@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solh/routes/routes.gr.dart';
 
 void main() {
   runApp(SolhApp());
@@ -7,21 +8,22 @@ void main() {
 class SolhApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Solh App',
+    final _appRouter = AppRouter();
+
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerDelegate: _appRouter.delegate(initialDeepLink: "/"),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+      title: 'Anah Ecommerce',
       theme: ThemeData(
         primarySwatch: Colors.green,
+        inputDecorationTheme: InputDecorationTheme(),
       ),
-      home: MyHomePage(title: 'Solh Demo Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -31,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Solh App"),
       ),
       body: Center(
           child: Container(
