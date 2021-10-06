@@ -19,6 +19,7 @@ static const Color white = Color.fromRGBO(255, 255, 255, 1);
 
 static const Color grey = Color.fromRGBO(166, 166, 166, 1); //Figma Grey #A6A6A6
 static const Color grey102 = Color.fromRGBO(102, 102, 102, 1); //Figma #666666
+static const Color grey239 = Color.fromRGBO(239, 239, 239, 1);
 static const Color greyS200 = Color.fromRGBO(238, 238, 238, 1); //Colors.grey.shade200
 
 //Pink Shades
