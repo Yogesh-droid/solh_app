@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:solh/shared_widgets_constants/constants/colors.dart';
 
-class CurvedContainer extends StatelessWidget {
-  const CurvedContainer(this.child,
-      {this.onPressed,
+class SolhCurvedContainer extends StatelessWidget {
+  const SolhCurvedContainer(
+      {
+      Key? key,
+      this.child,
+      this.onPressed,
       this.height,
       this.width,
       this.backgroundColor,
@@ -12,11 +15,12 @@ class CurvedContainer extends StatelessWidget {
       this.borderRadius,
       this.alignment,
       this.margin,
-      });
+      }) :
+      super (key: key);
 
   final double? height;
   final double? width;
-  final Widget child;
+  final Widget? child;
   final Color? backgroundColor;
   final VoidCallback? onPressed;
   final EdgeInsets? padding;
@@ -32,14 +36,11 @@ class CurvedContainer extends StatelessWidget {
       child: Container(
         alignment: alignment ?? Alignment.center,
         margin: margin,
-        padding: padding ?? EdgeInsets.symmetric(
-          vertical: MediaQuery.of(context).size.height/60,
-          horizontal: MediaQuery.of(context).size.width/20
-          ),
+        padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: backgroundColor ?? SolhColors.black,
-            border: border ?? Border.all(color: SolhColors.black),
-            borderRadius: borderRadius ?? BorderRadius.circular(10)
+            color: backgroundColor ?? SolhColors.white,
+            border: border ?? Border.all(color: SolhColors.green, width: 2.0),
+            borderRadius: borderRadius ?? BorderRadius.circular(20)
             ),
         height: height ?? MediaQuery.of(context).size.height / 18,
         width: width ?? MediaQuery.of(context).size.width / 1.8,

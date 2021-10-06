@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:solh/shared_widgets_constants/buttons/default_custom_button.dart';
+import 'package:solh/shared_widgets_constants/containers/curved_container.dart';
+import 'package:solh/shared_widgets_constants/constants/textstyles.dart';
 
 void main() {
   runApp(SolhApp());
@@ -9,6 +12,7 @@ class SolhApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Solh App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
@@ -34,9 +38,27 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
         child: Text("Root of the Application", style: TextStyle(fontSize: 24)),
-      )),
+      ),
+      SolhDefaultCustomButton(
+        onPressed: () => {},
+        child: Text(
+          "Test",
+          style: SolhTextStyles.defaultTextStyle,
+        ),
+        ),
+        SolhCurvedContainer(
+          child: Text(
+            "Test",
+            style: SolhTextStyles.defaultTextStyle,
+          ),
+        ),
+            ],
+          )),
     );
   }
 }
