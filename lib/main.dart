@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solh/shared_widgets_constants/buttons/default_custom_button.dart';
+import 'package:solh/shared_widgets_constants/buttons/default_custom_buttons.dart';
 import 'package:solh/shared_widgets_constants/containers/curved_container.dart';
 import 'package:solh/shared_widgets_constants/constants/textstyles.dart';
 
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
         child: Text("Root of the Application", style: TextStyle(fontSize: 24)),
       ),
-      SolhDefaultCustomButton(
+      SolhGreenBorderMiniButton(
         onPressed: () => {},
         child: Text(
           "Test",

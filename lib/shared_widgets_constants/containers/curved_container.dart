@@ -38,7 +38,7 @@ class SolhCurvedContainer extends StatelessWidget {
         margin: margin,
         padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: backgroundColor ?? SolhColors.white,
+            color: backgroundColor ?? Colors.transparent,
             border: border ?? Border.all(color: SolhColors.green, width: 2.0),
             borderRadius: borderRadius ?? BorderRadius.circular(20)
             ),
