@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solh/shared_widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhSecondaryTextFormField extends StatefulWidget {
   const SolhSecondaryTextFormField({
@@ -40,10 +40,12 @@ class SolhSecondaryTextFormField extends StatefulWidget {
   final int? maxLength;
 
   @override
-  _SolhSecondaryTextFormFieldState createState() => _SolhSecondaryTextFormFieldState();
+  _SolhSecondaryTextFormFieldState createState() =>
+      _SolhSecondaryTextFormFieldState();
 }
 
-class _SolhSecondaryTextFormFieldState extends State<SolhSecondaryTextFormField> {
+class _SolhSecondaryTextFormFieldState
+    extends State<SolhSecondaryTextFormField> {
   ChangeNotifier textFieldLister = ChangeNotifier();
   final FocusNode _focusNode = FocusNode();
 
@@ -74,7 +76,8 @@ class _SolhSecondaryTextFormFieldState extends State<SolhSecondaryTextFormField>
       child: TextFormField(
         focusNode: _focusNode,
         obscureText: widget.isObscureText,
-        style: widget.textStyle ?? TextStyle(color: SolhColors.black, fontSize: 14),
+        style: widget.textStyle ??
+            TextStyle(color: SolhColors.black, fontSize: 14),
         controller: widget.textEditingController,
         cursorColor: widget.cursorColor ?? SolhColors.white,
         minLines: widget.minLines ?? 1,

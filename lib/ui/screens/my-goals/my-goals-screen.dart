@@ -14,6 +14,5 @@ class MyGoalsScreen extends StatelessWidget {
             textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
       )),
     );
-    ;
   }
 }
