@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
+import 'package:solh/ui/screens/share/share-screen.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -18,17 +22,22 @@ import 'package:solh/ui/screens/home/homescreen.dart';
           AutoRoute(
             path: "ShareScreen",
             name: "ShareScreenRouter",
-            page: HomeScreen,
+            page: ShareScreen,
           ),
           AutoRoute(
             path: "ConnectScreen",
             name: "ConnectScreenRouter",
-            page: HomeScreen,
+            page: ConnectScreen,
           ),
           AutoRoute(
             path: "MyGoalsScreen",
             name: "MyGoalsScreenRouter",
-            page: HomeScreen,
+            page: MyGoalsScreen,
+          ),
+          AutoRoute(
+            path: "MyProfileScreen",
+            name: "MyProfileScreenRouter",
+            page: MyProfileScreen,
           ),
         ]),
   ],

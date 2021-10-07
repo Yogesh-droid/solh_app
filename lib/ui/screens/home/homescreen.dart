@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solh/ui/screens/widgets/app-bar.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -6,12 +7,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Solh App"),
-      ),
+      appBar: SolhAppBar(),
       body: Center(
           child: Container(
-        child: Text("Root of the Application", style: TextStyle(fontSize: 24)),
+        child: Text("Home Screen of the Application",
+            textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
       )),
     );
   }

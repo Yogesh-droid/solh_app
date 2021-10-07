@@ -16,10 +16,10 @@ class _MasterScreenState extends State<MasterScreen> {
     return AutoTabsScaffold(
       routes: [
         HomeScreenRouter(),
-        HomeScreenRouter(),
-        HomeScreenRouter(),
-        HomeScreenRouter(),
-        HomeScreenRouter(),
+        ShareScreenRouter(),
+        ConnectScreenRouter(),
+        MyGoalsScreenRouter(),
+        MyProfileScreenRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         if (widget.index != null) tabsRouter.setActiveIndex(widget.index!);
