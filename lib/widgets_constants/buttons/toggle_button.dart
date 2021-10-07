@@ -35,12 +35,9 @@ class _SolhToggleButtonState extends State<SolhToggleButton> {
           {
           widget.thumbColor = SolhColors.green;
           }
-          else 
+          else if(value == false)
           {
-            if(widget.thumbColor == null)
-            {
             widget.thumbColor = SolhColors.grey;
-            }
           }
         });
       },
