@@ -12,7 +12,7 @@ class SolhToggleButton extends StatefulWidget {
   });
 
   final Color? activeColor;
-  final Color? thumbColor;
+  Color? thumbColor;
   final Color? trackColor;
   bool switchValue; 
 
@@ -24,13 +24,24 @@ class _SolhToggleButtonState extends State<SolhToggleButton> {
   @override
   Widget build(BuildContext context) {
     return CupertinoSwitch(
-      activeColor: widget.activeColor ?? SolhColors.green,
+      activeColor: widget.activeColor ?? SolhColors.grey217, //SolhColors.green,
       trackColor: widget.trackColor ?? SolhColors.grey217,
       thumbColor: widget.thumbColor ?? SolhColors.grey,
       value: widget.switchValue,
       onChanged: (value) {
         setState(() {
           widget.switchValue = value;
+          if(value == true)
+          {
+          widget.thumbColor = SolhColors.green;
+          }
+          else 
+          {
+            if(widget.thumbColor == null)
+            {
+            widget.thumbColor = SolhColors.grey;
+            }
+          }
         });
       },
     );
