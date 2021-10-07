@@ -1,5 +1,7 @@
 # 卐 शुभ लाभ 卐
 
+# MERA MERA YASU YASU
+
 ## solh
  solh application by OMLogic
  
