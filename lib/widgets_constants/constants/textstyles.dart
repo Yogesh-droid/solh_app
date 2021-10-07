@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
-import 'package:solh/shared_widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhTextStyles{
 

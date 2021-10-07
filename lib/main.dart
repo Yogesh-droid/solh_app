@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:solh/shared_widgets_constants/buttons/default_custom_buttons.dart';
-import 'package:solh/shared_widgets_constants/containers/curved_container.dart';
-import 'package:solh/shared_widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/buttons/default_custom_buttons.dart';
+import 'package:solh/widgets_constants/containers/curved_container.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 void main() {
   runApp(SolhApp());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:solh/shared_widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhCurvedContainer extends StatelessWidget {
   const SolhCurvedContainer(
