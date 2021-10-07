@@ -14,12 +14,12 @@ static const Color pink224 = Color.fromRGBO(224, 86, 91, 1); //Figma Secondary P
 
 //Black Shades
 
-static const Color black = Color.fromRGBO(0, 0, 0, 1);
+static const Color black = Color.fromRGBO(0, 0, 0, 1); 
 static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //Figma #222222
 
 //White Shades
 
-static const Color white = Color.fromRGBO(255, 255, 255, 1);
+static const Color white = Color.fromRGBO(255, 255, 255, 1); //Figma White
 
 //Grey Shades
 

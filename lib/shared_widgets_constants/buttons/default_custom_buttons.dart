@@ -6,7 +6,7 @@ class SolhGreenBorderMiniButton extends StatefulWidget {
       {
       Key? key,
       this.child,
-      required this.onPressed,
+      this.onPressed,
       this.height,
       this.width,
       this.backgroundColor,
@@ -61,7 +61,7 @@ class SolhPinkBorderMiniButton extends StatefulWidget {
       {
       Key? key,
       this.child,
-      required this.onPressed,
+      this.onPressed,
       this.height,
       this.width,
       this.backgroundColor,
@@ -116,7 +116,7 @@ class SolhGreenMiniButton extends StatefulWidget {
       {
       Key? key,
       this.child,
-      required this.onPressed,
+      this.onPressed,
       this.height,
       this.width,
       this.backgroundColor,
@@ -171,7 +171,7 @@ class SolhPinkMiniButton extends StatefulWidget {
       {
       Key? key,
       this.child,
-      required this.onPressed,
+      this.onPressed,
       this.height,
       this.width,
       this.backgroundColor,

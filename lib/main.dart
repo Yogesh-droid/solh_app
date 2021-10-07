@@ -45,16 +45,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Text("Root of the Application", style: TextStyle(fontSize: 24)),
       ),
       SolhGreenBorderMiniButton(
-        onPressed: () => {},
         child: Text(
           "Test",
-          style: SolhTextStyles.defaultTextStyle,
+          style: SolhTextStyles.UniversalText,
         ),
         ),
         SolhCurvedContainer(
           child: Text(
             "Test",
-            style: SolhTextStyles.defaultTextStyle,
+            style: SolhTextStyles.UniversalText,
           ),
         ),
             ],
