@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
-class SolhCurvedContainer extends StatelessWidget {
-  const SolhCurvedContainer(
+class SolhContainer extends StatelessWidget {
+  const SolhContainer(
       {
       Key? key,
       this.child,

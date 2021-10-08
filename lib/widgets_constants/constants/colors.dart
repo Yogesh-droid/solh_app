@@ -19,7 +19,7 @@ static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //Figma #222222
 
 //White Shades
 
-static const Color white = Color.fromRGBO(255, 255, 255, 1); //Figma White
+static const Color white = Color.fromRGBO(255, 255, 255, 1); //Figma Whitegma Background
 
 //Grey Shades
 
