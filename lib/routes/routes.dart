@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
+import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/ui/screens/share/share-screen.dart';
@@ -40,6 +41,11 @@ import 'package:solh/ui/screens/share/share-screen.dart';
             page: MyProfileScreen,
           ),
         ]),
+    AutoRoute(
+      path: "IntroCrouselScreen",
+      name: "IntroCrouselScreenRouter",
+      page: IntroCrousel,
+    ),
   ],
 )
 class $AppRouter {}
