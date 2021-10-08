@@ -6,14 +6,16 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 class SolhToggleButton extends StatefulWidget {
   SolhToggleButton({
     this.activeColor,
-    this.thumbColor,
-    this.trackColor,
+    this.inactiveThumbColor,
+    this.activeTrackColor,
+    this.inactiveTrackColor,
     required this.switchValue,
   });
 
   final Color? activeColor;
-  Color? thumbColor;
-  final Color? trackColor;
+  final Color? inactiveThumbColor;
+  final Color? activeTrackColor;
+  final Color? inactiveTrackColor;
   bool switchValue; 
 
   @override
@@ -23,22 +25,15 @@ class SolhToggleButton extends StatefulWidget {
 class _SolhToggleButtonState extends State<SolhToggleButton> {
   @override
   Widget build(BuildContext context) {
-    return CupertinoSwitch(
-      activeColor: widget.activeColor ?? SolhColors.grey217, //SolhColors.green,
-      trackColor: widget.trackColor ?? SolhColors.grey217,
-      thumbColor: widget.thumbColor ?? SolhColors.grey,
+    return Switch(
+      activeColor: widget.activeColor ?? SolhColors.green,
+      activeTrackColor: widget.activeTrackColor ?? SolhColors.grey217,
+      inactiveTrackColor: widget.inactiveTrackColor ?? SolhColors.grey217,
+      inactiveThumbColor: widget.inactiveThumbColor ?? SolhColors.grey,
       value: widget.switchValue,
       onChanged: (value) {
         setState(() {
           widget.switchValue = value;
-          if(value == true)
-          {
-          widget.thumbColor = SolhColors.green;
-          }
-          else if(value == false)
-          {
-            widget.thumbColor = SolhColors.grey;
-          }
         });
       },
     );
