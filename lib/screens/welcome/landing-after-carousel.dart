@@ -28,7 +28,6 @@ class _FirstTimeLandingAfterCarouselState extends State<FirstTimeLandingAfterCar
           color: SolhColors.white,
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
