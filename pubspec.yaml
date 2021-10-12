@@ -26,6 +26,7 @@ flutter:
     - assets/images/logo/
     - assets/images/journal-demo/
     - assets/icons/journaling/
+    - assets/icons/app-bar/
 
   # To add assets to your application, add an assets section, like this:
   #assets:

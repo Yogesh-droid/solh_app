@@ -13,6 +13,13 @@ class SolhTextStyles{
     height: 1.23, //Figma Line Height 17.25
   );
 
+  static const TextStyle AppBarText = TextStyle(
+    fontSize: 24,
+    color: SolhColors.grey102,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 29.57
+  );
+
   //First Time Landing Page
 
   static const TextStyle LandingTitleText = TextStyle(
