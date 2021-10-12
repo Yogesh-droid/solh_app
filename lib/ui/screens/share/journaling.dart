@@ -13,6 +13,8 @@ class Journaling extends StatefulWidget {
 }
 
 class _JournalingState extends State<Journaling> {
+  final _newPostKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,15 +47,18 @@ class _JournalingState extends State<Journaling> {
                     padding: EdgeInsets.symmetric(
                       horizontal: MediaQuery.of(context).size.width / 30,
                     ),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "What's on your mind?",
-                        hintStyle: SolhTextStyles.JournalingHintText,
-                        contentPadding: EdgeInsets.only(bottom: 10),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
+                    child: Form(
+                      key: _newPostKey,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "What's on your mind?",
+                          hintStyle: SolhTextStyles.JournalingHintText,
+                          contentPadding: EdgeInsets.only(bottom: 9),
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
                       ),
                     ),
                   ),

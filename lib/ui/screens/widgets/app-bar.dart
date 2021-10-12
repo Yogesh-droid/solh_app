@@ -22,7 +22,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       elevation: 2,
       backgroundColor: SolhColors.white,
-      actions: [
+      actions: isLandingScreen ? [
         IconButton(
           onPressed: () => {}, 
           icon: Icon(
@@ -31,6 +31,24 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: SolhColors.pink224,
           ),
           IconButton(
+          onPressed: () => {}, 
+          icon: CircleAvatar(
+            radius: 28,
+            backgroundColor: SolhColors.pink224,
+            child: Text(
+              "SOS",
+              style: TextStyle(
+                color: SolhColors.white,
+                fontSize: 10,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          color: SolhColors.pink224,
+          ),
+      ] 
+      : [
+        IconButton(
           onPressed: () => {}, 
           icon: CircleAvatar(
             radius: 28,
