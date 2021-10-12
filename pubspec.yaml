@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.3
+  firebase: ^9.0.2
   auto_route: ^2.3.2
   sizer: ^2.0.15
   smooth_page_indicator: ^1.0.0+2

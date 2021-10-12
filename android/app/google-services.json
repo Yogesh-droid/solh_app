@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:729100578162:android:2365bc4a3f34fc2c16c1eb",
+        "mobilesdk_app_id": "1:729100578162:android:e05f9666d863470216c1eb",
         "android_client_info": {
-          "package_name": "com.omlogic.solh.solh"
+          "package_name": "com.solh.app"
         }
       },
       "oauth_client": [
