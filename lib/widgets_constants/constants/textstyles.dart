@@ -80,6 +80,27 @@ class SolhTextStyles{
     height: 1.23, //Figma Line Height 14.78
   );
 
+  static const TextStyle JournalingHashtagText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.pink224,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle JournalingDescriptionText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey102,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: SolhColors.green,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
   // Buttons
 
   static const TextStyle GreenBorderButtonText = TextStyle(
