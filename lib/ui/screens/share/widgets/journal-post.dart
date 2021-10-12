@@ -15,6 +15,8 @@ class _JournalPostState extends State<JournalPost> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height/1.57,
+               width: MediaQuery.of(context).size.width,
             child: Column(
               children: [
                 Divider(),
@@ -120,6 +122,8 @@ class _JournalPostState extends State<JournalPost> {
                         style: SolhTextStyles.JournalingHashtagText,
                       ),
                       RichText(
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
                   text: TextSpan(
                     text: "Amet, consectetur adipiscing elit. Elit odio sollicitudin accumsan gravida. Vitae lacus at facilisis",
                   style: SolhTextStyles.JournalingDescriptionText,

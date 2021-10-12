@@ -101,6 +101,12 @@ class _JournalingState extends State<Journaling> {
             ), 
            JournalPost(),
            JournalPost(),
+          //  ListView.builder(
+          //    itemCount: 2,
+          //    itemBuilder: (BuildContext context, int index) {
+          //      return JournalPost();
+          //    }
+          //    ),
           ],
         ),
       ),
