@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solh/ui/screens/share/journaling.dart';
 import 'package:solh/ui/screens/widgets/app-bar.dart';
 
 class ShareScreen extends StatelessWidget {
@@ -8,11 +9,12 @@ class ShareScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(),
-      body: Center(
-          child: Container(
-        child: Text("Share Screen of the Application",
-            textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
-      )),
+      body: Journaling(),
+      // body: Center(
+      //     child: Container(
+      //   child: Text("Share Screen of the Application",
+      //       textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
+      // )),
     );
   }
 }

@@ -50,6 +50,36 @@ class SolhTextStyles{
     height: 1.23, //Figma Line Height 19.71
   );
 
+  // Journaling
+
+  static const TextStyle JournalingHintText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle JournalingUsernameText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: SolhColors.black34,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle JournalingTimeStampText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey,
+    height: 1.23, //Figma Line Height 14.78
+  );
+
+  static const TextStyle JournalingBadgeText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.green,
+    height: 1.23, //Figma Line Height 14.78
+  );
+
   // Buttons
 
   static const TextStyle GreenBorderButtonText = TextStyle(
