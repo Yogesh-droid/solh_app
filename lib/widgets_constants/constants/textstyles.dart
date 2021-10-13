@@ -108,6 +108,13 @@ class SolhTextStyles{
     height: 1.23, //Figma Line Height 19.71
   );
 
+  static const TextStyle JournalingPostMenuText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey102,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
   // Buttons
 
   static const TextStyle GreenBorderButtonText = TextStyle(

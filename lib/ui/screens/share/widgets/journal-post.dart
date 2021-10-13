@@ -92,12 +92,129 @@ class _JournalPostState extends State<JournalPost> {
                                   ),
                               ],
                             ),
-                            IconButton(
-                          onPressed: () => {}, 
-                        icon: SvgIcon("assets/icons/journaling/post-settings.svg"),
-                        iconSize: 20,
-                        color: SolhColors.grey102,
+                        //     IconButton(
+                        //   onPressed: () => {}, 
+                        // icon: SvgIcon("assets/icons/journaling/post-settings.svg"),
+                        // iconSize: 20,
+                        // color: SolhColors.grey102,
+                        // ),
+                        PopupMenuButton(
+                icon: Icon(
+                  Icons.more_vert,
+                color: SolhColors.grey102,
+                ),
+                iconSize: 20,
+                color: SolhColors.white,
+                padding: EdgeInsets.zero,
+                offset: Offset(10,0),
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.only(
+                        right: MediaQuery.of(context).size.width/20,
+                        bottom: MediaQuery.of(context).size.height/30,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                        )
+                      ),
+                      child: SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: IconButton(
+                          onPressed: () => Navigator.pop(context), 
+                          icon: Icon(
+                            Icons.close,
+                          ),
+                          iconSize: 18,
+                          color: SolhColors.grey102,
+                          splashRadius: 16,
+                          ),
+                      ),
+                    ),
+                    value: 0,
+                    textStyle: SolhTextStyles.JournalingPostMenuText,
+                    padding: EdgeInsets.zero,
+                  ),
+                   PopupMenuItem(
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width/20,
+                        vertical: MediaQuery.of(context).size.height/80,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                        )
+                      ),
+                      child: Text(
+                        "Save this post",
                         ),
+                    ),
+                    value: 1,
+                    textStyle: SolhTextStyles.JournalingPostMenuText,
+                    padding: EdgeInsets.zero,
+                  ),
+                  PopupMenuItem(
+                    child: Container(
+                       alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width/20,
+                        vertical: MediaQuery.of(context).size.height/80,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                        )
+                      ),
+                      child: Text(
+                        "Don't see this post again",
+                        ),
+                    ),
+                    value: 2,
+                    textStyle: SolhTextStyles.JournalingPostMenuText,
+                    padding: EdgeInsets.zero,
+                  ),
+                  PopupMenuItem(
+                    child: Container(
+                       alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width/20,
+                        vertical: MediaQuery.of(context).size.height/80,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                        )
+                      ),
+                      child: Text(
+                        "Block this person",
+                        ),
+                    ),
+                    value: 3,
+                    textStyle: SolhTextStyles.JournalingPostMenuText,
+                    padding: EdgeInsets.zero,
+                  ),
+                  PopupMenuItem(
+                    child: Container(
+                       alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width/20,
+                        vertical: MediaQuery.of(context).size.height/80,
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                        )
+                      ),
+                      child: Text(
+                        "Report this post",
+                        ),
+                    ),
+                    value: 4,
+                    textStyle: SolhTextStyles.JournalingPostMenuText,
+                    padding: EdgeInsets.zero,
+                  ),
+                ]
+            ),
                           ],
                         ),
                       ),
