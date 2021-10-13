@@ -108,35 +108,35 @@ class _JournalPostState extends State<JournalPost> {
                 padding: EdgeInsets.zero,
                 offset: Offset(10,0),
                 itemBuilder: (context) => [
-                  PopupMenuItem(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      padding: EdgeInsets.only(
-                        right: MediaQuery.of(context).size.width/20,
-                        bottom: MediaQuery.of(context).size.height/30,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(bottom: BorderSide(color: SolhColors.grey239),
-                        )
-                      ),
-                      child: SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: IconButton(
-                          onPressed: () => Navigator.pop(context), 
-                          icon: Icon(
-                            Icons.close,
-                          ),
-                          iconSize: 18,
-                          color: SolhColors.grey102,
-                          splashRadius: 16,
-                          ),
-                      ),
-                    ),
-                    value: 0,
-                    textStyle: SolhTextStyles.JournalingPostMenuText,
-                    padding: EdgeInsets.zero,
-                  ),
+                  // PopupMenuItem(
+                  //   child: Container(
+                  //     alignment: Alignment.centerRight,
+                  //     padding: EdgeInsets.only(
+                  //       right: MediaQuery.of(context).size.width/20,
+                  //       bottom: MediaQuery.of(context).size.height/30,
+                  //     ),
+                  //     decoration: BoxDecoration(
+                  //       border: Border(bottom: BorderSide(color: SolhColors.grey239),
+                  //       )
+                  //     ),
+                  //     child: SizedBox(
+                  //       width: 18,
+                  //       height: 18,
+                  //       child: IconButton(
+                  //         onPressed: () => Navigator.pop(context), 
+                  //         icon: Icon(
+                  //           Icons.close,
+                  //         ),
+                  //         iconSize: 18,
+                  //         color: SolhColors.grey102,
+                  //         splashRadius: 16,
+                  //         ),
+                  //     ),
+                  //   ),
+                  //   value: 0,
+                  //   textStyle: SolhTextStyles.JournalingPostMenuText,
+                  //   padding: EdgeInsets.zero,
+                  // ),
                    PopupMenuItem(
                     child: Container(
                       alignment: Alignment.centerLeft,
