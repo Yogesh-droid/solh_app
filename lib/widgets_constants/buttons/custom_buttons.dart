@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhGreenBorderMiniButton extends StatefulWidget {
-  SolhGreenBorderMiniButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  SolhGreenBorderMiniButton({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -30,24 +29,25 @@ class SolhGreenBorderMiniButton extends StatefulWidget {
   final EdgeInsets? margin;
 
   @override
-  _SolhGreenBorderMiniButtonState createState() => _SolhGreenBorderMiniButtonState();
+  _SolhGreenBorderMiniButtonState createState() =>
+      _SolhGreenBorderMiniButtonState();
 }
 
 class _SolhGreenBorderMiniButtonState extends State<SolhGreenBorderMiniButton> {
-  
   @override
   Widget build(BuildContext context) {
-   return InkWell(
+    return InkWell(
       onTap: widget.onPressed,
       child: Container(
         alignment: widget.alignment ?? Alignment.center,
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-            ),
+          color: widget.backgroundColor ?? Colors.transparent,
+          border:
+              widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
@@ -57,21 +57,19 @@ class _SolhGreenBorderMiniButtonState extends State<SolhGreenBorderMiniButton> {
 }
 
 class SolhPinkBorderMiniButton extends StatefulWidget {
-  const SolhPinkBorderMiniButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  const SolhPinkBorderMiniButton({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -85,24 +83,25 @@ class SolhPinkBorderMiniButton extends StatefulWidget {
   final EdgeInsets? margin;
 
   @override
-  _SolhPinkBorderMiniButtonState createState() => _SolhPinkBorderMiniButtonState();
+  _SolhPinkBorderMiniButtonState createState() =>
+      _SolhPinkBorderMiniButtonState();
 }
 
 class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
-
   @override
   Widget build(BuildContext context) {
-   return InkWell(
+    return InkWell(
       onTap: widget.onPressed,
       child: Container(
         alignment: widget.alignment ?? Alignment.center,
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.pink224, width: 2.0),
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-            ),
+          color: widget.backgroundColor ?? Colors.transparent,
+          border: widget.border ??
+              Border.all(color: SolhColors.pink224, width: 2.0),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
@@ -112,21 +111,19 @@ class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
 }
 
 class SolhGreenMiniButton extends StatefulWidget {
-  const SolhGreenMiniButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  const SolhGreenMiniButton({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -144,20 +141,19 @@ class SolhGreenMiniButton extends StatefulWidget {
 }
 
 class _SolhGreenMiniButtonState extends State<SolhGreenMiniButton> {
-  
   @override
   Widget build(BuildContext context) {
-   return InkWell(
+    return InkWell(
       onTap: widget.onPressed,
       child: Container(
         alignment: widget.alignment ?? Alignment.center,
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? SolhColors.green,
-            border: widget.border ?? null,
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-            ),
+          color: widget.backgroundColor ?? SolhColors.green,
+          border: widget.border ?? null,
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
@@ -167,21 +163,19 @@ class _SolhGreenMiniButtonState extends State<SolhGreenMiniButton> {
 }
 
 class SolhPinkMiniButton extends StatefulWidget {
-  const SolhPinkMiniButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  const SolhPinkMiniButton({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -199,20 +193,19 @@ class SolhPinkMiniButton extends StatefulWidget {
 }
 
 class _SolhPinkMiniButtonState extends State<SolhPinkMiniButton> {
-
   @override
   Widget build(BuildContext context) {
-   return InkWell(
+    return InkWell(
       onTap: widget.onPressed,
       child: Container(
         alignment: widget.alignment ?? Alignment.center,
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? SolhColors.pink224,
-            border: widget.border ?? null,
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-            ),
+          color: widget.backgroundColor ?? SolhColors.pink224,
+          border: widget.border ?? null,
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
@@ -222,25 +215,23 @@ class _SolhPinkMiniButtonState extends State<SolhPinkMiniButton> {
 }
 
 class SolhGreenButton extends StatefulWidget {
-  const SolhGreenButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  const SolhGreenButton({
+    Key? key,
+    required this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
-  final Widget? child;
+  final Widget child;
   final Color? backgroundColor;
   final VoidCallback? onPressed;
   final EdgeInsets? padding;
@@ -254,44 +245,37 @@ class SolhGreenButton extends StatefulWidget {
 }
 
 class _SolhGreenButtonState extends State<SolhGreenButton> {
-  
   @override
   Widget build(BuildContext context) {
-   return InkWell(
-      onTap: widget.onPressed,
-      child: Container(
-        alignment: widget.alignment ?? Alignment.center,
-        margin: widget.margin,
-        padding: widget.padding ?? EdgeInsets.zero,
-        decoration: BoxDecoration(
-            color: widget.backgroundColor ?? SolhColors.green,
-            border: widget.border ?? null,
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
-            ),
-        height: widget.height ?? MediaQuery.of(context).size.height / 15,
-        width: widget.width ?? MediaQuery.of(context).size.width,
-        child: widget.child,
-      ),
+    return Container(
+      width: widget.width ?? 80.w,
+      height: widget.height ?? 5.8.h,
+      margin: EdgeInsets.only(top: 6.h, bottom: 2.h),
+      alignment: widget.alignment ?? Alignment.center,
+      // decoration: BoxDecoration(
+      //   color: widget.backgroundColor ?? SolhColors.green,
+      //   border: widget.border ?? null,
+      //   borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
+      // ),
+      child: TextButton(onPressed: widget.onPressed, child: widget.child),
     );
   }
 }
 
 class SolhGreenBorderButton extends StatefulWidget {
-  SolhGreenBorderButton(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super(key: key);
+  SolhGreenBorderButton({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -309,20 +293,20 @@ class SolhGreenBorderButton extends StatefulWidget {
 }
 
 class _SolhGreenBorderButtonState extends State<SolhGreenBorderButton> {
-  
   @override
   Widget build(BuildContext context) {
-   return InkWell(
+    return InkWell(
       onTap: widget.onPressed,
       child: Container(
         alignment: widget.alignment ?? Alignment.center,
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
-            ),
+          color: widget.backgroundColor ?? Colors.transparent,
+          border:
+              widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 15,
         width: widget.width ?? MediaQuery.of(context).size.width,
         child: widget.child,
