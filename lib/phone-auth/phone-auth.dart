@@ -83,7 +83,13 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                         height: 5.8.h,
                         width: 80.w,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            print("Phone no: " +
+                                _countryCode! +
+                                _phoneController.text);
+                            _signInWithPhone(
+                                "${_countryCode.toString()}${_phoneController.text}");
+                          },
                           child: Text(
                             "Continue",
                             style: TextStyle(color: Colors.white),
@@ -95,7 +101,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       ),
                       InkWell(
                           onTap: () => AutoRouter.of(context)
-                              .push(MasterScreenRouter(0)),
+                              .push(MasterScreenRouter(index: 0)),
                           child: Text("skip"))
                     ],
                   ),

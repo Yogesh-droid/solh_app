@@ -22,14 +22,7 @@ class SolhColors {
   static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //
   static const Color white =
       Color.fromRGBO(255, 255, 255, 1); //Figma Whitegma Background
-
-static const Color black = Color.fromRGBO(0, 0, 0, 1);
-static const Color blackop05 = Color.fromRGBO(0, 0, 0, 05);  
-static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //Figma #222222
-
-//White Shades
-
-static const Color white = Color.fromRGBO(255, 255, 255, 1); //Figma Whitegma Background
+  static const Color blackop05 = Color.fromRGBO(0, 0, 0, 05);
 
 //Grey Shades
 

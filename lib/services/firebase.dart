@@ -9,7 +9,6 @@ class FirebaseNetwork {
       {required Function(String) onCodeSent}) async {
     try {
       print("calling verify phoneNo");
-
       await FirebaseAuth.instance.verifyPhoneNumber(
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
