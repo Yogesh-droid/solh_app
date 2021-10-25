@@ -45,7 +45,7 @@ class _SolhGreenBorderMiniButtonState extends State<SolhGreenBorderMiniButton> {
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
+            border: widget.border ?? Border.all(color: SolhColors.green, width: 1.0),
             borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
             ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
@@ -100,7 +100,7 @@ class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.pink224, width: 2.0),
+            border: widget.border ?? Border.all(color: SolhColors.pink224, width: 1.0),
             borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
             ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
@@ -320,7 +320,7 @@ class _SolhGreenBorderButtonState extends State<SolhGreenBorderButton> {
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
+            border: widget.border ?? Border.all(color: SolhColors.green, width: 1.0),
             borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
             ),
         height: widget.height ?? MediaQuery.of(context).size.height / 15,

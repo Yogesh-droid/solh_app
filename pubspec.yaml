@@ -12,6 +12,7 @@ dependencies:
   cupertino_icons: ^1.0.3
   firebase: ^9.0.2
   auto_route: ^2.3.2
+  svg_icon: ^0.0.1
   sizer: ^2.0.15
   smooth_page_indicator: ^1.0.0+2
   google_fonts: ^2.1.0
@@ -27,8 +28,15 @@ flutter:
   
   assets:
     - assets/images/logo/
-    - assets/intro/png/
+    - assets/images/journal-demo/
+    - assets/icons/journaling/
+    - assets/icons/app-bar/
 
+  # To add assets to your application, add an assets section, like this:
+  #assets:
+  #  - assets/images/test-folder/
+  #   - images/a_dot_ham.jpeg
+    - assets/intro/png/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
