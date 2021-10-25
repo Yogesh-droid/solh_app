@@ -1,20 +1,31 @@
+import 'package:country_code_picker/country_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:sizer/sizer.dart' as sizer;
 
-void main() {
+final GlobalKey<NavigatorState> globalNavigatorKey =
+    GlobalKey<NavigatorState>();
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(SolhApp());
 }
 
 class SolhApp extends StatelessWidget {
-  final _appRouter = AppRouter();
+  final _appRouter = AppRouter(globalNavigatorKey);
 
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp.router(
+        supportedLocales: [
+          Locale("en"),
+        ],
+        localizationsDelegates: [CountryLocalizations.delegate],
         debugShowCheckedModeBanner: false,
         routerDelegate:
             _appRouter.delegate(initialDeepLink: "IntroCrouselScreen"),
