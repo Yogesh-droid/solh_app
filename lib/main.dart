@@ -1,10 +1,11 @@
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart' as sizer;
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:sizer/sizer.dart' as sizer;
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
@@ -20,6 +21,9 @@ class SolhApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FirebaseAuth.instance.currentUser!
+    //     .getIdToken()
+    //     .then((value) => print(value));
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp.router(
         supportedLocales: [
@@ -27,10 +31,12 @@ class SolhApp extends StatelessWidget {
         ],
         localizationsDelegates: [CountryLocalizations.delegate],
         debugShowCheckedModeBanner: false,
-        routerDelegate:
-            _appRouter.delegate(initialDeepLink: "IntroCrouselScreen"),
+        routerDelegate: _appRouter.delegate(
+            initialDeepLink: FirebaseAuth.instance.currentUser == null
+                ? "IntroCarouselScreen"
+                : "MasterScreen"),
         routeInformationParser: _appRouter.defaultRouteParser(),
-        title: 'Anah Ecommerce',
+        title: 'Solh App',
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,

@@ -29,7 +29,7 @@ class AppRouter extends _i10.RootStackRouter {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: _i1.MasterScreen(index: args.index));
     },
-    IntroCrouselScreenRouter.name: (routeData) {
+    IntroCarouselScreenRouter.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.IntroCrousel());
     },
@@ -80,8 +80,8 @@ class AppRouter extends _i10.RootStackRouter {
               _i10.RouteConfig(MyProfileScreenRouter.name,
                   path: 'MyProfileScreen')
             ]),
-        _i10.RouteConfig(IntroCrouselScreenRouter.name,
-            path: 'IntroCrouselScreen'),
+        _i10.RouteConfig(IntroCarouselScreenRouter.name,
+            path: 'IntroCarouselScreen'),
         _i10.RouteConfig(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen'),
         _i10.RouteConfig(OTPScreenRouter.name, path: 'OTPScreen')
       ];
@@ -105,10 +105,10 @@ class MasterScreenRouterArgs {
 }
 
 /// generated route for [_i2.IntroCrousel]
-class IntroCrouselScreenRouter extends _i10.PageRouteInfo<void> {
-  const IntroCrouselScreenRouter() : super(name, path: 'IntroCrouselScreen');
+class IntroCarouselScreenRouter extends _i10.PageRouteInfo<void> {
+  const IntroCarouselScreenRouter() : super(name, path: 'IntroCarouselScreen');
 
-  static const String name = 'IntroCrouselScreenRouter';
+  static const String name = 'IntroCarouselScreenRouter';
 }
 
 /// generated route for [_i3.PhoneAuthScreen]
