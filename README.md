@@ -2,7 +2,7 @@
 
 # MERA MERA YASU YASU
 
-## solh
- solh application by OMLogic
+## Solh
+ Solh application by OMLogic
  
- for genrating routes use command in terminal: `flutter packages pub run build_runner build`
+ For generating routes run this command in terminal: `flutter packages pub run build_runner build`

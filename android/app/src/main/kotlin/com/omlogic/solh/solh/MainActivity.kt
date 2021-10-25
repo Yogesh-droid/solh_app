@@ -1,4 +1,4 @@
-package com.omlogic.solh.solh
+package com.solh.app
 
 import io.flutter.embedding.android.FlutterActivity
 

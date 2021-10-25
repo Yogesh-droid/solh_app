@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.omlogic.solh.solh">
+    package="com.solh.app">
    <application
         android:label="solh"
         android:icon="@mipmap/ic_launcher">
