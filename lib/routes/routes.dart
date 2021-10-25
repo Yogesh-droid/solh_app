@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/phone-auth/otp-screen.dart';
+import 'package:solh/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
@@ -45,6 +47,16 @@ import 'package:solh/ui/screens/share/share-screen.dart';
       path: "IntroCrouselScreen",
       name: "IntroCrouselScreenRouter",
       page: IntroCrousel,
+    ),
+    AutoRoute(
+      path: "PhoneAuthScreen",
+      name: "PhoneAuthScreenRouter",
+      page: PhoneAuthScreen,
+    ),
+    AutoRoute(
+      path: "OTPScreen",
+      name: "OTPScreenRouter",
+      page: OTPScreen,
     ),
   ],
 )
