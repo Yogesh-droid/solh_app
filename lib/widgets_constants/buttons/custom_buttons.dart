@@ -97,11 +97,10 @@ class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: widget.backgroundColor ?? Colors.transparent,
-          border: widget.border ??
-              Border.all(color: SolhColors.pink224, width: 2.0),
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-        ),
+            color: widget.backgroundColor ?? Colors.transparent,
+            border: widget.border ?? Border.all(color: SolhColors.pink224, width: 1.0),
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+            ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
