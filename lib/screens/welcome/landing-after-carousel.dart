@@ -1,112 +1,146 @@
-import 'package:flutter/material.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/buttons/toggle_button.dart';
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-class FirstTimeConsentForm extends StatefulWidget {
-  const FirstTimeConsentForm({Key? key}) : super(key: key);
+class SolhTextStyles {
+  //Universal
 
-  @override
-  _FirstTimeConsentFormState createState() => _FirstTimeConsentFormState();
-}
+  static const TextStyle UniversalText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
 
-class _FirstTimeConsentFormState extends State<FirstTimeConsentForm> {
-  bool _switchValue = false;
+  static const TextStyle AppBarText = TextStyle(
+    fontSize: 24,
+    color: SolhColors.grey102,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 29.57
+  );
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 15,
-          vertical: MediaQuery.of(context).size.height / 20,
-        ),
-        decoration: BoxDecoration(
-          color: SolhColors.white,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / 10,
-              ),
-              child: Text(
-                "Good to have you here",
-                style: SolhTextStyles.LandingTitleText,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / 40,
-                bottom: MediaQuery.of(context).size.height / 80,
-              ),
-              child: Text(
-                "Solh Provides insight into your emotional health and how you can work on it. The app is developed by the therapists, but it is important that you understand that it is not a substitute for diagnosis of psychotherapy.",
-                style: SolhTextStyles.LandingParaText,
-              ),
-            ),
-            Text(
-              "The processing of health data requires your consent. This is voluntary and can be revoked at any time.",
-              style: SolhTextStyles.LandingParaText,
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height / 15,
-                          horizontal: MediaQuery.of(context).size.width / 40,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Expanded(
-                              child: RichText(
-                                text: TextSpan(
-                                    text: "I have read and understood ",
-                                    style: SolhTextStyles.ToggleParaText,
-                                    children: [
-                                      TextSpan(
-                                        text: "the terms of use ",
-                                        style: SolhTextStyles.ToggleLinkText,
-                                      ),
-                                      TextSpan(
-                                        text: "and ",
-                                        style: SolhTextStyles.ToggleParaText,
-                                      ),
-                                      TextSpan(
-                                        text: "privacy policy",
-                                        style: SolhTextStyles.ToggleLinkText,
-                                      ),
-                                    ]),
-                              ),
-                            ),
-                            SolhToggleButton(switchValue: _switchValue),
-                          ],
-                        ),
-                      ),
-                      SolhGreenButton(
-                        child: Text(
-                          "CONTINUE",
-                          style: SolhTextStyles.GreenButtonText,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //First Time Landing Page
+
+  static const TextStyle LandingTitleText = TextStyle(
+    fontSize: 24,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 29.57
+  );
+
+  static const TextStyle LandingParaText = TextStyle(
+    fontSize: 16,
+    color: SolhColors.grey102,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle LandingButtonHeaderText = TextStyle(
+    fontSize: 14,
+    color: SolhColors.grey102,
+    fontWeight: FontWeight.w300,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle ToggleParaText = TextStyle(
+    fontSize: 16,
+    color: SolhColors.grey102,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle ToggleLinkText = TextStyle(
+    fontSize: 16,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  // Journaling
+
+  static const TextStyle JournalingHintText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle JournalingUsernameText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: SolhColors.black34,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle JournalingTimeStampText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey,
+    height: 1.23, //Figma Line Height 14.78
+  );
+
+  static const TextStyle JournalingBadgeText = TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.green,
+    height: 1.23, //Figma Line Height 14.78
+  );
+
+  static const TextStyle JournalingHashtagText = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.pink224,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle JournalingDescriptionText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey102,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: SolhColors.green,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  static const TextStyle JournalingPostMenuText = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: SolhColors.grey102,
+    height: 1.23, //Figma Line Height 19.71
+  );
+
+  // Buttons
+
+  static const TextStyle GreenBorderButtonText = TextStyle(
+    fontSize: 14,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle PinkBorderButtonText = TextStyle(
+    fontSize: 14,
+    color: SolhColors.pink224,
+    fontWeight: FontWeight.w400, //Figma Line Height 17.25
+    height: 1.23,
+  );
+
+  static const TextStyle GreenButtonText = TextStyle(
+    fontSize: 14,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
+  static const TextStyle PinkButtonText = TextStyle(
+    fontSize: 14,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
 }
