@@ -71,28 +71,21 @@ people & mental healthcare professionals.''',
       body: SafeArea(
         child: Column(
           children: [
-            Column(
-              children: [
-                if (_showBackButton)
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () async {
-                              await _animatePageToBackward();
-                            },
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: SolhColors.green,
-                            )),
-                        SkipButton()
-                      ])
-                else
-                  Align(alignment: Alignment.topRight, child: SkipButton()),
-              ],
-            ),
-            SizedBox(
-              height: 80.h,
+            if (_showBackButton)
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                IconButton(
+                    onPressed: () async {
+                      await _animatePageToBackward();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: SolhColors.green,
+                    )),
+                SkipButton()
+              ])
+            else
+              Align(alignment: Alignment.topRight, child: SkipButton()),
+            Expanded(
               child: Column(
                 children: [
                   Expanded(
@@ -120,7 +113,7 @@ people & mental healthcare professionals.''',
                     isOnLast: _currentPage == 3,
                     onPressed: () async {
                       if (_currentPage == 3)
-                        AutoRouter.of(context).push(MasterScreenRouter());
+                        AutoRouter.of(context).push(PhoneAuthScreenRouter());
                       else
                         await _animatePageToForward();
                     },
@@ -163,7 +156,6 @@ class CrouselIntro extends StatelessWidget {
           ),
         ),
         Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
               _heading,
