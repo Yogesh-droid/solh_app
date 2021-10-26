@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -22,49 +23,50 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
           : null,
       elevation: 2,
       backgroundColor: SolhColors.white,
-      actions: isLandingScreen ? [
-        IconButton(
-          onPressed: () => {}, 
-          icon: Icon(
-            Icons.notifications_outlined,
-          ),
-          color: SolhColors.pink224,
-          ),
-          IconButton(
-          onPressed: () => {}, 
-          icon: CircleAvatar(
-            radius: 28,
-            backgroundColor: SolhColors.pink224,
-            child: Text(
-              "SOS",
-              style: TextStyle(
-                color: SolhColors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
+      actions: isLandingScreen
+          ? [
+              IconButton(
+                onPressed: () => {},
+                icon: Icon(
+                  Icons.notifications_outlined,
+                ),
+                color: SolhColors.pink224,
               ),
-            ),
-          ),
-          color: SolhColors.pink224,
-          ),
-      ] 
-      : [
-        IconButton(
-          onPressed: () => {}, 
-          icon: CircleAvatar(
-            radius: 28,
-            backgroundColor: SolhColors.pink224,
-            child: Text(
-              "SOS",
-              style: TextStyle(
-                color: SolhColors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w400,
+              IconButton(
+                onPressed: () => {},
+                icon: CircleAvatar(
+                  radius: 28,
+                  backgroundColor: SolhColors.pink224,
+                  child: Text(
+                    "SOS",
+                    style: TextStyle(
+                      color: SolhColors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                color: SolhColors.pink224,
               ),
-            ),
-          ),
-          color: SolhColors.pink224,
-          ),
-      ],
+            ]
+          : [
+              IconButton(
+                onPressed: () => {},
+                icon: CircleAvatar(
+                  radius: 28,
+                  backgroundColor: SolhColors.pink224,
+                  child: Text(
+                    "SOS",
+                    style: TextStyle(
+                      color: SolhColors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                color: SolhColors.pink224,
+              ),
+            ],
     );
   }
 

@@ -44,8 +44,8 @@ import 'package:solh/ui/screens/share/share-screen.dart';
           ),
         ]),
     AutoRoute(
-      path: "IntroCrouselScreen",
-      name: "IntroCrouselScreenRouter",
+      path: "IntroCarouselScreen",
+      name: "IntroCarouselScreenRouter",
       page: IntroCrousel,
     ),
     AutoRoute(

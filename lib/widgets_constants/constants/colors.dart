@@ -16,15 +16,13 @@ class SolhColors {
       Color.fromRGBO(224, 86, 91, 1); //Figma Secondary Pink
 
 //Black Shades
-
+  static const Color black166 = Color.fromRGBO(166, 166, 166, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
-  static const Color blackop05 = Color.fromRGBO(0, 0, 0, 05);
-  static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //Figma #222222
-
-//White Shades
-
+  static const Color black53 = Color.fromRGBO(53, 53, 53, 1);
+  static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //
   static const Color white =
       Color.fromRGBO(255, 255, 255, 1); //Figma Whitegma Background
+  static const Color blackop05 = Color.fromRGBO(0, 0, 0, 05);
 
 //Grey Shades
 
@@ -36,4 +34,5 @@ class SolhColors {
   static const Color grey239 = Color.fromRGBO(239, 239, 239, 1); //Figma #EFEFEF
   static const Color greyS200 =
       Color.fromRGBO(238, 238, 238, 1); //Colors.grey.shade200
+
 }

@@ -9,7 +9,6 @@ class FirebaseNetwork {
       {required Function(String) onCodeSent}) async {
     try {
       print("calling verify phoneNo");
-
       await FirebaseAuth.instance.verifyPhoneNumber(
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
@@ -31,7 +30,9 @@ class FirebaseNetwork {
               (PhoneAuthCredential phoneAuthCredential) async {
             // print(phoneAuthCredential.verificationId);
             // print(phoneAuthCredential.providerId);
-            await signInWithPhoneCredential(phoneAuthCredential);
+            UserCredential userCredential =
+                await signInWithPhoneCredential(phoneAuthCredential);
+            print(userCredential.credential!.token);
             print("verified");
             AutoRouter.of(globalNavigatorKey.currentState!.context)
                 .push(MasterScreenRouter());
