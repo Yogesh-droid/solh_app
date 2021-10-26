@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:solh/ui/screens/share/journaling.dart';
 import 'package:solh/ui/screens/widgets/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:svg_icon/svg_icon.dart';
 
 class ShareScreen extends StatelessWidget {
   const ShareScreen({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class ShareScreen extends StatelessWidget {
       appBar: SolhAppBar(
         Row(
           children: [
-            SvgIcon(
+            SvgPicture.asset(
               "assets/icons/app-bar/app-bar-menu.svg",
               width: 26,
               height: 24,

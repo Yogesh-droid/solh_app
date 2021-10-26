@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:solh/ui/screens/share/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:svg_icon/svg_icon.dart';
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
@@ -35,8 +35,7 @@ class _JournalingState extends State<Journaling> {
                 children: [
                   CircleAvatar(
                     child: Image.asset(
-                            "assets/images/journal-demo/demo-viewing-user-profile-picture.png"
-                          ),
+                        "assets/images/journal-demo/demo-viewing-user-profile-picture.png"),
                     backgroundColor: SolhColors.pink224,
                     radius: 20,
                   ),
@@ -74,7 +73,8 @@ class _JournalingState extends State<Journaling> {
                             splashRadius: 20,
                             padding: EdgeInsets.zero,
                             onPressed: () => {},
-                            icon: SvgIcon("assets/icons/journaling/post-photo.svg"),
+                            icon: SvgPicture.asset(
+                                "assets/icons/journaling/post-photo.svg"),
                             color: SolhColors.green,
                           ),
                         ),
@@ -89,7 +89,8 @@ class _JournalingState extends State<Journaling> {
                             splashRadius: 20,
                             padding: EdgeInsets.zero,
                             onPressed: () => {},
-                            icon: SvgIcon("assets/icons/journaling/switch-profile.svg"),
+                            icon: SvgPicture.asset(
+                                "assets/icons/journaling/switch-profile.svg"),
                             color: SolhColors.green,
                           ),
                         ),
@@ -98,15 +99,15 @@ class _JournalingState extends State<Journaling> {
                   ),
                 ],
               ),
-            ), 
-           JournalPost(),
-           JournalPost(),
-          //  ListView.builder(
-          //    itemCount: 2,
-          //    itemBuilder: (BuildContext context, int index) {
-          //      return JournalPost();
-          //    }
-          //    ),
+            ),
+            JournalPost(),
+            JournalPost(),
+            //  ListView.builder(
+            //    itemCount: 2,
+            //    itemBuilder: (BuildContext context, int index) {
+            //      return JournalPost();
+            //    }
+            //    ),
           ],
         ),
       ),
