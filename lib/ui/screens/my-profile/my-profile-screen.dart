@@ -12,11 +12,11 @@ class MyProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
-        Text(
+        title: Text(
           "Profile",
           style: SolhTextStyles.AppBarText,
         ),
-        true,
+        isLandingScreen: true,
       ),
       body: Center(
           child: Container(

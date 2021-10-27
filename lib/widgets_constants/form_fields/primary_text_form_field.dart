@@ -43,9 +43,6 @@ class _SolhPrimaryTextFormFieldState extends State<SolhPrimaryTextFormField> {
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {});
-    });
   }
 
   @override

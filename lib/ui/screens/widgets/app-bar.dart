@@ -3,27 +3,31 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
-  SolhAppBar(this.title, this.isLandingScreen);
-  final bool isLandingScreen;
-  final Widget? title;
+  SolhAppBar({Widget? title, required bool isLandingScreen})
+      : _title = title,
+        _isLandingScreen = isLandingScreen;
+  final bool _isLandingScreen;
+  final Widget? _title;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: title,
-      leadingWidth: MediaQuery.of(context).size.width / 15,
-      leading: !isLandingScreen
+      title: _title,
+      centerTitle: false,
+      leadingWidth: _isLandingScreen ? 0 : 30,
+      leading: !_isLandingScreen
           ? IconButton(
               onPressed: () => Navigator.pop(context),
               icon: Icon(
                 Icons.arrow_back_ios_new_rounded,
+                color: SolhColors.black,
                 size: 24,
               ),
             )
           : null,
       elevation: 2,
       backgroundColor: SolhColors.white,
-      actions: isLandingScreen
+      actions: _isLandingScreen
           ? [
               IconButton(
                 onPressed: () => {},

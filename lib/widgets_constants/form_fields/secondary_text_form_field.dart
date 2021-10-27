@@ -52,9 +52,6 @@ class _SolhSecondaryTextFormFieldState
   @override
   void initState() {
     super.initState();
-    _focusNode.addListener(() {
-      setState(() {});
-    });
   }
 
   @override

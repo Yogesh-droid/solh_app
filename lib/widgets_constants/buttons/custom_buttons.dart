@@ -45,8 +45,8 @@ class _SolhGreenBorderMiniButtonState extends State<SolhGreenBorderMiniButton> {
         decoration: BoxDecoration(
           color: widget.backgroundColor ?? Colors.transparent,
           border:
-              widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+              widget.border ?? Border.all(color: SolhColors.green, width: 1.0),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(25),
         ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
@@ -97,10 +97,11 @@ class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
         margin: widget.margin,
         padding: widget.padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-            color: widget.backgroundColor ?? Colors.transparent,
-            border: widget.border ?? Border.all(color: SolhColors.pink224, width: 1.0),
-            borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
-            ),
+          color: widget.backgroundColor ?? Colors.transparent,
+          border: widget.border ??
+              Border.all(color: SolhColors.pink224, width: 1.0),
+          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+        ),
         height: widget.height ?? MediaQuery.of(context).size.height / 18,
         width: widget.width ?? MediaQuery.of(context).size.width / 3,
         child: widget.child,
@@ -247,16 +248,12 @@ class _SolhGreenButtonState extends State<SolhGreenButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.width ?? 80.w,
-      height: widget.height ?? 5.8.h,
-      margin: EdgeInsets.only(top: 6.h, bottom: 2.h),
-      alignment: widget.alignment ?? Alignment.center,
-      // decoration: BoxDecoration(
-      //   color: widget.backgroundColor ?? SolhColors.green,
-      //   border: widget.border ?? null,
-      //   borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
-      // ),
-      child: TextButton(onPressed: widget.onPressed, child: widget.child),
+      height: widget.height ?? 5.h,
+      width: widget.width ?? double.infinity,
+      child: TextButton(
+        onPressed: widget.onPressed,
+        child: Container(alignment: Alignment.center, child: widget.child),
+      ),
     );
   }
 }
@@ -264,7 +261,7 @@ class _SolhGreenButtonState extends State<SolhGreenButton> {
 class SolhGreenBorderButton extends StatefulWidget {
   SolhGreenBorderButton({
     Key? key,
-    this.child,
+    required this.child,
     this.onPressed,
     this.height,
     this.width,
@@ -278,7 +275,7 @@ class SolhGreenBorderButton extends StatefulWidget {
 
   final double? height;
   final double? width;
-  final Widget? child;
+  final Widget child;
   final Color? backgroundColor;
   final VoidCallback? onPressed;
   final EdgeInsets? padding;
@@ -294,21 +291,22 @@ class SolhGreenBorderButton extends StatefulWidget {
 class _SolhGreenBorderButtonState extends State<SolhGreenBorderButton> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onPressed,
-      child: Container(
-        alignment: widget.alignment ?? Alignment.center,
-        margin: widget.margin,
-        padding: widget.padding ?? EdgeInsets.zero,
-        decoration: BoxDecoration(
-          color: widget.backgroundColor ?? Colors.transparent,
-          border:
-              widget.border ?? Border.all(color: SolhColors.green, width: 2.0),
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(40),
+    return Container(
+      height: widget.height ?? 5.h,
+      width: widget.width ?? double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(30)),
+        border: Border.all(color: SolhColors.green),
+      ),
+      child: TextButton(
+        onPressed: widget.onPressed,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+              Theme.of(context).scaffoldBackgroundColor),
+          overlayColor: MaterialStateProperty.all<Color>(
+              SolhColors.green.withOpacity(0.5)),
         ),
-        height: widget.height ?? MediaQuery.of(context).size.height / 15,
-        width: widget.width ?? MediaQuery.of(context).size.width,
-        child: widget.child,
+        child: Container(alignment: Alignment.center, child: widget.child),
       ),
     );
   }

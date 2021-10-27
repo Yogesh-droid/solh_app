@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/share/journaling.dart';
 import 'package:solh/ui/screens/widgets/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -12,7 +13,7 @@ class ShareScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
-        Row(
+        title: Row(
           children: [
             SvgPicture.asset(
               "assets/icons/app-bar/app-bar-menu.svg",
@@ -20,25 +21,18 @@ class ShareScreen extends StatelessWidget {
               height: 24,
               color: SolhColors.green,
             ),
-            Padding(
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width/20,
-              ),
-              child: Text(
-                "Journaling",
-                style: SolhTextStyles.AppBarText,
-                ),
+            SizedBox(
+              width: 2.h,
+            ),
+            Text(
+              "Journaling",
+              style: SolhTextStyles.AppBarText,
             ),
           ],
         ),
-        true,
+        isLandingScreen: true,
       ),
       body: Journaling(),
-      // body: Center(
-      //     child: Container(
-      //   child: Text("Share Screen of the Application",
-      //       textAlign: TextAlign.center, style: TextStyle(fontSize: 24)),
-      // )),
     );
   }
 }

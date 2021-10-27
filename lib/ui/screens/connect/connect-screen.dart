@@ -9,11 +9,11 @@ class ConnectScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
-        Text(
+        title: Text(
           "Connect",
           style: SolhTextStyles.AppBarText,
-          ),
-        true,
+        ),
+        isLandingScreen: true,
       ),
       body: Center(
           child: Container(

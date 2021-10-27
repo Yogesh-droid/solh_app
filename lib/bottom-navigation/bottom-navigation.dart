@@ -22,7 +22,7 @@ class _MasterScreenState extends State<MasterScreen> {
         MyProfileScreenRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
-        if (widget.index != null) tabsRouter.setActiveIndex(widget.index!);
+        // if (widget.index != null) tabsRouter.setActiveIndex(widget.index!);
         return BottomNavigationBar(
           enableFeedback: true,
           type: BottomNavigationBarType.fixed,

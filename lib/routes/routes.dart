@@ -7,6 +7,7 @@ import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
+import 'package:solh/ui/screens/share/create-post.dart';
 import 'package:solh/ui/screens/share/share-screen.dart';
 
 @MaterialAutoRouter(
@@ -23,10 +24,20 @@ import 'package:solh/ui/screens/share/share-screen.dart';
             page: HomeScreen,
           ),
           AutoRoute(
-            path: "ShareScreen",
-            name: "ShareScreenRouter",
-            page: ShareScreen,
-          ),
+              path: "ShareScreen",
+              name: "ShareScreenRouter",
+              page: EmptyRouterPage,
+              children: [
+                AutoRoute(
+                  path: "",
+                  page: ShareScreen,
+                ),
+                AutoRoute(
+                  path: "CreatePostScreen",
+                  name: "CreatePostScreenRouter",
+                  page: CreatePostScreen,
+                )
+              ]),
           AutoRoute(
             path: "ConnectScreen",
             name: "ConnectScreenRouter",
@@ -57,7 +68,7 @@ import 'package:solh/ui/screens/share/share-screen.dart';
       path: "OTPScreen",
       name: "OTPScreenRouter",
       page: OTPScreen,
-    ),
+    )
   ],
 )
 class $AppRouter {}
