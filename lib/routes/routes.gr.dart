@@ -9,21 +9,22 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i6;
-import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/material.dart' as _i13;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
 import '../phone-auth/otp-screen.dart' as _i4;
 import '../phone-auth/phone-auth.dart' as _i3;
+import '../ui/screens/comment/comment-screen.dart' as _i12;
 import '../ui/screens/connect/connect-screen.dart' as _i7;
 import '../ui/screens/home/homescreen.dart' as _i5;
 import '../ui/screens/intro/intro-crousel.dart' as _i2;
+import '../ui/screens/journaling/create-post.dart' as _i11;
+import '../ui/screens/journaling/share-screen.dart' as _i10;
 import '../ui/screens/my-goals/my-goals-screen.dart' as _i8;
 import '../ui/screens/my-profile/my-profile-screen.dart' as _i9;
-import '../ui/screens/share/create-post.dart' as _i11;
-import '../ui/screens/share/share-screen.dart' as _i10;
 
 class AppRouter extends _i6.RootStackRouter {
-  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
+  AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -78,6 +79,10 @@ class AppRouter extends _i6.RootStackRouter {
     CreatePostScreenRouter.name: (routeData) {
       return _i6.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i11.CreatePostScreen());
+    },
+    CommentScreenRouter.name: (routeData) {
+      return _i6.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i12.CommentScreen());
     }
   };
 
@@ -96,7 +101,9 @@ class AppRouter extends _i6.RootStackRouter {
                         path: '', parent: ShareScreenRouter.name),
                     _i6.RouteConfig(CreatePostScreenRouter.name,
                         path: 'CreatePostScreen',
-                        parent: ShareScreenRouter.name)
+                        parent: ShareScreenRouter.name),
+                    _i6.RouteConfig(CommentScreenRouter.name,
+                        path: 'CommentScreen', parent: ShareScreenRouter.name)
                   ]),
               _i6.RouteConfig(ConnectScreenRouter.name,
                   path: 'ConnectScreen', parent: MasterScreenRouter.name),
@@ -146,7 +153,7 @@ class PhoneAuthScreenRouter extends _i6.PageRouteInfo<void> {
 /// generated route for [_i4.OTPScreen]
 class OTPScreenRouter extends _i6.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i12.Key? key, required String phoneNo, required String verificationId})
+      {_i13.Key? key, required String phoneNo, required String verificationId})
       : super(name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -159,7 +166,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final String phoneNo;
 
@@ -214,4 +221,11 @@ class CreatePostScreenRouter extends _i6.PageRouteInfo<void> {
   const CreatePostScreenRouter() : super(name, path: 'CreatePostScreen');
 
   static const String name = 'CreatePostScreenRouter';
+}
+
+/// generated route for [_i12.CommentScreen]
+class CommentScreenRouter extends _i6.PageRouteInfo<void> {
+  const CommentScreenRouter() : super(name, path: 'CommentScreen');
+
+  static const String name = 'CommentScreenRouter';
 }

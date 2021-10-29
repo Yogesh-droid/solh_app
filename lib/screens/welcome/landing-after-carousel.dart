@@ -143,4 +143,11 @@ class SolhTextStyles {
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 17.25
   );
+
+  static const TextStyle mostUpvoted = TextStyle(
+    fontSize: 15,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w500,
+    height: 1.25, //Figma Line Height 17.25
+  );
 }

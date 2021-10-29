@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/ui/screens/share/widgets/journal-post.dart';
-import 'package:solh/ui/screens/share/widgets/stories.dart';
+import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
+import 'package:solh/ui/screens/journaling/widgets/stories.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -18,6 +18,14 @@ class Journaling extends StatefulWidget {
 
 class _JournalingState extends State<Journaling> {
   // final _newPostKey = GlobalKey<FormState>();
+
+  final List<String> _images = [
+    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDKwiSfAles5soFVbStddLdTd2VGg0hV8fGQ&usqp=CAU",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHJmKT56IxtNPFdhgZIuA5I7brj5c9ch96Rg&usqp=CAU",
+    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
+    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +109,24 @@ class _JournalingState extends State<Journaling> {
                         Stories(),
                       ],
                     );
-                  return JournalPost();
+                  return Column(
+                    children: [
+                      Container(
+                        child: JournalPost(
+                          imgUrl: _images[index],
+                        ),
+                        decoration: BoxDecoration(),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 1.h),
+                        height: 0.8.h,
+                        color: Colors.green.shade400
+                            .withOpacity(0.25)
+                            .withAlpha(80)
+                            .withGreen(160),
+                      ),
+                    ],
+                  );
                 }),
           ),
         ],
