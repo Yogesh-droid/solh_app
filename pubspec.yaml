@@ -38,6 +38,7 @@ flutter:
   assets:
     - assets/icons/app-bar/
     - assets/icons/journaling/
+    - assets/icons/comment-screen/
     - assets/images/logo/
     - assets/images/journal-demo/
     - assets/intro/png/

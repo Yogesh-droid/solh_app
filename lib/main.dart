@@ -25,40 +25,49 @@ class SolhApp extends StatelessWidget {
     //     .getIdToken()
     //     .then((value) => print(value));
     return sizer.Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp.router(
-        supportedLocales: [
-          Locale("en"),
-        ],
-        localizationsDelegates: [CountryLocalizations.delegate],
-        debugShowCheckedModeBanner: false,
-        routerDelegate: _appRouter.delegate(
-            initialDeepLink: FirebaseAuth.instance.currentUser == null
-                ? "IntroCarouselScreen"
-                : "MasterScreen"),
-        routeInformationParser: _appRouter.defaultRouteParser(),
-        title: 'Solh App',
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: GoogleFonts.signika().fontFamily,
-          primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          primarySwatch: Colors.green,
-          buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-          textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                  splashFactory: InkRipple.splashFactory,
-                  overlayColor:
-                      MaterialStateProperty.all<Color>(SolhColors.grey),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  )),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.green))),
+      return GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
 
-          // buttonBarTheme: ButtonBarThemeData(alignment: MainAxisAlignment.center),
-          inputDecorationTheme: InputDecorationTheme(),
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: MaterialApp.router(
+          supportedLocales: [
+            Locale("en"),
+          ],
+          localizationsDelegates: [CountryLocalizations.delegate],
+          debugShowCheckedModeBanner: false,
+          routerDelegate: _appRouter.delegate(
+              initialDeepLink: FirebaseAuth.instance.currentUser == null
+                  ? "IntroCarouselScreen"
+                  : "MasterScreen"),
+          routeInformationParser: _appRouter.defaultRouteParser(),
+          title: 'Solh App',
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily: GoogleFonts.signika().fontFamily,
+            primaryColor: Color.fromRGBO(95, 155, 140, 1),
+            primarySwatch: Colors.green,
+            buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+            textButtonTheme: TextButtonThemeData(
+                style: ButtonStyle(
+                    splashFactory: InkRipple.splashFactory,
+                    overlayColor:
+                        MaterialStateProperty.all<Color>(SolhColors.grey),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(SolhColors.white),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0),
+                    )),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(SolhColors.green))),
+
+            // buttonBarTheme: ButtonBarThemeData(alignment: MainAxisAlignment.center),
+            inputDecorationTheme: InputDecorationTheme(),
+          ),
         ),
       );
     });

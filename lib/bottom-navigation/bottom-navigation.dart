@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class MasterScreen extends StatefulWidget {
   MasterScreen({this.index});
@@ -26,10 +27,10 @@ class _MasterScreenState extends State<MasterScreen> {
         return BottomNavigationBar(
           enableFeedback: true,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Colors.black,
+          selectedItemColor: SolhColors.green,
           showUnselectedLabels: true,
           iconSize: 20,
-          unselectedItemColor: Colors.black,
+          unselectedItemColor: SolhColors.green,
           currentIndex: tabsRouter.activeIndex,
           unselectedLabelStyle: TextStyle(height: 1.5),
           selectedFontSize: 10,
@@ -50,14 +51,21 @@ class _MasterScreenState extends State<MasterScreen> {
           onTap: (index) => tabsRouter.setActiveIndex(index),
           items: [
             BottomNavigationBarItem(
-                icon: Icon(tabsRouter.activeIndex == 0
-                    ? Icons.home_filled
-                    : Icons.home_outlined),
+                icon: Icon(
+                  tabsRouter.activeIndex == 0
+                      ? CupertinoIcons.house_fill
+                      : CupertinoIcons.house,
+                ),
                 label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.person_3), label: "Share"),
+                icon: Icon(tabsRouter.activeIndex == 1
+                    ? CupertinoIcons.person_3_fill
+                    : CupertinoIcons.person_3),
+                label: "journaling"),
             BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.person_add),
+              icon: Icon(tabsRouter.activeIndex == 2
+                  ? CupertinoIcons.person_add_solid
+                  : CupertinoIcons.person_add),
               label: "Connect",
             ),
             BottomNavigationBarItem(
@@ -66,7 +74,9 @@ class _MasterScreenState extends State<MasterScreen> {
                     : CupertinoIcons.check_mark_circled),
                 label: "My Goals"),
             BottomNavigationBarItem(
-                icon: Icon(CupertinoIcons.line_horizontal_3),
+                icon: Icon(
+                  CupertinoIcons.line_horizontal_3,
+                ),
                 label: "My profile")
           ],
         );

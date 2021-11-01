@@ -87,15 +87,15 @@ class SolhTextStyles {
   );
 
   static const TextStyle JournalingHashtagText = TextStyle(
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: FontWeight.w400,
     color: SolhColors.pink224,
     height: 1.23, //Figma Line Height 17.25
   );
 
   static const TextStyle JournalingDescriptionText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
     color: SolhColors.grey102,
     height: 1.23, //Figma Line Height 19.71
   );
