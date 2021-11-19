@@ -1,25 +1,22 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-class JournalPost extends StatefulWidget {
-  const JournalPost({Key? key, String? imgUrl})
+class Post extends StatefulWidget {
+  const Post({Key? key, String? imgUrl})
       : _imgUrl = imgUrl,
         super(key: key);
 
   final String? _imgUrl;
 
   @override
-  _JournalPostState createState() => _JournalPostState();
+  _PostState createState() => _PostState();
 }
 
-class _JournalPostState extends State<JournalPost> {
+class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,83 +33,97 @@ class _JournalPostState extends State<JournalPost> {
                 left: MediaQuery.of(context).size.width / 20,
                 //vertical: MediaQuery.of(context).size.height/80,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  CircleAvatar(
-                    child: Image.asset(
-                        "assets/images/journal-demo/post-user-profile-picture.png"),
-                    backgroundColor: SolhColors.pink224,
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
+              child: GestureDetector(
+                onTap: () => AutoRouter.of(context).push(ConnectScreenRouter()),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      CircleAvatar(
+                        child: Image.asset(
+                            "assets/images/journal-demo/post-user-profile-picture.png"),
+                        backgroundColor: SolhColors.pink224,
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width / 40,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "John Cornor",
-                                    style:
-                                        SolhTextStyles.JournalingUsernameText,
-                                  ),
-                                  Text(
-                                    "2H ago",
-                                    style:
-                                        SolhTextStyles.JournalingTimeStampText,
-                                  )
-                                ],
-                              ),
-                            ),
                             Container(
-                              alignment: Alignment.center,
-                              height: MediaQuery.of(context).size.height / 40,
-                              padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    MediaQuery.of(context).size.width / 40,
-                              ),
-                              decoration: BoxDecoration(
-                                  color: SolhColors.grey239,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(
-                                    "Solh Expert",
-                                    style: SolhTextStyles.JournalingBadgeText,
-                                  ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width /
-                                          80,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              40,
                                     ),
-                                    child: Icon(
-                                      Icons.verified,
-                                      color: SolhColors.green,
-                                      size: 14,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "John Cornor",
+                                          style: SolhTextStyles
+                                              .JournalingUsernameText,
+                                        ),
+                                        Text(
+                                          "2H ago",
+                                          style: SolhTextStyles
+                                              .JournalingTimeStampText,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    height:
+                                        MediaQuery.of(context).size.height / 40,
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          MediaQuery.of(context).size.width /
+                                              40,
+                                    ),
+                                    decoration: BoxDecoration(
+                                        color: SolhColors.grey239,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          "Solh Expert",
+                                          style: SolhTextStyles
+                                              .JournalingBadgeText,
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                80,
+                                          ),
+                                          child: Icon(
+                                            Icons.verified,
+                                            color: SolhColors.green,
+                                            size: 14,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
+                            PostMenuButton(),
                           ],
                         ),
-                        PostMenuButton(),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
             Padding(

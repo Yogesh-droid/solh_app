@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
-  SolhAppBar({Widget? title, required bool isLandingScreen})
+  SolhAppBar({Widget? title, required bool isLandingScreen, double? height})
       : _title = title,
-        _isLandingScreen = isLandingScreen;
+        _isLandingScreen = isLandingScreen,
+        _height = height;
   final bool _isLandingScreen;
   final Widget? _title;
+  final double? _height;
 
   @override
   Widget build(BuildContext context) {
@@ -36,46 +39,42 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 color: SolhColors.pink224,
               ),
-              IconButton(
-                onPressed: () => {},
-                icon: CircleAvatar(
-                  radius: 28,
-                  backgroundColor: SolhColors.pink224,
-                  child: Text(
-                    "SOS",
-                    style: TextStyle(
-                      color: SolhColors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                color: SolhColors.pink224,
-              ),
+              SOSButton()
             ]
-          : [
-              IconButton(
-                onPressed: () => {},
-                icon: CircleAvatar(
-                  radius: 28,
-                  backgroundColor: SolhColors.pink224,
-                  child: Text(
-                    "SOS",
-                    style: TextStyle(
-                      color: SolhColors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                color: SolhColors.pink224,
-              ),
-            ],
+          : [SOSButton()],
     );
   }
 
   @override
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => Size(0, _height ?? 50);
+}
+
+class SOSButton extends StatelessWidget {
+  const SOSButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        print("sos");
+        showDialog(context: context, builder: (_) => SOSDialog());
+        // AutoRouter.of(context).push(SOSScreenRouter());
+      },
+      icon: CircleAvatar(
+        radius: 28,
+        backgroundColor: SolhColors.pink224,
+        child: Text(
+          "SOS",
+          style: TextStyle(
+            color: SolhColors.white,
+            fontSize: 10,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
+      color: SolhColors.pink224,
+    );
+  }
 }
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {

@@ -251,6 +251,13 @@ class _SolhGreenButtonState extends State<SolhGreenButton> {
       height: widget.height ?? 5.h,
       width: widget.width ?? double.infinity,
       child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: widget.borderRadius ?? BorderRadius.circular(30.0),
+          )),
+        ),
         onPressed: widget.onPressed,
         child: Container(alignment: Alignment.center, child: widget.child),
       ),

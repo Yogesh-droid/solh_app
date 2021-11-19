@@ -23,7 +23,7 @@ class FirebaseNetwork {
             AutoRouter.of(globalNavigatorKey.currentState!.context).push(
                 OTPScreenRouter(
                     phoneNo: phoneNo, verificationId: verificationId));
-            // print("verification ID:" + verificationId);
+            print("verification ID:" + verificationId);
           },
           phoneNumber: phoneNo,
           verificationCompleted:
@@ -32,7 +32,7 @@ class FirebaseNetwork {
             // print(phoneAuthCredential.providerId);
             UserCredential userCredential =
                 await signInWithPhoneCredential(phoneAuthCredential);
-            print(userCredential.credential!.token);
+            print("user token" + userCredential.credential!.token.toString());
             print("verified");
             AutoRouter.of(globalNavigatorKey.currentState!.context)
                 .push(MasterScreenRouter());

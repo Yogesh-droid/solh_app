@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -13,12 +14,17 @@ class MasterScreen extends StatefulWidget {
 
 class _MasterScreenState extends State<MasterScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
         HomeScreenRouter(),
-        ShareScreenRouter(),
-        ConnectScreenRouter(),
+        JournalingScreenRouter(),
+        GetHelpScreenRouter(),
         MyGoalsScreenRouter(),
         MyProfileScreenRouter(),
       ],
@@ -30,7 +36,7 @@ class _MasterScreenState extends State<MasterScreen> {
           selectedItemColor: SolhColors.green,
           showUnselectedLabels: true,
           iconSize: 20,
-          unselectedItemColor: SolhColors.green,
+          unselectedItemColor: SolhColors.black666,
           currentIndex: tabsRouter.activeIndex,
           unselectedLabelStyle: TextStyle(height: 1.5),
           selectedFontSize: 10,
@@ -63,10 +69,12 @@ class _MasterScreenState extends State<MasterScreen> {
                     : CupertinoIcons.person_3),
                 label: "journaling"),
             BottomNavigationBarItem(
-              icon: Icon(tabsRouter.activeIndex == 2
-                  ? CupertinoIcons.person_add_solid
-                  : CupertinoIcons.person_add),
-              label: "Connect",
+              icon: tabsRouter.activeIndex == 2
+                  ? SvgPicture.asset(
+                      "assets/icons/bottom-navigation-bar/get-help.svg")
+                  : SvgPicture.asset(
+                      "assets/icons/bottom-navigation-bar/get-help-outline.svg"),
+              label: "Get Help",
             ),
             BottomNavigationBarItem(
                 icon: Icon(tabsRouter.activeIndex == 3

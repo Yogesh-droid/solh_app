@@ -59,8 +59,16 @@ class _OTPScreenState extends State<OTPScreen> {
 
                     await FirebaseNetwork.signInWithPhoneCredential(
                             _phoneAuthCredential)
-                        .then((value) =>
-                            AutoRouter.of(context).push(MasterScreenRouter()));
+                        .then((value) async {
+                      String idToken = await value.user!.getIdToken();
+                      print("user idToken: $idToken");
+                      // print("user providerId: ${value.credential!.providerId}");
+                      // print(
+                      //     "user signInMethod: ${value.credential!.signInMethod}");
+                      // print("user token: ${value.credential!.token}");
+
+                      AutoRouter.of(context).push(MasterScreenRouter());
+                    });
                   },
                 ),
                 Row(
