@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/services/firebase.dart';
-import 'package:solh/ui/screens/widgets/app-bar.dart';
+import 'package:solh/services/firebase/auth.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -66,8 +66,9 @@ class _OTPScreenState extends State<OTPScreen> {
                       // print(
                       //     "user signInMethod: ${value.credential!.signInMethod}");
                       // print("user token: ${value.credential!.token}");
+                      AutoRouter.of(context).push(CreatePostScreenRouter());
 
-                      AutoRouter.of(context).push(MasterScreenRouter());
+                      // AutoRouter.of(context).push(MasterScreenRouter());
                     });
                   },
                 ),

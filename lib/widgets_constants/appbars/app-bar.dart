@@ -116,3 +116,38 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => Size(0, 60);
 }
+
+class ProfileSetupAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const ProfileSetupAppBar({
+    Key? key,
+    required String title,
+    // required String subHeading
+  })  : _title = title,
+        // _subHeading = subHeading,
+        super(key: key);
+
+  final String _title;
+  // final String _subHeading;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      foregroundColor: Colors.black,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0,
+      title: Column(
+        children: [
+          Text(_title),
+          // Text(
+          //   _subHeading,
+          //   style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 16),
+          // ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size(0, 50);
+}

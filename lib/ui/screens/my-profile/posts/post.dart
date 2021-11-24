@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/main.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
-import 'package:solh/ui/screens/widgets/app-bar.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 

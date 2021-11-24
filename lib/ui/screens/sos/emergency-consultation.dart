@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/sos/fetching-available.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class EmergencyConsultationConsentDialog extends StatelessWidget {

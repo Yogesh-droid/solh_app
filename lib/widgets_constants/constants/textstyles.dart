@@ -159,4 +159,7 @@ class SolhTextStyles {
 
   static const ProfileMenuGreyText =
       TextStyle(fontSize: 16, color: SolhColors.black666);
+
+  static const ProfileSetupSubHeading =
+      TextStyle(color: Color(0xFFA6A6A6), fontSize: 16);
 }

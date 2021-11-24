@@ -14,6 +14,7 @@ import 'package:solh/ui/screens/journaling/create-post.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/my-profile/settings/settings.dart';
+import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 
@@ -90,6 +91,10 @@ import 'package:solh/ui/screens/sos/sos.dart';
       name: "IntroCarouselScreenRouter",
       page: IntroCrousel,
     ),
+    AutoRoute(
+        path: "CreateProfileScreen",
+        name: "CreateProfileScreenRouter",
+        page: CreateProfileScreen),
     AutoRoute(
       path: "PhoneAuthScreen",
       name: "PhoneAuthScreenRouter",

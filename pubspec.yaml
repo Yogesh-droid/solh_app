@@ -27,6 +27,8 @@ dependencies:
   flutter_slider_drawer: ^2.0.0
   hive: ^2.0.4
   provider: ^6.0.1
+  date_time_picker: ^2.1.0
+
 
 dev_dependencies:
   build_runner:
@@ -40,6 +42,7 @@ flutter:
   assets:
     - assets/icons/app-bar/
     - assets/icons/profile/
+    - assets/icons/profile-setup/
     - assets/icons/journaling/
     - assets/icons/bottom-navigation-bar/
     - assets/icons/comment-screen/

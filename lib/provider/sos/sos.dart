@@ -1,15 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:solh/services/hive-storage/sos.dart';
+// import 'package:flutter/material.dart';
+// import 'package:hive/hive.dart';
+// import 'package:solh/services/hive-storage/sos.dart';
 
-class SOSProvider with ChangeNotifier {
-  SOSHiveModel _sosHiveModel = SOSHiveModel();
+// class SOSProvider with ChangeNotifier {
+//   SOSHiveModel _sosHiveModel = SOSHiveModel();
 
-  var sosBox;
+//   var sosBox;
 
-  Future initSOSHive() async {
-    sosBox = await Hive.openBox('testBox');
-  }
+//   Future initSOSHive() async {
+//     sosBox = await Hive.openBox('testBox');
+//   }
 
-  void fetchSOSPeople() {}
-}
+//   void fetchSOSPeople() {}
+// }

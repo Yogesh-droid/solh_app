@@ -22,6 +22,9 @@ class SolhApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
+      // return MaterialApp(
+      //   home: CreateProfileScreen(),
+      // );
       return MaterialApp.router(
         supportedLocales: [
           Locale("en"),
@@ -53,7 +56,6 @@ class SolhApp extends StatelessWidget {
                   )),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(SolhColors.green))),
-
           // buttonBarTheme: ButtonBarThemeData(alignment: MainAxisAlignment.center),
           inputDecorationTheme: InputDecorationTheme(),
         ),
