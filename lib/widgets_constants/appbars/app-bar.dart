@@ -28,7 +28,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             )
           : null,
-      elevation: 2,
+      elevation: 0.5,
       backgroundColor: SolhColors.white,
       actions: _isLandingScreen
           ? [

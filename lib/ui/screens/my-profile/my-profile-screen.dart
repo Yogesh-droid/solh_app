@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/model/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -16,6 +18,8 @@ class MyProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    userBlocNetwork.getMyProfileSnapshot();
+
     return Scaffold(
       backgroundColor: Color.fromRGBO(251, 251, 251, 1),
       appBar: SolhAppBar(
@@ -26,22 +30,35 @@ class MyProfileScreen extends StatelessWidget {
         isLandingScreen: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (FirebaseAuth.instance.currentUser != null)
-              Center(
-                child: SignInButton(),
-              )
-            else
-              ProfileContainer(),
-            ProfileMenu(),
-            ProfileMenuTile(
-                title: "Logout",
-                svgIconPath: "assets/icons/profile/logout.svg",
-                onPressed: () {})
-          ],
-        ),
+        child: StreamBuilder<UserModel?>(
+            stream: userBlocNetwork.userStateStream,
+            builder: (context, snapshot) {
+              if (snapshot.hasData)
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (FirebaseAuth.instance.currentUser != null)
+                      Center(
+                        child: SignInButton(),
+                      )
+                    else
+                      ProfileContainer(userModel: snapshot.requireData),
+                    ProfileMenu(),
+                    ProfileMenuTile(
+                        title: "Logout",
+                        svgIconPath: "assets/icons/profile/logout.svg",
+                        onPressed: () {
+                          FirebaseAuth.instance.signOut().then((value) =>
+                              AutoRouter.of(context).pushAndPopUntil(
+                                  IntroCarouselScreenRouter(),
+                                  predicate: (route) => false));
+                        })
+                  ],
+                );
+              if (snapshot.hasError)
+                Container(child: Text(snapshot.error.toString()));
+              return CircularProgressIndicator();
+            }),
       ),
     );
   }
@@ -179,7 +196,11 @@ class SignInButton extends StatelessWidget {
 }
 
 class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({Key? key}) : super(key: key);
+  const ProfileContainer({Key? key, required UserModel? userModel})
+      : _userModel = userModel,
+        super(key: key);
+
+  final UserModel? _userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +220,7 @@ class ProfileContainer extends StatelessWidget {
             ),
             SizedBox(height: 1.5.h),
             Text(
-              "Tessa",
+              _userModel!.name,
               style:
                   SolhTextStyles.SOSGreenHeading.copyWith(color: Colors.black),
             ),
@@ -211,11 +232,16 @@ class ProfileContainer extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14.w),
               child: Text(
-                "Bio/Self Experiences/Quate/When the pain passes, you eventually see how much good.",
+                _userModel!.bio,
                 textAlign: TextAlign.center,
               ),
             ),
-            ProfileDetailsButtonRow(),
+            ProfileDetailsButtonRow(
+              connections: _userModel!.connections,
+              likes: _userModel!.likes,
+              posts: _userModel!.posts,
+              reviews: _userModel!.reviews,
+            ),
             Padding(
               padding: EdgeInsets.only(
                   left: 6.w, right: 6.w, top: 1.8.h, bottom: 0.7.h),
@@ -269,7 +295,22 @@ class ProfileContainer extends StatelessWidget {
 }
 
 class ProfileDetailsButtonRow extends StatelessWidget {
-  const ProfileDetailsButtonRow({Key? key}) : super(key: key);
+  const ProfileDetailsButtonRow(
+      {Key? key,
+      required int likes,
+      required int connections,
+      required int posts,
+      required int reviews})
+      : _likes = likes,
+        _connections = connections,
+        _posts = posts,
+        _reviews = reviews,
+        super(key: key);
+
+  final int _likes;
+  final int _connections;
+  final int _posts;
+  final int _reviews;
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +320,7 @@ class ProfileDetailsButtonRow extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ProfileDetailsButton(
-            count: 27,
+            count: _likes,
             title: "Likes",
             svgIconPath: "assets/icons/profile/connections.svg",
           ),
@@ -289,7 +330,7 @@ class ProfileDetailsButtonRow extends StatelessWidget {
             width: 0.3,
           ),
           ProfileDetailsButton(
-            count: 27,
+            count: _connections,
             title: "Connections",
             svgIconPath: "assets/icons/profile/connections.svg",
           ),
@@ -299,7 +340,7 @@ class ProfileDetailsButtonRow extends StatelessWidget {
             width: 0.3,
           ),
           ProfileDetailsButton(
-            count: 27,
+            count: _posts,
             title: "Posts",
             svgIconPath: "assets/icons/profile/connections.svg",
           ),
@@ -309,7 +350,7 @@ class ProfileDetailsButtonRow extends StatelessWidget {
             width: 0.3,
           ),
           ProfileDetailsButton(
-            count: 27,
+            count: _reviews,
             title: "Reviews",
             svgIconPath: "assets/icons/profile/connections.svg",
           ),

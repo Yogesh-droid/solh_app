@@ -9,14 +9,13 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/cupertino.dart' as _i21;
 import 'package:flutter/material.dart' as _i20;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
 import '../phone-auth/otp-screen.dart' as _i5;
 import '../phone-auth/phone-auth.dart' as _i4;
-import '../screens/connect/connect-screen.dart' as _i14;
 import '../ui/screens/comment/comment-screen.dart' as _i15;
+import '../ui/screens/connect/connect-screen.dart' as _i14;
 import '../ui/screens/get-help/get-help.dart' as _i10;
 import '../ui/screens/home/homescreen.dart' as _i8;
 import '../ui/screens/intro/intro-crousel.dart' as _i2;
@@ -221,7 +220,7 @@ class PhoneAuthScreenRouter extends _i9.PageRouteInfo<void> {
 /// generated route for [_i5.OTPScreen]
 class OTPScreenRouter extends _i9.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i21.Key? key, required String phoneNo, required String verificationId})
+      {_i20.Key? key, required String phoneNo, required String verificationId})
       : super(name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -234,7 +233,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i21.Key? key;
+  final _i20.Key? key;
 
   final String phoneNo;
 

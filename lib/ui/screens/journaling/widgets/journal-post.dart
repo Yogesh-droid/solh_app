@@ -76,44 +76,7 @@ class _PostState extends State<Post> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height:
-                                        MediaQuery.of(context).size.height / 40,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width /
-                                              40,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: SolhColors.grey239,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          "Solh Expert",
-                                          style: SolhTextStyles
-                                              .JournalingBadgeText,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            left: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                80,
-                                          ),
-                                          child: Icon(
-                                            Icons.verified,
-                                            color: SolhColors.green,
-                                            size: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  SolhExpertBadge(),
                                 ],
                               ),
                             ),
@@ -269,6 +232,45 @@ class _PostState extends State<Post> {
             // ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SolhExpertBadge extends StatelessWidget {
+  const SolhExpertBadge({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      height: MediaQuery.of(context).size.height / 40,
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width / 40,
+      ),
+      decoration: BoxDecoration(
+          color: SolhColors.grey239,
+          borderRadius: BorderRadius.all(Radius.circular(10))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            "Solh Expert",
+            style: SolhTextStyles.JournalingBadgeText,
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width / 80,
+            ),
+            child: Icon(
+              Icons.verified,
+              color: SolhColors.green,
+              size: 14,
+            ),
+          ),
+        ],
       ),
     );
   }
