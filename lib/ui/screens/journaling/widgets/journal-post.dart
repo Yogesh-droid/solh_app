@@ -1,238 +1,238 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sizer/sizer.dart';
+import 'package:solh/model/journal.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-class Post extends StatefulWidget {
-  const Post({Key? key, String? imgUrl})
-      : _imgUrl = imgUrl,
+class PostTile extends StatefulWidget {
+  const PostTile({Key? key, required JournalModel? journalModel})
+      : _journalModel = journalModel,
         super(key: key);
 
-  final String? _imgUrl;
+  final JournalModel? _journalModel;
 
   @override
-  _PostState createState() => _PostState();
+  _PostTileState createState() => _PostTileState();
 }
 
-class _PostState extends State<Post> {
+class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
-      child: Container(
-        // height: MediaQuery.of(context).size.height / 1.6,
-        color: Color(0xFFFFF),
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            // Divider(),
-            Padding(
-              padding: EdgeInsets.only(
-                left: MediaQuery.of(context).size.width / 20,
-                //vertical: MediaQuery.of(context).size.height/80,
-              ),
-              child: GestureDetector(
-                onTap: () => AutoRouter.of(context).push(ConnectScreenRouter()),
-                child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      CircleAvatar(
-                        child: Image.asset(
-                            "assets/images/journal-demo/post-user-profile-picture.png"),
-                        backgroundColor: SolhColors.pink224,
-                      ),
-                      Expanded(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal:
-                                          MediaQuery.of(context).size.width /
-                                              40,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "John Cornor",
-                                          style: SolhTextStyles
-                                              .JournalingUsernameText,
-                                        ),
-                                        Text(
-                                          "2H ago",
-                                          style: SolhTextStyles
-                                              .JournalingTimeStampText,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  SolhExpertBadge(),
-                                ],
-                              ),
-                            ),
-                            PostMenuButton(),
-                          ],
-                        ),
-                      ),
-                    ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 5),
+          child: Container(
+            // height: MediaQuery.of(context).size.height / 1.6,
+            color: Color(0xFFFFF),
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              children: [
+                // Divider(),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width / 20,
+                    //vertical: MediaQuery.of(context).size.height/80,
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 20,
-              ),
-              child: Divider(),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 20,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "#Feeling lazy",
-                    style: SolhTextStyles.JournalingHashtagText,
-                  ),
-                  RichText(
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    text: TextSpan(
-                      text:
-                          "Amet, consectetur adipiscing elit. Elit odio sollicitudin accumsan gravida. Vitae lacus at facilisis",
-                      style: SolhTextStyles.JournalingDescriptionText,
-                      children: [
-                        TextSpan(
-                          text: " see more.",
-                          style:
-                              SolhTextStyles.JournalingDescriptionReadMoreText,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3,
-              margin: EdgeInsets.symmetric(
-                vertical: MediaQuery.of(context).size.height / 80,
-              ),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: NetworkImage(widget._imgUrl!),
-                fit: BoxFit.cover,
-              )),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/journaling/post-like.svg",
-                          width: 17,
-                          height: 17,
-                          color: SolhColors.green,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 40,
-                          ),
-                          child: Text(
-                            "45",
-                            style: SolhTextStyles.GreenBorderButtonText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  InkWell(
+                  child: GestureDetector(
                     onTap: () =>
-                        AutoRouter.of(context).push(CommentScreenRouter()),
+                        AutoRouter.of(context).push(ConnectScreenRouter()),
                     child: Container(
-                      width: MediaQuery.of(context).size.width / 3.5,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
-                          SvgPicture.asset(
-                            "assets/icons/journaling/post-comment.svg",
-                            width: 17,
-                            height: 17,
-                            color: SolhColors.green,
+                          CircleAvatar(
+                            child: Image.asset(
+                                "assets/images/journal-demo/post-user-profile-picture.png"),
+                            backgroundColor: SolhColors.pink224,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 40,
-                            ),
-                            child: Text(
-                              "27",
-                              style: SolhTextStyles.GreenBorderButtonText,
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 3.w,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              widget
+                                                  ._journalModel!.postedBy.name,
+                                              style: SolhTextStyles
+                                                  .JournalingUsernameText,
+                                            ),
+                                            Text(
+                                              "2H ago",
+                                              style: SolhTextStyles
+                                                  .JournalingTimeStampText,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SolhExpertBadge(),
+                                    ],
+                                  ),
+                                ),
+                                PostMenuButton(),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                      // onPressed: () {
-                      //   AutoRouter.of(context).push(CommentScreenRouter());
-                      // },
                     ),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3.5,
+                ),
+                Divider(),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 20,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Feeling " + widget._journalModel!.feelings,
+                        style: SolhTextStyles.JournalingDescriptionReadMoreText,
+                      ),
+                      Text(
+                        widget._journalModel!.description,
+                        style: SolhTextStyles.JournalingDescriptionText,
+                      ),
+                    ],
+                  ),
+                ),
+                if (widget._journalModel!.imageUrl != "")
+                  // Container(
+                  //   width: MediaQuery.of(context).size.width,
+                  //   height: MediaQuery.of(context).size.height / 3,
+                  //   margin: EdgeInsets.symmetric(
+                  //     vertical: MediaQuery.of(context).size.height / 80,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //       image: DecorationImage(
+                  //     image: NetworkImage(
+                  //         "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg"),
+                  //     fit: BoxFit.cover,
+                  //   )),
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 20,
+                    ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        SvgPicture.asset(
-                          "assets/icons/journaling/post-connect.svg",
-                          width: 17,
-                          height: 17,
-                          color: SolhColors.green,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 40,
+                        Container(
+                          width: MediaQuery.of(context).size.width / 3.5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/journaling/post-like.svg",
+                                width: 17,
+                                height: 17,
+                                color: SolhColors.green,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width / 40,
+                                ),
+                                child: Text(
+                                  widget._journalModel!.likes.toString(),
+                                  style: SolhTextStyles.GreenBorderButtonText,
+                                ),
+                              ),
+                            ],
                           ),
-                          child: Text(
-                            "Connect",
-                            style: SolhTextStyles.GreenBorderButtonText,
+                        ),
+                        InkWell(
+                          onTap: () => AutoRouter.of(context)
+                              .push(CommentScreenRouter()),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/journaling/post-comment.svg",
+                                  width: 17,
+                                  height: 17,
+                                  color: SolhColors.green,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left:
+                                        MediaQuery.of(context).size.width / 40,
+                                  ),
+                                  child: Text(
+                                    widget._journalModel!.comments.toString(),
+                                    style: SolhTextStyles.GreenBorderButtonText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // onPressed: () {
+                            //   AutoRouter.of(context).push(CommentScreenRouter());
+                            // },
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width / 3.5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                "assets/icons/journaling/post-connect.svg",
+                                width: 17,
+                                height: 17,
+                                color: SolhColors.green,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  left: MediaQuery.of(context).size.width / 40,
+                                ),
+                                child: Text(
+                                  "Connect",
+                                  style: SolhTextStyles.GreenBorderButtonText,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: MediaQuery.of(context).size.width / 20,
+                //     //vertical: MediaQuery.of(context).size.height/140,
+                //   ),
+                //   child: Divider(),
+                // ),
+              ],
             ),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(
-            //     horizontal: MediaQuery.of(context).size.width / 20,
-            //     //vertical: MediaQuery.of(context).size.height/140,
-            //   ),
-            //   child: Divider(),
-            // ),
-          ],
+          ),
         ),
-      ),
+        Container(
+          margin: EdgeInsets.symmetric(vertical: 1.h),
+          height: 0.8.h,
+          color: Colors.green.shade400
+              .withOpacity(0.25)
+              .withAlpha(80)
+              .withGreen(160),
+        ),
+      ],
     );
   }
 }

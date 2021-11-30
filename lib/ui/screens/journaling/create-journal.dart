@@ -2,9 +2,11 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/constants/enum/journal/feelings.dart';
+import 'package:solh/model/journal.dart';
+import 'package:solh/services/journal/journal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -18,6 +20,10 @@ class CreatePostScreen extends StatefulWidget {
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
+  String _journalType = JournalType.Publicaly.toShortString();
+  String _description = "";
+  String _feelings = JournalFeelings.Happy.toShortString();
+  String? _imageUrl;
   XFile? _xFile;
   Uint8List? _xFileAsUnit8List;
   bool _isImageAdded = false;
@@ -39,7 +45,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              UsernameHeader(),
+              UsernameHeader(
+                onTypeChanged: (value) {
+                  print("Changed to $value");
+                },
+              ),
               SizedBox(height: 2.h),
               Container(
                 child: TextField(
@@ -55,6 +65,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           borderSide: BorderSide(color: SolhColors.green)),
                       border: OutlineInputBorder(
                           borderSide: BorderSide(color: SolhColors.green))),
+                  onChanged: (value) {
+                    if (_description == "" || value == "") {
+                      setState(() {
+                        _description = value;
+                      });
+                    } else
+                      _description = value;
+                  },
                 ),
               ),
               SizedBox(height: 1.h),
@@ -67,21 +85,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               SizedBox(
                 height: 1.h,
               ),
-              StaggeredGridView.countBuilder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 12,
-                staggeredTileBuilder: (index) => StaggeredTile.count(1, 0.4),
-                itemBuilder: (context, index) => Container(
-                  alignment: Alignment.center,
-                  margin:
-                      EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 1.5.w),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: SolhColors.green),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Text("Happy 😊"),
-                ),
-                crossAxisCount: 3,
+              FeelingsContainer(
+                onFeelingsChanged: (feelings) {
+                  _feelings = feelings;
+                  print("feelings changed to: $feelings");
+                },
               ),
               SizedBox(height: 2.h),
               if (!_isImageAdded && !_isVideoAdded)
@@ -226,11 +234,92 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               SizedBox(height: 5.h),
               SolhGreenButton(
                 child: Text("Post"),
-                onPressed: () async {
-                  print("pressed");
-                },
+                backgroundColor:
+                    _description != "" ? SolhColors.green : SolhColors.grey,
+                onPressed: _postJournal,
               )
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _postJournal() {
+    if (_description != "") {
+      CreateJournal _createJournal = CreateJournal(
+        description: _description,
+        feelings: _feelings,
+        journalType: _journalType,
+        imageUrl:
+            "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2019_22/2879226/190531-think-stock-dog-ew-307p.jpg",
+      );
+      _createJournal.postJournal();
+    }
+  }
+}
+
+class FeelingsContainer extends StatefulWidget {
+  const FeelingsContainer({
+    Key? key,
+    required Function(String) onFeelingsChanged,
+  })  : _onFeelingsChanged = onFeelingsChanged,
+        super(key: key);
+
+  final Function(String) _onFeelingsChanged;
+
+  @override
+  State<FeelingsContainer> createState() => _FeelingsContainerState();
+}
+
+class _FeelingsContainerState extends State<FeelingsContainer> {
+  String _selectedFeeling = "Happy";
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: Wrap(
+        // alignment: WrapAlignment.center,
+        children: List.generate(
+          JournalFeelings.values.length,
+          (index) => GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedFeeling =
+                    JournalFeelings.values[index].toShortString();
+                widget._onFeelingsChanged.call(_selectedFeeling);
+              });
+            },
+            child: Container(
+              constraints: BoxConstraints(
+                minWidth: 8.w,
+                maxWidth: 24.w,
+              ),
+              height: 3.8.h,
+              width: JournalFeelings.values[index].toShortString().length.w * 4,
+              alignment: Alignment.center,
+              margin: EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 1.5.w),
+              decoration: BoxDecoration(
+                  color: _selectedFeeling ==
+                          JournalFeelings.values[index].toShortString()
+                      ? SolhColors.green
+                      : Color(0xFBFBFBFB),
+                  border: Border.all(
+                      color: _selectedFeeling ==
+                              JournalFeelings.values[index].toShortString()
+                          ? SolhColors.green
+                          : Color(0xEFEFEFEF)),
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              child: Text(
+                JournalFeelings.values[index].toShortString(),
+                style: TextStyle(
+                    color: _selectedFeeling ==
+                            JournalFeelings.values[index].toShortString()
+                        ? Colors.white
+                        : Color(0xFF666666)),
+              ),
+            ),
           ),
         ),
       ),
@@ -239,14 +328,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 }
 
 class UsernameHeader extends StatefulWidget {
-  const UsernameHeader({Key? key}) : super(key: key);
+  const UsernameHeader({Key? key, required Function(String) onTypeChanged})
+      : _onTypeChanged = onTypeChanged,
+        super(key: key);
+  final Function(String) _onTypeChanged;
 
   @override
   _UsernameHeaderState createState() => _UsernameHeaderState();
 }
 
 class _UsernameHeaderState extends State<UsernameHeader> {
-  String _dropdownValue = "P";
+  String _dropdownValue = "Publicaly";
 
   @override
   Widget build(BuildContext context) {
@@ -300,17 +392,17 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 setState(() {
                   _dropdownValue = newValue!;
                 });
+                widget._onTypeChanged.call(_dropdownValue);
               },
               style: TextStyle(color: SolhColors.green),
               items: [
                 DropdownMenuItem(
                   child: Text("Publicaly"),
-                  value: "P",
+                  value: "Publicaly",
                 ),
-                DropdownMenuItem(child: Text("Connections"), value: "C"),
                 DropdownMenuItem(
-                  child: Text("MyDiary"),
-                  value: "MD",
+                  child: Text("My Diary"),
+                  value: "My_Diary",
                 )
               ]),
         )

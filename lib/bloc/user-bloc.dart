@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:solh/constants/api.dart';
-import 'package:solh/model/user.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/ui/screens/network/network.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -10,11 +10,13 @@ class UserBlocNetwork {
   Stream<UserModel?> get userStateStream => _userController.stream;
 
   Future<UserModel?> _fetchDetails() async {
+    print("getting profile details");
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
               "http://localhost:3000/api/get-my-profile-details");
-      print("api response: " + apiResponse["user"].toString());
+      print(
+          "api response of profile details: " + apiResponse["user"].toString());
       return UserModel.fromJson(apiResponse["user"]);
     } catch (error) {
       throw error;

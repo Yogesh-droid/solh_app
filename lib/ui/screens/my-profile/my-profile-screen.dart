@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/model/user.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';

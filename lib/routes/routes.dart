@@ -10,7 +10,7 @@ import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
-import 'package:solh/ui/screens/journaling/create-post.dart';
+import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/my-profile/settings/settings.dart';

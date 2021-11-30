@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/journal-bloc.dart';
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/model/journal.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/ui/screens/journaling/widgets/stories.dart';
@@ -39,11 +43,16 @@ class _JournalingScreenState extends State<JournalingScreen> {
   }
 }
 
-class SideDrawer extends StatelessWidget {
+class SideDrawer extends StatefulWidget {
   const SideDrawer({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<SideDrawer> createState() => _SideDrawerState();
+}
+
+class _SideDrawerState extends State<SideDrawer> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,48 +61,60 @@ class SideDrawer extends StatelessWidget {
         width: 78.w,
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 2.5.h),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 7.w,
-                    child: CircleAvatar(
-                      radius: 6.8.w,
-                      backgroundImage: CachedNetworkImageProvider(
-                        "https://pics.filmaffinity.com/After_We_Collided-824346009-large.jpg",
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 2.w,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hi, there",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      Row(
+            StreamBuilder<UserModel?>(
+                stream: userBlocNetwork.userStateStream,
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.hasData)
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 3.5.w, vertical: 2.5.h),
+                      child: Row(
                         children: [
-                          Text(
-                            "John Conor ",
-                            style: TextStyle(color: Color(0xFF666666)),
+                          CircleAvatar(
+                            radius: 7.w,
+                            child: CircleAvatar(
+                              radius: 6.8.w,
+                              backgroundImage: CachedNetworkImageProvider(
+                                "https://wallpaperaccess.com/full/2213424.jpg",
+                              ),
+                            ),
                           ),
-                          Text(
-                            " Solh Expert",
-                            style: TextStyle(
-                                color: SolhColors.green, fontSize: 10),
+                          SizedBox(
+                            width: 2.w,
                           ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Hi, there",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w500),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    userSnapshot.requireData!.name,
+                                    style: TextStyle(color: Color(0xFF666666)),
+                                  ),
+                                  SizedBox(width: 1.5.w),
+                                  Text(
+                                    "Solh Expert",
+                                    style: TextStyle(
+                                        height: 0.18.h,
+                                        color: SolhColors.green,
+                                        fontSize: 10),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
                         ],
                       ),
-                    ],
-                  )
-                ],
-              ),
-            ),
+                    );
+                  return Container(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
             Container(
               height: 0.25.h,
               width: double.infinity,
@@ -203,7 +224,6 @@ class Journaling extends StatefulWidget {
 }
 
 class _JournalingState extends State<Journaling> {
-  @override
   final List<String> _images = [
     "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDKwiSfAles5soFVbStddLdTd2VGg0hV8fGQ&usqp=CAU",
@@ -213,6 +233,29 @@ class _JournalingState extends State<Journaling> {
   ];
 
   bool _isDrawerOpen = false;
+  bool _fetchingMore = false;
+
+  void initState() {
+    super.initState();
+    _journalsScrollController = ScrollController();
+    userBlocNetwork.getMyProfileSnapshot();
+    journalsBloc.getJournalsSnapshot();
+
+    _journalsScrollController.addListener(() async {
+      if (_journalsScrollController.position.pixels ==
+              _journalsScrollController.position.maxScrollExtent &&
+          !_fetchingMore) {
+        _fetchingMore = true;
+        await journalsBloc.getNextPageJournalsSnapshot();
+        print("Reached at end");
+        _fetchingMore = false;
+      }
+    });
+  }
+
+  late ScrollController _journalsScrollController;
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 300),
@@ -277,94 +320,30 @@ class _JournalingState extends State<Journaling> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (index == 0)
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal:
-                                        MediaQuery.of(context).size.width / 20,
-                                    vertical:
-                                        MediaQuery.of(context).size.height / 80,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      SolhGreenBorderMiniButton(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              18,
-                                          width: 64.w,
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 4.w,
-                                          ),
-                                          onPressed: () =>
-                                              AutoRouter.of(context).push(
-                                                  CreatePostScreenRouter()),
-                                          child: Text(
-                                            "What's on your mind?",
-                                            style: SolhTextStyles
-                                                .JournalingHintText,
-                                          )),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            iconSize: 24,
-                                            splashRadius: 20,
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () => {},
-                                            icon: SvgPicture.asset(
-                                                "assets/icons/journaling/post-photo.svg"),
-                                            color: SolhColors.green,
-                                          ),
-                                          Container(
-                                            height: 3.h,
-                                            width: 0.2,
-                                            color: SolhColors.blackop05,
-                                          ),
-                                          IconButton(
-                                            iconSize: 24,
-                                            splashRadius: 20,
-                                            padding: EdgeInsets.zero,
-                                            onPressed: () => {},
-                                            icon: SvgPicture.asset(
-                                                "assets/icons/journaling/switch-profile.svg"),
-                                            color: SolhColors.green,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Stories(),
-                              ],
+                    child: StreamBuilder<List<JournalModel?>>(
+                        stream: journalsBloc.journalsStateStream,
+                        builder: (context, jounalSnapshot) {
+                          if (jounalSnapshot.hasData) {
+                            print(jounalSnapshot.requireData.length);
+                            return ListView.builder(
+                                controller: _journalsScrollController,
+                                itemCount: jounalSnapshot.requireData.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  print("building tile: $index");
+                                  if (index == 0)
+                                    return WhatsOnYourMindSection();
+                                  return PostTile(
+                                    journalModel:
+                                        jounalSnapshot.requireData[index],
+                                  );
+                                });
+                          }
+                          if (jounalSnapshot.hasError)
+                            return Container(
+                              child: Text(jounalSnapshot.error.toString()),
                             );
-                          return Column(
-                            children: [
-                              Container(
-                                child: Post(
-                                  imgUrl: _images[index],
-                                ),
-                                decoration: BoxDecoration(),
-                              ),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 1.h),
-                                height: 0.8.h,
-                                color: Colors.green.shade400
-                                    .withOpacity(0.25)
-                                    .withAlpha(80)
-                                    .withGreen(160),
-                              ),
-                            ],
-                          );
+
+                          return Container();
                         }),
                   ),
                 ],
@@ -382,6 +361,73 @@ class _JournalingState extends State<Journaling> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class WhatsOnYourMindSection extends StatelessWidget {
+  const WhatsOnYourMindSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 20,
+            vertical: MediaQuery.of(context).size.height / 80,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SolhGreenBorderMiniButton(
+                  height: MediaQuery.of(context).size.height / 18,
+                  width: 64.w,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 4.w,
+                  ),
+                  onPressed: () =>
+                      AutoRouter.of(context).push(CreatePostScreenRouter()),
+                  child: Text(
+                    "What's on your mind?",
+                    style: SolhTextStyles.JournalingHintText,
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    iconSize: 24,
+                    splashRadius: 20,
+                    padding: EdgeInsets.zero,
+                    onPressed: () => {},
+                    icon: SvgPicture.asset(
+                        "assets/icons/journaling/post-photo.svg"),
+                    color: SolhColors.green,
+                  ),
+                  Container(
+                    height: 3.h,
+                    width: 0.2,
+                    color: SolhColors.blackop05,
+                  ),
+                  IconButton(
+                    iconSize: 24,
+                    splashRadius: 20,
+                    padding: EdgeInsets.zero,
+                    onPressed: () => {},
+                    icon: SvgPicture.asset(
+                        "assets/icons/journaling/switch-profile.svg"),
+                    color: SolhColors.green,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        // Stories(),
+      ],
     );
   }
 }

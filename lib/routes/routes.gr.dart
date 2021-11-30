@@ -19,7 +19,7 @@ import '../ui/screens/connect/connect-screen.dart' as _i14;
 import '../ui/screens/get-help/get-help.dart' as _i10;
 import '../ui/screens/home/homescreen.dart' as _i8;
 import '../ui/screens/intro/intro-crousel.dart' as _i2;
-import '../ui/screens/journaling/create-post.dart' as _i13;
+import '../ui/screens/journaling/create-journal.dart' as _i13;
 import '../ui/screens/journaling/journaling.dart' as _i12;
 import '../ui/screens/my-goals/my-goals-screen.dart' as _i11;
 import '../ui/screens/my-profile/my-profile-screen.dart' as _i16;

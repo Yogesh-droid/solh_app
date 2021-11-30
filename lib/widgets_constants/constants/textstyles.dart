@@ -101,8 +101,8 @@ class SolhTextStyles {
   );
 
   static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
     color: SolhColors.green,
     height: 1.23, //Figma Line Height 19.71
   );

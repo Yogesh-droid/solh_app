@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -46,14 +47,12 @@ class ConsultantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 20.h,
       margin: EdgeInsets.symmetric(vertical: 0.5.h),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
       child: Container(
-        height: 18.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8), bottomLeft: Radius.circular(8))),
@@ -65,7 +64,7 @@ class ConsultantsTile extends StatelessWidget {
                 Container(
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  height: 15.h,
+                  height: 16.h,
                   width: 25.w,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
@@ -100,13 +99,15 @@ class ConsultantsTile extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(width: 2.w),
-            Container(
-                width: 60.w,
+            SizedBox(width: 3.w),
+            Expanded(
+              child: Container(
+                height: 16.h,
                 padding: EdgeInsets.symmetric(vertical: 1.h),
+                // color: Colors.black12,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Dr. Sakshi Trivedi",
@@ -123,12 +124,11 @@ class ConsultantsTile extends StatelessWidget {
                       "07 Year of Experience",
                       style: TextStyle(fontSize: 12),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 1.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Row(
                             children: [
                               Icon(
                                 Icons.people,
@@ -141,42 +141,48 @@ class ConsultantsTile extends StatelessWidget {
                               )
                             ],
                           ),
-                          Row(
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Row(
                             children: [
+                              SvgPicture.asset(
+                                  "assets/icons/consultants/ratings.svg"),
                               Text(
                                 "4.5",
                                 style: TextStyle(color: SolhColors.green),
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              Text("07",
-                                  style: TextStyle(color: SolhColors.green)),
-                            ],
-                          )
-                        ],
-                      ),
+                        ),
+                        Row(
+                          children: [
+                            SvgPicture.asset(
+                                "assets/icons/consultants/review.svg"),
+                            Text("07",
+                                style: TextStyle(color: SolhColors.green)),
+                          ],
+                        )
+                      ],
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("View Profile"),
+                        Text(
+                          "View Profile",
+                          style: TextStyle(color: SolhColors.green),
+                        ),
                         SolhGreenButton(
-                            height: 4.h,
+                            height: 4.8.h,
                             width: 40.w,
-                            child: Text("Virtual Appointment"))
+                            child: Text("Book Appointment"))
                       ],
                     )
                   ],
-                )),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 1.h),
-              child: Text(
-                "Free",
-                style: TextStyle(color: SolhColors.green),
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

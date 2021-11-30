@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/model/journal.dart';
+import 'package:solh/model/user/journal-user.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -178,10 +180,19 @@ class _TabViewState extends State<TabView> {
                   itemCount: 8,
                   itemBuilder: (_, index) => Column(
                         children: [
-                          Post(
-                            imgUrl:
-                                'https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg',
-                          ),
+                          PostTile(
+                              journalModel: JournalModel(
+                                  feelings: "happy",
+                                  likes: 24,
+                                  comments: 15,
+                                  description: "tehre",
+                                  imageUrl: "",
+                                  postedBy: JournalUserModel(
+                                    name: "Geetansh",
+                                    isSolhAdviser: false,
+                                    isSolhCounselor: true,
+                                    isSolhExpert: true,
+                                  ))),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 1.h),
                             height: 0.8.h,

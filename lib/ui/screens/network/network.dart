@@ -103,11 +103,13 @@ class Network {
           headers: {"Authorization": "Bearer ${APIConstants.sessionCookie}"},
           body: body);
 
-      if (apiResponse.statusCode != 200) {
+      if (apiResponse.statusCode == 201) {
+        return jsonDecode(apiResponse.body);
+      } else if (apiResponse.statusCode == 200) {
+        return jsonDecode(apiResponse.body);
+      } else {
         print("Status Code: " + apiResponse.statusCode.toString());
         throw "server-error";
-      } else {
-        return jsonDecode(apiResponse.body);
       }
     } on SocketException {
       // internetConnectivityBloc.noInternet();

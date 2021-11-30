@@ -44,22 +44,10 @@ class PostScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Post(
-              imgUrl:
-                  "https://c8.alamy.com/comp/2E60KT1/albanian-artist-saimir-strati-45-poses-in-front-of-his-coffee-bean-mosaic-with-his-guinness-world-records-certificate-in-tirana-december-12-2011-the-mosaic-made-with-a-million-coffee-beans-depicting-five-musicians-entered-the-guinness-world-records-on-monday-as-the-worlds-largest-coffee-bean-mosaic-strati-used-140-kg-309-pounds-of-coffee-beans-some-roasted-black-some-averagely-and-some-not-roasted-at-all-to-portray-a-brazilian-dancer-a-japanese-drummer-a-us-country-music-singer-a-european-accordionist-and-an-african-drummer-reutersarben-celi-albania-tags-society-2E60KT1.jpg",
-            ),
-            Post(
-              imgUrl:
-                  "https://c8.alamy.com/comp/2E60KT1/albanian-artist-saimir-strati-45-poses-in-front-of-his-coffee-bean-mosaic-with-his-guinness-world-records-certificate-in-tirana-december-12-2011-the-mosaic-made-with-a-million-coffee-beans-depicting-five-musicians-entered-the-guinness-world-records-on-monday-as-the-worlds-largest-coffee-bean-mosaic-strati-used-140-kg-309-pounds-of-coffee-beans-some-roasted-black-some-averagely-and-some-not-roasted-at-all-to-portray-a-brazilian-dancer-a-japanese-drummer-a-us-country-music-singer-a-european-accordionist-and-an-african-drummer-reutersarben-celi-albania-tags-society-2E60KT1.jpg",
-            ),
-            Post(
-              imgUrl:
-                  "https://c8.alamy.com/comp/2E60KT1/albanian-artist-saimir-strati-45-poses-in-front-of-his-coffee-bean-mosaic-with-his-guinness-world-records-certificate-in-tirana-december-12-2011-the-mosaic-made-with-a-million-coffee-beans-depicting-five-musicians-entered-the-guinness-world-records-on-monday-as-the-worlds-largest-coffee-bean-mosaic-strati-used-140-kg-309-pounds-of-coffee-beans-some-roasted-black-some-averagely-and-some-not-roasted-at-all-to-portray-a-brazilian-dancer-a-japanese-drummer-a-us-country-music-singer-a-european-accordionist-and-an-african-drummer-reutersarben-celi-albania-tags-society-2E60KT1.jpg",
-            ),
-            Post(
-              imgUrl:
-                  "https://c8.alamy.com/comp/2E60KT1/albanian-artist-saimir-strati-45-poses-in-front-of-his-coffee-bean-mosaic-with-his-guinness-world-records-certificate-in-tirana-december-12-2011-the-mosaic-made-with-a-million-coffee-beans-depicting-five-musicians-entered-the-guinness-world-records-on-monday-as-the-worlds-largest-coffee-bean-mosaic-strati-used-140-kg-309-pounds-of-coffee-beans-some-roasted-black-some-averagely-and-some-not-roasted-at-all-to-portray-a-brazilian-dancer-a-japanese-drummer-a-us-country-music-singer-a-european-accordionist-and-an-african-drummer-reutersarben-celi-albania-tags-society-2E60KT1.jpg",
-            )
+            // PostTile(),
+            // PostTile(),
+            // PostTile(),
+            // PostTile()
           ],
         ),
       ),
