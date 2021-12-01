@@ -1,3 +1,4 @@
+import 'package:solh/constants/api.dart';
 import 'package:solh/model/journal.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:solh/ui/screens/network/network.dart';
@@ -16,7 +17,7 @@ class JournalsBloc {
     print("getting journals for the first time...");
     try {
       Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
-          "http://localhost:3000/api/get-journals");
+          "${APIConstants.aws}/api/get-journals");
       // print("api response of journals: " +
       //     apiResponse["body"]["journals"].toString());
       List<JournalModel> _journals = <JournalModel>[];
@@ -24,10 +25,8 @@ class JournalsBloc {
       _endPageLimit = apiResponse["body"]["totalPages"];
       print("Number of pages: $_endPageLimit");
       for (var journal in apiResponse["body"]["journals"]) {
-        print("journal list: " + journal["description"]);
         _journals.add(JournalModel.fromJson(journal));
       }
-
       return _journals;
     } catch (error) {
       throw error;
@@ -37,14 +36,11 @@ class JournalsBloc {
   Future<List<JournalModel?>> _fetchDetailsNextPage() async {
     print("getting journals for the next page...");
     try {
-      _currentPage++;
       Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
-          "http://localhost:3000/api/get-journals?page=$_currentPage");
+          "${APIConstants.aws}/api/get-journals?page=$_currentPage");
 
       List<JournalModel> _journals = <JournalModel>[];
       for (var journal in apiResponse["body"]["journals"]) {
-        print("journal list: " + journal["description"]);
-
         _journals.add(JournalModel.fromJson(journal));
       }
       return _journals;
@@ -54,20 +50,24 @@ class JournalsBloc {
     }
   }
 
-  void getJournalsSnapshot() async {
+  Future getJournalsSnapshot() async {
     _journalsList = [];
-    await _fetchDetailsFirstTime()
-        .then((journals) => _journalController.sink.add(journals))
-        .onError((error, stackTrace) =>
-            _journalController.sink.addError(error.toString()));
+    int _currentPage = 1;
+    await _fetchDetailsFirstTime().then((journals) {
+      _journalsList.addAll(journals);
+      return _journalController.add(_journalsList);
+    }).onError((error, stackTrace) =>
+        _journalController.sink.addError(error.toString()));
   }
 
   Future getNextPageJournalsSnapshot() async {
     print("fetching next page journals.............");
+    _currentPage++;
+
     if (_currentPage < _endPageLimit) {
       await _fetchDetailsNextPage().then((journals) {
         _journalsList.addAll(journals);
-        return _journalController.sink.add(_journalsList);
+        return _journalController.add(_journalsList);
       }).onError((error, stackTrace) =>
           _journalController.sink.addError(error.toString()));
     } else {

@@ -14,7 +14,7 @@ class UserBlocNetwork {
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "http://localhost:3000/api/get-my-profile-details");
+              "${APIConstants.aws}/api/get-my-profile-details");
       print(
           "api response of profile details: " + apiResponse["user"].toString());
       return UserModel.fromJson(apiResponse["user"]);

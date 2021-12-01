@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -238,22 +239,40 @@ class _JournalingState extends State<Journaling> {
   void initState() {
     super.initState();
     _journalsScrollController = ScrollController();
+    _refreshController = RefreshController();
     userBlocNetwork.getMyProfileSnapshot();
     journalsBloc.getJournalsSnapshot();
 
     _journalsScrollController.addListener(() async {
+      // if (_journalsScrollController.position.pixels ==
+      //         _journalsScrollController.position.minScrollExtent &&
+      //     _refreshController.isRefresh) {
+      //   print("refreshing");
+      // }
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&
           !_fetchingMore) {
-        _fetchingMore = true;
+        setState(() {
+          _fetchingMore = true;
+        });
         await journalsBloc.getNextPageJournalsSnapshot();
         print("Reached at end");
-        _fetchingMore = false;
+        setState(() {
+          _fetchingMore = false;
+        });
       }
     });
   }
 
+  void _onRefresh() async {
+    // monitor network fetch
+    await journalsBloc.getJournalsSnapshot();
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
   late ScrollController _journalsScrollController;
+  late RefreshController _refreshController;
 
   @override
   Widget build(BuildContext context) {
@@ -322,30 +341,38 @@ class _JournalingState extends State<Journaling> {
                   Expanded(
                     child: StreamBuilder<List<JournalModel?>>(
                         stream: journalsBloc.journalsStateStream,
-                        builder: (context, jounalSnapshot) {
-                          if (jounalSnapshot.hasData) {
-                            print(jounalSnapshot.requireData.length);
-                            return ListView.builder(
-                                controller: _journalsScrollController,
-                                itemCount: jounalSnapshot.requireData.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  print("building tile: $index");
-                                  if (index == 0)
-                                    return WhatsOnYourMindSection();
-                                  return PostTile(
-                                    journalModel:
-                                        jounalSnapshot.requireData[index],
-                                  );
-                                });
-                          }
-                          if (jounalSnapshot.hasError)
-                            return Container(
-                              child: Text(jounalSnapshot.error.toString()),
+                        builder: (context, journalSnapshot) {
+                          if (journalSnapshot.hasData) {
+                            print(
+                                "Total Length of the journals: ${journalSnapshot.requireData.length}");
+                            return SmartRefresher(
+                              onRefresh: _onRefresh,
+                              controller: _refreshController,
+                              child: ListView.builder(
+                                  controller: _journalsScrollController,
+                                  itemCount:
+                                      journalSnapshot.requireData.length + 1,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    print("building tile: $index");
+                                    if (index == 0)
+                                      return WhatsOnYourMindSection();
+                                    return JournalTile(
+                                      journalModel: journalSnapshot
+                                          .requireData[index - 1],
+                                    );
+                                  }),
                             );
-
+                          }
+                          if (journalSnapshot.hasError)
+                            return Container(
+                              child: Text(journalSnapshot.error.toString()),
+                            );
                           return Container();
                         }),
                   ),
+                  if (_fetchingMore) Center(child: CircularProgressIndicator()),
+                  SizedBox(height: 10.h),
                 ],
               ),
             ),

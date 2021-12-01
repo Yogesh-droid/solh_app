@@ -2,7 +2,7 @@ class UserModel {
   bool isSolhExpert;
   bool isSolhAdviser;
   bool isSolhCounselor;
-  String id;
+  // String id;
   String mobile;
   String uid;
   String gender;
@@ -17,7 +17,7 @@ class UserModel {
       {required this.isSolhAdviser,
       required this.isSolhCounselor,
       required this.isSolhExpert,
-      required this.id,
+      // required this.id,
       required this.mobile,
       required this.uid,
       required this.gender,
@@ -37,7 +37,7 @@ class UserModel {
         isSolhExpert: userJson['isSolhExpert'],
         isSolhAdviser: userJson['isSolhAdviser'],
         isSolhCounselor: userJson['isSolhCounselor'],
-        id: userJson['_id'],
+        // id: userJson['_id'],
         bio: userJson['bio'],
         mobile: userJson['mobile'],
         uid: userJson['uid'],

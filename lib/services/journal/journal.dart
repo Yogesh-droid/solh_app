@@ -1,3 +1,4 @@
+import 'package:solh/constants/api.dart';
 import 'package:solh/ui/screens/network/network.dart';
 
 class CreateJournal {
@@ -15,7 +16,7 @@ class CreateJournal {
   Future<String> postJournal() async {
     Map<String, dynamic> apiResponse =
         await Network.makeHttpPostRequestWithToken(
-            url: "http://localhost:3000/api/create-user-post",
+            url: "${APIConstants.aws}/api/create-user-post",
             body: {
           "description": description,
           "image": imageUrl,

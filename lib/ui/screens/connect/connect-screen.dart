@@ -180,7 +180,7 @@ class _TabViewState extends State<TabView> {
                   itemCount: 8,
                   itemBuilder: (_, index) => Column(
                         children: [
-                          PostTile(
+                          JournalTile(
                               journalModel: JournalModel(
                                   feelings: "happy",
                                   likes: 24,

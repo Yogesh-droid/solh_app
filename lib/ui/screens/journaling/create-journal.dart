@@ -4,9 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/model/journal.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/journal.dart';
+import 'package:solh/ui/screens/network/network.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -28,6 +32,82 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Uint8List? _xFileAsUnit8List;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
+
+  void _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => Container(
+              height: 20.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Choose your type"),
+                  SizedBox(height: 3.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.photo),
+                        onPressed: () async {
+                          print("picking image");
+                          _xFile = await _picker.pickImage(
+                            source: ImageSource.gallery,
+                            maxWidth: 640,
+                            maxHeight: 640,
+                            imageQuality: 25,
+                          );
+                          print(_xFile!.path.toString());
+                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+                          Navigator.of(_).pop();
+                          setState(() {
+                            _isImageAdded = true;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.video_camera_back),
+                        onPressed: () async {
+                          print("picking video");
+                          _xFile = await _picker.pickVideo(
+                              source: ImageSource.gallery);
+                          print(_xFile!.path.toString());
+                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+                          Navigator.of(_).pop();
+                          setState(() {
+                            _isVideoAdded = true;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ));
+    // Pick an image
+    // final XFile? image =
+    //     await _picker.pickImage(source: ImageSource.gallery);
+    // Capture a photo
+    // final XFile? photo =
+    //     await _picker.pickImage(source: ImageSource.camera);
+    // // Pick a video
+    // final XFile? video =
+    //     await _picker.pickVideo(source: ImageSource.gallery);
+    // // Capture a video
+    // final XFile? capturedVideo =
+    //     await _picker.pickVideo(source: ImageSource.camera);
+    // // Pick multiple images
+    // final List<XFile>? multipleFiles =
+    //     await _picker.pickMultiImage();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    userBlocNetwork.getMyProfileSnapshot();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,93 +175,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               if (!_isImageAdded && !_isVideoAdded)
                 Column(
                   children: [
-                    SolhGreenBorderButton(
-                      child: Text(
-                        "Pic from Diary",
-                        style: SolhTextStyles.GreenBorderButtonText,
-                      ),
-                      onPressed: () => print("Pressed"),
-                    ),
+                    // SolhGreenBorderButton(
+                    //   child: Text(
+                    //     "Pic from Diary",
+                    //     style: SolhTextStyles.GreenBorderButtonText,
+                    //   ),
+                    //   onPressed: () => print("Pressed"),
+                    // ),
                     SizedBox(height: 2.h),
                     SolhGreenBorderButton(
-                      child: Text(
-                        "Add Image/Video",
-                        style: SolhTextStyles.GreenBorderButtonText,
-                      ),
-                      onPressed: () async {
-                        final ImagePicker _picker = ImagePicker();
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (_) => Container(
-                                  height: 20.h,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text("Choose your type"),
-                                      SizedBox(height: 3.h),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          IconButton(
-                                            iconSize: 40,
-                                            icon: Icon(Icons.photo),
-                                            onPressed: () async {
-                                              print("picking image");
-                                              _xFile = await _picker.pickImage(
-                                                source: ImageSource.gallery,
-                                                maxWidth: 640,
-                                                maxHeight: 640,
-                                                imageQuality: 25,
-                                              );
-                                              print(_xFile!.path.toString());
-                                              _xFileAsUnit8List =
-                                                  await _xFile!.readAsBytes();
-                                              Navigator.of(_).pop();
-                                              setState(() {
-                                                _isImageAdded = true;
-                                              });
-                                            },
-                                          ),
-                                          IconButton(
-                                            iconSize: 40,
-                                            icon: Icon(Icons.video_camera_back),
-                                            onPressed: () async {
-                                              print("picking video");
-                                              _xFile = await _picker.pickVideo(
-                                                  source: ImageSource.gallery);
-                                              print(_xFile!.path.toString());
-                                              _xFileAsUnit8List =
-                                                  await _xFile!.readAsBytes();
-                                              Navigator.of(_).pop();
-
-                                              setState(() {
-                                                _isVideoAdded = true;
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ));
-                        // Pick an image
-                        // final XFile? image =
-                        //     await _picker.pickImage(source: ImageSource.gallery);
-                        // Capture a photo
-                        // final XFile? photo =
-                        //     await _picker.pickImage(source: ImageSource.camera);
-                        // // Pick a video
-                        // final XFile? video =
-                        //     await _picker.pickVideo(source: ImageSource.gallery);
-                        // // Capture a video
-                        // final XFile? capturedVideo =
-                        //     await _picker.pickVideo(source: ImageSource.camera);
-                        // // Pick multiple images
-                        // final List<XFile>? multipleFiles =
-                        //     await _picker.pickMultiImage();
-                      },
-                    ),
+                        child: Text(
+                          "Add Image/Video",
+                          style: SolhTextStyles.GreenBorderButtonText,
+                        ),
+                        onPressed: _pickImage),
                   ],
                 )
               else if (_isImageAdded)
@@ -245,8 +252,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
-  void _postJournal() {
+  void _postJournal() async {
     if (_description != "") {
+      // if (_xFileAsUnit8List != null)
+      //   Map<String, dynamic> response = await _uploadImage();
       CreateJournal _createJournal = CreateJournal(
         description: _description,
         feelings: _feelings,
@@ -256,6 +265,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       );
       _createJournal.postJournal();
     }
+  }
+
+  Future _uploadImage() async {
+    await Network.makeHttpPostRequestWithToken(
+        url: "${APIConstants.aws}", body: {"file": _xFileAsUnit8List});
   }
 }
 
@@ -280,7 +294,6 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
     return Container(
       alignment: Alignment.center,
       child: Wrap(
-        // alignment: WrapAlignment.center,
         children: List.generate(
           JournalFeelings.values.length,
           (index) => GestureDetector(
@@ -342,71 +355,77 @@ class _UsernameHeaderState extends State<UsernameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 6.w,
-              backgroundImage: NetworkImage(
-                  "https://qph.fs.quoracdn.net/main-qimg-6d89a6af21f564db1096d6dbd060f831"),
-            ),
-            SizedBox(
-              width: 2.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return StreamBuilder<UserModel?>(
+        stream: userBlocNetwork.userStateStream,
+        builder: (context, userSnapshot) {
+          if (userSnapshot.hasData)
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Santra Johns",
-                  style: SolhTextStyles.JournalingUsernameText.copyWith(
-                      fontWeight: FontWeight.normal, fontSize: 14),
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 6.w,
+                      backgroundImage: NetworkImage(
+                          "https://qph.fs.quoracdn.net/main-qimg-6d89a6af21f564db1096d6dbd060f831"),
+                    ),
+                    SizedBox(
+                      width: 2.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userSnapshot.requireData!.name,
+                          style: SolhTextStyles.JournalingUsernameText.copyWith(
+                              fontWeight: FontWeight.normal, fontSize: 14),
+                        ),
+                        Text(
+                          "Happiness Maker",
+                          style: SolhTextStyles.JournalingBadgeText.copyWith(
+                              fontSize: 12),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                Text(
-                  "Happiness Maker",
-                  style:
-                      SolhTextStyles.JournalingBadgeText.copyWith(fontSize: 12),
+                Container(
+                  height: 4.5.h,
+                  width: 35.w,
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      border: Border.all(
+                        color: SolhColors.green,
+                      )),
+                  child: DropdownButton(
+                      isExpanded: true,
+                      icon: Icon(CupertinoIcons.chevron_down),
+                      iconSize: 18,
+                      iconEnabledColor: SolhColors.green,
+                      underline: SizedBox(),
+                      value: _dropdownValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _dropdownValue = newValue!;
+                        });
+                        widget._onTypeChanged.call(_dropdownValue);
+                      },
+                      style: TextStyle(color: SolhColors.green),
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Publicaly"),
+                          value: "Publicaly",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("My Diary"),
+                          value: "My_Diary",
+                        )
+                      ]),
                 )
               ],
-            ),
-          ],
-        ),
-        Container(
-          height: 4.5.h,
-          width: 35.w,
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              border: Border.all(
-                color: SolhColors.green,
-              )),
-          child: DropdownButton(
-              isExpanded: true,
-              icon: Icon(CupertinoIcons.chevron_down),
-              iconSize: 18,
-              iconEnabledColor: SolhColors.green,
-              underline: SizedBox(),
-              value: _dropdownValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _dropdownValue = newValue!;
-                });
-                widget._onTypeChanged.call(_dropdownValue);
-              },
-              style: TextStyle(color: SolhColors.green),
-              items: [
-                DropdownMenuItem(
-                  child: Text("Publicaly"),
-                  value: "Publicaly",
-                ),
-                DropdownMenuItem(
-                  child: Text("My Diary"),
-                  value: "My_Diary",
-                )
-              ]),
-        )
-      ],
-    );
+            );
+          return Container();
+        });
   }
 }

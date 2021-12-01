@@ -4,13 +4,15 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class FirstTimeLandingLoginSignup extends StatefulWidget {
-  const FirstTimeLandingLoginSignup({ Key? key }) : super(key: key);
+  const FirstTimeLandingLoginSignup({Key? key}) : super(key: key);
 
   @override
-  _FirstTimeLandingLoginSignupState createState() => _FirstTimeLandingLoginSignupState();
+  _FirstTimeLandingLoginSignupState createState() =>
+      _FirstTimeLandingLoginSignupState();
 }
 
-class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignup> {
+class _FirstTimeLandingLoginSignupState
+    extends State<FirstTimeLandingLoginSignup> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,10 +20,10 @@ class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignu
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width/15,
-          vertical: MediaQuery.of(context).size.height/20,
+          horizontal: MediaQuery.of(context).size.width / 15,
+          vertical: MediaQuery.of(context).size.height / 20,
         ),
-        decoration: BoxDecoration(  
+        decoration: BoxDecoration(
           color: SolhColors.white,
         ),
         child: Stack(
@@ -31,10 +33,10 @@ class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignu
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height/10,
-                  decoration: BoxDecoration(  
+                  height: MediaQuery.of(context).size.height / 10,
+                  decoration: BoxDecoration(
                     color: Colors.transparent,
-                    image: DecorationImage(  
+                    image: DecorationImage(
                       image: AssetImage(
                         "assets/images/logo/solh-logo.png",
                       ),
@@ -48,7 +50,7 @@ class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignu
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height/5,
+                  height: MediaQuery.of(context).size.height / 5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -60,7 +62,7 @@ class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignu
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height/40,
+                          top: MediaQuery.of(context).size.height / 40,
                         ),
                         child: SolhGreenBorderButton(
                           child: Text(
@@ -76,7 +78,7 @@ class _FirstTimeLandingLoginSignupState extends State<FirstTimeLandingLoginSignu
             )
           ],
         ),
-      ),      
+      ),
     );
   }
 }
