@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/enum/journal/feelings.dart';
@@ -31,6 +33,8 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
 
   Uint8List? _xFileAsUnit8List;
 
+  File? _croppedFile;
+
   bool _isImageAdded = false;
 
   bool _isVideoAdded = false;
@@ -58,10 +62,28 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
                             source: ImageSource.gallery,
                             maxWidth: 640,
                             maxHeight: 640,
-                            imageQuality: 25,
+                            imageQuality: 50,
                           );
                           print(_xFile!.path.toString());
-                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+                          _croppedFile = await ImageCropper.cropImage(
+                              sourcePath: _xFile!.path,
+                              aspectRatioPresets: [
+                                CropAspectRatioPreset.square,
+                                // CropAspectRatioPreset.ratio3x2,
+                                // CropAspectRatioPreset.original,
+                                // CropAspectRatioPreset.ratio4x3,
+                                // CropAspectRatioPreset.ratio16x9
+                              ],
+                              androidUiSettings: AndroidUiSettings(
+                                  toolbarTitle: 'Cropper',
+                                  toolbarColor: Colors.deepOrange,
+                                  toolbarWidgetColor: Colors.white,
+                                  initAspectRatio:
+                                      CropAspectRatioPreset.original,
+                                  lockAspectRatio: false),
+                              iosUiSettings: IOSUiSettings(
+                                minimumAspectRatio: 1.0,
+                              ));
                           Navigator.of(_).pop();
                           setState(() {
                             _isImageAdded = true;
@@ -76,7 +98,8 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
                           _xFile = await _picker.pickVideo(
                               source: ImageSource.gallery);
                           print(_xFile!.path.toString());
-                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+
+                          // _xFileAsUnit8List = await _xFile!.readAsBytes();
                           Navigator.of(_).pop();
                           setState(() {
                             _isVideoAdded = true;
@@ -88,21 +111,6 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
                 ],
               ),
             ));
-    // Pick an image
-    // final XFile? image =
-    //     await _picker.pickImage(source: ImageSource.gallery);
-    // Capture a photo
-    // final XFile? photo =
-    //     await _picker.pickImage(source: ImageSource.camera);
-    // // Pick a video
-    // final XFile? video =
-    //     await _picker.pickVideo(source: ImageSource.gallery);
-    // // Capture a video
-    // final XFile? capturedVideo =
-    //     await _picker.pickVideo(source: ImageSource.camera);
-    // // Pick multiple images
-    // final List<XFile>? multipleFiles =
-    //     await _picker.pickMultiImage();
   }
 
   @override
@@ -116,32 +124,64 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
           SizedBox(
             height: 12.h,
           ),
-          if (_xFileAsUnit8List != null)
-            Image.memory(_xFileAsUnit8List!)
+          if (_croppedFile != null)
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 30.5.w,
+                  child: CircleAvatar(
+                    radius: 30.w,
+                    backgroundImage: FileImage(_croppedFile!),
+                  ),
+                ),
+                Positioned(
+                    top: -2.h,
+                    right: 0,
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _croppedFile = null;
+                          });
+                        },
+                        icon: Icon(Icons.close)))
+              ],
+            )
           else
             AddProfilePictureIllustration(
               onPressed: _pickImage,
             ),
           Expanded(child: Container()),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SolhGreenButton(
-                child: Text("Add Image"),
-                height: 6.h,
-                width: MediaQuery.of(context).size.width / 1.1,
-                onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => DescriptionScreen())),
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              SkipButton(),
-              SizedBox(
-                height: 3.8.h,
-              ),
-            ],
-          )
+          if (_croppedFile == null)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SolhGreenButton(
+                  child: Text("Add Image"),
+                  height: 6.h,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  onPressed: _pickImage,
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                SkipButton(),
+              ],
+            )
+          else
+            Column(
+              children: [
+                SolhGreenButton(
+                  child: Text("Next"),
+                  height: 6.h,
+                  width: MediaQuery.of(context).size.width / 1.1,
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => DescriptionScreen())),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+              ],
+            )
         ],
       ),
     );

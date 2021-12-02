@@ -74,8 +74,10 @@ class Network {
   //   });
   // }
 
-  static Future<Map<String, dynamic>> makeHttpPostRequest(
-      {required String url, required Map<String, dynamic> body}) async {
+  static Future<Map<String, dynamic>> makeHttpPostRequest({
+    required String url,
+    required Map<String, dynamic> body,
+  }) async {
     try {
       Uri _uri = Uri.parse(url);
       http.Response apiResponse = await http.post(_uri, body: body);
@@ -95,8 +97,10 @@ class Network {
     }
   }
 
-  static Future<Map<String, dynamic>> makeHttpPostRequestWithToken(
-      {required String url, required Map<String, dynamic> body}) async {
+  static Future<Map<String, dynamic>> makeHttpPostRequestWithToken({
+    required String url,
+    required Map<String, dynamic> body,
+  }) async {
     try {
       Uri _uri = Uri.parse(url);
       http.Response apiResponse = await http.post(_uri,
@@ -118,5 +122,27 @@ class Network {
       print(e);
       throw e;
     }
+  }
+
+  static Future<Map<String, dynamic>> uploadFileToServer(
+      String url, String key, File file) async {
+    Uri uri = Uri.parse(url);
+
+    var request = http.MultipartRequest("POST", uri)
+      ..files.add(http.MultipartFile(
+          key, file.readAsBytes().asStream(), file.lengthSync(),
+          filename: DateTime.now().toString()));
+
+    var response = await request.send();
+    var apiResponse = jsonDecode(await response.stream.bytesToString());
+    if (response.statusCode == 200)
+      return {
+        "success": true,
+        "imageUrl": apiResponse["data"]["location"],
+        "mimetype": apiResponse["data"]["mimetype"]
+      };
+    return {
+      "success": false,
+    };
   }
 }

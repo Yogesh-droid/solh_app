@@ -1,7 +1,9 @@
 import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -10,7 +12,7 @@ import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/journal.dart';
-import 'package:solh/ui/screens/network/network.dart';
+import 'package:solh/services/network/network.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -29,6 +31,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _feelings = JournalFeelings.Happy.toShortString();
   String? _imageUrl;
   XFile? _xFile;
+  File? _croppedFile;
   Uint8List? _xFileAsUnit8List;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
@@ -56,10 +59,30 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             source: ImageSource.gallery,
                             maxWidth: 640,
                             maxHeight: 640,
-                            imageQuality: 25,
+                            imageQuality: 50,
                           );
                           print(_xFile!.path.toString());
-                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+                          _croppedFile = await ImageCropper.cropImage(
+                              sourcePath: _xFile!.path,
+                              aspectRatioPresets: [
+                                // CropAspectRatioPreset.square,
+                                CropAspectRatioPreset.ratio3x2,
+                                // CropAspectRatioPreset.original,
+                                // CropAspectRatioPreset.ratio4x3,
+                                // CropAspectRatioPreset.ratio16x9
+                              ],
+                              androidUiSettings: AndroidUiSettings(
+                                  toolbarTitle: 'Cropper',
+                                  toolbarColor: Colors.deepOrange,
+                                  toolbarWidgetColor: Colors.white,
+                                  initAspectRatio:
+                                      CropAspectRatioPreset.original,
+                                  lockAspectRatio: false),
+                              iosUiSettings: IOSUiSettings(
+                                minimumAspectRatio: 1.0,
+                              ));
+                          // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
+
                           Navigator.of(_).pop();
                           setState(() {
                             _isImageAdded = true;
@@ -74,7 +97,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           _xFile = await _picker.pickVideo(
                               source: ImageSource.gallery);
                           print(_xFile!.path.toString());
-                          _xFileAsUnit8List = await _xFile!.readAsBytes();
+
+                          // _xFileAsUnit8List = await _xFile!.readAsBytes();
                           Navigator.of(_).pop();
                           setState(() {
                             _isVideoAdded = true;
@@ -128,6 +152,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               UsernameHeader(
                 onTypeChanged: (value) {
                   print("Changed to $value");
+                  _journalType = value;
                 },
               ),
               SizedBox(height: 2.h),
@@ -194,7 +219,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               else if (_isImageAdded)
                 Stack(
                   children: [
-                    Image.memory(_xFileAsUnit8List!),
+                    Image.file(_croppedFile!),
                     Positioned(
                       right: 0,
                       top: 0,
@@ -254,22 +279,39 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   void _postJournal() async {
     if (_description != "") {
-      // if (_xFileAsUnit8List != null)
-      //   Map<String, dynamic> response = await _uploadImage();
-      CreateJournal _createJournal = CreateJournal(
-        description: _description,
-        feelings: _feelings,
-        journalType: _journalType,
-        imageUrl:
-            "https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2019_22/2879226/190531-think-stock-dog-ew-307p.jpg",
-      );
-      _createJournal.postJournal();
+      if (_croppedFile != null) {
+        Map<String, dynamic> response = await _uploadImage();
+        print(response.toString());
+        if (response["success"]) {
+          print(response["imageUrl"]);
+          CreateJournal _createJournal = CreateJournal(
+              mediaUrl: response["imageUrl"],
+              description: _description,
+              feelings: _feelings,
+              journalType: _journalType,
+              mimetype: response["mimetype"],
+              location: response["imageUrl"]);
+          _createJournal.postJournal();
+        }
+      } else {
+        CreateJournal _createJournal = CreateJournal(
+          description: _description,
+          feelings: _feelings,
+          journalType: _journalType,
+        );
+        _createJournal.postJournal();
+      }
     }
   }
 
-  Future _uploadImage() async {
-    await Network.makeHttpPostRequestWithToken(
-        url: "${APIConstants.aws}", body: {"file": _xFileAsUnit8List});
+  Future<Map<String, dynamic>> _uploadImage() async {
+    return await Network.uploadFileToServer(
+        "${APIConstants.aws}/api/fileupload/journal-image",
+        "file",
+        _croppedFile!);
+    // return await Network.makeHttpPostRequestWithToken(
+    //     url: "${APIConstants.aws}",
+    //     body: {"file": _croppedFile!.readAsBytesSync()});
   }
 }
 

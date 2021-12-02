@@ -1,16 +1,20 @@
 import 'package:solh/constants/api.dart';
-import 'package:solh/ui/screens/network/network.dart';
+import 'package:solh/services/network/network.dart';
 
 class CreateJournal {
   String description;
   String feelings;
-  String imageUrl;
-  String journalType;
+  String? mimetype;
+  String? mediaUrl;
+  var location;
+  String? journalType;
 
   CreateJournal(
-      {required this.description,
+      {this.mediaUrl,
+      required this.description,
       required this.feelings,
-      required this.imageUrl,
+      this.mimetype,
+      this.location,
       required this.journalType});
 
   Future<String> postJournal() async {
@@ -19,7 +23,8 @@ class CreateJournal {
             url: "${APIConstants.aws}/api/create-user-post",
             body: {
           "description": description,
-          "image": imageUrl,
+          "mediaType": mimetype,
+          "mediaUrl": mediaUrl,
           "feelings": feelings,
           "journalType": journalType
         }).onError((error, stackTrace) {

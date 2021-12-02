@@ -1,7 +1,7 @@
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/journal.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:solh/ui/screens/network/network.dart';
+import 'package:solh/services/network/network.dart';
 
 class JournalsBloc {
   final _journalController = PublishSubject<List<JournalModel?>>();

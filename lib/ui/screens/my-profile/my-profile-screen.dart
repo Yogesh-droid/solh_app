@@ -238,8 +238,10 @@ class ProfileContainer extends StatelessWidget {
             ),
             ProfileDetailsButtonRow(
               connections: _userModel!.connections,
-              likes: _userModel!.likes,
-              posts: _userModel!.posts,
+              // likes: _userModel!.likes,
+              likes: 0,
+              // posts: _userModel!.posts,
+              posts: 0,
               reviews: _userModel!.reviews,
             ),
             Padding(

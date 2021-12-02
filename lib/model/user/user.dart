@@ -8,8 +8,8 @@ class UserModel {
   String gender;
   String name;
   String bio;
-  int likes;
-  int posts;
+  // int likes;
+  // int posts;
   int connections;
   int reviews;
 
@@ -22,16 +22,16 @@ class UserModel {
       required this.uid,
       required this.gender,
       required this.bio,
-      required this.likes,
-      required this.posts,
+      // required this.likes,
+      // required this.posts,
       required this.connections,
       required this.reviews,
       required this.name});
 
   factory UserModel.fromJson(Map<String, dynamic> userJson) {
     return UserModel(
-        likes: userJson["likes"],
-        posts: userJson["posts"],
+        // likes: userJson["likes"],
+        // posts: userJson["posts"],
         connections: userJson["connections"],
         reviews: userJson["reviews"],
         isSolhExpert: userJson['isSolhExpert'],

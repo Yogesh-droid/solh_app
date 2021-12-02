@@ -109,7 +109,7 @@ class _JournalTileState extends State<JournalTile> {
                   ],
                 ),
               ),
-              if (widget._journalModel!.imageUrl != "")
+              if (widget._journalModel!.mediaUrl != "")
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height / 3,
@@ -119,7 +119,7 @@ class _JournalTileState extends State<JournalTile> {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                     image:
-                        NetworkImage(widget._journalModel!.imageUrl.toString()),
+                        NetworkImage(widget._journalModel!.mediaUrl.toString()),
                     fit: BoxFit.cover,
                   )),
                 )

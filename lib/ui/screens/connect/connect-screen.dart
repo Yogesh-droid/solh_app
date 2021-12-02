@@ -182,11 +182,13 @@ class _TabViewState extends State<TabView> {
                         children: [
                           JournalTile(
                               journalModel: JournalModel(
+                                  id: "15987452625645625",
+                                  mediaType: "image",
                                   feelings: "happy",
                                   likes: 24,
                                   comments: 15,
                                   description: "tehre",
-                                  imageUrl: "",
+                                  mediaUrl: "",
                                   postedBy: JournalUserModel(
                                     name: "Geetansh",
                                     isSolhAdviser: false,
