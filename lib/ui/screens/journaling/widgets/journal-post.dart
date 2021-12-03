@@ -54,31 +54,34 @@ class _JournalTileState extends State<JournalTile> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                child: Row(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 3.w,
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 3.w,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
                                         children: [
                                           Text(
                                             widget._journalModel!.postedBy.name,
                                             style: SolhTextStyles
                                                 .JournalingUsernameText,
                                           ),
-                                          Text(
-                                            "2H ago",
-                                            style: SolhTextStyles
-                                                .JournalingTimeStampText,
-                                          )
+                                          SizedBox(width: 1.5.w),
+                                          if (widget._journalModel!.postedBy
+                                              .isSolhExpert)
+                                            SolhExpertBadge(),
                                         ],
                                       ),
-                                    ),
-                                    SolhExpertBadge(),
-                                  ],
+                                      Text(
+                                        "2H ago",
+                                        style: SolhTextStyles
+                                            .JournalingTimeStampText,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                               PostMenuButton(),
@@ -134,32 +137,38 @@ class _JournalTileState extends State<JournalTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width / 3.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/journaling/post-like.svg",
-                            width: 17,
-                            height: 17,
-                            color: SolhColors.green,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 40,
+                    InkWell(
+                      onTap: () {
+                        print("like post");
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/journaling/post-like.svg",
+                              width: 17,
+                              height: 17,
+                              color: SolhColors.green,
                             ),
-                            child: Text(
-                              widget._journalModel!.likes.toString(),
-                              style: SolhTextStyles.GreenBorderButtonText,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width / 40,
+                              ),
+                              child: Text(
+                                widget._journalModel!.likes.toString(),
+                                style: SolhTextStyles.GreenBorderButtonText,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(
-                      onTap: () =>
-                          AutoRouter.of(context).push(CommentScreenRouter()),
+                      onTap: () => AutoRouter.of(context).push(
+                          CommentScreenRouter(
+                              journalModel: widget._journalModel)),
                       child: Container(
                         width: MediaQuery.of(context).size.width / 3.5,
                         child: Row(
@@ -245,29 +254,18 @@ class SolhExpertBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height / 40,
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 40,
-      ),
+      // height: MediaQuery.of(context).size.height / 40,
+      padding: EdgeInsets.symmetric(horizontal: 0.5.w, vertical: 0.5.w),
       decoration: BoxDecoration(
           color: SolhColors.grey239,
           borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            "Solh Expert",
-            style: SolhTextStyles.JournalingBadgeText,
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: MediaQuery.of(context).size.width / 80,
-            ),
-            child: Icon(
-              Icons.verified,
-              color: SolhColors.green,
-              size: 14,
-            ),
+          Icon(
+            Icons.verified,
+            color: SolhColors.green,
+            size: 14,
           ),
         ],
       ),

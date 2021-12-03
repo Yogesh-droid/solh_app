@@ -9,9 +9,11 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/cupertino.dart' as _i21;
 import 'package:flutter/material.dart' as _i20;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
+import '../model/journal.dart' as _i22;
 import '../phone-auth/otp-screen.dart' as _i5;
 import '../phone-auth/phone-auth.dart' as _i4;
 import '../ui/screens/comment/comment-screen.dart' as _i15;
@@ -104,8 +106,11 @@ class AppRouter extends _i9.RootStackRouter {
           routeData: routeData, child: const _i14.ConnectProfileScreen());
     },
     CommentScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<CommentScreenRouterArgs>();
       return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i15.CommentScreen());
+          routeData: routeData,
+          child: _i15.CommentScreen(
+              key: args.key, journalModel: args.journalModel));
     },
     MyProfileScreen.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
@@ -220,7 +225,7 @@ class PhoneAuthScreenRouter extends _i9.PageRouteInfo<void> {
 /// generated route for [_i5.OTPScreen]
 class OTPScreenRouter extends _i9.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i20.Key? key, required String phoneNo, required String verificationId})
+      {_i21.Key? key, required String phoneNo, required String verificationId})
       : super(name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -233,7 +238,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String phoneNo;
 
@@ -313,10 +318,22 @@ class ConnectScreenRouter extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for [_i15.CommentScreen]
-class CommentScreenRouter extends _i9.PageRouteInfo<void> {
-  const CommentScreenRouter() : super(name, path: 'CommentScreen');
+class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
+  CommentScreenRouter({_i21.Key? key, required _i22.JournalModel? journalModel})
+      : super(name,
+            path: 'CommentScreen',
+            args:
+                CommentScreenRouterArgs(key: key, journalModel: journalModel));
 
   static const String name = 'CommentScreenRouter';
+}
+
+class CommentScreenRouterArgs {
+  const CommentScreenRouterArgs({this.key, required this.journalModel});
+
+  final _i21.Key? key;
+
+  final _i22.JournalModel? journalModel;
 }
 
 /// generated route for [_i16.MyProfileScreen]

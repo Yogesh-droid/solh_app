@@ -15,16 +15,18 @@ class JournalsBloc {
 
   Future<List<JournalModel?>> _fetchDetailsFirstTime() async {
     print("getting journals for the first time...");
+    _currentPage = 1;
     try {
-      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
-          "${APIConstants.aws}/api/get-journals");
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpGetRequestWithToken(
+              "${APIConstants.aws}/api/get-journals");
       // print("api response of journals: " +
       //     apiResponse["body"]["journals"].toString());
       List<JournalModel> _journals = <JournalModel>[];
-      print("total pages: " + apiResponse["body"]["totalPages"].toString());
-      _endPageLimit = apiResponse["body"]["totalPages"];
+      print("total pages: " + apiResponse["totalPages"].toString());
+      _endPageLimit = apiResponse["totalPages"];
       print("Number of pages: $_endPageLimit");
-      for (var journal in apiResponse["body"]["journals"]) {
+      for (var journal in apiResponse["journals"]) {
         _journals.add(JournalModel.fromJson(journal));
       }
       return _journals;
@@ -36,11 +38,12 @@ class JournalsBloc {
   Future<List<JournalModel?>> _fetchDetailsNextPage() async {
     print("getting journals for the next page...");
     try {
-      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
-          "${APIConstants.aws}/api/get-journals?page=$_currentPage");
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpGetRequestWithToken(
+              "${APIConstants.aws}/api/get-journals?page=$_currentPage");
 
       List<JournalModel> _journals = <JournalModel>[];
-      for (var journal in apiResponse["body"]["journals"]) {
+      for (var journal in apiResponse["journals"]) {
         _journals.add(JournalModel.fromJson(journal));
       }
       return _journals;
@@ -64,7 +67,7 @@ class JournalsBloc {
     print("fetching next page journals.............");
     _currentPage++;
 
-    if (_currentPage < _endPageLimit) {
+    if (_currentPage <= _endPageLimit) {
       await _fetchDetailsNextPage().then((journals) {
         _journalsList.addAll(journals);
         return _journalController.add(_journalsList);

@@ -4,7 +4,7 @@ class JournalUserModel {
   bool isSolhAdviser;
   bool isSolhCounselor;
   String name;
-
+  // String profilePictureUrl;
   // String username;
   // String uid;
 

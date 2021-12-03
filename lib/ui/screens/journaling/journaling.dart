@@ -372,7 +372,7 @@ class _JournalingState extends State<Journaling> {
                         }),
                   ),
                   if (_fetchingMore) Center(child: CircularProgressIndicator()),
-                  SizedBox(height: 80),
+                  SizedBox(height: 50),
                 ],
               ),
             ),
