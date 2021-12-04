@@ -17,7 +17,10 @@
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
+        <action android:name="android.intent.action.DIAL" />
+        <data android:scheme="tel" />
       </intent-filter>
+      
     </activity>
     <!-- Image Cropper -->
     <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

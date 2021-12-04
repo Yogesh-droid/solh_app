@@ -1,5 +1,4 @@
 class DoctorModel {
-  String id;
   String organisation;
   String name;
   String mobile;
@@ -12,7 +11,7 @@ class DoctorModel {
   String abbrevations;
 
   DoctorModel(
-      {required this.id,
+      {
       required this.organisation,
       required this.name,
       required this.mobile,
@@ -26,7 +25,6 @@ class DoctorModel {
 
   factory DoctorModel.fromJson(Map<String, dynamic> doctorJson) {
     return DoctorModel(
-        id: doctorJson["_id"],
         organisation: doctorJson["organisation"],
         name: doctorJson["name"],
         mobile: doctorJson["mobile"],

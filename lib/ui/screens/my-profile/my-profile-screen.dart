@@ -37,7 +37,7 @@ class MyProfileScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    if (FirebaseAuth.instance.currentUser != null)
+                    if (FirebaseAuth.instance.currentUser == null)
                       Center(
                         child: SignInButton(),
                       )
@@ -57,7 +57,7 @@ class MyProfileScreen extends StatelessWidget {
                 );
               if (snapshot.hasError)
                 Container(child: Text(snapshot.error.toString()));
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }),
       ),
     );
@@ -76,13 +76,13 @@ class ProfileMenu extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          ProfileMenuTile(
-            title: "Posts",
-            onPressed: () {
-              AutoRouter.of(context).push(PostScreenRouter());
-            },
-            svgIconPath: "assets/icons/profile/posts.svg",
-          ),
+          // ProfileMenuTile(
+          //   title: "Posts",
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(PostScreenRouter());
+          //   },
+          //   svgIconPath: "assets/icons/profile/posts.svg",
+          // ),
           ProfileMenuTile(
             title: "Settings",
             onPressed: () {
@@ -236,61 +236,61 @@ class ProfileContainer extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            ProfileDetailsButtonRow(
-              connections: _userModel!.connections,
-              // likes: _userModel!.likes,
-              likes: 0,
-              // posts: _userModel!.posts,
-              posts: 0,
-              reviews: _userModel!.reviews,
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  left: 6.w, right: 6.w, top: 1.8.h, bottom: 0.7.h),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: SolhGreenBorderButton(
-                          child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        CupertinoIcons.pencil,
-                        color: SolhColors.green,
-                        size: 16,
-                      ),
-                      SizedBox(
-                        width: 1.w,
-                      ),
-                      Text(
-                        "Edit",
-                        style: SolhTextStyles.GreenBorderButtonText,
-                      ),
-                    ],
-                  ))),
-                  SizedBox(
-                    width: 4.w,
-                  ),
-                  Expanded(
-                      child: SolhGreenBorderButton(
-                          child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Anonymous",
-                        style: SolhTextStyles.GreenBorderButtonText,
-                      ),
-                      SizedBox(width: 1.w),
-                      Icon(
-                        CupertinoIcons.arrow_right,
-                        color: SolhColors.green,
-                        size: 16,
-                      )
-                    ],
-                  )))
-                ],
-              ),
-            ),
+            // ProfileDetailsButtonRow(
+            //   connections: _userModel!.connections,
+            //   // likes: _userModel!.likes,
+            //   likes: 0,
+            //   // posts: _userModel!.posts,
+            //   posts: 0,
+            //   reviews: _userModel!.reviews,
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.only(
+            //       left: 6.w, right: 6.w, top: 1.8.h, bottom: 0.7.h),
+            //   child: Row(
+            //     children: [
+            //       Expanded(
+            //           child: SolhGreenBorderButton(
+            //               child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Icon(
+            //             CupertinoIcons.pencil,
+            //             color: SolhColors.green,
+            //             size: 16,
+            //           ),
+            //           SizedBox(
+            //             width: 1.w,
+            //           ),
+            //           Text(
+            //             "Edit",
+            //             style: SolhTextStyles.GreenBorderButtonText,
+            //           ),
+            //         ],
+            //       ))),
+            //       SizedBox(
+            //         width: 4.w,
+            //       ),
+            //       Expanded(
+            //           child: SolhGreenBorderButton(
+            //               child: Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text(
+            //             "Anonymous",
+            //             style: SolhTextStyles.GreenBorderButtonText,
+            //           ),
+            //           SizedBox(width: 1.w),
+            //           Icon(
+            //             CupertinoIcons.arrow_right,
+            //             color: SolhColors.green,
+            //             size: 16,
+            //           )
+            //         ],
+            //       )))
+            //     ],
+            //   ),
+            // ),
           ],
         ));
   }

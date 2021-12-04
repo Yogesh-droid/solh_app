@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/doctors-bloc.dart';
 import 'package:solh/model/doctor.dart';
@@ -7,13 +8,58 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ViewAllScreen extends StatelessWidget {
+class ViewAllScreen extends StatefulWidget {
   const ViewAllScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<ViewAllScreen> createState() => _ViewAllScreenState();
+}
+
+class _ViewAllScreenState extends State<ViewAllScreen> {
+
+  bool _fetchingMore=false;
+
+void initState() {
+    super.initState();
+    _doctorsScrollController = ScrollController();
+    _refreshController = RefreshController();
     doctorsBlocNetwork.getDoctorsSnapshot();
+
+    _doctorsScrollController.addListener(() async {
+      // if (_journalsScrollController.position.pixels ==
+      //         _journalsScrollController.position.minScrollExtent &&
+      //     _refreshController.isRefresh) {
+      //   print("refreshing");
+      // }
+      if (_doctorsScrollController.position.pixels ==
+              _doctorsScrollController.position.maxScrollExtent &&
+          !_fetchingMore) {
+        setState(() {
+          _fetchingMore = true;
+        });
+        await doctorsBlocNetwork.getNextPageDoctorsSnapshot();
+        print("Reached at end");
+        setState(() {
+          _fetchingMore = false;
+        });
+      }
+    });
+  }
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await doctorsBlocNetwork.getDoctorsSnapshot();
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  late ScrollController _doctorsScrollController;
+  late RefreshController _refreshController;
+
+  @override
+  Widget build(BuildContext context) {
     return StreamBuilder<List<DoctorModel?>>(
         stream: doctorsBlocNetwork.doctorsStateStream,
         builder: (context, doctorsSnapshot) {
@@ -29,7 +75,7 @@ class ViewAllScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                       Text(
-                        "${doctorsSnapshot.requireData.length} Consultants",
+                        "191 Consultants",
                         style:
                             TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
                       )
@@ -37,15 +83,29 @@ class ViewAllScreen extends StatelessWidget {
                   ),
                   isLandingScreen: false,
                 ),
-                body: ListView.builder(
-                  itemCount: doctorsSnapshot.requireData.length,
-                  padding: EdgeInsets.symmetric(vertical: 1.h),
-                  itemBuilder: (_, index) =>
-                      doctorsSnapshot.requireData[index]!.bio != ""
-                          ? ConsultantsTile(
-                              doctorModel: doctorsSnapshot.requireData[index]!,
-                            )
-                          : Container(),
+                body: SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          // physics: NeverScrollableScrollPhysics(),
+                          controller: _doctorsScrollController,
+                          itemCount: doctorsSnapshot.requireData.length,
+                          padding: EdgeInsets.symmetric(vertical: 1.h),
+                          itemBuilder: (_, index) =>
+                              doctorsSnapshot.requireData[index]!.bio != ""
+                                  ? ConsultantsTile(
+                                      doctorModel: doctorsSnapshot.requireData[index]!,
+                                    )
+                                  : Container(),
+                        ),
+                      ),
+                      if(_fetchingMore)
+                      Center(child: CircularProgressIndicator(),)
+                    ],
+                  ),
                 ));
           return Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -198,9 +258,12 @@ class ConsultantsTile extends StatelessWidget {
                           style: TextStyle(color: SolhColors.green),
                         ),
                         SolhGreenButton(
-                            height: 4.8.h,
+                            height: 4.5.h,
                             width: 40.w,
-                            child: Text("Book Appointment"))
+                            child: Text("Book Appointment"),onPressed: (){
+
+                            launch("tel://${_doctorModel.mobile}");
+                            },)
                       ],
                     )
                   ],
