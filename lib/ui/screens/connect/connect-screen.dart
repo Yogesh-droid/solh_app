@@ -190,6 +190,8 @@ class _TabViewState extends State<TabView> {
                                   description: "tehre",
                                   mediaUrl: "",
                                   postedBy: JournalUserModel(
+                                    profilePictureUrl:
+                                        "https://solh.s3.amazonaws.com/user/profile/1638601611065",
                                     name: "Geetansh",
                                     isSolhAdviser: false,
                                     isSolhCounselor: true,

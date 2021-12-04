@@ -1,31 +1,31 @@
 import 'package:solh/constants/api.dart';
+import 'package:solh/model/doctor.dart';
 import 'package:solh/model/journal.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:solh/services/network/network.dart';
 
-class JournalsBloc {
-  final _journalController = PublishSubject<List<JournalModel?>>();
+class DoctorsBloc {
+  final _doctorController = PublishSubject<List<DoctorModel?>>();
 
-  List<JournalModel?> _journalsList = <JournalModel?>[];
+  List<DoctorModel?> _doctorsList = <DoctorModel?>[];
   int _currentPage = 1;
   int _endPageLimit = 1;
 
-  Stream<List<JournalModel?>> get journalsStateStream =>
-      _journalController.stream;
+  Stream<List<DoctorModel?>> get doctorsStateStream => _doctorController.stream;
 
   Future<List<JournalModel?>> _fetchDetailsFirstTime() async {
-    print("getting journals for the first time...");
+    print("getting doctors for the first time...");
     _currentPage = 1;
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.aws}/api/get-journals");
+              "${APIConstants.aws}/api/doctors");
 
       List<JournalModel> _journals = <JournalModel>[];
       print("total pages: " + apiResponse["totalPages"].toString());
       _endPageLimit = apiResponse["totalPages"];
       print("Number of pages: $_endPageLimit");
-      for (var journal in apiResponse["journals"]) {
+      for (var journal in apiResponse["doctorsList"]) {
         _journals.add(JournalModel.fromJson(journal));
       }
       return _journals;
@@ -34,32 +34,32 @@ class JournalsBloc {
     }
   }
 
-  Future<List<JournalModel?>> _fetchDetailsNextPage() async {
+  Future<List<DoctorModel?>> _fetchDetailsNextPage() async {
     print("getting journals for the next page...");
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.aws}/api/get-journals?page=$_currentPage");
+              "${APIConstants.aws}/api/doctors?page=$_currentPage");
 
-      List<JournalModel> _journals = <JournalModel>[];
-      for (var journal in apiResponse["journals"]) {
-        _journals.add(JournalModel.fromJson(journal));
+      List<DoctorModel> _doctors = <DoctorModel>[];
+      for (var journal in apiResponse["doctorsList"]) {
+        _doctors.add(DoctorModel.fromJson(journal));
       }
-      return _journals;
+      return _doctors;
     } catch (error) {
       _currentPage--;
       throw error;
     }
   }
 
-  Future getJournalsSnapshot() async {
-    _journalsList = [];
+  Future getDoctorsSnapshot() async {
+    _doctorsList = [];
     int _currentPage = 1;
     await _fetchDetailsFirstTime().then((journals) {
-      _journalsList.addAll(journals);
-      return _journalController.add(_journalsList);
+      _doctorsList.addAll(_doctorsList);
+      return _doctorController.add(_doctorsList);
     }).onError((error, stackTrace) =>
-        _journalController.sink.addError(error.toString()));
+        _doctorController.sink.addError(error.toString()));
   }
 
   Future getNextPageJournalsSnapshot() async {
@@ -68,14 +68,14 @@ class JournalsBloc {
 
     if (_currentPage <= _endPageLimit) {
       await _fetchDetailsNextPage().then((journals) {
-        _journalsList.addAll(journals);
-        return _journalController.add(_journalsList);
+        _doctorsList.addAll(journals);
+        return _doctorController.add(_doctorsList);
       }).onError((error, stackTrace) =>
-          _journalController.sink.addError(error.toString()));
+          _doctorController.sink.addError(error.toString()));
     } else {
       print(" end of Page  DB");
     }
   }
 }
 
-JournalsBloc journalsBloc = JournalsBloc();
+DoctorsBloc doctorsBlocNetwork = DoctorsBloc();

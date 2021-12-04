@@ -2,6 +2,7 @@ class UserModel {
   bool isSolhExpert;
   bool isSolhAdviser;
   bool isSolhCounselor;
+  String profilePictureUrl;
   // String id;
   String mobile;
   String uid;
@@ -14,7 +15,8 @@ class UserModel {
   int reviews;
 
   UserModel(
-      {required this.isSolhAdviser,
+      {required this.profilePictureUrl,
+      required this.isSolhAdviser,
       required this.isSolhCounselor,
       required this.isSolhExpert,
       // required this.id,
@@ -32,6 +34,7 @@ class UserModel {
     return UserModel(
         // likes: userJson["likes"],
         // posts: userJson["posts"],
+        profilePictureUrl: userJson["profilePicture"],
         connections: userJson["connections"],
         reviews: userJson["reviews"],
         isSolhExpert: userJson['isSolhExpert'],

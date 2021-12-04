@@ -65,27 +65,42 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Container(
+            //   padding: EdgeInsets.symmetric(vertical: 2.h),
+            //   alignment: Alignment.center,
+            //   child: Container(
+            //     width: MediaQuery.of(context).size.width / 1.1,
+            //     decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(25.0),
+            //         border: Border.all(color: SolhColors.green)),
+            //     padding: EdgeInsets.only(left: 3.w),
+            //     child: TextField(
+            //         decoration: InputDecoration(
+            //             suffixIcon: Icon(
+            //               Icons.search,
+            //               color: SolhColors.green,
+            //             ),
+            //             border: InputBorder.none,
+            //             hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+            //             hintText: "Anxiety, Corporate Stress, Family Issues")),
+            //   ),
+            // ),
+            // GetHelpDivider(),
+
+            GetHelpCategory(
+              title: "Top Consultants",
+            ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 2.h),
-              alignment: Alignment.center,
-              child: Container(
-                width: MediaQuery.of(context).size.width / 1.1,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25.0),
-                    border: Border.all(color: SolhColors.green)),
-                padding: EdgeInsets.only(left: 3.w),
-                child: TextField(
-                    decoration: InputDecoration(
-                        suffixIcon: Icon(
-                          Icons.search,
-                          color: SolhColors.green,
-                        ),
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-                        hintText: "Anxiety, Corporate Stress, Family Issues")),
-              ),
+              height: 15.h,
+              margin: EdgeInsets.only(bottom: 2.h),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  itemBuilder: (_, index) => TopConsultantsTile()),
             ),
             GetHelpDivider(),
+
             GetHelpCategory(
               title: "Search by issues",
             ),
@@ -117,6 +132,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     ),
                   ],
                 )),
+
             GetHelpDivider(),
             GetHelpCategory(
               title: "Search by speciality",
@@ -166,171 +182,159 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               ),
             ),
             GetHelpDivider(),
-            GetHelpCategory(
-              title: "Top Consultants",
-            ),
-            Container(
-              height: 15.h,
-              margin: EdgeInsets.only(bottom: 2.h),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, index) => TopConsultantsTile()),
-            ),
-            GetHelpDivider(),
-            GetHelpCategory(
-              title: "Instantly Available",
-            ),
-            Container(
-              height: 15.h,
-              margin: EdgeInsets.only(bottom: 2.h),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, index) => TopConsultantsTile()),
-            ),
-            GetHelpDivider(),
-            GetHelpCategory(
-              title: "Solh Volunteers",
-            ),
-            Container(
-              height: 38.h,
-              padding: EdgeInsets.symmetric(horizontal: 3.5.w),
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: 8,
-                  itemBuilder: (_, index) => Container(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 1.w),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xFFEFEFEF)),
-                              borderRadius: BorderRadius.circular(8)),
-                          height: 25.h,
-                          width: 42.w,
-                          child: Column(
-                            children: [
-                              ProfilePictureHeader(),
-                              Text("John Conor"),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Solh Expert",
-                                    style: SolhTextStyles.JournalingBadgeText,
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width /
-                                          80,
-                                    ),
-                                    child: Icon(
-                                      Icons.verified,
-                                      color: SolhColors.green,
-                                      size: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 1.h, horizontal: 2.5.w),
-                                child: Text(
-                                    "Bio/Self experiences/Qoate/When the pain passes, you eventually see how much...",
-                                    style: SolhTextStyles.SOSGreyText.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300)),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 0.5.h, horizontal: 4.w),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/profile/connections.svg",
-                                          height: 12,
-                                          width: 12,
-                                        ),
-                                        SizedBox(width: 1.6.w),
-                                        Text(
-                                          "45",
-                                          style: SolhTextStyles
-                                                  .GreenBorderButtonText
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/profile/connections.svg",
-                                          height: 12,
-                                          width: 12,
-                                        ),
-                                        SizedBox(width: 1.6.w),
-                                        Text(
-                                          "45",
-                                          style: SolhTextStyles
-                                                  .GreenBorderButtonText
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/profile/connections.svg",
-                                          height: 12,
-                                          width: 12,
-                                        ),
-                                        SizedBox(width: 1.6.w),
-                                        Text(
-                                          "45",
-                                          style: SolhTextStyles
-                                                  .GreenBorderButtonText
-                                              .copyWith(fontSize: 12),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 2.5.h,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 2.w),
-                                child: SolhGreenButton(
-                                    height: 4.h,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SvgPicture.asset(
-                                          "assets/icons/profile/connections.svg",
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 2.w,
-                                        ),
-                                        Text("Connect"),
-                                      ],
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                      )),
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
+
+            // GetHelpCategory(
+            //   title: "Instantly Available",
+            // ),
+            // Container(
+            //   height: 15.h,
+            //   margin: EdgeInsets.only(bottom: 2.h),
+            //   child: ListView.builder(
+            //       shrinkWrap: true,
+            //       scrollDirection: Axis.horizontal,
+            //       itemCount: 6,
+            //       itemBuilder: (_, index) => TopConsultantsTile()),
+            // ),
+            // GetHelpDivider(),
+            // GetHelpCategory(
+            //   title: "Solh Volunteers",
+            // ),
+            // Container(
+            //   height: 38.h,
+            //   padding: EdgeInsets.symmetric(horizontal: 3.5.w),
+            //   child: ListView.builder(
+            //       scrollDirection: Axis.horizontal,
+            //       shrinkWrap: true,
+            //       itemCount: 8,
+            //       itemBuilder: (_, index) => Container(
+            //             child: Container(
+            //               margin: EdgeInsets.symmetric(horizontal: 1.w),
+            //               decoration: BoxDecoration(
+            //                   border: Border.all(color: Color(0xFFEFEFEF)),
+            //                   borderRadius: BorderRadius.circular(8)),
+            //               height: 25.h,
+            //               width: 42.w,
+            //               child: Column(
+            //                 children: [
+            //                   ProfilePictureHeader(),
+            //                   Text("John Conor"),
+            //                   Row(
+            //                     mainAxisAlignment: MainAxisAlignment.center,
+            //                     children: [
+            //                       Text(
+            //                         "Solh Expert",
+            //                         style: SolhTextStyles.JournalingBadgeText,
+            //                       ),
+            //                       Padding(
+            //                         padding: EdgeInsets.only(
+            //                           left: MediaQuery.of(context).size.width /
+            //                               80,
+            //                         ),
+            //                         child: Icon(
+            //                           Icons.verified,
+            //                           color: SolhColors.green,
+            //                           size: 14,
+            //                         ),
+            //                       ),
+            //                     ],
+            //                   ),
+            //                   Padding(
+            //                     padding: EdgeInsets.symmetric(
+            //                         vertical: 1.h, horizontal: 2.5.w),
+            //                     child: Text(
+            //                         "Bio/Self experiences/Qoate/When the pain passes, you eventually see how much...",
+            //                         style: SolhTextStyles.SOSGreyText.copyWith(
+            //                             fontSize: 12,
+            //                             fontWeight: FontWeight.w300)),
+            //                   ),
+            //                   Padding(
+            //                     padding: EdgeInsets.symmetric(
+            //                         vertical: 0.5.h, horizontal: 4.w),
+            //                     child: Row(
+            //                       mainAxisAlignment:
+            //                           MainAxisAlignment.spaceAround,
+            //                       children: [
+            //                         Row(
+            //                           children: [
+            //                             SvgPicture.asset(
+            //                               "assets/icons/profile/connections.svg",
+            //                               height: 12,
+            //                               width: 12,
+            //                             ),
+            //                             SizedBox(width: 1.6.w),
+            //                             Text(
+            //                               "45",
+            //                               style: SolhTextStyles
+            //                                       .GreenBorderButtonText
+            //                                   .copyWith(fontSize: 12),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                         Row(
+            //                           children: [
+            //                             SvgPicture.asset(
+            //                               "assets/icons/profile/connections.svg",
+            //                               height: 12,
+            //                               width: 12,
+            //                             ),
+            //                             SizedBox(width: 1.6.w),
+            //                             Text(
+            //                               "45",
+            //                               style: SolhTextStyles
+            //                                       .GreenBorderButtonText
+            //                                   .copyWith(fontSize: 12),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                         Row(
+            //                           children: [
+            //                             SvgPicture.asset(
+            //                               "assets/icons/profile/connections.svg",
+            //                               height: 12,
+            //                               width: 12,
+            //                             ),
+            //                             SizedBox(width: 1.6.w),
+            //                             Text(
+            //                               "45",
+            //                               style: SolhTextStyles
+            //                                       .GreenBorderButtonText
+            //                                   .copyWith(fontSize: 12),
+            //                             ),
+            //                           ],
+            //                         ),
+            //                       ],
+            //                     ),
+            //                   ),
+            //                   SizedBox(
+            //                     height: 2.5.h,
+            //                   ),
+            //                   Padding(
+            //                     padding: EdgeInsets.symmetric(horizontal: 2.w),
+            //                     child: SolhGreenButton(
+            //                         height: 4.h,
+            //                         child: Row(
+            //                           mainAxisAlignment:
+            //                               MainAxisAlignment.center,
+            //                           children: [
+            //                             SvgPicture.asset(
+            //                               "assets/icons/profile/connections.svg",
+            //                               color: Colors.white,
+            //                             ),
+            //                             SizedBox(
+            //                               width: 2.w,
+            //                             ),
+            //                             Text("Connect"),
+            //                           ],
+            //                         )),
+            //                   )
+            //                 ],
+            //               ),
+            //             ),
+            //           )),
+            // ),
+            // SizedBox(
+            //   height: 5.h,
+            // ),
           ],
         ),
       ),

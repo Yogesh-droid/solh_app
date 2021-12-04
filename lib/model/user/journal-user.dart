@@ -4,6 +4,7 @@ class JournalUserModel {
   bool isSolhAdviser;
   bool isSolhCounselor;
   String name;
+  String profilePictureUrl;
   // String profilePictureUrl;
   // String username;
   // String uid;
@@ -15,11 +16,13 @@ class JournalUserModel {
     required this.isSolhExpert,
     required this.isSolhAdviser,
     required this.isSolhCounselor,
+    required this.profilePictureUrl,
     // required this.uid,
   });
 
   factory JournalUserModel.fromJson(Map<String, dynamic> journalUser) {
     return JournalUserModel(
+      profilePictureUrl: journalUser["profilePicture"],
       name: journalUser["name"],
       isSolhAdviser: journalUser["isSolhAdviser"],
       isSolhCounselor: journalUser["isSolhCounselor"],

@@ -7,7 +7,6 @@ import 'package:solh/services/shared-prefrences/session-cookie.dart';
 class Network {
   static const String _sessionCookie =
       "eyJhbGciOiJSUzI1NiIsImtpZCI6InRCME0yQSJ9.eyJpc3MiOiJodHRwczovL3Nlc3Npb24uZmlyZWJhc2UuZ29vZ2xlLmNvbS9zb2xoLWZsdXR0ZXIiLCJhdWQiOiJzb2xoLWZsdXR0ZXIiLCJhdXRoX3RpbWUiOjE2Mzg1MTcyNzEsInVzZXJfaWQiOiJlWlpVY2JJQ1hKaGppS2RMekZ1QzBRNXI2RGQyIiwic3ViIjoiZVpaVWNiSUNYSmhqaUtkTHpGdUMwUTVyNkRkMiIsImlhdCI6MTYzODUxNzQzNywiZXhwIjoxNjM5NzI3MDM3LCJwaG9uZV9udW1iZXIiOiIrOTE4NDQ3ODM4MzI3IiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrOTE4NDQ3ODM4MzI3Il19LCJzaWduX2luX3Byb3ZpZGVyIjoicGhvbmUifX0.nz-NkdokPLnhHExm5an1pYEpaF7AxDk1Q1Ad3prHXWRr06EST-aX0PbX07p-T1daUVKoMAj-mGhT3nyE5cebl-WPKD3ORYXpaBIhJYxtvjOY184d7MYNtRJiMMT1sAvevZfvYwt6QsIuPvi-eKK89RKK-b9XAd-SAUkKEmcSIz9D-Gs4rR00NaKilOKg2JWNgcLHRAeM87KSMkahL9jMq1pKZRXtiV-ytd-ORPFN4QgKARc4UYjSaELeUgZlQgUFQocTjkvJSN9goHlfoOtKqC40btrLBsrRsC6XgiKJ0z0S8DoWbittLuXp1EYSxnlXNrSlZvEMkDK89AR3BSXbOw";
-
   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
     try {
       Uri _uri = Uri.parse(url);
@@ -17,7 +16,7 @@ class Network {
         print("Status Code: " + apiResponse.statusCode.toString());
         throw "server-error";
       } else {
-        return jsonDecode(apiResponse.body);
+        return jsonDecode(apiResponse.body)["body"];
       }
     } on SocketException {
       // internetConnectivityBloc.noInternet();

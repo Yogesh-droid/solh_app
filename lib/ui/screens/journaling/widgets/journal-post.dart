@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
@@ -45,8 +46,9 @@ class _JournalTileState extends State<JournalTile> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         CircleAvatar(
-                          child: Image.asset(
-                              "assets/images/journal-demo/post-user-profile-picture.png"),
+                          backgroundImage: CachedNetworkImageProvider(
+                            widget._journalModel!.postedBy.profilePictureUrl,
+                          ),
                           backgroundColor: SolhColors.pink224,
                         ),
                         Expanded(

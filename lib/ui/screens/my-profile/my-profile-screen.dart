@@ -214,8 +214,8 @@ class ProfileContainer extends StatelessWidget {
               radius: 50,
               child: CircleAvatar(
                 radius: 49,
-                backgroundImage: CachedNetworkImageProvider(
-                    "https://deadline.com/wp-content/uploads/2018/07/josephine-langford-photo.jpg"),
+                backgroundImage:
+                    CachedNetworkImageProvider(_userModel!.profilePictureUrl),
               ),
             ),
             SizedBox(height: 1.5.h),

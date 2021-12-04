@@ -76,7 +76,7 @@ class _SideDrawerState extends State<SideDrawer> {
                             child: CircleAvatar(
                               radius: 6.8.w,
                               backgroundImage: CachedNetworkImageProvider(
-                                "https://wallpaperaccess.com/full/2213424.jpg",
+                                userSnapshot.data!.profilePictureUrl,
                               ),
                             ),
                           ),

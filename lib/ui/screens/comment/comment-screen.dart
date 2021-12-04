@@ -26,117 +26,120 @@ class CommentScreen extends StatelessWidget {
           ),
           isLandingScreen: false,
         ),
-        body: Container(
-          // height: 400,
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
-                child: Column(
-                  children: [
-                    PostForComment(
-                      journalModel: _journalModel,
-                    ),
-                    CommentBoxWidget()
-                  ],
-                ),
-              ),
-              Align(
-                  alignment: Alignment.bottomCenter,
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 4.w),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(color: SolhColors.green)),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                focusNode: _commentFocusnode,
-                                autofocus: true,
-                                decoration: InputDecoration(
-                                    hintText: "Comment",
-                                    border: InputBorder.none),
-                                minLines: 1,
-                                maxLines: 6,
-                              ),
-                            ),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.send))
-                          ],
-                        ),
+                      PostForComment(
+                        journalModel: _journalModel,
                       ),
-                      // Container(
-                      //   padding: EdgeInsets.symmetric(
-                      //     horizontal: 6.w,
-                      //   ),
-                      //   alignment: Alignment.centerRight,
-                      //   height: 6.h,
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.end,
-                      //     children: [
-                      //       // SolhGreenBorderButton(
-                      //       //   child: Text(
-                      //       //     "Geetansh",
-                      //       //     style: SolhTextStyles.GreenBorderButtonText,
-                      //       //   ),
-                      //       //   width: 25.w,
-                      //       //   height: 3.8.h,
-                      //       // ),
-                      //       // SolhGreenBorderButton(
-                      //       //   child: Text(
-                      //       //     "Annonymous",
-                      //       //     style: SolhTextStyles.GreenBorderButtonText,
-                      //       //   ),
-                      //       //   width: 25.w,
-                      //       //   height: 3.8.h,
-                      //       // ),
-                      //       Column(
-                      //         mainAxisAlignment: MainAxisAlignment.center,
-                      //         crossAxisAlignment: CrossAxisAlignment.center,
-                      //         children: [
-                      //           Padding(
-                      //             padding: const EdgeInsets.only(left: 10.0),
-                      //             child: SvgPicture.asset(
-                      //               "assets/icons/comment-screen/interchange.svg",
-                      //               width: 3.w,
-                      //             ),
-                      //           ),
-                      //           SizedBox(
-                      //             height: 0.4.h,
-                      //           ),
-                      //           Stack(
-                      //             alignment: Alignment.center,
-                      //             children: [
-                      //               Padding(
-                      //                 padding:
-                      //                     const EdgeInsets.only(left: 20.0),
-                      //                 child: CircleAvatar(
-                      //                   backgroundColor: SolhColors.grey,
-                      //                   radius: 10,
-                      //                 ),
-                      //               ),
-                      //               Padding(
-                      //                 padding:
-                      //                     const EdgeInsets.only(right: 1.0),
-                      //                 child: CircleAvatar(
-                      //                   radius: 12,
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           )
-                      //         ],
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
+                      CommentBoxWidget()
                     ],
-                  ))
-            ],
+                  ),
+                ),
+                Positioned(
+                    bottom: 50.h,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 4.w),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(color: SolhColors.green)),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  focusNode: _commentFocusnode,
+                                  autofocus: true,
+                                  decoration: InputDecoration(
+                                      hintText: "Comment",
+                                      border: InputBorder.none),
+                                  minLines: 1,
+                                  maxLines: 6,
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {}, icon: Icon(Icons.send))
+                            ],
+                          ),
+                        ),
+                        // Container(
+                        //   padding: EdgeInsets.symmetric(
+                        //     horizontal: 6.w,
+                        //   ),
+                        //   alignment: Alignment.centerRight,
+                        //   height: 6.h,
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.end,
+                        //     children: [
+                        //       // SolhGreenBorderButton(
+                        //       //   child: Text(
+                        //       //     "Geetansh",
+                        //       //     style: SolhTextStyles.GreenBorderButtonText,
+                        //       //   ),
+                        //       //   width: 25.w,
+                        //       //   height: 3.8.h,
+                        //       // ),
+                        //       // SolhGreenBorderButton(
+                        //       //   child: Text(
+                        //       //     "Annonymous",
+                        //       //     style: SolhTextStyles.GreenBorderButtonText,
+                        //       //   ),
+                        //       //   width: 25.w,
+                        //       //   height: 3.8.h,
+                        //       // ),
+                        //       Column(
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.only(left: 10.0),
+                        //             child: SvgPicture.asset(
+                        //               "assets/icons/comment-screen/interchange.svg",
+                        //               width: 3.w,
+                        //             ),
+                        //           ),
+                        //           SizedBox(
+                        //             height: 0.4.h,
+                        //           ),
+                        //           Stack(
+                        //             alignment: Alignment.center,
+                        //             children: [
+                        //               Padding(
+                        //                 padding:
+                        //                     const EdgeInsets.only(left: 20.0),
+                        //                 child: CircleAvatar(
+                        //                   backgroundColor: SolhColors.grey,
+                        //                   radius: 10,
+                        //                 ),
+                        //               ),
+                        //               Padding(
+                        //                 padding:
+                        //                     const EdgeInsets.only(right: 1.0),
+                        //                 child: CircleAvatar(
+                        //                   radius: 12,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           )
+                        //         ],
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                      ],
+                    ))
+              ],
+            ),
           ),
         ));
   }
