@@ -18,10 +18,9 @@ class ViewAllScreen extends StatefulWidget {
 }
 
 class _ViewAllScreenState extends State<ViewAllScreen> {
+  bool _fetchingMore = false;
 
-  bool _fetchingMore=false;
-
-void initState() {
+  void initState() {
     super.initState();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
@@ -97,13 +96,16 @@ void initState() {
                           itemBuilder: (_, index) =>
                               doctorsSnapshot.requireData[index]!.bio != ""
                                   ? ConsultantsTile(
-                                      doctorModel: doctorsSnapshot.requireData[index]!,
+                                      doctorModel:
+                                          doctorsSnapshot.requireData[index]!,
                                     )
                                   : Container(),
                         ),
                       ),
-                      if(_fetchingMore)
-                      Center(child: CircularProgressIndicator(),)
+                      if (_fetchingMore)
+                        Center(
+                          child: CircularProgressIndicator(),
+                        )
                     ],
                   ),
                 ));
@@ -253,17 +255,18 @@ class ConsultantsTile extends StatelessWidget {
                       // mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
-                          "View Profile",
-                          style: TextStyle(color: SolhColors.green),
-                        ),
+                        // Text(
+                        //   "View Profile",
+                        //   style: TextStyle(color: SolhColors.green),
+                        // ),
                         SolhGreenButton(
-                            height: 4.5.h,
-                            width: 40.w,
-                            child: Text("Book Appointment"),onPressed: (){
-
+                          height: 4.2.h,
+                          width: 40.w,
+                          child: Text("Book Appointment"),
+                          onPressed: () {
                             launch("tel://${_doctorModel.mobile}");
-                            },)
+                          },
+                        )
                       ],
                     )
                   ],

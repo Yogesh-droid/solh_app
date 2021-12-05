@@ -66,7 +66,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       // print(
                       //     "user signInMethod: ${value.credential!.signInMethod}");
                       // print("user token: ${value.credential!.token}");
-                      AutoRouter.of(context).push(CreatePostScreenRouter());
+                      AutoRouter.of(context).push(MasterScreenRouter());
 
                       // AutoRouter.of(context).push(MasterScreenRouter());
                     });

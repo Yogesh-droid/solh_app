@@ -405,32 +405,32 @@ class TopConsultantsTile extends StatelessWidget {
                         topLeft: Radius.circular(8),
                         bottomLeft: Radius.circular(8)),
                     child: Image.network(
-                      "http://www.lacartes.com/images/business/315028/683231/l/927753.jpg",
+                      "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  child: Container(
-                    height: 2.5.h,
-                    width: 25.w,
-                    color: Colors.white70,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          backgroundColor: Color(0xFFE1555A),
-                          radius: 1.4.w,
-                        ),
-                        SizedBox(
-                          width: 1.5.w,
-                        ),
-                        Text("Active")
-                      ],
-                    ),
-                  ),
-                )
+                // Positioned(
+                //   bottom: 0,
+                //   child: Container(
+                //     height: 2.5.h,
+                //     width: 25.w,
+                //     color: Colors.white70,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         CircleAvatar(
+                //           backgroundColor: Color(0xFFE1555A),
+                //           radius: 1.4.w,
+                //         ),
+                //         SizedBox(
+                //           width: 1.5.w,
+                //         ),
+                //         Text("Active")
+                //       ],
+                //     ),
+                //   ),
+                // )
               ],
             ),
             SizedBox(width: 2.w),

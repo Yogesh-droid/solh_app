@@ -172,7 +172,7 @@ class CommentBoxWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "John Conor",
+                        "Rhythmm Gwari",
                         style: TextStyle(color: Color(0xFF666666)),
                       ),
                       Text(
@@ -270,7 +270,7 @@ class BestCommentWidget extends StatelessWidget {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text("John Conor"), Text("2D ago")],
+                    children: [Text("Rhythmm Gwari"), Text("2D ago")],
                   ),
                 ],
               ),

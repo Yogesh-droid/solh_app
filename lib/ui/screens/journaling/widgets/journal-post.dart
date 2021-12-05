@@ -20,6 +20,8 @@ class JournalTile extends StatefulWidget {
 }
 
 class _JournalTileState extends State<JournalTile> {
+  bool _isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -139,27 +141,34 @@ class _JournalTileState extends State<JournalTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
-                        print("like post");
+                        setState(() {
+                          _isLiked = !_isLiked;
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 3.5,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SvgPicture.asset(
-                              "assets/icons/journaling/post-like.svg",
-                              width: 17,
-                              height: 17,
+                            Icon(
+                              _isLiked ? Icons.favorite : Icons.favorite_border,
                               color: SolhColors.green,
+                              size: 20,
                             ),
+                            // SvgPicture.asset(
+                            //   "assets/icons/journaling/post-like.svg",
+                            //   width: 17,
+                            //   height: 17,
+                            //   color: SolhColors.green,
+                            // ),
                             Padding(
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 40,
                               ),
                               child: Text(
-                                widget._journalModel!.likes.toString(),
+                                _isLiked ? '1' : '0',
                                 style: SolhTextStyles.GreenBorderButtonText,
                               ),
                             ),
@@ -187,7 +196,7 @@ class _JournalTileState extends State<JournalTile> {
                                 left: MediaQuery.of(context).size.width / 40,
                               ),
                               child: Text(
-                                widget._journalModel!.comments.toString(),
+                                '2',
                                 style: SolhTextStyles.GreenBorderButtonText,
                               ),
                             ),
