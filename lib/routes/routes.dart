@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
-import 'package:solh/phone-auth/otp-screen.dart';
-import 'package:solh/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -14,6 +12,8 @@ import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/my-profile/settings/settings.dart';
+import 'package:solh/ui/screens/phone-auth/otp-screen.dart';
+import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
@@ -112,6 +112,11 @@ import 'package:solh/ui/screens/sos/sos.dart';
     ),
     AutoRoute(
       path: "SetupSOS",
+      name: "SetupSOSScreenRouter",
+      page: SetupSOSScreen,
+    ),
+    AutoRoute(
+      path: "Profile",
       name: "SetupSOSScreenRouter",
       page: SetupSOSScreen,
     )
