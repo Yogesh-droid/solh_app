@@ -76,13 +76,13 @@ class ProfileMenu extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
-          // ProfileMenuTile(
-          //   title: "Posts",
-          //   onPressed: () {
-          //     AutoRouter.of(context).push(PostScreenRouter());
-          //   },
-          //   svgIconPath: "assets/icons/profile/posts.svg",
-          // ),
+          ProfileMenuTile(
+            title: "Posts",
+            onPressed: () {
+              AutoRouter.of(context).push(PostScreenRouter());
+            },
+            svgIconPath: "assets/icons/profile/posts.svg",
+          ),
           ProfileMenuTile(
             title: "Settings",
             onPressed: () {
@@ -90,21 +90,21 @@ class ProfileMenu extends StatelessWidget {
             },
             svgIconPath: "assets/icons/profile/settings.svg",
           ),
-          ProfileMenuTile(
-            title: "Medical Reports",
-            onPressed: () {},
-            svgIconPath: "assets/icons/profile/medical-reports.svg",
-          ),
-          ProfileMenuTile(
-            title: "Personal Issues & Medical Backgrounds",
-            onPressed: () {},
-            svgIconPath: "assets/icons/profile/info.svg",
-          ),
-          ProfileMenuTile(
-            title: "Badges & Rewards",
-            onPressed: () {},
-            svgIconPath: "assets/icons/profile/badges-reward.svg",
-          )
+          // ProfileMenuTile(
+          //   title: "Medical Reports",
+          //   onPressed: () {},
+          //   svgIconPath: "assets/icons/profile/medical-reports.svg",
+          // ),
+          // ProfileMenuTile(
+          //   title: "Personal Issues & Medical Backgrounds",
+          //   onPressed: () {},
+          //   svgIconPath: "assets/icons/profile/info.svg",
+          // ),
+          // ProfileMenuTile(
+          //   title: "Badges & Rewards",
+          //   onPressed: () {},
+          //   svgIconPath: "assets/icons/profile/badges-reward.svg",
+          // )
         ],
       ),
     );

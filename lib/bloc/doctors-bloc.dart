@@ -17,17 +17,16 @@ class DoctorsBloc {
     _currentPage = 1;
     try {
       Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequest(
-              "${APIConstants.aws}/api/doctors");
+          await Network.makeHttpGetRequest("${APIConstants.api}/api/doctors");
 
       List<DoctorModel> _doctors = <DoctorModel>[];
 
       print("total pages: " + apiResponse["totalPages"].toString());
 
       _endPageLimit = apiResponse["totalPages"];
-      
+
       print("Number of pages: $_endPageLimit");
-      
+
       for (var doctor in apiResponse["doctorsList"]) {
         print(doctor);
         _doctors.add(DoctorModel.fromJson(doctor));
@@ -41,9 +40,8 @@ class DoctorsBloc {
   Future<List<DoctorModel?>> _fetchDetailsNextPage() async {
     print("getting doctors for the next page...");
     try {
-      Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequest(
-              "${APIConstants.aws}/api/doctors?page=$_currentPage");
+      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
+          "${APIConstants.api}/api/doctors?page=$_currentPage");
 
       List<DoctorModel> _doctors = <DoctorModel>[];
       for (var doctor in apiResponse["doctorsList"]) {
@@ -58,7 +56,6 @@ class DoctorsBloc {
 
   Future getDoctorsSnapshot() async {
     _doctorsList = [];
-    int _currentPage = 1;
     await _fetchDetailsFirstTime().then((doctors) {
       _doctorsList.addAll(doctors);
       return _doctorController.add(_doctorsList);

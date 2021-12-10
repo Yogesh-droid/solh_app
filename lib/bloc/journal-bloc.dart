@@ -19,7 +19,7 @@ class JournalsBloc {
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.aws}/api/get-journals");
+              "${APIConstants.api}/api/get-journals");
 
       List<JournalModel> _journals = <JournalModel>[];
       print("total pages: " + apiResponse["totalPages"].toString());
@@ -39,7 +39,7 @@ class JournalsBloc {
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.aws}/api/get-journals?page=$_currentPage");
+              "${APIConstants.api}/api/get-journals?page=$_currentPage");
 
       List<JournalModel> _journals = <JournalModel>[];
       for (var journal in apiResponse["journals"]) {
@@ -54,7 +54,6 @@ class JournalsBloc {
 
   Future getJournalsSnapshot() async {
     _journalsList = [];
-    int _currentPage = 1;
     await _fetchDetailsFirstTime().then((journals) {
       _journalsList.addAll(journals);
       return _journalController.add(_journalsList);

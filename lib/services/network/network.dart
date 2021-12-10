@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:solh/constants/api.dart';
-import 'package:solh/services/shared-prefrences/session-cookie.dart';
 
 class Network {
   static const String _sessionCookie =
@@ -109,7 +108,7 @@ class Network {
       if (apiResponse.statusCode == 201) {
         return jsonDecode(apiResponse.body);
       } else if (apiResponse.statusCode == 200) {
-        return jsonDecode(apiResponse.body);
+        return jsonDecode(apiResponse.body)["body"];
       } else {
         print("Status Code: " + apiResponse.statusCode.toString());
         throw "server-error";
@@ -127,13 +126,18 @@ class Network {
       String url, String key, File file) async {
     Uri uri = Uri.parse(url);
 
-    var request = http.MultipartRequest("POST", uri)
+    var request = http.MultipartRequest(
+      "POST",
+      uri,
+    )
+      ..headers.addAll({"Authorization": "Bearer ${Network._sessionCookie}"})
       ..files.add(http.MultipartFile(
           key, file.readAsBytes().asStream(), file.lengthSync(),
           filename: DateTime.now().toString()));
 
     var response = await request.send();
     var apiResponse = jsonDecode(await response.stream.bytesToString());
+    print(apiResponse);
     if (response.statusCode == 200)
       return {
         "success": true,

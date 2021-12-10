@@ -6,7 +6,6 @@ class CreateJournal {
   String feelings;
   String? mimetype;
   String? mediaUrl;
-  var location;
   String? journalType;
 
   CreateJournal(
@@ -14,13 +13,12 @@ class CreateJournal {
       required this.description,
       required this.feelings,
       this.mimetype,
-      this.location,
       required this.journalType});
 
   Future<String> postJournal() async {
     Map<String, dynamic> apiResponse =
         await Network.makeHttpPostRequestWithToken(
-            url: "${APIConstants.aws}/api/create-user-post",
+            url: "${APIConstants.api}/api/create-user-post",
             body: {
           "description": description,
           "mediaType": mimetype,

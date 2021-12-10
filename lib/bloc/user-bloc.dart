@@ -14,7 +14,7 @@ class UserBlocNetwork {
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.aws}/api/get-my-profile-details");
+              "${APIConstants.api}/api/get-my-profile-details");
       print(
           "api response of profile details: " + apiResponse["user"].toString());
       return UserModel.fromJson(apiResponse["user"]);
@@ -32,8 +32,9 @@ class UserBlocNetwork {
 
   Future<String?> CreateSessionCookie(String idToken) async {
     Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
-        url: "${APIConstants.aws}/create-session-cookie",
+        url: "${APIConstants.api}/create-session-cookie",
         body: {"idToken": idToken});
+    print(apiResponse);
   }
 
   void dispose() {

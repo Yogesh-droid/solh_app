@@ -5,6 +5,8 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/auth.dart';
+import 'package:solh/services/shared-prefrences/session-cookie.dart';
+import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -29,7 +31,7 @@ class _OTPScreenState extends State<OTPScreen> {
     return Scaffold(
       appBar: AuthAppBar(
           primaryTitle: "Verify Phone No.",
-          secondaryTitle: "Please enter the 4 digit code sent to"),
+          secondaryTitle: "Please enter the 6 digit code sent to"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -62,6 +64,7 @@ class _OTPScreenState extends State<OTPScreen> {
                         .then((value) async {
                       String idToken = await value.user!.getIdToken();
                       print("user idToken: $idToken");
+                      await SessionCookie.createSessionCookie(idToken);
                       // print("user providerId: ${value.credential!.providerId}");
                       // print(
                       //     "user signInMethod: ${value.credential!.signInMethod}");
@@ -69,6 +72,9 @@ class _OTPScreenState extends State<OTPScreen> {
                       AutoRouter.of(context).push(MasterScreenRouter());
 
                       // AutoRouter.of(context).push(MasterScreenRouter());
+                    }).onError((error, stackTrace) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(error.toString())));
                     });
                   },
                 ),

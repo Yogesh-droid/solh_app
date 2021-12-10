@@ -9,13 +9,10 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/cupertino.dart' as _i21;
 import 'package:flutter/material.dart' as _i20;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
-import '../model/journal.dart' as _i22;
-import '../phone-auth/otp-screen.dart' as _i5;
-import '../phone-auth/phone-auth.dart' as _i4;
+import '../model/journal.dart' as _i21;
 import '../ui/screens/comment/comment-screen.dart' as _i15;
 import '../ui/screens/connect/connect-screen.dart' as _i14;
 import '../ui/screens/get-help/get-help.dart' as _i10;
@@ -28,6 +25,8 @@ import '../ui/screens/my-profile/my-profile-screen.dart' as _i16;
 import '../ui/screens/my-profile/posts/post.dart' as _i17;
 import '../ui/screens/my-profile/settings/account-privacy.dart' as _i19;
 import '../ui/screens/my-profile/settings/settings.dart' as _i18;
+import '../ui/screens/phone-auth/otp-screen.dart' as _i5;
+import '../ui/screens/phone-auth/phone-auth.dart' as _i4;
 import '../ui/screens/profile-setup/profile-setup.dart' as _i3;
 import '../ui/screens/sos/setup-sos.dart' as _i7;
 import '../ui/screens/sos/sos.dart' as _i6;
@@ -102,8 +101,10 @@ class AppRouter extends _i9.RootStackRouter {
           routeData: routeData, child: const _i13.CreatePostScreen());
     },
     ConnectScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<ConnectScreenRouterArgs>();
       return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i14.ConnectProfileScreen());
+          routeData: routeData,
+          child: _i14.ConnectProfileScreen(key: args.key, uid: args.uid));
     },
     CommentScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CommentScreenRouterArgs>();
@@ -225,7 +226,7 @@ class PhoneAuthScreenRouter extends _i9.PageRouteInfo<void> {
 /// generated route for [_i5.OTPScreen]
 class OTPScreenRouter extends _i9.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i21.Key? key, required String phoneNo, required String verificationId})
+      {_i20.Key? key, required String phoneNo, required String verificationId})
       : super(name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -238,7 +239,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i21.Key? key;
+  final _i20.Key? key;
 
   final String phoneNo;
 
@@ -311,15 +312,26 @@ class CreatePostScreenRouter extends _i9.PageRouteInfo<void> {
 }
 
 /// generated route for [_i14.ConnectProfileScreen]
-class ConnectScreenRouter extends _i9.PageRouteInfo<void> {
-  const ConnectScreenRouter() : super(name, path: 'ConnectScreen');
+class ConnectScreenRouter extends _i9.PageRouteInfo<ConnectScreenRouterArgs> {
+  ConnectScreenRouter({_i20.Key? key, required String uid})
+      : super(name,
+            path: 'ConnectScreen',
+            args: ConnectScreenRouterArgs(key: key, uid: uid));
 
   static const String name = 'ConnectScreenRouter';
 }
 
+class ConnectScreenRouterArgs {
+  const ConnectScreenRouterArgs({this.key, required this.uid});
+
+  final _i20.Key? key;
+
+  final String uid;
+}
+
 /// generated route for [_i15.CommentScreen]
 class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
-  CommentScreenRouter({_i21.Key? key, required _i22.JournalModel? journalModel})
+  CommentScreenRouter({_i20.Key? key, required _i21.JournalModel? journalModel})
       : super(name,
             path: 'CommentScreen',
             args:
@@ -331,9 +343,9 @@ class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
 class CommentScreenRouterArgs {
   const CommentScreenRouterArgs({this.key, required this.journalModel});
 
-  final _i21.Key? key;
+  final _i20.Key? key;
 
-  final _i22.JournalModel? journalModel;
+  final _i21.JournalModel? journalModel;
 }
 
 /// generated route for [_i16.MyProfileScreen]

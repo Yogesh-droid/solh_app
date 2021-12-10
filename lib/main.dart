@@ -19,7 +19,8 @@ void main() async {
 
 class SolhApp extends StatelessWidget {
   final _appRouter = AppRouter(globalNavigatorKey);
-  final SessionCookie _sessionCookie = SessionCookie();
+  final SessionCookieSharedPrefrences _sessionCookie =
+      SessionCookieSharedPrefrences();
 
   @override
   Widget build(BuildContext context) {

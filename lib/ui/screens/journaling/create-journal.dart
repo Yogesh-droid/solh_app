@@ -1,6 +1,6 @@
-import 'dart:typed_data';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -29,10 +29,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _journalType = JournalType.Publicaly.toShortString();
   String _description = "";
   String _feelings = JournalFeelings.Happy.toShortString();
-  String? _imageUrl;
   XFile? _xFile;
   File? _croppedFile;
-  Uint8List? _xFileAsUnit8List;
+  bool _isPosting = false;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
 
@@ -61,31 +60,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             maxHeight: 640,
                             imageQuality: 50,
                           );
-                          print(_xFile!.path.toString());
-                          _croppedFile = await ImageCropper.cropImage(
-                              sourcePath: _xFile!.path,
-                              aspectRatioPresets: [
-                                // CropAspectRatioPreset.square,
-                                CropAspectRatioPreset.ratio3x2,
-                                // CropAspectRatioPreset.original,
-                                // CropAspectRatioPreset.ratio4x3,
-                                // CropAspectRatioPreset.ratio16x9
-                              ],
-                              androidUiSettings: AndroidUiSettings(
-                                  toolbarTitle: 'Cropper',
-                                  toolbarColor: Colors.deepOrange,
-                                  toolbarWidgetColor: Colors.white,
-                                  initAspectRatio:
-                                      CropAspectRatioPreset.original,
-                                  lockAspectRatio: false),
-                              iosUiSettings: IOSUiSettings(
-                                minimumAspectRatio: 1.0,
-                              ));
+                          if (_xFile != null)
+                            _croppedFile = await ImageCropper.cropImage(
+                                sourcePath: _xFile!.path,
+                                aspectRatioPresets: [
+                                  CropAspectRatioPreset.square,
+                                  // CropAspectRatioPreset.ratio3x2,
+                                  // CropAspectRatioPreset.original,
+                                  // CropAspectRatioPreset.ratio4x3,
+                                  // CropAspectRatioPreset.ratio16x9
+                                ],
+                                androidUiSettings: AndroidUiSettings(
+                                    toolbarTitle: 'Edit',
+                                    toolbarColor: SolhColors.white,
+                                    toolbarWidgetColor: Colors.black,
+                                    activeControlsWidgetColor: SolhColors.green,
+                                    initAspectRatio:
+                                        CropAspectRatioPreset.square,
+                                    lockAspectRatio: true),
+                                iosUiSettings: IOSUiSettings(
+                                  minimumAspectRatio: 1.0,
+                                ));
                           // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
 
                           Navigator.of(_).pop();
                           setState(() {
-                            _isImageAdded = true;
+                            if (_croppedFile != null) _isImageAdded = true;
                           });
                         },
                       ),
@@ -138,141 +138,152 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return Scaffold(
       appBar: SolhAppBar(
         title: Text(
-          "Create Post",
+          "Create Journal",
           style: SolhTextStyles.AppBarText,
         ),
         isLandingScreen: false,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              UsernameHeader(
-                onTypeChanged: (value) {
-                  print("Changed to $value");
-                  _journalType = value;
-                },
-              ),
-              SizedBox(height: 2.h),
-              Container(
-                child: TextField(
-                  maxLength: 240,
-                  maxLines: 6,
-                  minLines: 3,
-                  decoration: InputDecoration(
-                      fillColor: SolhColors.grey239,
-                      hintText: "What's on your mind?",
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SolhColors.green)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: SolhColors.green)),
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: SolhColors.green))),
-                  onChanged: (value) {
-                    if (_description == "" || value == "") {
-                      setState(() {
-                        _description = value;
-                      });
-                    } else
-                      _description = value;
-                  },
-                ),
-              ),
-              SizedBox(height: 1.h),
-              Text(
-                "Feelings",
-                style:
-                    SolhTextStyles.JournalingDescriptionReadMoreText.copyWith(
-                        color: SolhColors.grey102),
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              FeelingsContainer(
-                onFeelingsChanged: (feelings) {
-                  _feelings = feelings;
-                  print("feelings changed to: $feelings");
-                },
-              ),
-              SizedBox(height: 2.h),
-              if (!_isImageAdded && !_isVideoAdded)
-                Column(
-                  children: [
-                    // SolhGreenBorderButton(
-                    //   child: Text(
-                    //     "Pic from Diary",
-                    //     style: SolhTextStyles.GreenBorderButtonText,
-                    //   ),
-                    //   onPressed: () => print("Pressed"),
-                    // ),
-                    SizedBox(height: 2.h),
-                    SolhGreenBorderButton(
-                        child: Text(
-                          "Add Image/Video",
-                          style: SolhTextStyles.GreenBorderButtonText,
-                        ),
-                        onPressed: _pickImage),
-                  ],
-                )
-              else if (_isImageAdded)
-                Stack(
-                  children: [
-                    Image.file(_croppedFile!),
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: CircleAvatar(
-                        radius: 16,
-                        child: IconButton(
-                          onPressed: () {
-                            _xFile = null;
-                            _xFileAsUnit8List = null;
-                            setState(() {
-                              _isImageAdded = false;
-                            });
-                          },
-                          iconSize: 14,
-                          icon: Icon(Icons.close),
-                        ),
-                      ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  UsernameHeader(
+                    onTypeChanged: (value) {
+                      print("Changed to $value");
+                      _journalType = value;
+                    },
+                  ),
+                  SizedBox(height: 2.h),
+                  Container(
+                    child: TextField(
+                      maxLength: 240,
+                      maxLines: 6,
+                      minLines: 3,
+                      decoration: InputDecoration(
+                          fillColor: SolhColors.grey239,
+                          hintText: "What's on your mind?",
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: SolhColors.green)),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: SolhColors.green)),
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: SolhColors.green))),
+                      onChanged: (value) {
+                        if (_description == "" || value == "") {
+                          setState(() {
+                            _description = value;
+                          });
+                        } else
+                          _description = value;
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 1.h),
+                  Text(
+                    "Feelings",
+                    style: SolhTextStyles.JournalingDescriptionReadMoreText
+                        .copyWith(color: SolhColors.grey102),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  FeelingsContainer(
+                    onFeelingsChanged: (feelings) {
+                      _feelings = feelings;
+                      print("feelings changed to: $feelings");
+                    },
+                  ),
+                  SizedBox(height: 2.h),
+                  if (!_isImageAdded && !_isVideoAdded)
+                    Column(
+                      children: [
+                        // SolhGreenBorderButton(
+                        //   child: Text(
+                        //     "Pic from Diary",
+                        //     style: SolhTextStyles.GreenBorderButtonText,
+                        //   ),
+                        //   onPressed: () => print("Pressed"),
+                        // ),
+                        SizedBox(height: 2.h),
+                        SolhGreenBorderButton(
+                            child: Text(
+                              "Add Image/Video",
+                              style: SolhTextStyles.GreenBorderButtonText,
+                            ),
+                            onPressed: _pickImage),
+                      ],
                     )
-                  ],
-                )
-              else
-                Stack(
-                  children: [
-                    Positioned(
-                      right: 0,
-                      top: 0,
-                      child: CircleAvatar(
-                        radius: 16,
-                        child: IconButton(
-                          onPressed: () {
-                            _xFile = null;
-                            _xFileAsUnit8List = null;
-                            setState(() {
-                              _isVideoAdded = false;
-                            });
-                          },
-                          iconSize: 14,
-                          icon: Icon(Icons.close),
-                        ),
-                      ),
+                  else if (_isImageAdded)
+                    Stack(
+                      children: [
+                        Image.file(_croppedFile!),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: CircleAvatar(
+                            radius: 16,
+                            child: IconButton(
+                              onPressed: () {
+                                _xFile = null;
+                                _croppedFile = null;
+                                setState(() {
+                                  _isImageAdded = false;
+                                });
+                              },
+                              iconSize: 14,
+                              icon: Icon(Icons.close),
+                            ),
+                          ),
+                        )
+                      ],
                     )
-                  ],
-                ),
-              SizedBox(height: 5.h),
-              SolhGreenButton(
-                child: Text("Post"),
-                backgroundColor:
-                    _description != "" ? SolhColors.green : SolhColors.grey,
-                onPressed: _postJournal,
-              )
-            ],
+                  else
+                    Stack(
+                      children: [
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: CircleAvatar(
+                            radius: 16,
+                            child: IconButton(
+                              onPressed: () {
+                                _xFile = null;
+                                _croppedFile = null;
+                                setState(() {
+                                  _isVideoAdded = false;
+                                });
+                              },
+                              iconSize: 14,
+                              icon: Icon(Icons.close),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  SizedBox(height: 5.h),
+                  SolhGreenButton(
+                    height: 6.h,
+                    child: Text("Post"),
+                    backgroundColor:
+                        _description != "" ? SolhColors.green : SolhColors.grey,
+                    onPressed: _postJournal,
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+          if (_isPosting)
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              color: SolhColors.green.withOpacity(0.25),
+              child: Center(child: CircularProgressIndicator()),
+            ),
+        ],
       ),
     );
   }
@@ -280,18 +291,26 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void _postJournal() async {
     if (_description != "") {
       if (_croppedFile != null) {
+        setState(() {
+          _isPosting = true;
+        });
         Map<String, dynamic> response = await _uploadImage();
         print(response.toString());
         if (response["success"]) {
           print(response["imageUrl"]);
           CreateJournal _createJournal = CreateJournal(
-              mediaUrl: response["imageUrl"],
-              description: _description,
-              feelings: _feelings,
-              journalType: _journalType,
-              mimetype: response["mimetype"],
-              location: response["imageUrl"]);
+            mediaUrl: response["imageUrl"],
+            description: _description,
+            feelings: _feelings,
+            journalType: _journalType,
+            mimetype: response["mimetype"],
+          );
           _createJournal.postJournal();
+          setState(() {
+            _isPosting = false;
+          });
+
+          Navigator.pop(context);
         }
       } else {
         CreateJournal _createJournal = CreateJournal(
@@ -306,7 +325,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   Future<Map<String, dynamic>> _uploadImage() async {
     return await Network.uploadFileToServer(
-        "${APIConstants.aws}/api/fileupload/journal-image",
+        "${APIConstants.api}/api/fileupload/journal-image",
         "file",
         _croppedFile!);
     // return await Network.makeHttpPostRequestWithToken(
@@ -407,10 +426,10 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: 6.w,
-                      backgroundImage: NetworkImage(
-                          "https://qph.fs.quoracdn.net/main-qimg-6d89a6af21f564db1096d6dbd060f831"),
-                    ),
+                        radius: 6.w,
+                        backgroundImage: CachedNetworkImageProvider(
+                          userSnapshot.requireData!.profilePictureUrl,
+                        )),
                     SizedBox(
                       width: 2.w,
                     ),

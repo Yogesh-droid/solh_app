@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +13,6 @@ import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
-import 'package:solh/ui/screens/journaling/widgets/stories.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -67,8 +68,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData)
                     return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 3.5.w, vertical: 2.5.h),
+                      padding: EdgeInsets.symmetric(vertical: 2.5.h),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -225,14 +225,6 @@ class Journaling extends StatefulWidget {
 }
 
 class _JournalingState extends State<Journaling> {
-  final List<String> _images = [
-    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDKwiSfAles5soFVbStddLdTd2VGg0hV8fGQ&usqp=CAU",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHJmKT56IxtNPFdhgZIuA5I7brj5c9ch96Rg&usqp=CAU",
-    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
-    "https://mir-s3-cdn-cf.behance.net/project_modules/disp/11462520706403.562efc838c1db.jpg",
-  ];
-
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;
 
@@ -372,7 +364,7 @@ class _JournalingState extends State<Journaling> {
                         }),
                   ),
                   if (_fetchingMore) Center(child: CircularProgressIndicator()),
-                  SizedBox(height: 50),
+                  SizedBox(height: Platform.isIOS ? 80 : 50),
                 ],
               ),
             ),
@@ -403,7 +395,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width / 20,
+            horizontal: MediaQuery.of(context).size.width / 30,
             vertical: MediaQuery.of(context).size.height / 80,
           ),
           child: Row(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/journal-user.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -10,7 +11,11 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class ConnectProfileScreen extends StatelessWidget {
-  const ConnectProfileScreen({Key? key}) : super(key: key);
+  const ConnectProfileScreen({Key? key, required String uid})
+      : _uid = uid,
+        super(key: key);
+
+  final String _uid;
 
   @override
   Widget build(BuildContext context) {
@@ -22,105 +27,109 @@ class ConnectProfileScreen extends StatelessWidget {
             style: SolhTextStyles.AppBarText,
           ),
         ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverList(
-              delegate: SliverChildListDelegate([
-                Column(
-                  children: [
-                    SizedBox(height: 2.5.h),
-                    CircleAvatar(
-                      radius: 6.h,
-                      backgroundImage: CachedNetworkImageProvider(
-                        'https://static0.cbrimages.com/wordpress/wp-content/uploads/2020/09/The-Vampire-Diaries-Elena-Gilbert.jpg?q=50&fit=crop&w=767&h=450&dpr=1.5',
+        body: FutureBuilder<UserModel>(
+            future: null,
+            builder: (context, snapshot) {
+              return NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                  SliverList(
+                    delegate: SliverChildListDelegate([
+                      Column(
+                        children: [
+                          SizedBox(height: 2.5.h),
+                          CircleAvatar(
+                            radius: 6.h,
+                            backgroundImage: CachedNetworkImageProvider(
+                              "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F13%2F2015%2F04%2F05%2Ffeatured.jpg&q=85",
+                            ),
+                          ),
+                          SizedBox(height: 2.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("John Conor",
+                                  style: TextStyle(fontSize: 21)),
+                              Icon(Icons.people, color: SolhColors.grey)
+                            ],
+                          ),
+                          Text(
+                            "Solh Expert",
+                            style: SolhTextStyles.GreenBorderButtonText,
+                          ),
+                          SizedBox(height: 1.5.h),
+                          Container(
+                            width: 75.w,
+                            child: Text(
+                                '''Bio/Self experiences/Qoate/When the pain passes, you eventually see how much good.'''),
+                          ),
+                          SizedBox(height: 3.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.thumb_up,
+                                        size: 18,
+                                        color: SolhColors.green,
+                                      ),
+                                      SizedBox(
+                                        width: 2.w,
+                                      ),
+                                      Text(
+                                        '27',
+                                        style:
+                                            SolhTextStyles.GreenBorderButtonText
+                                                .copyWith(fontSize: 18),
+                                      ),
+                                    ],
+                                  ),
+                                  Text("Likes"),
+                                ],
+                              ),
+                              // Divider(),
+                              Column(
+                                children: [
+                                  Text(
+                                    '17',
+                                    style: SolhTextStyles.GreenBorderButtonText
+                                        .copyWith(fontSize: 18),
+                                  ),
+                                  Text("Connections"),
+                                ],
+                              ),
+                              // Divider(),
+                              Column(
+                                children: [
+                                  Text(
+                                    '17',
+                                    style: SolhTextStyles.GreenBorderButtonText
+                                        .copyWith(fontSize: 18),
+                                  ),
+                                  Text("Reviews"),
+                                ],
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 3.h),
+                          SolhGreenButton(
+                              width: 90.w,
+                              height: 6.3.h,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [Text("Connect/Join")],
+                              )),
+                          SizedBox(height: 3.h),
+                        ],
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("John Conor", style: TextStyle(fontSize: 21)),
-                        Icon(Icons.people, color: SolhColors.grey)
-                      ],
-                    ),
-                    Text(
-                      "Solh Expert",
-                      style: SolhTextStyles.GreenBorderButtonText,
-                    ),
-                    SizedBox(height: 1.5.h),
-                    Container(
-                      width: 75.w,
-                      child: Text(
-                          '''Bio/Self experiences/Qoate/When the pain passes, you eventually see how much good.'''),
-                    ),
-                    SizedBox(height: 3.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.thumb_up,
-                                  size: 18,
-                                  color: SolhColors.green,
-                                ),
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                                Text(
-                                  '27',
-                                  style: SolhTextStyles.GreenBorderButtonText
-                                      .copyWith(fontSize: 18),
-                                ),
-                              ],
-                            ),
-                            Text("Likes"),
-                          ],
-                        ),
-                        // Divider(),
-                        Column(
-                          children: [
-                            Text(
-                              '17',
-                              style:
-                                  SolhTextStyles.GreenBorderButtonText.copyWith(
-                                      fontSize: 18),
-                            ),
-                            Text("Connections"),
-                          ],
-                        ),
-                        // Divider(),
-                        Column(
-                          children: [
-                            Text(
-                              '17',
-                              style:
-                                  SolhTextStyles.GreenBorderButtonText.copyWith(
-                                      fontSize: 18),
-                            ),
-                            Text("Reviews"),
-                          ],
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 3.h),
-                    SolhGreenButton(
-                        width: 90.w,
-                        height: 6.3.h,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [Text("Connect/Join")],
-                        )),
-                    SizedBox(height: 3.h),
-                  ],
-                ),
-              ]),
-            )
-          ],
-          body: TabView(),
-        ));
+                    ]),
+                  )
+                ],
+                body: TabView(),
+              );
+            }));
   }
 }
 
@@ -182,21 +191,25 @@ class _TabViewState extends State<TabView> {
                         children: [
                           JournalTile(
                               journalModel: JournalModel(
+                                  createdAt: "2021-12-02T12:48:58.007Z",
                                   id: "15987452625645625",
                                   mediaType: "image",
                                   feelings: "happy",
+                                  isLiked: false,
                                   likes: 24,
                                   comments: 15,
                                   description: "tehre",
                                   mediaUrl: "",
                                   postedBy: JournalUserModel(
-                                    profilePictureUrl:
-                                        "https://solh.s3.amazonaws.com/user/profile/1638601611065",
-                                    name: "Geetansh",
-                                    isSolhAdviser: false,
-                                    isSolhCounselor: true,
-                                    isSolhExpert: true,
-                                  ))),
+                                      uid: "464",
+                                      profilePictureUrl:
+                                          "https://solh.s3.amazonaws.com/user/profile/1638601611065",
+                                      name: "Geetansh",
+                                      userType: "Volunteer"
+                                      // isSolhAdviser: false,
+                                      // isSolhCounselor: true,
+                                      // isSolhExpert: true,
+                                      ))),
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 1.h),
                             height: 0.8.h,
