@@ -182,7 +182,11 @@ class CrouselIntro extends StatelessWidget {
 class SkipButton extends StatelessWidget {
   const SkipButton({
     Key? key,
-  }) : super(key: key);
+    VoidCallback? onPressed,
+  })  : _onPressed = onPressed,
+        super(key: key);
+
+  final VoidCallback? _onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +198,7 @@ class SkipButton extends StatelessWidget {
         "Skip",
         style: SolhTextStyles.GreenBorderButtonText,
       ),
-      onPressed: () => AutoRouter.of(context).push(MasterScreenRouter()),
+      onPressed: _onPressed,
     );
   }
 }

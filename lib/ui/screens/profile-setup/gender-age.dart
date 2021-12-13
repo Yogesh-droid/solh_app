@@ -31,6 +31,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
     return Scaffold(
       appBar: ProfileSetupAppBar(
         title: "Gender & Age",
+        onBackButton: widget._onBack,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w),
@@ -83,20 +84,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   height: 2.h,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    DateTimePicker(
-                      initialValue: '',
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime(2100),
-                      dateLabelText: 'Date',
-                      onChanged: (val) => print(val),
-                      validator: (val) {
-                        print(val);
-                        return null;
-                      },
-                      onSaved: (val) => print(val),
-                    );
-                  },
+                  onTap: () {},
                   child: Container(
                       height: 6.1.h,
                       width: MediaQuery.of(context).size.width / 1.1,
@@ -107,11 +95,23 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                             color: SolhColors.green,
                           )),
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Select DOB",
+                      child: DateTimePicker(
+                        // initialValue: 'Select DOB',
+                        initialDate:
+                            DateTime.now().subtract(Duration(days: 4749)),
                         style: SolhTextStyles.ProfileMenuGreyText,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now().subtract(Duration(days: 4749)),
+                        dateLabelText: 'Date',
+                        onChanged: (val) => print(val),
+                        decoration: InputDecoration(border: InputBorder.none),
+                        validator: (val) {
+                          print(val);
+                          return null;
+                        },
+                        onSaved: (val) => print(val),
                       )),
-                )
+                ),
               ]),
             ),
             SolhGreenButton(

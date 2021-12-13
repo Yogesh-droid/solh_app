@@ -171,7 +171,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
                 SizedBox(
                   height: 2.h,
                 ),
-                SkipButton(),
+                SkipButton(
+                  onPressed: widget._onNext,
+                ),
                 SizedBox(
                   height: 6.h,
                 ),

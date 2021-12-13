@@ -25,30 +25,33 @@ class _EnterFullNameScreenState extends State<EnterFullNameScreen> {
     return Scaffold(
       body: Provider(
         create: (_) => ProviderUser(),
-        child: PageView(controller: _pageController, children: [
-          EnterNamePage(
-            onNext: () => _pageController.nextPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-          ),
-          EnterDescriptionPage(
-            onBack: () => _pageController.previousPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-            onNext: () => _pageController.nextPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-          ),
-          AddProfilePhotoPage(
-            onBack: () => _pageController.previousPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-            onNext: () => _pageController.nextPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-          ),
-          GenderAndAgePage(
-            onBack: () => _pageController.previousPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-            onNext: () => _pageController.nextPage(
-                duration: Duration(milliseconds: 500), curve: Curves.ease),
-          )
-        ]),
+        child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: [
+              EnterNamePage(
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
+              EnterDescriptionPage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
+              AddProfilePhotoPage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
+              GenderAndAgePage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              )
+            ]),
       ),
     );
   }
