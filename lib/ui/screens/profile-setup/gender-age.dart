@@ -9,14 +9,21 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 
-class GenderAndAge extends StatefulWidget {
-  const GenderAndAge({Key? key}) : super(key: key);
+class GenderAndAgePage extends StatefulWidget {
+  const GenderAndAgePage(
+      {Key? key, required VoidCallback onNext, required VoidCallback onBack})
+      : _onNext = onNext,
+        _onBack = onBack,
+        super(key: key);
+
+  final VoidCallback _onNext;
+  final VoidCallback _onBack;
 
   @override
-  State<GenderAndAge> createState() => _GenderAndAgeState();
+  State<GenderAndAgePage> createState() => _GenderAndAgePageState();
 }
 
-class _GenderAndAgeState extends State<GenderAndAge> {
+class _GenderAndAgePageState extends State<GenderAndAgePage> {
   String _dropdownValue = "M";
 
   @override

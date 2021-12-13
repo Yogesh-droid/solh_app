@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
@@ -119,20 +120,26 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class ProfileSetupAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const ProfileSetupAppBar({
-    Key? key,
-    required String title,
-    // required String subHeading
-  })  : _title = title,
+  const ProfileSetupAppBar(
+      {Key? key, required String title, VoidCallback? onBackButton
+      // required String subHeading
+      })
+      : _title = title,
+        _onBackButton = onBackButton,
         // _subHeading = subHeading,
         super(key: key);
 
   final String _title;
+  final VoidCallback? _onBackButton;
   // final String _subHeading;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      leading: IconButton(
+        icon: Icon(CupertinoIcons.back),
+        onPressed: _onBackButton,
+      ),
       foregroundColor: Colors.black,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,

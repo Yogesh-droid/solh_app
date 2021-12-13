@@ -9,18 +9,24 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
-import 'package:solh/ui/screens/profile-setup/description.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 
-class AddProfilePhoto extends StatefulWidget {
-  const AddProfilePhoto({Key? key}) : super(key: key);
+class AddProfilePhotoPage extends StatefulWidget {
+  const AddProfilePhotoPage(
+      {Key? key, required VoidCallback onNext, required VoidCallback onBack})
+      : _onNext = onNext,
+        _onBack = onBack,
+        super(key: key);
+
+  final VoidCallback _onNext;
+  final VoidCallback _onBack;
 
   @override
-  State<AddProfilePhoto> createState() => _AddProfilePhotoState();
+  State<AddProfilePhotoPage> createState() => _AddProfilePhotoPageState();
 }
 
-class _AddProfilePhotoState extends State<AddProfilePhoto> {
+class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
   String _journalType = JournalType.Publicaly.toShortString();
 
   String _description = "";
@@ -118,6 +124,7 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
     return Scaffold(
       appBar: ProfileSetupAppBar(
         title: "Add a Profile Photo",
+        onBackButton: widget._onBack,
       ),
       body: Column(
         children: [
@@ -165,6 +172,9 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
                   height: 2.h,
                 ),
                 SkipButton(),
+                SizedBox(
+                  height: 6.h,
+                ),
               ],
             )
           else
@@ -174,8 +184,11 @@ class _AddProfilePhotoState extends State<AddProfilePhoto> {
                   child: Text("Next"),
                   height: 6.h,
                   width: MediaQuery.of(context).size.width / 1.1,
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => DescriptionScreen())),
+                  // onPressed: () => Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (_) => EnterDescriptionPage())
+                  //         ),
                 ),
                 SizedBox(
                   height: 10.h,
