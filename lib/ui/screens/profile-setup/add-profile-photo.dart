@@ -47,76 +47,36 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
 
   void _pickImage() async {
     final ImagePicker _picker = ImagePicker();
-    showModalBottomSheet(
-        context: context,
-        builder: (_) => Container(
-              height: 20.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Choose your type"),
-                  SizedBox(height: 3.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        iconSize: 40,
-                        icon: Icon(Icons.photo),
-                        onPressed: () async {
-                          print("picking image");
-                          _xFile = await _picker.pickImage(
-                            source: ImageSource.gallery,
-                            maxWidth: 640,
-                            maxHeight: 640,
-                            imageQuality: 50,
-                          );
-                          print(_xFile!.path.toString());
-                          _croppedFile = await ImageCropper.cropImage(
-                              sourcePath: _xFile!.path,
-                              aspectRatioPresets: [
-                                CropAspectRatioPreset.square,
-                                // CropAspectRatioPreset.ratio3x2,
-                                // CropAspectRatioPreset.original,
-                                // CropAspectRatioPreset.ratio4x3,
-                                // CropAspectRatioPreset.ratio16x9
-                              ],
-                              androidUiSettings: AndroidUiSettings(
-                                  toolbarTitle: 'Cropper',
-                                  toolbarColor: Colors.deepOrange,
-                                  toolbarWidgetColor: Colors.white,
-                                  initAspectRatio:
-                                      CropAspectRatioPreset.original,
-                                  lockAspectRatio: false),
-                              iosUiSettings: IOSUiSettings(
-                                minimumAspectRatio: 1.0,
-                              ));
-                          Navigator.of(_).pop();
-                          setState(() {
-                            _isImageAdded = true;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        iconSize: 40,
-                        icon: Icon(Icons.video_camera_back),
-                        onPressed: () async {
-                          print("picking video");
-                          _xFile = await _picker.pickVideo(
-                              source: ImageSource.gallery);
-                          print(_xFile!.path.toString());
-
-                          // _xFileAsUnit8List = await _xFile!.readAsBytes();
-                          Navigator.of(_).pop();
-                          setState(() {
-                            _isVideoAdded = true;
-                          });
-                        },
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ));
+    print("picking image");
+    _xFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 640,
+      maxHeight: 640,
+      imageQuality: 50,
+    );
+    print(_xFile!.path.toString());
+    _croppedFile = await ImageCropper.cropImage(
+        sourcePath: _xFile!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+    Navigator.of(context).pop();
+    setState(() {
+      _isImageAdded = true;
+    });
   }
 
   @override

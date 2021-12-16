@@ -99,10 +99,6 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       SizedBox(
                         height: 2.h,
                       ),
-                      InkWell(
-                          onTap: () => AutoRouter.of(context)
-                              .push(CreateProfileScreenRouter()),
-                          child: Text("skip"))
                     ],
                   ),
                 ],

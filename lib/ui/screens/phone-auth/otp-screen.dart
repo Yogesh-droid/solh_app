@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/services/shared-prefrences/session-cookie.dart';
@@ -64,14 +65,22 @@ class _OTPScreenState extends State<OTPScreen> {
                         .then((value) async {
                       String idToken = await value.user!.getIdToken();
                       print("user idToken: $idToken");
-                      await SessionCookie.createSessionCookie(idToken);
-                      // print("user providerId: ${value.credential!.providerId}");
-                      // print(
-                      //     "user signInMethod: ${value.credential!.signInMethod}");
-                      // print("user token: ${value.credential!.token}");
-                      AutoRouter.of(context).push(MasterScreenRouter());
+                      bool isSessionCookieCreated =
+                          await SessionCookie.createSessionCookie(idToken);
+                      print(isSessionCookieCreated);
+                      print("checking is profile created");
+                      bool isProfileCreated =
+                          await userBlocNetwork.isProfileCreated();
+                      print("profile checking complete");
 
-                      // AutoRouter.of(context).push(MasterScreenRouter());
+                      print("^" * 30 +
+                          "Is Profile Created:" +
+                          isProfileCreated.toString() +
+                          "^" * 30);
+                      isProfileCreated
+                          ? AutoRouter.of(context).push(MasterScreenRouter())
+                          : AutoRouter.of(context)
+                              .push(CreateProfileScreenRouter());
                     }).onError((error, stackTrace) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));

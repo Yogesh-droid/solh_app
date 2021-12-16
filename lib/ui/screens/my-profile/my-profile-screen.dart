@@ -48,10 +48,12 @@ class MyProfileScreen extends StatelessWidget {
                         title: "Logout",
                         svgIconPath: "assets/icons/profile/logout.svg",
                         onPressed: () {
-                          FirebaseAuth.instance.signOut().then((value) =>
-                              AutoRouter.of(context).pushAndPopUntil(
-                                  IntroCarouselScreenRouter(),
-                                  predicate: (route) => false));
+                          FirebaseAuth.instance.signOut().then((value) {
+                            userBlocNetwork.updateSessionCookie = "";
+                            AutoRouter.of(context).pushAndPopUntil(
+                                IntroCarouselScreenRouter(),
+                                predicate: (route) => false);
+                          });
                         })
                   ],
                 );

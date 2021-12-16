@@ -34,6 +34,7 @@ class FirebaseNetwork {
                 await signInWithPhoneCredential(phoneAuthCredential);
             print("user token" + userCredential.credential!.token.toString());
             print("verified");
+
             AutoRouter.of(globalNavigatorKey.currentState!.context)
                 .push(MasterScreenRouter());
           });

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class ProviderUser {
@@ -8,6 +8,7 @@ class ProviderUser {
   String? _profilePictureUrl;
   String? _gender;
   String? _dob;
+
   set setFirstName(String firstname) {
     _firstname = firstname;
 
@@ -29,15 +30,27 @@ class ProviderUser {
     print("profilePictureUrl changed to: $_profilePictureUrl");
   }
 
+  set setGender(String gender) {
+    _gender = gender;
+    print("gender changed to: $_gender");
+  }
+
+  set setDob(String dob) {
+    _dob = dob;
+    print("dob changed to: $_dob");
+  }
+
   Future<bool> updateUserDetails() async {
-    await Network.makeHttpPostRequestWithToken(
-        url: "https://api.solhapp.com/api/edit-user-details",
+    var resposne = await Network.makeHttpPutRequestWithToken(
+        url: "${APIConstants.api}/api/edit-user-details",
         body: {
           "first_name": _firstname,
           "last_name": _lastname,
           "bio": _bio,
           "gender": _gender,
+          "dob": _dob
         });
+    print(resposne.toString());
     return false;
   }
 }

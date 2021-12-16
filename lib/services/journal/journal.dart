@@ -32,3 +32,35 @@ class CreateJournal {
     return "posted";
   }
 }
+
+// class DeleteJournal {
+//   String description;
+//   String feelings;
+//   String? mimetype;
+//   String? mediaUrl;
+//   String? journalType;
+
+//   DeleteJournal(
+//       {this.mediaUrl,
+//       required this.description,
+//       required this.feelings,
+//       this.mimetype,
+//       required this.journalType});
+
+//   Future<String> deleteJournal() async {
+//     Map<String, dynamic> apiResponse =
+//         await Network.makeHttpPostRequestWithToken(
+//             url: "${APIConstants.api}/api/create-user-post",
+//             body: {
+//           "description": description,
+//           "mediaType": mimetype,
+//           "mediaUrl": mediaUrl,
+//           "feelings": feelings,
+//           "journalType": journalType
+//         }).onError((error, stackTrace) {
+//       return {"error": error};
+//     });
+//     print("resposne: " + apiResponse.toString());
+//     return "posted";
+//   }
+// }

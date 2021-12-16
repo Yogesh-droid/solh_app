@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/model/comment.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/journal-user.dart';
 import 'package:solh/model/user/user.dart';
+
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -180,55 +182,56 @@ class _TabViewState extends State<TabView> {
             ),
           ]),
         ),
-        Expanded(
-          child: PageView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: [
-              ListView.builder(
-                  itemCount: 8,
-                  itemBuilder: (_, index) => Column(
-                        children: [
-                          JournalTile(
-                              journalModel: JournalModel(
-                                  createdAt: "2021-12-02T12:48:58.007Z",
-                                  id: "15987452625645625",
-                                  mediaType: "image",
-                                  feelings: "happy",
-                                  isLiked: false,
-                                  likes: 24,
-                                  comments: 15,
-                                  description: "tehre",
-                                  mediaUrl: "",
-                                  postedBy: JournalUserModel(
-                                      uid: "464",
-                                      profilePictureUrl:
-                                          "https://solh.s3.amazonaws.com/user/profile/1638601611065",
-                                      name: "Geetansh",
-                                      userType: "Volunteer"
-                                      // isSolhAdviser: false,
-                                      // isSolhCounselor: true,
-                                      // isSolhExpert: true,
-                                      ))),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 1.h),
-                            height: 0.8.h,
-                            color: Colors.green.shade400
-                                .withOpacity(0.25)
-                                .withAlpha(80)
-                                .withGreen(160),
-                          ),
-                        ],
-                      )),
-              Container()
-            ],
-            onPageChanged: (value) {
-              setState(() {
-                _currentPage = value;
-              });
-            },
-          ),
-        ),
+        // Expanded(
+        //   child: PageView(
+        //     physics: NeverScrollableScrollPhysics(),
+        //     controller: _pageController,
+        //     children: [
+        //       ListView.builder(
+        //           itemCount: 8,
+        //           itemBuilder: (_, index) => Column(
+        //                 children: [
+        //                   JournalTile(
+        //                       journalModel: JournalModel(
+        //                           bestComment: CommentModel(),
+        //                           createdAt: "2021-12-02T12:48:58.007Z",
+        //                           id: "15987452625645625",
+        //                           mediaType: "image",
+        //                           feelings: "happy",
+        //                           isLiked: false,
+        //                           likes: 24,
+        //                           comments: 15,
+        //                           description: "tehre",
+        //                           mediaUrl: "",
+        //                           postedBy: JournalUserModel(
+        //                               uid: "464",
+        //                               profilePictureUrl:
+        //                                   "https://solh.s3.amazonaws.com/user/profile/1638601611065",
+        //                               name: "Geetansh",
+        //                               userType: "Volunteer"
+        //                               // isSolhAdviser: false,
+        //                               // isSolhCounselor: true,
+        //                               // isSolhExpert: true,
+        //                               ))),
+        //                   Container(
+        //                     margin: EdgeInsets.symmetric(vertical: 1.h),
+        //                     height: 0.8.h,
+        //                     color: Colors.green.shade400
+        //                         .withOpacity(0.25)
+        //                         .withAlpha(80)
+        //                         .withGreen(160),
+        //                   ),
+        //                 ],
+        //               )),
+        //       Container()
+        //     ],
+        //     onPageChanged: (value) {
+        //       setState(() {
+        //         _currentPage = value;
+        //       });
+        //     },
+        //   ),
+        // ),
       ],
     );
   }

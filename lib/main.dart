@@ -4,8 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/shared-prefrences/session-cookie.dart';
+import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
@@ -14,17 +17,79 @@ final GlobalKey<NavigatorState> globalNavigatorKey =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(SolhApp());
+  if (FirebaseAuth.instance.currentUser != null) {
+    // print("user detected");
+    String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    print("*" * 30 + "\n" + "Id Token: $idToken");
+    await SessionCookie.createSessionCookie(idToken);
+    runApp(SplashScreen());
+  } else {
+    runApp(SolhApp(
+      isProfileCreated: false,
+    ));
+  }
 }
 
-class SolhApp extends StatelessWidget {
-  final _appRouter = AppRouter(globalNavigatorKey);
-  final SessionCookieSharedPrefrences _sessionCookie =
-      SessionCookieSharedPrefrences();
+class SplashScreen extends StatefulWidget {
+  SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  late Future<Map<String, dynamic>> _initialAppData;
+
+  Future<Map<String, dynamic>> _initApp() async {
+    Map<String, dynamic> initialAppData = {};
+    print("cejckndad a");
+    initialAppData["isProfileCreated"] =
+        await userBlocNetwork.isProfileCreated();
+    print("completed");
+
+    return initialAppData;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initialAppData = _initApp();
+  }
 
   @override
   Widget build(BuildContext context) {
-    _sessionCookie.setSessionKey();
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _initialAppData,
+      builder: (_, asyncSnapshot) => asyncSnapshot.hasData
+          ? SolhApp(
+              isProfileCreated: asyncSnapshot.requireData["isProfileCreated"],
+            )
+          : MaterialApp(
+              home: Scaffold(
+                body: Container(
+                  child: Center(
+                    child: Text(
+                      "Splash Logo",
+                      style: TextStyle(fontSize: 28),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+class SolhApp extends StatelessWidget {
+  SolhApp({Key? key, required bool isProfileCreated})
+      : _isProfileCreated = isProfileCreated,
+        super(key: key);
+
+  final bool _isProfileCreated;
+  final _appRouter = AppRouter(globalNavigatorKey);
+
+  @override
+  Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp.router(
         supportedLocales: [
@@ -33,9 +98,8 @@ class SolhApp extends StatelessWidget {
         localizationsDelegates: [CountryLocalizations.delegate],
         debugShowCheckedModeBanner: false,
         routerDelegate: _appRouter.delegate(
-            initialDeepLink: FirebaseAuth.instance.currentUser == null
-                ? "IntroCarouselScreen"
-                : "MasterScreen"),
+            initialDeepLink:
+                _isProfileCreated ? "MasterScreen" : "IntroCarouselScreen"),
         routeInformationParser: _appRouter.defaultRouteParser(),
         title: 'Solh App',
         theme: ThemeData(
@@ -57,7 +121,6 @@ class SolhApp extends StatelessWidget {
                   )),
                   backgroundColor:
                       MaterialStateProperty.all<Color>(SolhColors.green))),
-          // buttonBarTheme: ButtonBarThemeData(alignment: MainAxisAlignment.center),
           inputDecorationTheme: InputDecorationTheme(),
         ),
       );

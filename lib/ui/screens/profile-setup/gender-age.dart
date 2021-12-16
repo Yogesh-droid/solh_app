@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/profile-setup/email.dart';
+import 'package:solh/model/user/provider-user.dart';
+import 'package:solh/ui/screens/profile-setup/profile-created.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/buttons/skip-button.dart';
@@ -24,7 +26,16 @@ class GenderAndAgePage extends StatefulWidget {
 }
 
 class _GenderAndAgePageState extends State<GenderAndAgePage> {
-  String _dropdownValue = "M";
+  String _dropdownValue = "N/A";
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<ProviderUser>(context, listen: false).setGender =
+        _dropdownValue;
+    Provider.of<ProviderUser>(context, listen: false).setDob =
+        DateTime.now().subtract(Duration(days: 4749)).toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +74,9 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                       underline: SizedBox(),
                       value: _dropdownValue,
                       onChanged: (String? newValue) {
+                        print(newValue);
+                        Provider.of<ProviderUser>(context, listen: false)
+                            .setGender = newValue.toString();
                         setState(() {
                           _dropdownValue = newValue!;
                         });
@@ -71,55 +85,60 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                       items: [
                         DropdownMenuItem(
                           child: Text("Male"),
-                          value: "M",
+                          value: "Male",
                         ),
-                        DropdownMenuItem(child: Text("Female"), value: "F"),
+                        DropdownMenuItem(
+                            child: Text("Female"), value: "Female"),
                         DropdownMenuItem(
                           child: Text("N/A"),
-                          value: "N",
+                          value: "N/A",
                         )
                       ]),
                 ),
                 SizedBox(
                   height: 2.h,
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                      height: 6.1.h,
-                      width: MediaQuery.of(context).size.width / 1.1,
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          border: Border.all(
-                            color: SolhColors.green,
-                          )),
-                      alignment: Alignment.centerLeft,
-                      child: DateTimePicker(
-                        // initialValue: 'Select DOB',
-                        initialDate:
-                            DateTime.now().subtract(Duration(days: 4749)),
-                        style: SolhTextStyles.ProfileMenuGreyText,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now().subtract(Duration(days: 4749)),
-                        dateLabelText: 'Date',
-                        onChanged: (val) => print(val),
-                        decoration: InputDecoration(border: InputBorder.none),
-                        validator: (val) {
-                          print(val);
-                          return null;
-                        },
-                        onSaved: (val) => print(val),
-                      )),
-                ),
+                Container(
+                    height: 6.1.h,
+                    width: MediaQuery.of(context).size.width / 1.1,
+                    padding: EdgeInsets.symmetric(horizontal: 4.w),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        border: Border.all(
+                          color: SolhColors.green,
+                        )),
+                    alignment: Alignment.centerLeft,
+                    child: DateTimePicker(
+                      initialValue: DateTime.now()
+                          .subtract(Duration(days: 4749))
+                          .toString(),
+                      initialDate:
+                          DateTime.now().subtract(Duration(days: 4749)),
+                      style: SolhTextStyles.ProfileMenuGreyText,
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now().subtract(Duration(days: 4749)),
+                      dateLabelText: 'Date',
+                      onChanged: (val) =>
+                          Provider.of<ProviderUser>(context, listen: false)
+                              .setDob = val,
+                      decoration: InputDecoration(border: InputBorder.none),
+                      validator: (val) {
+                        print(val);
+                        return null;
+                      },
+                      onSaved: (val) => print(val),
+                    )),
               ]),
             ),
             SolhGreenButton(
-              height: 6.h,
-              child: Text("Next"),
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => EmailScreen())),
-            ),
+                height: 6.h,
+                child: Text("Next"),
+                onPressed: () async {
+                  await Provider.of<ProviderUser>(context, listen: false)
+                      .updateUserDetails();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => ProfileCreated()));
+                }),
             SizedBox(
               height: 3.h,
             ),

@@ -121,7 +121,9 @@ class _JournalTileState extends State<JournalTile> {
                                   ),
                                 ),
                               ),
-                              PostMenuButton(),
+                              PostMenuButton(
+                                journalId: widget._journalModel!.id,
+                              ),
                             ],
                           ),
                         ),
@@ -315,9 +317,11 @@ class SolhExpertBadge extends StatelessWidget {
 }
 
 class PostMenuButton extends StatelessWidget {
-  const PostMenuButton({
-    Key? key,
-  }) : super(key: key);
+  const PostMenuButton({Key? key, required String journalId})
+      : _journalId = journalId,
+        super(key: key);
+
+  final String _journalId;
 
   @override
   Widget build(BuildContext context) {
@@ -367,75 +371,74 @@ class PostMenuButton extends StatelessWidget {
                     horizontal: MediaQuery.of(context).size.width / 20,
                     vertical: MediaQuery.of(context).size.height / 80,
                   ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: SolhColors.grey239),
-                  )),
                   child: Text(
-                    "Save this post",
+                    "Delete this post",
                   ),
                 ),
+                onTap: () {
+                  print("deleted");
+                },
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
               ),
-              PopupMenuItem(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 20,
-                    vertical: MediaQuery.of(context).size.height / 80,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: SolhColors.grey239),
-                  )),
-                  child: Text(
-                    "Don't see this post again",
-                  ),
-                ),
-                value: 2,
-                textStyle: SolhTextStyles.JournalingPostMenuText,
-                padding: EdgeInsets.zero,
-              ),
-              PopupMenuItem(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 20,
-                    vertical: MediaQuery.of(context).size.height / 80,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: SolhColors.grey239),
-                  )),
-                  child: Text(
-                    "Block this person",
-                  ),
-                ),
-                value: 3,
-                textStyle: SolhTextStyles.JournalingPostMenuText,
-                padding: EdgeInsets.zero,
-              ),
-              PopupMenuItem(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 20,
-                    vertical: MediaQuery.of(context).size.height / 80,
-                  ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: SolhColors.grey239),
-                  )),
-                  child: Text(
-                    "Report this post",
-                  ),
-                ),
-                value: 4,
-                textStyle: SolhTextStyles.JournalingPostMenuText,
-                padding: EdgeInsets.zero,
-              ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Don't see this post again",
+              //     ),
+              //   ),
+              //   value: 2,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Block this person",
+              //     ),
+              //   ),
+              //   value: 3,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Report this post",
+              //     ),
+              //   ),
+              //   value: 4,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
             ]);
   }
 }

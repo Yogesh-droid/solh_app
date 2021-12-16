@@ -9,13 +9,17 @@ class UserModel {
   String gender;
   String name;
   String bio;
+  String firstName;
+  // String lastName;
   // int likes;
   // int posts;
   int connections;
   int reviews;
 
   UserModel(
-      {required this.profilePictureUrl,
+      {required this.firstName,
+      // required this.lastName,
+      required this.profilePictureUrl,
       required this.isSolhAdviser,
       required this.isSolhCounselor,
       required this.isSolhExpert,
@@ -34,6 +38,8 @@ class UserModel {
     return UserModel(
         // likes: userJson["likes"],
         // posts: userJson["posts"],
+        firstName: userJson["first_name"],
+        // lastName: userJson["last_name"],
         profilePictureUrl: userJson["profilePicture"],
         connections: userJson["connections"],
         reviews: userJson["reviews"],

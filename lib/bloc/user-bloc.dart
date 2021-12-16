@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:rxdart/rxdart.dart';
@@ -6,8 +7,17 @@ import 'package:solh/services/network/network.dart';
 
 class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
+  String _sessionCookie = "";
 
   Stream<UserModel?> get userStateStream => _userController.stream;
+
+  set updateSessionCookie(String sessionCookie) {
+    _sessionCookie = sessionCookie;
+  }
+
+  String get getSessionCookie {
+    return _sessionCookie;
+  }
 
   Future<UserModel?> _fetchDetails() async {
     print("getting profile details");
@@ -28,6 +38,13 @@ class UserBlocNetwork {
         .then((user) => _userController.sink.add(user))
         .onError((error, stackTrace) =>
             _userController.sink.addError(error.toString()));
+  }
+
+  Future<bool> isProfileCreated() async {
+    var response = await Network.makeHttpGetRequestWithToken(
+        "${APIConstants.api}/api/is-profile-created");
+    print("is user profile created: " + response.toString());
+    return response["isCreated"];
   }
 
   Future<String?> CreateSessionCookie(String idToken) async {

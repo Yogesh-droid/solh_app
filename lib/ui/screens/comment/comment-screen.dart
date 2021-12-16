@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -25,17 +26,23 @@ class CommentScreen extends StatefulWidget {
 
 class _CommentScreenState extends State<CommentScreen> {
   CommentNetwork _commentNetwork = CommentNetwork();
-
-  @override
-  void initState() {
-    super.initState();
-    commentsBloc.getcommentsSnapshot(widget._journalModel!.id);
-  }
+  bool? _isLoginedUserJournal;
 
   final FocusNode _commentFocusnode = FocusNode();
   final TextEditingController _commentEditingController =
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  bool _isLoading = false;
+  CommentModel? _bestComment;
+
+  @override
+  void initState() {
+    super.initState();
+    commentsBloc.getcommentsSnapshot(widget._journalModel!.id);
+    _isLoginedUserJournal = widget._journalModel!.postedBy.uid ==
+        FirebaseAuth.instance.currentUser!.uid;
+    _bestComment = widget._journalModel!.bestComment;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,21 +71,51 @@ class _CommentScreenState extends State<CommentScreen> {
                               SliverToBoxAdapter(
                                 child: PostForComment(
                                   journalModel: widget._journalModel,
+                                  bestComment: _bestComment,
                                 ),
                               ),
                               SliverList(
                                   delegate: SliverChildBuilderDelegate(
                                       (_, index) => CommentBoxWidget(
+                                            deleteComment: () async {
+                                              await _commentNetwork
+                                                  .deleteComment(
+                                                      journalId: widget
+                                                          ._journalModel!.id,
+                                                      commentId: commentSnapshot
+                                                          .requireData[index]!
+                                                          .id);
+                                              setState(() {
+                                                commentSnapshot.requireData
+                                                    .remove(commentSnapshot
+                                                        .requireData[index]);
+                                              });
+                                              print("deleted");
+                                            },
+                                            makeBestComment: () async {
+                                              await _commentNetwork
+                                                  .makeBestComment(
+                                                      journalId: widget
+                                                          ._journalModel!.id,
+                                                      commentId: commentSnapshot
+                                                          .requireData[index]!
+                                                          .id);
+                                              setState(() {
+                                                _bestComment = commentSnapshot
+                                                    .requireData[index];
+                                                print(
+                                                    _bestComment!.commentBody);
+                                              });
+                                              print("deleted");
+                                            },
+                                            journalId: widget._journalModel!.id,
                                             commentModel: commentSnapshot
                                                 .requireData[index],
+                                            isUserPost:
+                                                _isLoginedUserJournal ?? false,
                                           ),
                                       childCount:
-                                          commentSnapshot.requireData.length)
-
-                                  // ListView.builder(
-                                  //     itemCount: 8,
-                                  //     itemBuilder: (_, index) => CommentBoxWidget()),
-                                  ),
+                                          commentSnapshot.requireData.length)),
                             ],
                           );
                         else
@@ -110,21 +147,39 @@ class _CommentScreenState extends State<CommentScreen> {
                             ),
                           ),
                           IconButton(
-                              onPressed: () async {
-                                if (_commentEditingController.text != '') {
-                                  print("comment");
-                                  await _commentNetwork.addComment(
-                                      widget._journalModel!.id,
-                                      _commentEditingController.text);
-                                  _commentEditingController.clear();
-                                  _scrollController.animateTo(0,
-                                      duration: Duration(milliseconds: 500),
-                                      curve: Curves.easeIn);
-                                  commentsBloc.getcommentsSnapshot(
-                                      widget._journalModel!.id);
-                                }
-                              },
-                              icon: Icon(Icons.send))
+                              onPressed: _isLoading
+                                  ? null
+                                  : () async {
+                                      if (_commentEditingController.text !=
+                                          '') {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        print("comment");
+                                        await _commentNetwork.addComment(
+                                            journalId: widget._journalModel!.id,
+                                            commentBody:
+                                                _commentEditingController.text);
+                                        _commentEditingController.clear();
+                                        _scrollController.animateTo(0,
+                                            duration:
+                                                Duration(milliseconds: 500),
+                                            curve: Curves.easeIn);
+                                        commentsBloc.getcommentsSnapshot(
+                                            widget._journalModel!.id);
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    },
+                              icon: _isLoading
+                                  ? Container(
+                                      height: 4.w,
+                                      width: 4.w,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2.5,
+                                      ))
+                                  : Icon(Icons.send))
                         ],
                       ),
                     ),
@@ -202,81 +257,236 @@ class _CommentScreenState extends State<CommentScreen> {
 }
 
 class CommentBoxWidget extends StatelessWidget {
-  const CommentBoxWidget({
+  CommentBoxWidget({
     Key? key,
+    required String journalId,
+    required bool isUserPost,
     required CommentModel? commentModel,
+    required VoidCallback? deleteComment,
+    required VoidCallback makeBestComment,
   })  : _commentModel = commentModel,
+        _isUserPost = isUserPost,
+        _journalId = journalId,
+        _deleteComment = deleteComment,
+        _makeBestComment = makeBestComment,
         super(key: key);
 
+  final VoidCallback? _deleteComment;
+  final String _journalId;
+  final VoidCallback _makeBestComment;
   final CommentModel? _commentModel;
+  final bool _isUserPost;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 1.5.h),
       color: Color.fromRGBO(245, 245, 245, 0.75),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                      _commentModel!.user.profilePicture,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6.h,
-                    width: 2.w,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Row(
+                      CircleAvatar(
+                        backgroundImage: CachedNetworkImageProvider(
+                          _commentModel!.user.profilePicture,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 6.h,
+                        width: 2.w,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            children: [
+                              Text(
+                                _commentModel!.user.name,
+                                style: TextStyle(color: Color(0xFF666666)),
+                              ),
+                              SizedBox(
+                                width: 1.w,
+                              ),
+                              SolhExpertBadge()
+                            ],
+                          ),
                           Text(
-                            _commentModel!.user.name,
+                            timeago.format(
+                                DateTime.parse(_commentModel!.createdAt)),
                             style: TextStyle(color: Color(0xFF666666)),
-                          ),
-                          SizedBox(
-                            width: 1.w,
-                          ),
-                          SolhExpertBadge()
+                          )
                         ],
                       ),
-                      Text(
-                        timeago
-                            .format(DateTime.parse(_commentModel!.createdAt)),
-                        style: TextStyle(color: Color(0xFF666666)),
-                      )
                     ],
                   ),
                 ],
               ),
+              Divider(),
+              Container(
+                padding: EdgeInsets.all(2.w),
+                child: Text(
+                  _commentModel!.commentBody,
+                  style: TextStyle(height: 1.4, color: Color(0xFF222222)),
+                ),
+              ),
             ],
           ),
-          Divider(),
-          Container(
-            padding: EdgeInsets.all(2.w),
-            child: Text(
-              _commentModel!.commentBody,
-              style: TextStyle(height: 1.4, color: Color(0xFF222222)),
-            ),
-          ),
+          CommentMenuButton(
+              makeBestComment: _makeBestComment,
+              commentId: _commentModel!.id,
+              journalId: _journalId,
+              deleteJournal: _deleteComment),
         ],
       ),
     );
   }
 }
 
-class PostForComment extends StatelessWidget {
-  const PostForComment({Key? key, required JournalModel? journalModel})
-      : _journalModel = journalModel,
+class CommentMenuButton extends StatelessWidget {
+  CommentMenuButton({
+    Key? key,
+    required String commentId,
+    required String journalId,
+    required VoidCallback? deleteJournal,
+    required VoidCallback? makeBestComment,
+  })  : _deleteJournal = deleteJournal,
+        _commentId = commentId,
+        _journalId = journalId,
+        _makeBestComment = makeBestComment,
         super(key: key);
 
+  final VoidCallback? _deleteJournal;
+  final String _commentId;
+  final String _journalId;
+  final VoidCallback? _makeBestComment;
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton(
+        icon: Icon(
+          Icons.more_vert,
+          color: SolhColors.grey102,
+        ),
+        iconSize: 20,
+        color: SolhColors.white,
+        padding: EdgeInsets.zero,
+        offset: Offset(10, 0),
+        itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 20,
+                    vertical: MediaQuery.of(context).size.height / 80,
+                  ),
+                  decoration: BoxDecoration(
+                      border: Border(
+                    bottom: BorderSide(color: SolhColors.grey239),
+                  )),
+                  child: Text(
+                    "Delete this comment",
+                  ),
+                ),
+                onTap: _deleteJournal,
+                value: 1,
+                textStyle: SolhTextStyles.JournalingPostMenuText,
+                padding: EdgeInsets.zero,
+              ),
+              PopupMenuItem(
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 20,
+                    vertical: MediaQuery.of(context).size.height / 80,
+                  ),
+                  child: Text(
+                    "Select for best comment",
+                  ),
+                ),
+                onTap: _makeBestComment,
+                value: 1,
+                textStyle: SolhTextStyles.JournalingPostMenuText,
+                padding: EdgeInsets.zero,
+              ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Don't see this post again",
+              //     ),
+              //   ),
+              //   value: 2,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Block this person",
+              //     ),
+              //   ),
+              //   value: 3,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
+              // PopupMenuItem(
+              //   child: Container(
+              //     alignment: Alignment.centerLeft,
+              //     padding: EdgeInsets.symmetric(
+              //       horizontal: MediaQuery.of(context).size.width / 20,
+              //       vertical: MediaQuery.of(context).size.height / 80,
+              //     ),
+              //     decoration: BoxDecoration(
+              //         border: Border(
+              //       bottom: BorderSide(color: SolhColors.grey239),
+              //     )),
+              //     child: Text(
+              //       "Report this post",
+              //     ),
+              //   ),
+              //   value: 4,
+              //   textStyle: SolhTextStyles.JournalingPostMenuText,
+              //   padding: EdgeInsets.zero,
+              // ),
+            ]);
+  }
+}
+
+class PostForComment extends StatelessWidget {
+  const PostForComment(
+      {Key? key,
+      required JournalModel? journalModel,
+      required CommentModel? bestComment})
+      : _journalModel = journalModel,
+        _bestComment = bestComment,
+        super(key: key);
+
+  final CommentModel? _bestComment;
   final JournalModel? _journalModel;
   @override
   Widget build(BuildContext context) {
@@ -306,13 +516,16 @@ class PostForComment extends StatelessWidget {
         Row(
           children: [
             Text(
-              "Most Upvoted ",
+              "Comments",
               style: SolhTextStyles.mostUpvoted,
             ),
-            Icon(CupertinoIcons.chevron_down, size: 16, color: SolhColors.green)
+            // Icon(CupertinoIcons.chevron_down, size: 16, color: SolhColors.green)
           ],
         ),
-        BestCommentWidget()
+        if (_bestComment != null)
+          BestCommentWidget(
+            commentModel: _bestComment,
+          )
       ],
     );
   }
@@ -321,7 +534,11 @@ class PostForComment extends StatelessWidget {
 class BestCommentWidget extends StatelessWidget {
   const BestCommentWidget({
     Key? key,
-  }) : super(key: key);
+    required CommentModel? commentModel,
+  })  : _commentModel = commentModel,
+        super(key: key);
+
+  final CommentModel? _commentModel;
 
   @override
   Widget build(BuildContext context) {
@@ -336,14 +553,21 @@ class BestCommentWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  CircleAvatar(),
+                  CircleAvatar(
+                    backgroundImage: CachedNetworkImageProvider(
+                        _commentModel!.user.profilePicture),
+                  ),
                   SizedBox(
                     height: 6.h,
                     width: 2.w,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [Text("Rhythmm Gwari"), Text("2D ago")],
+                    children: [
+                      Text(_commentModel!.user.name),
+                      Text(timeago
+                          .format(DateTime.parse(_commentModel!.createdAt)))
+                    ],
                   ),
                 ],
               ),
@@ -383,7 +607,7 @@ class BestCommentWidget extends StatelessWidget {
                 color: SolhColors.green,
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Text(
-              '''❝Accept yourself, love yourself, and keep moving forward. If you want to fly, you have to give up what weighs you down.❞''',
+              _commentModel!.commentBody,
               style: TextStyle(height: 1.4, color: Colors.white),
             ),
           ),

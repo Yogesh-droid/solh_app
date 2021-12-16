@@ -40,6 +40,7 @@ class EnterDescriptionPage extends StatelessWidget {
               height: 3.5.h,
             ),
             TextField(
+              controller: _descriptionEditingController,
               maxLines: 4,
               decoration: InputDecoration(
                   hintText: "Add Description(Optional)",
@@ -59,7 +60,7 @@ class EnterDescriptionPage extends StatelessWidget {
             SizedBox(
               height: 2.h,
             ),
-            SkipButton(),
+            // SkipButton(),
           ],
         ),
       ),

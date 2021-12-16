@@ -35,16 +35,16 @@ class ProfileCreated extends StatelessWidget {
               onPressed: () =>
                   AutoRouter.of(context).push(MasterScreenRouter()),
             ),
-            SizedBox(
-              height: 1.h,
-            ),
-            SolhGreenBorderButton(
-              child: Text(
-                "Create Anonymous",
-                style: SolhTextStyles.GreenBorderButtonText,
-              ),
-              height: 6.h,
-            ),
+            // SizedBox(
+            //   height: 1.h,
+            // ),
+            // SolhGreenBorderButton(
+            //   child: Text(
+            //     "Create Anonymous",
+            //     style: SolhTextStyles.GreenBorderButtonText,
+            //   ),
+            //   height: 6.h,
+            // ),
             SizedBox(
               height: 8.h,
             ),
