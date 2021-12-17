@@ -108,7 +108,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                               });
                                               print("deleted");
                                             },
-                                            journalId: widget._journalModel!.id,
+                                            journalModel: widget._journalModel!,
                                             commentModel: commentSnapshot
                                                 .requireData[index],
                                             isUserPost:
@@ -138,7 +138,7 @@ class _CommentScreenState extends State<CommentScreen> {
                             child: TextField(
                               controller: _commentEditingController,
                               focusNode: _commentFocusnode,
-                              autofocus: true,
+                              // autofocus: true,
                               decoration: InputDecoration(
                                   hintText: "Comment",
                                   border: InputBorder.none),
@@ -259,20 +259,20 @@ class _CommentScreenState extends State<CommentScreen> {
 class CommentBoxWidget extends StatelessWidget {
   CommentBoxWidget({
     Key? key,
-    required String journalId,
+    required JournalModel journalModel,
     required bool isUserPost,
     required CommentModel? commentModel,
     required VoidCallback? deleteComment,
     required VoidCallback makeBestComment,
   })  : _commentModel = commentModel,
         _isUserPost = isUserPost,
-        _journalId = journalId,
+        _journalModel = journalModel,
         _deleteComment = deleteComment,
         _makeBestComment = makeBestComment,
         super(key: key);
 
   final VoidCallback? _deleteComment;
-  final String _journalId;
+  final JournalModel _journalModel;
   final VoidCallback _makeBestComment;
   final CommentModel? _commentModel;
   final bool _isUserPost;
@@ -339,11 +339,15 @@ class CommentBoxWidget extends StatelessWidget {
               ),
             ],
           ),
-          CommentMenuButton(
-              makeBestComment: _makeBestComment,
-              commentId: _commentModel!.id,
-              journalId: _journalId,
-              deleteJournal: _deleteComment),
+          if (_commentModel!.user.uid ==
+                  FirebaseAuth.instance.currentUser!.uid ||
+              _journalModel.postedBy.uid ==
+                  FirebaseAuth.instance.currentUser!.uid)
+            CommentMenuButton(
+                makeBestComment: _makeBestComment,
+                commentId: _commentModel!.id,
+                journalModel: _journalModel,
+                deleteJournal: _deleteComment),
         ],
       ),
     );
@@ -354,18 +358,18 @@ class CommentMenuButton extends StatelessWidget {
   CommentMenuButton({
     Key? key,
     required String commentId,
-    required String journalId,
+    required JournalModel journalModel,
     required VoidCallback? deleteJournal,
     required VoidCallback? makeBestComment,
   })  : _deleteJournal = deleteJournal,
         _commentId = commentId,
-        _journalId = journalId,
+        _journalModel = journalModel,
         _makeBestComment = makeBestComment,
         super(key: key);
 
   final VoidCallback? _deleteJournal;
   final String _commentId;
-  final String _journalId;
+  final JournalModel _journalModel;
   final VoidCallback? _makeBestComment;
 
   @override
@@ -387,10 +391,13 @@ class CommentMenuButton extends StatelessWidget {
                     horizontal: MediaQuery.of(context).size.width / 20,
                     vertical: MediaQuery.of(context).size.height / 80,
                   ),
-                  decoration: BoxDecoration(
-                      border: Border(
-                    bottom: BorderSide(color: SolhColors.grey239),
-                  )),
+                  decoration: _journalModel.postedBy.uid ==
+                          FirebaseAuth.instance.currentUser!.uid
+                      ? BoxDecoration(
+                          border: Border(
+                          bottom: BorderSide(color: SolhColors.grey239),
+                        ))
+                      : null,
                   child: Text(
                     "Delete this comment",
                   ),
@@ -400,22 +407,24 @@ class CommentMenuButton extends StatelessWidget {
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
               ),
-              PopupMenuItem(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width / 20,
-                    vertical: MediaQuery.of(context).size.height / 80,
+              if (_journalModel.postedBy.uid ==
+                  FirebaseAuth.instance.currentUser!.uid)
+                PopupMenuItem(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width / 20,
+                      vertical: MediaQuery.of(context).size.height / 80,
+                    ),
+                    child: Text(
+                      "Select for best comment",
+                    ),
                   ),
-                  child: Text(
-                    "Select for best comment",
-                  ),
+                  onTap: _makeBestComment,
+                  value: 1,
+                  textStyle: SolhTextStyles.JournalingPostMenuText,
+                  padding: EdgeInsets.zero,
                 ),
-                onTap: _makeBestComment,
-                value: 1,
-                textStyle: SolhTextStyles.JournalingPostMenuText,
-                padding: EdgeInsets.zero,
-              ),
               // PopupMenuItem(
               //   child: Container(
               //     alignment: Alignment.centerLeft,
