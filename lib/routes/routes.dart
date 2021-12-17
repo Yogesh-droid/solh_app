@@ -116,8 +116,8 @@ import 'package:solh/ui/screens/sos/sos.dart';
       page: SetupSOSScreen,
     ),
     AutoRoute(
-      path: "Profile",
-      name: "SetupSOSScreenRouter",
+      path: "ProfileScreen",
+      name: "ProfileScreenRouter",
       page: SetupSOSScreen,
     )
   ],

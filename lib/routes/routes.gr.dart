@@ -72,6 +72,10 @@ class AppRouter extends _i9.RootStackRouter {
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.SetupSOSScreen());
     },
+    ProfileScreenRouter.name: (routeData) {
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i7.SetupSOSScreen());
+    },
     HomeScreenRouter.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i8.HomeScreen());
@@ -181,14 +185,16 @@ class AppRouter extends _i9.RootStackRouter {
         _i9.RouteConfig(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen'),
         _i9.RouteConfig(OTPScreenRouter.name, path: 'OTPScreen'),
         _i9.RouteConfig(SOSScreenRouter.name, path: 'SOSScreen'),
-        _i9.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS')
+        _i9.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS'),
+        _i9.RouteConfig(ProfileScreenRouter.name, path: 'ProfileScreen')
       ];
 }
 
-/// generated route for [_i1.MasterScreen]
+/// generated route for
+/// [_i1.MasterScreen]
 class MasterScreenRouter extends _i9.PageRouteInfo<MasterScreenRouterArgs> {
   MasterScreenRouter({int? index, List<_i9.PageRouteInfo>? children})
-      : super(name,
+      : super(MasterScreenRouter.name,
             path: 'MasterScreen',
             args: MasterScreenRouterArgs(index: index),
             initialChildren: children);
@@ -200,34 +206,46 @@ class MasterScreenRouterArgs {
   const MasterScreenRouterArgs({this.index});
 
   final int? index;
+
+  @override
+  String toString() {
+    return 'MasterScreenRouterArgs{index: $index}';
+  }
 }
 
-/// generated route for [_i2.IntroCrousel]
+/// generated route for
+/// [_i2.IntroCrousel]
 class IntroCarouselScreenRouter extends _i9.PageRouteInfo<void> {
-  const IntroCarouselScreenRouter() : super(name, path: 'IntroCarouselScreen');
+  const IntroCarouselScreenRouter()
+      : super(IntroCarouselScreenRouter.name, path: 'IntroCarouselScreen');
 
   static const String name = 'IntroCarouselScreenRouter';
 }
 
-/// generated route for [_i3.CreateProfileScreen]
+/// generated route for
+/// [_i3.CreateProfileScreen]
 class CreateProfileScreenRouter extends _i9.PageRouteInfo<void> {
-  const CreateProfileScreenRouter() : super(name, path: 'CreateProfileScreen');
+  const CreateProfileScreenRouter()
+      : super(CreateProfileScreenRouter.name, path: 'CreateProfileScreen');
 
   static const String name = 'CreateProfileScreenRouter';
 }
 
-/// generated route for [_i4.PhoneAuthScreen]
+/// generated route for
+/// [_i4.PhoneAuthScreen]
 class PhoneAuthScreenRouter extends _i9.PageRouteInfo<void> {
-  const PhoneAuthScreenRouter() : super(name, path: 'PhoneAuthScreen');
+  const PhoneAuthScreenRouter()
+      : super(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen');
 
   static const String name = 'PhoneAuthScreenRouter';
 }
 
-/// generated route for [_i5.OTPScreen]
+/// generated route for
+/// [_i5.OTPScreen]
 class OTPScreenRouter extends _i9.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
       {_i20.Key? key, required String phoneNo, required String verificationId})
-      : super(name,
+      : super(OTPScreenRouter.name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
                 key: key, phoneNo: phoneNo, verificationId: verificationId));
@@ -244,77 +262,107 @@ class OTPScreenRouterArgs {
   final String phoneNo;
 
   final String verificationId;
+
+  @override
+  String toString() {
+    return 'OTPScreenRouterArgs{key: $key, phoneNo: $phoneNo, verificationId: $verificationId}';
+  }
 }
 
-/// generated route for [_i6.SOSDialog]
+/// generated route for
+/// [_i6.SOSDialog]
 class SOSScreenRouter extends _i9.PageRouteInfo<void> {
-  const SOSScreenRouter() : super(name, path: 'SOSScreen');
+  const SOSScreenRouter() : super(SOSScreenRouter.name, path: 'SOSScreen');
 
   static const String name = 'SOSScreenRouter';
 }
 
-/// generated route for [_i7.SetupSOSScreen]
+/// generated route for
+/// [_i7.SetupSOSScreen]
 class SetupSOSScreenRouter extends _i9.PageRouteInfo<void> {
-  const SetupSOSScreenRouter() : super(name, path: 'SetupSOS');
+  const SetupSOSScreenRouter()
+      : super(SetupSOSScreenRouter.name, path: 'SetupSOS');
 
   static const String name = 'SetupSOSScreenRouter';
 }
 
-/// generated route for [_i8.HomeScreen]
+/// generated route for
+/// [_i7.SetupSOSScreen]
+class ProfileScreenRouter extends _i9.PageRouteInfo<void> {
+  const ProfileScreenRouter()
+      : super(ProfileScreenRouter.name, path: 'ProfileScreen');
+
+  static const String name = 'ProfileScreenRouter';
+}
+
+/// generated route for
+/// [_i8.HomeScreen]
 class HomeScreenRouter extends _i9.PageRouteInfo<void> {
-  const HomeScreenRouter() : super(name, path: 'HomeScreen');
+  const HomeScreenRouter() : super(HomeScreenRouter.name, path: 'HomeScreen');
 
   static const String name = 'HomeScreenRouter';
 }
 
-/// generated route for [_i9.EmptyRouterPage]
+/// generated route for
+/// [_i9.EmptyRouterPage]
 class JournalingScreenRouter extends _i9.PageRouteInfo<void> {
   const JournalingScreenRouter({List<_i9.PageRouteInfo>? children})
-      : super(name, path: 'JournalingScreen', initialChildren: children);
+      : super(JournalingScreenRouter.name,
+            path: 'JournalingScreen', initialChildren: children);
 
   static const String name = 'JournalingScreenRouter';
 }
 
-/// generated route for [_i10.GetHelpScreen]
+/// generated route for
+/// [_i10.GetHelpScreen]
 class GetHelpScreenRouter extends _i9.PageRouteInfo<void> {
-  const GetHelpScreenRouter() : super(name, path: 'GetHelpScreen');
+  const GetHelpScreenRouter()
+      : super(GetHelpScreenRouter.name, path: 'GetHelpScreen');
 
   static const String name = 'GetHelpScreenRouter';
 }
 
-/// generated route for [_i11.MyGoalsScreen]
+/// generated route for
+/// [_i11.MyGoalsScreen]
 class MyGoalsScreenRouter extends _i9.PageRouteInfo<void> {
-  const MyGoalsScreenRouter() : super(name, path: 'MyGoalsScreen');
+  const MyGoalsScreenRouter()
+      : super(MyGoalsScreenRouter.name, path: 'MyGoalsScreen');
 
   static const String name = 'MyGoalsScreenRouter';
 }
 
-/// generated route for [_i9.EmptyRouterPage]
+/// generated route for
+/// [_i9.EmptyRouterPage]
 class MyProfileScreenRouter extends _i9.PageRouteInfo<void> {
   const MyProfileScreenRouter({List<_i9.PageRouteInfo>? children})
-      : super(name, path: 'MyProfileScreen', initialChildren: children);
+      : super(MyProfileScreenRouter.name,
+            path: 'MyProfileScreen', initialChildren: children);
 
   static const String name = 'MyProfileScreenRouter';
 }
 
-/// generated route for [_i12.JournalingScreen]
+/// generated route for
+/// [_i12.JournalingScreen]
 class JournalingScreen extends _i9.PageRouteInfo<void> {
-  const JournalingScreen() : super(name, path: '');
+  const JournalingScreen() : super(JournalingScreen.name, path: '');
 
   static const String name = 'JournalingScreen';
 }
 
-/// generated route for [_i13.CreatePostScreen]
+/// generated route for
+/// [_i13.CreatePostScreen]
 class CreatePostScreenRouter extends _i9.PageRouteInfo<void> {
-  const CreatePostScreenRouter() : super(name, path: 'CreatePostScreen');
+  const CreatePostScreenRouter()
+      : super(CreatePostScreenRouter.name, path: 'CreatePostScreen');
 
   static const String name = 'CreatePostScreenRouter';
 }
 
-/// generated route for [_i14.ConnectProfileScreen]
+/// generated route for
+/// [_i14.ConnectProfileScreen]
 class ConnectScreenRouter extends _i9.PageRouteInfo<ConnectScreenRouterArgs> {
   ConnectScreenRouter({_i20.Key? key, required String uid})
-      : super(name,
+      : super(ConnectScreenRouter.name,
             path: 'ConnectScreen',
             args: ConnectScreenRouterArgs(key: key, uid: uid));
 
@@ -327,12 +375,18 @@ class ConnectScreenRouterArgs {
   final _i20.Key? key;
 
   final String uid;
+
+  @override
+  String toString() {
+    return 'ConnectScreenRouterArgs{key: $key, uid: $uid}';
+  }
 }
 
-/// generated route for [_i15.CommentScreen]
+/// generated route for
+/// [_i15.CommentScreen]
 class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
   CommentScreenRouter({_i20.Key? key, required _i21.JournalModel? journalModel})
-      : super(name,
+      : super(CommentScreenRouter.name,
             path: 'CommentScreen',
             args:
                 CommentScreenRouterArgs(key: key, journalModel: journalModel));
@@ -346,33 +400,43 @@ class CommentScreenRouterArgs {
   final _i20.Key? key;
 
   final _i21.JournalModel? journalModel;
+
+  @override
+  String toString() {
+    return 'CommentScreenRouterArgs{key: $key, journalModel: $journalModel}';
+  }
 }
 
-/// generated route for [_i16.MyProfileScreen]
+/// generated route for
+/// [_i16.MyProfileScreen]
 class MyProfileScreen extends _i9.PageRouteInfo<void> {
-  const MyProfileScreen() : super(name, path: '');
+  const MyProfileScreen() : super(MyProfileScreen.name, path: '');
 
   static const String name = 'MyProfileScreen';
 }
 
-/// generated route for [_i17.PostScreen]
+/// generated route for
+/// [_i17.PostScreen]
 class PostScreenRouter extends _i9.PageRouteInfo<void> {
-  const PostScreenRouter() : super(name, path: 'PostScreen');
+  const PostScreenRouter() : super(PostScreenRouter.name, path: 'PostScreen');
 
   static const String name = 'PostScreenRouter';
 }
 
-/// generated route for [_i18.SettingsScreen]
+/// generated route for
+/// [_i18.SettingsScreen]
 class SettingsScreenRouter extends _i9.PageRouteInfo<void> {
-  const SettingsScreenRouter() : super(name, path: 'SettingsScreen');
+  const SettingsScreenRouter()
+      : super(SettingsScreenRouter.name, path: 'SettingsScreen');
 
   static const String name = 'SettingsScreenRouter';
 }
 
-/// generated route for [_i19.AccountPrivacyScreen]
+/// generated route for
+/// [_i19.AccountPrivacyScreen]
 class AccountPrivacyScreenRouter extends _i9.PageRouteInfo<void> {
   const AccountPrivacyScreenRouter()
-      : super(name, path: 'AccountPrivacyScreen');
+      : super(AccountPrivacyScreenRouter.name, path: 'AccountPrivacyScreen');
 
   static const String name = 'AccountPrivacyScreenRouter';
 }
