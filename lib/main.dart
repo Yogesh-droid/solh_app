@@ -67,12 +67,9 @@ class _SplashScreenState extends State<SplashScreen> {
           : MaterialApp(
               home: Scaffold(
                 body: Container(
+                  padding: EdgeInsets.all(24.0),
                   child: Center(
-                    child: Text(
-                      "Splash Logo",
-                      style: TextStyle(fontSize: 28),
-                    ),
-                  ),
+                      child: Image.asset("assets/images/logo/solh-logo.png")),
                 ),
               ),
             ),

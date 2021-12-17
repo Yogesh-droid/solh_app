@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/user/session-cookie.dart';
 
 class FirebaseNetwork {
   static signInWithPhoneNumber(String phoneNo,
@@ -35,8 +37,26 @@ class FirebaseNetwork {
             print("user token" + userCredential.credential!.token.toString());
             print("verified");
 
-            AutoRouter.of(globalNavigatorKey.currentState!.context)
-                .push(MasterScreenRouter());
+            print("user idToken: ${userCredential.credential!.token}");
+            bool isSessionCookieCreated =
+                await SessionCookie.createSessionCookie(
+                    userCredential.credential!.token.toString());
+            print(isSessionCookieCreated);
+            print("checking is profile created");
+            bool isProfileCreated = await userBlocNetwork.isProfileCreated();
+            print("profile checking complete");
+
+            print("^" * 30 +
+                "Is Profile Created:" +
+                isProfileCreated.toString() +
+                "^" * 30);
+            isProfileCreated
+                ? AutoRouter.of(globalNavigatorKey.currentState!.context)
+                    .pushAndPopUntil(MasterScreenRouter(),
+                        predicate: (value) => false)
+                : AutoRouter.of(globalNavigatorKey.currentState!.context)
+                    .pushAndPopUntil(CreateProfileScreenRouter(),
+                        predicate: (value) => false);
           });
     } on FirebaseAuthException catch (e) {
       print("bdkasbfk fk sbg kbjkrgb kajdfngljnealrgnalsf ;lawrnh");
