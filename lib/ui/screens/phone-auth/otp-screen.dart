@@ -78,9 +78,12 @@ class _OTPScreenState extends State<OTPScreen> {
                           isProfileCreated.toString() +
                           "^" * 30);
                       isProfileCreated
-                          ? AutoRouter.of(context).push(MasterScreenRouter())
-                          : AutoRouter.of(context)
-                              .push(CreateProfileScreenRouter());
+                          ? AutoRouter.of(context).pushAndPopUntil(
+                              MasterScreenRouter(),
+                              predicate: (value) => false)
+                          : AutoRouter.of(context).pushAndPopUntil(
+                              CreateProfileScreenRouter(),
+                              predicate: (value) => false);
                     }).onError((error, stackTrace) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));

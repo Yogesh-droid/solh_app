@@ -16,20 +16,35 @@ class CreateJournal {
       required this.journalType});
 
   Future<String> postJournal() async {
-    Map<String, dynamic> apiResponse =
-        await Network.makeHttpPostRequestWithToken(
-            url: "${APIConstants.api}/api/create-user-post",
-            body: {
-          "description": description,
-          "mediaType": mimetype,
-          "mediaUrl": mediaUrl,
-          "feelings": feelings,
-          "journalType": journalType
-        }).onError((error, stackTrace) {
-      return {"error": error};
-    });
-    print("resposne: " + apiResponse.toString());
-    return "posted";
+    if (mediaUrl != null) {
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpPostRequestWithToken(
+              url: "${APIConstants.api}/api/create-user-post",
+              body: {
+            "description": description,
+            "mediaType": mimetype,
+            "mediaUrl": mediaUrl,
+            "feelings": feelings,
+            "journalType": journalType
+          }).onError((error, stackTrace) {
+        return {"error": error};
+      });
+      print("resposne: " + apiResponse.toString());
+      return "posted";
+    } else {
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpPostRequestWithToken(
+              url: "${APIConstants.api}/api/create-user-post",
+              body: {
+            "description": description,
+            "feelings": feelings,
+            "journalType": journalType
+          }).onError((error, stackTrace) {
+        return {"error": error};
+      });
+      print("resposne: " + apiResponse.toString());
+      return "posted";
+    }
   }
 }
 

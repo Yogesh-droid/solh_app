@@ -290,10 +290,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
   void _postJournal() async {
     if (_description != "") {
+      setState(() {
+        _isPosting = true;
+      });
       if (_croppedFile != null) {
-        setState(() {
-          _isPosting = true;
-        });
         Map<String, dynamic> response = await _uploadImage();
         print(response.toString());
         if (response["success"]) {
@@ -309,7 +309,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           setState(() {
             _isPosting = false;
           });
-
           Navigator.pop(context);
         }
       } else {
@@ -319,6 +318,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           journalType: _journalType,
         );
         _createJournal.postJournal();
+        setState(() {
+          _isPosting = false;
+        });
+        Navigator.pop(context);
       }
     }
   }

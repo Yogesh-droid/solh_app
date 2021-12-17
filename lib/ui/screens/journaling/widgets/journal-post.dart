@@ -151,7 +151,7 @@ class _JournalTileState extends State<JournalTile> {
                   ],
                 ),
               ),
-              if (widget._journalModel!.mediaUrl != "")
+              if (widget._journalModel!.mediaUrl != null)
                 Container(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.width,

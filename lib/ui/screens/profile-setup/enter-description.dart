@@ -23,45 +23,51 @@ class EnterDescriptionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProfileSetupAppBar(
-        title: "Description",
-        onBackButton: _onBack,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w),
-        child: Column(
-          children: [
-            Text(
-              "Tell others little bit about yourself",
-              style: SolhTextStyles.ProfileSetupSubHeading,
-            ),
-            SizedBox(
-              height: 3.5.h,
-            ),
-            TextField(
-              controller: _descriptionEditingController,
-              maxLines: 4,
-              decoration: InputDecoration(
-                  hintText: "Add Description(Optional)",
-                  border: OutlineInputBorder()),
-            ),
-            SizedBox(
-              height: 6.h,
-            ),
-            SolhGreenButton(
+    return WillPopScope(
+      onWillPop: () async {
+        _onBack();
+        return false;
+      },
+      child: Scaffold(
+        appBar: ProfileSetupAppBar(
+          title: "Description",
+          onBackButton: _onBack,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: Column(
+            children: [
+              Text(
+                "Tell others little bit about yourself",
+                style: SolhTextStyles.ProfileSetupSubHeading,
+              ),
+              SizedBox(
+                height: 3.5.h,
+              ),
+              TextField(
+                controller: _descriptionEditingController,
+                maxLines: 4,
+                decoration: InputDecoration(
+                    hintText: "Add Description(Optional)",
+                    border: OutlineInputBorder()),
+              ),
+              SizedBox(
                 height: 6.h,
-                child: Text("Next"),
-                onPressed: () {
-                  Provider.of<ProviderUser>(context, listen: false).setBio =
-                      _descriptionEditingController.text;
-                  _onNext();
-                }),
-            SizedBox(
-              height: 2.h,
-            ),
-            // SkipButton(),
-          ],
+              ),
+              SolhGreenButton(
+                  height: 6.h,
+                  child: Text("Next"),
+                  onPressed: () {
+                    Provider.of<ProviderUser>(context, listen: false).setBio =
+                        _descriptionEditingController.text;
+                    _onNext();
+                  }),
+              SizedBox(
+                height: 2.h,
+              ),
+              // SkipButton(),
+            ],
+          ),
         ),
       ),
     );

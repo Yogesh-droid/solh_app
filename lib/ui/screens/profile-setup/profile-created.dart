@@ -32,8 +32,9 @@ class ProfileCreated extends StatelessWidget {
             SolhGreenButton(
               child: Text("Lets Go"),
               height: 6.h,
-              onPressed: () =>
-                  AutoRouter.of(context).push(MasterScreenRouter()),
+              onPressed: () => AutoRouter.of(context).pushAndPopUntil(
+                  MasterScreenRouter(),
+                  predicate: (value) => false),
             ),
             // SizedBox(
             //   height: 1.h,

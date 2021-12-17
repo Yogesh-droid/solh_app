@@ -39,66 +39,30 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProfileSetupAppBar(
-        title: "Gender & Age",
-        onBackButton: widget._onBack,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w),
-        child: Column(
-          children: [
-            Text(
-              "Please select your gender & age group",
-              style: SolhTextStyles.ProfileSetupSubHeading,
-            ),
-            SizedBox(
-              height: 3.5.h,
-            ),
-            Expanded(
-              child: Column(children: [
-                Container(
-                  height: 6.1.h,
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      border: Border.all(
-                        color: SolhColors.green,
-                      )),
-                  child: DropdownButton(
-                      isExpanded: true,
-                      icon: Icon(CupertinoIcons.chevron_down),
-                      iconSize: 18,
-                      iconEnabledColor: SolhColors.green,
-                      underline: SizedBox(),
-                      value: _dropdownValue,
-                      onChanged: (String? newValue) {
-                        print(newValue);
-                        Provider.of<ProviderUser>(context, listen: false)
-                            .setGender = newValue.toString();
-                        setState(() {
-                          _dropdownValue = newValue!;
-                        });
-                      },
-                      style: TextStyle(color: SolhColors.green),
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Male"),
-                          value: "Male",
-                        ),
-                        DropdownMenuItem(
-                            child: Text("Female"), value: "Female"),
-                        DropdownMenuItem(
-                          child: Text("N/A"),
-                          value: "N/A",
-                        )
-                      ]),
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                Container(
+    return WillPopScope(
+      onWillPop: () async {
+        widget._onBack();
+        return false;
+      },
+      child: Scaffold(
+        appBar: ProfileSetupAppBar(
+          title: "Gender & Age",
+          onBackButton: widget._onBack,
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: Column(
+            children: [
+              Text(
+                "Please select your gender & age group",
+                style: SolhTextStyles.ProfileSetupSubHeading,
+              ),
+              SizedBox(
+                height: 3.5.h,
+              ),
+              Expanded(
+                child: Column(children: [
+                  Container(
                     height: 6.1.h,
                     width: MediaQuery.of(context).size.width / 1.1,
                     padding: EdgeInsets.symmetric(horizontal: 4.w),
@@ -107,46 +71,88 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                         border: Border.all(
                           color: SolhColors.green,
                         )),
-                    alignment: Alignment.centerLeft,
-                    child: DateTimePicker(
-                      initialValue: DateTime.now()
-                          .subtract(Duration(days: 4749))
-                          .toString(),
-                      initialDate:
-                          DateTime.now().subtract(Duration(days: 4749)),
-                      style: SolhTextStyles.ProfileMenuGreyText,
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now().subtract(Duration(days: 4749)),
-                      dateLabelText: 'Date',
-                      onChanged: (val) =>
+                    child: DropdownButton(
+                        isExpanded: true,
+                        icon: Icon(CupertinoIcons.chevron_down),
+                        iconSize: 18,
+                        iconEnabledColor: SolhColors.green,
+                        underline: SizedBox(),
+                        value: _dropdownValue,
+                        onChanged: (String? newValue) {
+                          print(newValue);
                           Provider.of<ProviderUser>(context, listen: false)
-                              .setDob = val,
-                      decoration: InputDecoration(border: InputBorder.none),
-                      validator: (val) {
-                        print(val);
-                        return null;
-                      },
-                      onSaved: (val) => print(val),
-                    )),
-              ]),
-            ),
-            SolhGreenButton(
+                              .setGender = newValue.toString();
+                          setState(() {
+                            _dropdownValue = newValue!;
+                          });
+                        },
+                        style: TextStyle(color: SolhColors.green),
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("Male"),
+                            value: "Male",
+                          ),
+                          DropdownMenuItem(
+                              child: Text("Female"), value: "Female"),
+                          DropdownMenuItem(
+                            child: Text("N/A"),
+                            value: "N/A",
+                          )
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Container(
+                      height: 6.1.h,
+                      width: MediaQuery.of(context).size.width / 1.1,
+                      padding: EdgeInsets.symmetric(horizontal: 4.w),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          border: Border.all(
+                            color: SolhColors.green,
+                          )),
+                      alignment: Alignment.centerLeft,
+                      child: DateTimePicker(
+                        initialValue: DateTime.now()
+                            .subtract(Duration(days: 4749))
+                            .toString(),
+                        initialDate:
+                            DateTime.now().subtract(Duration(days: 4749)),
+                        style: SolhTextStyles.ProfileMenuGreyText,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now().subtract(Duration(days: 4749)),
+                        dateLabelText: 'Date',
+                        onChanged: (val) =>
+                            Provider.of<ProviderUser>(context, listen: false)
+                                .setDob = val,
+                        decoration: InputDecoration(border: InputBorder.none),
+                        validator: (val) {
+                          print(val);
+                          return null;
+                        },
+                        onSaved: (val) => print(val),
+                      )),
+                ]),
+              ),
+              SolhGreenButton(
+                  height: 6.h,
+                  child: Text("Next"),
+                  onPressed: () async {
+                    await Provider.of<ProviderUser>(context, listen: false)
+                        .updateUserDetails();
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => ProfileCreated()));
+                  }),
+              SizedBox(
+                height: 3.h,
+              ),
+              SkipButton(),
+              SizedBox(
                 height: 6.h,
-                child: Text("Next"),
-                onPressed: () async {
-                  await Provider.of<ProviderUser>(context, listen: false)
-                      .updateUserDetails();
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ProfileCreated()));
-                }),
-            SizedBox(
-              height: 3.h,
-            ),
-            SkipButton(),
-            SizedBox(
-              height: 6.h,
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

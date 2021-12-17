@@ -6,11 +6,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/model/journal.dart';
+import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class AddProfilePhotoPage extends StatefulWidget {
   const AddProfilePhotoPage(
@@ -65,15 +68,16 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
           // CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
+            toolbarTitle: 'Edit Image',
+            activeControlsWidgetColor: SolhColors.green,
+            toolbarColor: SolhColors.green,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),
         iosUiSettings: IOSUiSettings(
           minimumAspectRatio: 1.0,
         ));
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
     setState(() {
       _isImageAdded = true;
     });
@@ -81,83 +85,94 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProfileSetupAppBar(
-        title: "Add a Profile Photo",
-        onBackButton: widget._onBack,
-      ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 12.h,
-          ),
-          if (_croppedFile != null)
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 30.5.w,
-                  child: CircleAvatar(
-                    radius: 30.w,
-                    backgroundImage: FileImage(_croppedFile!),
-                  ),
-                ),
-                Positioned(
-                    top: -2.h,
-                    right: 0,
-                    child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _croppedFile = null;
-                          });
-                        },
-                        icon: Icon(Icons.close)))
-              ],
-            )
-          else
-            AddProfilePictureIllustration(
-              onPressed: _pickImage,
+    return WillPopScope(
+      onWillPop: () async {
+        widget._onBack();
+        return false;
+      },
+      child: Scaffold(
+        appBar: ProfileSetupAppBar(
+          title: "Add a Profile Photo",
+          onBackButton: widget._onBack,
+        ),
+        body: Column(
+          children: [
+            SizedBox(
+              height: 12.h,
             ),
-          Expanded(child: Container()),
-          if (_croppedFile == null)
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SolhGreenButton(
-                  child: Text("Add Image"),
-                  height: 6.h,
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  onPressed: _pickImage,
-                ),
-                SizedBox(
-                  height: 2.h,
-                ),
-                SkipButton(
-                  onPressed: widget._onNext,
-                ),
-                SizedBox(
-                  height: 6.h,
-                ),
-              ],
-            )
-          else
-            Column(
-              children: [
-                SolhGreenButton(
-                  child: Text("Next"),
-                  height: 6.h,
-                  width: MediaQuery.of(context).size.width / 1.1,
-                  // onPressed: () => Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (_) => EnterDescriptionPage())
-                  //         ),
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-              ],
-            )
-        ],
+            if (_croppedFile != null)
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 30.5.w,
+                    child: CircleAvatar(
+                      radius: 30.w,
+                      backgroundImage: FileImage(_croppedFile!),
+                    ),
+                  ),
+                  Positioned(
+                      top: -2.h,
+                      right: 0,
+                      child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _croppedFile = null;
+                            });
+                          },
+                          icon: Icon(Icons.close)))
+                ],
+              )
+            else
+              AddProfilePictureIllustration(
+                onPressed: _pickImage,
+              ),
+            Expanded(child: Container()),
+            if (_croppedFile == null)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  SolhGreenButton(
+                    child: Text("Add Image"),
+                    height: 6.h,
+                    width: MediaQuery.of(context).size.width / 1.1,
+                    onPressed: _pickImage,
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  SkipButton(
+                    onPressed: widget._onNext,
+                  ),
+                  SizedBox(
+                    height: 6.h,
+                  ),
+                ],
+              )
+            else
+              Column(
+                children: [
+                  SolhGreenButton(
+                    child: Text("Next"),
+                    height: 6.h,
+                    width: MediaQuery.of(context).size.width / 1.1,
+                    onPressed: () async {
+                      var response = await Network.uploadFileToServer(
+                          "${APIConstants.api}/api/fileupload/user-profile-picture",
+                          "profile",
+                          _croppedFile!);
+                      if (response["success"]) {
+                        print("image uplaoded successfully");
+                        widget._onNext();
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                ],
+              )
+          ],
+        ),
       ),
     );
   }

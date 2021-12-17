@@ -7,7 +7,7 @@ class JournalModel {
   String createdAt;
   String id;
   String? mediaUrl;
-  String mediaType;
+  String? mediaType;
   int likes;
   int comments;
   bool isLiked;
