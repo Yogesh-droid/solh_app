@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/model/user/provider-user.dart';
-import 'package:solh/ui/screens/intro/intro-crousel.dart';
-import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';

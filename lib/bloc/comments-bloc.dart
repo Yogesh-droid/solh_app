@@ -8,6 +8,13 @@ class CommentsBloc {
   final _commentsController = PublishSubject<List<CommentModel?>>();
   int _currentPage = 1;
   int _endPageLimit = 1;
+
+  CommentModel? _bestComment;
+
+  CommentModel? get bestComment {
+    return _bestComment;
+  }
+
   List<CommentModel?> _commentsList = <CommentModel?>[];
 
   Stream<List<CommentModel?>> get commentsStateStream =>
@@ -26,6 +33,11 @@ class CommentsBloc {
       // _endPageLimit = apiResponse["totalPages"];
       // print("Number of pages: $_endPageLimit");
       print("response:" + apiResponse.toString());
+
+      print(_bestComment);
+      _bestComment = CommentModel.fromJson(apiResponse["bestComment"]);
+      print(_bestComment);
+
       for (var comment in apiResponse["comments"]) {
         print(comment["commentBody"]);
         _comments.add(CommentModel.fromJson(comment));

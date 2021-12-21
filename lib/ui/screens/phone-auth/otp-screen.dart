@@ -6,7 +6,6 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/auth.dart';
-import 'package:solh/services/shared-prefrences/session-cookie.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';

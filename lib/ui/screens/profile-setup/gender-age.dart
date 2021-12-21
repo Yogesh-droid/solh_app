@@ -139,6 +139,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   height: 6.h,
                   child: Text("Next"),
                   onPressed: () async {
+                    widget._onNext();
                     await Provider.of<ProviderUser>(context, listen: false)
                         .updateUserDetails();
                     Navigator.of(context).push(

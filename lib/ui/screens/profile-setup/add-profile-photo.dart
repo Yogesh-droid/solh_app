@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,8 +6,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/constants/enum/journal/feelings.dart';
-import 'package:solh/model/journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -30,23 +27,8 @@ class AddProfilePhotoPage extends StatefulWidget {
 }
 
 class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
-  String _journalType = JournalType.Publicaly.toShortString();
-
-  String _description = "";
-
-  String _feelings = JournalFeelings.Happy.toShortString();
-
-  String? _imageUrl;
-
   XFile? _xFile;
-
-  Uint8List? _xFileAsUnit8List;
-
   File? _croppedFile;
-
-  bool _isImageAdded = false;
-
-  bool _isVideoAdded = false;
 
   void _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -78,9 +60,7 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
           minimumAspectRatio: 1.0,
         ));
     // Navigator.of(context).pop();
-    setState(() {
-      _isImageAdded = true;
-    });
+    setState(() {});
   }
 
   @override

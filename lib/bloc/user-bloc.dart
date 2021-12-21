@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:rxdart/rxdart.dart';

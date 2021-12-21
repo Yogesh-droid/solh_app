@@ -1,8 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
