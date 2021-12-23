@@ -10,11 +10,13 @@ import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class JournalingScreen extends StatefulWidget {
   const JournalingScreen({Key? key}) : super(key: key);
@@ -66,7 +68,8 @@ class _SideDrawerState extends State<SideDrawer> {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData)
                     return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 2.5.h),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 2.5.h, horizontal: 3.8.w),
                       child: Row(
                         children: [
                           CircleAvatar(
@@ -111,7 +114,7 @@ class _SideDrawerState extends State<SideDrawer> {
                       ),
                     );
                   return Container(
-                    child: CircularProgressIndicator(),
+                    child: MyLoader(),
                   );
                 }),
             Container(
@@ -350,6 +353,19 @@ class _JournalingState extends State<Journaling> {
                                     return JournalTile(
                                       journalModel: journalSnapshot
                                           .requireData[index - 1],
+                                      deletePost: () async {
+                                        print("deleting post");
+                                        DeleteJournal _deleteJournal =
+                                            DeleteJournal(
+                                                journalId: journalSnapshot
+                                                    .requireData[index - 1]!
+                                                    .id);
+                                        await _deleteJournal.deletePost();
+                                        setState(() {
+                                          journalSnapshot.requireData
+                                              .removeAt(index - 1);
+                                        });
+                                      },
                                     );
                                   }),
                             );
@@ -361,7 +377,7 @@ class _JournalingState extends State<Journaling> {
                           return Container();
                         }),
                   ),
-                  if (_fetchingMore) Center(child: CircularProgressIndicator()),
+                  if (_fetchingMore) Center(child: MyLoader()),
                   SizedBox(height: Platform.isIOS ? 80 : 50),
                 ],
               ),
@@ -469,7 +485,7 @@ class ComingSoonBadge extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Coming Soon",
+            "Comming Soon",
             style: SolhTextStyles.JournalingBadgeText,
           ),
         ],

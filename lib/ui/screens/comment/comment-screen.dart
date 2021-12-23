@@ -10,6 +10,7 @@ import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CommentScreen extends StatefulWidget {
@@ -32,7 +33,6 @@ class _CommentScreenState extends State<CommentScreen> {
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
-  CommentModel? _bestComment;
 
   @override
   void initState() {
@@ -40,7 +40,6 @@ class _CommentScreenState extends State<CommentScreen> {
     commentsBloc.getcommentsSnapshot(widget._journalModel!.id);
     _isLoginedUserJournal = widget._journalModel!.postedBy.uid ==
         FirebaseAuth.instance.currentUser!.uid;
-    _bestComment = commentsBloc.bestComment;
   }
 
   @override
@@ -70,7 +69,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               SliverToBoxAdapter(
                                 child: PostForComment(
                                   journalModel: widget._journalModel,
-                                  bestComment: _bestComment,
+                                  bestComment: commentsBloc.getBestComment,
                                 ),
                               ),
                               SliverList(
@@ -100,12 +99,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           .requireData[index]!
                                                           .id);
                                               setState(() {
-                                                _bestComment = commentSnapshot
-                                                    .requireData[index];
-                                                print(
-                                                    _bestComment!.commentBody);
+                                                commentsBloc.setBestComment =
+                                                    commentSnapshot
+                                                        .requireData[index];
+                                                print(commentsBloc
+                                                    .getBestComment);
                                               });
-                                              print("deleted");
                                             },
                                             journalModel: widget._journalModel!,
                                             commentModel: commentSnapshot
@@ -118,7 +117,9 @@ class _CommentScreenState extends State<CommentScreen> {
                             ],
                           );
                         else
-                          return Center(child: CircularProgressIndicator());
+                          return Center(
+                            child: MyLoader(),
+                          );
                       }),
                 ),
                 Column(
@@ -175,10 +176,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                   ? Container(
                                       height: 4.w,
                                       width: 4.w,
-                                      child: CircularProgressIndicator(
+                                      child: MyLoader(
                                         strokeWidth: 2.5,
                                       ))
-                                  : Icon(Icons.send))
+                                  : Icon(
+                                      Icons.send,
+                                      color: SolhColors.green,
+                                    ))
                         ],
                       ),
                     ),

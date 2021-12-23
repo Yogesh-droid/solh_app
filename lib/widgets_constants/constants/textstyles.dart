@@ -55,11 +55,10 @@ class SolhTextStyles {
   );
 
   // Journaling
-
   static const TextStyle JournalingHintText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: SolhColors.grey,
+    color: Color(0xFFA6A6A6),
     height: 1.23, //Figma Line Height 17.25
   );
 

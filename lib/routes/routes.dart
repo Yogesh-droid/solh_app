@@ -10,6 +10,7 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/my-profile/settings/settings.dart';
 import 'package:solh/ui/screens/phone-auth/otp-screen.dart';
@@ -84,6 +85,11 @@ import 'package:solh/ui/screens/sos/sos.dart';
                   name: "AccountPrivacyScreenRouter",
                   page: AccountPrivacyScreen,
                 ),
+                AutoRoute(
+                  path: "EditMyProfileScreen",
+                  name: "EditMyProfileScreenRouter",
+                  page: EditMyProfileScreen,
+                ),
               ]),
         ]),
     AutoRoute(
@@ -115,11 +121,6 @@ import 'package:solh/ui/screens/sos/sos.dart';
       name: "SetupSOSScreenRouter",
       page: SetupSOSScreen,
     ),
-    AutoRoute(
-      path: "ProfileScreen",
-      name: "ProfileScreenRouter",
-      page: SetupSOSScreen,
-    )
   ],
 )
 class $AppRouter {}

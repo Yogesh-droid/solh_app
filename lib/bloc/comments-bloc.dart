@@ -11,8 +11,12 @@ class CommentsBloc {
 
   CommentModel? _bestComment;
 
-  CommentModel? get bestComment {
+  CommentModel? get getBestComment {
     return _bestComment;
+  }
+
+  set setBestComment(CommentModel? bestComment) {
+    _bestComment = bestComment;
   }
 
   List<CommentModel?> _commentsList = <CommentModel?>[];
@@ -35,7 +39,9 @@ class CommentsBloc {
       print("response:" + apiResponse.toString());
 
       print(_bestComment);
-      _bestComment = CommentModel.fromJson(apiResponse["bestComment"]);
+      _bestComment = apiResponse["bestComment"] == null
+          ? null
+          : CommentModel.fromJson(apiResponse["bestComment"]);
       print(_bestComment);
 
       for (var comment in apiResponse["comments"]) {

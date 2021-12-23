@@ -12,6 +12,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class MyProfileScreen extends StatelessWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class MyProfileScreen extends StatelessWidget {
                 );
               if (snapshot.hasError)
                 Container(child: Text(snapshot.error.toString()));
-              return Center(child: CircularProgressIndicator());
+              return Center(child: MyLoader());
             }),
       ),
     );
@@ -78,6 +79,13 @@ class ProfileMenu extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
+          ProfileMenuTile(
+            title: "Edit Profile",
+            onPressed: () {
+              AutoRouter.of(context).push(EditMyProfileScreenRouter());
+            },
+            svgIconPath: "assets/icons/profile/posts.svg",
+          ),
           ProfileMenuTile(
             title: "Posts",
             onPressed: () {

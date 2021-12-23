@@ -9,10 +9,10 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i20;
+import 'package:flutter/material.dart' as _i21;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
-import '../model/journal.dart' as _i21;
+import '../model/journal.dart' as _i22;
 import '../ui/screens/comment/comment-screen.dart' as _i15;
 import '../ui/screens/connect/connect-screen.dart' as _i14;
 import '../ui/screens/get-help/get-help.dart' as _i10;
@@ -23,6 +23,7 @@ import '../ui/screens/journaling/journaling.dart' as _i12;
 import '../ui/screens/my-goals/my-goals-screen.dart' as _i11;
 import '../ui/screens/my-profile/my-profile-screen.dart' as _i16;
 import '../ui/screens/my-profile/posts/post.dart' as _i17;
+import '../ui/screens/my-profile/profile/edit-profile.dart' as _i20;
 import '../ui/screens/my-profile/settings/account-privacy.dart' as _i19;
 import '../ui/screens/my-profile/settings/settings.dart' as _i18;
 import '../ui/screens/phone-auth/otp-screen.dart' as _i5;
@@ -32,7 +33,7 @@ import '../ui/screens/sos/setup-sos.dart' as _i7;
 import '../ui/screens/sos/sos.dart' as _i6;
 
 class AppRouter extends _i9.RootStackRouter {
-  AppRouter([_i20.GlobalKey<_i20.NavigatorState>? navigatorKey])
+  AppRouter([_i21.GlobalKey<_i21.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -69,10 +70,6 @@ class AppRouter extends _i9.RootStackRouter {
           routeData: routeData, child: const _i6.SOSDialog());
     },
     SetupSOSScreenRouter.name: (routeData) {
-      return _i9.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i7.SetupSOSScreen());
-    },
-    ProfileScreenRouter.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.SetupSOSScreen());
     },
@@ -132,6 +129,10 @@ class AppRouter extends _i9.RootStackRouter {
     AccountPrivacyScreenRouter.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i19.AccountPrivacyScreen());
+    },
+    EditMyProfileScreenRouter.name: (routeData) {
+      return _i9.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i20.EditMyProfileScreen());
     }
   };
 
@@ -175,6 +176,9 @@ class AppRouter extends _i9.RootStackRouter {
                         parent: MyProfileScreenRouter.name),
                     _i9.RouteConfig(AccountPrivacyScreenRouter.name,
                         path: 'AccountPrivacyScreen',
+                        parent: MyProfileScreenRouter.name),
+                    _i9.RouteConfig(EditMyProfileScreenRouter.name,
+                        path: 'EditMyProfileScreen',
                         parent: MyProfileScreenRouter.name)
                   ])
             ]),
@@ -185,8 +189,7 @@ class AppRouter extends _i9.RootStackRouter {
         _i9.RouteConfig(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen'),
         _i9.RouteConfig(OTPScreenRouter.name, path: 'OTPScreen'),
         _i9.RouteConfig(SOSScreenRouter.name, path: 'SOSScreen'),
-        _i9.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS'),
-        _i9.RouteConfig(ProfileScreenRouter.name, path: 'ProfileScreen')
+        _i9.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS')
       ];
 }
 
@@ -244,7 +247,7 @@ class PhoneAuthScreenRouter extends _i9.PageRouteInfo<void> {
 /// [_i5.OTPScreen]
 class OTPScreenRouter extends _i9.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i20.Key? key, required String phoneNo, required String verificationId})
+      {_i21.Key? key, required String phoneNo, required String verificationId})
       : super(OTPScreenRouter.name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -257,7 +260,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String phoneNo;
 
@@ -284,15 +287,6 @@ class SetupSOSScreenRouter extends _i9.PageRouteInfo<void> {
       : super(SetupSOSScreenRouter.name, path: 'SetupSOS');
 
   static const String name = 'SetupSOSScreenRouter';
-}
-
-/// generated route for
-/// [_i7.SetupSOSScreen]
-class ProfileScreenRouter extends _i9.PageRouteInfo<void> {
-  const ProfileScreenRouter()
-      : super(ProfileScreenRouter.name, path: 'ProfileScreen');
-
-  static const String name = 'ProfileScreenRouter';
 }
 
 /// generated route for
@@ -361,7 +355,7 @@ class CreatePostScreenRouter extends _i9.PageRouteInfo<void> {
 /// generated route for
 /// [_i14.ConnectProfileScreen]
 class ConnectScreenRouter extends _i9.PageRouteInfo<ConnectScreenRouterArgs> {
-  ConnectScreenRouter({_i20.Key? key, required String uid})
+  ConnectScreenRouter({_i21.Key? key, required String uid})
       : super(ConnectScreenRouter.name,
             path: 'ConnectScreen',
             args: ConnectScreenRouterArgs(key: key, uid: uid));
@@ -372,7 +366,7 @@ class ConnectScreenRouter extends _i9.PageRouteInfo<ConnectScreenRouterArgs> {
 class ConnectScreenRouterArgs {
   const ConnectScreenRouterArgs({this.key, required this.uid});
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
   final String uid;
 
@@ -385,7 +379,7 @@ class ConnectScreenRouterArgs {
 /// generated route for
 /// [_i15.CommentScreen]
 class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
-  CommentScreenRouter({_i20.Key? key, required _i21.JournalModel? journalModel})
+  CommentScreenRouter({_i21.Key? key, required _i22.JournalModel? journalModel})
       : super(CommentScreenRouter.name,
             path: 'CommentScreen',
             args:
@@ -397,9 +391,9 @@ class CommentScreenRouter extends _i9.PageRouteInfo<CommentScreenRouterArgs> {
 class CommentScreenRouterArgs {
   const CommentScreenRouterArgs({this.key, required this.journalModel});
 
-  final _i20.Key? key;
+  final _i21.Key? key;
 
-  final _i21.JournalModel? journalModel;
+  final _i22.JournalModel? journalModel;
 
   @override
   String toString() {
@@ -439,4 +433,13 @@ class AccountPrivacyScreenRouter extends _i9.PageRouteInfo<void> {
       : super(AccountPrivacyScreenRouter.name, path: 'AccountPrivacyScreen');
 
   static const String name = 'AccountPrivacyScreenRouter';
+}
+
+/// generated route for
+/// [_i20.EditMyProfileScreen]
+class EditMyProfileScreenRouter extends _i9.PageRouteInfo<void> {
+  const EditMyProfileScreenRouter()
+      : super(EditMyProfileScreenRouter.name, path: 'EditMyProfileScreen');
+
+  static const String name = 'EditMyProfileScreenRouter';
 }

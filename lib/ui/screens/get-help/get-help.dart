@@ -85,9 +85,10 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             //   ),
             // ),
             // GetHelpDivider(),
-
             GetHelpCategory(
               title: "Top Consultants",
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => ViewAllScreen())),
             ),
             Container(
               height: 15.h,
@@ -553,14 +554,14 @@ class GetHelpCategory extends StatelessWidget {
             _title,
             style: TextStyle(fontSize: 20, color: Color(0xFF666666)),
           ),
-          InkWell(
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => ViewAllScreen())),
-            child: Text(
-              "View All",
-              style: TextStyle(color: SolhColors.green),
-            ),
-          )
+          if (_onPressed != null)
+            InkWell(
+              onTap: _onPressed,
+              child: Text(
+                "View All",
+                style: TextStyle(color: SolhColors.green),
+              ),
+            )
         ],
       ),
     );

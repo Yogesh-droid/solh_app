@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +10,13 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
-import 'package:solh/services/journal/journal.dart';
+import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({Key? key}) : super(key: key);
@@ -146,142 +146,158 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       body: Stack(
         children: [
           SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  UsernameHeader(
-                    onTypeChanged: (value) {
-                      print("Changed to $value");
-                      _journalType = value;
-                    },
-                  ),
-                  SizedBox(height: 2.h),
-                  Container(
-                    child: TextField(
-                      maxLength: 240,
-                      maxLines: 6,
-                      minLines: 3,
-                      decoration: InputDecoration(
-                          fillColor: SolhColors.grey239,
-                          hintText: "What's on your mind?",
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: SolhColors.green)),
-                          focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: SolhColors.green)),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide(color: SolhColors.green))),
-                      onChanged: (value) {
-                        if (_description == "" || value == "") {
-                          setState(() {
-                            _description = value;
-                          });
-                        } else
-                          _description = value;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 1.h),
-                  Text(
-                    "Feelings",
-                    style: SolhTextStyles.JournalingDescriptionReadMoreText
-                        .copyWith(color: SolhColors.grey102),
-                  ),
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  FeelingsContainer(
-                    onFeelingsChanged: (feelings) {
-                      _feelings = feelings;
-                      print("feelings changed to: $feelings");
-                    },
-                  ),
-                  SizedBox(height: 2.h),
-                  if (!_isImageAdded && !_isVideoAdded)
-                    Column(
-                      children: [
-                        // SolhGreenBorderButton(
-                        //   child: Text(
-                        //     "Pic from Diary",
-                        //     style: SolhTextStyles.GreenBorderButtonText,
-                        //   ),
-                        //   onPressed: () => print("Pressed"),
-                        // ),
-                        SizedBox(height: 2.h),
-                        SolhGreenBorderButton(
-                            child: Text(
-                              "Add Image/Video",
-                              style: SolhTextStyles.GreenBorderButtonText,
-                            ),
-                            onPressed: _pickImage),
-                      ],
-                    )
-                  else if (_isImageAdded)
-                    Stack(
-                      children: [
-                        Image.file(_croppedFile!),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: CircleAvatar(
-                            radius: 16,
-                            child: IconButton(
-                              onPressed: () {
-                                _xFile = null;
-                                _croppedFile = null;
-                                setState(() {
-                                  _isImageAdded = false;
-                                });
+            child: StreamBuilder<UserModel?>(
+                stream: userBlocNetwork.userStateStream,
+                builder: (context, userSnapshot) {
+                  if (userSnapshot.hasData)
+                    return Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UsernameHeader(
+                            userModel: userSnapshot.requireData,
+                            onTypeChanged: (value) {
+                              print("Changed to $value");
+                              _journalType = value;
+                            },
+                          ),
+                          SizedBox(height: 2.h),
+                          Container(
+                            child: TextField(
+                              maxLength: 240,
+                              maxLines: 6,
+                              minLines: 3,
+                              decoration: InputDecoration(
+                                  fillColor: SolhColors.grey239,
+                                  hintText: "What's on your mind?",
+                                  hintStyle:
+                                      TextStyle(color: Color(0xFFA6A6A6)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: SolhColors.green)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: SolhColors.green)),
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: SolhColors.green))),
+                              onChanged: (value) {
+                                if (_description == "" || value == "") {
+                                  setState(() {
+                                    _description = value;
+                                  });
+                                } else
+                                  _description = value;
                               },
-                              iconSize: 14,
-                              icon: Icon(Icons.close),
                             ),
                           ),
-                        )
-                      ],
-                    )
-                  else
-                    Stack(
-                      children: [
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: CircleAvatar(
-                            radius: 16,
-                            child: IconButton(
-                              onPressed: () {
-                                _xFile = null;
-                                _croppedFile = null;
-                                setState(() {
-                                  _isVideoAdded = false;
-                                });
-                              },
-                              iconSize: 14,
-                              icon: Icon(Icons.close),
-                            ),
+                          SizedBox(height: 1.h),
+                          Text(
+                            "Feelings",
+                            style:
+                                SolhTextStyles.JournalingDescriptionReadMoreText
+                                    .copyWith(color: SolhColors.grey102),
                           ),
-                        )
-                      ],
-                    ),
-                  SizedBox(height: 5.h),
-                  SolhGreenButton(
-                    height: 6.h,
-                    child: Text("Post"),
-                    backgroundColor:
-                        _description != "" ? SolhColors.green : SolhColors.grey,
-                    onPressed: _postJournal,
-                  )
-                ],
-              ),
-            ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          FeelingsContainer(
+                            onFeelingsChanged: (feelings) {
+                              _feelings = feelings;
+                              print("feelings changed to: $feelings");
+                            },
+                          ),
+                          SizedBox(height: 2.h),
+                          if (!_isImageAdded && !_isVideoAdded)
+                            Column(
+                              children: [
+                                // SolhGreenBorderButton(
+                                //   child: Text(
+                                //     "Pic from Diary",
+                                //     style: SolhTextStyles.GreenBorderButtonText,
+                                //   ),
+                                //   onPressed: () => print("Pressed"),
+                                // ),
+                                SizedBox(height: 2.h),
+                                SolhGreenBorderButton(
+                                    child: Text(
+                                      "Add Image/Video",
+                                      style:
+                                          SolhTextStyles.GreenBorderButtonText,
+                                    ),
+                                    onPressed: _pickImage),
+                              ],
+                            )
+                          else if (_isImageAdded)
+                            Stack(
+                              children: [
+                                Image.file(_croppedFile!),
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: CircleAvatar(
+                                    radius: 16,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        _xFile = null;
+                                        _croppedFile = null;
+                                        setState(() {
+                                          _isImageAdded = false;
+                                        });
+                                      },
+                                      iconSize: 14,
+                                      icon: Icon(Icons.close),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          else
+                            Stack(
+                              children: [
+                                Positioned(
+                                  right: 0,
+                                  top: 0,
+                                  child: CircleAvatar(
+                                    radius: 16,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        _xFile = null;
+                                        _croppedFile = null;
+                                        setState(() {
+                                          _isVideoAdded = false;
+                                        });
+                                      },
+                                      iconSize: 14,
+                                      icon: Icon(Icons.close),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          SizedBox(height: 5.h),
+                          SolhGreenButton(
+                            height: 6.h,
+                            child: Text("Post"),
+                            backgroundColor: _description != ""
+                                ? SolhColors.green
+                                : SolhColors.grey,
+                            onPressed: _postJournal,
+                          )
+                        ],
+                      ),
+                    );
+                  return Center(child: MyLoader());
+                }),
           ),
           if (_isPosting)
             Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               color: SolhColors.green.withOpacity(0.25),
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(child: MyLoader()),
             ),
         ],
       ),
@@ -405,10 +421,15 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
 }
 
 class UsernameHeader extends StatefulWidget {
-  const UsernameHeader({Key? key, required Function(String) onTypeChanged})
+  const UsernameHeader(
+      {Key? key,
+      required Function(String) onTypeChanged,
+      required UserModel? userModel})
       : _onTypeChanged = onTypeChanged,
+        _userModel = userModel,
         super(key: key);
   final Function(String) _onTypeChanged;
+  final UserModel? _userModel;
 
   @override
   _UsernameHeaderState createState() => _UsernameHeaderState();
@@ -419,77 +440,71 @@ class _UsernameHeaderState extends State<UsernameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<UserModel?>(
-        stream: userBlocNetwork.userStateStream,
-        builder: (context, userSnapshot) {
-          if (userSnapshot.hasData)
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+                radius: 6.w,
+                backgroundImage: CachedNetworkImageProvider(
+                  widget._userModel!.profilePictureUrl,
+                )),
+            SizedBox(
+              width: 2.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                        radius: 6.w,
-                        backgroundImage: CachedNetworkImageProvider(
-                          userSnapshot.requireData!.profilePictureUrl,
-                        )),
-                    SizedBox(
-                      width: 2.w,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          userSnapshot.requireData!.name,
-                          style: SolhTextStyles.JournalingUsernameText.copyWith(
-                              fontWeight: FontWeight.normal, fontSize: 14),
-                        ),
-                        Text(
-                          "Happiness Maker",
-                          style: SolhTextStyles.JournalingBadgeText.copyWith(
-                              fontSize: 12),
-                        )
-                      ],
-                    ),
-                  ],
+                Text(
+                  widget._userModel!.name,
+                  style: SolhTextStyles.JournalingUsernameText.copyWith(
+                      fontWeight: FontWeight.normal, fontSize: 14),
                 ),
-                Container(
-                  height: 4.5.h,
-                  width: 35.w,
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      border: Border.all(
-                        color: SolhColors.green,
-                      )),
-                  child: DropdownButton(
-                      isExpanded: true,
-                      icon: Icon(CupertinoIcons.chevron_down),
-                      iconSize: 18,
-                      iconEnabledColor: SolhColors.green,
-                      underline: SizedBox(),
-                      value: _dropdownValue,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _dropdownValue = newValue!;
-                        });
-                        widget._onTypeChanged.call(_dropdownValue);
-                      },
-                      style: TextStyle(color: SolhColors.green),
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Publicaly"),
-                          value: "Publicaly",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("My Diary"),
-                          value: "My_Diary",
-                        )
-                      ]),
+                Text(
+                  "Happiness Maker",
+                  style:
+                      SolhTextStyles.JournalingBadgeText.copyWith(fontSize: 12),
                 )
               ],
-            );
-          return Container();
-        });
+            ),
+          ],
+        ),
+        Container(
+          height: 4.5.h,
+          width: 35.w,
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              border: Border.all(
+                color: SolhColors.green,
+              )),
+          child: DropdownButton(
+              isExpanded: true,
+              icon: Icon(CupertinoIcons.chevron_down),
+              iconSize: 18,
+              iconEnabledColor: SolhColors.green,
+              underline: SizedBox(),
+              value: _dropdownValue,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _dropdownValue = newValue!;
+                });
+                widget._onTypeChanged.call(_dropdownValue);
+              },
+              style: TextStyle(color: SolhColors.green),
+              items: [
+                DropdownMenuItem(
+                  child: Text("Publicaly"),
+                  value: "Publicaly",
+                ),
+                DropdownMenuItem(
+                  child: Text("My Diary"),
+                  value: "My_Diary",
+                )
+              ]),
+        )
+      ],
+    );
   }
 }

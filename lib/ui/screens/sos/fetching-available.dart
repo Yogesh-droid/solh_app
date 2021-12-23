@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class FetchingAvalableConsultantsDialog extends StatelessWidget {
   const FetchingAvalableConsultantsDialog({Key? key}) : super(key: key);
@@ -36,7 +37,7 @@ class FetchingAvalableConsultantsDialog extends StatelessWidget {
             CircleAvatar(
               backgroundColor: Colors.white,
               radius: 26,
-              child: CircularProgressIndicator(
+              child: MyLoader(
                 strokeWidth: 2.5,
                 backgroundColor: Colors.white,
               ),

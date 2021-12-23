@@ -1,4 +1,3 @@
-import 'package:solh/model/comment.dart';
 import 'package:solh/model/user/journal-user.dart';
 
 class JournalModel {
@@ -11,13 +10,11 @@ class JournalModel {
   int likes;
   int comments;
   bool isLiked;
-  CommentModel? bestComment;
   String feelings;
   JournalUserModel postedBy;
 
   JournalModel(
-      {required this.bestComment,
-      required this.createdAt,
+      {required this.createdAt,
       required this.id,
       required this.mediaType,
       required this.feelings,
@@ -32,9 +29,6 @@ class JournalModel {
   factory JournalModel.fromJson(Map<String, dynamic> postJson) {
     // print("best comment:" + postJson["bestComment"].toString());
     return JournalModel(
-      bestComment: postJson["bestComment"] != null
-          ? CommentModel.fromJson(postJson["bestComment"])
-          : null,
       createdAt: postJson["createdAt"],
       id: postJson["id"],
       isLiked: postJson["isLiked"],

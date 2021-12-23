@@ -6,6 +6,7 @@ import 'package:solh/model/doctor.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewAllScreen extends StatefulWidget {
@@ -37,7 +38,6 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
           _fetchingMore = true;
         });
         await doctorsBlocNetwork.getNextPageDoctorsSnapshot();
-        print("Reached at end");
         setState(() {
           _fetchingMore = false;
         });
@@ -102,13 +102,13 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                       ),
                       if (_fetchingMore)
                         Center(
-                          child: CircularProgressIndicator(),
+                          child: MyLoader(),
                         )
                     ],
                   ),
                 ));
           return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(child: MyLoader()),
           );
         });
   }

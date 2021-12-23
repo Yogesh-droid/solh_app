@@ -13,11 +13,16 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class JournalTile extends StatefulWidget {
-  const JournalTile({Key? key, required JournalModel? journalModel})
+  const JournalTile(
+      {Key? key,
+      required JournalModel? journalModel,
+      required VoidCallback deletePost})
       : _journalModel = journalModel,
+        _deletePost = deletePost,
         super(key: key);
 
   final JournalModel? _journalModel;
+  final VoidCallback _deletePost;
 
   @override
   _JournalTileState createState() => _JournalTileState();
@@ -65,11 +70,9 @@ class _JournalTileState extends State<JournalTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Divider(),
               Padding(
                 padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width / 35,
-                  //vertical: MediaQuery.of(context).size.height/80,
                 ),
                 child: GestureDetector(
                   onTap: () => AutoRouter.of(context).push(ConnectScreenRouter(
@@ -126,6 +129,7 @@ class _JournalTileState extends State<JournalTile> {
                                   FirebaseAuth.instance.currentUser!.uid)
                                 PostMenuButton(
                                   journalId: widget._journalModel!.id,
+                                  deletePost: widget._deletePost,
                                 ),
                             ],
                           ),
@@ -287,13 +291,9 @@ class _JournalTileState extends State<JournalTile> {
           ),
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 1.h),
-          height: 0.8.h,
-          color: Colors.green.shade400
-              .withOpacity(0.25)
-              .withAlpha(80)
-              .withGreen(160),
-        ),
+            margin: EdgeInsets.symmetric(vertical: 1.h),
+            height: 0.8.h,
+            color: Color(0xFFF6F6F8)),
       ],
     );
   }
@@ -320,11 +320,14 @@ class SolhExpertBadge extends StatelessWidget {
 }
 
 class PostMenuButton extends StatelessWidget {
-  const PostMenuButton({Key? key, required String journalId})
+  const PostMenuButton(
+      {Key? key, required String journalId, required VoidCallback deletePost})
       : _journalId = journalId,
+        _deletePost = deletePost,
         super(key: key);
 
   final String _journalId;
+  final VoidCallback _deletePost;
 
   @override
   Widget build(BuildContext context) {
@@ -378,9 +381,7 @@ class PostMenuButton extends StatelessWidget {
                     "Delete this post",
                   ),
                 ),
-                onTap: () {
-                  print("deleted");
-                },
+                onTap: _deletePost,
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/journal-bloc.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class PostScreen extends StatelessWidget {
   const PostScreen({Key? key}) : super(key: key);
@@ -43,10 +45,12 @@ class PostScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // PostTile(),
-            // PostTile(),
-            // PostTile(),
-            // PostTile()
+            StreamBuilder(
+                stream: journalsBloc.journalsStateStream,
+                builder: (_, journalsSnapshot) {
+                  if (journalsSnapshot.hasData) return Container();
+                  return MyLoader();
+                })
           ],
         ),
       ),
