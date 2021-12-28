@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
+import 'package:solh/services/user/user-profile.dart';
+import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -14,7 +17,6 @@ class ConnectProfileScreen extends StatelessWidget {
         super(key: key);
 
   final String _uid;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,107 +28,111 @@ class ConnectProfileScreen extends StatelessWidget {
           ),
         ),
         body: FutureBuilder<UserModel>(
-            future: null,
-            builder: (context, snapshot) {
-              return NestedScrollView(
-                headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Column(
-                        children: [
-                          SizedBox(height: 2.5.h),
-                          CircleAvatar(
-                            radius: 6.h,
-                            backgroundImage: CachedNetworkImageProvider(
-                              "https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fstatic.onecms.io%2Fwp-content%2Fuploads%2Fsites%2F13%2F2015%2F04%2F05%2Ffeatured.jpg&q=85",
+            future: UserProfile.fetchUserProfile(_uid),
+            builder: (context, userProfileSnapshot) {
+              if (userProfileSnapshot.hasData)
+                return NestedScrollView(
+                  headerSliverBuilder: (context, innerBoxIsScrolled) => [
+                    SliverList(
+                      delegate: SliverChildListDelegate([
+                        Column(
+                          children: [
+                            SizedBox(height: 2.5.h),
+                            CircleAvatar(
+                              radius: 6.h,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  userProfileSnapshot
+                                      .requireData.profilePictureUrl),
                             ),
-                          ),
-                          SizedBox(height: 2.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text("John Conor",
-                                  style: TextStyle(fontSize: 21)),
-                              Icon(Icons.people, color: SolhColors.grey)
-                            ],
-                          ),
-                          Text(
-                            "Solh Expert",
-                            style: SolhTextStyles.GreenBorderButtonText,
-                          ),
-                          SizedBox(height: 1.5.h),
-                          Container(
-                            width: 75.w,
-                            child: Text(
-                                '''Bio/Self experiences/Qoate/When the pain passes, you eventually see how much good.'''),
-                          ),
-                          SizedBox(height: 3.h),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.thumb_up,
-                                        size: 18,
-                                        color: SolhColors.green,
-                                      ),
-                                      SizedBox(
-                                        width: 2.w,
-                                      ),
-                                      Text(
-                                        '27',
-                                        style:
-                                            SolhTextStyles.GreenBorderButtonText
-                                                .copyWith(fontSize: 18),
-                                      ),
-                                    ],
-                                  ),
-                                  Text("Likes"),
-                                ],
-                              ),
-                              // Divider(),
-                              Column(
-                                children: [
-                                  Text(
-                                    '17',
-                                    style: SolhTextStyles.GreenBorderButtonText
-                                        .copyWith(fontSize: 18),
-                                  ),
-                                  Text("Connections"),
-                                ],
-                              ),
-                              // Divider(),
-                              Column(
-                                children: [
-                                  Text(
-                                    '17',
-                                    style: SolhTextStyles.GreenBorderButtonText
-                                        .copyWith(fontSize: 18),
-                                  ),
-                                  Text("Reviews"),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 3.h),
-                          SolhGreenButton(
-                              width: 90.w,
-                              height: 6.3.h,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [Text("Connect/Join")],
-                              )),
-                          SizedBox(height: 3.h),
-                        ],
-                      ),
-                    ]),
-                  )
-                ],
-                body: TabView(),
-              );
+                            SizedBox(height: 2.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(userProfileSnapshot.requireData.firstName,
+                                    style: TextStyle(fontSize: 21)),
+                                Icon(Icons.people, color: SolhColors.grey)
+                              ],
+                            ),
+                            Text(
+                              "Solh Expert",
+                              style: SolhTextStyles.GreenBorderButtonText,
+                            ),
+                            SizedBox(height: 1.5.h),
+                            Container(
+                              width: 75.w,
+                              child: Text(userProfileSnapshot.requireData.bio),
+                            ),
+                            SizedBox(height: 3.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.thumb_up,
+                                          size: 18,
+                                          color: SolhColors.green,
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
+                                        Text(
+                                          '27',
+                                          style: SolhTextStyles
+                                                  .GreenBorderButtonText
+                                              .copyWith(fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                    Text("Likes"),
+                                  ],
+                                ),
+                                // Divider(),
+                                Column(
+                                  children: [
+                                    Text(
+                                      '17',
+                                      style:
+                                          SolhTextStyles.GreenBorderButtonText
+                                              .copyWith(fontSize: 18),
+                                    ),
+                                    Text("Connections"),
+                                  ],
+                                ),
+                                // Divider(),
+                                Column(
+                                  children: [
+                                    Text(
+                                      '17',
+                                      style:
+                                          SolhTextStyles.GreenBorderButtonText
+                                              .copyWith(fontSize: 18),
+                                    ),
+                                    Text("Reviews"),
+                                  ],
+                                )
+                              ],
+                            ),
+                            // SizedBox(height: 3.h),
+                            // SolhGreenButton(
+                            //     width: 90.w,
+                            //     height: 6.3.h,
+                            //     child: Row(
+                            //       mainAxisAlignment: MainAxisAlignment.center,
+                            //       children: [Text("Connect/Join")],
+                            //     )),
+                            // SizedBox(height: 3.h),
+                          ],
+                        ),
+                      ]),
+                    )
+                  ],
+                  body: TabView(),
+                );
+              else
+                return Center(child: CircularProgressIndicator());
             }));
   }
 }
@@ -147,6 +153,7 @@ class _TabViewState extends State<TabView> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           height: 6.h,
@@ -164,70 +171,54 @@ class _TabViewState extends State<TabView> {
                     fontSize: 20),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                _pageController.jumpToPage(1);
-              },
-              child: Text(
-                "Reviews",
-                style: TextStyle(
-                    color:
-                        _currentPage == 1 ? SolhColors.green : SolhColors.grey,
-                    fontSize: 20),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     _pageController.jumpToPage(1);
+            //   },
+            //   child: Text(
+            //     "Reviews",
+            //     style: TextStyle(
+            //         color:
+            //             _currentPage == 1 ? SolhColors.green : SolhColors.grey,
+            //         fontSize: 20),
+            //   ),
+            // ),
           ]),
         ),
-        // Expanded(
-        //   child: PageView(
-        //     physics: NeverScrollableScrollPhysics(),
-        //     controller: _pageController,
-        //     children: [
-        //       ListView.builder(
-        //           itemCount: 8,
-        //           itemBuilder: (_, index) => Column(
-        //                 children: [
-        //                   JournalTile(
-        //                       journalModel: JournalModel(
-        //                           bestComment: CommentModel(),
-        //                           createdAt: "2021-12-02T12:48:58.007Z",
-        //                           id: "15987452625645625",
-        //                           mediaType: "image",
-        //                           feelings: "happy",
-        //                           isLiked: false,
-        //                           likes: 24,
-        //                           comments: 15,
-        //                           description: "tehre",
-        //                           mediaUrl: "",
-        //                           postedBy: JournalUserModel(
-        //                               uid: "464",
-        //                               profilePictureUrl:
-        //                                   "https://solh.s3.amazonaws.com/user/profile/1638601611065",
-        //                               name: "Geetansh",
-        //                               userType: "Volunteer"
-        //                               // isSolhAdviser: false,
-        //                               // isSolhCounselor: true,
-        //                               // isSolhExpert: true,
-        //                               ))),
-        //                   Container(
-        //                     margin: EdgeInsets.symmetric(vertical: 1.h),
-        //                     height: 0.8.h,
-        //                     color: Colors.green.shade400
-        //                         .withOpacity(0.25)
-        //                         .withAlpha(80)
-        //                         .withGreen(160),
-        //                   ),
-        //                 ],
-        //               )),
-        //       Container()
-        //     ],
-        //     onPageChanged: (value) {
-        //       setState(() {
-        //         _currentPage = value;
-        //       });
-        //     },
-        //   ),
-        // ),
+        Expanded(
+          child: PageView(
+            physics: NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            children: [
+              StreamBuilder<Object>(
+                stream: null,
+                builder: (context, snapshot) {
+                  return ListView.builder(
+                      itemCount: 8,
+                      itemBuilder: (_, index) => Column(
+                            children: [
+                              JournalTile(journalModel: , deletePost: () {  },),
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 1.h),
+                                height: 0.8.h,
+                                color: Colors.green.shade400
+                                    .withOpacity(0.25)
+                                    .withAlpha(80)
+                                    .withGreen(160),
+                              ),
+                            ],
+                          ));
+                }
+              ),
+              Container()
+            ],
+            onPageChanged: (value) {
+              setState(() {
+                _currentPage = value;
+              });
+            },
+          ),
+        ),
       ],
     );
   }
