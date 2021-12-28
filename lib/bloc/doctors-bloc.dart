@@ -12,12 +12,11 @@ class DoctorsBloc {
 
   Stream<List<DoctorModel?>> get doctorsStateStream => _doctorController.stream;
 
-  Future<List<DoctorModel?>> _fetchDetailsFirstTime() async {
+  Future<List<DoctorModel?>> _fetchDetailsFirstTime(String url) async {
     print("getting doctors for the first time...");
     _currentPage = 1;
     try {
-      Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequest("${APIConstants.api}/api/doctors");
+      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(url);
 
       List<DoctorModel> _doctors = <DoctorModel>[];
 
@@ -37,11 +36,11 @@ class DoctorsBloc {
     }
   }
 
-  Future<List<DoctorModel?>> _fetchDetailsNextPage() async {
+  Future<List<DoctorModel?>> _fetchDetailsNextPage(String url) async {
     print("getting doctors for the next page...");
     try {
-      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequest(
-          "${APIConstants.api}/api/doctors?page=$_currentPage");
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpGetRequest("$url?page=$_currentPage");
 
       List<DoctorModel> _doctors = <DoctorModel>[];
       for (var doctor in apiResponse["doctorsList"]) {
@@ -54,27 +53,56 @@ class DoctorsBloc {
     }
   }
 
-  Future getDoctorsSnapshot() async {
+  Future getDoctorsSnapshot(int? page) async {
     _doctorsList = [];
-    await _fetchDetailsFirstTime().then((doctors) {
+    await _fetchDetailsFirstTime(page != null
+            ? "${APIConstants.api}/api/doctors?page=$page"
+            : "${APIConstants.api}/api/doctors")
+        .then((doctors) {
       _doctorsList.addAll(doctors);
       return _doctorController.add(_doctorsList);
     }).onError((error, stackTrace) =>
-        _doctorController.sink.addError(error.toString()));
+            _doctorController.sink.addError(error.toString()));
   }
 
+  // Future getDoctorsByIssue() async {
+  //   _doctorsList = [];
+  //   _currentPage = 4;
+
+  //   _fetchDetailsFirstTime("${APIConstants.api}/api/doctors/page=8")
+  //       .then((doctors) {
+  //     _doctorsList.addAll(doctors);
+  //     return _doctorController.add(_doctorsList);
+  //   }).onError((error, stackTrace) =>
+  //           _doctorController.sink.addError(error.toString()));
+  // }
+
+  // Future getDoctorsBySpeciality() async {
+  //   _doctorsList = [];
+  //   _currentPage = 3;
+  //   _fetchDetailsFirstTime("${APIConstants.api}/api/doctors/page=3")
+  //       .then((doctors) {
+  //     _doctorsList.addAll(doctors);
+  //     return _doctorController.add(_doctorsList);
+  //   }).onError((error, stackTrace) =>
+  //           _doctorController.sink.addError(error.toString()));
+  // }
+
   Future getNextPageDoctorsSnapshot() async {
+    _currentPage = 1;
+
     print("fetching next page doctors.............");
     _currentPage++;
 
     if (_currentPage <= _endPageLimit) {
-      await _fetchDetailsNextPage().then((doctors) {
+      await _fetchDetailsNextPage("${APIConstants.api}/api/doctors")
+          .then((doctors) {
         _doctorsList.addAll(doctors);
         return _doctorController.add(_doctorsList);
       }).onError((error, stackTrace) =>
-          _doctorController.sink.addError(error.toString()));
+              _doctorController.sink.addError(error.toString()));
     } else {
-      print(" end of Page  DB");
+      print("End of Page  DB");
     }
   }
 }

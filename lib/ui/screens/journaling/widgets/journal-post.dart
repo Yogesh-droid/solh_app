@@ -75,8 +75,11 @@ class _JournalTileState extends State<JournalTile> {
                   left: MediaQuery.of(context).size.width / 35,
                 ),
                 child: GestureDetector(
-                  onTap: () => AutoRouter.of(context).push(ConnectScreenRouter(
-                      uid: widget._journalModel!.postedBy.uid)),
+                  onTap: () => {
+                    print(widget._journalModel!.postedBy.uid),
+                    AutoRouter.of(context).push(ConnectScreenRouter(
+                        uid: widget._journalModel!.postedBy.uid))
+                  },
                   child: Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,

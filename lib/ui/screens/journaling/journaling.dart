@@ -413,11 +413,12 @@ class WhatsOnYourMindSection extends StatelessWidget {
             vertical: MediaQuery.of(context).size.height / 80,
           ),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SolhGreenBorderMiniButton(
                   height: MediaQuery.of(context).size.height / 18,
-                  width: 64.w,
+                  width: 92.w,
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.symmetric(
                     horizontal: 4.w,
@@ -428,38 +429,37 @@ class WhatsOnYourMindSection extends StatelessWidget {
                     "What's on your mind?",
                     style: SolhTextStyles.JournalingHintText,
                   )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 24,
-                    splashRadius: 20,
-                    padding: EdgeInsets.zero,
-                    onPressed: () => {},
-                    icon: SvgPicture.asset(
-                        "assets/icons/journaling/post-photo.svg"),
-                    color: SolhColors.green,
-                  ),
-                  Container(
-                    height: 3.h,
-                    width: 0.2,
-                    color: SolhColors.blackop05,
-                  ),
-                  IconButton(
-                    iconSize: 24,
-                    splashRadius: 20,
-                    padding: EdgeInsets.zero,
-                    onPressed: () => {},
-                    icon: SvgPicture.asset(
-                        "assets/icons/journaling/switch-profile.svg"),
-                    color: SolhColors.green,
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     IconButton(
+              //       iconSize: 24,
+              //       splashRadius: 20,
+              //       padding: EdgeInsets.zero,
+              //       onPressed: () => {},
+              //       icon: SvgPicture.asset(
+              //           "assets/icons/journaling/post-photo.svg"),
+              //       color: SolhColors.green,
+              //     ),
+              //     Container(
+              //       height: 3.h,
+              //       width: 0.2,
+              //       color: SolhColors.blackop05,
+              //     ),
+              //     IconButton(
+              //       iconSize: 24,
+              //       splashRadius: 20,
+              //       padding: EdgeInsets.zero,
+              //       onPressed: () => {},
+              //       icon: SvgPicture.asset(
+              //           "assets/icons/journaling/switch-profile.svg"),
+              //       color: SolhColors.green,
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
-        // Stories(),
       ],
     );
   }

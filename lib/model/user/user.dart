@@ -4,21 +4,23 @@ class UserModel {
   bool isSolhCounselor;
   String profilePictureUrl;
   // String id;
+  String dob;
   String mobile;
   String uid;
   String gender;
   String name;
   String bio;
   String firstName;
-  // String lastName;
+  String lastName;
   // int likes;
   // int posts;
   int connections;
   int reviews;
 
   UserModel(
-      {required this.firstName,
-      // required this.lastName,
+      {required this.dob,
+      required this.firstName,
+      required this.lastName,
       required this.profilePictureUrl,
       required this.isSolhAdviser,
       required this.isSolhCounselor,
@@ -36,10 +38,11 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> userJson) {
     return UserModel(
+        dob: userJson["dob"],
         // likes: userJson["likes"],
         // posts: userJson["posts"],
         firstName: userJson["first_name"],
-        // lastName: userJson["last_name"],
+        lastName: userJson["last_name"],
         profilePictureUrl: userJson["profilePicture"],
         connections: userJson["connections"],
         reviews: userJson["reviews"],

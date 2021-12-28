@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/get-help/view-all/view-all.dart';
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -34,21 +36,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
       appBar: SolhAppBar(
         title: Row(
           children: [
-            GestureDetector(
-              onTap: () {
-                print("side bar tapped");
-                setState(() {
-                  _isDrawerOpen = !_isDrawerOpen;
-                });
-                print("opened");
-              },
-              child: SvgPicture.asset(
-                "assets/icons/app-bar/app-bar-menu.svg",
-                width: 26,
-                height: 24,
-                color: SolhColors.green,
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () {
+            //     print("side bar tapped");
+            //     setState(() {
+            //       _isDrawerOpen = !_isDrawerOpen;
+            //     });
+            //     print("opened");
+            //   },
+            //   child: SvgPicture.asset(
+            //     "assets/icons/app-bar/app-bar-menu.svg",
+            //     width: 26,
+            //     height: 24,
+            //     color: SolhColors.green,
+            //   ),
+            // ),
             SizedBox(
               width: 2.h,
             ),
@@ -64,31 +66,10 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Container(
-            //   padding: EdgeInsets.symmetric(vertical: 2.h),
-            //   alignment: Alignment.center,
-            //   child: Container(
-            //     width: MediaQuery.of(context).size.width / 1.1,
-            //     decoration: BoxDecoration(
-            //         borderRadius: BorderRadius.circular(25.0),
-            //         border: Border.all(color: SolhColors.green)),
-            //     padding: EdgeInsets.only(left: 3.w),
-            //     child: TextField(
-            //         decoration: InputDecoration(
-            //             suffixIcon: Icon(
-            //               Icons.search,
-            //               color: SolhColors.green,
-            //             ),
-            //             border: InputBorder.none,
-            //             hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-            //             hintText: "Anxiety, Corporate Stress, Family Issues")),
-            //   ),
-            // ),
-            // GetHelpDivider(),
             GetHelpCategory(
               title: "Top Consultants",
               onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => ViewAllScreen())),
+                  .push(MaterialPageRoute(builder: (_) => ConsultantsScreen())),
             ),
             Container(
               height: 15.h,
@@ -100,7 +81,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   itemBuilder: (_, index) => TopConsultantsTile()),
             ),
             GetHelpDivider(),
-
             GetHelpCategory(
               title: "Search by issues",
             ),
@@ -111,28 +91,55 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   children: [
                     IssuesTile(
                       title: 'Anxiety',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 3));
+                      },
                     ),
                     IssuesTile(
                       title: 'Corporate Stress',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 5));
+                      },
                     ),
                     IssuesTile(
                       title: 'Family Issues',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 7));
+                      },
                     ),
                     IssuesTile(
                       title: 'Work Problems',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 2));
+                      },
                     ),
                     IssuesTile(
                       title: 'Relationship Struggles',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 8));
+                      },
                     ),
                     IssuesTile(
                       title: 'Corporate Stress',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 9));
+                      },
                     ),
                     IssuesTile(
                       title: 'Family Issues',
+                      onPressed: () {
+                        AutoRouter.of(context)
+                            .push(ConsultantsScreenRouter(page: 14));
+                      },
                     ),
                   ],
                 )),
-
             GetHelpDivider(),
             GetHelpCategory(
               title: "Search by speciality",
@@ -148,193 +155,46 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 itemCount: _specialities.length,
                 shrinkWrap: true,
-                itemBuilder: (_, index) => Container(
-                  height: 1.h,
-                  width: 10.w,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Color(0xFFEFEFEF)),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 8.w,
-                        child: CircleAvatar(
-                          radius: 7.8.w,
-                          backgroundColor: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child:
-                                Image.asset("assets/images/logo/solh-logo.png"),
+                itemBuilder: (_, index) => GestureDetector(
+                  onTap: () {
+                    AutoRouter.of(context)
+                        .push(ConsultantsScreenRouter(page: index + 2));
+                  },
+                  child: Container(
+                    height: 1.h,
+                    width: 10.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color(0xFFEFEFEF)),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 8.w,
+                          child: CircleAvatar(
+                            radius: 7.8.w,
+                            backgroundColor: Colors.white,
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                  "assets/images/logo/solh-logo.png"),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: 2.w),
-                      Container(
-                        width: 25.w,
-                        child: Text(
-                          _specialities[index],
-                          style: TextStyle(),
+                        SizedBox(width: 2.w),
+                        Container(
+                          width: 25.w,
+                          child: Text(
+                            _specialities[index],
+                            style: TextStyle(),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
             GetHelpDivider(),
-
-            // GetHelpCategory(
-            //   title: "Instantly Available",
-            // ),
-            // Container(
-            //   height: 15.h,
-            //   margin: EdgeInsets.only(bottom: 2.h),
-            //   child: ListView.builder(
-            //       shrinkWrap: true,
-            //       scrollDirection: Axis.horizontal,
-            //       itemCount: 6,
-            //       itemBuilder: (_, index) => TopConsultantsTile()),
-            // ),
-            // GetHelpDivider(),
-            // GetHelpCategory(
-            //   title: "Solh Volunteers",
-            // ),
-            // Container(
-            //   height: 38.h,
-            //   padding: EdgeInsets.symmetric(horizontal: 3.5.w),
-            //   child: ListView.builder(
-            //       scrollDirection: Axis.horizontal,
-            //       shrinkWrap: true,
-            //       itemCount: 8,
-            //       itemBuilder: (_, index) => Container(
-            //             child: Container(
-            //               margin: EdgeInsets.symmetric(horizontal: 1.w),
-            //               decoration: BoxDecoration(
-            //                   border: Border.all(color: Color(0xFFEFEFEF)),
-            //                   borderRadius: BorderRadius.circular(8)),
-            //               height: 25.h,
-            //               width: 42.w,
-            //               child: Column(
-            //                 children: [
-            //                   ProfilePictureHeader(),
-            //                   Text("John Conor"),
-            //                   Row(
-            //                     mainAxisAlignment: MainAxisAlignment.center,
-            //                     children: [
-            //                       Text(
-            //                         "Solh Expert",
-            //                         style: SolhTextStyles.JournalingBadgeText,
-            //                       ),
-            //                       Padding(
-            //                         padding: EdgeInsets.only(
-            //                           left: MediaQuery.of(context).size.width /
-            //                               80,
-            //                         ),
-            //                         child: Icon(
-            //                           Icons.verified,
-            //                           color: SolhColors.green,
-            //                           size: 14,
-            //                         ),
-            //                       ),
-            //                     ],
-            //                   ),
-            //                   Padding(
-            //                     padding: EdgeInsets.symmetric(
-            //                         vertical: 1.h, horizontal: 2.5.w),
-            //                     child: Text(
-            //                         "Bio/Self experiences/Qoate/When the pain passes, you eventually see how much...",
-            //                         style: SolhTextStyles.SOSGreyText.copyWith(
-            //                             fontSize: 12,
-            //                             fontWeight: FontWeight.w300)),
-            //                   ),
-            //                   Padding(
-            //                     padding: EdgeInsets.symmetric(
-            //                         vertical: 0.5.h, horizontal: 4.w),
-            //                     child: Row(
-            //                       mainAxisAlignment:
-            //                           MainAxisAlignment.spaceAround,
-            //                       children: [
-            //                         Row(
-            //                           children: [
-            //                             SvgPicture.asset(
-            //                               "assets/icons/profile/connections.svg",
-            //                               height: 12,
-            //                               width: 12,
-            //                             ),
-            //                             SizedBox(width: 1.6.w),
-            //                             Text(
-            //                               "45",
-            //                               style: SolhTextStyles
-            //                                       .GreenBorderButtonText
-            //                                   .copyWith(fontSize: 12),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                         Row(
-            //                           children: [
-            //                             SvgPicture.asset(
-            //                               "assets/icons/profile/connections.svg",
-            //                               height: 12,
-            //                               width: 12,
-            //                             ),
-            //                             SizedBox(width: 1.6.w),
-            //                             Text(
-            //                               "45",
-            //                               style: SolhTextStyles
-            //                                       .GreenBorderButtonText
-            //                                   .copyWith(fontSize: 12),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                         Row(
-            //                           children: [
-            //                             SvgPicture.asset(
-            //                               "assets/icons/profile/connections.svg",
-            //                               height: 12,
-            //                               width: 12,
-            //                             ),
-            //                             SizedBox(width: 1.6.w),
-            //                             Text(
-            //                               "45",
-            //                               style: SolhTextStyles
-            //                                       .GreenBorderButtonText
-            //                                   .copyWith(fontSize: 12),
-            //                             ),
-            //                           ],
-            //                         ),
-            //                       ],
-            //                     ),
-            //                   ),
-            //                   SizedBox(
-            //                     height: 2.5.h,
-            //                   ),
-            //                   Padding(
-            //                     padding: EdgeInsets.symmetric(horizontal: 2.w),
-            //                     child: SolhGreenButton(
-            //                         height: 4.h,
-            //                         child: Row(
-            //                           mainAxisAlignment:
-            //                               MainAxisAlignment.center,
-            //                           children: [
-            //                             SvgPicture.asset(
-            //                               "assets/icons/profile/connections.svg",
-            //                               color: Colors.white,
-            //                             ),
-            //                             SizedBox(
-            //                               width: 2.w,
-            //                             ),
-            //                             Text("Connect"),
-            //                           ],
-            //                         )),
-            //                   )
-            //                 ],
-            //               ),
-            //             ),
-            //           )),
-            // ),
-            // SizedBox(
-            //   height: 5.h,
-            // ),
           ],
         ),
       ),
@@ -346,26 +206,32 @@ class IssuesTile extends StatelessWidget {
   const IssuesTile({
     Key? key,
     required String title,
+    required VoidCallback onPressed,
   })  : _title = title,
+        _onPressed = onPressed,
         super(key: key);
 
   final String _title;
+  final VoidCallback _onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
-      padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Color(0xFFEFEFEF),
+    return GestureDetector(
+      onTap: _onPressed,
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+        padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Color(0xFFEFEFEF),
+          ),
+          borderRadius: BorderRadius.circular(18),
+          color: Color(0xFFFBFBFB),
         ),
-        borderRadius: BorderRadius.circular(18),
-        color: Color(0xFFFBFBFB),
-      ),
-      child: Text(
-        _title,
-        style: TextStyle(color: Color(0xFF666666)),
+        child: Text(
+          _title,
+          style: TextStyle(color: Color(0xFF666666)),
+        ),
       ),
     );
   }

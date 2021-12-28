@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,7 +19,7 @@ class UserBlocNetwork {
     return _sessionCookie;
   }
 
-  Future<UserModel?> _fetchDetails() async {
+  Future<UserModel?> _fetchUserDetails(String uid) async {
     print("getting profile details");
     try {
       Map<String, dynamic> apiResponse =
@@ -33,7 +34,14 @@ class UserBlocNetwork {
   }
 
   void getMyProfileSnapshot() async {
-    await _fetchDetails()
+    await _fetchUserDetails(FirebaseAuth.instance.currentUser!.uid)
+        .then((user) => _userController.sink.add(user))
+        .onError((error, stackTrace) =>
+            _userController.sink.addError(error.toString()));
+  }
+
+  void getUserProfileSnapshot(String uid) async {
+    await _fetchUserDetails(uid)
         .then((user) => _userController.sink.add(user))
         .onError((error, stackTrace) =>
             _userController.sink.addError(error.toString()));

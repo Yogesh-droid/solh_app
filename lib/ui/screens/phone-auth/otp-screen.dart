@@ -71,7 +71,6 @@ class _OTPScreenState extends State<OTPScreen> {
                       bool isProfileCreated =
                           await userBlocNetwork.isProfileCreated();
                       print("profile checking complete");
-
                       print("^" * 30 +
                           "Is Profile Created:" +
                           isProfileCreated.toString() +

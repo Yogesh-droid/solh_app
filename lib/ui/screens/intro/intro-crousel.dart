@@ -58,7 +58,6 @@ people & mental healthcare professionals.''',
       });
     if (_currentPage == 2) setState(() {});
     if (_currentPage == 3) setState(() {});
-
     if (_currentPage == 0)
       setState(() {
         _showBackButton = false;
@@ -81,10 +80,20 @@ people & mental healthcare professionals.''',
                       Icons.arrow_back,
                       color: SolhColors.green,
                     )),
-                SkipButton()
+                SkipButton(
+                  onPressed: () {
+                    AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                  },
+                )
               ])
             else
-              Align(alignment: Alignment.topRight, child: SkipButton()),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: SkipButton(
+                    onPressed: () {
+                      AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                    },
+                  )),
             Expanded(
               child: Column(
                 children: [

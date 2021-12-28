@@ -3,6 +3,7 @@ import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
@@ -110,6 +111,11 @@ import 'package:solh/ui/screens/sos/sos.dart';
       path: "OTPScreen",
       name: "OTPScreenRouter",
       page: OTPScreen,
+    ),
+    AutoRoute(
+      path: "ConsultantsScreen",
+      name: "ConsultantsScreenRouter",
+      page: ConsultantsScreen,
     ),
     AutoRoute(
       path: "SOSScreen",

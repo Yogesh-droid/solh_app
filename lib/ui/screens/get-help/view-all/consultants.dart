@@ -9,28 +9,27 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ViewAllScreen extends StatefulWidget {
-  const ViewAllScreen({Key? key}) : super(key: key);
+class ConsultantsScreen extends StatefulWidget {
+  ConsultantsScreen({Key? key, int? page, int? count})
+      : _page = page,
+        _count = count,
+        super(key: key);
 
+  int? _page;
+  int? _count;
   @override
-  State<ViewAllScreen> createState() => _ViewAllScreenState();
+  State<ConsultantsScreen> createState() => _ConsultantsScreenState();
 }
 
-class _ViewAllScreenState extends State<ViewAllScreen> {
+class _ConsultantsScreenState extends State<ConsultantsScreen> {
   bool _fetchingMore = false;
 
   void initState() {
     super.initState();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
-    doctorsBlocNetwork.getDoctorsSnapshot();
-
+    doctorsBlocNetwork.getDoctorsSnapshot(widget._page);
     _doctorsScrollController.addListener(() async {
-      // if (_journalsScrollController.position.pixels ==
-      //         _journalsScrollController.position.minScrollExtent &&
-      //     _refreshController.isRefresh) {
-      //   print("refreshing");
-      // }
       if (_doctorsScrollController.position.pixels ==
               _doctorsScrollController.position.maxScrollExtent &&
           !_fetchingMore) {
@@ -46,9 +45,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
   }
 
   void _onRefresh() async {
-    // monitor network fetch
-    await doctorsBlocNetwork.getDoctorsSnapshot();
-    // if failed,use refreshFailed()
+    await doctorsBlocNetwork.getDoctorsSnapshot(widget._page);
     _refreshController.refreshCompleted();
   }
 
@@ -72,7 +69,7 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                         style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
                       Text(
-                        "191 Consultants",
+                        "${widget._count} Consultants",
                         style:
                             TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
                       )
@@ -80,32 +77,27 @@ class _ViewAllScreenState extends State<ViewAllScreen> {
                   ),
                   isLandingScreen: false,
                 ),
-                body: SmartRefresher(
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          // physics: NeverScrollableScrollPhysics(),
-                          controller: _doctorsScrollController,
-                          itemCount: doctorsSnapshot.requireData.length,
-                          padding: EdgeInsets.symmetric(vertical: 1.h),
-                          itemBuilder: (_, index) =>
-                              doctorsSnapshot.requireData[index]!.bio != ""
-                                  ? ConsultantsTile(
-                                      doctorModel:
-                                          doctorsSnapshot.requireData[index]!,
-                                    )
-                                  : Container(),
-                        ),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _doctorsScrollController,
+                        itemCount: doctorsSnapshot.requireData.length,
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        itemBuilder: (_, index) =>
+                            doctorsSnapshot.requireData[index]!.bio != ""
+                                ? ConsultantsTile(
+                                    doctorModel:
+                                        doctorsSnapshot.requireData[index]!,
+                                  )
+                                : Container(),
                       ),
-                      if (_fetchingMore)
-                        Center(
-                          child: MyLoader(),
-                        )
-                    ],
-                  ),
+                    ),
+                    if (_fetchingMore)
+                      Center(
+                        child: MyLoader(),
+                      )
+                  ],
                 ));
           return Scaffold(
             body: Center(child: MyLoader()),
@@ -153,27 +145,6 @@ class ConsultantsTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                // Positioned(
-                //   bottom: 0,
-                //   child: Container(
-                //     height: 2.5.h,
-                //     width: 25.w,
-                //     color: Colors.white70,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         CircleAvatar(
-                //           backgroundColor: Color(0xFFE1555A),
-                //           radius: 1.4.w,
-                //         ),
-                //         SizedBox(
-                //           width: 1.5.w,
-                //         ),
-                //         Text("Active")
-                //       ],
-                //     ),
-                //   ),
-                // )
               ],
             ),
             SizedBox(width: 3.w),
@@ -181,7 +152,6 @@ class ConsultantsTile extends StatelessWidget {
               child: Container(
                 height: 16.h,
                 padding: EdgeInsets.symmetric(vertical: 1.h),
-                // color: Colors.black12,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,59 +174,9 @@ class ConsultantsTile extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Text(
-                    //   "07 Year of Experience",
-                    //   style: TextStyle(fontSize: 12),
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Padding(
-                    //       padding: EdgeInsets.only(right: 8.0),
-                    //       child: Row(
-                    //         children: [
-                    //           Icon(
-                    //             Icons.people,
-                    //             color: SolhColors.green,
-                    //             size: 18,
-                    //           ),
-                    //           Text(
-                    //             "72",
-                    //             style: SolhTextStyles.GreenBorderButtonText,
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     Padding(
-                    //       padding: EdgeInsets.only(right: 8.0),
-                    //       child: Row(
-                    //         children: [
-                    //           SvgPicture.asset(
-                    //               "assets/icons/consultants/ratings.svg"),
-                    //           Text(
-                    //             "4.5",
-                    //             style: TextStyle(color: SolhColors.green),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    //     Row(
-                    //       children: [
-                    //         SvgPicture.asset(
-                    //             "assets/icons/consultants/review.svg"),
-                    //         Text("07",
-                    //             style: TextStyle(color: SolhColors.green)),
-                    //       ],
-                    //     )
-                    //   ],
-                    // ),
                     Row(
-                      // mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        // Text(
-                        //   "View Profile",
-                        //   style: TextStyle(color: SolhColors.green),
-                        // ),
                         SolhGreenButton(
                           height: 4.2.h,
                           width: 40.w,
