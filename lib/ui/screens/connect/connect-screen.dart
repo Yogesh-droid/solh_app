@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/user/user-profile.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
 
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -190,26 +188,26 @@ class _TabViewState extends State<TabView> {
             physics: NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: [
-              StreamBuilder<Object>(
-                stream: null,
-                builder: (context, snapshot) {
-                  return ListView.builder(
-                      itemCount: 8,
-                      itemBuilder: (_, index) => Column(
-                            children: [
-                              JournalTile(journalModel: , deletePost: () {  },),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 1.h),
-                                height: 0.8.h,
-                                color: Colors.green.shade400
-                                    .withOpacity(0.25)
-                                    .withAlpha(80)
-                                    .withGreen(160),
-                              ),
-                            ],
-                          ));
-                }
-              ),
+              // StreamBuilder<Object>(
+              //   stream: null,
+              //   builder: (context, snapshot) {
+              //     return ListView.builder(
+              //         itemCount: 8,
+              //         itemBuilder: (_, index) => Column(
+              //               children: [
+              //                 JournalTile(journalModel: , deletePost: () {  },),
+              //                 Container(
+              //                   margin: EdgeInsets.symmetric(vertical: 1.h),
+              //                   height: 0.8.h,
+              //                   color: Colors.green.shade400
+              //                       .withOpacity(0.25)
+              //                       .withAlpha(80)
+              //                       .withGreen(160),
+              //                 ),
+              //               ],
+              //             ));
+              //   }
+              // ),
               Container()
             ],
             onPageChanged: (value) {

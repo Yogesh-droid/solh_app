@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/model/user/provider-user.dart';
 import 'package:solh/ui/screens/profile-setup/profile-created.dart';
+import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/buttons/skip-button.dart';
@@ -62,43 +62,21 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               ),
               Expanded(
                 child: Column(children: [
-                  Container(
-                    height: 6.1.h,
-                    width: MediaQuery.of(context).size.width / 1.1,
-                    padding: EdgeInsets.symmetric(horizontal: 4.w),
-                    decoration: BoxDecoration(
+                  GenderSelectionDropdown(
+                    dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
                           color: SolhColors.green,
                         )),
-                    child: DropdownButton(
-                        isExpanded: true,
-                        icon: Icon(CupertinoIcons.chevron_down),
-                        iconSize: 18,
-                        iconEnabledColor: SolhColors.green,
-                        underline: SizedBox(),
-                        value: _dropdownValue,
-                        onChanged: (String? newValue) {
-                          print(newValue);
-                          Provider.of<ProviderUser>(context, listen: false)
-                              .setGender = newValue.toString();
-                          setState(() {
-                            _dropdownValue = newValue!;
-                          });
-                        },
-                        style: TextStyle(color: SolhColors.green),
-                        items: [
-                          DropdownMenuItem(
-                            child: Text("Male"),
-                            value: "Male",
-                          ),
-                          DropdownMenuItem(
-                              child: Text("Female"), value: "Female"),
-                          DropdownMenuItem(
-                            child: Text("N/A"),
-                            value: "N/A",
-                          )
-                        ]),
+                    dropdownValue: _dropdownValue,
+                    newValue: (String? newValue) {
+                      print(newValue);
+                      Provider.of<ProviderUser>(context, listen: false)
+                          .setGender = newValue.toString();
+                      setState(() {
+                        _dropdownValue = newValue!;
+                      });
+                    },
                   ),
                   SizedBox(
                     height: 2.h,

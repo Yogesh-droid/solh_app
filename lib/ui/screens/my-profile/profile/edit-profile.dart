@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/model/user/user.dart';
+import 'package:solh/services/user/user-profile.dart';
+import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -30,6 +33,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
     userBlocNetwork.getMyProfileSnapshot();
   }
 
+  String? _dropdownValue = "N/A";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,19 +46,22 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         isLandingScreen: false,
       ),
       body: SingleChildScrollView(
-        child: StreamBuilder<UserModel?>(
-            stream: userBlocNetwork.userStateStream,
+        child: FutureBuilder<UserModel?>(
+            future: UserProfile.fetchUserProfile(
+                FirebaseAuth.instance.currentUser!.uid),
             builder: (context, userSnapshot) {
               if (userSnapshot.hasData) {
-                userBlocNetwork.userStateStream.first.then((user) {
-                  _firstNameTextEditingController.text = user!.firstName;
-                  _lastNameTextEditingController.text = user.lastName;
-                  _bioTextEditingController.text = user.bio;
-                  _phoneTextEditingController.text = user.bio;
-                  // _emailIdTextEditingController.text = user
-                  _genderTextEditingController.text = user.gender;
-                  _dobTextEditingController.text = user.dob;
-                });
+                print(userSnapshot.requireData!.firstName);
+                _firstNameTextEditingController.text =
+                    userSnapshot.requireData!.firstName;
+                _lastNameTextEditingController.text =
+                    userSnapshot.requireData!.lastName;
+                _bioTextEditingController.text = userSnapshot.requireData!.bio;
+                _phoneTextEditingController.text =
+                    userSnapshot.requireData!.mobile;
+                _genderTextEditingController.text =
+                    userSnapshot.requireData!.gender;
+                _dobTextEditingController.text = userSnapshot.requireData!.dob;
                 print(_firstNameTextEditingController.text);
                 return Column(
                   children: [
@@ -70,35 +78,27 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                     ),
                     TextFieldB(
                       label: "Your First Name",
+                      textEditingController: _firstNameTextEditingController,
                     ),
                     TextFieldB(
                       label: "Your Last Name",
+                      textEditingController: _lastNameTextEditingController,
                     ),
                     TextFieldB(
                       label: "About/Bio",
+                      textEditingController: _bioTextEditingController,
                       maxLine: 4,
                     ),
-                    TextFieldB(
-                      label: "Phone",
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 4.w, vertical: 2.5.h),
-                      child: SolhGreenButton(
-                        child: Text(
-                          "Change No.",
-                        ),
-                        height: 6.5.h,
-                      ),
-                    ),
-                    TextFieldB(
-                      label: "Email Id",
-                    ),
-                    TextFieldB(
-                      label: "Gender",
-                    ),
+                    GenderSelectionDropdown(
+                        dropDownDecoration: BoxDecoration(border: Border.all()),
+                        dropdownValue: _dropdownValue,
+                        newValue: (String? newValue) {
+                          print(newValue);
+                          _dropdownValue = newValue!;
+                        }),
                     TextFieldB(
                       label: "DOB",
+                      textEditingController: _dobTextEditingController,
                     ),
                     Padding(
                       padding:
@@ -111,7 +111,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   ],
                 );
               } else
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
             }),
       ),
     );
