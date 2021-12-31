@@ -27,7 +27,7 @@ class ProfileCreated extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 16),
             ),
-            SizedBox(height: 40.h),
+            SizedBox(height: 46.h),
             SolhGreenButton(
               child: Text("Lets Go"),
               height: 6.h,

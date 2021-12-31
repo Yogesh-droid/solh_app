@@ -6,7 +6,6 @@ import 'package:solh/ui/screens/profile-setup/profile-created.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/buttons/skip-button.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:date_time_picker/date_time_picker.dart';
@@ -63,12 +62,13 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               Expanded(
                 child: Column(children: [
                   GenderSelectionDropdown(
+                    initialDropdownValue: "N/A",
                     dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
                           color: SolhColors.green,
                         )),
-                    dropdownValue: _dropdownValue,
+                    // dropdownValue: _dropdownValue,
                     newValue: (String? newValue) {
                       print(newValue);
                       Provider.of<ProviderUser>(context, listen: false)
@@ -81,36 +81,18 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   SizedBox(
                     height: 2.h,
                   ),
-                  Container(
-                      height: 6.1.h,
-                      width: MediaQuery.of(context).size.width / 1.1,
-                      padding: EdgeInsets.symmetric(horizontal: 4.w),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          border: Border.all(
-                            color: SolhColors.green,
-                          )),
-                      alignment: Alignment.centerLeft,
-                      child: DateTimePicker(
-                        initialValue: DateTime.now()
-                            .subtract(Duration(days: 4749))
-                            .toString(),
-                        initialDate:
-                            DateTime.now().subtract(Duration(days: 4749)),
-                        style: SolhTextStyles.ProfileMenuGreyText,
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime.now().subtract(Duration(days: 4749)),
-                        dateLabelText: 'Date',
-                        onChanged: (val) =>
-                            Provider.of<ProviderUser>(context, listen: false)
-                                .setDob = val,
-                        decoration: InputDecoration(border: InputBorder.none),
-                        validator: (val) {
-                          print(val);
-                          return null;
-                        },
-                        onSaved: (val) => print(val),
-                      )),
+                  DOBPicker(
+                    initialDateOfBirth:
+                        DateTime.now().subtract(Duration(days: 4749)),
+                    boxDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        border: Border.all(
+                          color: SolhColors.green,
+                        )),
+                    onChanged: (val) =>
+                        Provider.of<ProviderUser>(context, listen: false)
+                            .setDob = val,
+                  ),
                 ]),
               ),
               SolhGreenButton(
@@ -126,7 +108,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               SizedBox(
                 height: 3.h,
               ),
-              SkipButton(),
+              // SkipButton(),
               SizedBox(
                 height: 6.h,
               ),
@@ -135,5 +117,46 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
         ),
       ),
     );
+  }
+}
+
+class DOBPicker extends StatelessWidget {
+  DOBPicker({
+    Key? key,
+    Function(String)? onChanged,
+    required DateTime initialDateOfBirth,
+    required BoxDecoration boxDecoration,
+  })  : _onChanged = onChanged,
+        _boxDecoration = boxDecoration,
+        _initialDateOfBirth = initialDateOfBirth,
+        super(key: key);
+
+  final Function(String)? _onChanged;
+  final DateTime _initialDateOfBirth;
+  BoxDecoration _boxDecoration = BoxDecoration();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 6.1.h,
+        width: MediaQuery.of(context).size.width / 1.1,
+        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        decoration: _boxDecoration,
+        alignment: Alignment.centerLeft,
+        child: DateTimePicker(
+          initialValue: _initialDateOfBirth.toString(),
+          initialDate: DateTime.now().subtract(Duration(days: 4749)),
+          style: SolhTextStyles.ProfileMenuGreyText,
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now().subtract(Duration(days: 4749)),
+          dateLabelText: 'Date',
+          onChanged: _onChanged,
+          decoration: InputDecoration(border: InputBorder.none),
+          validator: (val) {
+            print(val);
+            return null;
+          },
+          onSaved: (val) => print(val),
+        ));
   }
 }

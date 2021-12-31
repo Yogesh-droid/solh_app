@@ -63,10 +63,10 @@ class CreateProfileScreen extends StatelessWidget {
           SizedBox(
             height: 2.5.h,
           ),
-          Text(
-            "Skip",
-            style: TextStyle(color: SolhColors.green),
-          ),
+          // Text(
+          //   "Skip",
+          //   style: TextStyle(color: SolhColors.green),
+          // ),
           Container(
             height: 10.h,
           )
