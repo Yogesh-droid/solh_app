@@ -6,8 +6,19 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-class PostScreen extends StatelessWidget {
+class PostScreen extends StatefulWidget {
   const PostScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PostScreen> createState() => _PostScreenState();
+}
+
+class _PostScreenState extends State<PostScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,24 +43,11 @@ class PostScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 1.5.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    "Created",
-                    style: TextStyle(color: SolhColors.green),
-                  ),
-                  Text("Saved")
-                ],
-              ),
-            ),
             StreamBuilder(
                 stream: journalsBloc.journalsStateStream,
                 builder: (_, journalsSnapshot) {
                   if (journalsSnapshot.hasData) return Container();
-                  return MyLoader();
+                  return Center(child: MyLoader());
                 })
           ],
         ),
