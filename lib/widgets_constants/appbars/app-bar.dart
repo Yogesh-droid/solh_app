@@ -1,14 +1,23 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
-  SolhAppBar({Widget? title, required bool isLandingScreen, double? height})
+  SolhAppBar(
+      {Widget? title,
+      required bool isLandingScreen,
+      double? height,
+      bool isVideoCallScreen = false})
       : _title = title,
         _isLandingScreen = isLandingScreen,
+        _isVideoCallScreen = isVideoCallScreen,
         _height = height;
+
+  final bool _isVideoCallScreen;
   final bool _isLandingScreen;
   final Widget? _title;
   final double? _height;
@@ -16,38 +25,57 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: _title,
-      centerTitle: false,
-      leadingWidth: _isLandingScreen ? 0 : 30,
-      leading: !_isLandingScreen
-          ? IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: SolhColors.black,
-                size: 24,
-              ),
-            )
-          : null,
-      elevation: 0.5,
-      backgroundColor: SolhColors.white,
-      actions: _isLandingScreen
-          ? [
-              IconButton(
-                onPressed: () => {},
+        title: _title,
+        centerTitle: false,
+        leadingWidth: _isLandingScreen ? 0 : 30,
+        leading: !_isLandingScreen
+            ? IconButton(
+                onPressed: () => Navigator.pop(context),
                 icon: Icon(
-                  Icons.notifications_outlined,
+                  Icons.arrow_back_ios_new_rounded,
+                  color: SolhColors.black,
+                  size: 24,
                 ),
-                color: SolhColors.pink224,
-              ),
-              SOSButton()
-            ]
-          : [SOSButton()],
-    );
+              )
+            : null,
+        elevation: 0.5,
+        backgroundColor: SolhColors.white,
+        actions:
+            // _isLandingScreen ?
+            [
+          if (!_isVideoCallScreen) AssistanceButton()
+          // IconButton(
+          //   onPressed: () => {},
+          //   icon: Icon(
+          //     Icons.notifications_outlined,
+          //   ),
+          //   color: SolhColors.pink224,
+          // ),
+          // SOSButton()
+        ]
+        // : [SOSButton()],
+        );
   }
 
   @override
   Size get preferredSize => Size(0, _height ?? 50);
+}
+
+class AssistanceButton extends StatelessWidget {
+  const AssistanceButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          AutoRouter.of(context).push(VideoCallCounsellorRouter());
+        },
+        icon: Icon(
+          Icons.video_call_outlined,
+          size: 30,
+          color: SolhColors.green,
+        ));
+  }
 }
 
 class SOSButton extends StatelessWidget {

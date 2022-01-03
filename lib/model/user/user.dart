@@ -13,9 +13,11 @@ class UserModel {
   String lastName;
   int connections;
   int reviews;
+  String userType;
 
   UserModel(
-      {required this.dob,
+      {required this.userType,
+      required this.dob,
       required this.firstName,
       required this.lastName,
       required this.profilePictureUrl,
@@ -32,6 +34,7 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> userJson) {
     return UserModel(
+        userType: userJson["userType"],
         dob: userJson["dob"],
         firstName: userJson["first_name"],
         lastName: userJson["last_name"],

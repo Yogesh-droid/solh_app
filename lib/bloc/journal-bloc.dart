@@ -13,13 +13,15 @@ class JournalsBloc {
   Stream<List<JournalModel?>> get journalsStateStream =>
       _journalController.stream;
 
-  Future<List<JournalModel?>> _fetchDetailsFirstTime() async {
+  Future<List<JournalModel?>> _fetchDetailsFirstTime(
+      {required String? uid}) async {
     print("getting journals for the first time...");
     _currentPage = 1;
     try {
       Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.api}/api/get-journals");
+          await Network.makeHttpGetRequestWithToken(uid != null
+              ? "${APIConstants.api}/api/api/user-journal/$uid"
+              : "${APIConstants.api}/api/get-journals");
 
       List<JournalModel> _journals = <JournalModel>[];
       print("total pages: " + apiResponse["totalPages"].toString());
@@ -34,12 +36,15 @@ class JournalsBloc {
     }
   }
 
-  Future<List<JournalModel?>> _fetchDetailsNextPage() async {
+  Future<List<JournalModel?>> _fetchDetailsNextPage(
+      {required String? uid}) async {
     print("getting journals for the next page...");
     try {
-      Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.api}/api/get-journals?page=$_currentPage");
+      Map<String,
+          dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(uid !=
+              null
+          ? "${APIConstants.api}/api/api/user-journal/$uid?page=$_currentPage"
+          : "${APIConstants.api}/api/get-journals?page=$_currentPage");
 
       List<JournalModel> _journals = <JournalModel>[];
       for (var journal in apiResponse["journals"]) {
@@ -52,21 +57,21 @@ class JournalsBloc {
     }
   }
 
-  Future getJournalsSnapshot() async {
+  Future getJournalsSnapshot({String? uid}) async {
     _journalsList = [];
-    await _fetchDetailsFirstTime().then((journals) {
+    await _fetchDetailsFirstTime(uid: uid).then((journals) {
       _journalsList.addAll(journals);
       return _journalController.add(_journalsList);
     }).onError((error, stackTrace) =>
         _journalController.sink.addError(error.toString()));
   }
 
-  Future getNextPageJournalsSnapshot() async {
+  Future getNextPageJournalsSnapshot({String? uid}) async {
     print("fetching next page journals.............");
     _currentPage++;
 
     if (_currentPage <= _endPageLimit) {
-      await _fetchDetailsNextPage().then((journals) {
+      await _fetchDetailsNextPage(uid: uid).then((journals) {
         _journalsList.addAll(journals);
         return _journalController.add(_journalsList);
       }).onError((error, stackTrace) =>

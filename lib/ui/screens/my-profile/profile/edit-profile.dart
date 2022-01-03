@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -184,6 +185,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               setState(() {
                                 _isLoading = false;
                               });
+                              AutoRouter.of(context).pop();
                             },
                             child: Text("Save Changes"),
                             height: 6.5.h,

@@ -100,7 +100,7 @@ class _SideDrawerState extends State<SideDrawer> {
                                   ),
                                   SizedBox(width: 1.5.w),
                                   Text(
-                                    "Solh Expert",
+                                    userSnapshot.requireData!.userType,
                                     style: TextStyle(
                                         height: 0.18.h,
                                         color: SolhColors.green,
@@ -234,7 +234,7 @@ class _JournalingState extends State<Journaling> {
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
     userBlocNetwork.getMyProfileSnapshot();
-    journalsBloc.getJournalsSnapshot();
+    journalsBloc.getJournalsSnapshot(isUserJournals: false);
 
     _journalsScrollController.addListener(() async {
       // if (_journalsScrollController.position.pixels ==
@@ -248,7 +248,7 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = true;
         });
-        await journalsBloc.getNextPageJournalsSnapshot();
+        await journalsBloc.getNextPageJournalsSnapshot(isUserJournals: false);
         print("Reached at end");
         setState(() {
           _fetchingMore = false;
@@ -259,7 +259,7 @@ class _JournalingState extends State<Journaling> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await journalsBloc.getJournalsSnapshot();
+    await journalsBloc.getJournalsSnapshot(isUserJournals: false);
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }

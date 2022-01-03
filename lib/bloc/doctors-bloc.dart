@@ -89,8 +89,6 @@ class DoctorsBloc {
   // }
 
   Future getNextPageDoctorsSnapshot() async {
-    _currentPage = 1;
-
     print("fetching next page doctors.............");
     _currentPage++;
 

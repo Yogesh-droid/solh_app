@@ -84,7 +84,7 @@ class ProfileMenu extends StatelessWidget {
             onPressed: () {
               AutoRouter.of(context).push(EditMyProfileScreenRouter());
             },
-            svgIconPath: "assets/icons/profile/posts.svg",
+            svgIconPath: "assets/icons/profile/edit.svg",
           ),
           ProfileMenuTile(
             title: "Posts",
@@ -93,13 +93,13 @@ class ProfileMenu extends StatelessWidget {
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
-          ProfileMenuTile(
-            title: "Settings",
-            onPressed: () {
-              AutoRouter.of(context).push(SettingsScreenRouter());
-            },
-            svgIconPath: "assets/icons/profile/settings.svg",
-          ),
+          // ProfileMenuTile(
+          //   title: "Settings",
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(SettingsScreenRouter());
+          //   },
+          //   svgIconPath: "assets/icons/profile/settings.svg",
+          // ),
           // ProfileMenuTile(
           //   title: "Medical Reports",
           //   onPressed: () {},
@@ -235,7 +235,7 @@ class ProfileContainer extends StatelessWidget {
                   SolhTextStyles.SOSGreenHeading.copyWith(color: Colors.black),
             ),
             Text(
-              "Solh Expert",
+              _userModel!.userType,
               style: SolhTextStyles.JournalingBadgeText,
             ),
             SizedBox(height: 0.8.h),

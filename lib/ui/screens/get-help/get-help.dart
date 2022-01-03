@@ -6,9 +6,11 @@ import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GetHelpScreen extends StatefulWidget {
   const GetHelpScreen({Key? key}) : super(key: key);
@@ -28,6 +30,47 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
     "Organizational Psychologists",
     "Developmental Psychologists",
     "Expressive Art Therapists"
+  ];
+
+  final List<Map<String, String>> _topConsultants = [
+    {
+      "name": 'DR. PRAKASH CHANDRA',
+      "bio":
+          'Depression, OCD, Behavioural Issues, Couples Therapy, Anxiety, Personality Issues.',
+      "mobile": "9313592008"
+    },
+    {
+      "name": "Ms.Ekta Singh",
+      "bio":
+          "Counselling Psychologist, Educational Psychologist, Psychotherapist, Relationship Counsellor, Child Psychologist",
+      "mobile": "9953553440"
+    },
+    {
+      "name": "Dr. Sakshi Gupta",
+      "bio":
+          "Clinical psychologist, Child Counsellor, Career Counsellor,Psychologist,internships",
+      "mobile": "8860082131"
+    },
+    {
+      "name": "Lalit Sharma",
+      "bio": "Speech And Language Therapist ",
+      "mobile": "8285366721"
+    },
+    {
+      "name": "Nidhi Sharma",
+      "bio": "speech rehabilitation, Occupational Therapy &  special education",
+      "mobile": "9312408234"
+    },
+    {
+      "name": "Dr Ankit Goel",
+      "bio": "Psychiatrist,psychologist,behaviour therapy,counselling",
+      "mobile": "9152571051"
+    },
+    {
+      "name": "Ms Mariella Zanoletti",
+      "bio": "Therapist, counselling psychologist, psychotherapist",
+      "mobile": "9899186443"
+    }
   ];
 
   @override
@@ -78,7 +121,11 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: 6,
-                  itemBuilder: (_, index) => TopConsultantsTile()),
+                  itemBuilder: (_, index) => TopConsultantsTile(
+                        bio: _topConsultants[index]["bio"].toString(),
+                        name: _topConsultants[index]["name"].toString(),
+                        mobile: _topConsultants[index]["mobile"].toString(),
+                      )),
             ),
             GetHelpDivider(),
             GetHelpCategory(
@@ -239,8 +286,18 @@ class IssuesTile extends StatelessWidget {
 
 class TopConsultantsTile extends StatelessWidget {
   const TopConsultantsTile({
+    required String name,
+    required String bio,
+    required String mobile,
     Key? key,
-  }) : super(key: key);
+  })  : _name = name,
+        _bio = bio,
+        _mobile = mobile,
+        super(key: key);
+
+  final String _mobile;
+  final String _name;
+  final String _bio;
 
   @override
   Widget build(BuildContext context) {
@@ -307,44 +364,57 @@ class TopConsultantsTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text("Dr. Sakshi Trivedi"),
-                    Text("(PhD)"),
+                    Text(_name),
+                    // Text(_qualification),
                     Text(
-                      "Areas of specialization In layman language...",
+                      _bio,
                       style: TextStyle(
                           fontSize: 12,
                           color: Color(0xFF666666),
                           fontWeight: FontWeight.w300),
                     ),
-                    Text(
-                      "07 Year of Experience",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 1.w),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.people,
-                                color: SolhColors.green,
-                                size: 18,
-                              ),
-                              Text(
-                                "72",
-                                style: SolhTextStyles.GreenBorderButtonText,
-                              )
-                            ],
-                          ),
-                          Text(
-                            "Free",
-                            style: TextStyle(color: SolhColors.green),
-                          )
-                        ],
+                    Center(
+                      child: SolhGreenButton(
+                        height: 3.45.h,
+                        width: 35.w,
+                        child: Text(
+                          "Book Appointment",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        onPressed: () {
+                          launch("tel://$_mobile");
+                        },
                       ),
                     )
+                    // Text(
+                    //   "07 Year of Experience",
+                    //   style: TextStyle(fontSize: 12),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 1.w),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.people,
+                    //             color: SolhColors.green,
+                    //             size: 18,
+                    //           ),
+                    //           Text(
+                    //             "72",
+                    //             style: SolhTextStyles.GreenBorderButtonText,
+                    //           )
+                    //         ],
+                    //       ),
+                    //       Text(
+                    //         "Free",
+                    //         style: TextStyle(color: SolhColors.green),
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 )),
           ],

@@ -52,7 +52,7 @@ class ConnectProfileScreen extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              "Solh Expert",
+                              userProfileSnapshot.requireData.userType,
                               style: SolhTextStyles.GreenBorderButtonText,
                             ),
                             SizedBox(height: 1.5.h),
