@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/journal-bloc.dart';
+import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
@@ -234,7 +234,7 @@ class _JournalingState extends State<Journaling> {
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
     userBlocNetwork.getMyProfileSnapshot();
-    journalsBloc.getJournalsSnapshot(isUserJournals: false);
+    journalsBloc.getJournalsSnapshot();
 
     _journalsScrollController.addListener(() async {
       // if (_journalsScrollController.position.pixels ==
@@ -248,7 +248,7 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = true;
         });
-        await journalsBloc.getNextPageJournalsSnapshot(isUserJournals: false);
+        await journalsBloc.getNextPageJournalsSnapshot();
         print("Reached at end");
         setState(() {
           _fetchingMore = false;
@@ -259,7 +259,7 @@ class _JournalingState extends State<Journaling> {
 
   void _onRefresh() async {
     // monitor network fetch
-    await journalsBloc.getJournalsSnapshot(isUserJournals: false);
+    await journalsBloc.getJournalsSnapshot();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }

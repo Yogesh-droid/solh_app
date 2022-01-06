@@ -3,7 +3,7 @@ import 'package:solh/model/journal.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:solh/services/network/network.dart';
 
-class MyJournalsBloc {
+class JournalsBloc {
   final _journalController = PublishSubject<List<JournalModel?>>();
 
   List<JournalModel?> _journalsList = <JournalModel?>[];
@@ -14,12 +14,12 @@ class MyJournalsBloc {
       _journalController.stream;
 
   Future<List<JournalModel?>> _fetchDetailsFirstTime() async {
-    print("getting my journals for the first time...");
+    print("getting journals for the first time...");
     _currentPage = 1;
     try {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.api}/api/get-my-journal");
+              "${APIConstants.api}/api/get-journals");
 
       List<JournalModel> _journals = <JournalModel>[];
       print("total pages: " + apiResponse["totalPages"].toString());
@@ -64,6 +64,7 @@ class MyJournalsBloc {
   Future getNextPageJournalsSnapshot() async {
     print("fetching next page journals.............");
     _currentPage++;
+
     if (_currentPage <= _endPageLimit) {
       await _fetchDetailsNextPage().then((journals) {
         _journalsList.addAll(journals);
@@ -76,4 +77,4 @@ class MyJournalsBloc {
   }
 }
 
-MyJournalsBloc journalsBloc = MyJournalsBloc();
+JournalsBloc journalsBloc = JournalsBloc();
