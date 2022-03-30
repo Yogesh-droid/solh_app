@@ -302,13 +302,13 @@ class _JournalingState extends State<Journaling> {
                 title: Row(
                   children: [
                     GestureDetector(
-                      // onTap: () {
-                      //   print("side bar tapped");
-                      //   setState(() {
-                      //     _isDrawerOpen = !_isDrawerOpen;
-                      //   });
-                      //   print("opened");
-                      // },
+                      onTap: () {
+                        print("side bar tapped");
+                        setState(() {
+                          _isDrawerOpen = !_isDrawerOpen;
+                        });
+                        print("opened");
+                      },
                       child: SvgPicture.asset(
                         "assets/icons/app-bar/app-bar-menu.svg",
                         width: 26,

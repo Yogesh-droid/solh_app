@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -24,7 +26,8 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  final TextEditingController _otpController = TextEditingController();
+  //final TextEditingController _otpController = TextEditingController();
+  OtpVerificationController otpVerificationController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +45,7 @@ class _OTPScreenState extends State<OTPScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 PinCodeTextField(
-                  controller: _otpController,
+                  controller: otpVerificationController.otpController,
                   appContext: context,
                   onChanged: (String value) {},
                   keyboardType: TextInputType.number,
@@ -53,11 +56,13 @@ class _OTPScreenState extends State<OTPScreen> {
                   length: 6,
                   onCompleted: (String value) async {
                     print(widget._verificationId);
-                    print("smscode: ${_otpController.text}");
+                    print(
+                        "smscode: ${otpVerificationController.otpController.text}");
                     PhoneAuthCredential _phoneAuthCredential =
                         PhoneAuthProvider.credential(
                             verificationId: widget._verificationId,
-                            smsCode: _otpController.text);
+                            smsCode:
+                                otpVerificationController.otpController.text);
 
                     await FirebaseNetwork.signInWithPhoneCredential(
                             _phoneAuthCredential)

@@ -1,10 +1,13 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../../../services/controllers/otp_verification_controller.dart';
+import '../../../services/firebase/auth.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({Key? key}) : super(key: key);
@@ -19,7 +22,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   TextEditingController _phoneController = TextEditingController();
 
   void _signInWithPhone(String phoneNo) {
-    FirebaseNetwork.signInWithPhoneNumber(phoneNo,
+    print(phoneNo);
+    FirebaseNetwork().signInWithPhoneNumber(phoneNo,
         onCodeSent: (String verificationId) => setState(() {}));
   }
 
@@ -57,7 +61,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             textAlignVertical: TextAlignVertical.bottom,
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,
-                            onSubmitted: _signInWithPhone,
+                            onSubmitted: (value) {
+                              _signInWithPhone('$_countryCode$value');
+                            },
                             decoration: InputDecoration(
                                 hintText: " Phone No.",
                                 hintStyle: TextStyle(),

@@ -157,7 +157,7 @@ class CrouselIntro extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 4.h),
+          margin: EdgeInsets.symmetric(vertical: 2.5.h),
           width: 100.w,
           child: Image.asset(
             "assets/intro/png/crousel-${_index + 1}.png",
@@ -174,7 +174,7 @@ class CrouselIntro extends StatelessWidget {
                   color: Theme.of(context).primaryColor),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 5.w),
+              padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
               child: Text(
                 _description,
                 style: TextStyle(color: SolhColors.black34),

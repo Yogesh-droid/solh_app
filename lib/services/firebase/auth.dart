@@ -1,17 +1,23 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/services/user/session-cookie.dart';
 
 class FirebaseNetwork {
-  static signInWithPhoneNumber(String phoneNo,
+  OtpVerificationController otpVerificationController = Get.put(
+    OtpVerificationController(),
+  );
+  void signInWithPhoneNumber(String phoneNo,
       {required Function(String) onCodeSent}) async {
     try {
       print("calling verify phoneNo");
       await FirebaseAuth.instance.verifyPhoneNumber(
+          timeout: const Duration(seconds: 60),
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
             print(error.message);
@@ -20,6 +26,7 @@ class FirebaseNetwork {
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
           codeSent: (String verificationId, int? forceResendingToken) {
+            //otpVerificationController.updateOtp('123456');
             print("Code Sent");
             onCodeSent.call(verificationId);
             AutoRouter.of(globalNavigatorKey.currentState!.context).push(
@@ -30,7 +37,11 @@ class FirebaseNetwork {
           phoneNumber: phoneNo,
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
-            // print(phoneAuthCredential.verificationId);
+            print("verification completed");
+            print(phoneAuthCredential.smsCode.toString());
+            otpVerificationController
+                .updateOtp(phoneAuthCredential.smsCode ?? '');
+            print(phoneAuthCredential.verificationId);
             // print(phoneAuthCredential.providerId);
             UserCredential userCredential =
                 await signInWithPhoneCredential(phoneAuthCredential);
