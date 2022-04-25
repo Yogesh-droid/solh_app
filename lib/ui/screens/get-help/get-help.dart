@@ -1,15 +1,19 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/getHelp/get_help_controller.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
+import 'package:solh/widgets_constants/solh_search_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class GetHelpScreen extends StatefulWidget {
@@ -20,6 +24,9 @@ class GetHelpScreen extends StatefulWidget {
 }
 
 class _GetHelpScreenState extends State<GetHelpScreen> {
+  GetHelpController getHelpController = Get.find();
+  SearchMarketController searchMarketController =
+      Get.put(SearchMarketController());
   bool _isDrawerOpen = false;
   List<String> _specialities = [
     "Psychotherapist",
@@ -109,23 +116,19 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GetHelpCategory(
-              title: "Top Consultants",
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => ConsultantsScreen())),
-            ),
-            Container(
-              height: 15.h,
-              margin: EdgeInsets.only(bottom: 2.h),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, index) => TopConsultantsTile(
-                        bio: _topConsultants[index]["bio"].toString(),
-                        name: _topConsultants[index]["name"].toString(),
-                        mobile: _topConsultants[index]["mobile"].toString(),
-                      )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SolhSearchField(
+                  hintText: 'Anxiety, Corporate Stress, Family Isues',
+                  icon: 'assets/icons/app-bar/search.svg',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SearchScreen(),
+                      ),
+                    );
+                  }),
             ),
             GetHelpDivider(),
             GetHelpCategory(
@@ -135,57 +138,70 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 margin:
                     EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
                 child: Wrap(
-                  children: [
-                    IssuesTile(
-                      title: 'Anxiety',
+                  children:
+                      //[
+                      // IssuesTile(
+                      //   title: 'Anxiety',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 3));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Corporate Stress',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 5));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Family Issues',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 7));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Work Problems',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 2));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Relationship Struggles',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 8));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Corporate Stress',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 9));
+                      //   },
+                      // ),
+                      // IssuesTile(
+                      //   title: 'Family Issues',
+                      //   onPressed: () {
+                      //     AutoRouter.of(context)
+                      //         .push(ConsultantsScreenRouter(page: 14));
+                      //   },
+                      // ),
+
+                      getHelpController
+                          .getIssueResponseModel.value.specializationList!
+                          .map((issue) {
+                    return IssuesTile(
+                      title: issue.name ?? '',
                       onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 3));
+                        AutoRouter.of(context).push(ConsultantsScreenRouter(
+                            slug: issue.slug ?? '', type: 'issue'));
                       },
-                    ),
-                    IssuesTile(
-                      title: 'Corporate Stress',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 5));
-                      },
-                    ),
-                    IssuesTile(
-                      title: 'Family Issues',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 7));
-                      },
-                    ),
-                    IssuesTile(
-                      title: 'Work Problems',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 2));
-                      },
-                    ),
-                    IssuesTile(
-                      title: 'Relationship Struggles',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 8));
-                      },
-                    ),
-                    IssuesTile(
-                      title: 'Corporate Stress',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 9));
-                      },
-                    ),
-                    IssuesTile(
-                      title: 'Family Issues',
-                      onPressed: () {
-                        AutoRouter.of(context)
-                            .push(ConsultantsScreenRouter(page: 14));
-                      },
-                    ),
-                  ],
+                    );
+                  }).toList(),
+                  // ],
                 )),
             GetHelpDivider(),
             GetHelpCategory(
@@ -200,12 +216,16 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 2),
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: _specialities.length,
+                itemCount: getHelpController
+                    .getSpecializationModel.value.specializationList!.length,
                 shrinkWrap: true,
                 itemBuilder: (_, index) => GestureDetector(
                   onTap: () {
-                    AutoRouter.of(context)
-                        .push(ConsultantsScreenRouter(page: index + 2));
+                    AutoRouter.of(context).push(ConsultantsScreenRouter(
+                        slug: getHelpController.getSpecializationModel.value
+                                .specializationList![index].slug ??
+                            '',
+                        type: 'specialization'));
                   },
                   child: Container(
                     height: 1.h,
@@ -231,7 +251,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                         Container(
                           width: 25.w,
                           child: Text(
-                            _specialities[index],
+                            getHelpController.getSpecializationModel.value
+                                    .specializationList![index].name ??
+                                '',
                             style: TextStyle(),
                           ),
                         ),
@@ -240,6 +262,27 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   ),
                 ),
               ),
+            ),
+            GetHelpDivider(),
+            GetHelpCategory(
+              title: "Top Consultants",
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => ConsultantsScreen(
+                        slug: '',
+                      ))),
+            ),
+            Container(
+              height: 17.h,
+              margin: EdgeInsets.only(bottom: 2.h),
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 6,
+                  itemBuilder: (_, index) => TopConsultantsTile(
+                        bio: _topConsultants[index]["bio"].toString(),
+                        name: _topConsultants[index]["name"].toString(),
+                        mobile: _topConsultants[index]["mobile"].toString(),
+                      )),
             ),
             GetHelpDivider(),
           ],
@@ -302,123 +345,89 @@ class TopConsultantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 70.w,
-      height: 15.h,
+      //width: 70.w,
+      //height: 25.h,
       margin: EdgeInsets.symmetric(horizontal: 2.5.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
-      child: Container(
-        height: 18.h,
-        decoration: BoxDecoration(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ClipRRect(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8), bottomLeft: Radius.circular(8))),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  height: 15.h,
-                  width: 25.w,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomLeft: Radius.circular(8)),
-                    child: Image.network(
-                      "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                // Positioned(
-                //   bottom: 0,
-                //   child: Container(
-                //     height: 2.5.h,
-                //     width: 25.w,
-                //     color: Colors.white70,
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         CircleAvatar(
-                //           backgroundColor: Color(0xFFE1555A),
-                //           radius: 1.4.w,
-                //         ),
-                //         SizedBox(
-                //           width: 1.5.w,
-                //         ),
-                //         Text("Active")
-                //       ],
-                //     ),
-                //   ),
-                // )
-              ],
+                topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+            child: Image.network(
+              "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
+              width: 25.w,
+              fit: BoxFit.cover,
             ),
-            SizedBox(width: 2.w),
-            Container(
-                width: 42.w,
-                padding: EdgeInsets.symmetric(vertical: 1.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(_name),
-                    // Text(_qualification),
-                    Text(
-                      _bio,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF666666),
-                          fontWeight: FontWeight.w300),
-                    ),
-                    Center(
-                      child: SolhGreenButton(
-                        height: 3.45.h,
-                        width: 35.w,
-                        child: Text(
-                          "Book Appointment",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        onPressed: () {
-                          launch("tel://$_mobile");
-                        },
+          ),
+          SizedBox(width: 2.w),
+          Container(
+              width: 42.w,
+              // height: 15.h,
+              padding: EdgeInsets.symmetric(vertical: 1.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(_name),
+                  // Text(_qualification),
+                  Text(
+                    _bio,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF666666),
+                        fontWeight: FontWeight.w300),
+                  ),
+                  Center(
+                    child: SolhGreenButton(
+                      height: 5.h,
+                      width: 35.w,
+                      child: Text(
+                        "Book Appointment",
+                        style: TextStyle(fontSize: 12),
                       ),
-                    )
-                    // Text(
-                    //   "07 Year of Experience",
-                    //   style: TextStyle(fontSize: 12),
-                    // ),
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 1.w),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Row(
-                    //         children: [
-                    //           Icon(
-                    //             Icons.people,
-                    //             color: SolhColors.green,
-                    //             size: 18,
-                    //           ),
-                    //           Text(
-                    //             "72",
-                    //             style: SolhTextStyles.GreenBorderButtonText,
-                    //           )
-                    //         ],
-                    //       ),
-                    //       Text(
-                    //         "Free",
-                    //         style: TextStyle(color: SolhColors.green),
-                    //       )
-                    //     ],
-                    //   ),
-                    // )
-                  ],
-                )),
-          ],
-        ),
+                      onPressed: () {
+                        launch("tel://$_mobile");
+                      },
+                    ),
+                  )
+                  // Text(
+                  //   "07 Year of Experience",
+                  //   style: TextStyle(fontSize: 12),
+                  // ),
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: 1.w),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Row(
+                  //         children: [
+                  //           Icon(
+                  //             Icons.people,
+                  //             color: SolhColors.green,
+                  //             size: 18,
+                  //           ),
+                  //           Text(
+                  //             "72",
+                  //             style: SolhTextStyles.GreenBorderButtonText,
+                  //           )
+                  //         ],
+                  //       ),
+                  //       Text(
+                  //         "Free",
+                  //         style: TextStyle(color: SolhColors.green),
+                  //       )
+                  //     ],
+                  //   ),
+                  // )
+                ],
+              )),
+        ],
       ),
     );
   }

@@ -23,28 +23,30 @@ class MyJournalsBloc {
     print("getting my journals for the first time...");
 
     _currentPage = 1;
-    try {
-      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}");
+    // try {
+    Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
+        "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}");
 
-      List<JournalModel> _journals = <JournalModel>[];
+    List<JournalModel> _journals = <JournalModel>[];
 
-      _numberOfPosts = apiResponse["totalJournals"];
+    _numberOfPosts = apiResponse["totalJournals"];
 
-      print("total pages: " + apiResponse["totalPages"].toString());
+    print("total pages: " + apiResponse["totalPages"].toString());
 
-      _endPageLimit = apiResponse["totalPages"];
+    _endPageLimit = apiResponse["totalPages"];
 
-      print("Number of pages: $_endPageLimit");
+    print("Number of pages: $_endPageLimit");
+    print('journals are ${JournalModel.fromJson(apiResponse["journals"])}');
 
-      for (var journal in apiResponse["journals"]) {
-        _journals.add(JournalModel.fromJson(journal));
-      }
-
-      return _journals;
-    } catch (error) {
-      throw error;
+    for (var journal in apiResponse["journals"]) {
+      _journals.add(JournalModel.fromJson(journal));
     }
+    print("Number of journals: ${_journals.length}");
+
+    return _journals;
+    // } catch (error) {
+    //   throw error;
+    // }
   }
 
   Future<List<JournalModel?>> _fetchDetailsNextPage() async {
@@ -68,6 +70,7 @@ class MyJournalsBloc {
     _journalsList = [];
     await _fetchDetailsFirstTime().then((journals) {
       _journalsList.addAll(journals);
+      print("journals fetched: " + journals.length.toString());
       return _myJournalController.add(_journalsList);
     }).onError((error, stackTrace) =>
         _myJournalController.sink.addError(error.toString()));

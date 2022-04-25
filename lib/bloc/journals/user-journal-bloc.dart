@@ -49,7 +49,11 @@ class UserBlocNetwork {
 
   Future<bool> isProfileCreated() async {
     var response = await Network.makeHttpGetRequestWithToken(
-        "${APIConstants.api}/api/is-profile-created");
+            "${APIConstants.api}/api/is-profile-created")
+        .onError((error, stackTrace) {
+      print("error: " + error.toString());
+      return {"isProfileCreated": false};
+    });
     print("is user profile created: " + response.toString());
     return response["isCreated"];
   }

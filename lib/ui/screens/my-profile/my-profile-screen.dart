@@ -34,7 +34,9 @@ class MyProfileScreen extends StatelessWidget {
         child: StreamBuilder<UserModel?>(
             stream: userBlocNetwork.userStateStream,
             builder: (context, snapshot) {
-              if (snapshot.hasData)
+              if (snapshot.hasData) {
+                print(
+                    'snapshot.data.profilePictureUrl: ${snapshot.data!.firstName}');
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -45,19 +47,43 @@ class MyProfileScreen extends StatelessWidget {
                     else
                       ProfileContainer(userModel: snapshot.requireData),
                     ProfileMenu(),
-                    ProfileMenuTile(
-                        title: "Logout",
-                        svgIconPath: "assets/icons/profile/logout.svg",
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut().then((value) {
-                            userBlocNetwork.updateSessionCookie = "";
-                            AutoRouter.of(context).pushAndPopUntil(
-                                IntroCarouselScreenRouter(),
-                                predicate: (route) => false);
-                          });
-                        })
+                    // ProfileMenuTile(
+                    //     title: "Logout",
+                    //     svgIconPath: "assets/icons/profile/logout.svg",
+                    //     onPressed: () {
+                    //       FirebaseAuth.instance.signOut().then((value) {
+                    //         userBlocNetwork.updateSessionCookie = "";
+                    //         AutoRouter.of(context).pushAndPopUntil(
+                    //             IntroCarouselScreenRouter(),
+                    //             predicate: (route) => false);
+                    //       });
+                    //     })
+
+                    SizedBox(height: 5.h),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SolhGreenBorderButton(
+                          height: 50,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          child: Text(
+                            "Logout",
+                            style: TextStyle(
+                                fontSize: 18, color: SolhColors.black166),
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut().then((value) {
+                              userBlocNetwork.updateSessionCookie = "";
+                              AutoRouter.of(context).pushAndPopUntil(
+                                  IntroCarouselScreenRouter(),
+                                  predicate: (route) => false);
+                            });
+                          }),
+                    )
                   ],
                 );
+              }
               if (snapshot.hasError)
                 Container(child: Text(snapshot.error.toString()));
               return Center(child: MyLoader());
@@ -224,25 +250,27 @@ class ProfileContainer extends StatelessWidget {
               radius: 50,
               child: CircleAvatar(
                 radius: 49,
-                backgroundImage:
-                    CachedNetworkImageProvider(_userModel!.profilePictureUrl),
+                backgroundImage: CachedNetworkImageProvider(
+                    _userModel!.profilePicture ?? ''),
               ),
             ),
             SizedBox(height: 1.5.h),
             Text(
-              _userModel!.name,
+              _userModel!.name ?? "",
               style:
                   SolhTextStyles.SOSGreenHeading.copyWith(color: Colors.black),
             ),
-            Text(
-              _userModel!.userType,
-              style: SolhTextStyles.JournalingBadgeText,
-            ),
-            SizedBox(height: 0.8.h),
+            // Text(
+            //   _userModel!.userType == 'Normal'
+            //       ? ''
+            //       : _userModel!.userType ?? "",
+            //   style: SolhTextStyles.JournalingBadgeText,
+            // ),
+            //SizedBox(height: 0.8.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14.w),
               child: Text(
-                _userModel!.bio,
+                _userModel!.bio ?? "",
                 textAlign: TextAlign.center,
               ),
             ),

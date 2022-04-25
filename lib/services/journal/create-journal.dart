@@ -42,6 +42,7 @@ class CreateJournal {
           }).onError((error, stackTrace) {
         return {"error": error};
       });
+
       print("response: " + apiResponse.toString());
       return "posted";
     }

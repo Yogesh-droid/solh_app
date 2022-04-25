@@ -13,6 +13,7 @@ import 'package:flutter/material.dart' as _i23;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
 import '../model/journal.dart' as _i24;
+import '../model/journals/journals_response_model.dart';
 import '../ui/screens/comment/comment-screen.dart' as _i17;
 import '../ui/screens/connect/connect-screen.dart' as _i16;
 import '../ui/screens/get-help/get-help.dart' as _i12;
@@ -69,11 +70,16 @@ class AppRouter extends _i11.RootStackRouter {
     },
     ConsultantsScreenRouter.name: (routeData) {
       final args = routeData.argsAs<ConsultantsScreenRouterArgs>(
-          orElse: () => const ConsultantsScreenRouterArgs());
+          orElse: () => ConsultantsScreenRouterArgs(slug: ''));
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i6.ConsultantsScreen(
-              key: args.key, page: args.page, count: args.count));
+            key: args.key,
+            page: args.page,
+            count: args.count,
+            slug: args.slug,
+            type: args.type,
+          ));
     },
     SOSScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
@@ -113,7 +119,7 @@ class AppRouter extends _i11.RootStackRouter {
     },
     CreatePostScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i15.CreatePostScreen());
+          routeData: routeData, child: _i15.CreatePostScreen());
     },
     ConnectScreenRouter.name: (routeData) {
       final args = routeData.argsAs<ConnectScreenRouterArgs>();
@@ -126,7 +132,10 @@ class AppRouter extends _i11.RootStackRouter {
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i17.CommentScreen(
-              key: args.key, journalModel: args.journalModel));
+            key: args.key,
+            journalModel: args.journalModel,
+            index: args.index,
+          ));
     },
     MyProfileScreen.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
@@ -134,7 +143,7 @@ class AppRouter extends _i11.RootStackRouter {
     },
     PostScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i19.PostScreen());
+          routeData: routeData, child: _i19.PostScreen());
     },
     SettingsScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
@@ -294,23 +303,31 @@ class OTPScreenRouterArgs {
 /// [_i6.ConsultantsScreen]
 class ConsultantsScreenRouter
     extends _i11.PageRouteInfo<ConsultantsScreenRouterArgs> {
-  ConsultantsScreenRouter({_i23.Key? key, int? page, int? count})
+  ConsultantsScreenRouter(
+      {_i23.Key? key,
+      int? page,
+      int? count,
+      required String slug,
+      String? type})
       : super(ConsultantsScreenRouter.name,
             path: 'ConsultantsScreen',
             args: ConsultantsScreenRouterArgs(
-                key: key, page: page, count: count));
+                key: key, page: page, count: count, slug: slug, type: type));
 
   static const String name = 'ConsultantsScreenRouter';
 }
 
 class ConsultantsScreenRouterArgs {
-  const ConsultantsScreenRouterArgs({this.key, this.page, this.count});
+  const ConsultantsScreenRouterArgs(
+      {required this.slug, this.key, this.page, this.count, this.type});
 
   final _i23.Key? key;
 
   final int? page;
 
   final int? count;
+  final String slug;
+  final String? type;
 
   @override
   String toString() {
@@ -434,21 +451,27 @@ class ConnectScreenRouterArgs {
 /// generated route for
 /// [_i17.CommentScreen]
 class CommentScreenRouter extends _i11.PageRouteInfo<CommentScreenRouterArgs> {
-  CommentScreenRouter({_i23.Key? key, required _i24.JournalModel? journalModel})
+  CommentScreenRouter(
+      {_i23.Key? key, required Journals? journalModel, required int index})
       : super(CommentScreenRouter.name,
             path: 'CommentScreen',
-            args:
-                CommentScreenRouterArgs(key: key, journalModel: journalModel));
+            args: CommentScreenRouterArgs(
+                key: key, journalModel: journalModel, index: index));
 
   static const String name = 'CommentScreenRouter';
 }
 
 class CommentScreenRouterArgs {
-  const CommentScreenRouterArgs({this.key, required this.journalModel});
+  const CommentScreenRouterArgs({
+    this.key,
+    required this.journalModel,
+    required this.index,
+  });
 
   final _i23.Key? key;
 
-  final _i24.JournalModel? journalModel;
+  final Journals? journalModel;
+  final int index;
 
   @override
   String toString() {

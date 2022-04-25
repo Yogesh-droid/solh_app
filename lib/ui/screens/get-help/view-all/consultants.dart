@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/doctors-bloc.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import 'package:url_launcher/url_launcher.dart';
+import '../consultant_tile.dart';
 
 class ConsultantsScreen extends StatefulWidget {
-  ConsultantsScreen({Key? key, int? page, int? count})
+  ConsultantsScreen(
+      {Key? key, int? page, int? count, required this.slug, this.type})
       : _page = page,
         _count = count,
         super(key: key);
 
   int? _page;
   int? _count;
+  final String slug;
+  final String? type;
   @override
   State<ConsultantsScreen> createState() => _ConsultantsScreenState();
 }
 
 class _ConsultantsScreenState extends State<ConsultantsScreen> {
   bool _fetchingMore = false;
+  SearchMarketController searchMarketController = Get.find();
 
   void initState() {
     super.initState();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
-    doctorsBlocNetwork.getDoctorsSnapshot(widget._page);
+    //doctorsBlocNetwork.getDoctorsSnapshot(widget._page);
+    widget.type == 'specialization'
+        ? searchMarketController.getSpecializationList(widget.slug)
+        : searchMarketController.getIssueList(widget.slug);
     _doctorsScrollController.addListener(() async {
       if (_doctorsScrollController.position.pixels ==
               _doctorsScrollController.position.maxScrollExtent &&
@@ -36,7 +43,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
         setState(() {
           _fetchingMore = true;
         });
-        await doctorsBlocNetwork.getNextPageDoctorsSnapshot();
+        //await doctorsBlocNetwork.getNextPageDoctorsSnapshot();
         setState(() {
           _fetchingMore = false;
         });
@@ -54,7 +61,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<DoctorModel?>>(
+/*     return StreamBuilder<List<DoctorModel?>>(
         stream: doctorsBlocNetwork.doctorsStateStream,
         builder: (context, doctorsSnapshot) {
           if (doctorsSnapshot.hasData)
@@ -80,18 +87,45 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                 body: Column(
                   children: [
                     Expanded(
-                      child: ListView.builder(
-                        controller: _doctorsScrollController,
-                        itemCount: doctorsSnapshot.requireData.length,
-                        padding: EdgeInsets.symmetric(vertical: 1.h),
-                        itemBuilder: (_, index) =>
-                            doctorsSnapshot.requireData[index]!.bio != ""
-                                ? ConsultantsTile(
-                                    doctorModel:
-                                        doctorsSnapshot.requireData[index]!,
-                                  )
-                                : Container(),
-                      ),
+                      child: Obx(() => ListView.separated(
+                          separatorBuilder: ((context, index) => SizedBox(
+                                height: 10,
+                              )),
+                          controller: _doctorsScrollController,
+                          itemCount: searchMarketController
+                              .issueModel.value.doctors!.length,
+                          padding: EdgeInsets.symmetric(vertical: 1.h),
+                          itemBuilder: (_, index) => ConsultantsTile(
+                                doctorModel: DoctorModel(
+                                    organisation: searchMarketController
+                                            .issueModel
+                                            .value
+                                            .doctors![index]
+                                            .organisation ??
+                                        '',
+                                    name: searchMarketController.issueModel.value.doctors![index].name ??
+                                        '',
+                                    mobile: searchMarketController
+                                            .issueModel
+                                            .value
+                                            .doctors![index]
+                                            .contactNumber ??
+                                        '',
+                                    email: searchMarketController.issueModel
+                                            .value.doctors![index].email ??
+                                        '',
+                                    clinic: '',
+                                    locality: searchMarketController
+                                            .issueModel
+                                            .value
+                                            .doctors![index]
+                                            .addressLineOne ??
+                                        '',
+                                    pincode: '',
+                                    city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
+                                    bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
+                                    abbrevations: ''),
+                              ))),
                     ),
                     if (_fetchingMore)
                       Center(
@@ -102,98 +136,171 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
           return Scaffold(
             body: Center(child: MyLoader()),
           );
-        });
-  }
-}
+        }); */
 
-class ConsultantsTile extends StatelessWidget {
-  const ConsultantsTile({Key? key, required DoctorModel doctorModel})
-      : _doctorModel = doctorModel,
-        super(key: key);
-
-  final DoctorModel _doctorModel;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 0.5.h),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8), bottomLeft: Radius.circular(8))),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(8)),
-                  height: 16.h,
-                  width: 25.w,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomLeft: Radius.circular(8)),
-                    child: Image.network(
-                      "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: 3.w),
-            Expanded(
-              child: Container(
-                height: 16.h,
-                padding: EdgeInsets.symmetric(vertical: 1.h),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Dr. ${_doctorModel.name}",
-                      style: TextStyle(fontSize: 16),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: 100.w,
-                        child: Text(
-                          "${_doctorModel.bio}",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF666666),
-                              fontWeight: FontWeight.w300),
-                          overflow: TextOverflow.clip,
-                        ),
+    return Scaffold(
+        backgroundColor: Color(0xFFF6F6F8),
+        appBar: SolhAppBar(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Consultants",
+                style: TextStyle(fontSize: 16, color: Colors.black),
+              ),
+              Obx(() => searchMarketController.issueModel.value.doctors !=
+                          null &&
+                      searchMarketController.issueModel.value.provider != null
+                  ? Text(
+                      "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} Consultants",
+                      style: TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
+                    )
+                  : SizedBox())
+            ],
+          ),
+          isLandingScreen: false,
+        ),
+        // body: CustomScrollView(
+        // slivers: [
+        //     Obx(() => ListView.separated(
+        //         separatorBuilder: ((context, index) => SizedBox(
+        //               height: 10,
+        //             )),
+        //         controller: _doctorsScrollController,
+        //         shrinkWrap: true,
+        //         itemCount:
+        //             searchMarketController.issueModel.value.doctors!.length,
+        //         padding: EdgeInsets.symmetric(vertical: 1.h),
+        //         itemBuilder: (_, index) => ConsultantsTile(
+        //               doctorModel: DoctorModel(
+        //                   organisation: searchMarketController.issueModel.value
+        //                           .doctors![index].organisation ??
+        //                       '',
+        //                   name:
+        //                       searchMarketController.issueModel.value.doctors![index].name ??
+        //                           '',
+        //                   mobile: searchMarketController.issueModel.value
+        //                           .doctors![index].contactNumber ??
+        //                       '',
+        //                   email: searchMarketController
+        //                           .issueModel.value.doctors![index].email ??
+        //                       '',
+        //                   clinic: '',
+        //                   locality: searchMarketController.issueModel.value
+        //                           .doctors![index].addressLineOne ??
+        //                       '',
+        //                   pincode: '',
+        //                   city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
+        //                   bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
+        //                   abbrevations: ''),
+        //             ))),
+        //     Obx(() => ListView.separated(
+        //         shrinkWrap: true,
+        //         separatorBuilder: ((context, index) => SizedBox(
+        //               height: 10,
+        //             )),
+        //         itemCount:
+        //             searchMarketController.issueModel.value.provider!.length,
+        //         padding: EdgeInsets.symmetric(vertical: 1.h),
+        //         itemBuilder: (_, index) => ConsultantsTile(
+        //               doctorModel: DoctorModel(
+        //                   organisation: '',
+        //                   name: searchMarketController
+        //                           .issueModel.value.provider![index].name ??
+        //                       '',
+        //                   mobile: searchMarketController.issueModel.value
+        //                           .provider![index].contactNumber ??
+        //                       '',
+        //                   email: searchMarketController
+        //                           .issueModel.value.provider![index].email ??
+        //                       '',
+        //                   clinic: '',
+        //                   locality: searchMarketController.issueModel.value
+        //                           .provider![index].addressLineOne ??
+        //                       '',
+        //                   pincode: '',
+        //                   city: searchMarketController.issueModel.value
+        //                           .provider![index].addressLineFour ??
+        //                       '',
+        //                   bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
+        //                   abbrevations: ''),
+        //             ))),
+        //     if (_fetchingMore)
+        //       Center(
+        //         child: MyLoader(),
+        //       )
+        //   ],
+        // )
+        body: Obx(() => searchMarketController.issueModel.value.doctors !=
+                    null &&
+                searchMarketController.issueModel.value.provider != null
+            ? CustomScrollView(
+                slivers: [
+                  if (searchMarketController
+                          .issueModel.value.doctors!.isEmpty &&
+                      searchMarketController.issueModel.value.provider!.isEmpty)
+                    SliverToBoxAdapter(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('No results found'),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        SolhGreenButton(
-                          height: 4.2.h,
-                          width: 40.w,
-                          child: Text("Book Appointment"),
-                          onPressed: () {
-                            launch("tel://${_doctorModel.mobile}");
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => ConsultantsTile(
+                          doctorModel: DoctorModel(
+                              organisation: searchMarketController.issueModel
+                                      .value.doctors![index].organisation ??
+                                  '',
+                              name: searchMarketController
+                                      .issueModel.value.doctors![index].name ??
+                                  '',
+                              mobile: searchMarketController.issueModel.value
+                                      .doctors![index].contactNumber ??
+                                  '',
+                              email: searchMarketController
+                                      .issueModel.value.doctors![index].email ??
+                                  '',
+                              clinic: '',
+                              locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
+                              pincode: '',
+                              city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
+                              bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
+                              abbrevations: '')),
+                      childCount: searchMarketController
+                          .issueModel.value.doctors!.length,
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => ConsultantsTile(
+                          doctorModel: DoctorModel(
+                              organisation: '',
+                              name: searchMarketController
+                                      .issueModel.value.provider![index].name ??
+                                  '',
+                              mobile: searchMarketController.issueModel.value
+                                      .provider![index].contactNumber ??
+                                  '',
+                              email: searchMarketController.issueModel.value
+                                      .provider![index].email ??
+                                  '',
+                              clinic: '',
+                              locality: searchMarketController.issueModel.value
+                                      .provider![index].addressLineOne ??
+                                  '',
+                              pincode: '',
+                              city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
+                              bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
+                              abbrevations: '')),
+                      childCount: searchMarketController
+                          .issueModel.value.provider!.length,
+                    ),
+                  ),
+                ],
+              )
+            : Center(
+                child: MyLoader(),
+              )));
   }
 }

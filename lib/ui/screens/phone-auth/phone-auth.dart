@@ -1,12 +1,11 @@
+import 'dart:async';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-
-import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
@@ -18,13 +17,36 @@ class PhoneAuthScreen extends StatefulWidget {
 
 class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? _countryCode = '+91';
+  late FocusNode _focusNode;
+  late TextEditingController _phoneController;
 
-  TextEditingController _phoneController = TextEditingController();
+  bool _hintShown = false;
+  final SmsAutoFill _autoFill = SmsAutoFill();
 
   void _signInWithPhone(String phoneNo) {
     print(phoneNo);
     FirebaseNetwork().signInWithPhoneNumber(phoneNo,
         onCodeSent: (String verificationId) => setState(() {}));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController = TextEditingController();
+    _focusNode = FocusNode();
+    _focusNode.addListener(() async {
+      if (_focusNode.hasFocus && !_hintShown) {
+        _hintShown = true;
+        scheduleMicrotask(() {
+          _askPhoneHint();
+        });
+      }
+    });
+  }
+
+  Future<void> _askPhoneHint() async {
+    String? hint = await _autoFill.hint;
+    _phoneController.value = TextEditingValue(text: hint!.substring(3));
   }
 
   @override
@@ -58,6 +80,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height / 15,
                           child: TextField(
+                            focusNode: _focusNode,
+                            autofillHints: [AutofillHints.telephoneNumber],
                             textAlignVertical: TextAlignVertical.bottom,
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,

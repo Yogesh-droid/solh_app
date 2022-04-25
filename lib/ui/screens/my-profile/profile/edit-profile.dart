@@ -2,9 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/user/user-profile.dart';
@@ -33,6 +36,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   TextEditingController _emailIdTextEditingController = TextEditingController();
   TextEditingController _genderTextEditingController = TextEditingController();
   TextEditingController _dobTextEditingController = TextEditingController();
+  final AgeController _ageController = Get.find();
 
   bool _isLoading = false;
 
@@ -63,22 +67,30 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                     FirebaseAuth.instance.currentUser!.uid),
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData) {
-                    _dob = userSnapshot.requireData!.dob;
+                    _dob = '';
                     print(userSnapshot.requireData!.gender);
                     _gender = userSnapshot.requireData!.gender;
                     print(userSnapshot.requireData!.firstName);
                     _firstNameTextEditingController.text =
-                        userSnapshot.requireData!.firstName;
+                        userSnapshot.requireData!.firstName!;
                     _lastNameTextEditingController.text =
-                        userSnapshot.requireData!.lastName;
+                        userSnapshot.requireData!.lastName!;
                     _bioTextEditingController.text =
-                        userSnapshot.requireData!.bio;
+                        userSnapshot.requireData!.bio!;
                     _phoneTextEditingController.text =
-                        userSnapshot.requireData!.mobile;
+                        userSnapshot.requireData!.mobile!;
                     _genderTextEditingController.text =
-                        userSnapshot.requireData!.gender;
+                        userSnapshot.requireData!.gender!;
                     _dobTextEditingController.text =
-                        userSnapshot.requireData!.dob;
+                        'userSnapshot.requireData!.dob';
+                    _ageController.selectedAge.value = userSnapshot
+                                .requireData!.dob !=
+                            null
+                        ? DateFormat('dd MMM yyyy')
+                            .format(
+                                DateTime.parse(userSnapshot.requireData!.dob!))
+                            .toString()
+                        : '';
                     print(_firstNameTextEditingController.text);
                     return Column(
                       children: [
@@ -89,7 +101,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                           child: CircleAvatar(
                             radius: 14.w,
                             backgroundImage: CachedNetworkImageProvider(
-                                userSnapshot.data!.profilePictureUrl),
+                                userSnapshot.data!.profilePicture!),
                           ),
                         ),
                         Container(
@@ -125,7 +137,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                 _gender = newValue!;
                               },
                               initialDropdownValue:
-                                  userSnapshot.requireData!.gender,
+                                  userSnapshot.requireData!.gender!,
                             ),
                           ],
                         ),
@@ -140,11 +152,18 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               style: TextStyle(color: Color(0xFFA6A6A6)),
                             ),
                             DOBPicker(
-                              initialDateOfBirth:
-                                  DateTime.parse(userSnapshot.requireData!.dob),
+                              initialDateOfBirth: DateTime.parse(
+                                  userSnapshot.requireData!.dob ??
+                                      DateTime.now().toString()),
                               onChanged: (date) {
                                 print(date);
                                 _dob = date;
+                              },
+                              onDateChanged: (date) {
+                                print(date);
+                                _dob = DateFormat('dd MMMM yyyy').format(date);
+                                _ageController.onChanged(
+                                    DateFormat('dd MMMM yyyy').format(date));
                               },
                               boxDecoration: BoxDecoration(
                                   borderRadius:

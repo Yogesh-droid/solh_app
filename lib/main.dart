@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/user/session-cookie.dart';
@@ -18,6 +20,7 @@ void main() async {
   await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  final AgeController ageController = Get.put(AgeController());
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     print("*" * 30 + "\n" + "Id Token: $idToken");
@@ -43,7 +46,7 @@ class SolhApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp.router(
+      return GetMaterialApp.router(
         supportedLocales: [
           Locale("en"),
         ],

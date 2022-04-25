@@ -66,15 +66,21 @@ class AssistanceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {
-          AutoRouter.of(context).push(VideoCallCounsellorRouter());
-        },
-        icon: Icon(
-          Icons.video_call_outlined,
-          size: 30,
-          color: SolhColors.green,
-        ));
+    // return IconButton(
+    //     onPressed: () {
+    //       AutoRouter.of(context).push(VideoCallCounsellorRouter());
+    //     },
+    //     // icon: Icon(
+    //     //   Icons.video_call_outlined,
+    //     //   size: 30,
+    //     //   color: SolhColors.green,
+    //     // ));
+    //     icon: Image.asset(
+    //       'assets/icons/app-bar/button.png',
+    //       width: 28,
+    //       height: 30,
+    //     ));
+    return SOSButton();
   }
 }
 
@@ -87,7 +93,7 @@ class SOSButton extends StatelessWidget {
       onPressed: () {
         print("sos");
         showDialog(context: context, builder: (_) => SOSDialog());
-        // AutoRouter.of(context).push(SOSScreenRouter());
+        //AutoRouter.of(context).push(SOSScreenRouter());
       },
       icon: CircleAvatar(
         radius: 28,

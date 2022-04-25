@@ -45,7 +45,7 @@ class CreateProfileScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 2.4.w),
             child: Text(
-              "Create your profile & be a part righway. Please fill genuine details as You can also creat an anonymous profile further.",
+              "Create your profile to be a part of the Solh community. Please fill genuine details and you can also create an anonymous profile further.",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 16, color: Color.fromRGBO(166, 166, 166, 1)),

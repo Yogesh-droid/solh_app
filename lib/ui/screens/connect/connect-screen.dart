@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/user/user-profile.dart';
-import 'package:solh/ui/screens/journaling/widgets/journal-post.dart';
-
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import '../../../services/utility.dart';
+import '../../../widgets_constants/buttons/custom_buttons.dart';
 
 class ConnectProfileScreen extends StatelessWidget {
-  const ConnectProfileScreen({Key? key, required String uid})
+  final ConnectionController connectionController = Get.find();
+  ConnectProfileScreen({Key? key, required String uid})
       : _uid = uid,
         super(key: key);
 
@@ -40,25 +44,30 @@ class ConnectProfileScreen extends StatelessWidget {
                               radius: 6.h,
                               backgroundImage: CachedNetworkImageProvider(
                                   userProfileSnapshot
-                                      .requireData.profilePictureUrl),
+                                          .requireData.profilePicture ??
+                                      ""),
                             ),
                             SizedBox(height: 2.h),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(userProfileSnapshot.requireData.firstName,
+                                Text(
+                                    userProfileSnapshot.requireData.firstName ??
+                                        "",
                                     style: TextStyle(fontSize: 21)),
                                 Icon(Icons.people, color: SolhColors.grey)
                               ],
                             ),
                             Text(
-                              userProfileSnapshot.requireData.userType,
+                              userProfileSnapshot.requireData.userType ?? "",
                               style: SolhTextStyles.GreenBorderButtonText,
                             ),
                             SizedBox(height: 1.5.h),
                             Container(
                               width: 75.w,
-                              child: Text(userProfileSnapshot.requireData.bio),
+                              child: Text(
+                                  userProfileSnapshot.requireData.bio ?? "",
+                                  style: TextStyle(fontSize: 16)),
                             ),
                             SizedBox(height: 3.h),
                             Row(
@@ -76,12 +85,16 @@ class ConnectProfileScreen extends StatelessWidget {
                                         SizedBox(
                                           width: 2.w,
                                         ),
-                                        Text(
-                                          '27',
-                                          style: SolhTextStyles
-                                                  .GreenBorderButtonText
-                                              .copyWith(fontSize: 18),
-                                        ),
+                                        Obx(() => Text(
+                                              connectionController
+                                                  .userAnalyticsModel
+                                                  .value
+                                                  .journalLikeCount
+                                                  .toString(),
+                                              style: SolhTextStyles
+                                                      .GreenBorderButtonText
+                                                  .copyWith(fontSize: 18),
+                                            )),
                                       ],
                                     ),
                                     Text("Likes"),
@@ -90,12 +103,16 @@ class ConnectProfileScreen extends StatelessWidget {
                                 // Divider(),
                                 Column(
                                   children: [
-                                    Text(
-                                      '17',
-                                      style:
-                                          SolhTextStyles.GreenBorderButtonText
+                                    Obx(() => Text(
+                                          connectionController
+                                              .userAnalyticsModel
+                                              .value
+                                              .connectionCount
+                                              .toString(),
+                                          style: SolhTextStyles
+                                                  .GreenBorderButtonText
                                               .copyWith(fontSize: 18),
-                                    ),
+                                        )),
                                     Text("Connections"),
                                   ],
                                 ),
@@ -113,15 +130,20 @@ class ConnectProfileScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            // SizedBox(height: 3.h),
-                            // SolhGreenButton(
-                            //     width: 90.w,
-                            //     height: 6.3.h,
-                            //     child: Row(
-                            //       mainAxisAlignment: MainAxisAlignment.center,
-                            //       children: [Text("Connect/Join")],
-                            //     )),
-                            // SizedBox(height: 3.h),
+                            SizedBox(height: 3.h),
+                            SolhGreenButton(
+                                onPressed: () async {
+                                  await connectionController
+                                      .addConnection(_uid);
+                                  Utility.showToast('Connection request sent');
+                                },
+                                width: 90.w,
+                                height: 6.3.h,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [Text("Connect/Join")],
+                                )),
+                            SizedBox(height: 3.h),
                           ],
                         ),
                       ]),

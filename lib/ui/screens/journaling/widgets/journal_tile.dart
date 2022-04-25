@@ -3,38 +3,48 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/model/journal.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'solh_expert_badge.dart';
 
 class JournalTile extends StatefulWidget {
   const JournalTile(
       {Key? key,
-      required JournalModel? journalModel,
-      required VoidCallback deletePost})
+      required Journals? journalModel,
+      required VoidCallback deletePost,
+      required this.index})
       : _journalModel = journalModel,
         _deletePost = deletePost,
         super(key: key);
 
-  final JournalModel? _journalModel;
+  final Journals? _journalModel;
   final VoidCallback _deletePost;
+  final int index;
 
   @override
   _JournalTileState createState() => _JournalTileState();
 }
 
 class _JournalTileState extends State<JournalTile> {
+  JournalCommentController journalCommentController = Get.find();
+  ConnectionController connectionController = Get.find();
   late bool _isLiked;
 
   @override
   void initState() {
     super.initState();
-    _isLiked = widget._journalModel!.isLiked;
+    _isLiked = widget._journalModel!.isLiked ?? false;
   }
 
   Future<bool> _likeJournal() async {
@@ -76,9 +86,11 @@ class _JournalTileState extends State<JournalTile> {
                 ),
                 child: GestureDetector(
                   onTap: () => {
-                    print(widget._journalModel!.postedBy.uid),
+                    connectionController
+                        .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
+                    print(widget._journalModel!.postedBy!.uid),
                     AutoRouter.of(context).push(ConnectScreenRouter(
-                        uid: widget._journalModel!.postedBy.uid))
+                        uid: widget._journalModel!.postedBy!.uid ?? ''))
                   },
                   child: Container(
                     child: Row(
@@ -87,7 +99,11 @@ class _JournalTileState extends State<JournalTile> {
                       children: [
                         CircleAvatar(
                           backgroundImage: CachedNetworkImageProvider(
-                            widget._journalModel!.postedBy.profilePictureUrl,
+                            widget._journalModel!.postedBy != null
+                                ? widget._journalModel!.postedBy!
+                                        .profilePicture ??
+                                    ''
+                                : '',
                           ),
                           backgroundColor: SolhColors.pink224,
                         ),
@@ -107,20 +123,28 @@ class _JournalTileState extends State<JournalTile> {
                                       Row(
                                         children: [
                                           Text(
-                                            widget._journalModel!.postedBy.name,
+                                            widget._journalModel!.postedBy !=
+                                                    null
+                                                ? widget._journalModel!
+                                                        .postedBy!.name ??
+                                                    ''
+                                                : '',
                                             style: SolhTextStyles
                                                 .JournalingUsernameText,
                                           ),
                                           SizedBox(width: 1.5.w),
-                                          if (widget._journalModel!.postedBy
-                                                  .userType ==
-                                              "Expert")
+                                          if (widget._journalModel!.postedBy !=
+                                                  null &&
+                                              widget._journalModel!.postedBy!
+                                                      .userType ==
+                                                  "Expert")
                                             SolhExpertBadge(),
                                         ],
                                       ),
                                       Text(
                                         timeago.format(DateTime.parse(
-                                            widget._journalModel!.createdAt)),
+                                            widget._journalModel!.createdAt ??
+                                                '')),
                                         style: SolhTextStyles
                                             .JournalingTimeStampText,
                                       )
@@ -128,10 +152,11 @@ class _JournalTileState extends State<JournalTile> {
                                   ),
                                 ),
                               ),
-                              if (widget._journalModel!.postedBy.uid ==
-                                  FirebaseAuth.instance.currentUser!.uid)
+                              if (widget._journalModel!.postedBy != null &&
+                                  widget._journalModel!.postedBy!.uid ==
+                                      FirebaseAuth.instance.currentUser!.uid)
                                 PostMenuButton(
-                                  journalId: widget._journalModel!.id,
+                                  journalId: widget._journalModel!.id ?? '',
                                   deletePost: widget._deletePost,
                                 ),
                             ],
@@ -150,13 +175,24 @@ class _JournalTileState extends State<JournalTile> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Feeling " + widget._journalModel!.feelings,
-                      style: SolhTextStyles.JournalingDescriptionReadMoreText,
-                    ),
-                    Text(
-                      widget._journalModel!.description,
+                    widget._journalModel!.feelings != null
+                        ? Text(
+                            "Feeling " +
+                                widget._journalModel!.feelings!.feelingName!,
+                            style: SolhTextStyles
+                                .JournalingDescriptionReadMoreText,
+                          )
+                        : Container(),
+                    ReadMoreText(
+                      widget._journalModel!.description!,
+                      trimLines: 3,
+                      //trimLength: 100,
                       style: SolhTextStyles.JournalingDescriptionText,
+                      colorClickableText: SolhColors.green,
+                      //trimMode: TrimMode.Length,
+                      trimMode: TrimMode.Line,
+                      trimCollapsedText: ' Read more',
+                      trimExpandedText: ' Less',
                     ),
                   ],
                 ),
@@ -227,11 +263,18 @@ class _JournalTileState extends State<JournalTile> {
                       ),
                     ),
                     InkWell(
-                      onTap: () => AutoRouter.of(context).push(
-                          CommentScreenRouter(
-                              journalModel: widget._journalModel)),
+                      onTap: () =>
+                          // Get.to(
+                          //   CommentScreen(
+                          //     journalModel: widget._journalModel,
+                          //   ),
+                          // ),
+                          AutoRouter.of(context).push(CommentScreenRouter(
+                              journalModel: widget._journalModel,
+                              index: widget.index)),
                       child: Container(
                         width: MediaQuery.of(context).size.width / 3.5,
+                        height: MediaQuery.of(context).size.height / 20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -257,27 +300,35 @@ class _JournalTileState extends State<JournalTile> {
                         // },
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width / 3.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/journaling/post-connect.svg",
-                            width: 17,
-                            height: 17,
-                            color: SolhColors.green,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: MediaQuery.of(context).size.width / 40,
+                    InkWell(
+                      onTap: () async {
+                        await connectionController.addConnection(
+                          widget._journalModel!.postedBy!.sId!,
+                        );
+                        Utility.showToast('Connection request sent');
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/journaling/post-connect.svg",
+                              width: 17,
+                              height: 17,
+                              color: SolhColors.green,
                             ),
-                            child: Text(
-                              "Connect",
-                              style: SolhTextStyles.GreenBorderButtonText,
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width / 40,
+                              ),
+                              child: Text(
+                                "Connect",
+                                style: SolhTextStyles.GreenBorderButtonText,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -297,26 +348,6 @@ class _JournalTileState extends State<JournalTile> {
             margin: EdgeInsets.symmetric(vertical: 1.h),
             height: 0.8.h,
             color: Color(0xFFF6F6F8)),
-      ],
-    );
-  }
-}
-
-class SolhExpertBadge extends StatelessWidget {
-  const SolhExpertBadge({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Icon(
-          Icons.verified,
-          color: SolhColors.green,
-          size: 14,
-        ),
       ],
     );
   }

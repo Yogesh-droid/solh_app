@@ -35,9 +35,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
     print("picking image");
     _xFile = await _picker.pickImage(
       source: ImageSource.gallery,
-      maxWidth: 640,
-      maxHeight: 640,
-      imageQuality: 50,
+      // maxWidth: 640,
+      // maxHeight: 640,
+      // imageQuality: 50,
     );
     print(_xFile!.path.toString());
     _croppedFile = await ImageCropper.cropImage(

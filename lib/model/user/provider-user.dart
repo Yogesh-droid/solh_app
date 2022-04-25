@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
@@ -7,7 +8,7 @@ class ProviderUser {
   String? _bio;
   String? _profilePictureUrl;
   String? _gender;
-  String? _dob;
+  String? _dob = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
   set setFirstName(String firstname) {
     _firstname = firstname;

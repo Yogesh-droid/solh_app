@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.gr.dart';
@@ -14,6 +15,7 @@ class FirebaseNetwork {
   );
   void signInWithPhoneNumber(String phoneNo,
       {required Function(String) onCodeSent}) async {
+    var appSignatureID = await SmsAutoFill().getAppSignature;
     try {
       print("calling verify phoneNo");
       await FirebaseAuth.instance.verifyPhoneNumber(
