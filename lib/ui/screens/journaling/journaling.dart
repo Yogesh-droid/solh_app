@@ -195,57 +195,60 @@ class _JournalingState extends State<Journaling> {
                   Expanded(
                     child: Obx(
                       () => !_journalPageController.isLoading.value
-                          ? SmartRefresher(
-                              onRefresh: _onRefresh,
-                              controller: _refreshController,
-                              child: Obx(
-                                () => _journalPageController
-                                        .journalsList.isNotEmpty
-                                    ? ListView.builder(
-                                        controller: _journalsScrollController,
-                                        itemCount: _journalPageController
-                                            .journalsList.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          print("building tile: ");
-                                          // if (index == 0)
-                                          //   return WhatsOnYourMindSection();
-                                          return JournalTile(
-                                            journalModel: _journalPageController
-                                                .journalsList.value[index],
-                                            index: index,
-                                            deletePost: () async {
-                                              print("deleting post");
-                                              DeleteJournal _deleteJournal =
-                                                  DeleteJournal(
-                                                      journalId:
-                                                          _journalPageController
-                                                              .journalsList
-                                                              .value[index]
-                                                              .id!);
-                                              await _deleteJournal.deletePost();
-                                              setState(() {
-                                                _journalPageController
-                                                    .journalsList.value
-                                                    .removeAt(index);
-                                                _journalPageController
-                                                    .journalsList
-                                                    .refresh();
-                                              });
-                                            },
-                                          );
-                                        })
-                                    : Container(
-                                        child: Center(
-                                          child: Text(
-                                            "No Journals",
-                                            style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
+                          ? Obx(
+                              () => _journalPageController
+                                      .journalsList.isNotEmpty
+                                  ? SmartRefresher(
+                                      onRefresh: _onRefresh,
+                                      controller: _refreshController,
+                                      child: ListView.builder(
+                                          controller: _journalsScrollController,
+                                          itemCount: _journalPageController
+                                              .journalsList.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            print("building tile: ");
+                                            // if (index == 0)
+                                            //   return WhatsOnYourMindSection();
+                                            return JournalTile(
+                                              journalModel:
+                                                  _journalPageController
+                                                      .journalsList
+                                                      .value[index],
+                                              index: index,
+                                              deletePost: () async {
+                                                print("deleting post");
+                                                DeleteJournal _deleteJournal =
+                                                    DeleteJournal(
+                                                        journalId:
+                                                            _journalPageController
+                                                                .journalsList
+                                                                .value[index]
+                                                                .id!);
+                                                await _deleteJournal
+                                                    .deletePost();
+                                                setState(() {
+                                                  _journalPageController
+                                                      .journalsList.value
+                                                      .removeAt(index);
+                                                  _journalPageController
+                                                      .journalsList
+                                                      .refresh();
+                                                });
+                                              },
+                                            );
+                                          }),
+                                    )
+                                  : Container(
+                                      child: Center(
+                                        child: Text(
+                                          "No Journals",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                              ),
+                                    ),
                             )
                           : Center(
                               child: CircularProgressIndicator(),

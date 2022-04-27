@@ -300,37 +300,44 @@ class _JournalTileState extends State<JournalTile> {
                         // },
                       ),
                     ),
-                    InkWell(
-                      onTap: () async {
-                        await connectionController.addConnection(
-                          widget._journalModel!.postedBy!.sId!,
-                        );
-                        Utility.showToast('Connection request sent');
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 3.5,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/journaling/post-connect.svg",
-                              width: 17,
-                              height: 17,
-                              color: SolhColors.green,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width / 40,
+                    widget._journalModel!.postedBy!.uid !=
+                            FirebaseAuth.instance.currentUser!.uid
+                        ? InkWell(
+                            onTap: () async {
+                              await connectionController.addConnection(
+                                widget._journalModel!.postedBy!.sId!,
+                              );
+                              Utility.showToast('Connection request sent');
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width / 3.5,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/icons/journaling/post-connect.svg",
+                                    width: 17,
+                                    height: 17,
+                                    color: SolhColors.green,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width /
+                                          40,
+                                    ),
+                                    child: Text(
+                                      "Connect",
+                                      style:
+                                          SolhTextStyles.GreenBorderButtonText,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              child: Text(
-                                "Connect",
-                                style: SolhTextStyles.GreenBorderButtonText,
-                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          )
+                        : SizedBox(
+                            width: 100,
+                          ),
                   ],
                 ),
               ),

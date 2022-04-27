@@ -8,6 +8,8 @@ import 'package:solh/services/network/network.dart';
 class ConnectionController extends GetxController {
   var myConnectionModel = MyConnectionModel().obs;
   var allConnectionModel = GetConnectionResponse().obs;
+  var receivedConnections = <Connections>[].obs;
+  var sentConnections = <Connections>[].obs;
   var userAnalyticsModel = UserAnalyticModel().obs;
   var isAddingConnection = false.obs;
 
@@ -33,7 +35,16 @@ class ConnectionController extends GetxController {
     });
 
     if (map.isNotEmpty) {
+      sentConnections.clear();
+      receivedConnections.clear();
       allConnectionModel.value = GetConnectionResponse.fromJson(map);
+      allConnectionModel.value.connections!.forEach((element) {
+        if (element.flag == 'sent') {
+          sentConnections.value.add(element);
+        } else {
+          receivedConnections.value.add(element);
+        }
+      });
     }
   }
 

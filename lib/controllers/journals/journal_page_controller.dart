@@ -15,8 +15,10 @@ class JournalPageController extends GetxController {
 
   Future<void> getAllJournals(int pageNo) async {
     print('started gettting all journals');
-    //pageNo == 1 ? isLoading.value = true : false;
     try {
+      if (pageNo == 1) {
+        isLoading.value = true;
+      }
       if (pageNo <= endPageLimit) {
         print('trying to get all journals');
         Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(

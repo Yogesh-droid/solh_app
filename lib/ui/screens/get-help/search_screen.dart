@@ -98,78 +98,112 @@ class SearchScreen extends StatelessWidget {
                     ),
                   )),*/
 
-            Expanded(
-              child: CustomScrollView(
-                slivers: [
-                  if (searchMarketController
-                          .searchMarketModel.value.doctors!.isEmpty &&
-                      searchMarketController
-                          .searchMarketModel.value.provider!.isEmpty)
-                    SliverToBoxAdapter(
-                      child: Container(
-                        child: Center(
-                          child: Text('No results found'),
-                        ),
-                      ),
-                    ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => ConsultantsTile(
-                          doctorModel: DoctorModel(
-                              organisation: searchMarketController
-                                      .searchMarketModel
-                                      .value
-                                      .doctors![index]
-                                      .organisation ??
-                                  '',
-                              name: searchMarketController.searchMarketModel
-                                      .value.doctors![index].name ??
-                                  '',
-                              mobile: searchMarketController.searchMarketModel
-                                      .value.doctors![index].contactNumber ??
-                                  '',
-                              email: searchMarketController.searchMarketModel
-                                      .value.doctors![index].email ??
-                                  '',
-                              clinic: '',
-                              locality: searchMarketController.searchMarketModel.value.doctors![index].addressLineOne ?? '',
-                              pincode: '',
-                              city: searchMarketController.searchMarketModel.value.doctors![index].addressLineFour ?? '',
-                              bio: searchMarketController.searchMarketModel.value.doctors![index].bio ?? '',
-                              abbrevations: '')),
-                      childCount: searchMarketController
-                          .searchMarketModel.value.doctors!.length,
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => ConsultantsTile(
-                          doctorModel: DoctorModel(
-                              organisation: '',
-                              name: searchMarketController.searchMarketModel
-                                      .value.provider![index].name ??
-                                  '',
-                              mobile: searchMarketController.searchMarketModel
-                                      .value.provider![index].contactNumber ??
-                                  '',
-                              email: searchMarketController.searchMarketModel
-                                      .value.provider![index].email ??
-                                  '',
-                              clinic: '',
-                              locality: searchMarketController.searchMarketModel
-                                      .value.provider![index].addressLineOne ??
-                                  '',
-                              pincode: '',
-                              city: searchMarketController.searchMarketModel.value.provider![index].addressLineFour ?? '',
-                              bio: searchMarketController.searchMarketModel.value.provider![index].bio ?? '',
-                              abbrevations: '')),
-                      childCount: searchMarketController
-                          .searchMarketModel.value.provider!.length,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Obx(() => Expanded(
+                  child:
+                      searchMarketController.searchMarketModel.value.doctors !=
+                                  null ||
+                              searchMarketController
+                                      .searchMarketModel.value.provider !=
+                                  null
+                          ? CustomScrollView(
+                              slivers: [
+                                if (searchMarketController.searchMarketModel
+                                        .value.doctors!.isEmpty &&
+                                    searchMarketController.searchMarketModel
+                                        .value.provider!.isEmpty)
+                                  SliverToBoxAdapter(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text('No results found'),
+                                      ),
+                                    ),
+                                  ),
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) => ConsultantsTile(
+                                        doctorModel: DoctorModel(
+                                            organisation: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .organisation ??
+                                                '',
+                                            name: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .name ??
+                                                '',
+                                            mobile: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .contactNumber ??
+                                                '',
+                                            email: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .email ??
+                                                '',
+                                            clinic: '',
+                                            locality: searchMarketController.searchMarketModel.value.doctors![index].addressLineOne ?? '',
+                                            pincode: '',
+                                            city: searchMarketController.searchMarketModel.value.doctors![index].addressLineFour ?? '',
+                                            bio: searchMarketController.searchMarketModel.value.doctors![index].bio ?? '',
+                                            abbrevations: '')),
+                                    childCount: searchMarketController
+                                        .searchMarketModel
+                                        .value
+                                        .doctors!
+                                        .length,
+                                  ),
+                                ),
+                                SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) => ConsultantsTile(
+                                        doctorModel: DoctorModel(
+                                            organisation: '',
+                                            name: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .name ??
+                                                '',
+                                            mobile: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .contactNumber ??
+                                                '',
+                                            email: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .email ??
+                                                '',
+                                            clinic: '',
+                                            locality: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .addressLineOne ??
+                                                '',
+                                            pincode: '',
+                                            city: searchMarketController.searchMarketModel.value.provider![index].addressLineFour ?? '',
+                                            bio: searchMarketController.searchMarketModel.value.provider![index].bio ?? '',
+                                            abbrevations: '')),
+                                    childCount: searchMarketController
+                                        .searchMarketModel
+                                        .value
+                                        .provider!
+                                        .length,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                )),
           ],
         ),
       ),

@@ -6,7 +6,9 @@ import 'package:sms_autofill/sms_autofill.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import '../../../constants/api.dart';
 import '../../../services/firebase/auth.dart';
+import '../../../services/network/network.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({Key? key}) : super(key: key);

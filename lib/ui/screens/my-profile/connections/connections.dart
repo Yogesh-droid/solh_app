@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
@@ -296,108 +298,299 @@ class Connections extends StatelessWidget {
   }
 
   Widget getInvitesView(BuildContext context) {
-    return Obx(() => ListView.builder(
-          itemCount:
-              connectionController.allConnectionModel.value.connections != null
-                  ? connectionController
-                      .allConnectionModel.value.connections!.length
-                  : 0,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: CachedNetworkImageProvider(
-                        connectionController.allConnectionModel.value
-                                .connections![index].profilePicture ??
-                            ''),
+    // return Obx(() => ListView.builder(
+    //       itemCount:
+    //           connectionController.allConnectionModel.value.connections != null
+    //               ? connectionController
+    //                   .allConnectionModel.value.connections!.length
+    //               : 0,
+    //       shrinkWrap: true,
+    //       itemBuilder: (context, index) {
+    //         return Container(
+    //           padding: EdgeInsets.all(10),
+    //           width: MediaQuery.of(context).size.width,
+    //           child: Row(
+    //             children: [
+    //               CircleAvatar(
+    //                 radius: 30,
+    //                 backgroundImage: CachedNetworkImageProvider(
+    //                     connectionController.allConnectionModel.value
+    //                             .connections![index].profilePicture ??
+    //                         ''),
+    //               ),
+    //               SizedBox(
+    //                 width: 10,
+    //               ),
+    //               Column(
+    //                 mainAxisAlignment: MainAxisAlignment.start,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   Text(
+    //                     connectionController.allConnectionModel.value
+    //                             .connections![index].name ??
+    //                         '',
+    //                     overflow: TextOverflow.ellipsis,
+    //                     style: TextStyle(
+    //                         fontSize: 18,
+    //                         fontWeight: FontWeight.w600,
+    //                         color: SolhColors.black34),
+    //                   ),
+    //                   Container(
+    //                     width: MediaQuery.of(context).size.width * 0.30,
+    //                     child: Text(
+    //                       connectionController.allConnectionModel.value
+    //                               .connections![index].bio ??
+    //                           '',
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: TextStyle(
+    //                           fontSize: 14,
+    //                           fontWeight: FontWeight.w600,
+    //                           color: SolhColors.grey196),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //               Spacer(),
+    //               inviteButton(
+    //                   callback: () async {
+    //                     connectionController.isAddingConnection.value = true;
+    //                     await connectionController.acceptConnection(
+    //                         connectionController.allConnectionModel.value
+    //                             .connections![index].connectionId!);
+    //                     connectionController.isAddingConnection.value = false;
+    //                   },
+    //                   flag: connectionController.allConnectionModel.value
+    //                           .connections![index].flag ??
+    //                       ''),
+    //               PopupMenuButton(itemBuilder: (context) {
+    //                 return [
+    //                   PopupMenuItem(
+    //                     child: Text('Create Group'),
+    //                     value: '1',
+    //                   ),
+    //                   PopupMenuItem(
+    //                     child: Text('Settings'),
+    //                     value: '2',
+    //                   ),
+    //                 ];
+    //               })
+    //             ],
+    //           ),
+    //         );
+    //       },
+    //     ));
+
+    return CustomScrollView(
+      slivers: [
+        connectionController.sentConnections.isNotEmpty
+            ? SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, top: 8),
+                  child: Text(
+                    'sent',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.black34),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        connectionController.allConnectionModel.value
-                                .connections![index].name ??
-                            '',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: SolhColors.black34),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.30,
-                        child: Text(
-                          connectionController.allConnectionModel.value
-                                  .connections![index].bio ??
-                              '',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: SolhColors.grey196),
+                ),
+              )
+            : SliverToBoxAdapter(),
+        connectionController.sentConnections.isNotEmpty
+            ? SliverList(
+                delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: CachedNetworkImageProvider(
+                              connectionController.sentConnections.value[index]
+                                      .profilePicture ??
+                                  ''),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              connectionController
+                                      .sentConnections.value[index].name ??
+                                  '',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: SolhColors.black34),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.30,
+                              child: Text(
+                                connectionController
+                                        .sentConnections.value[index].bio ??
+                                    '',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: SolhColors.grey196),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        inviteButton(
+                            callback: () async {
+                              connectionController.isAddingConnection.value =
+                                  true;
+                              await connectionController.acceptConnection(
+                                  connectionController.sentConnections
+                                      .value[index].connectionId!);
+                              connectionController.isAddingConnection.value =
+                                  false;
+                            },
+                            flag: 'sent'),
+                        PopupMenuButton(
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                child: Text('See Profile'),
+                                value: '1',
+                              ),
+                              PopupMenuItem(
+                                child: Text('Decline'),
+                                value: '2',
+                              ),
+                            ];
+                          },
+                          onSelected: (value) {
+                            if (value == '1') {
+                              AutoRouter.of(context).push(ConnectScreenRouter(
+                                  uid: connectionController
+                                          .sentConnections.value[index].uId ??
+                                      ''));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                },
+                childCount: connectionController.sentConnections.value.length,
+              ))
+            : SliverToBoxAdapter(),
+        connectionController.receivedConnections.isNotEmpty
+            ? SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, top: 8),
+                  child: Text(
+                    'received',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.black34),
                   ),
-                  Spacer(),
-                  inviteButton(
-                      callback: () async {
-                        connectionController.isAddingConnection.value = true;
-                        await connectionController.acceptConnection(
-                            connectionController.allConnectionModel.value
-                                .connections![index].connectionId!);
-                        connectionController.isAddingConnection.value = false;
-                      },
-                      flag: connectionController.allConnectionModel.value
-                              .connections![index].flag ??
-                          ''),
-                  PopupMenuButton(itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        child: Text('Create Group'),
-                        value: '1',
-                      ),
-                      PopupMenuItem(
-                        child: Text('Settings'),
-                        value: '2',
-                      ),
-                    ];
-                  })
-                  // IconButton(
-                  //     onPressed: () async {
-                  //       await showMenu(
-                  //           context: context,
-                  //           position: RelativeRect.fromLTRB(
-                  //               200,
-                  //               MediaQuery.of(context).size.height * 0.2,
-                  //               MediaQuery.of(context).size.width * 0.1,
-                  //               400),
-                  //           items: [
-                  //             PopupMenuItem(
-                  //               child: Text('Create Group'),
-                  //               value: '1',
-                  //             ),
-                  //             PopupMenuItem(
-                  //               child: Text('Settings'),
-                  //               value: '2',
-                  //             ),
-                  //           ]);
-                  //     },
-                  //     icon: Icon(Icons.more_vert, color: SolhColors.grey196)),
-                ],
-              ),
-            );
-          },
-        ));
+                ),
+              )
+            : SliverToBoxAdapter(),
+        connectionController.receivedConnections.isNotEmpty
+            ? SliverList(
+                delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 30,
+                          backgroundImage: CachedNetworkImageProvider(
+                              connectionController.receivedConnections
+                                      .value[index].profilePicture ??
+                                  ''),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              connectionController
+                                      .receivedConnections.value[index].name ??
+                                  '',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: SolhColors.black34),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.30,
+                              child: Text(
+                                connectionController
+                                        .receivedConnections.value[index].bio ??
+                                    '',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: SolhColors.grey196),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        inviteButton(
+                            callback: () async {
+                              connectionController.isAddingConnection.value =
+                                  true;
+                              await connectionController.acceptConnection(
+                                  connectionController.receivedConnections
+                                      .value[index].connectionId!);
+                              connectionController.isAddingConnection.value =
+                                  false;
+                            },
+                            flag: 'received'),
+                        PopupMenuButton(
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem(
+                                child: Text('See Profile'),
+                                value: '1',
+                              ),
+                              PopupMenuItem(
+                                child: Text('Decline'),
+                                value: '2',
+                              ),
+                            ];
+                          },
+                          onSelected: (value) {
+                            if (value == '1') {
+                              AutoRouter.of(context).push(ConnectScreenRouter(
+                                  uid: connectionController.receivedConnections
+                                          .value[index].uId ??
+                                      ''));
+                            }
+                          },
+                        )
+                      ],
+                    ),
+                  );
+                },
+                childCount:
+                    connectionController.receivedConnections.value.length,
+              ))
+            : SliverToBoxAdapter(),
+      ],
+    );
   }
 
   Widget getConnectionFilterChips() {

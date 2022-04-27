@@ -137,72 +137,33 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             Container(
                 margin:
                     EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
-                child: Wrap(
-                  children:
-                      //[
-                      // IssuesTile(
-                      //   title: 'Anxiety',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 3));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Corporate Stress',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 5));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Family Issues',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 7));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Work Problems',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 2));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Relationship Struggles',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 8));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Corporate Stress',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 9));
-                      //   },
-                      // ),
-                      // IssuesTile(
-                      //   title: 'Family Issues',
-                      //   onPressed: () {
-                      //     AutoRouter.of(context)
-                      //         .push(ConsultantsScreenRouter(page: 14));
-                      //   },
-                      // ),
-
-                      getHelpController
-                          .getIssueResponseModel.value.specializationList!
-                          .map((issue) {
-                    return IssuesTile(
-                      title: issue.name ?? '',
-                      onPressed: () {
-                        AutoRouter.of(context).push(ConsultantsScreenRouter(
-                            slug: issue.slug ?? '', type: 'issue'));
-                      },
-                    );
-                  }).toList(),
-                  // ],
-                )),
+                child: Wrap(children: [
+                  Wrap(
+                    children: getHelpController
+                        .getIssueResponseModel.value.specializationList!
+                        .sublist(
+                            0,
+                            getHelpController.getIssueResponseModel.value
+                                        .specializationList!.length >
+                                    10
+                                ? 10
+                                : getHelpController.getIssueResponseModel.value
+                                    .specializationList!.length)
+                        .map((issue) {
+                      return IssuesTile(
+                        title: issue.name ?? '',
+                        onPressed: () {
+                          AutoRouter.of(context).push(ConsultantsScreenRouter(
+                              slug: issue.slug ?? '', type: 'issue'));
+                        },
+                      );
+                    }).toList(),
+                  ),
+                  if (getHelpController.getIssueResponseModel.value
+                          .specializationList!.length >
+                      10)
+                    IssuesTile(title: 'view all', onPressed: () {})
+                ])),
             GetHelpDivider(),
             GetHelpCategory(
               title: "Search by speciality",

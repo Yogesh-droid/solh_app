@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -11,6 +14,7 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/user/user-profile.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -18,6 +22,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
+import '../../profile-setup/add-profile-photo.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
@@ -27,6 +33,8 @@ class EditMyProfileScreen extends StatefulWidget {
 }
 
 class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
+  XFile? _xFile;
+  File? _croppedFile;
   TextEditingController _firstNameTextEditingController =
       TextEditingController();
   TextEditingController _lastNameTextEditingController =
@@ -98,10 +106,38 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                           height: 2.5.h,
                         ),
                         Container(
-                          child: CircleAvatar(
-                            radius: 14.w,
-                            backgroundImage: CachedNetworkImageProvider(
-                                userSnapshot.data!.profilePicture!),
+                          child: Stack(
+                            children: [
+                              _croppedFile != null
+                                  ? CircleAvatar(
+                                      radius: 14.w,
+                                      backgroundImage: FileImage(_croppedFile!),
+                                    )
+                                  : CircleAvatar(
+                                      radius: 14.w,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                              userSnapshot
+                                                  .data!.profilePicture!),
+                                    ),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: InkWell(
+                                  onTap: () {
+                                    _croppedFile != null
+                                        ? uploadImage()
+                                        : _pickImage();
+                                  },
+                                  child: _croppedFile != null
+                                      ? Icon(Icons.check_box_outlined)
+                                      : Icon(
+                                          Icons.edit,
+                                          color: SolhColors.green,
+                                        ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         Container(
@@ -225,6 +261,50 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         ],
       ),
     );
+  }
+
+  void _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    print("picking image");
+    _xFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      // maxWidth: 640,
+      // maxHeight: 640,
+      // imageQuality: 50,
+    );
+    print(_xFile!.path.toString());
+    _croppedFile = await ImageCropper.cropImage(
+        sourcePath: _xFile!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Edit Image',
+            activeControlsWidgetColor: SolhColors.green,
+            toolbarColor: SolhColors.green,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+    // Navigator.of(context).pop();
+    setState(() {});
+  }
+
+  Future<void> uploadImage() async {
+    var response = await Network.uploadFileToServer(
+        "${APIConstants.api}/api/fileupload/user-profile-picture",
+        "profile",
+        _croppedFile!);
+    if (response["success"]) {
+      Utility.showToast('Profile picture updated');
+      userBlocNetwork.getMyProfileSnapshot();
+    }
   }
 }
 
