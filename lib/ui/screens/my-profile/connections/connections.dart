@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
@@ -13,6 +15,7 @@ import 'package:solh/widgets_constants/solh_search_field.dart';
 class Connections extends StatelessWidget {
   Connections({Key? key}) : super(key: key);
   final ConnectionController connectionController = Get.find();
+  final RefreshController _refreshController = RefreshController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +59,20 @@ class Connections extends StatelessWidget {
           ),
           IconButton(
             onPressed: () async {
-              await showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(
-                      200, size.height * 0.2, size.width * 0.1, 400),
-                  items: [
-                    PopupMenuItem(
-                      child: Text('Create Group'),
-                      value: '1',
-                    ),
-                    PopupMenuItem(
-                      child: Text('Settings'),
-                      value: '2',
-                    ),
-                  ]);
+              // await showMenu(
+              //     context: context,
+              //     position: RelativeRect.fromLTRB(
+              //         200, size.height * 0.2, size.width * 0.1, 400),
+              //     items: [
+              //       PopupMenuItem(
+              //         child: Text('Create Group'),
+              //         value: '1',
+              //       ),
+              //       PopupMenuItem(
+              //         child: Text('Settings'),
+              //         value: '2',
+              //       ),
+              //     ]);
             },
             icon: Icon(Icons.more_vert),
             color: SolhColors.green,
@@ -208,6 +211,9 @@ class Connections extends StatelessWidget {
   Widget getAllConnectionqView() {
     return Column(
       children: [
+        SizedBox(
+          height: 20,
+        ),
         //getConnectionFilterChips(),
         Expanded(
           child: Obx(() => ListView.builder(
@@ -252,6 +258,7 @@ class Connections extends StatelessWidget {
                     padding: EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width,
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
                           radius: 30,
@@ -264,27 +271,34 @@ class Connections extends StatelessWidget {
                           width: 10,
                         ),
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               connectionController.myConnectionModel.value
                                       .myConnections![index].name ??
                                   '',
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.w600,
                                   color: SolhColors.black34),
                             ),
-                            Text(
-                              connectionController.myConnectionModel.value
-                                      .myConnections![index].bio ??
-                                  '',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: SolhColors.grey196),
-                            ),
+                            if (connectionController.myConnectionModel.value
+                                    .myConnections![index].bio !=
+                                null)
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.30,
+                                child: Text(
+                                  connectionController.myConnectionModel.value
+                                          .myConnections![index].bio ??
+                                      '',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: SolhColors.grey196),
+                                ),
+                              ),
                           ],
                         ),
                       ],
@@ -380,217 +394,279 @@ class Connections extends StatelessWidget {
     //       },
     //     ));
 
-    return CustomScrollView(
-      slivers: [
-        connectionController.sentConnections.isNotEmpty
-            ? SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0, top: 8),
-                  child: Text(
-                    'sent',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: SolhColors.black34),
-                  ),
-                ),
-              )
-            : SliverToBoxAdapter(),
-        connectionController.sentConnections.isNotEmpty
-            ? SliverList(
-                delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: CachedNetworkImageProvider(
-                              connectionController.sentConnections.value[index]
-                                      .profilePicture ??
-                                  ''),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+    return Obx(() {
+      return SmartRefresher(
+        controller: _refreshController,
+        onRefresh: () async {
+          await connectionController.getAllConnection();
+          connectionController.receivedConnections.refresh();
+          connectionController.sentConnections.refresh();
+          _refreshController.refreshCompleted();
+        },
+        child: CustomScrollView(
+          slivers: [
+            /// this is just space ///
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height:
+                    connectionController.sentConnections.isNotEmpty ? 20 : 0,
+              ),
+            ),
+            /////////////////
+            connectionController.sentConnections.isNotEmpty
+                ? SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 18.0, top: 8),
+                      child: Text(
+                        'sent',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: SolhColors.black34),
+                      ),
+                    ),
+                  )
+                : SliverToBoxAdapter(),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height:
+                    connectionController.sentConnections.isNotEmpty ? 16 : 0,
+              ),
+            ),
+            connectionController.sentConnections.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
                           children: [
-                            Text(
-                              connectionController
-                                      .sentConnections.value[index].name ??
-                                  '',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: SolhColors.black34),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.30,
-                              child: Text(
-                                connectionController
-                                        .sentConnections.value[index].bio ??
-                                    '',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: SolhColors.grey196),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Spacer(),
-                        inviteButton(
-                            callback: () async {
-                              connectionController.isAddingConnection.value =
-                                  true;
-                              await connectionController.acceptConnection(
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: CachedNetworkImageProvider(
                                   connectionController.sentConnections
-                                      .value[index].connectionId!);
-                              connectionController.isAddingConnection.value =
-                                  false;
-                            },
-                            flag: 'sent'),
-                        PopupMenuButton(
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                child: Text('See Profile'),
-                                value: '1',
-                              ),
-                              PopupMenuItem(
-                                child: Text('Decline'),
-                                value: '2',
-                              ),
-                            ];
-                          },
-                          onSelected: (value) {
-                            if (value == '1') {
-                              AutoRouter.of(context).push(ConnectScreenRouter(
-                                  uid: connectionController
-                                          .sentConnections.value[index].uId ??
-                                      ''));
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  );
-                },
-                childCount: connectionController.sentConnections.value.length,
-              ))
-            : SliverToBoxAdapter(),
-        connectionController.receivedConnections.isNotEmpty
-            ? SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 18.0, top: 8),
-                  child: Text(
-                    'received',
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: SolhColors.black34),
-                  ),
-                ),
-              )
-            : SliverToBoxAdapter(),
-        connectionController.receivedConnections.isNotEmpty
-            ? SliverList(
-                delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  return Container(
-                    padding: EdgeInsets.all(10),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: CachedNetworkImageProvider(
-                              connectionController.receivedConnections
-                                      .value[index].profilePicture ??
-                                  ''),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              connectionController
-                                      .receivedConnections.value[index].name ??
-                                  '',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: SolhColors.black34),
+                                          .value[index].profilePicture ??
+                                      ''),
                             ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.30,
-                              child: Text(
-                                connectionController
-                                        .receivedConnections.value[index].bio ??
-                                    '',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: SolhColors.grey196),
-                              ),
+                            SizedBox(
+                              width: 10,
                             ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  connectionController
+                                          .sentConnections.value[index].name ??
+                                      '',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: SolhColors.black34),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.30,
+                                  child: Text(
+                                    connectionController
+                                            .sentConnections.value[index].bio ??
+                                        '',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: SolhColors.grey196),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            inviteButton(
+                                callback: () async {
+                                  connectionController
+                                      .isAddingConnection.value = true;
+                                  await connectionController.acceptConnection(
+                                      connectionController.sentConnections
+                                          .value[index].connectionId!,
+                                      '1');
+                                  connectionController
+                                      .isAddingConnection.value = false;
+                                },
+                                flag: 'sent'),
+                            PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Text('See Profile'),
+                                    value: '1',
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Cancel'),
+                                    value: '2',
+                                  ),
+                                ];
+                              },
+                              onSelected: (value) async {
+                                if (value == '1') {
+                                  AutoRouter.of(context).push(
+                                      ConnectScreenRouter(
+                                          uid: connectionController
+                                                  .sentConnections
+                                                  .value[index]
+                                                  .uId ??
+                                              ''));
+                                } else if (value == '2') {
+                                  connectionController.deleteConnectionRequest(
+                                    connectionController.sentConnections
+                                        .value[index].connectionId!,
+                                  );
+                                }
+                              },
+                            )
                           ],
                         ),
-                        Spacer(),
-                        inviteButton(
-                            callback: () async {
-                              connectionController.isAddingConnection.value =
-                                  true;
-                              await connectionController.acceptConnection(
-                                  connectionController.receivedConnections
-                                      .value[index].connectionId!);
-                              connectionController.isAddingConnection.value =
-                                  false;
-                            },
-                            flag: 'received'),
-                        PopupMenuButton(
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                child: Text('See Profile'),
-                                value: '1',
-                              ),
-                              PopupMenuItem(
-                                child: Text('Decline'),
-                                value: '2',
-                              ),
-                            ];
-                          },
-                          onSelected: (value) {
-                            if (value == '1') {
-                              AutoRouter.of(context).push(ConnectScreenRouter(
-                                  uid: connectionController.receivedConnections
-                                          .value[index].uId ??
-                                      ''));
-                            }
-                          },
-                        )
-                      ],
+                      );
+                    },
+                    childCount:
+                        connectionController.sentConnections.value.length,
+                  ))
+                : SliverToBoxAdapter(),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 36,
+              ),
+            ),
+            connectionController.receivedConnections.isNotEmpty
+                ? SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 18.0, top: 8),
+                      child: Text(
+                        'received',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: SolhColors.black34),
+                      ),
                     ),
-                  );
-                },
-                childCount:
-                    connectionController.receivedConnections.value.length,
-              ))
-            : SliverToBoxAdapter(),
-      ],
-    );
+                  )
+                : SliverToBoxAdapter(),
+            connectionController.receivedConnections.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  connectionController.receivedConnections
+                                          .value[index].profilePicture ??
+                                      ''),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  connectionController.receivedConnections
+                                          .value[index].name ??
+                                      '',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      color: SolhColors.black34),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.30,
+                                  child: connectionController
+                                              .receivedConnections
+                                              .value[index]
+                                              .bio !=
+                                          null
+                                      ? connectionController.receivedConnections
+                                              .value[index].bio!.isNotEmpty
+                                          ? Text(
+                                              connectionController
+                                                      .receivedConnections
+                                                      .value[index]
+                                                      .bio ??
+                                                  '',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: SolhColors.grey196),
+                                            )
+                                          : Container()
+                                      : Container(),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            inviteButton(
+                                callback: () async {
+                                  connectionController
+                                      .isAddingConnection.value = true;
+                                  await connectionController.acceptConnection(
+                                      connectionController.receivedConnections
+                                          .value[index].connectionId!,
+                                      '1');
+                                  connectionController
+                                      .isAddingConnection.value = false;
+                                },
+                                flag: 'received'),
+                            PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Text('See Profile'),
+                                    value: '1',
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Decline'),
+                                    value: '2',
+                                  ),
+                                ];
+                              },
+                              onSelected: (value) {
+                                if (value == '1') {
+                                  AutoRouter.of(context).push(
+                                      ConnectScreenRouter(
+                                          uid: connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .uId ??
+                                              ''));
+                                } else if (value == '2') {
+                                  connectionController.acceptConnection(
+                                      connectionController.receivedConnections
+                                          .value[index].connectionId!,
+                                      '0');
+                                }
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    childCount:
+                        connectionController.receivedConnections.value.length,
+                  ))
+                : SliverToBoxAdapter(),
+          ],
+        ),
+      );
+    });
   }
 
   Widget getConnectionFilterChips() {
@@ -632,8 +708,8 @@ class Connections extends StatelessWidget {
         callback();
       },
       child: Container(
-        width: 100,
-        height: 45,
+        width: 80,
+        height: 36,
         decoration: BoxDecoration(
           color: SolhColors.green,
           borderRadius: BorderRadius.circular(50),
@@ -645,6 +721,7 @@ class Connections extends StatelessWidget {
                   width: 20,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(SolhColors.white),
+                    strokeWidth: 2,
                   ),
                 )
               : Text(

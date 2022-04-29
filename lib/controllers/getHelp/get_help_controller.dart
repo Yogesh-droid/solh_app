@@ -6,7 +6,9 @@ import '../../services/network/network.dart';
 
 class GetHelpController extends GetxController {
   var getIssueResponseModel = GetIssueResponseModel().obs;
+  var issueList = [].obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
+  var isAllIssueShown = false.obs;
 
   void getIssueList() async {
     try {
@@ -14,8 +16,28 @@ class GetHelpController extends GetxController {
           await Network.makeGetRequest("${APIConstants.api}/api/issues");
 
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
+      issueList.value = getIssueResponseModel.value.specializationList != null
+          ? getIssueResponseModel.value.specializationList!.length > 8
+              ? getIssueResponseModel.value.specializationList!.sublist(0, 8)
+              : getIssueResponseModel.value.specializationList!
+          : [];
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
+    }
+  }
+
+  void showAllIssues() {
+    if (getIssueResponseModel.value.specializationList != null) {
+      issueList.value = getIssueResponseModel.value.specializationList!;
+    }
+  }
+
+  void showLessIssues() {
+    if (getIssueResponseModel.value.specializationList != null) {
+      issueList.value =
+          getIssueResponseModel.value.specializationList!.length > 8
+              ? getIssueResponseModel.value.specializationList!.sublist(0, 8)
+              : getIssueResponseModel.value.specializationList!;
     }
   }
 

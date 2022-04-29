@@ -236,6 +236,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                 searchMarketController.issueModel.value.provider != null
             ? CustomScrollView(
                 slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 10,
+                    ),
+                  ),
                   if (searchMarketController
                           .issueModel.value.doctors!.isEmpty &&
                       searchMarketController.issueModel.value.provider!.isEmpty)

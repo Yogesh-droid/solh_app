@@ -19,7 +19,22 @@ class SearchScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: getSearchField(context),
+              child: Row(
+                children: [
+                  Container(
+                    height: 40,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.keyboard_arrow_left,
+                        color: SolhColors.green,
+                        size: 30,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  Expanded(child: getSearchField(context)),
+                ],
+              ),
             ),
             const SizedBox(height: 16),
             Obx(() => searchMarketController.isLoading.value
@@ -212,12 +227,12 @@ class SearchScreen extends StatelessWidget {
 
   Widget getSearchField(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.07,
+      height: MediaQuery.of(context).size.height * 0.06,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
         color: Colors.white,
         border: Border.all(
-          color: Colors.green,
+          color: SolhColors.green,
           width: 1,
         ),
       ),
@@ -231,9 +246,14 @@ class SearchScreen extends StatelessWidget {
             hintStyle: TextStyle(
               color: Colors.grey,
             ),
-            suffixIcon: Icon(
-              Icons.close,
-              color: SolhColors.green,
+            suffixIcon: InkWell(
+              onTap: () {
+                searchController.clear();
+              },
+              child: Icon(
+                Icons.close,
+                color: SolhColors.green,
+              ),
             ),
           ),
           keyboardType: TextInputType.text,

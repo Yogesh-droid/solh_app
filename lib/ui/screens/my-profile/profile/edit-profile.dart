@@ -110,32 +110,70 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                             children: [
                               _croppedFile != null
                                   ? CircleAvatar(
-                                      radius: 14.w,
-                                      backgroundImage: FileImage(_croppedFile!),
+                                      radius: 14.5.w,
+                                      backgroundColor: SolhColors.green,
+                                      child: InkWell(
+                                        onTap: () {
+                                          _pickImage();
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 14.w,
+                                          backgroundImage:
+                                              FileImage(_croppedFile!),
+                                        ),
+                                      ),
                                     )
                                   : CircleAvatar(
-                                      radius: 14.w,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                              userSnapshot
-                                                  .data!.profilePicture!),
+                                      radius: 14.5.w,
+                                      backgroundColor: SolhColors.green,
+                                      child: InkWell(
+                                        onTap: () {
+                                          _pickImage();
+                                        },
+                                        child: CircleAvatar(
+                                          radius: 14.w,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                  userSnapshot
+                                                      .data!.profilePicture!),
+                                        ),
+                                      ),
                                     ),
                               Positioned(
                                 right: 0,
                                 top: 0,
                                 child: InkWell(
-                                  onTap: () {
-                                    _croppedFile != null
-                                        ? uploadImage()
-                                        : _pickImage();
-                                  },
-                                  child: _croppedFile != null
-                                      ? Icon(Icons.check_box_outlined)
-                                      : Icon(
-                                          Icons.edit,
-                                          color: SolhColors.green,
-                                        ),
-                                ),
+                                    onTap: () {
+                                      _croppedFile != null
+                                          ? uploadImage()
+                                          : _pickImage();
+                                    },
+                                    child: _croppedFile != null
+                                        ? Icon(Icons.check_box_outlined,
+                                            color: SolhColors.green)
+                                        : Container(
+                                            height: 35,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.black26,
+                                                    blurRadius: 5,
+                                                    offset: Offset(0, 2)
+                                                    // spreadRadius: 3
+                                                    )
+                                              ],
+                                            ),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                _pickImage();
+                                              },
+                                              iconSize: 14,
+                                              icon: Icon(Icons.edit_outlined,
+                                                  color: SolhColors.green),
+                                            ),
+                                          )),
                               ),
                             ],
                           ),
@@ -225,6 +263,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
+                              uploadImage();
                               await Network.makeHttpPutRequestWithToken(
                                   url:
                                       "${APIConstants.api}/api/edit-user-details",

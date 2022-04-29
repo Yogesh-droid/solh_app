@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/model/user/user.dart';
@@ -86,7 +87,13 @@ class MyProfileScreen extends StatelessWidget {
               }
               if (snapshot.hasError)
                 Container(child: Text(snapshot.error.toString()));
-              return Center(child: MyLoader());
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height / 3),
+                  Center(child: MyLoader()),
+                ],
+              );
             }),
       ),
     );
@@ -329,6 +336,56 @@ class ProfileContainer extends StatelessWidget {
             //     ],
             //   ),
             // ),
+            SizedBox(height: 3.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.thumb_up,
+                          size: 18,
+                          color: SolhColors.green,
+                        ),
+                        SizedBox(
+                          width: 2.w,
+                        ),
+                        Text(
+                          _userModel!.likes.toString(),
+                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                              fontSize: 18),
+                        )
+                      ],
+                    ),
+                    Text("Likes"),
+                  ],
+                ),
+                // Divider(),
+                Column(
+                  children: [
+                    Text(
+                      _userModel!.connections.toString(),
+                      style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                          fontSize: 18),
+                    ),
+                    Text("Connections"),
+                  ],
+                ),
+                // Divider(),
+                // Column(
+                //   children: [
+                //     Text(
+                //       '17',
+                //       style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                //           fontSize: 18),
+                //     ),
+                //     Text("Reviews"),
+                //   ],
+                // )
+              ],
+            ),
           ],
         ));
   }

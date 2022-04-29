@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../model/doctor.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
@@ -95,9 +96,10 @@ class ConsultantsTile extends StatelessWidget {
     // );
 
     return Container(
+        height: 180,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(color: SolhColors.grey196.withOpacity(0.4)),
         ),
         child: Padding(
@@ -133,7 +135,7 @@ class ConsultantsTile extends StatelessWidget {
                       "Dr. ${_doctorModel.name}",
                       style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           color: Color(0xFF222222)),
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -143,7 +145,7 @@ class ConsultantsTile extends StatelessWidget {
                     child: Text(
                       "${_doctorModel.bio}",
                       style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           color: Color(0xFF666666),
                           fontWeight: FontWeight.w300),
                       overflow: TextOverflow.ellipsis,
@@ -153,12 +155,12 @@ class ConsultantsTile extends StatelessWidget {
                   Text(
                     "7 yrs of experience",
                     style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         color: Color(0xFF222222),
                         fontWeight: FontWeight.w400),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: 1.h),
                   //// interaction details ////////////////////
                   ///
                   getInteractionDetails(),
@@ -168,13 +170,11 @@ class ConsultantsTile extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
-            child: Text('free',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: SolhColors.green,
-                    fontWeight: FontWeight.w300)),
-          ),
+          Text('free',
+              style: TextStyle(
+                  fontSize: 15,
+                  color: SolhColors.green,
+                  fontWeight: FontWeight.w300)),
         ],
       ),
     );
@@ -182,10 +182,10 @@ class ConsultantsTile extends StatelessWidget {
 
   getProfileImg() {
     return CircleAvatar(
-      radius: 51,
+      radius: 46,
       backgroundColor: SolhColors.green,
       child: CircleAvatar(
-        radius: 50,
+        radius: 45,
         backgroundImage: NetworkImage(
           'https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png',
         ),
@@ -201,10 +201,12 @@ class ConsultantsTile extends StatelessWidget {
             Icon(
               Icons.people,
               color: SolhColors.green,
+              size: 10,
             ),
             Text('72',
                 style: TextStyle(
                   color: SolhColors.green,
+                  fontSize: 12,
                 )),
           ],
         ),
@@ -214,10 +216,12 @@ class ConsultantsTile extends StatelessWidget {
             Icon(
               Icons.star_half,
               color: SolhColors.green,
+              size: 10,
             ),
             Text('4.5',
                 style: TextStyle(
                   color: SolhColors.green,
+                  fontSize: 12,
                 )),
           ],
         ),
@@ -227,10 +231,12 @@ class ConsultantsTile extends StatelessWidget {
             Icon(
               Icons.note_alt_outlined,
               color: SolhColors.green,
+              size: 10,
             ),
             Text('07',
                 style: TextStyle(
                   color: SolhColors.green,
+                  fontSize: 12,
                 )),
           ],
         ),
@@ -244,27 +250,33 @@ class ConsultantsTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                radius: 8,
-                backgroundColor: Colors.red,
-              ),
-              SizedBox(width: 3.w),
-              Text('Active',
-                  style: TextStyle(
-                    color: SolhColors.black,
-                  )),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     CircleAvatar(
+          //       radius: 8,
+          //       backgroundColor: Colors.red,
+          //     ),
+          //     SizedBox(width: 3.w),
+          //     Text('Active',
+          //         style: TextStyle(
+          //           color: SolhColors.black,
+          //           fontSize: 12,
+          //         )),
+          //   ],
+          // ),
           MaterialButton(
             onPressed: () {},
             child: Text('Call',
                 style: TextStyle(
                   color: SolhColors.green,
+                  fontSize: 14,
                 )),
           ),
-          SolhGreenBtn48(onPress: () {}, text: 'Book Appointment'),
+          SolhGreenBtn48(
+              onPress: () {
+                launch("tel://${_doctorModel.mobile}");
+              },
+              text: 'Book Appointment'),
         ],
       ),
     );

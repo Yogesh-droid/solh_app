@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
+import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
@@ -122,6 +123,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   hintText: 'Anxiety, Corporate Stress, Family Isues',
                   icon: 'assets/icons/app-bar/search.svg',
                   onTap: () {
+                    searchMarketController.searchMarketModel.value =
+                        SearchMarketModel();
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -131,25 +135,44 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   }),
             ),
             GetHelpDivider(),
-            GetHelpCategory(
-              title: "Search by issues",
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GetHelpCategory(title: 'Search by issues'),
+                  GestureDetector(
+                    onTap: () {
+                      getHelpController.isAllIssueShown.value
+                          ? getHelpController.showLessIssues()
+                          : getHelpController.showAllIssues();
+                      getHelpController.isAllIssueShown.value =
+                          !getHelpController.isAllIssueShown.value;
+                    },
+                    child: Padding(
+                        padding: const EdgeInsets.only(right: 11.0),
+                        child: Obx(() {
+                          return Text(
+                            !getHelpController.isAllIssueShown.value
+                                ? "Show More"
+                                : "Show less",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: SolhColors.green,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          );
+                        })),
+                  ),
+                ],
+              ),
             ),
             Container(
                 margin:
                     EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
-                child: Wrap(children: [
-                  Wrap(
-                    children: getHelpController
-                        .getIssueResponseModel.value.specializationList!
-                        .sublist(
-                            0,
-                            getHelpController.getIssueResponseModel.value
-                                        .specializationList!.length >
-                                    10
-                                ? 10
-                                : getHelpController.getIssueResponseModel.value
-                                    .specializationList!.length)
-                        .map((issue) {
+                child: Obx(() {
+                  return Wrap(
+                    children: getHelpController.issueList.value.map((issue) {
                       return IssuesTile(
                         title: issue.name ?? '',
                         onPressed: () {
@@ -158,12 +181,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                         },
                       );
                     }).toList(),
-                  ),
-                  if (getHelpController.getIssueResponseModel.value
-                          .specializationList!.length >
-                      10)
-                    IssuesTile(title: 'view all', onPressed: () {})
-                ])),
+                  );
+                })),
             GetHelpDivider(),
             GetHelpCategory(
               title: "Search by speciality",

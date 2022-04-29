@@ -5,11 +5,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/comment.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/services/network/network.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -141,6 +143,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               SliverToBoxAdapter(
                                 child: PostForComment(
                                   journalModel: widget._journalModel,
+                                  index: widget.index,
                                   //bestComment: commentsBloc.getBestComment,
                                 ),
                               ),
@@ -355,22 +358,23 @@ class _CommentScreenState extends State<CommentScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Obx(() =>
-                          journalCommentController.repliedTo.value.isNotEmpty
-                              ? Align(
-                                  alignment: Alignment.topLeft,
-                                  // child: MaterialButton(
-                                  //   onPressed: () {},
-                                  //   child: Text(
-                                  //     journalCommentController.repliedTo.value,
-                                  //     style: TextStyle(color: Colors.blueAccent),
-                                  //   ),
-                                  // ),
-                                  child: RichText(
-                                    text: TextSpan(),
-                                  ),
-                                )
-                              : SizedBox()),
+                      /////  this is the comment for mention user in reply //////////////
+                      // Obx(() =>
+                      //     journalCommentController.repliedTo.value.isNotEmpty
+                      //         ? Align(
+                      //             alignment: Alignment.topLeft,
+                      //             // child: MaterialButton(
+                      //             //   onPressed: () {},
+                      //             //   child: Text(
+                      //             //     journalCommentController.repliedTo.value,
+                      //             //     style: TextStyle(color: Colors.blueAccent),
+                      //             //   ),
+                      //             // ),
+                      //             child: RichText(
+                      //               text: TextSpan(),
+                      //             ),
+                      //           )
+                      //         : SizedBox()),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -382,7 +386,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                   decoration: InputDecoration(
                                     hintText: journalCommentController
                                             .isReplying.value
-                                        ? 'Replying ...'
+                                        ? 'Reply ...'
                                         : "Comment",
                                     border: InputBorder.none,
                                   ),
@@ -780,16 +784,21 @@ class CommentBoxWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.thumb_up_outlined,
-                color: SolhColors.green,
-                size: 17,
+              InkWell(
+                onTap: () {},
+                child: Icon(
+                  Icons.thumb_up_outlined,
+                  color: SolhColors.green,
+                  size: 17,
+                ),
               ),
               SizedBox(
                 width: 1.w,
               ),
               Text(
-                '(0)',
+                commentModel.likes != null
+                    ? commentModel.likes!.toString()
+                    : '0',
                 style: TextStyle(
                   color: SolhColors.green,
                 ),
@@ -810,7 +819,9 @@ class CommentBoxWidget extends StatelessWidget {
                 width: 1.w,
               ),
               Text(
-                '(0)',
+                commentModel!.replyNum != null
+                    ? commentModel!.replyNum!.toString()
+                    : '0',
                 style: TextStyle(
                   color: SolhColors.green,
                 ),
@@ -909,21 +920,28 @@ class CommentBoxWidget extends StatelessWidget {
           )
         : SizedBox();
   }
-
-  Widget getReplyCard(element, int index) {
-    return Container();
-  }
 }
 
-class PostForComment extends StatelessWidget {
-  const PostForComment({
+class PostForComment extends StatefulWidget {
+  PostForComment({
     Key? key,
     required Journals? journalModel,
+    required this.index,
   })  : _journalModel = journalModel,
         super(key: key);
 
   //final CommentModel? _bestComment;
   final Journals? _journalModel;
+  final int index;
+
+  @override
+  State<PostForComment> createState() => _PostForCommentState();
+}
+
+class _PostForCommentState extends State<PostForComment> {
+  final JournalPageController _journalPageController = Get.find();
+  bool _isLiked = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -935,15 +953,16 @@ class PostForComment extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _journalModel!.feelings != null
+                  widget._journalModel!.feelings != null
                       ? Text(
-                          "Feeling " + _journalModel!.feelings!.feelingName!,
+                          "Feeling " +
+                              widget._journalModel!.feelings!.feelingName!,
                           style:
                               SolhTextStyles.JournalingDescriptionReadMoreText,
                         )
                       : Container(),
                   ReadMoreText(
-                    _journalModel!.description ?? '',
+                    widget._journalModel!.description ?? '',
                     style: SolhTextStyles.JournalingDescriptionText,
                     trimCollapsedText: ' Read more',
                     trimExpandedText: ' less',
@@ -985,17 +1004,40 @@ class PostForComment extends StatelessWidget {
   Widget getLikeBtn() {
     return Row(
       children: [
-        IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.favorite_border_outlined,
-              color: SolhColors.green,
-              size: 16,
-            )),
-        Text(
-          _journalModel!.likes!.toString(),
-          style: TextStyle(color: Colors.grey),
-        ),
+        IconButton(onPressed: () {
+          //// this is for doing like or unlike
+          !_journalPageController.journalsList[widget.index].isLiked!
+              ? _likeJournal()
+              : _unlikeJournal();
+          ///////////////////////////////////////////////
+          /// below is for checking if liked by me or not
+          _journalPageController.journalsList[widget.index].isLiked =
+              !_journalPageController.journalsList[widget.index].isLiked!;
+          ///////
+          /// below is for updating the like number
+          _journalPageController.journalsList[widget.index].isLiked!
+              ? _journalPageController.journalsList[widget.index].likes =
+                  _journalPageController.journalsList[widget.index].likes! + 1
+              : _journalPageController.journalsList[widget.index].likes =
+                  _journalPageController.journalsList[widget.index].likes! - 1;
+
+          _journalPageController.journalsList.refresh();
+        }, icon: Obx(() {
+          return Icon(
+            !_journalPageController.journalsList[widget.index].isLiked!
+                ? Icons.favorite_border_outlined
+                : Icons.favorite_rounded,
+            color: SolhColors.green,
+            size: 16,
+          );
+        })),
+        Obx(() {
+          return Text(
+            _journalPageController.journalsList.value[widget.index].likes!
+                .toString(),
+            style: TextStyle(color: Colors.grey),
+          );
+        })
       ],
     );
   }
@@ -1013,7 +1055,7 @@ class PostForComment extends StatelessWidget {
           ),
         ),
         Text(
-          _journalModel!.comments!.toString(),
+          widget._journalModel!.comments!.toString(),
           style: TextStyle(color: Colors.grey),
         ),
       ],
@@ -1049,6 +1091,28 @@ class PostForComment extends StatelessWidget {
         size: 16,
       ),
     );
+  }
+
+  Future<void> _likeJournal() async {
+    setState(() {
+      _isLiked = true;
+    });
+    var response = await Network.makeHttpPostRequestWithToken(
+        url: "${APIConstants.api}/api/like-journal",
+        body: {"post": widget._journalModel!.id});
+    if (response["status"] == false)
+      setState(() {
+        _isLiked = false;
+      });
+    //return (response["status"]);
+  }
+
+  Future<bool> _unlikeJournal() async {
+    var response = await Network.makeHttpGetRequestWithToken(
+      "${APIConstants.api}/api/unlike-journal/${widget._journalModel!.id}",
+    );
+    print(response);
+    return (response["status"]);
   }
 }
 
@@ -1109,7 +1173,7 @@ class BestCommentWidget extends StatelessWidget {
                         Icon(
                           Icons.star,
                           color: Colors.white,
-                          size: 16,
+                          size: 13,
                         )
                       ],
                     ),

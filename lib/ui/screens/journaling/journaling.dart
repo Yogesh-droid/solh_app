@@ -251,7 +251,7 @@ class _JournalingState extends State<Journaling> {
                                     ),
                             )
                           : Center(
-                              child: CircularProgressIndicator(),
+                              child: MyLoader(),
                             ),
                     ),
 

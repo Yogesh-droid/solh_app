@@ -48,11 +48,24 @@ class ConnectionController extends GetxController {
     }
   }
 
-  Future<void> acceptConnection(String connection_id) async {
+  Future<void> acceptConnection(String connection_id, String response) async {
     await Network.makePutRequestWithToken(
             url: APIConstants.api + '/api/connection',
-            body: {'connection_id': connection_id, 'response': '1'})
+            body: {'connection_id': connection_id, 'response': response})
         .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    await getMyConnection();
+    await getAllConnection();
+  }
+
+  Future<void> deleteConnectionRequest(String connectionId) async {
+    await Network.makePutRequestWithToken(
+        url: APIConstants.api + '/api/sender-res-connection',
+        body: {
+          'connection_id': connectionId,
+        }).onError((error, stackTrace) {
       print(error);
       return {};
     });

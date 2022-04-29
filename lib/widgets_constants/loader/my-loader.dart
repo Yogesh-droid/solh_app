@@ -16,9 +16,10 @@ class MyLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircularProgressIndicator(
+      // color: SolhColors.green,
       color: SolhColors.green,
       strokeWidth: _strokeWidth ?? 4.0,
-      backgroundColor: _backgroundColor,
+      //backgroundColor: _backgroundColor,
     );
   }
 }

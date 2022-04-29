@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
@@ -39,6 +40,7 @@ class JournalTile extends StatefulWidget {
 class _JournalTileState extends State<JournalTile> {
   JournalCommentController journalCommentController = Get.find();
   ConnectionController connectionController = Get.find();
+  JournalPageController journalPageController = Get.find();
   late bool _isLiked;
 
   @override
@@ -224,12 +226,27 @@ class _JournalTileState extends State<JournalTile> {
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        if (_isLiked) {
+                        if (journalPageController
+                            .journalsList[widget.index].isLiked!) {
+                          journalPageController
+                              .journalsList[widget.index].isLiked = false;
+                          journalPageController.journalsList[widget.index]
+                              .likes = journalPageController
+                                  .journalsList[widget.index].likes! -
+                              1;
+                          journalPageController.journalsList.refresh();
                           // await _unlikeJournal();
-                          setState(() {
-                            _isLiked = false;
-                          });
+                          // setState(() {
+                          //   _isLiked = false;
+                          // });
                         } else {
+                          journalPageController
+                              .journalsList[widget.index].isLiked = true;
+                          journalPageController.journalsList[widget.index]
+                              .likes = journalPageController
+                                  .journalsList[widget.index].likes! +
+                              1;
+                          journalPageController.journalsList.refresh();
                           await _likeJournal();
                         }
                       },
@@ -238,38 +255,37 @@ class _JournalTileState extends State<JournalTile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              _isLiked ? Icons.favorite : Icons.favorite_border,
-                              color: SolhColors.green,
-                              size: 20,
-                            ),
-                            // SvgPicture.asset(
-                            //   "assets/icons/journaling/post-like.svg",
-                            //   width: 17,
-                            //   height: 17,
-                            //   color: SolhColors.green,
-                            // ),
+                            Obx(() {
+                              return Icon(
+                                journalPageController.journalsList[widget.index]
+                                            .isLiked ==
+                                        true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: SolhColors.green,
+                                size: 20,
+                              );
+                            }),
                             Padding(
                               padding: EdgeInsets.only(
                                 left: MediaQuery.of(context).size.width / 40,
                               ),
-                              child: Text(
-                                _isLiked ? '1' : '0',
-                                style: SolhTextStyles.GreenBorderButtonText,
-                              ),
+                              child: Obx(() {
+                                return Text(
+                                  journalPageController
+                                      .journalsList[widget.index].likes
+                                      .toString(),
+                                  style: SolhTextStyles.GreenBorderButtonText,
+                                );
+                              }),
                             ),
                           ],
                         ),
                       ),
                     ),
                     InkWell(
-                      onTap: () =>
-                          // Get.to(
-                          //   CommentScreen(
-                          //     journalModel: widget._journalModel,
-                          //   ),
-                          // ),
-                          AutoRouter.of(context).push(CommentScreenRouter(
+                      onTap: () => AutoRouter.of(context).push(
+                          CommentScreenRouter(
                               journalModel: widget._journalModel,
                               index: widget.index)),
                       child: Container(

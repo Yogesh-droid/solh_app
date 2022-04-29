@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "729100578162",
+    "project_id": "solh-flutter",
+    "storage_bucket": "solh-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729100578162:android:e05f9666d863470216c1eb",
+        "android_client_info": {
+          "package_name": "com.solh.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "729100578162-3234f20jbagovh1oof2pes65k831r712.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "d27e89063f901bb94414d9d964493e8d95e423e0"
+          }
+        },
+        {
+          "client_id": "729100578162-bm65sjkqslje6jutprdken6i8777t7er.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "f07e3187ab6a905a4014e68cef11a451c6d39adf"
+          }
+        },
+        {
+          "client_id": "729100578162-ke7s5vb7ifrfuipbvuqn5ona335805ap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "e0c584c413657c9dd4888bc065d5107f6c346ca8"
+          }
+        },
+        {
+          "client_id": "729100578162-qogtu8is2he73vdgofe76eo331q9stf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "6030315a07910a1b04b996afc3388be77934648b"
+          }
+        },
+        {
+          "client_id": "729100578162-gubt1oi4bdllcfe89nqtphel6cmr9h90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpu9w_iT-DTIq9MkelRwbRCR_eS8kBuCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "729100578162-gubt1oi4bdllcfe89nqtphel6cmr9h90.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "729100578162-05sufu3hth1sqn6f9cd4t85mq1d8n67n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.solh.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
