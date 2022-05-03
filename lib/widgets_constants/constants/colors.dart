@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 class SolhColors {
 //Green Shades
 
-  static const Color green = Color(0xFF5F9B8C); //Figma Primary Green
+  // static const Color green = Color(0xFF1DA1F2);
+
+  static const Color green =
+      Color.fromRGBO(95, 155, 140, 1); //Figma Primary Green
+
   static const Color green228 =
       Color.fromRGBO(228, 255, 248, 1); //Figma Light Green
 
@@ -16,6 +20,7 @@ class SolhColors {
 
 //Black Shades
   static const Color black166 = Color.fromRGBO(166, 166, 166, 1);
+  static const Color black666 = Color(0xFF666666);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
   static const Color black53 = Color.fromRGBO(53, 53, 53, 1);
   static const Color black34 = Color.fromRGBO(34, 34, 34, 1); //

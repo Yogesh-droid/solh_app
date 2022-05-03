@@ -58,7 +58,6 @@ people & mental healthcare professionals.''',
       });
     if (_currentPage == 2) setState(() {});
     if (_currentPage == 3) setState(() {});
-
     if (_currentPage == 0)
       setState(() {
         _showBackButton = false;
@@ -81,10 +80,20 @@ people & mental healthcare professionals.''',
                       Icons.arrow_back,
                       color: SolhColors.green,
                     )),
-                SkipButton()
+                SkipButton(
+                  onPressed: () {
+                    AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                  },
+                )
               ])
             else
-              Align(alignment: Alignment.topRight, child: SkipButton()),
+              Align(
+                  alignment: Alignment.topRight,
+                  child: SkipButton(
+                    onPressed: () {
+                      AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                    },
+                  )),
             Expanded(
               child: Column(
                 children: [
@@ -148,7 +157,7 @@ class CrouselIntro extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 4.h),
+          margin: EdgeInsets.symmetric(vertical: 2.5.h),
           width: 100.w,
           child: Image.asset(
             "assets/intro/png/crousel-${_index + 1}.png",
@@ -165,7 +174,7 @@ class CrouselIntro extends StatelessWidget {
                   color: Theme.of(context).primaryColor),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 0.4.h, horizontal: 5.w),
+              padding: EdgeInsets.symmetric(vertical: 0.5.h, horizontal: 5.w),
               child: Text(
                 _description,
                 style: TextStyle(color: SolhColors.black34),
@@ -182,7 +191,11 @@ class CrouselIntro extends StatelessWidget {
 class SkipButton extends StatelessWidget {
   const SkipButton({
     Key? key,
-  }) : super(key: key);
+    VoidCallback? onPressed,
+  })  : _onPressed = onPressed,
+        super(key: key);
+
+  final VoidCallback? _onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -194,7 +207,7 @@ class SkipButton extends StatelessWidget {
         "Skip",
         style: SolhTextStyles.GreenBorderButtonText,
       ),
-      onPressed: () => AutoRouter.of(context).push(MasterScreenRouter()),
+      onPressed: _onPressed,
     );
   }
 }

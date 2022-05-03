@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -57,11 +55,10 @@ class SolhTextStyles {
   );
 
   // Journaling
-
   static const TextStyle JournalingHintText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: SolhColors.grey,
+    color: Color(0xFFA6A6A6),
     height: 1.23, //Figma Line Height 17.25
   );
 
@@ -94,15 +91,16 @@ class SolhTextStyles {
   );
 
   static const TextStyle JournalingDescriptionText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: SolhColors.grey102,
-    height: 1.23, //Figma Line Height 19.71
-  );
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: SolhColors.grey102,
+      height: 1.25,
+      letterSpacing: 0.1 //Figma Line Height 19.71
+      );
 
   static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
     color: SolhColors.green,
     height: 1.23, //Figma Line Height 19.71
   );
@@ -143,4 +141,23 @@ class SolhTextStyles {
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 17.25
   );
+
+  static const TextStyle SOSGreenHeading =
+      TextStyle(color: SolhColors.green, fontSize: 20);
+
+  static const TextStyle mostUpvoted = TextStyle(
+    fontSize: 15,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w500,
+    height: 1.25, //Figma Line Height 17.25
+  );
+
+  static const SOSGreyText =
+      TextStyle(fontSize: 16, color: SolhColors.black666);
+
+  static const ProfileMenuGreyText =
+      TextStyle(fontSize: 16, color: SolhColors.black666);
+
+  static const ProfileSetupSubHeading =
+      TextStyle(color: Color(0xFFA6A6A6), fontSize: 16);
 }

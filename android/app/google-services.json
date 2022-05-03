@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "729100578162-ke7s5vb7ifrfuipbvuqn5ona335805ap.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "e0c584c413657c9dd4888bc065d5107f6c346ca8"
+          }
+        },
+        {
+          "client_id": "729100578162-qogtu8is2he73vdgofe76eo331q9stf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "6030315a07910a1b04b996afc3388be77934648b"
+          }
+        },
+        {
           "client_id": "729100578162-gubt1oi4bdllcfe89nqtphel6cmr9h90.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "729100578162-gubt1oi4bdllcfe89nqtphel6cmr9h90.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "729100578162-05sufu3hth1sqn6f9cd4t85mq1d8n67n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.solh.app"
+              }
             }
           ]
         }
