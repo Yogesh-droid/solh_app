@@ -11,6 +11,7 @@ class JournalCommentController extends GetxController {
   var getJouranalsCommentModel = GetJouranalsCommentModel().obs;
   var isReplying = false.obs;
   String commentId = '';
+  String parentId = '';
   var repliedTo = ''.obs;
   var isLoading = false.obs;
   var hiddenReplyList = [].obs;
@@ -54,7 +55,9 @@ class JournalCommentController extends GetxController {
   Future<bool> addReply(
       {required String parentId,
       required String journalId,
-      required String commentBody}) async {
+      required String commentBody,
+      required String userId,
+      int? index}) async {
     reactingToComment.value = true;
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/comment-on-journal",
@@ -62,9 +65,11 @@ class JournalCommentController extends GetxController {
           "commentBody": commentBody,
           "journal": journalId,
           "parentId": parentId,
+          "replyToUser": userId,
         });
     print(response);
     reactingToComment.value = false;
+    getReply(postId: parentId, pageNo: 1, index: index);
     isReplying.value = false;
     return false;
   }

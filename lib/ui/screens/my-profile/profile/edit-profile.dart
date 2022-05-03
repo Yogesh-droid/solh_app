@@ -312,7 +312,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       // imageQuality: 50,
     );
     print(_xFile!.path.toString());
-    _croppedFile = await ImageCropper.cropImage(
+    _croppedFile = await ImageCropper().cropImage(
         sourcePath: _xFile!.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,

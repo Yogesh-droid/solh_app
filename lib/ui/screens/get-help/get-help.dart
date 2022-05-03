@@ -220,11 +220,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           child: CircleAvatar(
                             radius: 7.8.w,
                             backgroundColor: Colors.white,
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Image.asset(
-                                  "assets/images/logo/solh-logo.png"),
-                            ),
+                            child: Image.asset("assets/images/solh_tree.png"),
                           ),
                         ),
                         SizedBox(width: 2.w),

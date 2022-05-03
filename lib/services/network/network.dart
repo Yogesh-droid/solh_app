@@ -145,6 +145,7 @@ class Network {
     try {
       Uri _uri = Uri.parse(url);
       print(url);
+      print(body);
       http.Response apiResponse = await http.delete(_uri,
           headers: {
             "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"

@@ -14,11 +14,13 @@ import '../../../widgets_constants/buttons/custom_buttons.dart';
 
 class ConnectProfileScreen extends StatelessWidget {
   final ConnectionController connectionController = Get.find();
-  ConnectProfileScreen({Key? key, required String uid})
+  ConnectProfileScreen({Key? key, required String uid, required String sId})
       : _uid = uid,
+        _sId = sId,
         super(key: key);
 
   final String _uid;
+  final String _sId;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +40,21 @@ class ConnectProfileScreen extends StatelessWidget {
                     SliverList(
                       delegate: SliverChildListDelegate([
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(height: 2.5.h),
                             CircleAvatar(
-                              radius: 6.h,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  userProfileSnapshot
-                                          .requireData.profilePicture ??
-                                      ""),
+                              radius: 6.5.h,
+                              backgroundColor: Color(0xFFD9D9D9),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 6.h,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    userProfileSnapshot
+                                            .requireData.profilePicture ??
+                                        ""),
+                              ),
                             ),
                             SizedBox(height: 2.h),
                             Row(
@@ -55,18 +64,20 @@ class ConnectProfileScreen extends StatelessWidget {
                                     userProfileSnapshot.requireData.firstName ??
                                         "",
                                     style: TextStyle(fontSize: 21)),
-                                Icon(Icons.people, color: SolhColors.grey)
+                                //Icon(Icons.people, color: SolhColors.grey)
                               ],
                             ),
-                            Text(
-                              userProfileSnapshot.requireData.userType ?? "",
-                              style: SolhTextStyles.GreenBorderButtonText,
-                            ),
+                            // Text(
+                            //   userProfileSnapshot.requireData.userType ?? "",
+                            //   style: SolhTextStyles.GreenBorderButtonText,
+                            // ),
                             SizedBox(height: 1.5.h),
-                            Container(
-                              width: 75.w,
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 18),
                               child: Text(
                                   userProfileSnapshot.requireData.bio ?? "",
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 16)),
                             ),
                             SizedBox(height: 3.h),
@@ -117,25 +128,24 @@ class ConnectProfileScreen extends StatelessWidget {
                                   ],
                                 ),
                                 // Divider(),
-                                Column(
-                                  children: [
-                                    Text(
-                                      '17',
-                                      style:
-                                          SolhTextStyles.GreenBorderButtonText
-                                              .copyWith(fontSize: 18),
-                                    ),
-                                    Text("Reviews"),
-                                  ],
-                                )
+                                // Column(
+                                //   children: [
+                                //     Text(
+                                //       '17',
+                                //       style:
+                                //           SolhTextStyles.GreenBorderButtonText
+                                //               .copyWith(fontSize: 18),
+                                //     ),
+                                //     Text("Reviews"),
+                                //   ],
+                                // )
                               ],
                             ),
                             SizedBox(height: 3.h),
                             SolhGreenButton(
                                 onPressed: () async {
                                   await connectionController
-                                      .addConnection(_uid);
-                                  Utility.showToast('Connection request sent');
+                                      .addConnection(_sId);
                                 },
                                 width: 90.w,
                                 height: 6.3.h,

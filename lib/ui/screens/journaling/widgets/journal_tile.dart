@@ -64,11 +64,12 @@ class _JournalTileState extends State<JournalTile> {
   }
 
   Future<bool> _unlikeJournal() async {
-    var response = await Network.makeHttpGetRequestWithToken(
-      "${APIConstants.api}/api/unlike-journal/${widget._journalModel!.id}",
+    var response = await Network.makeHttpDeleteRequestWithToken(
+      body: {"postId": widget._journalModel!.id},
+      url: "${APIConstants.api}/api/unlike-journal",
     );
     print(response);
-    return (response["status"]);
+    return true;
   }
 
   @override
@@ -90,9 +91,10 @@ class _JournalTileState extends State<JournalTile> {
                   onTap: () => {
                     connectionController
                         .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
-                    print(widget._journalModel!.postedBy!.uid),
+                    print(widget._journalModel!.postedBy!.sId),
                     AutoRouter.of(context).push(ConnectScreenRouter(
-                        uid: widget._journalModel!.postedBy!.uid ?? ''))
+                        uid: widget._journalModel!.postedBy!.uid ?? '',
+                        sId: widget._journalModel!.postedBy!.sId ?? '')),
                   },
                   child: Container(
                     child: Row(
@@ -100,14 +102,20 @@ class _JournalTileState extends State<JournalTile> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         CircleAvatar(
-                          backgroundImage: CachedNetworkImageProvider(
-                            widget._journalModel!.postedBy != null
-                                ? widget._journalModel!.postedBy!
-                                        .profilePicture ??
-                                    ''
-                                : '',
+                          backgroundColor: Color(0xFFD9D9D9),
+                          child: Padding(
+                            padding: const EdgeInsets.all(1.0),
+                            child: CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                widget._journalModel!.postedBy != null
+                                    ? widget._journalModel!.postedBy!
+                                            .profilePicture ??
+                                        ''
+                                    : '',
+                              ),
+                              backgroundColor: SolhColors.white,
+                            ),
                           ),
-                          backgroundColor: SolhColors.pink224,
                         ),
                         Expanded(
                           child: Row(
@@ -235,10 +243,10 @@ class _JournalTileState extends State<JournalTile> {
                                   .journalsList[widget.index].likes! -
                               1;
                           journalPageController.journalsList.refresh();
-                          // await _unlikeJournal();
-                          // setState(() {
-                          //   _isLiked = false;
-                          // });
+                          await _unlikeJournal();
+                          setState(() {
+                            _isLiked = false;
+                          });
                         } else {
                           journalPageController
                               .journalsList[widget.index].isLiked = true;

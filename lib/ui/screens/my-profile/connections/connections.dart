@@ -516,6 +516,11 @@ class Connections extends StatelessWidget {
                                                   .sentConnections
                                                   .value[index]
                                                   .uId ??
+                                              '',
+                                          sId: connectionController
+                                                  .sentConnections
+                                                  .value[index]
+                                                  .sId ??
                                               ''));
                                 } else if (value == '2') {
                                   connectionController.deleteConnectionRequest(
@@ -646,6 +651,11 @@ class Connections extends StatelessWidget {
                                                   .receivedConnections
                                                   .value[index]
                                                   .uId ??
+                                              '',
+                                          sId: connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .sId ??
                                               ''));
                                 } else if (value == '2') {
                                   connectionController.acceptConnection(

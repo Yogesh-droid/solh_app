@@ -73,6 +73,7 @@ class Comments {
   String? parentId;
   String? createdAt;
   String? updatedAt;
+  ReplyTo? replyTo;
   int? iV;
   List<User>? user;
 
@@ -90,6 +91,7 @@ class Comments {
       this.parentId,
       this.createdAt,
       this.updatedAt,
+      this.replyTo,
       this.iV,
       this.user});
 
@@ -112,6 +114,8 @@ class Comments {
     parentId = json['parentId'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    replyTo =
+        json['replyTo'] != null ? new ReplyTo.fromJson(json['replyTo']) : null;
     iV = json['__v'];
     if (json['user'] != null) {
       user = <User>[];
@@ -138,10 +142,38 @@ class Comments {
     data['parentId'] = this.parentId;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
+    if (this.replyTo != null) {
+      data['replyTo'] = this.replyTo!.toJson();
+    }
     data['__v'] = this.iV;
     if (this.user != null) {
       data['user'] = this.user!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class ReplyTo {
+  String? sId;
+  String? uid;
+  String? name;
+  String? id;
+
+  ReplyTo({this.sId, this.uid, this.name, this.id});
+
+  ReplyTo.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    uid = json['uid'];
+    name = json['name'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['uid'] = this.uid;
+    data['name'] = this.name;
+    data['id'] = this.id;
     return data;
   }
 }
@@ -225,54 +257,6 @@ class BestComment {
     if (this.user != null) {
       data['user'] = this.user!.map((v) => v.toJson()).toList();
     }
-    return data;
-  }
-}
-
-class RepliedTo {
-  String? sId;
-  CommentUser? commentUser;
-
-  RepliedTo({this.sId, this.commentUser});
-
-  RepliedTo.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    commentUser = json['commentUser'] != null
-        ? new CommentUser.fromJson(json['commentUser'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    if (this.commentUser != null) {
-      data['commentUser'] = this.commentUser!.toJson();
-    }
-    return data;
-  }
-}
-
-class CommentUser {
-  String? sId;
-  String? name;
-  String? uid;
-  String? id;
-
-  CommentUser({this.sId, this.name, this.uid, this.id});
-
-  CommentUser.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    uid = json['uid'];
-    id = json['id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['uid'] = this.uid;
-    data['id'] = this.id;
     return data;
   }
 }

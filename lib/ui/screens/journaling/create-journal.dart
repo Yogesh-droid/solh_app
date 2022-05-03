@@ -69,7 +69,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             // imageQuality: 100,
                           );
                           if (_xFile != null)
-                            _croppedFile = await ImageCropper.cropImage(
+                            _croppedFile = await ImageCropper().cropImage(
                                 sourcePath: _xFile!.path,
                                 aspectRatioPresets: [
                                   CropAspectRatioPreset.square,
@@ -122,7 +122,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               imageQuality: 100,
                             );
                             if (_xFile != null)
-                              _croppedFile = await ImageCropper.cropImage(
+                              _croppedFile = await ImageCropper().cropImage(
                                   sourcePath: _xFile!.path,
                                   aspectRatioPresets: [
                                     CropAspectRatioPreset.square,

@@ -64,7 +64,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                           imageQuality: 50,
                         );
                         if (_xFile != null)
-                          _croppedFile = await ImageCropper.cropImage(
+                          _croppedFile = await ImageCropper().cropImage(
                               sourcePath: _xFile!.path,
                               aspectRatioPresets: [
                                 CropAspectRatioPreset.square,

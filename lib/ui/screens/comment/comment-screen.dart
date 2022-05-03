@@ -1,16 +1,20 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/comment.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -253,11 +257,17 @@ class _CommentScreenState extends State<CommentScreen> {
                                               .getJouranalsCommentModel
                                               .value
                                               .bestComment,
-                                          onReplyTapped: (id, name) {
+                                          onReplyTapped: (id, name, sId) {
                                             journalCommentController
                                                 .isReplying.value = true;
                                             journalCommentController.commentId =
-                                                id;
+                                                journalCommentController
+                                                    .getJouranalsCommentModel
+                                                    .value
+                                                    .bestComment!
+                                                    .sId!;
+                                            journalCommentController.parentId =
+                                                sId;
                                             journalCommentController
                                                 .repliedTo.value = name;
                                           },
@@ -318,16 +328,23 @@ class _CommentScreenState extends State<CommentScreen> {
                                               },
                                               journalModel:
                                                   widget._journalModel!,
-                                              onReplyTapped: (id, name) {
+                                              onReplyTapped: (id, name, sId) {
                                                 print(id);
                                                 print(journalCommentController
                                                     .isReplying.value);
                                                 journalCommentController
                                                     .isReplying.value = true;
                                                 journalCommentController
-                                                    .commentId = id;
+                                                        .commentId =
+                                                    journalCommentController
+                                                        .getJouranalsCommentModel
+                                                        .value
+                                                        .comments![index]
+                                                        .sId!;
                                                 journalCommentController
                                                     .repliedTo.value = name;
+                                                journalCommentController
+                                                    .parentId = sId;
                                               },
                                               commentModel:
                                                   journalCommentController
@@ -417,8 +434,14 @@ class _CommentScreenState extends State<CommentScreen> {
                                           parentId: journalCommentController
                                               .commentId,
                                           journalId: widget._journalModel!.id!,
-                                          commentBody:
-                                              _commentEditingController.text)
+                                          commentBody: _commentEditingController
+                                              .text,
+                                          userId: journalCommentController
+                                              .parentId,
+                                          index: journalCommentController
+                                              .hiddenReplyList
+                                              .indexWhere(
+                                                  (element) => element == true))
                                       : await journalCommentController
                                           .addComment(
                                               journalId:
@@ -428,7 +451,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       .text);
                                   _commentEditingController.clear();
                                   _scrollController.jumpTo(_scrollController
-                                      .position.minScrollExtent);
+                                      .position.maxScrollExtent);
                                   // _scrollController.animateTo(1,
                                   //     duration:
                                   //         Duration(milliseconds: 500),
@@ -560,9 +583,10 @@ class CommentBoxWidget extends StatelessWidget {
   final Comments? _commentModel;
   final bool _isUserPost;
   final BestComment? _bestComment;
-  final Function(String id, String userName) onReplyTapped;
+  final Function(String id, String userName, String userId) onReplyTapped;
   final int index;
   final JournalCommentController journalCommentController = Get.find();
+  final ConnectionController connectionController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -570,7 +594,7 @@ class CommentBoxWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 1.5.h),
       child: Column(
         children: [
-          getCommentBody(_commentModel!, _bestComment),
+          getCommentBody(_commentModel!, _bestComment, context),
           getCommentFooter(_bestComment != null ? _bestComment : _commentModel!,
               onReplyTapped),
           _bestComment != null
@@ -587,7 +611,8 @@ class CommentBoxWidget extends StatelessWidget {
                           journalCommentController.hiddenBestCommentReply.value
                       ? getReplyView(
                           journalCommentController.bestCommentReplyList.value,
-                          onReplyTapped)
+                          onReplyTapped,
+                          context)
                       : Container();
                 })
               : Obx(() {
@@ -597,7 +622,8 @@ class CommentBoxWidget extends StatelessWidget {
                           journalCommentController.hiddenReplyList[index]
                       ? getReplyView(
                           journalCommentController.repliesList.value[index],
-                          onReplyTapped)
+                          onReplyTapped,
+                          context)
                       : Container();
                 })
         ],
@@ -605,7 +631,8 @@ class CommentBoxWidget extends StatelessWidget {
     );
   }
 
-  Widget getCommentBody(Comments commentModel, BestComment? bestComment) {
+  Widget getCommentBody(
+      Comments commentModel, BestComment? bestComment, BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -760,9 +787,41 @@ class CommentBoxWidget extends StatelessWidget {
                     ],
                   ),
                   Divider(),
-                  Text(
-                    commentModel.commentBody!,
-                    style: TextStyle(height: 1.4, color: Color(0xFF222222)),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        commentModel.replyTo != null
+                            ? TextSpan(
+                                text: commentModel.replyTo!.name != null
+                                    ? '@${commentModel.replyTo!.name}'
+                                    : '',
+                                style: TextStyle(
+                                    height: 1.4,
+                                    color: SolhColors.green,
+                                    fontSize: 14),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    connectionController.getUserAnalytics(
+                                        commentModel.replyTo!.sId!);
+
+                                    AutoRouter.of(context).push(
+                                        ConnectScreenRouter(
+                                            uid:
+                                                commentModel.replyTo!.uid ?? '',
+                                            sId: commentModel.replyTo!.sId ??
+                                                ''));
+                                  },
+                              )
+                            : TextSpan(),
+                        TextSpan(
+                          text: ' ${commentModel.commentBody}',
+                          style: TextStyle(
+                              height: 1.4,
+                              color: Color(0xFF222222),
+                              fontSize: 14),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -775,7 +834,7 @@ class CommentBoxWidget extends StatelessWidget {
 
   Widget getCommentFooter(
     dynamic commentModel,
-    Function(String id, String userName) onReplyTapped,
+    Function(String id, String userName, String userId) onReplyTapped,
   ) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -811,7 +870,9 @@ class CommentBoxWidget extends StatelessWidget {
                 icon: Icon(Icons.reply_outlined),
                 onPressed: () {
                   onReplyTapped(
-                      commentModel!.sId!, commentModel!.user![0].name!);
+                      commentModel!.sId!,
+                      commentModel!.user![0].name!,
+                      commentModel!.user![0].sId!);
                 },
                 color: SolhColors.green,
               ),
@@ -898,7 +959,9 @@ class CommentBoxWidget extends StatelessWidget {
   }
 
   Widget getReplyView(
-      List<dynamic> list, Function(String id, String username) onReplyTapped) {
+      List<dynamic> list,
+      Function(String id, String username, String userId) onReplyTapped,
+      BuildContext context) {
     return list.isNotEmpty
         ? Padding(
             padding: const EdgeInsets.only(left: 28.0),
@@ -908,7 +971,7 @@ class CommentBoxWidget extends StatelessWidget {
               children: list
                   .map((element) => Column(
                         children: [
-                          getCommentBody(element, null),
+                          getCommentBody(element, null, context),
                           getCommentFooter(element, onReplyTapped),
                           SizedBox(
                             height: 10,
@@ -1108,8 +1171,9 @@ class _PostForCommentState extends State<PostForComment> {
   }
 
   Future<bool> _unlikeJournal() async {
-    var response = await Network.makeHttpGetRequestWithToken(
-      "${APIConstants.api}/api/unlike-journal/${widget._journalModel!.id}",
+    var response = await Network.makeHttpDeleteRequestWithToken(
+      body: {"postId": widget._journalModel!.id},
+      url: "${APIConstants.api}/api/unlike-journal",
     );
     print(response);
     return (response["status"]);

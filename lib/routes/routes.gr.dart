@@ -125,7 +125,11 @@ class AppRouter extends _i11.RootStackRouter {
       final args = routeData.argsAs<ConnectScreenRouterArgs>();
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i16.ConnectProfileScreen(key: args.key, uid: args.uid));
+          child: _i16.ConnectProfileScreen(
+            key: args.key,
+            uid: args.uid,
+            sId: args.sId,
+          ));
     },
     CommentScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CommentScreenRouterArgs>();
@@ -427,20 +431,22 @@ class CreatePostScreenRouter extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i16.ConnectProfileScreen]
 class ConnectScreenRouter extends _i11.PageRouteInfo<ConnectScreenRouterArgs> {
-  ConnectScreenRouter({_i23.Key? key, required String uid})
+  ConnectScreenRouter({_i23.Key? key, required String uid, required String sId})
       : super(ConnectScreenRouter.name,
             path: 'ConnectScreen',
-            args: ConnectScreenRouterArgs(key: key, uid: uid));
+            args: ConnectScreenRouterArgs(key: key, uid: uid, sId: sId));
 
   static const String name = 'ConnectScreenRouter';
 }
 
 class ConnectScreenRouterArgs {
-  const ConnectScreenRouterArgs({this.key, required this.uid});
+  const ConnectScreenRouterArgs(
+      {this.key, required this.uid, required this.sId});
 
   final _i23.Key? key;
 
   final String uid;
+  final String sId;
 
   @override
   String toString() {

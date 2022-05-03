@@ -4,6 +4,7 @@ import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/model/user/user_analitics_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
 
 class ConnectionController extends GetxController {
   var myConnectionModel = MyConnectionModel().obs;
@@ -78,8 +79,9 @@ class ConnectionController extends GetxController {
         url: APIConstants.api + '/api/connection',
         body: {'receiver_id': uid}).onError((error, stackTrace) {
       print(error);
+
       return {};
-    });
+    }).then((value) => Utility.showToast(value['message']));
     getMyConnection();
     getAllConnection();
   }
