@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -40,25 +39,24 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
       // imageQuality: 50,
     );
     print(_xFile!.path.toString());
-    _croppedFile = await ImageCropper().cropImage(
-        sourcePath: _xFile!.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          // CropAspectRatioPreset.ratio3x2,
-          // CropAspectRatioPreset.original,
-          // CropAspectRatioPreset.ratio4x3,
-          // CropAspectRatioPreset.ratio16x9
-        ],
-        androidUiSettings: AndroidUiSettings(
-            toolbarTitle: 'Edit Image',
+    if (_xFile != null) {
+      final croppedFile = await ImageCropper()
+          .cropImage(sourcePath: _xFile!.path, aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ], uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Edit',
+            toolbarColor: SolhColors.white,
+            toolbarWidgetColor: Colors.black,
             activeControlsWidgetColor: SolhColors.green,
-            toolbarColor: SolhColors.green,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.original,
-            lockAspectRatio: false),
-        iosUiSettings: IOSUiSettings(
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true),
+        IOSUiSettings(
           minimumAspectRatio: 1.0,
-        ));
+        )
+      ]);
+      _croppedFile = File(croppedFile!.path);
+    }
     // Navigator.of(context).pop();
     setState(() {});
   }

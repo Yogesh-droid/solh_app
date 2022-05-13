@@ -21,10 +21,14 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:video_trimmer/video_trimmer.dart';
+
+import 'trimmer_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key, this.croppedFile}) : super(key: key);
   File? croppedFile;
+  Trimmer trimmer = Trimmer();
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -39,6 +43,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _feelings = JournalFeelings.Happy.toShortString();
   XFile? _xFile;
   File? _croppedFile;
+  bool? isVideoPicked;
   bool _isPosting = false;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
@@ -68,8 +73,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             // maxHeight: 640,
                             // imageQuality: 100,
                           );
-                          if (_xFile != null)
-                            _croppedFile = await ImageCropper().cropImage(
+                          if (_xFile != null) {
+                            final croppedFile = await ImageCropper().cropImage(
                                 sourcePath: _xFile!.path,
                                 aspectRatioPresets: [
                                   CropAspectRatioPreset.square,
@@ -78,17 +83,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   // CropAspectRatioPreset.ratio4x3,
                                   // CropAspectRatioPreset.ratio16x9
                                 ],
-                                androidUiSettings: AndroidUiSettings(
-                                    toolbarTitle: 'Edit',
-                                    toolbarColor: SolhColors.white,
-                                    toolbarWidgetColor: Colors.black,
-                                    activeControlsWidgetColor: SolhColors.green,
-                                    initAspectRatio:
-                                        CropAspectRatioPreset.square,
-                                    lockAspectRatio: true),
-                                iosUiSettings: IOSUiSettings(
-                                  minimumAspectRatio: 1.0,
-                                ));
+                                uiSettings: [
+                                  AndroidUiSettings(
+                                      toolbarTitle: 'Edit',
+                                      toolbarColor: SolhColors.white,
+                                      toolbarWidgetColor: Colors.black,
+                                      activeControlsWidgetColor:
+                                          SolhColors.green,
+                                      initAspectRatio:
+                                          CropAspectRatioPreset.square,
+                                      lockAspectRatio: true),
+                                  IOSUiSettings(
+                                    minimumAspectRatio: 1.0,
+                                  )
+                                ]);
+                            _croppedFile = File(croppedFile!.path);
+                          }
+
                           // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
 
                           Navigator.of(_).pop();
@@ -106,8 +117,24 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               source: ImageSource.gallery);
                           print(_xFile!.path.toString());
 
+                          ////////////////////////////////////////////////////////////
+                          /// For video trimming
+
+                          if (_xFile != null) {
+                            widget.trimmer
+                                .loadVideo(videoFile: File(_xFile!.path));
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return TrimmerView(File(_xFile!.path));
+                              }),
+                            );
+                          }
+
+                          ////////////////////////////////////////////////////////////
+                          ///
+
                           // _xFileAsUnit8List = await _xFile!.readAsBytes();
-                          Navigator.of(_).pop();
+                          // Navigator.of(_).pop();
                           setState(() {
                             _isVideoAdded = true;
                           });
@@ -121,28 +148,33 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               maxHeight: 640,
                               imageQuality: 100,
                             );
-                            if (_xFile != null)
-                              _croppedFile = await ImageCropper().cropImage(
-                                  sourcePath: _xFile!.path,
-                                  aspectRatioPresets: [
+                            if (_xFile != null) {
+                              final croppedFile = await ImageCropper()
+                                  .cropImage(
+                                      sourcePath: _xFile!.path,
+                                      aspectRatioPresets: [
                                     CropAspectRatioPreset.square,
                                     // CropAspectRatioPreset.ratio3x2,
                                     // CropAspectRatioPreset.original,
                                     // CropAspectRatioPreset.ratio4x3,
                                     // CropAspectRatioPreset.ratio16x9
                                   ],
-                                  androidUiSettings: AndroidUiSettings(
-                                      toolbarTitle: 'Edit',
-                                      toolbarColor: SolhColors.white,
-                                      toolbarWidgetColor: Colors.black,
-                                      activeControlsWidgetColor:
-                                          SolhColors.green,
-                                      initAspectRatio:
-                                          CropAspectRatioPreset.square,
-                                      lockAspectRatio: true),
-                                  iosUiSettings: IOSUiSettings(
-                                    minimumAspectRatio: 1.0,
-                                  ));
+                                      uiSettings: [
+                                    AndroidUiSettings(
+                                        toolbarTitle: 'Edit',
+                                        toolbarColor: SolhColors.white,
+                                        toolbarWidgetColor: Colors.black,
+                                        activeControlsWidgetColor:
+                                            SolhColors.green,
+                                        initAspectRatio:
+                                            CropAspectRatioPreset.square,
+                                        lockAspectRatio: true),
+                                    IOSUiSettings(
+                                      minimumAspectRatio: 1.0,
+                                    )
+                                  ]);
+                              _croppedFile = File(croppedFile!.path);
+                            }
                             // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
 
                             Navigator.of(_).pop();
@@ -191,9 +223,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return Scaffold(
       appBar: SolhAppBar(
         title: Text(
-          "Create Journal",
-          style: SolhTextStyles.AppBarText,
-        ),
+            journalPageController.selectedGroupId.value == ''
+                ? "Create Journal"
+                : "Post in group",
+            style: SolhTextStyles.JournalingUsernameText),
         isLandingScreen: false,
       ),
       body: Stack(
@@ -248,7 +281,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ),
                           SizedBox(height: 1.h),
                           Text(
-                            "Feelings",
+                            "  Feelings",
                             style:
                                 SolhTextStyles.JournalingDescriptionReadMoreText
                                     .copyWith(color: SolhColors.grey102),
@@ -324,17 +357,32 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               ],
                             )
                           else
-                            Stack(
-                              children: [
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: CircleAvatar(
-                                    radius: 17,
-                                    backgroundColor: SolhColors.green,
-                                    child: CircleAvatar(
-                                      backgroundColor: SolhColors.white,
-                                      radius: 16,
+                            Obx(() {
+                              if (journalPageController
+                                      .outputPath.value.length >
+                                  0) {
+                                widget.trimmer.loadVideo(
+                                    videoFile: File(journalPageController
+                                        .outputPath.value));
+                                _croppedFile = File(
+                                    journalPageController.outputPath.value);
+                                isVideoPicked = true;
+                              }
+                              return Stack(
+                                children: [
+                                  //Image.file(_croppedFile!),
+                                  VideoViewer(trimmer: widget.trimmer),
+                                  Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      height: 35,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white.withOpacity(0.6),
+                                        border: Border.all(
+                                            color: SolhColors.green, width: 2),
+                                      ),
                                       child: IconButton(
                                         onPressed: () {
                                           _xFile = null;
@@ -344,16 +392,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           });
                                         },
                                         iconSize: 14,
-                                        icon: Icon(
-                                          Icons.close,
-                                          color: SolhColors.black,
-                                        ),
+                                        icon: Icon(Icons.close,
+                                            color: SolhColors.black),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
+                                  )
+                                ],
+                              );
+                            }),
                           SizedBox(height: 5.h),
                           // SolhGreenButton(
                           //   height: 6.h,
@@ -404,6 +450,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             feelings: feelingsController.selectedFeelingsId.value,
             journalType: _journalType,
             mimetype: response["mimetype"],
+            groupId: journalPageController.selectedGroupId.value,
           );
           await _createJournal.postJournal();
           if (_journalType == 'My_Diary') {
@@ -414,14 +461,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             journalPageController.journalsList.clear();
             journalPageController.pageNo = 1;
             journalPageController.endPageLimit = 1;
-            await journalPageController.getAllJournals(1);
+            journalPageController.selectedGroupId.value != ''
+                ? await journalPageController.getAllJournals(1,
+                    groupId: journalPageController.selectedGroupId.value)
+                : await journalPageController.getAllJournals(1);
             journalPageController.journalsList.refresh();
             setState(() {
               _isPosting = false;
             });
           }
-
-          //journalsBloc.getJournalsSnapshot();
           Navigator.pop(context);
         }
       } else {
@@ -429,8 +477,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           description: _description,
           feelings: feelingsController.selectedFeelingsId.value,
           journalType: _journalType,
+          groupId: journalPageController.selectedGroupId.value,
         );
         await _createJournal.postJournal();
+        journalPageController.selectedGroupId.value != ''
+            ? await journalPageController.getAllJournals(1,
+                groupId: journalPageController.selectedGroupId.value)
+            : await journalPageController.getAllJournals(1);
         if (_journalType == 'My_Diary') {
           await myDiaryController.getMyJournals(1);
           myDiaryController.myJournalsList.refresh();
@@ -452,14 +505,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     }
   }
 
-  Future<Map<String, dynamic>> _uploadImage() async {
+  Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
     return await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/journal-image",
         "file",
-        _croppedFile!);
-    // return await Network.makeHttpPostRequestWithToken(
-    //     url: "${APIConstants.aws}",
-    //     body: {"file": _croppedFile!.readAsBytesSync()});
+        _croppedFile!,
+        isVideo: isVideoPicked);
   }
 }
 
@@ -483,7 +534,7 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
       child: Wrap(
         children: List.generate(
           feelingsController.feelingsList.length,
@@ -523,7 +574,8 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                           : Color(0xEFEFEFEF)),
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Text(
-                JournalFeelings.values[index].toShortString(),
+                //JournalFeelings.values[index].toShortString(),
+                feelingsController.feelingsList.value[index].feelingName ?? '',
                 style: TextStyle(
                     color: _selectedFeeling ==
                             feelingsController
@@ -555,6 +607,7 @@ class UsernameHeader extends StatefulWidget {
 }
 
 class _UsernameHeaderState extends State<UsernameHeader> {
+  JournalPageController journalPageController = Get.find();
   String _dropdownValue = "Publicaly";
 
   @override
@@ -590,44 +643,46 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             ),
           ],
         ),
-        Container(
-          height: 4.5.h,
-          width: 35.w,
-          padding: EdgeInsets.symmetric(horizontal: 4.w),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              border: Border.all(
-                color: SolhColors.green,
-              )),
-          child: DropdownButton(
-              isExpanded: true,
-              icon: Icon(CupertinoIcons.chevron_down),
-              iconSize: 18,
-              iconEnabledColor: SolhColors.green,
-              underline: SizedBox(),
-              value: _dropdownValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  _dropdownValue = newValue!;
-                });
-                widget._onTypeChanged.call(_dropdownValue);
-              },
-              style: TextStyle(color: SolhColors.green),
-              items: [
-                DropdownMenuItem(
-                  child: Text("Publicaly"),
-                  value: "Publicaly",
-                ),
-                DropdownMenuItem(
-                  child: Text("My Diary"),
-                  value: "My_Diary",
-                ),
-                DropdownMenuItem(
-                  child: Text("Connections"),
-                  value: "Connections",
-                ),
-              ]),
-        )
+        journalPageController.selectedGroupId.value == ''
+            ? Container(
+                height: 4.5.h,
+                width: 35.w,
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(
+                      color: SolhColors.green,
+                    )),
+                child: DropdownButton(
+                    isExpanded: true,
+                    icon: Icon(CupertinoIcons.chevron_down),
+                    iconSize: 18,
+                    iconEnabledColor: SolhColors.green,
+                    underline: SizedBox(),
+                    value: _dropdownValue,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _dropdownValue = newValue!;
+                      });
+                      widget._onTypeChanged.call(_dropdownValue);
+                    },
+                    style: TextStyle(color: SolhColors.green),
+                    items: [
+                      DropdownMenuItem(
+                        child: Text("Publicaly"),
+                        value: "Publicaly",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("My Diary"),
+                        value: "My_Diary",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Connections"),
+                        value: "Connections",
+                      ),
+                    ]),
+              )
+            : Container()
       ],
     );
   }

@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:http_parser/http_parser.dart';
 
 class Network {
   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
     try {
       Uri _uri = Uri.parse(url);
       print(url);
+
       http.Response apiResponse = await http.get(_uri);
       if (apiResponse.statusCode != 200) {
         print("📶" * 30);
@@ -202,7 +204,8 @@ class Network {
   }
 
   static Future<Map<String, dynamic>> uploadFileToServer(
-      String url, String key, File file) async {
+      String url, String key, File file,
+      {bool? isVideo}) async {
     Uri uri = Uri.parse(url);
 
     var request = http.MultipartRequest(
@@ -213,7 +216,10 @@ class Network {
           {"Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"})
       ..files.add(http.MultipartFile(
           key, file.readAsBytes().asStream(), file.lengthSync(),
-          filename: DateTime.now().toString()));
+          filename: DateTime.now().toString(),
+          contentType: isVideo != null
+              ? MediaType("video", "mp4")
+              : MediaType("image", "png")));
 
     var response = await request.send();
     var apiResponse = jsonDecode(await response.stream.bytesToString());

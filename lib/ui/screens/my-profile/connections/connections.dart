@@ -168,6 +168,7 @@ class Connections extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
+                    backgroundColor: Colors.white,
                     radius: 30,
                     backgroundImage: CachedNetworkImageProvider(
                         connectionController.myConnectionModel.value
@@ -261,6 +262,7 @@ class Connections extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
+                          backgroundColor: Colors.white,
                           radius: 30,
                           backgroundImage: CachedNetworkImageProvider(
                               connectionController.myConnectionModel.value
@@ -443,7 +445,8 @@ class Connections extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 30,
+                              backgroundColor: Colors.white,
+                              radius: MediaQuery.of(context).size.width * 0.06,
                               backgroundImage: CachedNetworkImageProvider(
                                   connectionController.sentConnections
                                           .value[index].profilePicture ??
@@ -567,6 +570,7 @@ class Connections extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
+                              backgroundColor: Colors.white,
                               radius: 30,
                               backgroundImage: CachedNetworkImageProvider(
                                   connectionController.receivedConnections

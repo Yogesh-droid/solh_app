@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
+import 'package:solh/ui/screens/groups/create_group.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../model/user/user.dart';
@@ -111,7 +113,12 @@ class _SideDrawerState extends State<SideDrawer> {
               ),
               SideDrawerMenuTile(
                 title: "Groups",
-                comingSoon: true,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ManageGroupPage()));
+                },
               ),
               SideDrawerMenuTile(
                 title: "Mood Tracker",

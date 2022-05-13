@@ -256,6 +256,7 @@ class ProfileContainer extends StatelessWidget {
             CircleAvatar(
               radius: 50,
               child: CircleAvatar(
+                backgroundColor: Colors.white,
                 radius: 49,
                 backgroundImage: CachedNetworkImageProvider(
                     _userModel!.profilePicture ?? ''),

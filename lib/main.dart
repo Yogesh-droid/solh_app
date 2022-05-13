@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:http/io_client.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
@@ -21,6 +24,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   final AgeController ageController = Get.put(AgeController());
+
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     print("*" * 30 + "\n" + "Id Token: $idToken");
@@ -33,6 +37,51 @@ void main() async {
     runApp(SolhApp(
       isProfileCreated: false,
     ));
+
+  /*  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Solh',
+    home: Scaffold(
+        appBar: AppBar(title: Text('Solh')),
+        body: Container(
+            child: Center(
+          child: MaterialButton(
+            color: Colors.blue,
+            focusColor: Colors.blue,
+            onPressed: () {
+              final ioc = new HttpClient();
+              ioc.badCertificateCallback =
+                  (X509Certificate cert, String host, int port) => true;
+              final http = new IOClient(ioc);
+              http
+                  .get(Uri.parse(
+                      'https://api.solhapp.com/api/get-parent?journal=625f8aab1acb0f23151313b9&page=1'
+                      //'https://jsonplaceholder.typicode.com/todos/1'
+                      //'https://api.anah.ae/api/category/getcategory'
+                      ))
+                  .then((response) {
+                print(response.body + '\n' + response.statusCode.toString());
+              }).catchError((error) {
+                print(error);
+              });
+              // print('gyfuyujnjjbbhjubj');
+              // Dio()
+              //     .get(
+              //         'https://api.solhapp.com/api/get-parent?journal=625f8aab1acb0f23151313b9&page=1',
+              //         options: Options(headers: <String, String>{
+              //           'Accept': 'application/json',
+              //           'Content-Type': 'application/json; charset=UTF-8',
+              //         }))
+              //     .then((value) {
+              //   print(value.data);
+              // }).catchError((error) {
+              //   print(error);
+              // });
+            },
+            child: Text('Test'),
+          ),
+        ))),
+  )); */
 }
 
 class SolhApp extends StatelessWidget {

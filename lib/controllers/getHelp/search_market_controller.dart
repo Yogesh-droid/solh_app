@@ -6,6 +6,7 @@ import 'package:solh/services/network/network.dart';
 
 class SearchMarketController extends GetxController {
   var isLoading = false.obs;
+  var suggestionList = [].obs;
   var searchMarketModel = SearchMarketModel().obs;
   var issueModel = SearchMarketModel().obs;
 
@@ -15,6 +16,17 @@ class SearchMarketController extends GetxController {
         APIConstants.api + '/api/get-help?text=$searchText');
 
     searchMarketModel.value = SearchMarketModel.fromJson(map);
+    isLoading.value = false;
+  }
+
+  Future<void> getSuggestions(String searchText) async {
+    isLoading.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequest(
+        APIConstants.api + '/api/get-suggestion?text=$searchText');
+    suggestionList.clear();
+
+    suggestionList.value.addAll(map['suggestions']);
+    suggestionList.refresh();
     isLoading.value = false;
   }
 

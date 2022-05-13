@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
-
 import '../../../routes/routes.gr.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
@@ -20,7 +21,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
   }) : super(key: key);
   XFile? _xFile;
   File? _croppedFile;
-
+  final JournalPageController _journalPageController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -43,10 +44,14 @@ class WhatsOnYourMindSection extends StatelessWidget {
                   ),
                   onPressed: () =>
                       AutoRouter.of(context).push(CreatePostScreenRouter()),
-                  child: Text(
-                    "What's on your mind?",
-                    style: SolhTextStyles.JournalingHintText,
-                  )),
+                  child: Obx(() {
+                    return Text(
+                      _journalPageController.selectedGroupId.value == ''
+                          ? "What's on your mind?"
+                          : "post in group",
+                      style: SolhTextStyles.JournalingHintText,
+                    );
+                  })),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -63,8 +68,8 @@ class WhatsOnYourMindSection extends StatelessWidget {
                           maxHeight: 640,
                           imageQuality: 50,
                         );
-                        if (_xFile != null)
-                          _croppedFile = await ImageCropper().cropImage(
+                        if (_xFile != null) {
+                          final croppedFile = await ImageCropper().cropImage(
                               sourcePath: _xFile!.path,
                               aspectRatioPresets: [
                                 CropAspectRatioPreset.square,
@@ -73,16 +78,21 @@ class WhatsOnYourMindSection extends StatelessWidget {
                                 // CropAspectRatioPreset.ratio4x3,
                                 // CropAspectRatioPreset.ratio16x9
                               ],
-                              androidUiSettings: AndroidUiSettings(
-                                  toolbarTitle: 'Edit',
-                                  toolbarColor: SolhColors.white,
-                                  toolbarWidgetColor: Colors.black,
-                                  activeControlsWidgetColor: SolhColors.green,
-                                  initAspectRatio: CropAspectRatioPreset.square,
-                                  lockAspectRatio: true),
-                              iosUiSettings: IOSUiSettings(
-                                minimumAspectRatio: 1.0,
-                              ));
+                              uiSettings: [
+                                AndroidUiSettings(
+                                    toolbarTitle: 'Edit',
+                                    toolbarColor: SolhColors.white,
+                                    toolbarWidgetColor: Colors.black,
+                                    activeControlsWidgetColor: SolhColors.green,
+                                    initAspectRatio:
+                                        CropAspectRatioPreset.square,
+                                    lockAspectRatio: true),
+                                IOSUiSettings(
+                                  minimumAspectRatio: 1.0,
+                                )
+                              ]);
+                          _croppedFile = File(croppedFile!.path);
+                        }
                         // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreatePostScreen(

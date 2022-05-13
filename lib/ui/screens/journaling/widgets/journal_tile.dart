@@ -13,10 +13,10 @@ import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:video_player/video_player.dart';
 import 'solh_expert_badge.dart';
 
 class JournalTile extends StatefulWidget {
@@ -151,13 +151,19 @@ class _JournalTileState extends State<JournalTile> {
                                             SolhExpertBadge(),
                                         ],
                                       ),
-                                      Text(
-                                        timeago.format(DateTime.parse(
-                                            widget._journalModel!.createdAt ??
-                                                '')),
-                                        style: SolhTextStyles
-                                            .JournalingTimeStampText,
-                                      )
+                                      DateTime.tryParse(widget._journalModel!
+                                                      .createdAt ??
+                                                  '') !=
+                                              null
+                                          ? Text(
+                                              timeago.format(DateTime.parse(
+                                                  widget._journalModel!
+                                                          .createdAt ??
+                                                      '')),
+                                              style: SolhTextStyles
+                                                  .JournalingTimeStampText,
+                                            )
+                                          : Container()
                                     ],
                                   ),
                                 ),
@@ -187,40 +193,119 @@ class _JournalTileState extends State<JournalTile> {
                   children: [
                     widget._journalModel!.feelings != null
                         ? Text(
-                            "Feeling " +
+                            "#Feeling " +
                                 widget._journalModel!.feelings!.feelingName!,
-                            style: SolhTextStyles
-                                .JournalingDescriptionReadMoreText,
+                            style: SolhTextStyles.PinkBorderButtonText)
+                        : Container(),
+                    widget._journalModel!.description != null
+                        ? ReadMoreText(
+                            widget._journalModel!.description!,
+                            trimLines: 3,
+                            //trimLength: 100,
+                            style: SolhTextStyles.JournalingDescriptionText,
+                            colorClickableText: SolhColors.green,
+                            //trimMode: TrimMode.Length,
+                            trimMode: TrimMode.Line,
+                            trimCollapsedText: ' Read more',
+                            trimExpandedText: ' Less',
                           )
                         : Container(),
-                    ReadMoreText(
-                      widget._journalModel!.description!,
-                      trimLines: 3,
-                      //trimLength: 100,
-                      style: SolhTextStyles.JournalingDescriptionText,
-                      colorClickableText: SolhColors.green,
-                      //trimMode: TrimMode.Length,
-                      trimMode: TrimMode.Line,
-                      trimCollapsedText: ' Read more',
-                      trimExpandedText: ' Less',
-                    ),
                   ],
                 ),
               ),
-              if (widget._journalModel!.mediaUrl != null)
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width,
-                  margin: EdgeInsets.symmetric(
-                    vertical: MediaQuery.of(context).size.height / 80,
-                  ),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                    image:
-                        NetworkImage(widget._journalModel!.mediaUrl.toString()),
-                    fit: BoxFit.cover,
-                  )),
-                )
+              if (widget._journalModel!.mediaUrl != null &&
+                  widget._journalModel!.mediaUrl != '')
+                //// For Video player ////
+                widget._journalModel!.mediaType == 'video/mp4'
+                    ? InkWell(
+                        onTap: () {
+                          journalPageController.playVideo(
+                            widget.index,
+                          );
+                          journalPageController.videoPlayerController.refresh();
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.symmetric(
+                                  vertical:
+                                      MediaQuery.of(context).size.height / 80,
+                                ),
+                                child: VideoPlayer(journalPageController
+                                    .videoPlayerController
+                                    .value[widget.index]![widget.index]!)),
+                            Obx(() {
+                              return !journalPageController
+                                      .videoPlayerController
+                                      .value[widget.index]![widget.index]!
+                                      .value
+                                      .isPlaying
+                                  ? Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: MediaQuery.of(context).size.width,
+                                      margin: EdgeInsets.symmetric(
+                                        vertical:
+                                            MediaQuery.of(context).size.height /
+                                                80,
+                                      ),
+                                      color: Colors.black.withOpacity(0.5),
+                                    )
+                                  : Container();
+                            }),
+                            Obx(() {
+                              return !journalPageController
+                                      .videoPlayerController
+                                      .value[widget.index]![widget.index]!
+                                      .value
+                                      .isPlaying
+                                  ? Positioned(
+                                      bottom:
+                                          MediaQuery.of(context).size.height /
+                                              5,
+                                      left: MediaQuery.of(context).size.width /
+                                              2 -
+                                          MediaQuery.of(context).size.width /
+                                              10,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          journalPageController.playVideo(
+                                            widget.index,
+                                          );
+                                          journalPageController
+                                              .videoPlayerController
+                                              .refresh();
+                                        },
+                                        icon: Image.asset(
+                                          'assets/images/play_icon.png',
+                                          fit: BoxFit.fill,
+                                        ),
+                                        iconSize:
+                                            MediaQuery.of(context).size.width /
+                                                8,
+                                        color: SolhColors.green,
+                                      ),
+                                    )
+                                  : Container();
+                            }),
+                          ],
+                        ),
+                      )
+                    ///// Below for image only
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.symmetric(
+                          vertical: MediaQuery.of(context).size.height / 80,
+                        ),
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: NetworkImage(
+                              widget._journalModel!.mediaUrl.toString()),
+                          fit: BoxFit.cover,
+                        )),
+                      )
               else
                 Container(
                   height: 1.h,
@@ -331,7 +416,6 @@ class _JournalTileState extends State<JournalTile> {
                               await connectionController.addConnection(
                                 widget._journalModel!.postedBy!.sId!,
                               );
-                              Utility.showToast('Connection request sent');
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width / 3.5,

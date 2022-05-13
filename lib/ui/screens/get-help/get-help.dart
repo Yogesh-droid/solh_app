@@ -141,7 +141,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GetHelpCategory(title: 'Search by issues'),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       getHelpController.isAllIssueShown.value
                           ? getHelpController.showLessIssues()
@@ -150,7 +150,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           !getHelpController.isAllIssueShown.value;
                     },
                     child: Padding(
-                        padding: const EdgeInsets.only(right: 11.0),
+                        padding: const EdgeInsets.only(
+                            right: 11.0, bottom: 11, top: 11, left: 11),
                         child: Obx(() {
                           return Text(
                             !getHelpController.isAllIssueShown.value
@@ -220,7 +221,14 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           child: CircleAvatar(
                             radius: 7.8.w,
                             backgroundColor: Colors.white,
-                            child: Image.asset("assets/images/solh_tree.png"),
+                            child: CachedNetworkImage(
+                              imageUrl: getHelpController
+                                      .getSpecializationModel
+                                      .value
+                                      .specializationList![index]
+                                      .displayImage ??
+                                  '',
+                            ),
                           ),
                         ),
                         SizedBox(width: 2.w),

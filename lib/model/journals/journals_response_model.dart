@@ -67,6 +67,7 @@ class Journals {
   PostedBy? postedBy;
   String? mediaUrl;
   String? mediaType;
+  Group? group;
 
   Journals(
       {this.id,
@@ -81,7 +82,8 @@ class Journals {
       this.bestComment,
       this.postedBy,
       this.mediaUrl,
-      this.mediaType});
+      this.mediaType,
+      this.group});
 
   Journals.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -103,6 +105,7 @@ class Journals {
         : null;
     mediaUrl = json['mediaUrl'];
     mediaType = json['mediaType'];
+    group = json['group'] != null ? new Group.fromJson(json['group']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -122,6 +125,27 @@ class Journals {
     }
     data['mediaUrl'] = this.mediaUrl;
     data['mediaType'] = this.mediaType;
+    if (this.group != null) {
+      data['group'] = this.group!.toJson();
+    }
+    return data;
+  }
+}
+
+class Group {
+  String? sId;
+  String? groupName;
+
+  Group({this.sId, this.groupName});
+
+  Group.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    groupName = json['groupName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
     return data;
   }
 }

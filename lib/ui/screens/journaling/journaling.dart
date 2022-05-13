@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,9 +9,11 @@ import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
+import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
@@ -19,6 +22,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:video_player/video_player.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 
 class JournalingScreen extends StatefulWidget {
@@ -30,6 +34,8 @@ class JournalingScreen extends StatefulWidget {
 
 class _JournalingScreenState extends State<JournalingScreen> {
   FeelingsController feelingsController = Get.put(FeelingsController());
+  final DiscoverGroupController discoverGroupController =
+      Get.put(DiscoverGroupController());
   JournalPageController _journalPageController =
       Get.put(JournalPageController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
@@ -65,6 +71,15 @@ class Journaling extends StatefulWidget {
 
 class _JournalingState extends State<Journaling> {
   JournalPageController _journalPageController = Get.find();
+  DiscoverGroupController discoverGroupController = Get.find();
+  List<String> groups = [
+    'Solh',
+    'Stress Buster',
+    'Anxiety',
+    'Depression',
+    'Anger',
+    'Happiness'
+  ];
 
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;
@@ -192,11 +207,18 @@ class _JournalingState extends State<Journaling> {
                   //       }),
                   // ),
                   WhatsOnYourMindSection(),
+                  groupRow(),
                   Expanded(
                     child: Obx(
                       () => !_journalPageController.isLoading.value
-                          ? Obx(
-                              () => _journalPageController
+                          ? Obx(() {
+                              print("building journals" +
+                                  _journalPageController.journalsResponseModel
+                                      .value.journals!.length
+                                      .toString());
+                              print(
+                                  _journalPageController.selectedGroupId.value);
+                              return _journalPageController
                                       .journalsList.isNotEmpty
                                   ? SmartRefresher(
                                       onRefresh: _onRefresh,
@@ -208,35 +230,61 @@ class _JournalingState extends State<Journaling> {
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             print("building tile: ");
-                                            // if (index == 0)
-                                            //   return WhatsOnYourMindSection();
-                                            return JournalTile(
-                                              journalModel:
-                                                  _journalPageController
-                                                      .journalsList
-                                                      .value[index],
-                                              index: index,
-                                              deletePost: () async {
-                                                print("deleting post");
-                                                DeleteJournal _deleteJournal =
-                                                    DeleteJournal(
-                                                        journalId:
-                                                            _journalPageController
-                                                                .journalsList
-                                                                .value[index]
-                                                                .id!);
-                                                await _deleteJournal
-                                                    .deletePost();
-                                                setState(() {
-                                                  _journalPageController
-                                                      .journalsList.value
-                                                      .removeAt(index);
-                                                  _journalPageController
-                                                      .journalsList
-                                                      .refresh();
-                                                });
-                                              },
-                                            );
+                                            // VideoPlayerController
+                                            //     _videoPlayerController =
+                                            //     VideoPlayerController.network(
+                                            //         _journalPageController
+                                            //             .journalsList[0]
+                                            //             .mediaUrl!)
+                                            //       ..initialize();
+                                            // return InkWell(
+                                            //   onTap: () =>
+                                            //       _videoPlayerController.play(),
+                                            //   child: Container(
+                                            //     height: 200,
+                                            //     decoration: BoxDecoration(
+                                            //         border: Border.all(
+                                            //       color: Colors.grey,
+                                            //     )),
+                                            //     child: VideoPlayer(
+                                            //         _videoPlayerController),
+                                            //   ),
+                                            // );
+                                            return _journalPageController
+                                                        .journalsList
+                                                        .value[index]
+                                                        .id !=
+                                                    null
+                                                ? JournalTile(
+                                                    journalModel:
+                                                        _journalPageController
+                                                            .journalsList
+                                                            .value[index],
+                                                    index: index,
+                                                    deletePost: () async {
+                                                      print("deleting post");
+                                                      DeleteJournal
+                                                          _deleteJournal =
+                                                          DeleteJournal(
+                                                              journalId:
+                                                                  _journalPageController
+                                                                      .journalsList
+                                                                      .value[
+                                                                          index]
+                                                                      .id!);
+                                                      await _deleteJournal
+                                                          .deletePost();
+                                                      setState(() {
+                                                        _journalPageController
+                                                            .journalsList.value
+                                                            .removeAt(index);
+                                                        _journalPageController
+                                                            .journalsList
+                                                            .refresh();
+                                                      });
+                                                    },
+                                                  )
+                                                : Container();
                                           }),
                                     )
                                   : Container(
@@ -248,17 +296,12 @@ class _JournalingState extends State<Journaling> {
                                               fontWeight: FontWeight.w600),
                                         ),
                                       ),
-                                    ),
-                            )
+                                    );
+                            })
                           : Center(
                               child: MyLoader(),
                             ),
                     ),
-
-                    // if (journalSnapshot.hasError)
-                    //   return Container(
-                    //     child: Text(journalSnapshot.error.toString()),
-                    //   );
                   ),
                   if (_fetchingMore) Center(child: MyLoader()),
                   SizedBox(height: Platform.isIOS ? 80 : 50),
@@ -309,6 +352,202 @@ class _JournalingState extends State<Journaling> {
         ],
       ),
       isLandingScreen: true,
+    );
+  }
+
+  Widget groupRow() {
+    return Obx(() {
+      return discoverGroupController.joinedGroupModel.value.groupList != null
+          ? discoverGroupController.joinedGroupModel.value.groupList!.isNotEmpty
+              ? Container(
+                  height: MediaQuery.of(context).size.height * 0.13,
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: discoverGroupController
+                          .joinedGroupModel.value.groupList!.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index == 0) {
+                          return getSolhGrouContainer();
+                        }
+                        return getGroupContainer(discoverGroupController
+                            .joinedGroupModel.value.groupList![index]);
+                      }),
+                )
+              : Container()
+          : Container();
+    });
+  }
+
+  Widget getGroupContainer(GroupList group) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Obx(() {
+          return Container(
+            width: 60,
+            height: 60,
+            decoration:
+                _journalPageController.selectedGroupId.value == group.sId
+                    ? BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            SolhColors.green,
+                            Colors.red.withOpacity(0.3),
+                            Colors.red.withOpacity(0.8),
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ))
+                    : BoxDecoration(),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(50),
+              onTap: () async {
+                _journalPageController.selectedGroupId.value = group.sId ?? '';
+                _journalPageController.journalsList.clear();
+                _journalPageController.pageNo = 1;
+                _journalPageController.endPageLimit = 1;
+                await _journalPageController.getAllJournals(1,
+                    groupId: group.sId);
+                _journalPageController.journalsList.refresh();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: _journalPageController.selectedGroupId.value ==
+                            group.sId
+                        ? Border()
+                        : Border.all(
+                            color: SolhColors.green,
+                            width: 2,
+                          ),
+                    image: DecorationImage(
+                      image: CachedNetworkImageProvider(group.groupMediaUrl ??
+                          "https://picsum.photos/200/200"),
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+            width: 70,
+            child: Obx(() {
+              return Text(
+                "${group.groupName}",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color:
+                      _journalPageController.selectedGroupId.value == group.sId
+                          ? Color(0xFF222222)
+                          : Color(0xFF666666),
+                ),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              );
+            })),
+      ],
+    );
+  }
+
+  Widget getSolhGrouContainer() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Obx(() {
+          return Container(
+            width: 60,
+            height: 60,
+            decoration: _journalPageController.selectedGroupId.value == ''
+                ? BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        SolhColors.green,
+                        Colors.red.withOpacity(0.3),
+                        Colors.red.withOpacity(0.8),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ))
+                : BoxDecoration(),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(50),
+              onTap: () async {
+                _journalPageController.selectedGroupId.value = '';
+                _journalPageController.journalsList.clear();
+                _journalPageController.pageNo = 1;
+                _journalPageController.endPageLimit = 1;
+                await _journalPageController.getAllJournals(1);
+                _journalPageController.journalsList.refresh();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: _journalPageController.selectedGroupId == ''
+                        ? Border()
+                        : Border.all(
+                            color: SolhColors.green,
+                            width: 2,
+                          ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Image.asset(
+                      'assets/images/logo/solh-logo.png',
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }),
+        SizedBox(
+          height: 5,
+        ),
+        Container(
+          width: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Obx(() {
+                return Text(
+                  "Solh",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: _journalPageController.selectedGroupId == ''
+                        ? Color(0xFF222222)
+                        : Color(0xFF666666),
+                    fontWeight: FontWeight.w400,
+                    height: 1.23, //Figma Line Height 17.25
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                );
+              }),
+              SizedBox(
+                width: 5,
+              ),
+              Image.asset(
+                'assets/icons/profile/verified.png',
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

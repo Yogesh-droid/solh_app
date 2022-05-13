@@ -168,12 +168,13 @@ class MyDiaryDetails extends StatelessWidget {
 
   Future<void> postPublically(BuildContext context) async {
     CreateJournal _createJournal = CreateJournal(
-      description: myDiary.description ?? '',
-      feelings: myDiary.feelings!.sId ?? '',
-      journalType: 'Publicaly',
-      mediaUrl: myDiary.mediaUrl ?? '',
-      mimetype: 'image/jpeg',
-    );
+        description: myDiary.description ?? '',
+        feelings: myDiary.feelings!.sId ?? '',
+        journalType: 'Publicaly',
+        mediaUrl: myDiary.mediaUrl ?? '',
+        mimetype: 'image/jpeg',
+        groupId: '',
+        postedIn: null);
     myDiaryController.isPosting.value = true;
     _createJournal.postJournal();
     await myDiaryController.getMyJournals(1);

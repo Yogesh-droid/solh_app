@@ -369,7 +369,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 Container(
                   padding: EdgeInsets.only(left: 4.w),
                   decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.transparent,
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: SolhColors.green)),
                   child: Column(
@@ -421,126 +421,87 @@ class _CommentScreenState extends State<CommentScreen> {
                                   },
                                   icon: Icon(Icons.close))
                               : Container())),
-                          IconButton(
-                              onPressed: () async {
-                                print(
-                                    'journalCommentController.isReplying.value');
-                                if (_commentEditingController.text != '') {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  journalCommentController.isReplying.value
-                                      ? await journalCommentController.addReply(
-                                          parentId: journalCommentController
-                                              .commentId,
-                                          journalId: widget._journalModel!.id!,
-                                          commentBody: _commentEditingController
-                                              .text,
-                                          userId: journalCommentController
-                                              .parentId,
-                                          index: journalCommentController
-                                              .hiddenReplyList
-                                              .indexWhere(
-                                                  (element) => element == true))
-                                      : await journalCommentController
-                                          .addComment(
-                                              journalId:
-                                                  widget._journalModel!.id!,
-                                              commentBody:
-                                                  _commentEditingController
-                                                      .text);
-                                  _commentEditingController.clear();
-                                  _scrollController.jumpTo(_scrollController
-                                      .position.maxScrollExtent);
-                                  // _scrollController.animateTo(1,
-                                  //     duration:
-                                  //         Duration(milliseconds: 500),
-                                  //     curve: Curves.easeIn);
-                                  // commentsBloc.getcommentsSnapshot(
-                                  //     widget._journalModel!.id!);
-                                  /////////////////
-                                  getComments();
-                                  _journalPageController.journalsList.value
-                                      .forEach((element) {
-                                    if (element.id ==
-                                        widget._journalModel!.id) {
-                                      element.comments = element.comments! + 1;
-                                    }
-                                  });
-                                  _journalPageController.journalsList.refresh();
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                }
-                              },
+                          _isLoading
+                              ? Container(
+                                  height: 4.w,
+                                  width: 4.w,
+                                  child: MyLoader(
+                                    strokeWidth: 2.5,
+                                  ))
+                              : Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: MaterialButton(
+                                    //padding: EdgeInsets.all(2),
+                                    highlightElevation: 0,
+                                    minWidth: 0,
+                                    height: 45,
+                                    focusElevation: 0,
+                                    elevation: 0,
+                                    shape: CircleBorder(),
+                                    color: Color(0xFF0F4F4F4),
+                                    highlightColor: Colors.grey[400],
 
-                              /* _isLoading
-                                  ? null
-                                  : journalCommentController.isReplying.value
-                                      ? () {
-                                          print('replying..............');
-                                          print(journalCommentController
-                                              .commentId);
-                                          Future.delayed(
-                                              Duration(milliseconds: 500), () {
-                                            journalCommentController
-                                                .isReplying.value = false;
-                                            print('replyied..............');
-                                          });
-                                        }
-                                      : () async {
-                                          print('commenting..............');
-                                          // if (_commentEditingController.text !=
-                                          //     '') {
-                                          //   setState(() {
-                                          //     _isLoading = true;
-                                          //   });
-                                          //   print("comment");
-                                          //   await journalCommentController
-                                          //       .addComment(
-                                          //           journalId: widget
-                                          //               ._journalModel!.id!,
-                                          //           commentBody:
-                                          //               _commentEditingController
-                                          //                   .text);
-                                          //   _commentEditingController.clear();
-                                          //   _scrollController.jumpTo(
-                                          //       _scrollController
-                                          //           .position.minScrollExtent);
-                                          //   // _scrollController.animateTo(1,
-                                          //   //     duration:
-                                          //   //         Duration(milliseconds: 500),
-                                          //   //     curve: Curves.easeIn);
-                                          //   // commentsBloc.getcommentsSnapshot(
-                                          //   //     widget._journalModel!.id!);
-                                          //   getComments();
-                                          //   _journalPageController
-                                          //       .journalsList.value
-                                          //       .forEach((element) {
-                                          //     if (element.id ==
-                                          //         widget._journalModel!.id) {
-                                          //       element.comments =
-                                          //           element.comments! + 1;
-                                          //     }
-                                          //   });
-                                          //   _journalPageController.journalsList
-                                          //       .refresh();
-                                          //   setState(() {
-                                          //     _isLoading = false;
-                                          //   });
-                                          // }
-                                        }, */
-                              icon: _isLoading
-                                  ? Container(
-                                      height: 4.w,
-                                      width: 4.w,
-                                      child: MyLoader(
-                                        strokeWidth: 2.5,
-                                      ))
-                                  : Icon(
+                                    onPressed: () async {
+                                      if (_commentEditingController.text !=
+                                          '') {
+                                        setState(() {
+                                          _isLoading = true;
+                                        });
+                                        journalCommentController.isReplying.value
+                                            ? await journalCommentController
+                                                .addReply(
+                                                    parentId:
+                                                        journalCommentController
+                                                            .commentId,
+                                                    journalId: widget
+                                                        ._journalModel!.id!,
+                                                    commentBody:
+                                                        _commentEditingController
+                                                            .text,
+                                                    userId:
+                                                        journalCommentController
+                                                            .parentId,
+                                                    index: journalCommentController
+                                                        .hiddenReplyList
+                                                        .indexWhere((element) =>
+                                                            element == true))
+                                            : await journalCommentController
+                                                .addComment(
+                                                    journalId: widget
+                                                        ._journalModel!.id!,
+                                                    commentBody:
+                                                        _commentEditingController
+                                                            .text);
+                                        _commentEditingController.clear();
+                                        _scrollController.jumpTo(
+                                            _scrollController
+                                                .position.maxScrollExtent);
+
+                                        getComments();
+                                        _journalPageController
+                                            .journalsList.value
+                                            .forEach((element) {
+                                          if (element.id ==
+                                              widget._journalModel!.id) {
+                                            element.comments =
+                                                element.comments! + 1;
+                                          }
+                                        });
+                                        _journalPageController.journalsList
+                                            .refresh();
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                      }
+                                    },
+
+                                    child: Icon(
                                       Icons.send,
+                                      size: 20,
                                       color: SolhColors.green,
-                                    ))
+                                    ),
+                                  ),
+                                )
                         ],
                       ),
                     ],
@@ -637,6 +598,7 @@ class CommentBoxWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CircleAvatar(
+          backgroundColor: Colors.grey[300],
           backgroundImage: CachedNetworkImageProvider(
             commentModel.user![0].profilePicture!,
           ),
