@@ -61,6 +61,22 @@ class _TrimmerViewState extends State<TrimmerView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Video Trimmer"),
+        backgroundColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.black),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.check, color: Colors.black),
+            onPressed: () async {
+              String? _value = await _saveVideo();
+              if (_value != null) {
+                Navigator.pop(context, _value);
+              }
+            },
+          ),
+        ],
       ),
       body: Builder(
         builder: (context) => Center(
@@ -77,21 +93,22 @@ class _TrimmerViewState extends State<TrimmerView> {
                     backgroundColor: Colors.red,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: _progressVisibility
-                      ? null
-                      : () async {
-                          _saveVideo().then((outputPath) {
-                            print('OUTPUT PATH: $outputPath');
-                            final snackBar = SnackBar(
-                                content: Text('Video Saved successfully'));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar,
-                            );
-                          });
-                        },
-                  child: Text("SAVE"),
-                ),
+                // ElevatedButton(
+                //   onPressed: _progressVisibility
+                //       ? null
+                //       : () async {
+                //           _saveVideo().then((outputPath) {
+                //             print('OUTPUT PATH: $outputPath');
+                //             // final snackBar = SnackBar(
+                //             //     content: Text('Video Saved successfully'));
+                //             // ScaffoldMessenger.of(context).showSnackBar(
+                //             //   snackBar,
+                //             // );
+                //             Navigator.pop(context);
+                //           });
+                //         },
+                //   child: Text("SAVE"),
+                // ),
                 Expanded(
                   child: VideoViewer(trimmer: _trimmer),
                 ),

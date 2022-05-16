@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:country_code_picker/country_localizations.dart';
-import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,6 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:http/io_client.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();

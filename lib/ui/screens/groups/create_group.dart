@@ -5,6 +5,7 @@ import 'package:get/instance_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import '../../../constants/api.dart';
@@ -18,7 +19,8 @@ import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
 
 class CreateGroup extends StatelessWidget {
-  final CreateGroupController _controller = Get.put(CreateGroupController());
+  final CreateGroupController _controller = Get.find();
+  final DiscoverGroupController _groupController = Get.find();
   XFile? _xFile;
   String? _groupMediaUrl;
   String? _groupMediaType;
@@ -270,9 +272,14 @@ class CreateGroup extends StatelessWidget {
             imgType: _groupMediaType,
           );
           if (map['success']) {
-            Utility.showToast('Group Created Successfully');
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => InviteMembersUI()));
+            _groupController.getJoinedGroups();
+            _groupController.getCreatedGroups();
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => InviteMembersUI(
+                          groupId: map['groupDetails']['_id'],
+                        )));
           }
         }
       },

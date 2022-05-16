@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/group/create_group_controller.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -9,8 +12,12 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class GroupDetailsPage extends StatelessWidget {
-  const GroupDetailsPage({Key? key, required this.group}) : super(key: key);
+  GroupDetailsPage({Key? key, required this.group, this.isJoined})
+      : super(key: key);
   final GroupList group;
+  bool? isJoined;
+  JournalPageController journalPageController = Get.find();
+  CreateGroupController createGroupController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -191,19 +198,78 @@ class GroupDetailsPage extends StatelessWidget {
   }
 
   getPostButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SolhGreenBorderButton(
-          child: Text(
-            'See Post',
-            style: SolhTextStyles.GreenBorderButtonText,
-          ),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Journaling();
-            }));
-          }),
-    );
+    return isJoined != null
+        ? Container(
+            height: 50,
+            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 50,
+                  child: SolhGreenBorderButton(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Text(
+                        'See Post',
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      ),
+                      onPressed: () {
+                        journalPageController.selectedGroupId.value =
+                            group.sId ?? '';
+                        journalPageController.journalsList.clear();
+                        journalPageController.pageNo = 1;
+                        journalPageController.endPageLimit = 1;
+                        journalPageController.getAllJournals(1,
+                            groupId: group.sId ?? '');
+                        journalPageController.journalsList.refresh();
+
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return JournalingScreen();
+                        }));
+                      }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 50,
+                  child: SolhGreenBorderButton(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: Text(
+                        'Join',
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      ),
+                      onPressed: () {
+                        createGroupController.joinGroup(
+                            groupId: group.sId ?? '');
+                      }),
+                ),
+              ),
+            ]),
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SolhGreenBorderButton(
+                child: Text(
+                  'See Post',
+                  style: SolhTextStyles.GreenBorderButtonText,
+                ),
+                onPressed: () {
+                  journalPageController.selectedGroupId.value = group.sId ?? '';
+                  journalPageController.journalsList.clear();
+                  journalPageController.pageNo = 1;
+                  journalPageController.endPageLimit = 1;
+                  journalPageController.getAllJournals(1,
+                      groupId: group.sId ?? '');
+                  journalPageController.journalsList.refresh();
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return JournalingScreen();
+                  }));
+                }),
+          );
   }
 
   getMembersList() {

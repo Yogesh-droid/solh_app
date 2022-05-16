@@ -235,8 +235,10 @@ class _JournalTileState extends State<JournalTile> {
                                 ),
                                 child: VideoPlayer(journalPageController
                                     .videoPlayerController
-                                    .value[widget.index]![widget.index]!)),
+                                    .value[widget.index][widget.index])),
                             Obx(() {
+                              print(widget.index.toString() +
+                                  'sjdfidsciodjfiojewiojfdkmecwefjiedfjcdskcmdksjdfiojioewjfioewfkeiojdfisjncksfjewiohjf');
                               return !journalPageController
                                       .videoPlayerController
                                       .value[widget.index]![widget.index]!

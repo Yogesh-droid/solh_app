@@ -136,7 +136,8 @@ class ManageGroupPage extends StatelessWidget {
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context);
+                      return getGroupCard(groupList[index], context,
+                          isJoined: false);
                     },
                   )
                 : Center(
@@ -147,14 +148,17 @@ class ManageGroupPage extends StatelessWidget {
           );
   }
 
-  Widget getGroupCard(GroupList group, BuildContext context) {
+  Widget getGroupCard(GroupList group, BuildContext context, {bool? isJoined}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(children: [
         InkWell(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return GroupDetailsPage(group: group);
+              return GroupDetailsPage(
+                group: group,
+                isJoined: isJoined,
+              );
             }));
           },
           child: Hero(

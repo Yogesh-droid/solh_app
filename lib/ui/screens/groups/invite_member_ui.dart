@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -9,7 +10,8 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../controllers/group/create_group_controller.dart';
 
 class InviteMembersUI extends StatelessWidget {
-  InviteMembersUI({Key? key}) : super(key: key);
+  InviteMembersUI({Key? key, required this.groupId}) : super(key: key);
+  final String groupId;
   final CreateGroupController controller = Get.find();
   final ConnectionController connectionController = Get.find();
 
@@ -25,7 +27,11 @@ class InviteMembersUI extends StatelessWidget {
               itemCount: connectionController
                   .myConnectionModel.value.myConnections!.length,
               itemBuilder: (context, index) {
-                return getMemberTile(context, index);
+                return getMemberTile(
+                    context,
+                    index,
+                    connectionController
+                        .myConnectionModel.value.myConnections![index]);
               }),
         ),
       ),
@@ -43,7 +49,7 @@ class InviteMembersUI extends StatelessWidget {
           MaterialButton(
               onPressed: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Journaling();
+                  return JournalingScreen();
                 }));
               },
               child: Text(
@@ -55,7 +61,8 @@ class InviteMembersUI extends StatelessWidget {
     );
   }
 
-  Widget getMemberTile(BuildContext context, int index) {
+  Widget getMemberTile(
+      BuildContext context, int index, MyConnections myConnections) {
     return ListTile(
       contentPadding: EdgeInsets.all(0),
       title: Text(connectionController
@@ -65,6 +72,11 @@ class InviteMembersUI extends StatelessWidget {
               .myConnectionModel.value.myConnections![index].bio ??
           ''),
       onTap: () {
+        if (controller.selectedMembers.contains(myConnections.sId)) {
+          controller.selectedMembers.remove(myConnections.sId);
+        } else {
+          controller.selectedMembers.add(myConnections.sId);
+        }
         controller.selectedMembersIndex.contains(index)
             ? controller.selectedMembersIndex.remove(index)
             : controller.selectedMembersIndex.add(index);
@@ -95,7 +107,14 @@ class InviteMembersUI extends StatelessWidget {
     return Obx(() {
       return FloatingActionButton.extended(
         elevation: 0,
-        onPressed: () {},
+        onPressed: () async {
+          await controller.addMembers(
+            groupId: groupId,
+          );
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return JournalingScreen();
+          }));
+        },
         label: Container(
           width: MediaQuery.of(context).size.width * 0.8,
           child: Center(

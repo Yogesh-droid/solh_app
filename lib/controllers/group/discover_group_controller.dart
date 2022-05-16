@@ -34,8 +34,8 @@ class DiscoverGroupController extends GetxController {
   }
 
   Future<void> getDiscoverGroups() async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/discover-groups');
+    Map<String, dynamic> map =
+        await Network.makeGetRequestWithToken('${APIConstants.api}/api/group');
     if (map['success']) {
       discoveredGroupModel.value = GetGroupResponseModel.fromJson(map);
     }

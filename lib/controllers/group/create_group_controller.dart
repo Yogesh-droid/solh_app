@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../constants/api.dart';
@@ -7,6 +8,7 @@ class CreateGroupController extends GetxController {
   var path = ''.obs;
   var tagList = [].obs;
   var selectedMembersIndex = [].obs;
+  var selectedMembers = [];
 
   Future<Map<String, dynamic>> createGroup(
       {required String groupName,
@@ -30,6 +32,38 @@ class CreateGroupController extends GetxController {
                     'groupType': groupType,
                   })
         .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    return map;
+  }
+
+  Future<Map<String, dynamic>> addMembers({
+    required String groupId,
+  }) async {
+    List userIds = [];
+    for (var i = 0; i < selectedMembers.length; i++) {
+      userIds.add('selectedMembers[i].userId');
+    }
+    Map<String, dynamic> map = await Network.makePostRequestWithToken(
+        url: APIConstants.api + '/api/sendInvite',
+        body: {
+          'groupId': groupId,
+          'userId': ['', '']
+        }).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    return map;
+  }
+
+  Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
+    Map<String, dynamic> map = await Network.makePostRequestWithToken(
+        url: APIConstants.api + '/api/join-group',
+        body: {
+          'groupId': groupId,
+          'userId': FirebaseAuth.instance.currentUser!.uid
+        }).onError((error, stackTrace) {
       print(error);
       return {};
     });
