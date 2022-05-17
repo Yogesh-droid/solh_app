@@ -170,11 +170,10 @@ class ManageGroupPage extends StatelessWidget {
                   color: SolhColors.green,
                   child: Container(
                     height: 300,
-                    child: CachedNetworkImage(
-                        imageUrl: group.groupMediaUrl != null
-                            ? group.groupMediaUrl ?? ''
-                            : 'https://picsum.photos/200/300',
-                        fit: BoxFit.fill),
+                    child: Image.asset(
+                      'assets/images/group_placeholder.png',
+                      fit: BoxFit.cover,
+                    ),
                   )),
             ),
           ),

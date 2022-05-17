@@ -18,9 +18,10 @@ class JournalPageController extends GetxController {
   var videoPlayerController = [].obs;
   List<int> indexListHavingVideo = [];
   var selectedGroupId = "".obs;
+  var isScrollingStarted = false.obs;
 
   Future<void> getAllJournals(int pageNo, {String? groupId}) async {
-    print('started gettting all journals');
+    print('started gettting all journals $pageNo');
     try {
       if (pageNo == 1) {
         isLoading.value = true;
@@ -55,14 +56,15 @@ class JournalPageController extends GetxController {
             }
 
             videoPlayerController.value.add({
-              ((pageNo - 1) * 10) + i:
-                  VideoPlayerController.network(journalsList.value[i].mediaUrl!)
-                    ..initialize()
+              i: VideoPlayerController.network(journalsList.value[i].mediaUrl!)
+                ..initialize()
             });
           } else {
             videoPlayerController.value.add(null);
           }
         }
+        print('length of video player controller: ' +
+            videoPlayerController.value.length.toString());
       }
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());

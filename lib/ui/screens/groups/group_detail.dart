@@ -294,9 +294,8 @@ class GroupDetailsPage extends StatelessWidget {
               return Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: CachedNetworkImageProvider(
-                      group.groupMembers![index].profilePicture ??
-                          'https://picsum.photos/200/300',
+                    backgroundImage: AssetImage(
+                      'assets/images/group_placeholder.png',
                     ),
                   ),
                   SizedBox(

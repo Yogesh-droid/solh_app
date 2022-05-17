@@ -93,11 +93,13 @@ class _JournalingState extends State<Journaling> {
     journalsBloc.getJournalsSnapshot();
 
     _journalsScrollController.addListener(() async {
-      // if (_journalsScrollController.position.pixels ==
-      //         _journalsScrollController.position.minScrollExtent &&
-      //     _refreshController.isRefresh) {
-      //   print("refreshing");
-      // }
+      if (_journalsScrollController.position.pixels ==
+          _journalsScrollController.position.minScrollExtent) {
+        print("refreshing");
+        _journalPageController.isScrollingStarted.value = false;
+      } else {
+        _journalPageController.isScrollingStarted.value = true;
+      }
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&
           !_fetchingMore) {
@@ -122,7 +124,12 @@ class _JournalingState extends State<Journaling> {
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.endPageLimit = 1;
-    await _journalPageController.getAllJournals(1);
+    _journalPageController.selectedGroupId.value.length > 0
+        ? await _journalPageController.getAllJournals(1,
+            groupId: _journalPageController.selectedGroupId.value)
+        : await _journalPageController.getAllJournals(
+            1,
+          );
     _journalPageController.journalsList.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
@@ -133,130 +140,148 @@ class _JournalingState extends State<Journaling> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AnimatedPositioned(
-          duration: Duration(milliseconds: 300),
-          left: _isDrawerOpen ? 78.w : 0,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    offset: const Offset(
-                      14.0,
-                      14.0,
-                    ),
-                    blurRadius: 20.0,
-                    spreadRadius: 4.0,
-                  )
-                ],
-                color: Colors.white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                Scaffold(
-                  appBar: getAppBar(),
-                  body: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      WhatsOnYourMindSection(),
-                      groupRow(),
-                      Expanded(
-                        child: Obx(
-                          () => !_journalPageController.isLoading.value
-                              ? Obx(() {
-                                  return _journalPageController
-                                          .journalsList.isNotEmpty
-                                      ? SmartRefresher(
-                                          onRefresh: _onRefresh,
-                                          controller: _refreshController,
-                                          child: ListView.builder(
-                                              shrinkWrap: true,
-                                              controller:
-                                                  _journalsScrollController,
-                                              itemCount: _journalPageController
-                                                  .journalsList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return _journalPageController
+    return AnimatedPositioned(
+      duration: Duration(milliseconds: 300),
+      left: _isDrawerOpen ? 78.w : 0,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.35),
+                offset: const Offset(
+                  14.0,
+                  14.0,
+                ),
+                blurRadius: 20.0,
+                spreadRadius: 4.0,
+              )
+            ],
+            color: Colors.white),
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            Scaffold(
+              appBar: getAppBar(),
+              body: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  WhatsOnYourMindSection(),
+                  //groupRow(),
+                  Expanded(
+                    child: Obx(
+                      () => !_journalPageController.isLoading.value
+                          ? Obx(() {
+                              return _journalPageController
+                                      .journalsList.isNotEmpty
+                                  ? SmartRefresher(
+                                      onRefresh: _onRefresh,
+                                      controller: _refreshController,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          controller: _journalsScrollController,
+                                          itemCount: _journalPageController
+                                                  .journalsList.length +
+                                              1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            if (index == 0) {
+                                              return Column(
+                                                children: [
+                                                  groupRow(),
+                                                  Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 1.h),
+                                                      height: 0.8.h,
+                                                      color: Color(0xFFF6F6F8)),
+                                                ],
+                                              );
+                                            }
+
+                                            return _journalPageController
+                                                        .journalsList
+                                                        .value[index - 1]
+                                                        .id !=
+                                                    null
+                                                ? JournalTile(
+                                                    journalModel:
+                                                        _journalPageController
                                                             .journalsList
-                                                            .value[index]
-                                                            .id !=
-                                                        null
-                                                    ? JournalTile(
-                                                        journalModel:
-                                                            _journalPageController
-                                                                .journalsList
-                                                                .value[index],
-                                                        index: index,
-                                                        deletePost: () async {
-                                                          print(
-                                                              "deleting post");
-                                                          DeleteJournal
-                                                              _deleteJournal =
-                                                              DeleteJournal(
-                                                                  journalId: _journalPageController
+                                                            .value[index - 1],
+                                                    index: index - 1,
+                                                    deletePost: () async {
+                                                      print("deleting post");
+                                                      DeleteJournal
+                                                          _deleteJournal =
+                                                          DeleteJournal(
+                                                              journalId:
+                                                                  _journalPageController
                                                                       .journalsList
                                                                       .value[
-                                                                          index]
+                                                                          index -
+                                                                              1]
                                                                       .id!);
-                                                          await _deleteJournal
-                                                              .deletePost();
-                                                          setState(() {
-                                                            _journalPageController
-                                                                .journalsList
-                                                                .value
-                                                                .removeAt(
-                                                                    index);
-                                                            _journalPageController
-                                                                .journalsList
-                                                                .refresh();
-                                                          });
-                                                        },
-                                                      )
-                                                    : Container();
-                                              }),
-                                        )
-                                      : Container(
-                                          child: Center(
+                                                      await _deleteJournal
+                                                          .deletePost();
+                                                      setState(() {
+                                                        _journalPageController
+                                                            .journalsList.value
+                                                            .removeAt(
+                                                                index - 1);
+                                                        _journalPageController
+                                                            .journalsList
+                                                            .refresh();
+                                                      });
+                                                    },
+                                                  )
+                                                : Container();
+                                          }),
+                                    )
+                                  : Container(
+                                      child: Column(
+                                        children: [
+                                          groupRow(),
+                                          SizedBox(
+                                            height: 20.h,
+                                          ),
+                                          Center(
                                             child: Text(
                                               "No Journals",
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  fontWeight: FontWeight.w600),
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xFFD9D9D9)),
                                             ),
                                           ),
-                                        );
-                                })
-                              : Center(
-                                  child: MyLoader(),
-                                ),
-                        ),
-                      ),
-                      if (_fetchingMore) Center(child: MyLoader()),
-                      SizedBox(height: Platform.isIOS ? 80 : 50),
-                    ],
-                  ),
-                ),
-                if (_isDrawerOpen)
-                  GestureDetector(
-                    onTap: () => setState(() => _isDrawerOpen = false),
-                    child: Container(
-                      color: Colors.transparent,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
+                                        ],
+                                      ),
+                                    );
+                            })
+                          : Center(
+                              child: MyLoader(),
+                            ),
                     ),
                   ),
-              ],
+                  if (_fetchingMore) Center(child: MyLoader()),
+                  SizedBox(height: Platform.isIOS ? 80 : 50),
+                ],
+              ),
             ),
-          ),
+            if (_isDrawerOpen)
+              GestureDetector(
+                onTap: () => setState(() => _isDrawerOpen = false),
+                child: Container(
+                  color: Colors.transparent,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                ),
+              ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -404,6 +429,7 @@ class _JournalingState extends State<Journaling> {
 
   Widget getSolhGrouContainer() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Obx(() {

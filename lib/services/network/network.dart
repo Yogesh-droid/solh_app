@@ -304,10 +304,10 @@ class Network {
     }
   }
 
-  static Future<Map<String, dynamic>> makePostRequestWithToken({
-    required String url,
-    required Map<String, dynamic> body,
-  }) async {
+  static Future<Map<String, dynamic>> makePostRequestWithToken(
+      {required String url,
+      required Map<String, dynamic> body,
+      bool? isEncoded}) async {
     try {
       Uri _uri = Uri.parse(url);
       print(url);
@@ -320,6 +320,7 @@ class Network {
           body: body);
 
       print(apiResponse.statusCode);
+      print(jsonEncode(body));
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));

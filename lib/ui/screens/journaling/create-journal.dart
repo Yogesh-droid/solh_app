@@ -314,6 +314,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 //           SolhTextStyles.GreenBorderButtonText,
                                 //     ),
                                 //     onPressed: _pickImage),
+
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "  Add Image/Video",
+                                    style: SolhTextStyles
+                                            .JournalingDescriptionReadMoreText
+                                        .copyWith(color: SolhColors.grey102),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 1.h,
+                                ),
                                 InkWell(
                                   onTap: (() {
                                     _pickImage();

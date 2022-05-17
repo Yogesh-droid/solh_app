@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/model/user/user_analitics_model.dart';
@@ -12,7 +13,9 @@ class ConnectionController extends GetxController {
   var receivedConnections = <Connections>[].obs;
   var sentConnections = <Connections>[].obs;
   var userAnalyticsModel = UserAnalyticModel().obs;
+  var groupInvites = <Group>[].obs;
   var isAddingConnection = false.obs;
+  DiscoverGroupController discoverGroupController = Get.find();
 
   Future<void> getMyConnection() async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
@@ -46,6 +49,10 @@ class ConnectionController extends GetxController {
           receivedConnections.value.add(element);
         }
       });
+      groupInvites.value.clear();
+      allConnectionModel.value.group!.forEach((element) {
+        groupInvites.value.add(element);
+      });
     }
   }
 
@@ -54,6 +61,18 @@ class ConnectionController extends GetxController {
             url: APIConstants.api + '/api/connection',
             body: {'connection_id': connection_id, 'response': response})
         .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    await getMyConnection();
+    await getAllConnection();
+    discoverGroupController.getJoinedGroups();
+  }
+
+  Future<void> acceptConnectionFromGroup(String connection_id) async {
+    await Network.makePostRequestWithToken(
+        url: APIConstants.api + '/api/accept?id=${connection_id}',
+        body: {}).onError((error, stackTrace) {
       print(error);
       return {};
     });
