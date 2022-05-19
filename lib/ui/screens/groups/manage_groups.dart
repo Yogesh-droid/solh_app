@@ -8,8 +8,6 @@ import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'dart:math' as math;
-
 import 'group_detail.dart';
 
 class ManageGroupPage extends StatelessWidget {
@@ -170,10 +168,15 @@ class ManageGroupPage extends StatelessWidget {
                   color: SolhColors.green,
                   child: Container(
                     height: 300,
-                    child: Image.asset(
-                      'assets/images/group_placeholder.png',
-                      fit: BoxFit.cover,
-                    ),
+                    child: group.groupMediaUrl != null
+                        ? CachedNetworkImage(
+                            imageUrl: group.groupMediaUrl ?? '',
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/group_placeholder.png',
+                            fit: BoxFit.cover,
+                          ),
                   )),
             ),
           ),
@@ -209,75 +212,100 @@ class ManageGroupPage extends StatelessWidget {
         //       )
         //     ])),
         Positioned(
-          left: 10,
-          bottom: 10,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                group.groupName ?? '',
-                style: TextStyle(
-                  color: SolhColors.white,
-                  fontSize: 20,
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('assets/icons/group/lock.png'),
-                      SizedBox(width: 5),
-                      Text(
-                        group.groupType ?? '',
-                        style: TextStyle(
-                          color: SolhColors.white,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('|', style: TextStyle(color: SolhColors.white)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset('assets/icons/group/persons.png'),
-                      SizedBox(width: 5),
-                      Text(group.groupMembers!.length.toString() + ' members',
-                          style: TextStyle(
-                            color: SolhColors.white,
-                            fontSize: 12,
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text('|', style: TextStyle(color: SolhColors.white)),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/icons/group/edit.png',
-                      ),
-                      SizedBox(width: 5),
-                      Text(group.groupMembers!.length.toString() + ' posts',
-                          style: TextStyle(
-                            color: SolhColors.white,
-                            fontSize: 12,
-                          )),
-                    ],
-                  ),
+          left: 0,
+          bottom: 0,
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.topCenter,
+                colors: [
+                  Colors.black.withOpacity(0.5),
+                  Colors.black.withOpacity(0.0),
                 ],
-              )
-            ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: Offset(0, 0),
+                )
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    group.groupName ?? '',
+                    style: TextStyle(
+                      color: SolhColors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset('assets/icons/group/lock.png'),
+                          SizedBox(width: 5),
+                          Text(
+                            group.groupType ?? '',
+                            style: TextStyle(
+                              color: SolhColors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('|', style: TextStyle(color: SolhColors.white)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Row(
+                        children: [
+                          Image.asset('assets/icons/group/persons.png'),
+                          SizedBox(width: 5),
+                          Text(
+                              group.groupMembers!.length.toString() +
+                                  ' members',
+                              style: TextStyle(
+                                color: SolhColors.white,
+                                fontSize: 12,
+                              )),
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('|', style: TextStyle(color: SolhColors.white)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/icons/group/edit.png',
+                          ),
+                          SizedBox(width: 5),
+                          Text(group.groupMembers!.length.toString() + ' posts',
+                              style: TextStyle(
+                                color: SolhColors.white,
+                                fontSize: 12,
+                              )),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
           ),
         )
       ]),

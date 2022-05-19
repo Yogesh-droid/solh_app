@@ -11,6 +11,7 @@ class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
   final AgeController _ageController = Get.find();
   String _sessionCookie = "";
+  String id = '';
 
   Stream<UserModel?> get userStateStream => _userController.stream;
 
@@ -44,6 +45,7 @@ class UserBlocNetwork {
     });
     print('user details fetched ${userModel.toString()}');
     if (userModel != null) {
+      id = userModel.sId ?? '';
       _userController.sink.add(userModel);
     } else {
       _userController.sink.addError('user details not fetched');

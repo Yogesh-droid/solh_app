@@ -24,7 +24,7 @@ class GenderSelectionDropdown extends StatefulWidget {
 }
 
 class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
-  String _dropdownValue = "N/A";
+  String _dropdownValue = "Other";
 
   @override
   void initState() {
@@ -60,8 +60,8 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
             ),
             DropdownMenuItem(child: Text("Female"), value: "Female"),
             DropdownMenuItem(
-              child: Text("N/A"),
-              value: "N/A",
+              child: Text("Other"),
+              value: "Other",
             )
           ]),
     );

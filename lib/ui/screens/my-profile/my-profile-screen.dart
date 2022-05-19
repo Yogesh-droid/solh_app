@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -115,7 +116,10 @@ class ProfileMenu extends StatelessWidget {
           ProfileMenuTile(
             title: "Edit Profile",
             onPressed: () {
-              AutoRouter.of(context).push(EditMyProfileScreenRouter());
+              //AutoRouter.of(context).push(EditMyProfileScreenRouter());
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return EditMyProfileScreen();
+              }));
             },
             svgIconPath: "assets/icons/profile/edit.svg",
           ),

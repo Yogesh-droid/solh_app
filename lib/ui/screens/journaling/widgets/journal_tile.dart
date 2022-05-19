@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -151,19 +152,33 @@ class _JournalTileState extends State<JournalTile> {
                                             SolhExpertBadge(),
                                         ],
                                       ),
-                                      DateTime.tryParse(widget._journalModel!
-                                                      .createdAt ??
-                                                  '') !=
-                                              null
-                                          ? Text(
-                                              timeago.format(DateTime.parse(
-                                                  widget._journalModel!
+                                      Row(
+                                        children: [
+                                          DateTime.tryParse(widget
+                                                          ._journalModel!
                                                           .createdAt ??
-                                                      '')),
-                                              style: SolhTextStyles
-                                                  .JournalingTimeStampText,
-                                            )
-                                          : Container()
+                                                      '') !=
+                                                  null
+                                              ? Text(
+                                                  timeago.format(DateTime.parse(
+                                                      widget._journalModel!
+                                                              .createdAt ??
+                                                          '')),
+                                                  style: SolhTextStyles
+                                                      .JournalingTimeStampText,
+                                                )
+                                              : Container(),
+                                          SizedBox(
+                                            width: 1.5.w,
+                                          ),
+                                          widget._journalModel!.group != null
+                                              ? Icon(
+                                                  CupertinoIcons.person_3_fill,
+                                                  color: Color(0xFFA6A6A6),
+                                                )
+                                              : Container()
+                                        ],
+                                      )
                                     ],
                                   ),
                                 ),

@@ -23,8 +23,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-import '../../profile-setup/add-profile-photo.dart';
-
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
 
@@ -51,10 +49,10 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   @override
   void initState() {
     super.initState();
-    userBlocNetwork.getMyProfileSnapshot();
+    //userBlocNetwork.getMyProfileSnapshot();
   }
 
-  String? _gender = "N/A";
+  String? _gender = "Other";
   String? _dob = "";
 
   @override
@@ -76,9 +74,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                 builder: (context, userSnapshot) {
                   if (userSnapshot.hasData) {
                     _dob = '';
-                    print(userSnapshot.requireData!.gender);
                     _gender = userSnapshot.requireData!.gender;
-                    print(userSnapshot.requireData!.firstName);
                     _firstNameTextEditingController.text =
                         userSnapshot.requireData!.firstName!;
                     _lastNameTextEditingController.text =

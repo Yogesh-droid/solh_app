@@ -171,100 +171,109 @@ class _JournalingState extends State<Journaling> {
                   WhatsOnYourMindSection(),
                   //groupRow(),
                   Expanded(
-                    child: Obx(
-                      () => !_journalPageController.isLoading.value
+                      child: SmartRefresher(
+                    onRefresh: _onRefresh,
+                    controller: _refreshController,
+                    child: Obx(() {
+                      return !_journalPageController.isLoading.value
                           ? Obx(() {
                               return _journalPageController
-                                      .journalsList.isNotEmpty
-                                  ? SmartRefresher(
-                                      onRefresh: _onRefresh,
-                                      controller: _refreshController,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          controller: _journalsScrollController,
-                                          itemCount: _journalPageController
-                                                  .journalsList.length +
-                                              1,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            if (index == 0) {
-                                              return Column(
-                                                children: [
-                                                  groupRow(),
-                                                  Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 1.h),
-                                                      height: 0.8.h,
-                                                      color: Color(0xFFF6F6F8)),
-                                                ],
-                                              );
-                                            }
-
-                                            return _journalPageController
+                                      .journalsList.value.isNotEmpty
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      controller: _journalsScrollController,
+                                      itemCount: _journalPageController
+                                              .journalsList.length +
+                                          1,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (index == 0) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              groupRow(),
+                                              Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 1.h),
+                                                  height: 0.8.h,
+                                                  color: Color(0xFFF6F6F8)),
+                                            ],
+                                          );
+                                        }
+                                        return _journalPageController
+                                                    .journalsList
+                                                    .value[index - 1]
+                                                    .id !=
+                                                null
+                                            ? JournalTile(
+                                                journalModel:
+                                                    _journalPageController
                                                         .journalsList
-                                                        .value[index - 1]
-                                                        .id !=
-                                                    null
-                                                ? JournalTile(
-                                                    journalModel:
-                                                        _journalPageController
-                                                            .journalsList
-                                                            .value[index - 1],
-                                                    index: index - 1,
-                                                    deletePost: () async {
-                                                      print("deleting post");
-                                                      DeleteJournal
-                                                          _deleteJournal =
-                                                          DeleteJournal(
-                                                              journalId:
-                                                                  _journalPageController
-                                                                      .journalsList
-                                                                      .value[
-                                                                          index -
-                                                                              1]
-                                                                      .id!);
-                                                      await _deleteJournal
-                                                          .deletePost();
-                                                      setState(() {
-                                                        _journalPageController
-                                                            .journalsList.value
-                                                            .removeAt(
-                                                                index - 1);
-                                                        _journalPageController
-                                                            .journalsList
-                                                            .refresh();
-                                                      });
-                                                    },
-                                                  )
-                                                : Container();
-                                          }),
-                                    )
-                                  : Container(
+                                                        .value[index - 1],
+                                                index: index - 1,
+                                                deletePost: () async {
+                                                  print("deleting post");
+                                                  DeleteJournal _deleteJournal =
+                                                      DeleteJournal(
+                                                          journalId:
+                                                              _journalPageController
+                                                                  .journalsList
+                                                                  .value[
+                                                                      index - 1]
+                                                                  .id!);
+                                                  await _deleteJournal
+                                                      .deletePost();
+                                                  setState(() {
+                                                    _journalPageController
+                                                        .journalsList.value
+                                                        .removeAt(index - 1);
+                                                    _journalPageController
+                                                        .journalsList
+                                                        .refresh();
+                                                  });
+                                                },
+                                              )
+                                            : Container();
+                                      })
+                                  : Center(
                                       child: Column(
                                         children: [
                                           groupRow(),
                                           SizedBox(
-                                            height: 20.h,
+                                            height: 25.h,
                                           ),
-                                          Center(
-                                            child: Text(
-                                              "No Journals",
+                                          Obx(() {
+                                            return Text(
+                                              _journalPageController
+                                                          .selectedGroupId
+                                                          .value ==
+                                                      ''
+                                                  ? "No Journals"
+                                                  : 'No Post',
                                               style: TextStyle(
                                                   fontSize: 20,
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight: FontWeight.w500,
                                                   color: Color(0xFFD9D9D9)),
-                                            ),
-                                          ),
+                                            );
+                                          })
                                         ],
                                       ),
                                     );
                             })
-                          : Center(
-                              child: MyLoader(),
-                            ),
-                    ),
-                  ),
+                          : Container(
+                              child: Column(
+                                children: [
+                                  groupRow(),
+                                  SizedBox(
+                                    height: 25.h,
+                                  ),
+                                  MyLoader(),
+                                ],
+                              ),
+                            );
+                    }),
+                  )),
                   if (_fetchingMore) Center(child: MyLoader()),
                   SizedBox(height: Platform.isIOS ? 80 : 50),
                 ],
@@ -319,6 +328,7 @@ class _JournalingState extends State<Journaling> {
 
   Widget groupRow() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getSolhGrouContainer(),
         Expanded(
@@ -393,8 +403,11 @@ class _JournalingState extends State<Journaling> {
                             width: 2,
                           ),
                     image: DecorationImage(
-                      image: CachedNetworkImageProvider(group.groupMediaUrl ??
-                          "https://picsum.photos/200/200"),
+                      image: group.groupMediaUrl != null
+                          ? CachedNetworkImageProvider(group.groupMediaUrl ??
+                              "https://picsum.photos/200/200")
+                          : AssetImage("assets/images/group_placeholder.png")
+                              as ImageProvider,
                       fit: BoxFit.fill,
                     ),
                   ),

@@ -254,6 +254,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => ConsultantsScreen(
                         slug: '',
+                        type: 'topconsultant',
                       ))),
             ),
             Container(

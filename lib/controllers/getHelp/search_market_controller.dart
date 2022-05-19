@@ -37,6 +37,13 @@ class SearchMarketController extends GetxController {
     issueModel.value = SearchMarketModel.fromJson(map);
   }
 
+  Future<void> getTopConsultants() async {
+    Map<String, dynamic> map =
+        await Network.makeGetRequest(APIConstants.api + '/api/top-consultants');
+
+    issueModel.value = SearchMarketModel.fromJson(map);
+  }
+
   Future<void> getIssueList(String slug) async {
     Map<String, dynamic> map = await Network.makeGetRequest(
         APIConstants.api + '/api/get-help?issue=$slug');

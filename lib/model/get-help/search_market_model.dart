@@ -48,6 +48,7 @@ class Doctors {
   String? bio;
   String? contactNumber;
   String? email;
+  String? sId;
 
   Doctors(
       {this.offlineSession,
@@ -59,7 +60,8 @@ class Doctors {
       this.addressLineFour,
       this.bio,
       this.contactNumber,
-      this.email});
+      this.email,
+      this.sId});
 
   Doctors.fromJson(Map<String, dynamic> json) {
     offlineSession = json['offlineSession'];
@@ -72,6 +74,7 @@ class Doctors {
     bio = json['bio'];
     contactNumber = json['contactNumber'];
     email = json['email'];
+    sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +89,7 @@ class Doctors {
     data['bio'] = this.bio;
     data['contactNumber'] = this.contactNumber;
     data['email'] = this.email;
+    data['_id'] = this.sId;
     return data;
   }
 }

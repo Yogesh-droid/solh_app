@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:solh/services/utility.dart';
 import '../../bloc/user-bloc.dart';
 import '../../constants/api.dart';
 import '../../services/network/network.dart';
@@ -49,19 +50,6 @@ class CreateGroupController extends GetxController {
     selectedMembers.forEach((element) {
       list.add("${element}");
     });
-
-    // Map<String, dynamic> map = await Network.makePostRequestWithToken(
-    //         url: APIConstants.api + '/api/sendInvite',
-    //         body: {
-    //           'groupId': groupId,
-    //           'userId': list,
-    //         },
-    //         isEncoded: true)
-    //     .onError((error, stackTrace) {
-    //   print(error);
-    //   return {};
-    // });
-
     http.post(Uri.parse('${APIConstants.api}/api/sendInvite'),
         body: jsonEncode({
           'groupId': groupId,
@@ -79,14 +67,15 @@ class CreateGroupController extends GetxController {
 
   Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
-        url: APIConstants.api + '/api/join-group',
-        body: {
-          'groupId': groupId,
-          'userId': FirebaseAuth.instance.currentUser!.uid
-        }).onError((error, stackTrace) {
+            url: APIConstants.api + '/api/join-group',
+            body: {'groupId': groupId, 'userId': userBlocNetwork.id})
+        .onError((error, stackTrace) {
       print(error);
       return {};
     });
+    if (map['success'] == true) {
+      Utility.showToast(map['message']);
+    }
     return map;
   }
 }

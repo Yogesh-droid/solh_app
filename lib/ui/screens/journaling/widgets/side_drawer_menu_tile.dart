@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-
-import '../journaling.dart';
 import 'coming_soon_badge.dart';
 
 class SideDrawerMenuTile extends StatelessWidget {

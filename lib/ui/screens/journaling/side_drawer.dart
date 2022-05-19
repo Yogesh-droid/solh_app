@@ -46,6 +46,7 @@ class _SideDrawerState extends State<SideDrawer> {
                             CircleAvatar(
                               radius: 7.w,
                               child: CircleAvatar(
+                                backgroundColor: Colors.white,
                                 radius: 6.8.w,
                                 backgroundImage: CachedNetworkImageProvider(
                                   userSnapshot.data!.profilePicture ??

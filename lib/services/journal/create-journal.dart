@@ -49,12 +49,21 @@ class CreateJournal {
     } else {
       Map<String, dynamic> apiResponse =
           await Network.makeHttpPostRequestWithToken(
-              url: "${APIConstants.api}/api/create-user-post",
-              body: {
-            "description": description,
-            "feelings": feelings,
-            "journalType": journalType
-          }).onError((error, stackTrace) {
+                  url: "${APIConstants.api}/api/create-user-post",
+                  body: groupId != ''
+                      ? {
+                          "description": description,
+                          "feelings": feelings,
+                          "journalType": journalType,
+                          'postIn': 'Group',
+                          "groupPostedIn": groupId
+                        }
+                      : {
+                          "description": description,
+                          "feelings": feelings,
+                          "journalType": journalType
+                        })
+              .onError((error, stackTrace) {
         return {"error": error};
       });
 

@@ -66,7 +66,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               Expanded(
                 child: Column(children: [
                   GenderSelectionDropdown(
-                    initialDropdownValue: "N/A",
+                    initialDropdownValue: "Other",
                     dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(

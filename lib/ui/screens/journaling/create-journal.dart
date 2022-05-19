@@ -486,17 +486,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           Navigator.pop(context);
         }
       } else {
+        print(
+            'sudhfciosdjcsdmcnsdiuvhdsiuhcdsnckds;mdflvfsvdsnvjsdcjnsddjnfkdfknvdklv;dmsdms.,${journalPageController.selectedGroupId.value}');
         CreateJournal _createJournal = CreateJournal(
           description: _description,
           feelings: feelingsController.selectedFeelingsId.value,
           journalType: _journalType,
           groupId: journalPageController.selectedGroupId.value,
         );
+        print(_createJournal.groupId);
         await _createJournal.postJournal();
-        journalPageController.selectedGroupId.value != ''
-            ? await journalPageController.getAllJournals(1,
-                groupId: journalPageController.selectedGroupId.value)
-            : await journalPageController.getAllJournals(1);
+
         if (_journalType == 'My_Diary') {
           await myDiaryController.getMyJournals(1);
           myDiaryController.myJournalsList.refresh();
@@ -505,7 +505,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           journalPageController.journalsList.clear();
           journalPageController.pageNo = 1;
           journalPageController.endPageLimit = 1;
-          await journalPageController.getAllJournals(1);
+          //await journalPageController.getAllJournals(1);
+          journalPageController.selectedGroupId.value != ''
+              ? await journalPageController.getAllJournals(1,
+                  groupId: journalPageController.selectedGroupId.value)
+              : await journalPageController.getAllJournals(1);
           journalPageController.journalsList.refresh();
           setState(() {
             _isPosting = false;
