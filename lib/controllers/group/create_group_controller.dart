@@ -29,12 +29,14 @@ class CreateGroupController extends GetxController {
                     'groupDescription': desc,
                     'groupType': groupType,
                     'groupMediaUrl': img,
-                    'groupMediaType': imgType
+                    'groupMediaType': imgType,
+                    'groupTags': tagList.value.join(',')
                   }
                 : {
                     'groupName': groupName,
                     'groupDescription': desc,
                     'groupType': groupType,
+                    'groupTags': tagList.value.join(',')
                   })
         .onError((error, stackTrace) {
       print(error);

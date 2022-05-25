@@ -40,4 +40,11 @@ class DiscoverGroupController extends GetxController {
       discoveredGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
   }
+
+  Future<void> deleteGroups(String groupId) async {
+    Map<String, dynamic> map = await Network.makeHttpDeleteRequestWithToken(
+        url: '${APIConstants.api}/api/group?groupId=$groupId', body: {});
+    getCreatedGroups();
+    getJoinedGroups();
+  }
 }

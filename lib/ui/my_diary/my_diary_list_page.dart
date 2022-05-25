@@ -3,6 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/controllers/journals/feelings_controller.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/ui/my_diary/affirmation_page.dart';
 import 'package:solh/ui/my_diary/my_diary_details.dart';
@@ -10,7 +12,8 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class MyDiaryListPage extends StatefulWidget {
-  MyDiaryListPage({Key? key}) : super(key: key);
+  MyDiaryListPage({Key? key, this.isPickFromDiary}) : super(key: key);
+  final bool? isPickFromDiary;
 
   @override
   State<MyDiaryListPage> createState() => _MyDiaryListPageState();
@@ -19,10 +22,11 @@ class MyDiaryListPage extends StatefulWidget {
 class _MyDiaryListPageState extends State<MyDiaryListPage> {
   final MyDiaryController myDiaryController = Get.find();
   final ScrollController _scrollController = ScrollController();
+  final JournalPageController journalPageController = Get.find();
+  final FeelingsController feelingsController = Get.find();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
@@ -132,12 +136,26 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MyDiaryDetails(
-                                  myDiary: myDiaryController
-                                      .myJournalsList.value[index])));
+                      if (widget.isPickFromDiary != null) {
+                        journalPageController.descriptionController.text =
+                            myDiaryController
+                                    .myJournalsList.value[index].description ??
+                                '';
+                        journalPageController.selectedDiary.value =
+                            myDiaryController.myJournalsList.value[index];
+                        feelingsController.selectedFeelingsId.value.add(
+                            myDiaryController.myJournalsList.value[index]
+                                    .feelings!.sId ??
+                                '');
+                        feelingsController.selectedFeelingsId.refresh();
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyDiaryDetails(
+                                    myDiary: myDiaryController
+                                        .myJournalsList.value[index])));
+                      }
                     },
                     child: Container(
                       decoration: BoxDecoration(

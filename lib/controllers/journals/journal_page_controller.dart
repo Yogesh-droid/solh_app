@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/network/error_handling.dart';
@@ -7,9 +8,11 @@ import '../../constants/api.dart';
 
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;
+  TextEditingController descriptionController = TextEditingController();
 
   var journalsList = <Journals>[].obs;
   var outputPath = "".obs;
+  var selectedDiary = Journals().obs;
   var isLoading = false.obs;
   int endPageLimit = 1;
   int pageNo = 1;

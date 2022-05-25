@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/constants/enum/journal/feelings.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
@@ -17,12 +16,15 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 
+import '../../../widgets_constants/buttons/custom_buttons.dart';
 import 'trimmer_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -39,8 +41,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   MyDiaryController myDiaryController = Get.find();
   FeelingsController feelingsController = Get.find();
   String _journalType = JournalType.Publicaly.toShortString();
+  TextEditingController _customFeelingController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
+  FocusNode _customFeelingFocusNode = FocusNode();
+  FocusNode _searchFeelingFocusNode = FocusNode();
   String _description = "";
-  String _feelings = JournalFeelings.Happy.toShortString();
   XFile? _xFile;
   File? _croppedFile;
   bool? isVideoPicked;
@@ -191,21 +196,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 ],
               ),
             ));
-    // Pick an image
-    // final XFile? image =
-    //     await _picker.pickImage(source: ImageSource.gallery);
-    // Capture a photo
-    // final XFile? photo =
-    //     await _picker.pickImage(source: ImageSource.camera);
-    // // Pick a video
-    // final XFile? video =
-    //     await _picker.pickVideo(source: ImageSource.gallery);
-    // // Capture a video
-    // final XFile? capturedVideo =
-    //     await _picker.pickVideo(source: ImageSource.camera);
-    // // Pick multiple images
-    // final List<XFile>? multipleFiles =
-    //     await _picker.pickMultiImage();
   }
 
   @override
@@ -228,6 +218,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 : "Post in group",
             style: SolhTextStyles.JournalingUsernameText),
         isLandingScreen: false,
+        isDiaryBtnShown: true,
       ),
       body: Stack(
         children: [
@@ -252,6 +243,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           SizedBox(height: 2.h),
                           Container(
                             child: TextField(
+                              controller:
+                                  journalPageController.descriptionController,
                               maxLength: 240,
                               maxLines: 6,
                               minLines: 3,
@@ -269,160 +262,30 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   border: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: SolhColors.green))),
-                              onChanged: (value) {
-                                if (_description == "" || value == "") {
-                                  setState(() {
-                                    _description = value;
-                                  });
-                                } else
-                                  _description = value;
-                              },
+                              // onChanged: (value) {
+                              //   if (_description == "" || value == "") {
+                              //     setState(() {
+                              //       _description = value;
+                              //     });
+                              //   } else
+                              //     _description = value;
+                              // },
                             ),
                           ),
                           SizedBox(height: 1.h),
-                          Text(
-                            "  Feelings",
-                            style:
-                                SolhTextStyles.JournalingDescriptionReadMoreText
-                                    .copyWith(color: SolhColors.grey102),
-                          ),
+                          getFeelingTitle(),
                           SizedBox(
                             height: 1.h,
                           ),
                           FeelingsContainer(
                             onFeelingsChanged: (feelings) {
-                              _feelings = feelings;
                               print("feelings changed to: $feelings");
                             },
                           ),
                           SizedBox(height: 2.h),
-                          if (!_isImageAdded && !_isVideoAdded)
-                            Column(
-                              children: [
-                                // SolhGreenBorderButton(
-                                //   child: Text(
-                                //     "Pic from Diary",
-                                //     style: SolhTextStyles.GreenBorderButtonText,
-                                //   ),
-                                //   onPressed: () => print("Pressed"),
-                                // ),
-                                SizedBox(height: 2.h),
-                                // SolhGreenBorderButton(
-                                //     child: Text(
-                                //       "Add Image/Video",
-                                //       style:
-                                //           SolhTextStyles.GreenBorderButtonText,
-                                //     ),
-                                //     onPressed: _pickImage),
-
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "  Add Image/Video",
-                                    style: SolhTextStyles
-                                            .JournalingDescriptionReadMoreText
-                                        .copyWith(color: SolhColors.grey102),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 1.h,
-                                ),
-                                InkWell(
-                                  onTap: (() {
-                                    _pickImage();
-                                  }),
-                                  child: Image.asset(
-                                      'assets/images/add_image.png',
-                                      width: 100.w,
-                                      height: 35.h),
-                                ),
-                              ],
-                            )
-                          else if (_isImageAdded)
-                            Stack(
-                              children: [
-                                Image.file(_croppedFile!),
-                                Positioned(
-                                  right: 0,
-                                  top: 0,
-                                  child: Container(
-                                    height: 35,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white.withOpacity(0.6),
-                                      border: Border.all(
-                                          color: SolhColors.green, width: 2),
-                                    ),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        _xFile = null;
-                                        _croppedFile = null;
-                                        setState(() {
-                                          _isImageAdded = false;
-                                        });
-                                      },
-                                      iconSize: 14,
-                                      icon: Icon(Icons.close,
-                                          color: SolhColors.black),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          else
-                            Obx(() {
-                              if (journalPageController
-                                      .outputPath.value.length >
-                                  0) {
-                                widget.trimmer.loadVideo(
-                                    videoFile: File(journalPageController
-                                        .outputPath.value));
-                                _croppedFile = File(
-                                    journalPageController.outputPath.value);
-                                isVideoPicked = true;
-                              }
-                              return Stack(
-                                children: [
-                                  //Image.file(_croppedFile!),
-                                  VideoViewer(trimmer: widget.trimmer),
-                                  Positioned(
-                                    right: 0,
-                                    top: 0,
-                                    child: Container(
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white.withOpacity(0.6),
-                                        border: Border.all(
-                                            color: SolhColors.green, width: 2),
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          _xFile = null;
-                                          _croppedFile = null;
-                                          setState(() {
-                                            _isVideoAdded = false;
-                                          });
-                                        },
-                                        iconSize: 14,
-                                        icon: Icon(Icons.close,
-                                            color: SolhColors.black),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            }),
-                          SizedBox(height: 5.h),
-                          // SolhGreenButton(
-                          //   height: 6.h,
-                          //   child: Text("Post"),
-                          //   backgroundColor: _description != ""
-                          //       ? SolhColors.green
-                          //       : SolhColors.grey,
-                          //   onPressed: _postJournal,
-                          // ),
-                          SizedBox(height: 5.h),
+                          getMediaContainer(),
+                          SizedBox(height: 10.h),
+                          getCustomFeelingTextBox(),
                         ],
                       ),
                     );
@@ -438,59 +301,69 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-          backgroundColor: SolhColors.green,
-          onPressed: _postJournal,
-          label: Container(
-              width: MediaQuery.of(context).size.width - 20.w,
-              child: Center(child: Text("Post")))),
+      floatingActionButton: Obx(() {
+        return !feelingsController.isCreatingCustomFeeling.value &&
+                !feelingsController.isSearching.value
+            ? FloatingActionButton.extended(
+                backgroundColor: SolhColors.green,
+                onPressed: _postJournal,
+                label: Container(
+                    width: MediaQuery.of(context).size.width - 20.w,
+                    child: Center(child: Text("Post"))))
+            : Container();
+      }),
     );
   }
 
   void _postJournal() async {
-    if (_description != "") {
+    if (journalPageController.descriptionController.text != "") {
       setState(() {
         _isPosting = true;
       });
-      if (_croppedFile != null) {
-        Map<String, dynamic> response = await _uploadImage();
+      if (_croppedFile != null ||
+          journalPageController.selectedDiary.value.mediaType != null) {
+        Map<String, dynamic> response =
+            journalPageController.selectedDiary.value.mediaType != null
+                ? {}
+                : await _uploadImage();
         print(response.toString());
-        if (response["success"]) {
-          print(response["imageUrl"]);
-          CreateJournal _createJournal = CreateJournal(
-            mediaUrl: response["imageUrl"],
-            description: _description,
-            feelings: feelingsController.selectedFeelingsId.value,
-            journalType: _journalType,
-            mimetype: response["mimetype"],
-            groupId: journalPageController.selectedGroupId.value,
-          );
-          await _createJournal.postJournal();
-          if (_journalType == 'My_Diary') {
-            await myDiaryController.getMyJournals(1);
-            myDiaryController.myJournalsList.refresh();
-            Utility.showToast("Post added to My Diary");
-          } else {
-            journalPageController.journalsList.clear();
-            journalPageController.pageNo = 1;
-            journalPageController.endPageLimit = 1;
-            journalPageController.selectedGroupId.value != ''
-                ? await journalPageController.getAllJournals(1,
-                    groupId: journalPageController.selectedGroupId.value)
-                : await journalPageController.getAllJournals(1);
-            journalPageController.journalsList.refresh();
-            setState(() {
-              _isPosting = false;
-            });
-          }
-          Navigator.pop(context);
-        }
-      } else {
-        print(
-            'sudhfciosdjcsdmcnsdiuvhdsiuhcdsnckds;mdflvfsvdsnvjsdcjnsddjnfkdfknvdklv;dmsdms.,${journalPageController.selectedGroupId.value}');
+
+        //print(response["imageUrl"]);
         CreateJournal _createJournal = CreateJournal(
-          description: _description,
-          feelings: feelingsController.selectedFeelingsId.value,
+          mediaUrl: journalPageController.selectedDiary.value.mediaType != null
+              ? journalPageController.selectedDiary.value.mediaUrl
+              : response["imageUrl"],
+          description: journalPageController.descriptionController.text,
+          feelings: feelingsController.selectedFeelingsId.value[0],
+          journalType: _journalType,
+          mimetype: journalPageController.selectedDiary.value.mediaType != null
+              ? journalPageController.selectedDiary.value.mediaType
+              : response["mimetype"],
+          groupId: journalPageController.selectedGroupId.value,
+        );
+        await _createJournal.postJournal();
+        if (_journalType == 'My_Diary') {
+          await myDiaryController.getMyJournals(1);
+          myDiaryController.myJournalsList.refresh();
+          Utility.showToast("Post added to My Diary");
+        } else {
+          journalPageController.journalsList.clear();
+          journalPageController.pageNo = 1;
+          journalPageController.endPageLimit = 1;
+          journalPageController.selectedGroupId.value != ''
+              ? await journalPageController.getAllJournals(1,
+                  groupId: journalPageController.selectedGroupId.value)
+              : await journalPageController.getAllJournals(1);
+          journalPageController.journalsList.refresh();
+          setState(() {
+            _isPosting = false;
+          });
+        }
+        Navigator.pop(context);
+      } else {
+        CreateJournal _createJournal = CreateJournal(
+          description: journalPageController.descriptionController.text,
+          feelings: feelingsController.selectedFeelingsId.value[0],
           journalType: _journalType,
           groupId: journalPageController.selectedGroupId.value,
         );
@@ -523,11 +396,329 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
+    print(_croppedFile!.path + " " + _croppedFile!.lengthSync().toString());
     return await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/journal-image",
         "file",
         _croppedFile!,
         isVideo: isVideoPicked);
+  }
+
+  Widget getCustomFeelingTextBox() {
+    return Obx(() {
+      return feelingsController.isCreatingCustomFeeling.value
+          ? Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(color: SolhColors.green, width: 1),
+                  ),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 5.w),
+                      Expanded(
+                        child: TextField(
+                          focusNode: _customFeelingFocusNode,
+                          controller: _customFeelingController,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: "Feeling/Emotion",
+                            border: InputBorder.none,
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      IconButton(
+                        onPressed: () {
+                          _customFeelingController.clear();
+                          _customFeelingFocusNode.unfocus();
+                          feelingsController.isCreatingCustomFeeling.value =
+                              false;
+                        },
+                        icon: Icon(Icons.clear),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            if (_customFeelingController.text != "") {
+                              feelingsController.createCustomFeeling(
+                                  _customFeelingController.text);
+                              _customFeelingController.clear();
+                              _customFeelingFocusNode.unfocus();
+                              feelingsController.isCreatingCustomFeeling.value =
+                                  false;
+                            }
+                          },
+                          icon: Icon(Icons.check))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10.h),
+              ],
+            )
+          : Container();
+    });
+  }
+
+  Widget getFeelingTitle() {
+    return Row(
+      children: [
+        Text(
+          "  Feelings",
+          style: SolhTextStyles.JournalingDescriptionReadMoreText.copyWith(
+              color: SolhColors.grey102),
+        ),
+        Expanded(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(width: 5.w),
+            Expanded(child: Obx(() {
+              return TextFormField(
+                enabled: feelingsController.isSearching.value,
+                focusNode: _searchFeelingFocusNode,
+                controller: _searchController,
+                decoration: InputDecoration(
+                    hintText:
+                        feelingsController.isSearching.value ? "Search" : "",
+                    border: feelingsController.isSearching.value
+                        ? UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: SolhColors.green, width: 1),
+                          )
+                        : InputBorder.none,
+                    suffixIcon: feelingsController.isSearching.value
+                        ? IconButton(
+                            onPressed: () {
+                              _searchController.clear();
+                              _searchFeelingFocusNode.unfocus();
+                              feelingsController.isSearching.value = false;
+                            },
+                            icon: Icon(Icons.clear),
+                          )
+                        : Container()),
+                keyboardType: TextInputType.text,
+              );
+            })),
+            Obx(() {
+              return feelingsController.isSearching.value
+                  ? Container()
+                  : IconButton(
+                      onPressed: () {
+                        feelingsController.isSearching.value = true;
+                        _searchFeelingFocusNode.requestFocus();
+                      },
+                      icon: Icon(
+                        Icons.search,
+                        color: SolhColors.green,
+                        size: 18,
+                      ));
+            }),
+            IconButton(
+              onPressed: () {
+                feelingsController.isCreatingCustomFeeling.value = true;
+                _customFeelingFocusNode.requestFocus();
+              },
+              icon: Icon(
+                Icons.add,
+                color: SolhColors.green,
+                size: 18,
+              ),
+            )
+          ],
+        ))
+      ],
+    );
+  }
+
+  Widget getMediaContainer() {
+    return Obx(() {
+      return journalPageController.selectedDiary.value.mediaType != null
+          ? journalPageController.selectedDiary.value.mediaType == 'image/png'
+              ? Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl:
+                          journalPageController.selectedDiary.value.mediaUrl ??
+                              '',
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey,
+                      ),
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.6),
+                          border: Border.all(color: SolhColors.green, width: 2),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            journalPageController
+                                .selectedDiary.value.mediaType = null;
+
+                            setState(() {
+                              _isImageAdded = false;
+                            });
+                          },
+                          iconSize: 14,
+                          icon: Icon(Icons.close, color: SolhColors.black),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Container(
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 20,
+                        height: 200,
+                        child: VideoPlayer(
+                          VideoPlayerController.network(
+                            journalPageController
+                                    .selectedDiary.value.mediaUrl ??
+                                '',
+                          )..initialize(),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          height: 35,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(0.6),
+                            border:
+                                Border.all(color: SolhColors.green, width: 2),
+                          ),
+                          child: IconButton(
+                            onPressed: () {
+                              journalPageController
+                                  .selectedDiary.value.mediaType = null;
+
+                              setState(() {
+                                _isImageAdded = false;
+                              });
+                            },
+                            iconSize: 14,
+                            icon: Icon(Icons.close, color: SolhColors.black),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+          : _isImageAdded
+              ? Stack(
+                  children: [
+                    Image.file(_croppedFile!),
+                    Positioned(
+                      right: 0,
+                      top: 0,
+                      child: Container(
+                        height: 35,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(0.6),
+                          border: Border.all(color: SolhColors.green, width: 2),
+                        ),
+                        child: IconButton(
+                          onPressed: () {
+                            _xFile = null;
+                            _croppedFile = null;
+                            journalPageController
+                                .selectedDiary.value.mediaType = null;
+                            setState(() {
+                              _isImageAdded = false;
+                            });
+                          },
+                          iconSize: 14,
+                          icon: Icon(Icons.close, color: SolhColors.black),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : _isVideoAdded
+                  ? Obx(() {
+                      if (journalPageController.outputPath.value.length > 0) {
+                        widget.trimmer.loadVideo(
+                            videoFile:
+                                File(journalPageController.outputPath.value));
+                        _croppedFile =
+                            File(journalPageController.outputPath.value);
+
+                        isVideoPicked = true;
+                      }
+                      return Stack(
+                        children: [
+                          VideoViewer(trimmer: widget.trimmer),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(0.6),
+                                border: Border.all(
+                                    color: SolhColors.green, width: 2),
+                              ),
+                              child: IconButton(
+                                onPressed: () {
+                                  _xFile = null;
+                                  _croppedFile = null;
+                                  journalPageController
+                                      .selectedDiary.value.mediaType = null;
+                                  setState(() {
+                                    _isVideoAdded = false;
+                                  });
+                                },
+                                iconSize: 14,
+                                icon:
+                                    Icon(Icons.close, color: SolhColors.black),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    })
+                  : Column(
+                      children: [
+                        SizedBox(height: 2.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "  Add Image/Video",
+                            style:
+                                SolhTextStyles.JournalingDescriptionReadMoreText
+                                    .copyWith(color: SolhColors.grey102),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        InkWell(
+                          onTap: (() {
+                            _pickImage();
+                          }),
+                          child: Image.asset('assets/images/add_image.png',
+                              width: 100.w, height: 35.h),
+                        ),
+                      ],
+                    );
+    });
   }
 }
 
@@ -551,57 +742,51 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 20.h,
       alignment: Alignment.centerLeft,
-      child: Wrap(
-        children: List.generate(
-          feelingsController.feelingsList.length,
-          (index) => GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedFeeling =
-                    feelingsController.feelingsList.value[index].feelingName ??
-                        '';
-                widget._onFeelingsChanged.call(_selectedFeeling);
-                feelingsController.selectedFeelingsId.value =
-                    feelingsController.feelingsList.value[index].sId!;
-              });
-            },
-            child: Container(
-              constraints: BoxConstraints(
-                minWidth: 8.w,
-                maxWidth: 24.w,
+      child: Scrollbar(
+        //isAlwaysShown: true,
+        child: OverflowBox(
+          maxWidth: MediaQuery.of(context).size.width,
+          child: Obx(() {
+            return GridView(
+              padding: EdgeInsets.only(left: 0),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisExtent: 15.h,
               ),
-              height: 3.8.h,
-              width: feelingsController
-                      .feelingsList.value[index].feelingName!.length.w *
-                  4,
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(vertical: 0.8.h, horizontal: 1.5.w),
-              decoration: BoxDecoration(
-                  color: _selectedFeeling ==
-                          feelingsController
-                              .feelingsList.value[index].feelingName
-                      ? SolhColors.green
-                      : Color(0xFBFBFBFB),
-                  border: Border.all(
-                      color: _selectedFeeling ==
-                              feelingsController
-                                  .feelingsList.value[index].feelingName
-                          ? SolhColors.green
-                          : Color(0xEFEFEFEF)),
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Text(
-                //JournalFeelings.values[index].toShortString(),
-                feelingsController.feelingsList.value[index].feelingName ?? '',
-                style: TextStyle(
-                    color: _selectedFeeling ==
-                            feelingsController
-                                .feelingsList.value[index].feelingName
-                        ? Colors.white
-                        : Color(0xFF666666)),
+              children: List.generate(
+                feelingsController.feelingsList.length,
+                (index) => FilterChip(
+                    selectedColor: SolhColors.green,
+                    backgroundColor: Color(0xFFEFEFEF),
+                    showCheckmark: false,
+                    label: Text(feelingsController
+                            .feelingsList.value[index].feelingName ??
+                        ''),
+                    labelStyle: TextStyle(
+                        color: feelingsController.selectedFeelingsId.value
+                                .contains(feelingsController
+                                    .feelingsList.value[index].sId!)
+                            ? Colors.white
+                            : Color(0xFF666666)),
+                    onSelected: (value) {
+                      widget._onFeelingsChanged.call(_selectedFeeling);
+                      feelingsController.selectedFeelingsId.contains(
+                              feelingsController.feelingsList.value[index].sId)
+                          ? feelingsController.selectedFeelingsId.remove(
+                              feelingsController.feelingsList.value[index].sId)
+                          : feelingsController.selectedFeelingsId.add(
+                              feelingsController.feelingsList.value[index].sId);
+                    },
+                    selected: feelingsController.selectedFeelingsId.value
+                        .contains(
+                            feelingsController.feelingsList.value[index].sId!)),
               ),
-            ),
-          ),
+            );
+          }),
         ),
       ),
     );

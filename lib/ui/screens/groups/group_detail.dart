@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
@@ -75,23 +76,33 @@ class GroupDetailsPage extends StatelessWidget {
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
         ),
-        // PopupMenuButton(
-        //     icon: Icon(
-        //       Icons.more_vert,
-        //       color: SolhColors.green,
-        //     ),
-        //     itemBuilder: (context) {
-        //       return [
-        //         PopupMenuItem(
-        //           child: Text('Edit'),
-        //           value: 1,
-        //         ),
-        //         PopupMenuItem(
-        //           child: Text('Delete'),
-        //           value: 2,
-        //         ),
-        //       ];
-        //     }),
+        group.defaultAdmin == userBlocNetwork.id
+            ? PopupMenuButton(
+                icon: Icon(
+                  Icons.more_vert,
+                  color: SolhColors.green,
+                ),
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: Text('Edit'),
+                      value: 1,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Delete'),
+                      value: 2,
+                    ),
+                  ];
+                },
+                onSelected: (value) async {
+                  if (value == 1) {
+                  } else {
+                    await discoverGroupController.deleteGroups(group.id ?? '');
+                    Navigator.pop(context);
+                  }
+                },
+              )
+            : Container(),
       ]),
       isLandingScreen: false,
     );

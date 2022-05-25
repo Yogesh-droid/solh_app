@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/doctor.dart';
+import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
 class ConsultantsTile extends StatelessWidget {
@@ -57,7 +58,7 @@ class ConsultantsTile extends StatelessWidget {
                   Container(
                     width: 50.w,
                     child: Text(
-                      "Dr. ${_doctorModel.name}",
+                      "${_doctorModel.name}",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -65,6 +66,30 @@ class ConsultantsTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  // Container(
+                  //   width: 50.w,
+                  //   child: Text(
+                  //     "${_doctorModel.bio}",
+                  //     style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: Color(0xFF666666),
+                  //         fontWeight: FontWeight.w300),
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 2,
+                  //   ),
+                  // ),
+                  // Container(
+                  //   width: 50.w,
+                  //   child: Text(
+                  //     "${_doctorModel.bio}",
+                  //     style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: Color(0xFF666666),
+                  //         fontWeight: FontWeight.w300),
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 2,
+                  //   ),
+                  // ),
                   Container(
                     width: 50.w,
                     child: Text(
@@ -77,14 +102,7 @@ class ConsultantsTile extends StatelessWidget {
                       maxLines: 2,
                     ),
                   ),
-                  Text(
-                    "7 yrs of experience",
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF222222),
-                        fontWeight: FontWeight.w400),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+
                   SizedBox(height: 1.h),
                   //// interaction details ////////////////////
                   ///
@@ -107,12 +125,13 @@ class ConsultantsTile extends StatelessWidget {
 
   getProfileImg() {
     return CircleAvatar(
+      backgroundColor: Color(0xFFD9D9D9),
       radius: 46,
-      backgroundColor: SolhColors.green,
       child: CircleAvatar(
+        backgroundColor: Colors.white,
         radius: 45,
         backgroundImage: NetworkImage(
-          'https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png',
+          'https://solh.s3.amazonaws.com/user/profile/1651493729337',
         ),
       ),
     );
@@ -197,11 +216,22 @@ class ConsultantsTile extends StatelessWidget {
                   fontSize: 14,
                 )),
           ),
-          SolhGreenBtn48(
-              onPress: () {
-                launch("tel://${_doctorModel.mobile}");
-              },
-              text: 'Book Appointment'),
+          // SolhGreenBtn48(
+          //     onPress: () {
+          //       launch("tel://${_doctorModel.mobile}");
+          //     },
+          //     text: 'Book Appointment'),
+          SolhGreenButton(
+            height: 6.h,
+            width: 35.w,
+            child: Text(
+              "Book Appointment",
+              style: TextStyle(fontSize: 12),
+            ),
+            onPressed: () {
+              launchUrl(Uri.parse("tel://${_doctorModel.mobile}"));
+            },
+          )
         ],
       ),
     );

@@ -133,7 +133,10 @@ class CreateGroup extends StatelessWidget {
       controller: _descriptionEditingController,
       maxLines: 4,
       decoration: InputDecoration(
-          hintText: "Add Description(Optional)", border: OutlineInputBorder()),
+        hintText: "Add Description(Optional)",
+        border: OutlineInputBorder(),
+        hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+      ),
     );
   }
 
@@ -166,11 +169,12 @@ class CreateGroup extends StatelessWidget {
             TextFormField(
                 decoration: InputDecoration(
                   hintText: "Add Tags(Anxiety, Depression, etc.)",
+                  hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
                   border: InputBorder.none,
                 ),
                 controller: _tagEditingController,
                 onFieldSubmitted: (value) {
-                  _tagEditingController.clear();
+                  _tagEditingController.text = '';
                   _controller.tagList.value.add(value);
                   _controller.tagList.refresh();
                 }),
@@ -212,7 +216,9 @@ class CreateGroup extends StatelessWidget {
           children: [
             Text(
               "Public",
-              style: SolhTextStyles.ProfileMenuGreyText,
+              style: TextStyle(
+                color: Color(0xFFA6A6A6),
+              ),
             ),
             Icon(Icons.keyboard_arrow_down)
           ],

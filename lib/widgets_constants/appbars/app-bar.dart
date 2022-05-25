@@ -1,25 +1,29 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
+import '../../ui/my_diary/my_diary_list_page.dart';
+
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
       {Widget? title,
       required bool isLandingScreen,
       double? height,
-      bool isVideoCallScreen = false})
+      bool isVideoCallScreen = false,
+      bool? isDiaryBtnShown})
       : _title = title,
         _isLandingScreen = isLandingScreen,
         _isVideoCallScreen = isVideoCallScreen,
-        _height = height;
+        _height = height,
+        _isDiaryBtnShown = isDiaryBtnShown;
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
   final Widget? _title;
   final double? _height;
+  final bool? _isDiaryBtnShown;
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +46,25 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions:
             // _isLandingScreen ?
             [
-          if (!_isVideoCallScreen) AssistanceButton()
-          // IconButton(
-          //   onPressed: () => {},
-          //   icon: Icon(
-          //     Icons.notifications_outlined,
-          //   ),
-          //   color: SolhColors.pink224,
-          // ),
-          // SOSButton()
-        ]
-        // : [SOSButton()],
-        );
+          _isDiaryBtnShown != null
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyDiaryListPage(
+                                  isPickFromDiary: true,
+                                )));
+                  },
+                  icon: Icon(
+                    Icons.book,
+                    color: SolhColors.green,
+                    size: 24,
+                  ),
+                )
+              : Container(),
+          if (!_isVideoCallScreen) AssistanceButton(),
+        ]);
   }
 
   @override
@@ -65,20 +76,6 @@ class AssistanceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return IconButton(
-    //     onPressed: () {
-    //       AutoRouter.of(context).push(VideoCallCounsellorRouter());
-    //     },
-    //     // icon: Icon(
-    //     //   Icons.video_call_outlined,
-    //     //   size: 30,
-    //     //   color: SolhColors.green,
-    //     // ));
-    //     icon: Image.asset(
-    //       'assets/icons/app-bar/button.png',
-    //       width: 28,
-    //       height: 30,
-    //     ));
     return SOSButton();
   }
 }

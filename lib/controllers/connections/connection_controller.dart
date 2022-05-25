@@ -15,6 +15,7 @@ class ConnectionController extends GetxController {
   var userAnalyticsModel = UserAnalyticModel().obs;
   var groupInvites = <Group>[].obs;
   var isAddingConnection = false.obs;
+  var addingConnectionId = "".obs;
   DiscoverGroupController discoverGroupController = Get.find();
 
   Future<void> getMyConnection() async {

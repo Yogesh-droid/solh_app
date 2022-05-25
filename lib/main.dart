@@ -1,6 +1,8 @@
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:new_version/new_version.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,9 +19,11 @@ final GlobalKey<NavigatorState> globalNavigatorKey =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  checkVersion();
   final AgeController ageController = Get.put(AgeController());
 
   if (FirebaseAuth.instance.currentUser != null) {
@@ -79,6 +83,14 @@ void main() async {
           ),
         ))),
   )); */
+}
+
+Future<void> checkVersion() async {
+  final newVersion = NewVersion();
+  await newVersion.getVersionStatus().then((value) {
+    print(value!.localVersion.toString());
+    print(value.storeVersion.toString());
+  });
 }
 
 class SolhApp extends StatelessWidget {

@@ -37,12 +37,12 @@ class _JournalingScreenState extends State<JournalingScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
+  ConnectionController connectionController = Get.put(ConnectionController());
   JournalPageController _journalPageController =
       Get.put(JournalPageController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
-  ConnectionController connectionController = Get.put(ConnectionController());
   GetHelpController getHelpController = Get.put(GetHelpController());
   // final _newPostKey = GlobalKey<FormState>();
 
@@ -81,7 +81,8 @@ class _JournalingState extends State<Journaling> {
     'Anger',
     'Happiness'
   ];
-
+  late ScrollController _journalsScrollController;
+  late RefreshController _refreshController;
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;
 
@@ -97,7 +98,8 @@ class _JournalingState extends State<Journaling> {
           _journalsScrollController.position.minScrollExtent) {
         print("refreshing");
         _journalPageController.isScrollingStarted.value = false;
-      } else {
+      }
+      if (_journalsScrollController.position.pixels > 0) {
         _journalPageController.isScrollingStarted.value = true;
       }
       if (_journalsScrollController.position.pixels ==
@@ -114,6 +116,12 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = false;
         });
+      }
+
+      if (_journalsScrollController.position.pixels ==
+          _journalsScrollController.position.maxScrollExtent) {
+        print("refreshing");
+        _journalPageController.isScrollingStarted.value = false;
       }
     });
   }
@@ -134,9 +142,6 @@ class _JournalingState extends State<Journaling> {
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
-
-  late ScrollController _journalsScrollController;
-  late RefreshController _refreshController;
 
   @override
   Widget build(BuildContext context) {
@@ -171,71 +176,77 @@ class _JournalingState extends State<Journaling> {
                   WhatsOnYourMindSection(),
                   //groupRow(),
                   Expanded(
-                      child: SmartRefresher(
-                    onRefresh: _onRefresh,
-                    controller: _refreshController,
                     child: Obx(() {
                       return !_journalPageController.isLoading.value
                           ? Obx(() {
                               return _journalPageController
                                       .journalsList.value.isNotEmpty
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      controller: _journalsScrollController,
-                                      itemCount: _journalPageController
-                                              .journalsList.length +
-                                          1,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        if (index == 0) {
-                                          return Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              groupRow(),
-                                              Container(
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 1.h),
-                                                  height: 0.8.h,
-                                                  color: Color(0xFFF6F6F8)),
-                                            ],
-                                          );
-                                        }
-                                        return _journalPageController
-                                                    .journalsList
-                                                    .value[index - 1]
-                                                    .id !=
-                                                null
-                                            ? JournalTile(
-                                                journalModel:
-                                                    _journalPageController
+                                  ? SmartRefresher(
+                                      controller: _refreshController,
+                                      onRefresh: _onRefresh,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          controller: _journalsScrollController,
+                                          itemCount: _journalPageController
+                                                  .journalsList.length +
+                                              1,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            if (index == 0) {
+                                              return Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  groupRow(),
+                                                  Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 1.h),
+                                                      height: 0.8.h,
+                                                      color: Color(0xFFF6F6F8)),
+                                                ],
+                                              );
+                                            }
+
+                                            return _journalPageController
                                                         .journalsList
-                                                        .value[index - 1],
-                                                index: index - 1,
-                                                deletePost: () async {
-                                                  print("deleting post");
-                                                  DeleteJournal _deleteJournal =
-                                                      DeleteJournal(
-                                                          journalId:
-                                                              _journalPageController
-                                                                  .journalsList
-                                                                  .value[
-                                                                      index - 1]
-                                                                  .id!);
-                                                  await _deleteJournal
-                                                      .deletePost();
-                                                  setState(() {
-                                                    _journalPageController
-                                                        .journalsList.value
-                                                        .removeAt(index - 1);
-                                                    _journalPageController
-                                                        .journalsList
-                                                        .refresh();
-                                                  });
-                                                },
-                                              )
-                                            : Container();
-                                      })
+                                                        .value[index - 1]
+                                                        .id !=
+                                                    null
+                                                ? JournalTile(
+                                                    journalModel:
+                                                        _journalPageController
+                                                            .journalsList
+                                                            .value[index - 1],
+                                                    index: index - 1,
+                                                    deletePost: () async {
+                                                      print("deleting post");
+                                                      DeleteJournal
+                                                          _deleteJournal =
+                                                          DeleteJournal(
+                                                              journalId:
+                                                                  _journalPageController
+                                                                      .journalsList
+                                                                      .value[
+                                                                          index -
+                                                                              1]
+                                                                      .id!);
+                                                      await _deleteJournal
+                                                          .deletePost();
+                                                      setState(() {
+                                                        _journalPageController
+                                                            .journalsList.value
+                                                            .removeAt(
+                                                                index - 1);
+                                                        _journalPageController
+                                                            .journalsList
+                                                            .refresh();
+                                                      });
+                                                    },
+                                                  )
+                                                : Container();
+                                          }),
+                                    )
                                   : Center(
                                       child: Column(
                                         children: [
@@ -273,7 +284,7 @@ class _JournalingState extends State<Journaling> {
                               ),
                             );
                     }),
-                  )),
+                  ),
                   if (_fetchingMore) Center(child: MyLoader()),
                   SizedBox(height: Platform.isIOS ? 80 : 50),
                 ],

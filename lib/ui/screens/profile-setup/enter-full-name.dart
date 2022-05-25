@@ -155,6 +155,7 @@ class ProfielTextField extends StatelessWidget {
           contentPadding:
               EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 3.5.w),
           hintText: _hintText,
+          hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
           border: OutlineInputBorder()),
     );
   }

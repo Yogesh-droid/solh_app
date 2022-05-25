@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
@@ -16,8 +17,21 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-class MyProfileScreen extends StatelessWidget {
+class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MyProfileScreen> createState() => _MyProfileScreenState();
+}
+
+class _MyProfileScreenState extends State<MyProfileScreen> {
+  ConnectionController connectionController = Get.find();
+
+  @override
+  void initState() {
+    connectionController.getUserAnalytics(userBlocNetwork.id);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -243,11 +257,12 @@ class SignInButton extends StatelessWidget {
 }
 
 class ProfileContainer extends StatelessWidget {
-  const ProfileContainer({Key? key, required UserModel? userModel})
+  ProfileContainer({Key? key, required UserModel? userModel})
       : _userModel = userModel,
         super(key: key);
 
   final UserModel? _userModel;
+  final ConnectionController _connectionController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -357,11 +372,17 @@ class ProfileContainer extends StatelessWidget {
                         SizedBox(
                           width: 2.w,
                         ),
-                        Text(
-                          _userModel!.likes.toString(),
-                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
-                              fontSize: 18),
-                        )
+                        Obx(() {
+                          return Text(
+                            //_userModel!.likes.toString(),
+                            _connectionController
+                                .userAnalyticsModel.value.journalLikeCount
+                                .toString(),
+                            style:
+                                SolhTextStyles.GreenBorderButtonText.copyWith(
+                                    fontSize: 18),
+                          );
+                        })
                       ],
                     ),
                     Text("Likes"),
@@ -370,11 +391,15 @@ class ProfileContainer extends StatelessWidget {
                 // Divider(),
                 Column(
                   children: [
-                    Text(
-                      _userModel!.connections.toString(),
-                      style: SolhTextStyles.GreenBorderButtonText.copyWith(
-                          fontSize: 18),
-                    ),
+                    Obx(() {
+                      return Text(
+                        _connectionController
+                            .userAnalyticsModel.value.connectionCount
+                            .toString(),
+                        style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                            fontSize: 18),
+                      );
+                    }),
                     Text("Connections"),
                   ],
                 ),
