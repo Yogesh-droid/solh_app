@@ -17,7 +17,6 @@ class JournalPageController extends GetxController {
   int endPageLimit = 1;
   int pageNo = 1;
   int videoIndex = 0;
-  // List<Map<int, VideoPlayerController>?> videoPlayerController = [];
   var videoPlayerController = [].obs;
   List<int> indexListHavingVideo = [];
   var selectedGroupId = "".obs;

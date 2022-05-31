@@ -185,7 +185,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '''Didn’t recieve a code?  ''',
+                      '''Didn’t receive a code?  ''',
                       style: TextStyle(fontWeight: FontWeight.w300),
                     ),
                     InkWell(onTap: () {}, child: Text("Resend Code"))

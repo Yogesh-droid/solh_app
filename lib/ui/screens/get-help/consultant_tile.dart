@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/doctor.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -49,7 +48,7 @@ class ConsultantsTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getProfileImg(),
+              getProfileImg(_doctorModel.profilePicture),
               SizedBox(width: 3.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +122,7 @@ class ConsultantsTile extends StatelessWidget {
     );
   }
 
-  getProfileImg() {
+  getProfileImg(String? profilePicture) {
     return CircleAvatar(
       backgroundColor: Color(0xFFD9D9D9),
       radius: 46,
@@ -131,7 +130,8 @@ class ConsultantsTile extends StatelessWidget {
         backgroundColor: Colors.white,
         radius: 45,
         backgroundImage: NetworkImage(
-          'https://solh.s3.amazonaws.com/user/profile/1651493729337',
+          profilePicture ??
+              'https://solh.s3.amazonaws.com/user/profile/1651493729337',
         ),
       ),
     );

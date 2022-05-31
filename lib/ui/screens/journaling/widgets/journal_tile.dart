@@ -21,7 +21,7 @@ import 'package:video_player/video_player.dart';
 import 'solh_expert_badge.dart';
 
 class JournalTile extends StatefulWidget {
-  const JournalTile(
+  JournalTile(
       {Key? key,
       required Journals? journalModel,
       required VoidCallback deletePost,
@@ -33,6 +33,7 @@ class JournalTile extends StatefulWidget {
   final Journals? _journalModel;
   final VoidCallback _deletePost;
   final int index;
+  List<String> feelingList = [];
 
   @override
   _JournalTileState createState() => _JournalTileState();
@@ -48,6 +49,7 @@ class _JournalTileState extends State<JournalTile> {
   void initState() {
     super.initState();
     _isLiked = widget._journalModel!.isLiked ?? false;
+    getFeelings();
   }
 
   Future<bool> _likeJournal() async {
@@ -107,13 +109,22 @@ class _JournalTileState extends State<JournalTile> {
                           child: Padding(
                             padding: const EdgeInsets.all(1.0),
                             child: CircleAvatar(
-                              backgroundImage: CachedNetworkImageProvider(
-                                widget._journalModel!.postedBy != null
-                                    ? widget._journalModel!.postedBy!
-                                            .profilePicture ??
-                                        ''
-                                    : '',
-                              ),
+                              backgroundImage: widget._journalModel!.group !=
+                                          null &&
+                                      journalPageController
+                                              .selectedGroupId.value.length ==
+                                          0
+                                  ? widget._journalModel!.group!.groupImage !=
+                                          null
+                                      ? CachedNetworkImageProvider(widget
+                                          ._journalModel!.group!.groupImage!)
+                                      : AssetImage(
+                                              'assets/images/group_placeholder.png')
+                                          as ImageProvider
+                                  : CachedNetworkImageProvider(widget
+                                      ._journalModel!
+                                      .postedBy!
+                                      .profilePicture!),
                               backgroundColor: SolhColors.white,
                             ),
                           ),
@@ -134,12 +145,21 @@ class _JournalTileState extends State<JournalTile> {
                                       Row(
                                         children: [
                                           Text(
-                                            widget._journalModel!.postedBy !=
-                                                    null
-                                                ? widget._journalModel!
-                                                        .postedBy!.name ??
+                                            widget._journalModel!.group !=
+                                                        null &&
+                                                    journalPageController
+                                                            .selectedGroupId ==
+                                                        ''
+                                                ? widget._journalModel!.group!
+                                                        .groupName ??
                                                     ''
-                                                : '',
+                                                : widget._journalModel!
+                                                            .postedBy !=
+                                                        null
+                                                    ? widget._journalModel!
+                                                            .postedBy!.name ??
+                                                        ''
+                                                    : '',
                                             style: SolhTextStyles
                                                 .JournalingUsernameText,
                                           ),
@@ -209,7 +229,10 @@ class _JournalTileState extends State<JournalTile> {
                     widget._journalModel!.feelings != null
                         ? Text(
                             "#Feeling " +
-                                widget._journalModel!.feelings!.feelingName!,
+                                widget.feelingList
+                                    .toString()
+                                    .replaceAll("[", "")
+                                    .replaceAll("]", ""),
                             style: SolhTextStyles.PinkBorderButtonText)
                         : Container(),
                     widget._journalModel!.description != null
@@ -481,6 +504,15 @@ class _JournalTileState extends State<JournalTile> {
             color: Color(0xFFF6F6F8)),
       ],
     );
+  }
+
+  void getFeelings() {
+    widget._journalModel!.feelings!.forEach((element) {
+      widget.feelingList.add(element.feelingName ?? '');
+    });
+    if (widget.feelingList.length > 4) {
+      widget.feelingList.removeRange(4, widget.feelingList.length);
+    }
   }
 }
 

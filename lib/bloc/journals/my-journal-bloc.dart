@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/model/journal.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/network/network.dart';
 
 class MyJournalsBloc {
-  final _myJournalController = PublishSubject<List<JournalModel?>>();
+  final _myJournalController = PublishSubject<List<Journals?>>();
 
-  List<JournalModel?> _journalsList = <JournalModel?>[];
+  List<Journals?> _journalsList = <Journals?>[];
   int _currentPage = 1;
   int _endPageLimit = 1;
   int _numberOfPosts = 0;
@@ -16,18 +16,21 @@ class MyJournalsBloc {
     return _numberOfPosts;
   }
 
-  Stream<List<JournalModel?>> get journalsStateStream =>
+  Stream<List<Journals?>> get journalsStateStream =>
       _myJournalController.stream;
 
-  Future<List<JournalModel?>> _fetchDetailsFirstTime() async {
+  Future<List<Journals?>> _fetchDetailsFirstTime() async {
     print("getting my journals for the first time...");
 
     _currentPage = 1;
     // try {
     Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
         "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}");
+    print(
+        'sdklckldmcklmsdklcmsdklmcklsdmcdklsmcsdklmcklsdmvklmdskvdsklvmdklmvkldfl;v,dflmvfmvkdfm' +
+            apiResponse['journals'].length.toString());
 
-    List<JournalModel> _journals = <JournalModel>[];
+    List<Journals> _journals = <Journals>[];
 
     _numberOfPosts = apiResponse["totalJournals"];
 
@@ -36,12 +39,15 @@ class MyJournalsBloc {
     _endPageLimit = apiResponse["totalPages"];
 
     print("Number of pages: $_endPageLimit");
-    print('journals are ${JournalModel.fromJson(apiResponse["journals"])}');
+
+    //print('journals are ${JournalModel.fromJson(apiResponse["journals"])}');
 
     for (var journal in apiResponse["journals"]) {
-      _journals.add(JournalModel.fromJson(journal));
+      print("kldsm");
+      _journals.add(Journals.fromJson(journal));
     }
     print("Number of journals: ${_journals.length}");
+    print("Number of posts: $_numberOfPosts");
 
     return _journals;
     // } catch (error) {
@@ -49,15 +55,15 @@ class MyJournalsBloc {
     // }
   }
 
-  Future<List<JournalModel?>> _fetchDetailsNextPage() async {
+  Future<List<Journals?>> _fetchDetailsNextPage() async {
     print("getting journals for the next page...");
     try {
       Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
           "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}?page=$_currentPage");
 
-      List<JournalModel> _journals = <JournalModel>[];
+      List<Journals> _journals = <Journals>[];
       for (var journal in apiResponse["journals"]) {
-        _journals.add(JournalModel.fromJson(journal));
+        _journals.add(Journals.fromJson(journal));
       }
       return _journals;
     } catch (error) {

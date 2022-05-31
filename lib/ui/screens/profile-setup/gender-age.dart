@@ -161,7 +161,7 @@ class DOBPicker extends StatelessWidget {
                   mode: CupertinoDatePickerMode.date,
                   onDateTimeChanged: onDateChanged,
                   initialDateTime: DateTime.now(),
-                  minimumYear: 1980,
+                  minimumYear: 1960,
                   maximumYear: 2030,
                 ),
               );

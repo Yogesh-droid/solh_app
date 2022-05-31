@@ -981,7 +981,7 @@ class _PostForCommentState extends State<PostForComment> {
                   widget._journalModel!.feelings != null
                       ? Text(
                           "Feeling " +
-                              widget._journalModel!.feelings!.feelingName!,
+                              widget._journalModel!.feelings![0].feelingName!,
                           style:
                               SolhTextStyles.JournalingDescriptionReadMoreText,
                         )

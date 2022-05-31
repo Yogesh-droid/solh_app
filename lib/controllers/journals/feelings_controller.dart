@@ -22,7 +22,7 @@ class FeelingsController extends GetxController {
         feelingsList.add(Feelings.fromJson(element));
       });
       if (feelingsList.isNotEmpty) {
-        selectedFeelingsId.value[0] = feelingsList.first.sId!;
+        selectedFeelingsId.value.add(feelingsList.first.sId!);
       }
     } on Exception catch (e) {
       print(e.toString());
@@ -49,7 +49,6 @@ class FeelingsController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     fetchFeeligs();
   }

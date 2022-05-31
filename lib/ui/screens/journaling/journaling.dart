@@ -108,9 +108,12 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = true;
         });
-        await journalsBloc.getNextPageJournalsSnapshot();
-        await _journalPageController
-            .getAllJournals(++_journalPageController.pageNo);
+        //await journalsBloc.getNextPageJournalsSnapshot();
+        await _journalPageController.getAllJournals(
+            ++_journalPageController.pageNo,
+            groupId: _journalPageController.selectedGroupId.value != ''
+                ? _journalPageController.selectedGroupId.value
+                : null);
         _journalPageController.journalsList.refresh();
         print("Reached at end");
         setState(() {
@@ -233,15 +236,37 @@ class _JournalingState extends State<Journaling> {
                                                                       .id!);
                                                       await _deleteJournal
                                                           .deletePost();
-                                                      setState(() {
-                                                        _journalPageController
-                                                            .journalsList.value
-                                                            .removeAt(
-                                                                index - 1);
-                                                        _journalPageController
-                                                            .journalsList
-                                                            .refresh();
-                                                      });
+                                                      // _journalPageController
+                                                      //     .videoPlayerController
+                                                      //     .value
+                                                      //     .removeAt(index - 1);
+                                                      // _journalPageController
+                                                      //     .journalsList.value
+                                                      //     .removeAt(index - 1);
+                                                      // _journalPageController
+                                                      //     .videoPlayerController
+                                                      //     .refresh();
+                                                      // _journalPageController
+                                                      //     .journalsList
+                                                      //     .refresh();
+                                                      _journalPageController
+                                                          .journalsList
+                                                          .clear();
+                                                      _journalPageController
+                                                          .pageNo = 1;
+                                                      _journalPageController
+                                                          .endPageLimit = 1;
+                                                      await _journalPageController.getAllJournals(
+                                                          1,
+                                                          groupId: _journalPageController
+                                                                      .selectedGroupId
+                                                                      .value
+                                                                      .length >
+                                                                  0
+                                                              ? _journalPageController
+                                                                  .selectedGroupId
+                                                                  .value
+                                                              : null);
                                                     },
                                                   )
                                                 : Container();
@@ -358,6 +383,28 @@ class _JournalingState extends State<Journaling> {
                             itemBuilder: (BuildContext context, int index) {
                               return getGroupContainer(discoverGroupController
                                   .joinedGroupModel.value.groupList![index]);
+                            }),
+                      )
+                    : Container()
+                : Container();
+          }),
+        ),
+        Expanded(
+          child: Obx(() {
+            return discoverGroupController.createdGroupModel.value.groupList !=
+                    null
+                ? discoverGroupController
+                        .createdGroupModel.value.groupList!.isNotEmpty
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.13,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: discoverGroupController
+                                .createdGroupModel.value.groupList!.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return getGroupContainer(discoverGroupController
+                                  .createdGroupModel.value.groupList![index]);
                             }),
                       )
                     : Container()

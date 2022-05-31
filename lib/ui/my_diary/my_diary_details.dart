@@ -48,7 +48,7 @@ class MyDiaryDetails extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Text(myDiary.feelings!.feelingName!,
+            Text(myDiary.feelings![0].feelingName!,
                 style: TextStyle(
                     color: SolhColors.pink224,
                     fontSize: 16,
@@ -167,9 +167,13 @@ class MyDiaryDetails extends StatelessWidget {
   }
 
   Future<void> postPublically(BuildContext context) async {
+    List<String> feelings = [];
+    for (Feelings feeling in myDiary.feelings!) {
+      feelings.add(feeling.sId!);
+    }
     CreateJournal _createJournal = CreateJournal(
         description: myDiary.description ?? '',
-        feelings: myDiary.feelings!.sId ?? '',
+        feelings: feelings,
         journalType: 'Publicaly',
         mediaUrl: myDiary.mediaUrl ?? '',
         mimetype: 'image/jpeg',

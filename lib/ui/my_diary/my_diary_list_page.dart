@@ -145,7 +145,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                             myDiaryController.myJournalsList.value[index];
                         feelingsController.selectedFeelingsId.value.add(
                             myDiaryController.myJournalsList.value[index]
-                                    .feelings!.sId ??
+                                    .feelings![0].sId ??
                                 '');
                         feelingsController.selectedFeelingsId.refresh();
                       } else {
@@ -179,7 +179,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                           SizedBox(height: 2.0),
                           Text(
                               myDiaryController.myJournalsList.value[index]
-                                  .feelings!.feelingName!,
+                                  .feelings![0].feelingName!,
                               style: TextStyle(
                                   color: SolhColors.pink224,
                                   fontSize: 16,

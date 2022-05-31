@@ -23,7 +23,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  checkVersion();
+  //checkVersion();
   final AgeController ageController = Get.put(AgeController());
 
   if (FirebaseAuth.instance.currentUser != null) {

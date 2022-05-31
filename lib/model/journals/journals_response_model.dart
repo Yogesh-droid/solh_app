@@ -60,7 +60,7 @@ class Journals {
   int? comments;
   bool? isLiked;
   List<String>? likedBy;
-  Feelings? feelings;
+  List<Feelings>? feelings;
   String? createdAt;
   String? updatedAt;
   BestComment? bestComment;
@@ -92,8 +92,11 @@ class Journals {
     comments = json['comments'];
     isLiked = json['isLiked'];
     likedBy = json['likedBy'] != null ? json['likedBy'].cast<String>() : null;
+    // feelings = json['feelings'] != null
+    //     ? new Feelings.fromJson(json['feelings'])
+    //     : null;
     feelings = json['feelings'] != null
-        ? new Feelings.fromJson(json['feelings'])
+        ? (json['feelings'] as List).map((i) => Feelings.fromJson(i)).toList()
         : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -116,7 +119,10 @@ class Journals {
     data['comments'] = this.comments;
     data['isLiked'] = this.isLiked;
     data['likedBy'] = this.likedBy;
-    data['feelings'] = this.feelings;
+    //data['feelings'] = this.feelings;
+    data['feelings'] = this.feelings != null
+        ? this.feelings!.map((v) => v.toJson()).toList()
+        : null;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['bestComment'] = this.bestComment;
@@ -135,12 +141,14 @@ class Journals {
 class Group {
   String? sId;
   String? groupName;
+  String? groupImage;
 
-  Group({this.sId, this.groupName});
+  Group({this.sId, this.groupName, this.groupImage});
 
   Group.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     groupName = json['groupName'];
+    groupImage = json['groupMediaUrl'];
   }
 
   Map<String, dynamic> toJson() {

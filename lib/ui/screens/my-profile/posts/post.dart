@@ -7,6 +7,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../controllers/journals/journal_page_controller.dart';
+import '../../../../model/journals/journals_response_model.dart';
 
 class PostScreen extends StatefulWidget {
   PostScreen({Key? key}) : super(key: key);
@@ -20,7 +21,6 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getMyJournals();
   }
@@ -45,7 +45,7 @@ class _PostScreenState extends State<PostScreen> {
           ],
         ),
       ),
-      body: StreamBuilder<List<JournalModel?>>(
+      body: StreamBuilder<List<Journals?>>(
           stream: myJournalsBloc.journalsStateStream,
           builder: (_, journalsSnapshot) {
             if (journalsSnapshot.hasData)

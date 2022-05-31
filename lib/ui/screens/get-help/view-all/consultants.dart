@@ -235,112 +235,113 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
         //       )
         //   ],
         // )
-        body: Obx(() =>
-            searchMarketController.issueModel.value.doctors != null ||
-                    searchMarketController.issueModel.value.provider != null
-                ? CustomScrollView(
-                    slivers: [
-                      SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 10,
-                        ),
+        body: Obx(() => searchMarketController.issueModel.value.doctors !=
+                    null ||
+                searchMarketController.issueModel.value.provider != null
+            ? CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: 10,
+                    ),
+                  ),
+                  if (searchMarketController
+                          .issueModel.value.doctors!.isEmpty &&
+                      searchMarketController.issueModel.value.provider!.isEmpty)
+                    SliverToBoxAdapter(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text('No results found'),
                       ),
-                      if (searchMarketController
-                              .issueModel.value.doctors!.isEmpty &&
-                          searchMarketController
-                              .issueModel.value.provider!.isEmpty)
-                        SliverToBoxAdapter(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text('No results found'),
+                    ),
+                  searchMarketController.issueModel.value.doctors != null
+                      ? SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => ConsultantsTile(
+                              doctorModel: DoctorModel(
+                                  organisation: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .doctors![index]
+                                          .organisation ??
+                                      '',
+                                  name: searchMarketController.issueModel.value
+                                          .doctors![index].name ??
+                                      '',
+                                  mobile: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .doctors![index]
+                                          .contactNumber ??
+                                      '',
+                                  email: searchMarketController.issueModel.value
+                                          .doctors![index].email ??
+                                      '',
+                                  clinic: '',
+                                  locality:
+                                      searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
+                                  pincode: '',
+                                  city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
+                                  bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
+                                  abbrevations: '',
+                                  profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''),
+                              onTap: () {
+                                //                     connectionController
+                                //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
+                                //   print(widget._journalModel!.postedBy!.sId),
+                                //   AutoRouter.of(context).push(ConnectScreenRouter(
+                                //       uid: widget._journalModel!.postedBy!.uid ?? '',
+                                //       sId: widget._journalModel!.postedBy!.sId ?? '')),
+                                // },
+                              },
+                            ),
+                            childCount: searchMarketController
+                                .issueModel.value.doctors!.length,
                           ),
-                        ),
-                      searchMarketController.issueModel.value.doctors != null
-                          ? SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) => ConsultantsTile(
-                                  doctorModel: DoctorModel(
-                                      organisation: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .doctors![index]
-                                              .organisation ??
-                                          '',
-                                      name: searchMarketController.issueModel
-                                              .value.doctors![index].name ??
-                                          '',
-                                      mobile: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .doctors![index]
-                                              .contactNumber ??
-                                          '',
-                                      email: searchMarketController.issueModel
-                                              .value.doctors![index].email ??
-                                          '',
-                                      clinic: '',
-                                      locality:
-                                          searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
-                                      pincode: '',
-                                      city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
-                                      bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
-                                      abbrevations: ''),
-                                  onTap: () {
-                                    //                     connectionController
-                                    //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
-                                    //   print(widget._journalModel!.postedBy!.sId),
-                                    //   AutoRouter.of(context).push(ConnectScreenRouter(
-                                    //       uid: widget._journalModel!.postedBy!.uid ?? '',
-                                    //       sId: widget._journalModel!.postedBy!.sId ?? '')),
-                                    // },
-                                  },
-                                ),
-                                childCount: searchMarketController
-                                    .issueModel.value.doctors!.length,
-                              ),
-                            )
-                          : SizedBox(),
-                      searchMarketController.issueModel.value.provider != null
-                          ? SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) => ConsultantsTile(
-                                  doctorModel: DoctorModel(
-                                      organisation: '',
-                                      name: searchMarketController.issueModel
-                                              .value.provider![index].name ??
-                                          '',
-                                      mobile: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .provider![index]
-                                              .contactNumber ??
-                                          '',
-                                      email: searchMarketController.issueModel
-                                              .value.provider![index].email ??
-                                          '',
-                                      clinic: '',
-                                      locality: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .provider![index]
-                                              .addressLineOne ??
-                                          '',
-                                      pincode: '',
-                                      city:
-                                          searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
-                                      bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
-                                      abbrevations: ''),
-                                  onTap: () {},
-                                ),
-                                childCount: searchMarketController
-                                    .issueModel.value.provider!.length,
-                              ),
-                            )
-                          : SliverToBoxAdapter(),
-                    ],
-                  )
-                : Center(
-                    child: MyLoader(),
-                  )));
+                        )
+                      : SizedBox(),
+                  searchMarketController.issueModel.value.provider != null
+                      ? SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => ConsultantsTile(
+                              doctorModel: DoctorModel(
+                                  organisation: '',
+                                  name: searchMarketController.issueModel.value.provider![index].name ??
+                                      '',
+                                  mobile: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .contactNumber ??
+                                      '',
+                                  email: searchMarketController.issueModel.value
+                                          .provider![index].email ??
+                                      '',
+                                  clinic: '',
+                                  locality: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .addressLineOne ??
+                                      '',
+                                  pincode: '',
+                                  city: searchMarketController.issueModel.value
+                                          .provider![index].addressLineFour ??
+                                      '',
+                                  bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
+                                  abbrevations: '',
+                                  profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''),
+                              onTap: () {},
+                            ),
+                            childCount: searchMarketController
+                                .issueModel.value.provider!.length,
+                          ),
+                        )
+                      : SliverToBoxAdapter(),
+                ],
+              )
+            : Center(
+                child: MyLoader(),
+              )));
   }
 }

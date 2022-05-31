@@ -16,15 +16,12 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
-
-import '../../../widgets_constants/buttons/custom_buttons.dart';
 import 'trimmer_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
@@ -329,12 +326,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         print(response.toString());
 
         //print(response["imageUrl"]);
+        List<String> feelings = [];
+        feelingsController.selectedFeelingsId.value.forEach((element) {
+          feelings.add(element.id);
+        });
         CreateJournal _createJournal = CreateJournal(
           mediaUrl: journalPageController.selectedDiary.value.mediaType != null
               ? journalPageController.selectedDiary.value.mediaUrl
               : response["imageUrl"],
           description: journalPageController.descriptionController.text,
-          feelings: feelingsController.selectedFeelingsId.value[0],
+          feelings: feelings,
           journalType: _journalType,
           mimetype: journalPageController.selectedDiary.value.mediaType != null
               ? journalPageController.selectedDiary.value.mediaType
@@ -361,9 +362,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         }
         Navigator.pop(context);
       } else {
+        List<String> feelings = [];
+        feelingsController.selectedFeelingsId.value.forEach((element) {
+          feelings.add(element);
+        });
         CreateJournal _createJournal = CreateJournal(
           description: journalPageController.descriptionController.text,
-          feelings: feelingsController.selectedFeelingsId.value[0],
+          feelings: feelings,
           journalType: _journalType,
           groupId: journalPageController.selectedGroupId.value,
         );
@@ -871,7 +876,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                     style: TextStyle(color: SolhColors.green),
                     items: [
                       DropdownMenuItem(
-                        child: Text("Publicaly"),
+                        child: Text("Publicly"),
                         value: "Publicaly",
                       ),
                       DropdownMenuItem(
