@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,6 +23,7 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:http/http.dart' as http;
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
@@ -231,7 +233,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               },
                               onDateChanged: (date) {
                                 print(date);
-                                _dob = DateFormat('dd MMMM yyyy').format(date);
+                                _ageController.DOB.value =
+                                    DateFormat('yyyy-MM-dd').format(date);
                                 _ageController.onChanged(
                                     DateFormat('dd MMMM yyyy').format(date));
                               },
@@ -251,6 +254,21 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                         //   label: "DOB",
                         //   textEditingController: _dobTextEditingController,
                         // ),
+                        // Row(
+                        //   children: [
+                        //     Obx(() {
+                        //       return Checkbox(
+                        //           value: _ageController.isProvider.value,
+                        //           onChanged: (val) {
+                        //             _ageController.isProvider.value = val!;
+                        //           });
+                        //     }),
+                        //     Text(
+                        //       "I am provider",
+                        //       style: TextStyle(color: Color(0xFFA6A6A6)),
+                        //     ),
+                        //   ],
+                        // ),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 4.w, vertical: 4.h),
@@ -259,19 +277,53 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              uploadImage();
-                              await Network.makeHttpPutRequestWithToken(
-                                  url:
-                                      "${APIConstants.api}/api/edit-user-details",
-                                  body: {
+                              if (_croppedFile != null) uploadImage();
+                              // await Network.makeHttpPutRequestWithToken(
+                              //     url:
+                              //         "${APIConstants.api}/api/edit-user-details",
+                              //     body: {
+                              //       "first_name":
+                              //           _firstNameTextEditingController.text,
+                              //       "last_name":
+                              //           _lastNameTextEditingController.text,
+                              //       "gender": _gender,
+                              //       "bio": _bioTextEditingController.text,
+                              //       "dob": _ageController.selectedAge.value,
+                              //       "isProvider": _ageController.isProvider.value
+                              //     });
+                              print(_dob);
+                              var response = await http.put(
+                                  Uri.parse(
+                                      "${APIConstants.api}/api/edit-user-details"),
+                                  body: jsonEncode({
                                     "first_name":
                                         _firstNameTextEditingController.text,
                                     "last_name":
                                         _lastNameTextEditingController.text,
                                     "gender": _gender,
                                     "bio": _bioTextEditingController.text,
-                                    "dob": _dob
-                                  });
+                                    "dob": _ageController.DOB.value,
+                                    "isProvider":
+                                        _ageController.isProvider.value
+                                  }),
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                    "Authorization":
+                                        "Bearer ${userBlocNetwork.getSessionCookie}"
+                                  }).then((value) {
+                                print(value.body);
+                              }).onError((error, stackTrace) {
+                                print(error);
+                                print(stackTrace);
+                              });
+                              if (response != null) {
+                                print(response.statusCode);
+                                print(response.body);
+                                print(response.headers);
+                                print(response.request);
+                                print(response.reasonPhrase);
+                              }
+
                               setState(() {
                                 _isLoading = false;
                               });

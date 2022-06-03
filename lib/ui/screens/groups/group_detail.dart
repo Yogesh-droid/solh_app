@@ -61,7 +61,7 @@ class GroupDetailsPage extends StatelessWidget {
             ),
             getGroupDesc(),
             Divider(),
-            getMembersList()
+            getMembersList(context)
           ],
         ),
       ),
@@ -76,7 +76,7 @@ class GroupDetailsPage extends StatelessWidget {
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
         ),
-        group.defaultAdmin == userBlocNetwork.id
+        group.defaultAdmin!.id == userBlocNetwork.id
             ? PopupMenuButton(
                 icon: Icon(
                   Icons.more_vert,
@@ -190,7 +190,7 @@ class GroupDetailsPage extends StatelessWidget {
                         'assets/icons/group/edit.png',
                       ),
                       SizedBox(width: 5),
-                      Text(group.groupMembers!.length.toString() + ' posts',
+                      Text(group.journalCount!.toString() + ' posts',
                           style: TextStyle(
                             color: SolhColors.white,
                             fontSize: 12,
@@ -325,7 +325,7 @@ class GroupDetailsPage extends StatelessWidget {
           );
   }
 
-  getMembersList() {
+  getMembersList(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -333,6 +333,10 @@ class GroupDetailsPage extends StatelessWidget {
         children: [
           Text('Members',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+          SizedBox(
+            height: 10,
+          ),
+          //getDefaultAdmin(context),
           SizedBox(
             height: 10,
           ),
@@ -378,6 +382,34 @@ class GroupDetailsPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget getDefaultAdmin(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundImage: CachedNetworkImageProvider(
+              group.defaultAdmin!.profilePicture ?? ''),
+          backgroundColor: Colors.transparent,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(group.defaultAdmin!.name ?? '',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            Container(
+              width: MediaQuery.of(context).size.width / 1.2,
+              child: Text(group.defaultAdmin!.bio ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14, color: SolhColors.grey)),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -216,59 +216,7 @@ class _JournalingState extends State<Journaling> {
                                                         .value[index - 1]
                                                         .id !=
                                                     null
-                                                ? JournalTile(
-                                                    journalModel:
-                                                        _journalPageController
-                                                            .journalsList
-                                                            .value[index - 1],
-                                                    index: index - 1,
-                                                    deletePost: () async {
-                                                      print("deleting post");
-                                                      DeleteJournal
-                                                          _deleteJournal =
-                                                          DeleteJournal(
-                                                              journalId:
-                                                                  _journalPageController
-                                                                      .journalsList
-                                                                      .value[
-                                                                          index -
-                                                                              1]
-                                                                      .id!);
-                                                      await _deleteJournal
-                                                          .deletePost();
-                                                      // _journalPageController
-                                                      //     .videoPlayerController
-                                                      //     .value
-                                                      //     .removeAt(index - 1);
-                                                      // _journalPageController
-                                                      //     .journalsList.value
-                                                      //     .removeAt(index - 1);
-                                                      // _journalPageController
-                                                      //     .videoPlayerController
-                                                      //     .refresh();
-                                                      // _journalPageController
-                                                      //     .journalsList
-                                                      //     .refresh();
-                                                      _journalPageController
-                                                          .journalsList
-                                                          .clear();
-                                                      _journalPageController
-                                                          .pageNo = 1;
-                                                      _journalPageController
-                                                          .endPageLimit = 1;
-                                                      await _journalPageController.getAllJournals(
-                                                          1,
-                                                          groupId: _journalPageController
-                                                                      .selectedGroupId
-                                                                      .value
-                                                                      .length >
-                                                                  0
-                                                              ? _journalPageController
-                                                                  .selectedGroupId
-                                                                  .value
-                                                              : null);
-                                                    },
-                                                  )
+                                                ? getJournalTile(index)
                                                 : Container();
                                           }),
                                     )
@@ -363,55 +311,87 @@ class _JournalingState extends State<Journaling> {
   }
 
   Widget groupRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        getSolhGrouContainer(),
-        Expanded(
-          child: Obx(() {
-            return discoverGroupController.joinedGroupModel.value.groupList !=
-                    null
-                ? discoverGroupController
-                        .joinedGroupModel.value.groupList!.isNotEmpty
-                    ? Container(
-                        height: MediaQuery.of(context).size.height * 0.13,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: discoverGroupController
-                                .joinedGroupModel.value.groupList!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return getGroupContainer(discoverGroupController
-                                  .joinedGroupModel.value.groupList![index]);
-                            }),
-                      )
-                    : Container()
-                : Container();
-          }),
-        ),
-        Expanded(
-          child: Obx(() {
-            return discoverGroupController.createdGroupModel.value.groupList !=
-                    null
-                ? discoverGroupController
-                        .createdGroupModel.value.groupList!.isNotEmpty
-                    ? Container(
-                        height: MediaQuery.of(context).size.height * 0.13,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: discoverGroupController
-                                .createdGroupModel.value.groupList!.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return getGroupContainer(discoverGroupController
-                                  .createdGroupModel.value.groupList![index]);
-                            }),
-                      )
-                    : Container()
-                : Container();
-          }),
-        ),
-      ],
+    // return Row(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     getSolhGrouContainer(),
+    //     Expanded(
+    //       child: Obx(() {
+    //         return discoverGroupController.joinedGroupModel.value.groupList !=
+    //                 null
+    //             ? discoverGroupController
+    //                     .joinedGroupModel.value.groupList!.isNotEmpty
+    //                 ? Container(
+    //                     height: MediaQuery.of(context).size.height * 0.13,
+    //                     child: ListView.builder(
+    //                         shrinkWrap: true,
+    //                         scrollDirection: Axis.horizontal,
+    //                         itemCount: discoverGroupController
+    //                             .joinedGroupModel.value.groupList!.length,
+    //                         itemBuilder: (BuildContext context, int index) {
+    //                           return getGroupContainer(discoverGroupController
+    //                               .joinedGroupModel.value.groupList![index]);
+    //                         }),
+    //                   )
+    //                 : Container()
+    //             : Container();
+    //       }),
+    //     ),
+    //     Expanded(
+    //       child: Obx(() {
+    //         return discoverGroupController.createdGroupModel.value.groupList !=
+    //                 null
+    //             ? discoverGroupController
+    //                     .createdGroupModel.value.groupList!.isNotEmpty
+    //                 ? Container(
+    //                     height: MediaQuery.of(context).size.height * 0.13,
+    //                     child: ListView.builder(
+    //                         shrinkWrap: true,
+    //                         scrollDirection: Axis.horizontal,
+    //                         itemCount: discoverGroupController
+    //                             .createdGroupModel.value.groupList!.length,
+    //                         itemBuilder: (BuildContext context, int index) {
+    //                           return getGroupContainer(discoverGroupController
+    //                               .createdGroupModel.value.groupList![index]);
+    //                         }),
+    //                   )
+    //                 : Container()
+    //             : Container();
+    //       }),
+    //     ),
+    //   ],
+    // );
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.13,
+      child: CustomScrollView(
+        scrollDirection: Axis.horizontal,
+        slivers: [
+          SliverToBoxAdapter(
+            child: getSolhGrouContainer(),
+          ),
+          discoverGroupController.joinedGroupModel.value.groupList != null
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                  return getGroupContainer(discoverGroupController
+                      .joinedGroupModel.value.groupList![index]);
+                },
+                      childCount: discoverGroupController
+                          .joinedGroupModel.value.groupList!.length))
+              : SliverToBoxAdapter(),
+          discoverGroupController.createdGroupModel.value.groupList != null
+              ? SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                  return getGroupContainer(discoverGroupController
+                      .createdGroupModel.value.groupList![index]);
+                },
+                      childCount: discoverGroupController
+                          .createdGroupModel.value.groupList!.length))
+              : SliverToBoxAdapter(),
+        ],
+      ),
     );
   }
 
@@ -588,6 +568,44 @@ class _JournalingState extends State<Journaling> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> deletePost(int index) async {
+    print("deleting post");
+    DeleteJournal _deleteJournal = DeleteJournal(
+        journalId: _journalPageController.journalsList.value[index - 1].id!);
+    await _deleteJournal.deletePost();
+    // _journalPageController
+    //     .videoPlayerController
+    //     .value
+    //     .removeAt(index - 1);
+    // _journalPageController
+    //     .journalsList.value
+    //     .removeAt(index - 1);
+    // _journalPageController
+    //     .videoPlayerController
+    //     .refresh();
+    // _journalPageController
+    //     .journalsList
+    //     .refresh();
+    _journalPageController.journalsList.clear();
+    _journalPageController.pageNo = 1;
+    _journalPageController.endPageLimit = 1;
+    await _journalPageController.getAllJournals(1,
+        groupId: _journalPageController.selectedGroupId.value.length > 0
+            ? _journalPageController.selectedGroupId.value
+            : null);
+  }
+
+  Widget getJournalTile(int index) {
+    return JournalTile(
+      journalModel: _journalPageController.journalsList.value[index - 1],
+      index: index - 1,
+      deletePost: () async {
+        deletePost(index);
+      },
+      isMyJournal: false,
     );
   }
 }

@@ -22,12 +22,15 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
+import '../../../model/journals/journals_response_model.dart';
 import 'trimmer_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({Key? key, this.croppedFile}) : super(key: key);
+  CreatePostScreen({Key? key, this.croppedFile, this.isPostedFromDiaryDetails})
+      : super(key: key);
   File? croppedFile;
   Trimmer trimmer = Trimmer();
+  final bool? isPostedFromDiaryDetails;
 
   @override
   State<CreatePostScreen> createState() => _CreatePostScreenState();
@@ -42,7 +45,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _searchController = TextEditingController();
   FocusNode _customFeelingFocusNode = FocusNode();
   FocusNode _searchFeelingFocusNode = FocusNode();
-  String _description = "";
   XFile? _xFile;
   File? _croppedFile;
   bool? isVideoPicked;
@@ -198,6 +200,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.isPostedFromDiaryDetails == null) {
+      journalPageController.selectedDiary.value = Journals();
+      _customFeelingController.clear();
+      feelingsController.selectedFeelingsId.value.clear();
+      _searchController.clear();
+      journalPageController.descriptionController.clear();
+    }
+
     if (widget.croppedFile != null) {
       _croppedFile = widget.croppedFile;
       _isImageAdded = true;
@@ -259,14 +269,51 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   border: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: SolhColors.green))),
-                              // onChanged: (value) {
-                              //   if (_description == "" || value == "") {
-                              //     setState(() {
-                              //       _description = value;
-                              //     });
-                              //   } else
-                              //     _description = value;
-                              // },
+                              onChanged: (value) async {
+                                if (value == '@') {
+                                  await showMenu(
+                                    context: context,
+                                    position: RelativeRect.fromLTRB(
+                                        200, 150, 100, 100),
+                                    items: [
+                                      PopupMenuItem(
+                                        value: 1,
+                                        child: Text(
+                                          "ROHIT",
+                                          style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Roboto',
+                                              color: Colors.green),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 2,
+                                        child: Text(
+                                          "REKHA",
+                                          style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Roboto',
+                                              color: Colors.green),
+                                        ),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 3,
+                                        child: Text(
+                                          "DHRUV",
+                                          style: TextStyle(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Roboto',
+                                              color: Colors.green),
+                                        ),
+                                      ),
+                                    ],
+                                    elevation: 8.0,
+                                  );
+                                }
+                              },
                             ),
                           ),
                           SizedBox(height: 1.h),
@@ -298,105 +345,110 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ),
         ],
       ),
-      floatingActionButton: Obx(() {
-        return !feelingsController.isCreatingCustomFeeling.value &&
-                !feelingsController.isSearching.value
-            ? FloatingActionButton.extended(
-                backgroundColor: SolhColors.green,
-                onPressed: _postJournal,
-                label: Container(
-                    width: MediaQuery.of(context).size.width - 20.w,
-                    child: Center(child: Text("Post"))))
-            : Container();
-      }),
+      floatingActionButton: _isPosting
+          ? Container()
+          : Obx(() {
+              return !feelingsController.isCreatingCustomFeeling.value &&
+                      !feelingsController.isSearching.value
+                  ? FloatingActionButton.extended(
+                      backgroundColor: SolhColors.green,
+                      onPressed: _postJournal,
+                      label: Container(
+                          width: MediaQuery.of(context).size.width - 20.w,
+                          child: Center(child: Text("Post"))))
+                  : Container();
+            }),
     );
   }
 
   void _postJournal() async {
-    if (journalPageController.descriptionController.text != "") {
-      setState(() {
-        _isPosting = true;
+    setState(() {
+      _isPosting = true;
+    });
+    if (_croppedFile != null ||
+        journalPageController.selectedDiary.value.mediaType != null) {
+      Map<String, dynamic> response =
+          journalPageController.selectedDiary.value.mediaType != null
+              ? {}
+              : await _uploadImage();
+      List<String> feelings = [];
+      feelingsController.selectedFeelingsId.value.forEach((element) {
+        feelings.add(element);
       });
-      if (_croppedFile != null ||
-          journalPageController.selectedDiary.value.mediaType != null) {
-        Map<String, dynamic> response =
-            journalPageController.selectedDiary.value.mediaType != null
-                ? {}
-                : await _uploadImage();
-        print(response.toString());
-
-        //print(response["imageUrl"]);
-        List<String> feelings = [];
-        feelingsController.selectedFeelingsId.value.forEach((element) {
-          feelings.add(element.id);
-        });
-        CreateJournal _createJournal = CreateJournal(
-          mediaUrl: journalPageController.selectedDiary.value.mediaType != null
-              ? journalPageController.selectedDiary.value.mediaUrl
-              : response["imageUrl"],
-          description: journalPageController.descriptionController.text,
-          feelings: feelings,
-          journalType: _journalType,
-          mimetype: journalPageController.selectedDiary.value.mediaType != null
-              ? journalPageController.selectedDiary.value.mediaType
-              : response["mimetype"],
-          groupId: journalPageController.selectedGroupId.value,
-        );
-        await _createJournal.postJournal();
-        if (_journalType == 'My_Diary') {
-          await myDiaryController.getMyJournals(1);
-          myDiaryController.myJournalsList.refresh();
-          Utility.showToast("Post added to My Diary");
-        } else {
-          journalPageController.journalsList.clear();
-          journalPageController.pageNo = 1;
-          journalPageController.endPageLimit = 1;
-          journalPageController.selectedGroupId.value != ''
-              ? await journalPageController.getAllJournals(1,
-                  groupId: journalPageController.selectedGroupId.value)
-              : await journalPageController.getAllJournals(1);
-          journalPageController.journalsList.refresh();
-          setState(() {
-            _isPosting = false;
-          });
-        }
-        Navigator.pop(context);
+      CreateJournal _createJournal = CreateJournal(
+        postId: journalPageController.selectedDiary.value.id,
+        mediaUrl: journalPageController.selectedDiary.value.mediaType != null
+            ? journalPageController.selectedDiary.value.mediaUrl
+            : response["imageUrl"],
+        description: journalPageController.descriptionController.text,
+        feelings: feelings,
+        journalType: _journalType,
+        mimetype: journalPageController.selectedDiary.value.mediaType != null
+            ? journalPageController.selectedDiary.value.mediaType
+            : response["mimetype"],
+        groupId: journalPageController.selectedGroupId.value,
+      );
+      print('posting + ${journalPageController.selectedDiary.value.id}');
+      journalPageController.selectedDiary.value.id != null
+          ? await _createJournal.postJournalFromDiary()
+          : await _createJournal.postJournal();
+      if (_journalType == 'My_Diary') {
+        await myDiaryController.getMyJournals(1);
+        myDiaryController.myJournalsList.refresh();
+        Utility.showToast("Post added to My Diary");
       } else {
-        List<String> feelings = [];
-        feelingsController.selectedFeelingsId.value.forEach((element) {
-          feelings.add(element);
+        journalPageController.journalsList.clear();
+        journalPageController.pageNo = 1;
+        journalPageController.endPageLimit = 1;
+        journalPageController.selectedGroupId.value != ''
+            ? await journalPageController.getAllJournals(1,
+                groupId: journalPageController.selectedGroupId.value)
+            : await journalPageController.getAllJournals(1);
+        journalPageController.journalsList.refresh();
+        setState(() {
+          _isPosting = false;
         });
-        CreateJournal _createJournal = CreateJournal(
-          description: journalPageController.descriptionController.text,
-          feelings: feelings,
-          journalType: _journalType,
-          groupId: journalPageController.selectedGroupId.value,
-        );
-        print(_createJournal.groupId);
-        await _createJournal.postJournal();
-
-        if (_journalType == 'My_Diary') {
-          await myDiaryController.getMyJournals(1);
-          myDiaryController.myJournalsList.refresh();
-          Utility.showToast("Post added to My Diary");
-        } else {
-          journalPageController.journalsList.clear();
-          journalPageController.pageNo = 1;
-          journalPageController.endPageLimit = 1;
-          //await journalPageController.getAllJournals(1);
-          journalPageController.selectedGroupId.value != ''
-              ? await journalPageController.getAllJournals(1,
-                  groupId: journalPageController.selectedGroupId.value)
-              : await journalPageController.getAllJournals(1);
-          journalPageController.journalsList.refresh();
-          setState(() {
-            _isPosting = false;
-          });
-        }
-        //journalsBloc.getJournalsSnapshot();
-
-        Navigator.pop(context);
       }
+      Navigator.pop(context);
+    } else {
+      List<String> feelings = [];
+      feelingsController.selectedFeelingsId.value.forEach((element) {
+        feelings.add(element);
+      });
+      CreateJournal _createJournal = CreateJournal(
+        postId: journalPageController.selectedDiary.value.id,
+        description: journalPageController.descriptionController.text,
+        feelings: feelings,
+        journalType: _journalType,
+        groupId: journalPageController.selectedGroupId.value,
+      );
+      print(_createJournal.groupId);
+      print('posting + ${journalPageController.selectedDiary.value.id}');
+      journalPageController.selectedDiary.value.id != null
+          ? await _createJournal.postJournalFromDiary()
+          : await _createJournal.postJournal();
+
+      if (_journalType == 'My_Diary') {
+        await myDiaryController.getMyJournals(1);
+        myDiaryController.myJournalsList.refresh();
+        Utility.showToast("Post added to My Diary");
+      } else {
+        journalPageController.journalsList.clear();
+        journalPageController.pageNo = 1;
+        journalPageController.endPageLimit = 1;
+        //await journalPageController.getAllJournals(1);
+        journalPageController.selectedGroupId.value != ''
+            ? await journalPageController.getAllJournals(1,
+                groupId: journalPageController.selectedGroupId.value)
+            : await journalPageController.getAllJournals(1);
+        journalPageController.journalsList.refresh();
+        setState(() {
+          _isPosting = false;
+        });
+      }
+      //journalsBloc.getJournalsSnapshot();
+
+      Navigator.pop(context);
     }
   }
 

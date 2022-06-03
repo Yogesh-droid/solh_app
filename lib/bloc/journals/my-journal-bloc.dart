@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:video_player/video_player.dart';
 
 class MyJournalsBloc {
   final _myJournalController = PublishSubject<List<Journals?>>();
+  JournalPageController _journalPageController = Get.find();
 
   List<Journals?> _journalsList = <Journals?>[];
   int _currentPage = 1;
@@ -24,30 +28,47 @@ class MyJournalsBloc {
 
     _currentPage = 1;
     // try {
-    Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
-        "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}");
-    print(
-        'sdklckldmcklmsdklcmsdklmcklsdmcdklsmcsdklmcklsdmvklmdskvdsklvmdklmvkldfl;v,dflmvfmvkdfm' +
-            apiResponse['journals'].length.toString());
+    Map<String, dynamic> apiResponse =
+        await Network.makeHttpGetRequestWithToken(
+            "${APIConstants.api}/api/get-my-journal");
 
     List<Journals> _journals = <Journals>[];
 
     _numberOfPosts = apiResponse["totalJournals"];
 
-    print("total pages: " + apiResponse["totalPages"].toString());
-
     _endPageLimit = apiResponse["totalPages"];
 
-    print("Number of pages: $_endPageLimit");
+    JournalsResponseModel _journalsResponseModel =
+        JournalsResponseModel.fromJson(apiResponse);
 
-    //print('journals are ${JournalModel.fromJson(apiResponse["journals"])}');
-
-    for (var journal in apiResponse["journals"]) {
-      print("kldsm");
-      _journals.add(Journals.fromJson(journal));
+    if (_journalsResponseModel.journals != null) {
+      _journals = _journalsResponseModel.journals!;
     }
-    print("Number of journals: ${_journals.length}");
-    print("Number of posts: $_numberOfPosts");
+
+    _journalPageController.myVideoPlayerControllers.value.forEach((element) {
+      if (element != null) {
+        element.forEach((key, value) {
+          value.dispose();
+        });
+      }
+    });
+    _journalPageController.myVideoPlayerControllers.value.clear();
+    for (int i = 0; i < _journals.length; i++) {
+      if (_journals[i].mediaType == "video/mp4") {
+        if (_journalPageController.myVideoPlayerControllers.value.isEmpty) {
+          _journalPageController.myVideoIndex = i;
+        }
+
+        _journalPageController.myVideoPlayerControllers.value.add({
+          i: VideoPlayerController.network(_journals[i].mediaUrl!)..initialize()
+        });
+      } else {
+        _journalPageController.myVideoPlayerControllers.value.add(null);
+      }
+    }
+    print('length of video player controller: ' +
+        _journalPageController.myVideoPlayerControllers.value.length
+            .toString());
 
     return _journals;
     // } catch (error) {
@@ -77,6 +98,9 @@ class MyJournalsBloc {
     await _fetchDetailsFirstTime().then((journals) {
       _journalsList.addAll(journals);
       print("journals fetched: " + journals.length.toString());
+      _journalsList.forEach((journal) {
+        print(journal!.postedBy!.name ?? '');
+      });
       return _myJournalController.add(_journalsList);
     }).onError((error, stackTrace) =>
         _myJournalController.sink.addError(error.toString()));

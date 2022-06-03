@@ -11,9 +11,9 @@ class FeelingsController extends GetxController {
 
   Future<void> fetchFeeligs() async {
     try {
-      Map<String, dynamic> response =
-          await Network.makeGetRequest(APIConstants.api + '/api/default')
-              .onError((error, stackTrace) {
+      Map<String, dynamic> response = await Network.makeGetRequestWithToken(
+              APIConstants.api + '/api/default')
+          .onError((error, stackTrace) {
         print(error);
         return {};
       });
@@ -32,15 +32,17 @@ class FeelingsController extends GetxController {
   Future<void> createCustomFeeling(String feelingName) async {
     try {
       Map<String, dynamic> response = await Network.makePostRequestWithToken(
-          url: APIConstants.api + '/api/feelings',
-          body: {'feelingName': feelingName}).onError((error, stackTrace) {
+              url: APIConstants.api + '/api/feelings',
+              body: {'feelingName': feelingName, 'feelingType': 'Personal'})
+          .onError((error, stackTrace) {
         print(error);
         return {};
       });
 
-      if (response['status'] == 'success') {
-        feelingsList.add(Feelings.fromJson(response['data']));
+      if (response['success']) {
+        feelingsList[0] = (Feelings.fromJson(response['feeling']));
         selectedFeelingsId.value[0] = feelingsList.first.sId!;
+        feelingsList.refresh();
       }
     } on Exception catch (e) {
       print(e.toString());

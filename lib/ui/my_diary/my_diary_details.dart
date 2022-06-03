@@ -7,9 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
-import 'package:solh/services/journal/create-journal.dart';
-import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import '../../controllers/journals/feelings_controller.dart';
 import '../../widgets_constants/constants/colors.dart';
 
 class MyDiaryDetails extends StatelessWidget {
@@ -17,6 +17,7 @@ class MyDiaryDetails extends StatelessWidget {
   final Journals myDiary;
   final JournalPageController journalPageController = Get.find();
   final MyDiaryController myDiaryController = Get.find();
+  final FeelingsController feelingsController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -167,29 +168,44 @@ class MyDiaryDetails extends StatelessWidget {
   }
 
   Future<void> postPublically(BuildContext context) async {
-    List<String> feelings = [];
-    for (Feelings feeling in myDiary.feelings!) {
-      feelings.add(feeling.sId!);
-    }
-    CreateJournal _createJournal = CreateJournal(
-        description: myDiary.description ?? '',
-        feelings: feelings,
-        journalType: 'Publicaly',
-        mediaUrl: myDiary.mediaUrl ?? '',
-        mimetype: 'image/jpeg',
-        groupId: '',
-        postedIn: null);
-    myDiaryController.isPosting.value = true;
-    _createJournal.postJournal();
-    await myDiaryController.getMyJournals(1);
-    myDiaryController.myJournalsList.refresh();
-    journalPageController.journalsList.clear();
-    journalPageController.pageNo = 1;
-    journalPageController.endPageLimit = 1;
-    await journalPageController.getAllJournals(1);
-    journalPageController.journalsList.refresh();
-    myDiaryController.isPosting.value = false;
-    Utility.showToast('Posted Publically');
-    Navigator.pop(context);
+    // List<String> feelings = [];
+    // for (Feelings feeling in myDiary.feelings!) {
+    //   feelings.add(feeling.sId!);
+    // }
+    // CreateJournal _createJournal = CreateJournal(
+    //     description: myDiary.description ?? '',
+    //     feelings: feelings,
+    //     journalType: 'Publicaly',
+    //     mediaUrl: myDiary.mediaUrl ?? '',
+    //     mimetype: 'image/jpeg',
+    //     groupId: '',
+    //     postedIn: null);
+    // myDiaryController.isPosting.value = true;
+    // _createJournal.postJournal();
+    // await myDiaryController.getMyJournals(1);
+    // myDiaryController.myJournalsList.refresh();
+    // journalPageController.journalsList.clear();
+    // journalPageController.pageNo = 1;
+    // journalPageController.endPageLimit = 1;
+    // await journalPageController.getAllJournals(1);
+    // journalPageController.journalsList.refresh();
+    // myDiaryController.isPosting.value = false;
+    // Utility.showToast('Posted Publically');
+    // Navigator.pop(context);
+    journalPageController.descriptionController.text =
+        myDiary.description ?? '';
+    journalPageController.selectedDiary.value = myDiary;
+    myDiary.feelings!.forEach((element) {
+      feelingsController.selectedFeelingsId.add(element.sId);
+    });
+    // feelingsController.selectedFeelingsId.value
+    //     .add(myDiary.feelings![0].sId ?? '');
+    feelingsController.selectedFeelingsId.refresh();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CreatePostScreen(
+                  isPostedFromDiaryDetails: true,
+                )));
   }
 }

@@ -17,8 +17,10 @@ class JournalPageController extends GetxController {
   int endPageLimit = 1;
   int pageNo = 1;
   int videoIndex = 0;
+  int myVideoIndex = 0;
+  bool isPlayingMyPostVideo = false;
   var videoPlayerController = [].obs;
-  List<int> indexListHavingVideo = [];
+  var myVideoPlayerControllers = [].obs;
   var selectedGroupId = "".obs;
   var isScrollingStarted = false.obs;
 
@@ -65,8 +67,6 @@ class JournalPageController extends GetxController {
             videoPlayerController.value.add(null);
           }
         }
-        print('length of video player controller: ' +
-            videoPlayerController.value.length.toString());
       }
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
@@ -75,42 +75,40 @@ class JournalPageController extends GetxController {
   }
 
   void playVideo(int index) {
-    print(index);
-
+    isPlayingMyPostVideo = false;
     if (videoPlayerController.value[index] != null) {
       if (videoIndex != index) {
         videoPlayerController.value[index]![index]!.pause();
-        ///////////////////////////////
-        print(videoPlayerController.value[index]![index]!.value.isPlaying
-                .toString() +
-            'Paused .................. at $index');
       }
       if (videoPlayerController.value[index]![index]!.value.isPlaying) {
         videoPlayerController.value[index]![index]!.pause();
-        ///////////////////////////////////////////////////////////////////////////////
-        print(videoPlayerController.value[index]![index]!.value.isPlaying
-                .toString() +
-            'Paused ..................');
       } else {
-        videoPlayerController.value[index]![index]!.play();
-        print(videoPlayerController.value[index]![index]!.value.isPlaying
-                .toString() +
-            'Playing ................ at $index');
-        videoIndex = index;
+        if (!isPlayingMyPostVideo) {
+          videoPlayerController.value[index]![index]!.play();
+          videoIndex = index;
+        }
       }
+    }
+  }
 
-      // if (videoIndex != index) {
-      //   print('paused $videoIndex');
-      //   videoPlayerController[videoIndex][videoIndex]!.pause();
-      // }
-
+  void playMyPostVideo(int index) {
+    isPlayingMyPostVideo = true;
+    if (myVideoPlayerControllers.value[index] != null) {
+      if (myVideoIndex != index) {
+        myVideoPlayerControllers.value[index]![index]!.pause();
+      }
+      if (myVideoPlayerControllers.value[index]![index]!.value.isPlaying) {
+        myVideoPlayerControllers.value[index]![index]!.pause();
+      } else {
+        myVideoPlayerControllers.value[index]![index]!.play();
+        myVideoIndex = index;
+      }
     }
   }
 
   @override
   void onInit() {
     getAllJournals(1);
-
     super.onInit();
   }
 }

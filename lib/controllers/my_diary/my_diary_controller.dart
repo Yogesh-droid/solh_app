@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 import '../../constants/api.dart';
 import '../../model/journals/journals_response_model.dart';
 import '../../services/network/error_handling.dart';

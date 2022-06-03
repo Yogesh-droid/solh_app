@@ -13,13 +13,14 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -38,6 +39,8 @@ void main() async {
     runApp(SolhApp(
       isProfileCreated: false,
     ));
+
+  FlutterNativeSplash.remove();
 
   /*  runApp(MaterialApp(
     debugShowCheckedModeBanner: false,

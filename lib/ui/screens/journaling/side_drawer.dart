@@ -10,6 +10,7 @@ import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../my-profile/my-profile-screen.dart';
+import '../profile-setup/profile-created.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({
@@ -124,6 +125,12 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Mood Tracker",
                 comingSoon: true,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProfileCreated()));
+                },
               ),
             ]),
             Expanded(
