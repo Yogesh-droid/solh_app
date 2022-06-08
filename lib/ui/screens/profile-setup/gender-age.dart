@@ -66,7 +66,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               Expanded(
                 child: Column(children: [
                   GenderSelectionDropdown(
-                    initialDropdownValue: "N/A",
+                    initialDropdownValue: "Other",
                     dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
@@ -161,7 +161,7 @@ class DOBPicker extends StatelessWidget {
                   mode: CupertinoDatePickerMode.date,
                   onDateTimeChanged: onDateChanged,
                   initialDateTime: DateTime.now(),
-                  minimumYear: 1980,
+                  minimumYear: 1960,
                   maximumYear: 2030,
                 ),
               );

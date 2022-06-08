@@ -30,6 +30,12 @@ class JournalCommentController extends GetxController {
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }
+
+    /// repliesList is list<Map<List<comments,bool>>> where bool is false by default initially as all list is hidden,
+    /// when we click "show replies" then we pass true to that list
+
+    repliesList.clear();
+
     getJouranalsCommentModel.value.comments!.forEach((element) {
       repliesList.value.add([]);
       hiddenReplyList.value.add(false);
@@ -87,12 +93,18 @@ class JournalCommentController extends GetxController {
   }
 
   Future<bool> deleteComment(
-      {required String journalId, required String commentId}) async {
+      {required String journalId,
+      required String commentId,
+      required bool isReply}) async {
     var response = await Network.makeHttpDeleteRequestWithToken(
         url: "${APIConstants.api}/api/delete-comment-on-journal",
         body: {"commentId": commentId, "journalId": journalId});
-    getJournalComment(postId: journalId, pageNo: pageNo);
-    getJouranalsCommentModel.refresh();
+    if (!isReply) {
+      getJournalComment(postId: journalId, pageNo: pageNo);
+      getJouranalsCommentModel.refresh();
+    } else {
+      getReply(postId: journalId, pageNo: pageNo);
+    }
     print(response);
     return false;
   }
@@ -104,11 +116,17 @@ class JournalCommentController extends GetxController {
           "${APIConstants.api}/api/get-children?parent=$postId&page=$pageNo");
       print('index: ' + index.toString());
       if (index != null) {
+        print('index: ' + index.toString());
+        print('repliesList: ' + repliesList.value.toString());
         if (GetJouranalsCommentModel.fromJson(map).comments != null &&
             GetJouranalsCommentModel.fromJson(map).comments!.length > 0) {
           repliesList.value.removeAt(index);
           repliesList.value
               .insert(index, GetJouranalsCommentModel.fromJson(map).comments);
+          repliesList.refresh();
+        } else {
+          repliesList.value.removeAt(index);
+          repliesList.value.insert(index, []);
           repliesList.refresh();
         }
       } else {

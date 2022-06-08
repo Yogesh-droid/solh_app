@@ -1,6 +1,8 @@
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:new_version/new_version.dart';
+import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,16 +13,20 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  //checkVersion();
   final AgeController ageController = Get.put(AgeController());
+
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     print("*" * 30 + "\n" + "Id Token: $idToken");
@@ -33,6 +39,61 @@ void main() async {
     runApp(SolhApp(
       isProfileCreated: false,
     ));
+
+  FlutterNativeSplash.remove();
+
+  /*  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Solh',
+    home: Scaffold(
+        appBar: AppBar(title: Text('Solh')),
+        body: Container(
+            child: Center(
+          child: MaterialButton(
+            color: Colors.blue,
+            focusColor: Colors.blue,
+            onPressed: () {
+              final ioc = new HttpClient();
+              ioc.badCertificateCallback =
+                  (X509Certificate cert, String host, int port) => true;
+              final http = new IOClient(ioc);
+              http
+                  .get(Uri.parse(
+                      'https://api.solhapp.com/api/get-parent?journal=625f8aab1acb0f23151313b9&page=1'
+                      //'https://jsonplaceholder.typicode.com/todos/1'
+                      //'https://api.anah.ae/api/category/getcategory'
+                      ))
+                  .then((response) {
+                print(response.body + '\n' + response.statusCode.toString());
+              }).catchError((error) {
+                print(error);
+              });
+              // print('gyfuyujnjjbbhjubj');
+              // Dio()
+              //     .get(
+              //         'https://api.solhapp.com/api/get-parent?journal=625f8aab1acb0f23151313b9&page=1',
+              //         options: Options(headers: <String, String>{
+              //           'Accept': 'application/json',
+              //           'Content-Type': 'application/json; charset=UTF-8',
+              //         }))
+              //     .then((value) {
+              //   print(value.data);
+              // }).catchError((error) {
+              //   print(error);
+              // });
+            },
+            child: Text('Test'),
+          ),
+        ))),
+  )); */
+}
+
+Future<void> checkVersion() async {
+  final newVersion = NewVersion();
+  await newVersion.getVersionStatus().then((value) {
+    print(value!.localVersion.toString());
+    print(value.storeVersion.toString());
+  });
 }
 
 class SolhApp extends StatelessWidget {

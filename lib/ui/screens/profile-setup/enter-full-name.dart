@@ -131,16 +131,19 @@ class ProfielTextField extends StatelessWidget {
       String? hintText,
       AutovalidateMode? autovalidateMode,
       TextEditingController? textEditingController,
-      String? Function(String?)? validator})
+      String? Function(String?)? validator,
+      Function(String?)? onChanged})
       : _hintText = hintText,
         _validator = validator,
         _autovalidateMode = autovalidateMode,
         _textEditingController = textEditingController,
+        _onChanged = onChanged,
         super(key: key);
 
   final AutovalidateMode? _autovalidateMode;
   final String? _hintText;
   final String? Function(String?)? _validator;
+  final Function(String?)? _onChanged;
   final TextEditingController? _textEditingController;
 
   @override
@@ -151,10 +154,12 @@ class ProfielTextField extends StatelessWidget {
       textAlignVertical: TextAlignVertical.center,
       validator: _validator,
       autovalidateMode: _autovalidateMode,
+      onChanged: _onChanged,
       decoration: InputDecoration(
           contentPadding:
               EdgeInsets.symmetric(vertical: 1.5.h, horizontal: 3.5.w),
           hintText: _hintText,
+          hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
           border: OutlineInputBorder()),
     );
   }

@@ -3,9 +3,9 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/network/network.dart';
 
 class UserProfile {
-  static Future<UserModel> fetchUserProfile(String uid) async {
+  static Future<UserModel> fetchUserProfile(String sId) async {
     var response = await Network.makeHttpGetRequestWithToken(
-        "${APIConstants.api}/api/get-user-profile-details/$uid");
+        "${APIConstants.api}/api/get-user-profile-details/$sId");
     print(response);
     return UserModel.fromJson(response["user"]);
   }

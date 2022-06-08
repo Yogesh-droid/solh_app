@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
@@ -141,7 +142,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GetHelpCategory(title: 'Search by issues'),
-                  GestureDetector(
+                  InkWell(
                     onTap: () {
                       getHelpController.isAllIssueShown.value
                           ? getHelpController.showLessIssues()
@@ -150,7 +151,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           !getHelpController.isAllIssueShown.value;
                     },
                     child: Padding(
-                        padding: const EdgeInsets.only(right: 11.0),
+                        padding: const EdgeInsets.only(
+                            right: 11.0, bottom: 11, top: 11, left: 11),
                         child: Obx(() {
                           return Text(
                             !getHelpController.isAllIssueShown.value
@@ -220,7 +222,14 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           child: CircleAvatar(
                             radius: 7.8.w,
                             backgroundColor: Colors.white,
-                            child: Image.asset("assets/images/solh_tree.png"),
+                            child: CachedNetworkImage(
+                              imageUrl: getHelpController
+                                      .getSpecializationModel
+                                      .value
+                                      .specializationList![index]
+                                      .displayImage ??
+                                  '',
+                            ),
                           ),
                         ),
                         SizedBox(width: 2.w),
@@ -245,6 +254,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => ConsultantsScreen(
                         slug: '',
+                        type: 'topconsultant',
                       ))),
             ),
             Container(
@@ -333,8 +343,10 @@ class TopConsultantsTile extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-            child: Image.network(
-              "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
+            child: CachedNetworkImage(
+              imageUrl:
+                  'https://solh.s3.amazonaws.com/user/profile/1651493729337',
+              color: Color(0xFFD9D9D9),
               width: 25.w,
               fit: BoxFit.cover,
             ),

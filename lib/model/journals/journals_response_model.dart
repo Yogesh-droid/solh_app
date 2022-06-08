@@ -60,13 +60,14 @@ class Journals {
   int? comments;
   bool? isLiked;
   List<String>? likedBy;
-  Feelings? feelings;
+  List<Feelings>? feelings;
   String? createdAt;
   String? updatedAt;
   BestComment? bestComment;
   PostedBy? postedBy;
   String? mediaUrl;
   String? mediaType;
+  Group? group;
 
   Journals(
       {this.id,
@@ -81,17 +82,21 @@ class Journals {
       this.bestComment,
       this.postedBy,
       this.mediaUrl,
-      this.mediaType});
+      this.mediaType,
+      this.group});
 
   Journals.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['_id'];
     description = json['description'];
     likes = json['likes'];
     comments = json['comments'];
     isLiked = json['isLiked'];
     likedBy = json['likedBy'] != null ? json['likedBy'].cast<String>() : null;
+    // feelings = json['feelings'] != null
+    //     ? new Feelings.fromJson(json['feelings'])
+    //     : null;
     feelings = json['feelings'] != null
-        ? new Feelings.fromJson(json['feelings'])
+        ? (json['feelings'] as List).map((i) => Feelings.fromJson(i)).toList()
         : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -103,6 +108,7 @@ class Journals {
         : null;
     mediaUrl = json['mediaUrl'];
     mediaType = json['mediaType'];
+    group = json['group'] != null ? new Group.fromJson(json['group']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -113,7 +119,10 @@ class Journals {
     data['comments'] = this.comments;
     data['isLiked'] = this.isLiked;
     data['likedBy'] = this.likedBy;
-    data['feelings'] = this.feelings;
+    //data['feelings'] = this.feelings;
+    data['feelings'] = this.feelings != null
+        ? this.feelings!.map((v) => v.toJson()).toList()
+        : null;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['bestComment'] = this.bestComment;
@@ -122,6 +131,29 @@ class Journals {
     }
     data['mediaUrl'] = this.mediaUrl;
     data['mediaType'] = this.mediaType;
+    if (this.group != null) {
+      data['group'] = this.group!.toJson();
+    }
+    return data;
+  }
+}
+
+class Group {
+  String? sId;
+  String? groupName;
+  String? groupImage;
+
+  Group({this.sId, this.groupName, this.groupImage});
+
+  Group.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    groupName = json['groupName'];
+    groupImage = json['groupMediaUrl'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+
     return data;
   }
 }

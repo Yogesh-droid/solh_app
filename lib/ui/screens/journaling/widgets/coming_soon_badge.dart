@@ -23,7 +23,7 @@ class ComingSoonBadge extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Text(
-            "Comming Soon",
+            "Coming Soon",
             style: SolhTextStyles.JournalingBadgeText,
           ),
         ],

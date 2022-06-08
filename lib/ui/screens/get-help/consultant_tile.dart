@@ -1,116 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/doctor.dart';
+import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
 class ConsultantsTile extends StatelessWidget {
-  const ConsultantsTile({Key? key, required DoctorModel doctorModel})
+  const ConsultantsTile(
+      {Key? key, required DoctorModel doctorModel, required this.onTap})
       : _doctorModel = doctorModel,
         super(key: key);
 
   final DoctorModel _doctorModel;
+  final Callback onTap;
 
   @override
   Widget build(BuildContext context) {
-    // return Container(
-    //   margin: EdgeInsets.symmetric(vertical: 0.5.h),
-    //   decoration: BoxDecoration(
-    //       color: Colors.white,
-    //       borderRadius: BorderRadius.circular(8),
-    //       border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
-    //   child: Container(
-    //     decoration: BoxDecoration(
-    //         borderRadius: BorderRadius.only(
-    //             topLeft: Radius.circular(8), bottomLeft: Radius.circular(8))),
-    //     child: Row(
-    //       crossAxisAlignment: CrossAxisAlignment.start,
-    //       children: [
-    //         Stack(
-    //           children: [
-    //             Container(
-    //               decoration:
-    //                   BoxDecoration(borderRadius: BorderRadius.circular(8)),
-    //               height: 16.h,
-    //               width: 25.w,
-    //               child: ClipRRect(
-    //                 borderRadius: BorderRadius.only(
-    //                     topLeft: Radius.circular(8),
-    //                     bottomLeft: Radius.circular(8)),
-    //                 child: Image.network(
-    //                   "https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png",
-    //                   fit: BoxFit.cover,
-    //                 ),
-    //               ),
-    //             ),
-    //           ],
-    //         ),
-    //         SizedBox(width: 3.w),
-    //         Expanded(
-    //           child: Container(
-    //             height: 16.h,
-    //             padding: EdgeInsets.symmetric(vertical: 1.h),
-    //             child: Column(
-    //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //               crossAxisAlignment: CrossAxisAlignment.start,
-    //               children: [
-    //                 Text(
-    //                   "Dr. ${_doctorModel.name}",
-    //                   style: TextStyle(fontSize: 16),
-    //                   overflow: TextOverflow.ellipsis,
-    //                 ),
-    //                 Expanded(
-    //                   child: Container(
-    //                     width: 100.w,
-    //                     child: Text(
-    //                       "${_doctorModel.bio}",
-    //                       style: TextStyle(
-    //                           fontSize: 12,
-    //                           color: Color(0xFF666666),
-    //                           fontWeight: FontWeight.w300),
-    //                       overflow: TextOverflow.clip,
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 // SolhGreenButton(
-    //                 //   height: 4.2.h,
-    //                 //   width: 40.w,
-    //                 //   child: Text("Book Appointment"),
-    //                 //   onPressed: () {
-    //                 //     launch("tel://${_doctorModel.mobile}");
-    //                 //   },
-    //                 // )
-    //                 SolhGreenBtn48(
-    //                     onPress: () {
-    //                       launch("tel://${_doctorModel.mobile}");
-    //                     },
-    //                     text: 'Book Appointment')
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //   ),
-    // );
-
-    return Container(
-        height: 180,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: SolhColors.grey196.withOpacity(0.4)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              getProfileDetails(),
-              getActivityDetails(),
-            ],
+    return InkWell(
+      onTap: () => onTap,
+      child: Container(
+          height: 180,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: SolhColors.grey196.withOpacity(0.4)),
           ),
-        ));
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                getProfileDetails(),
+                getActivityDetails(),
+              ],
+            ),
+          )),
+    );
   }
 
   getProfileDetails() {
@@ -123,7 +48,7 @@ class ConsultantsTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getProfileImg(),
+              getProfileImg(_doctorModel.profilePicture),
               SizedBox(width: 3.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +57,7 @@ class ConsultantsTile extends StatelessWidget {
                   Container(
                     width: 50.w,
                     child: Text(
-                      "Dr. ${_doctorModel.name}",
+                      "${_doctorModel.name}",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -140,6 +65,30 @@ class ConsultantsTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  // Container(
+                  //   width: 50.w,
+                  //   child: Text(
+                  //     "${_doctorModel.bio}",
+                  //     style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: Color(0xFF666666),
+                  //         fontWeight: FontWeight.w300),
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 2,
+                  //   ),
+                  // ),
+                  // Container(
+                  //   width: 50.w,
+                  //   child: Text(
+                  //     "${_doctorModel.bio}",
+                  //     style: TextStyle(
+                  //         fontSize: 14,
+                  //         color: Color(0xFF666666),
+                  //         fontWeight: FontWeight.w300),
+                  //     overflow: TextOverflow.ellipsis,
+                  //     maxLines: 2,
+                  //   ),
+                  // ),
                   Container(
                     width: 50.w,
                     child: Text(
@@ -152,14 +101,7 @@ class ConsultantsTile extends StatelessWidget {
                       maxLines: 2,
                     ),
                   ),
-                  Text(
-                    "7 yrs of experience",
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF222222),
-                        fontWeight: FontWeight.w400),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+
                   SizedBox(height: 1.h),
                   //// interaction details ////////////////////
                   ///
@@ -180,14 +122,16 @@ class ConsultantsTile extends StatelessWidget {
     );
   }
 
-  getProfileImg() {
+  getProfileImg(String? profilePicture) {
     return CircleAvatar(
+      backgroundColor: Color(0xFFD9D9D9),
       radius: 46,
-      backgroundColor: SolhColors.green,
       child: CircleAvatar(
+        backgroundColor: Colors.white,
         radius: 45,
         backgroundImage: NetworkImage(
-          'https://e7.pngegg.com/pngimages/1001/748/png-clipart-doctor-raising-right-hand-illustration-physician-hospital-medicine-doctor-s-office-health-doctor-s-child-face.png',
+          profilePicture ??
+              'https://solh.s3.amazonaws.com/user/profile/1651493729337',
         ),
       ),
     );
@@ -272,11 +216,22 @@ class ConsultantsTile extends StatelessWidget {
                   fontSize: 14,
                 )),
           ),
-          SolhGreenBtn48(
-              onPress: () {
-                launch("tel://${_doctorModel.mobile}");
-              },
-              text: 'Book Appointment'),
+          // SolhGreenBtn48(
+          //     onPress: () {
+          //       launch("tel://${_doctorModel.mobile}");
+          //     },
+          //     text: 'Book Appointment'),
+          SolhGreenButton(
+            height: 6.h,
+            width: 35.w,
+            child: Text(
+              "Book Appointment",
+              style: TextStyle(fontSize: 12),
+            ),
+            onPressed: () {
+              launchUrl(Uri.parse("tel://${_doctorModel.mobile}"));
+            },
+          )
         ],
       ),
     );

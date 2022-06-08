@@ -27,14 +27,17 @@ class SpecializationList {
   String? name;
   String? slug;
   String? id;
+  String? displayImage;
 
-  SpecializationList({this.sId, this.name, this.slug, this.id});
+  SpecializationList(
+      {this.sId, this.name, this.slug, this.id, this.displayImage});
 
   SpecializationList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     slug = json['slug'];
     id = json['id'];
+    displayImage = json['displayImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -43,6 +46,7 @@ class SpecializationList {
     data['name'] = this.name;
     data['slug'] = this.slug;
     data['id'] = this.id;
+    data['displayImage'] = this.displayImage;
     return data;
   }
 }

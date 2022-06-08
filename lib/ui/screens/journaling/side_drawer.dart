@@ -2,12 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
+import 'package:solh/ui/screens/groups/create_group.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../my-profile/my-profile-screen.dart';
+import '../profile-setup/profile-created.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({
@@ -44,6 +47,7 @@ class _SideDrawerState extends State<SideDrawer> {
                             CircleAvatar(
                               radius: 7.w,
                               child: CircleAvatar(
+                                backgroundColor: Colors.white,
                                 radius: 6.8.w,
                                 backgroundImage: CachedNetworkImageProvider(
                                   userSnapshot.data!.profilePicture ??
@@ -111,11 +115,17 @@ class _SideDrawerState extends State<SideDrawer> {
               ),
               SideDrawerMenuTile(
                 title: "Groups",
-                comingSoon: true,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ManageGroupPage()));
+                },
               ),
               SideDrawerMenuTile(
                 title: "Mood Tracker",
                 comingSoon: true,
+                onPressed: () {},
               ),
             ]),
             Expanded(

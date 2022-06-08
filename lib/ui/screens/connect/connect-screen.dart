@@ -9,7 +9,6 @@ import 'package:solh/services/user/user-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import '../../../services/utility.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 
 class ConnectProfileScreen extends StatelessWidget {

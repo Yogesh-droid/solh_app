@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "729100578162-3234f20jbagovh1oof2pes65k831r712.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "d27e89063f901bb94414d9d964493e8d95e423e0"
+          }
+        },
+        {
+          "client_id": "729100578162-bm65sjkqslje6jutprdken6i8777t7er.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "f07e3187ab6a905a4014e68cef11a451c6d39adf"
+          }
+        },
+        {
           "client_id": "729100578162-ke7s5vb7ifrfuipbvuqn5ona335805ap.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

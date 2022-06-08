@@ -9,10 +9,10 @@ class DoctorModel {
   String city;
   String bio;
   String abbrevations;
+  String profilePicture;
 
   DoctorModel(
-      {
-      required this.organisation,
+      {required this.organisation,
       required this.name,
       required this.mobile,
       required this.email,
@@ -21,7 +21,8 @@ class DoctorModel {
       required this.pincode,
       required this.city,
       required this.bio,
-      required this.abbrevations});
+      required this.abbrevations,
+      required this.profilePicture});
 
   factory DoctorModel.fromJson(Map<String, dynamic> doctorJson) {
     return DoctorModel(
@@ -34,6 +35,7 @@ class DoctorModel {
         pincode: doctorJson["pincode"],
         city: doctorJson["city"],
         bio: doctorJson["bio"],
-        abbrevations: doctorJson["Abbrevations"]);
+        abbrevations: doctorJson["Abbrevations"],
+        profilePicture: doctorJson["profilePicture"]);
   }
 }

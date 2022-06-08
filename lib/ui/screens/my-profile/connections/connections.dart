@@ -6,8 +6,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
@@ -16,7 +16,7 @@ class Connections extends StatelessWidget {
   Connections({Key? key}) : super(key: key);
   final ConnectionController connectionController = Get.find();
   final RefreshController _refreshController = RefreshController();
-
+  final DiscoverGroupController groupController = Get.find();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -124,88 +124,112 @@ class Connections extends StatelessWidget {
   }
 
   Widget getChatsView() {
-    return Obx(() => ListView.builder(
-          itemCount:
-              connectionController.myConnectionModel.value.myConnections != null
-                  ? connectionController
-                      .myConnectionModel.value.myConnections!.length
-                  : 0,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            // return ListTile(
-            //   dense: true,
-            //   contentPadding: EdgeInsets.all(0),
-            //   leading: CircleAvatar(
-            //     radius: 50,
-            //     backgroundImage: CachedNetworkImageProvider(
-            //         connectionController.myConnectionModel.value
-            //                 .myConnections![index].profilePicture ??
-            //             ''),
-            //   ),
-            //   title: Text(
-            //     connectionController
-            //             .myConnectionModel.value.myConnections![index].name ??
-            //         '',
-            //     style: TextStyle(
-            //         fontSize: 18,
-            //         fontWeight: FontWeight.w600,
-            //         color: SolhColors.black34),
-            //   ),
-            //   subtitle: Text(
-            //     connectionController
-            //             .myConnectionModel.value.myConnections![index].bio ??
-            //         '',
-            //     style: TextStyle(
-            //         fontSize: 14,
-            //         fontWeight: FontWeight.w600,
-            //         color: SolhColors.grey196),
-            //   ),
-            // );
+    return Container(
+      child: Column(children: [
+        SizedBox(
+          height: 150,
+        ),
+        Text(
+          'No Chats',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFFA6A6A6),
+          ),
+        )
+      ]),
+    );
 
-            return Container(
-              padding: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: CachedNetworkImageProvider(
-                        connectionController.myConnectionModel.value
-                                .myConnections![index].profilePicture ??
-                            ''),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        connectionController.myConnectionModel.value
-                                .myConnections![index].name ??
-                            '',
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: SolhColors.black34),
-                      ),
-                      Text(
-                        connectionController.myConnectionModel.value
-                                .myConnections![index].bio ??
-                            '',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: SolhColors.grey196),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
-        ));
+    // return Obx(() => ListView.builder(
+    //       itemCount:
+    //           connectionController.myConnectionModel.value.myConnections != null
+    //               ? connectionController
+    //                   .myConnectionModel.value.myConnections!.length
+    //               : 0,
+    //       shrinkWrap: true,
+    //       itemBuilder: (context, index) {
+    //         // return ListTile(
+    //         //   dense: true,
+    //         //   contentPadding: EdgeInsets.all(0),
+    //         //   leading: CircleAvatar(
+    //         //     radius: 50,
+    //         //     backgroundImage: CachedNetworkImageProvider(
+    //         //         connectionController.myConnectionModel.value
+    //         //                 .myConnections![index].profilePicture ??
+    //         //             ''),
+    //         //   ),
+    //         //   title: Text(
+    //         //     connectionController
+    //         //             .myConnectionModel.value.myConnections![index].name ??
+    //         //         '',
+    //         //     style: TextStyle(
+    //         //         fontSize: 18,
+    //         //         fontWeight: FontWeight.w600,
+    //         //         color: SolhColors.black34),
+    //         //   ),
+    //         //   subtitle: Text(
+    //         //     connectionController
+    //         //             .myConnectionModel.value.myConnections![index].bio ??
+    //         //         '',
+    //         //     style: TextStyle(
+    //         //         fontSize: 14,
+    //         //         fontWeight: FontWeight.w600,
+    //         //         color: SolhColors.grey196),
+    //         //   ),
+    //         // );
+
+    //         return Container(
+    //           padding: EdgeInsets.all(10),
+    //           width: MediaQuery.of(context).size.width,
+    //           child: Row(
+    //             children: [
+    //               CircleAvatar(
+    //                 backgroundColor: Colors.white,
+    //                 radius: 30,
+    //                 backgroundImage: CachedNetworkImageProvider(
+    //                     connectionController.myConnectionModel.value
+    //                             .myConnections![index].profilePicture ??
+    //                         ''),
+    //               ),
+    //               SizedBox(
+    //                 width: 10,
+    //               ),
+    //               Column(
+    //                 mainAxisAlignment: MainAxisAlignment.start,
+    //                 crossAxisAlignment: CrossAxisAlignment.start,
+    //                 children: [
+    //                   Container(
+    //                     width: MediaQuery.of(context).size.width * 0.6,
+    //                     child: Text(
+    //                       connectionController.myConnectionModel.value
+    //                               .myConnections![index].name ??
+    //                           '',
+    //                       style: TextStyle(
+    //                           fontSize: 18,
+    //                           fontWeight: FontWeight.w600,
+    //                           color: SolhColors.black34),
+    //                     ),
+    //                   ),
+    //                   Container(
+    //                     width: MediaQuery.of(context).size.width * 0.6,
+    //                     child: Text(
+    //                       connectionController.myConnectionModel.value
+    //                               .myConnections![index].bio ??
+    //                           '',
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: TextStyle(
+    //                           fontSize: 14,
+    //                           fontWeight: FontWeight.w600,
+    //                           color: SolhColors.grey196),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               ),
+    //             ],
+    //           ),
+    //         );
+    //       },
+    //     ));
   }
 
   Widget getAllConnectionqView() {
@@ -261,6 +285,7 @@ class Connections extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CircleAvatar(
+                          backgroundColor: Colors.white,
                           radius: 30,
                           backgroundImage: CachedNetworkImageProvider(
                               connectionController.myConnectionModel.value
@@ -287,12 +312,13 @@ class Connections extends StatelessWidget {
                                     .myConnections![index].bio !=
                                 null)
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.30,
+                                width: MediaQuery.of(context).size.width * 0.7,
                                 child: Text(
                                   connectionController.myConnectionModel.value
                                           .myConnections![index].bio ??
                                       '',
                                   overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600,
@@ -312,88 +338,6 @@ class Connections extends StatelessWidget {
   }
 
   Widget getInvitesView(BuildContext context) {
-    // return Obx(() => ListView.builder(
-    //       itemCount:
-    //           connectionController.allConnectionModel.value.connections != null
-    //               ? connectionController
-    //                   .allConnectionModel.value.connections!.length
-    //               : 0,
-    //       shrinkWrap: true,
-    //       itemBuilder: (context, index) {
-    //         return Container(
-    //           padding: EdgeInsets.all(10),
-    //           width: MediaQuery.of(context).size.width,
-    //           child: Row(
-    //             children: [
-    //               CircleAvatar(
-    //                 radius: 30,
-    //                 backgroundImage: CachedNetworkImageProvider(
-    //                     connectionController.allConnectionModel.value
-    //                             .connections![index].profilePicture ??
-    //                         ''),
-    //               ),
-    //               SizedBox(
-    //                 width: 10,
-    //               ),
-    //               Column(
-    //                 mainAxisAlignment: MainAxisAlignment.start,
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: [
-    //                   Text(
-    //                     connectionController.allConnectionModel.value
-    //                             .connections![index].name ??
-    //                         '',
-    //                     overflow: TextOverflow.ellipsis,
-    //                     style: TextStyle(
-    //                         fontSize: 18,
-    //                         fontWeight: FontWeight.w600,
-    //                         color: SolhColors.black34),
-    //                   ),
-    //                   Container(
-    //                     width: MediaQuery.of(context).size.width * 0.30,
-    //                     child: Text(
-    //                       connectionController.allConnectionModel.value
-    //                               .connections![index].bio ??
-    //                           '',
-    //                       overflow: TextOverflow.ellipsis,
-    //                       style: TextStyle(
-    //                           fontSize: 14,
-    //                           fontWeight: FontWeight.w600,
-    //                           color: SolhColors.grey196),
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //               Spacer(),
-    //               inviteButton(
-    //                   callback: () async {
-    //                     connectionController.isAddingConnection.value = true;
-    //                     await connectionController.acceptConnection(
-    //                         connectionController.allConnectionModel.value
-    //                             .connections![index].connectionId!);
-    //                     connectionController.isAddingConnection.value = false;
-    //                   },
-    //                   flag: connectionController.allConnectionModel.value
-    //                           .connections![index].flag ??
-    //                       ''),
-    //               PopupMenuButton(itemBuilder: (context) {
-    //                 return [
-    //                   PopupMenuItem(
-    //                     child: Text('Create Group'),
-    //                     value: '1',
-    //                   ),
-    //                   PopupMenuItem(
-    //                     child: Text('Settings'),
-    //                     value: '2',
-    //                   ),
-    //                 ];
-    //               })
-    //             ],
-    //           ),
-    //         );
-    //       },
-    //     ));
-
     return Obx(() {
       return SmartRefresher(
         controller: _refreshController,
@@ -412,7 +356,7 @@ class Connections extends StatelessWidget {
                     connectionController.sentConnections.isNotEmpty ? 20 : 0,
               ),
             ),
-            /////////////////
+            /////////////////  ------ sent connections title  ------ /////////////////
             connectionController.sentConnections.isNotEmpty
                 ? SliverToBoxAdapter(
                     child: Padding(
@@ -433,6 +377,9 @@ class Connections extends StatelessWidget {
                     connectionController.sentConnections.isNotEmpty ? 16 : 0,
               ),
             ),
+
+            ////////////    sent connections List   //////////////
+            ///
             connectionController.sentConnections.isNotEmpty
                 ? SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -443,7 +390,8 @@ class Connections extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              radius: 30,
+                              backgroundColor: Colors.white,
+                              radius: MediaQuery.of(context).size.width * 0.06,
                               backgroundImage: CachedNetworkImageProvider(
                                   connectionController.sentConnections
                                           .value[index].profilePicture ??
@@ -510,6 +458,10 @@ class Connections extends StatelessWidget {
                               },
                               onSelected: (value) async {
                                 if (value == '1') {
+                                  connectionController.getUserAnalytics(
+                                      connectionController.sentConnections
+                                              .value[index].sId ??
+                                          '');
                                   AutoRouter.of(context).push(
                                       ConnectScreenRouter(
                                           uid: connectionController
@@ -538,12 +490,19 @@ class Connections extends StatelessWidget {
                         connectionController.sentConnections.value.length,
                   ))
                 : SliverToBoxAdapter(),
+            ///////////////////////////////////////////
+            ///
             SliverToBoxAdapter(
               child: SizedBox(
                 height: 36,
               ),
             ),
-            connectionController.receivedConnections.isNotEmpty
+
+            ////////  received connections  Title  //////////////
+            ///
+
+            connectionController.receivedConnections.isNotEmpty ||
+                    connectionController.groupInvites.isNotEmpty
                 ? SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 18.0, top: 8),
@@ -557,6 +516,9 @@ class Connections extends StatelessWidget {
                     ),
                   )
                 : SliverToBoxAdapter(),
+
+            /////////////  received connections list  //////////////
+            ///
             connectionController.receivedConnections.isNotEmpty
                 ? SliverList(
                     delegate: SliverChildBuilderDelegate(
@@ -567,6 +529,7 @@ class Connections extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
+                              backgroundColor: Colors.white,
                               radius: 30,
                               backgroundImage: CachedNetworkImageProvider(
                                   connectionController.receivedConnections
@@ -622,6 +585,12 @@ class Connections extends StatelessWidget {
                                 callback: () async {
                                   connectionController
                                       .isAddingConnection.value = true;
+                                  connectionController.addingConnectionId
+                                      .value = connectionController
+                                          .receivedConnections
+                                          .value[index]
+                                          .connectionId ??
+                                      '';
                                   await connectionController.acceptConnection(
                                       connectionController.receivedConnections
                                           .value[index].connectionId!,
@@ -629,7 +598,9 @@ class Connections extends StatelessWidget {
                                   connectionController
                                       .isAddingConnection.value = false;
                                 },
-                                flag: 'received'),
+                                flag: 'received',
+                                id: connectionController.receivedConnections
+                                    .value[index].connectionId),
                             PopupMenuButton(
                               itemBuilder: (context) {
                                 return [
@@ -673,6 +644,145 @@ class Connections extends StatelessWidget {
                         connectionController.receivedConnections.value.length,
                   ))
                 : SliverToBoxAdapter(),
+
+            /////////////   --------  this is for groups --------  //////////////
+
+            connectionController.groupInvites.isNotEmpty
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 30,
+                              backgroundImage: connectionController.groupInvites
+                                          .value[index].groupMediaUrl !=
+                                      null
+                                  ? CachedNetworkImageProvider(
+                                      connectionController.groupInvites
+                                              .value[index].groupMediaUrl ??
+                                          '')
+                                  : AssetImage(
+                                          'assets/images/group_placeholder.png')
+                                      as ImageProvider,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      connectionController.groupInvites
+                                              .value[index].groupName ??
+                                          '',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: SolhColors.black34),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Icon(
+                                      Icons.people,
+                                      color: SolhColors.grey196,
+                                      size: 14,
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.30,
+                                  child: connectionController.groupInvites
+                                              .value[index].groupDescription !=
+                                          null
+                                      ? connectionController
+                                              .groupInvites
+                                              .value[index]
+                                              .groupDescription!
+                                              .isNotEmpty
+                                          ? Text(
+                                              connectionController
+                                                      .groupInvites
+                                                      .value[index]
+                                                      .groupDescription ??
+                                                  '',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: SolhColors.grey196),
+                                            )
+                                          : Container()
+                                      : Container(),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            inviteButton(
+                                callback: () async {
+                                  connectionController
+                                      .isAddingConnection.value = true;
+                                  await connectionController
+                                      .acceptConnectionFromGroup(
+                                    connectionController
+                                        .groupInvites.value[index].inviteId!,
+                                  );
+                                  connectionController
+                                      .isAddingConnection.value = false;
+                                  groupController.getJoinedGroups();
+                                  groupController.getDiscoverGroups();
+                                },
+                                flag: 'received',
+                                id: connectionController
+                                    .groupInvites.value[index].inviteId),
+                            PopupMenuButton(
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    child: Text('See Profile'),
+                                    value: '1',
+                                  ),
+                                  PopupMenuItem(
+                                    child: Text('Decline'),
+                                    value: '2',
+                                  ),
+                                ];
+                              },
+                              onSelected: (value) {
+                                if (value == '1') {
+                                  AutoRouter.of(context).push(
+                                      ConnectScreenRouter(
+                                          uid: connectionController.groupInvites
+                                                  .value[index].groupId ??
+                                              '',
+                                          sId: connectionController.groupInvites
+                                                  .value[index].groupId ??
+                                              ''));
+                                } else if (value == '2') {
+                                  connectionController.acceptConnection(
+                                      connectionController
+                                          .groupInvites.value[index].inviteId!,
+                                      '0');
+                                }
+                              },
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: connectionController.groupInvites.value.length,
+                  ))
+                : SliverToBoxAdapter(),
           ],
         ),
       );
@@ -712,7 +822,8 @@ class Connections extends StatelessWidget {
     );
   }
 
-  Widget inviteButton({required Callback callback, required String flag}) {
+  Widget inviteButton(
+      {required Callback callback, required String flag, String? id}) {
     return InkWell(
       onTap: () {
         callback();
@@ -725,7 +836,9 @@ class Connections extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
-          child: Obx(() => connectionController.isAddingConnection.value
+          child: Obx(() => connectionController.isAddingConnection.value &&
+                  flag == 'received' &&
+                  id == connectionController.addingConnectionId.value
               ? Container(
                   height: 20,
                   width: 20,
