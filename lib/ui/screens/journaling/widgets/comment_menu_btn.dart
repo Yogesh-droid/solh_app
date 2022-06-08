@@ -9,18 +9,22 @@ class CommentMenuButton extends StatelessWidget {
     Key? key,
     required String commentId,
     required Journals journalModel,
-    required VoidCallback? deleteJournal,
     required VoidCallback? makeBestComment,
+    bool? isReply,
+    required Function(String id, bool? isReply) deleteJournal,
   })  : _deleteJournal = deleteJournal,
         _commentId = commentId,
         _journalModel = journalModel,
         _makeBestComment = makeBestComment,
+        _isReply = isReply,
         super(key: key);
 
-  final VoidCallback? _deleteJournal;
+  //final VoidCallback? _deleteJournal;
+  final Function(String id, bool? isReply) _deleteJournal;
   final String _commentId;
   final Journals _journalModel;
   final VoidCallback? _makeBestComment;
+  final bool? _isReply;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,9 @@ class CommentMenuButton extends StatelessWidget {
                     "Delete this comment",
                   ),
                 ),
-                onTap: _deleteJournal,
+                onTap: () {
+                  _deleteJournal(_commentId, _isReply);
+                },
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,

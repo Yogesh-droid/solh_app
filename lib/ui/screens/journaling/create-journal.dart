@@ -803,17 +803,18 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
       alignment: Alignment.centerLeft,
       child: Scrollbar(
         //isAlwaysShown: true,
-        child: OverflowBox(
-          maxWidth: MediaQuery.of(context).size.width,
+        child: Container(
+          //maxWidth: MediaQuery.of(context).size.width,
+
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
           child: Obx(() {
             return GridView(
-              padding: EdgeInsets.only(left: 0),
-              scrollDirection: Axis.horizontal,
               shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisExtent: 15.h,
-              ),
+                  crossAxisCount: 3, mainAxisExtent: 15.h, mainAxisSpacing: 0),
               children: List.generate(
                 feelingsController.feelingsList.length,
                 (index) => FilterChip(

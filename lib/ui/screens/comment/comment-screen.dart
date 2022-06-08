@@ -156,122 +156,142 @@ class _CommentScreenState extends State<CommentScreen> {
                                       null
                                   ? SliverToBoxAdapter(
                                       child: CommentBoxWidget(
-                                          journalModel: widget._journalModel!,
-                                          isUserPost: _isLoginedUserJournal!,
-                                          commentModel: Comments(
-                                            commentBody:
-                                                journalCommentController
-                                                    .getJouranalsCommentModel
-                                                    .value
-                                                    .bestComment!
-                                                    .commentBody,
-                                            commentBy: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .commentBy,
-                                            commentDate:
-                                                journalCommentController
-                                                    .getJouranalsCommentModel
-                                                    .value
-                                                    .bestComment!
-                                                    .commentDate,
-                                            commentOn: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .commentOn,
-                                            commentTime:
-                                                journalCommentController
-                                                    .getJouranalsCommentModel
-                                                    .value
-                                                    .bestComment!
-                                                    .commentTime,
-                                            commentUser:
-                                                journalCommentController
-                                                    .getJouranalsCommentModel
-                                                    .value
-                                                    .bestComment!
-                                                    .commentUser,
-                                            createdAt: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .createdAt,
-                                            likes: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .likes,
-                                            parentId: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .parentId,
-                                            replyNum: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .replyNum,
-                                            sId: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .sId,
-                                            user: journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .bestComment!
-                                                .user,
-                                          ),
-                                          deleteComment: () async {
-                                            await journalCommentController
-                                                .deleteComment(
-                                                    journalId: widget
-                                                            ._journalModel!
-                                                            .id ??
-                                                        '',
-                                                    commentId:
-                                                        journalCommentController
-                                                                .getJouranalsCommentModel
-                                                                .value
-                                                                .bestComment!
-                                                                .sId ??
-                                                            '');
-                                            getComments();
-                                            _journalPageController
-                                                .journalsList.value
-                                                .forEach((element) {
-                                              if (element.id ==
-                                                  widget._journalModel!.id) {
-                                                element.comments =
-                                                    element.comments! - 1;
-                                              }
-                                            });
-                                            _journalPageController.journalsList
-                                                .refresh();
-                                            print("deleted");
-                                          },
-                                          makeBestComment: () {},
-                                          bestComment: journalCommentController
+                                        journalModel: widget._journalModel!,
+                                        isUserPost: _isLoginedUserJournal!,
+                                        commentModel: Comments(
+                                          commentBody: journalCommentController
                                               .getJouranalsCommentModel
                                               .value
-                                              .bestComment,
-                                          onReplyTapped: (id, name, sId) {
-                                            journalCommentController
-                                                .isReplying.value = true;
-                                            journalCommentController.commentId =
-                                                journalCommentController
-                                                    .getJouranalsCommentModel
-                                                    .value
-                                                    .bestComment!
-                                                    .sId!;
-                                            journalCommentController.parentId =
-                                                sId;
-                                            journalCommentController
-                                                .repliedTo.value = name;
-                                          },
-                                          index: 0),
+                                              .bestComment!
+                                              .commentBody,
+                                          commentBy: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .commentBy,
+                                          commentDate: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .commentDate,
+                                          commentOn: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .commentOn,
+                                          commentTime: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .commentTime,
+                                          commentUser: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .commentUser,
+                                          createdAt: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .createdAt,
+                                          likes: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .likes,
+                                          parentId: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .parentId,
+                                          replyNum: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .replyNum,
+                                          sId: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .sId,
+                                          user: journalCommentController
+                                              .getJouranalsCommentModel
+                                              .value
+                                              .bestComment!
+                                              .user,
+                                        ),
+                                        deleteComment: () async {
+                                          await journalCommentController
+                                              .deleteComment(
+                                                  journalId: widget
+                                                          ._journalModel!.id ??
+                                                      '',
+                                                  commentId:
+                                                      journalCommentController
+                                                              .getJouranalsCommentModel
+                                                              .value
+                                                              .bestComment!
+                                                              .sId ??
+                                                          '',
+                                                  isReply: false);
+                                          getComments();
+                                          _journalPageController
+                                              .journalsList.value
+                                              .forEach((element) {
+                                            if (element.id ==
+                                                widget._journalModel!.id) {
+                                              element.comments =
+                                                  element.comments! - 1;
+                                            }
+                                          });
+                                          _journalPageController.journalsList
+                                              .refresh();
+                                          print("deleted");
+                                        },
+                                        makeBestComment: () {},
+                                        bestComment: journalCommentController
+                                            .getJouranalsCommentModel
+                                            .value
+                                            .bestComment,
+                                        onReplyTapped: (id, name, sId) {
+                                          journalCommentController
+                                              .isReplying.value = true;
+                                          journalCommentController.commentId =
+                                              journalCommentController
+                                                  .getJouranalsCommentModel
+                                                  .value
+                                                  .bestComment!
+                                                  .sId!;
+                                          journalCommentController.parentId =
+                                              sId;
+                                          journalCommentController
+                                              .repliedTo.value = name;
+                                        },
+                                        index: 0,
+                                        onDeleteTapped:
+                                            (String id, bool? isReply) async {
+                                          await journalCommentController
+                                              .deleteComment(
+                                                  journalId: widget
+                                                          ._journalModel!.id ??
+                                                      '',
+                                                  commentId: id,
+                                                  isReply: isReply ?? true);
+                                          getComments();
+                                          _journalPageController
+                                              .journalsList.value
+                                              .forEach((element) {
+                                            if (element.id ==
+                                                widget._journalModel!.id) {
+                                              element.comments =
+                                                  element.comments! - 1;
+                                            }
+                                          });
+                                          _journalPageController.journalsList
+                                              .refresh();
+                                          print("deleted");
+                                        },
+                                      ),
                                     )
                                   : SliverToBoxAdapter(),
                               journalCommentController.getJouranalsCommentModel
@@ -279,82 +299,130 @@ class _CommentScreenState extends State<CommentScreen> {
                                   ? SliverList(
                                       delegate: SliverChildBuilderDelegate(
                                           (_, index) => CommentBoxWidget(
-                                              deleteComment: () async {
-                                                await journalCommentController
-                                                    .deleteComment(
-                                                        journalId: widget
-                                                                ._journalModel!
-                                                                .id ??
-                                                            '',
-                                                        commentId:
-                                                            journalCommentController
-                                                                    .getJouranalsCommentModel
-                                                                    .value
-                                                                    .comments![
-                                                                        index]
-                                                                    .sId ??
-                                                                '');
-                                                getComments();
-                                                _journalPageController
-                                                    .journalsList.value
-                                                    .forEach((element) {
-                                                  if (element.id ==
-                                                      widget
-                                                          ._journalModel!.id) {
-                                                    element.comments =
-                                                        element.comments! - 1;
-                                                  }
-                                                });
-                                                _journalPageController
-                                                    .journalsList
-                                                    .refresh();
-                                                print("deleted");
-                                              },
-                                              makeBestComment: () async {
-                                                await journalCommentController
-                                                    .makeBestComment(
-                                                        journalId: widget
-                                                                ._journalModel!
-                                                                .id ??
-                                                            '',
-                                                        commentId:
-                                                            journalCommentController
-                                                                    .getJouranalsCommentModel
-                                                                    .value
-                                                                    .comments![
-                                                                        index]
-                                                                    .sId ??
-                                                                '');
-                                              },
-                                              journalModel:
-                                                  widget._journalModel!,
-                                              onReplyTapped: (id, name, sId) {
-                                                print(id);
-                                                print(journalCommentController
-                                                    .isReplying.value);
-                                                journalCommentController
-                                                    .isReplying.value = true;
-                                                journalCommentController
-                                                        .commentId =
+                                                deleteComment: () async {
+                                                  await journalCommentController
+                                                      .deleteComment(
+                                                          journalId: widget
+                                                                  ._journalModel!
+                                                                  .id ??
+                                                              '',
+                                                          commentId:
+                                                              journalCommentController
+                                                                      .getJouranalsCommentModel
+                                                                      .value
+                                                                      .comments![
+                                                                          index]
+                                                                      .sId ??
+                                                                  '',
+                                                          isReply: false);
+                                                  getComments();
+                                                  _journalPageController
+                                                      .journalsList.value
+                                                      .forEach((element) {
+                                                    if (element.id ==
+                                                        widget._journalModel!
+                                                            .id) {
+                                                      element.comments =
+                                                          element.comments! - 1;
+                                                    }
+                                                  });
+
+                                                  _journalPageController
+                                                      .journalsList
+                                                      .refresh();
+                                                  print("deleted");
+                                                },
+                                                makeBestComment: () async {
+                                                  await journalCommentController
+                                                      .makeBestComment(
+                                                          journalId: widget
+                                                                  ._journalModel!
+                                                                  .id ??
+                                                              '',
+                                                          commentId:
+                                                              journalCommentController
+                                                                      .getJouranalsCommentModel
+                                                                      .value
+                                                                      .comments![
+                                                                          index]
+                                                                      .sId ??
+                                                                  '');
+                                                },
+                                                journalModel:
+                                                    widget._journalModel!,
+                                                onReplyTapped: (id, name, sId) {
+                                                  print(id);
+                                                  print(journalCommentController
+                                                      .isReplying.value);
+                                                  journalCommentController
+                                                      .isReplying.value = true;
+                                                  journalCommentController
+                                                          .commentId =
+                                                      journalCommentController
+                                                          .getJouranalsCommentModel
+                                                          .value
+                                                          .comments![index]
+                                                          .sId!;
+                                                  journalCommentController
+                                                      .repliedTo.value = name;
+                                                  journalCommentController
+                                                      .parentId = sId;
+                                                },
+                                                commentModel:
                                                     journalCommentController
                                                         .getJouranalsCommentModel
                                                         .value
-                                                        .comments![index]
-                                                        .sId!;
-                                                journalCommentController
-                                                    .repliedTo.value = name;
-                                                journalCommentController
-                                                    .parentId = sId;
-                                              },
-                                              commentModel:
-                                                  journalCommentController
-                                                      .getJouranalsCommentModel
-                                                      .value
-                                                      .comments![index],
-                                              isUserPost:
-                                                  _isLoginedUserJournal ??
-                                                      false,
-                                              index: index),
+                                                        .comments![index],
+                                                isUserPost:
+                                                    _isLoginedUserJournal ??
+                                                        false,
+                                                index: index,
+                                                onDeleteTapped: (String id,
+                                                    bool? isReply) async {
+                                                  await journalCommentController
+                                                      .deleteComment(
+                                                          journalId: widget
+                                                                  ._journalModel!
+                                                                  .id ??
+                                                              '',
+                                                          commentId: id,
+                                                          isReply:
+                                                              isReply ?? true);
+
+                                                  if (isReply == true) {
+                                                    print(
+                                                        'is reply true hai ye to zkkddncdcndsncdsndkndkn');
+                                                    journalCommentController.getReply(
+                                                        postId: journalCommentController
+                                                            .getJouranalsCommentModel
+                                                            .value
+                                                            .comments![index]
+                                                            .sId!,
+                                                        pageNo: 1,
+                                                        index: index);
+                                                  } else {
+                                                    print(
+                                                        'is reply false hai ye to zkkddncdcndsncdsndkndkn');
+                                                    //getComments();
+                                                    _journalPageController
+                                                        .journalsList.value
+                                                        .forEach((element) {
+                                                      if (element.id ==
+                                                          widget._journalModel!
+                                                              .id) {
+                                                        element.comments =
+                                                            element.comments! -
+                                                                1;
+                                                      }
+                                                    });
+                                                    _journalPageController
+                                                        .journalsList
+                                                        .refresh();
+
+                                                    print("deleted");
+                                                  }
+                                                },
+                                              ),
                                           childCount: journalCommentController
                                               .getJouranalsCommentModel
                                               .value
@@ -530,6 +598,7 @@ class CommentBoxWidget extends StatelessWidget {
     BestComment? bestComment,
     required this.onReplyTapped,
     required this.index,
+    required this.onDeleteTapped,
   })  : _commentModel = commentModel,
         _isUserPost = isUserPost,
         _journalModel = journalModel,
@@ -545,6 +614,7 @@ class CommentBoxWidget extends StatelessWidget {
   final bool _isUserPost;
   final BestComment? _bestComment;
   final Function(String id, String userName, String userId) onReplyTapped;
+  final Function(String id, bool? isReply) onDeleteTapped;
   final int index;
   final JournalCommentController journalCommentController = Get.find();
   final ConnectionController connectionController = Get.find();
@@ -555,7 +625,7 @@ class CommentBoxWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 1.5.h),
       child: Column(
         children: [
-          getCommentBody(_commentModel!, _bestComment, context),
+          getCommentBody(_commentModel!, _bestComment, context, false),
           getCommentFooter(_bestComment != null ? _bestComment : _commentModel!,
               onReplyTapped),
           _bestComment != null
@@ -592,8 +662,8 @@ class CommentBoxWidget extends StatelessWidget {
     );
   }
 
-  Widget getCommentBody(
-      Comments commentModel, BestComment? bestComment, BuildContext context) {
+  Widget getCommentBody(Comments commentModel, BestComment? bestComment,
+      BuildContext context, bool? isReply) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -705,7 +775,7 @@ class CommentBoxWidget extends StatelessWidget {
                               SizedBox(
                                 width: 1.w,
                               ),
-                              SolhExpertBadge(),
+                              //SolhExpertBadge(),
                             ],
                           ),
                           Text(
@@ -742,10 +812,12 @@ class CommentBoxWidget extends StatelessWidget {
                           _journalModel.postedBy!.uid ==
                               FirebaseAuth.instance.currentUser!.uid)
                         CommentMenuButton(
-                            makeBestComment: _makeBestComment,
-                            commentId: commentModel.sId!,
-                            journalModel: _journalModel,
-                            deleteJournal: _deleteComment),
+                          makeBestComment: _makeBestComment,
+                          commentId: commentModel.sId!,
+                          journalModel: _journalModel,
+                          deleteJournal: onDeleteTapped,
+                          isReply: isReply,
+                        ),
                     ],
                   ),
                   Divider(),
@@ -933,7 +1005,7 @@ class CommentBoxWidget extends StatelessWidget {
               children: list
                   .map((element) => Column(
                         children: [
-                          getCommentBody(element, null, context),
+                          getCommentBody(element, null, context, true),
                           getCommentFooter(element, onReplyTapped),
                           SizedBox(
                             height: 10,

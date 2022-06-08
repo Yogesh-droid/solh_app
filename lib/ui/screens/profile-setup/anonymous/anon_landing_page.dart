@@ -4,11 +4,10 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/profile-setup/anonymous/pick_user_name_screen.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import '../../../../widgets_constants/constants/textstyles.dart';
 
-import '../../../widgets_constants/constants/textstyles.dart';
-
-class ProfileCreated extends StatelessWidget {
-  const ProfileCreated({Key? key}) : super(key: key);
+class AnonLandingPage extends StatelessWidget {
+  const AnonLandingPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +21,12 @@ class ProfileCreated extends StatelessWidget {
                 height: 30.h,
               ),
               Text(
-                "Your profile has been created",
+                "Your profile is ready!",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.black, fontSize: 24),
               ),
               Text(
-                "You can also create an anonymous profile to hide your identity",
+                "If you want to maintain your privacy, select the 'Anonymous' option.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 16),
               ),
