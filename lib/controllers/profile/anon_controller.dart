@@ -23,11 +23,11 @@ class AnonController extends GetxController {
         body: {
           'userName': userName.value,
           'avtarImageUrl': avtarImageUrl.value,
-          'profilePictureType': avtarType.value
+          'profilePictureType': avtarType.value,
         });
     isLoading.value = false;
-    if (map['body']['isCreated']) {
-      return map['body'];
+    if (map['success']) {
+      return map['message'];
     }
     return null;
   }

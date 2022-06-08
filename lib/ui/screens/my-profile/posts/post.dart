@@ -56,6 +56,7 @@ class _PostScreenState extends State<PostScreen> {
               return Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
+                    shrinkWrap: true,
                     itemCount: journalsSnapshot.requireData.length,
                     itemBuilder: (_, index) {
                       print(journalsSnapshot.data![index]);

@@ -2,10 +2,12 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/instance_manager.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
@@ -27,6 +29,7 @@ class AddProfilePicAnon extends StatefulWidget {
 class _AddProfilePhotoPageState extends State<AddProfilePicAnon> {
   XFile? _xFile;
   File? _croppedFile;
+  AnonController anonController = Get.find();
 
   void _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -70,7 +73,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePicAnon> {
       child: Scaffold(
         appBar: ProfileSetupAppBar(
           title: "Add a Profile Photo",
-          //onBackButton: widget._onBack,
+          onBackButton: () {
+            Navigator.of(context).pop();
+          },
         ),
         body: Column(
           children: [
@@ -123,10 +128,11 @@ class _AddProfilePhotoPageState extends State<AddProfilePicAnon> {
                     height: 2.h,
                   ),
                   SkipButton(onPressed: () {
-                    AutoRouter.of(context).pushAndPopUntil(MasterScreenRouter(),
-                        predicate: (Route<dynamic> route) {
-                      return route.settings.name == MasterScreenRouter.name;
-                    });
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => AnonLandingPage(),
+                      ),
+                    );
                   }),
                   SizedBox(
                     height: 6.h,
@@ -147,6 +153,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePicAnon> {
                           _croppedFile!);
                       if (response["success"]) {
                         print("image uplaoded successfully");
+                        anonController.avtarImageUrl.value =
+                            response["imageUrl"];
+                        anonController.avtarType.value = response["mimetype"];
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => AnonLandingPage(),

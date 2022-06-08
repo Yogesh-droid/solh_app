@@ -78,6 +78,8 @@ class PickUsernameScreen extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     } else {
                       if (_usernameEditingController.text.isNotEmpty) {
+                        _anonController.userName.value =
+                            _usernameEditingController.text;
                         Navigator.push(
                             context,
                             MaterialPageRoute(

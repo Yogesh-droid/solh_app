@@ -125,12 +125,7 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Mood Tracker",
                 comingSoon: true,
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ProfileCreated()));
-                },
+                onPressed: () {},
               ),
             ]),
             Expanded(
