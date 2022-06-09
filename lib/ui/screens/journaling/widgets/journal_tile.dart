@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -50,6 +51,21 @@ class _JournalTileState extends State<JournalTile> {
   void initState() {
     super.initState();
     getFeelings();
+  }
+
+  Map getTexts() {
+    List textList = widget._journalModel!.description!.split('@');
+    if (textList.length == 1) {
+      return {
+        'text1': textList[0],
+      };
+    }
+    List textList2 = textList[1].split(' ');
+    String text3 = textList[1].replaceAll(textList2[0], '');
+    print('map++' +
+        {'text1': textList[0], 'text2': text3, 'text3': textList2[0]}
+            .toString());
+    return {'text1': textList[0], 'text2': text3, 'text3': textList2[0]};
   }
 
   @override
@@ -245,17 +261,36 @@ class _JournalTileState extends State<JournalTile> {
                   style: SolhTextStyles.PinkBorderButtonText)
               : Container(),
           widget._journalModel!.description != null
-              ? ReadMoreText(
-                  widget._journalModel!.description!,
-                  trimLines: 3,
-                  //trimLength: 100,
-                  style: SolhTextStyles.JournalingDescriptionText,
-                  colorClickableText: SolhColors.green,
-                  //trimMode: TrimMode.Length,
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: ' Read more',
-                  trimExpandedText: ' Less',
-                )
+              ? RichText(
+                  text: TextSpan(children: [
+                  TextSpan(
+                      text: getTexts()['text1'] ?? '',
+                      style: SolhTextStyles.JournalingDescriptionText,
+                      children: [
+                        getTexts().containsKey('text3')
+                            ? TextSpan(
+                                text: '@' + getTexts()['text3'],
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => print('click'),
+                                style: TextStyle(color: Color(0xffE1555A)))
+                            : TextSpan(text: ''),
+                        getTexts().containsKey('text2')
+                            ? TextSpan(text: getTexts()['text2'])
+                            : TextSpan(text: ''),
+                      ]),
+                ]))
+
+              // ? ReadMoreText(
+              //     widget._journalModel!.description!,
+              //     trimLines: 3,
+              //     //trimLength: 100,
+              //     style: SolhTextStyles.JournalingDescriptionText,
+              //     colorClickableText: SolhColors.green,
+              //     //trimMode: TrimMode.Length,
+              //     trimMode: TrimMode.Line,
+              //     trimCollapsedText: ' Read more',
+              //     trimExpandedText: ' Less',
+              //   )
               : Container(),
         ],
       ),

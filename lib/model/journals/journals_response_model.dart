@@ -86,7 +86,7 @@ class Journals {
       this.group});
 
   Journals.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    id = json['id'];
     description = json['description'];
     likes = json['likes'];
     comments = json['comments'];

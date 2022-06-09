@@ -22,11 +22,15 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
   bool _hintShown = false;
   final SmsAutoFill _autoFill = SmsAutoFill();
-
+  bool isLoading = false;
   void _signInWithPhone(String phoneNo) {
     print(phoneNo);
+    isLoading = true;
+    setState(() {});
     FirebaseNetwork().signInWithPhoneNumber(phoneNo,
-        onCodeSent: (String verificationId) => setState(() {}));
+        onCodeSent: (String verificationId) => setState(() {
+              isLoading = false;
+            }));
   }
 
   @override
@@ -107,23 +111,25 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        height: 5.8.h,
-                        width: 80.w,
-                        child: TextButton(
-                          onPressed: () async {
-                            print("Phone no: " +
-                                _countryCode! +
-                                _phoneController.text);
-                            _signInWithPhone(
-                                "${_countryCode.toString()}${_phoneController.text}");
-                          },
-                          child: Text(
-                            "Continue",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                      isLoading
+                          ? CircularProgressIndicator()
+                          : Container(
+                              height: 5.8.h,
+                              width: 80.w,
+                              child: TextButton(
+                                onPressed: () async {
+                                  print("Phone no: " +
+                                      _countryCode! +
+                                      _phoneController.text);
+                                  _signInWithPhone(
+                                      "${_countryCode.toString()}${_phoneController.text}");
+                                },
+                                child: Text(
+                                  "Continue",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
                       SizedBox(
                         height: 2.h,
                       ),
