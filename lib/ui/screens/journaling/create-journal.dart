@@ -51,6 +51,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   bool _isPosting = false;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
+  Map<String, dynamic> imgUploadResponse = {};
 
   void _pickImage() async {
     final ImagePicker _picker = ImagePicker();
@@ -101,15 +102,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     minimumAspectRatio: 1.0,
                                   )
                                 ]);
+
                             _croppedFile = File(croppedFile!.path);
+
+                            setState(() {
+                              if (_croppedFile != null) _isImageAdded = true;
+                            });
+                            Navigator.pop(context);
+                            imgUploadResponse =
+                                await _uploadImage(isVideo: false);
                           }
 
                           // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
-
-                          Navigator.of(_).pop();
-                          setState(() {
-                            if (_croppedFile != null) _isImageAdded = true;
-                          });
                         },
                       ),
                       IconButton(
@@ -177,14 +181,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       minimumAspectRatio: 1.0,
                                     )
                                   ]);
+
                               _croppedFile = File(croppedFile!.path);
+
+                              setState(() {
+                                if (_croppedFile != null) _isImageAdded = true;
+                              });
+                              Navigator.pop(context);
+
+                              imgUploadResponse =
+                                  await _uploadImage(isVideo: false);
                             }
                             // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
-
-                            Navigator.of(_).pop();
-                            setState(() {
-                              if (_croppedFile != null) _isImageAdded = true;
-                            });
                           },
                           icon: Icon(
                             Icons.camera_alt,
@@ -218,147 +226,152 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SolhAppBar(
-        title: Text(
-            journalPageController.selectedGroupId.value == ''
-                ? "Create Journal"
-                : "Post in group",
-            style: SolhTextStyles.JournalingUsernameText),
-        isLandingScreen: false,
-        isDiaryBtnShown: true,
-      ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: StreamBuilder<UserModel?>(
-                stream: userBlocNetwork.userStateStream,
-                builder: (context, userSnapshot) {
-                  if (userSnapshot.hasData)
-                    return Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          UsernameHeader(
-                            userModel: userSnapshot.requireData,
-                            onTypeChanged: (value) {
-                              print("Changed to $value");
-                              _journalType = value;
-                            },
-                          ),
-                          SizedBox(height: 2.h),
-                          Container(
-                            child: TextField(
-                              controller:
-                                  journalPageController.descriptionController,
-                              maxLength: 240,
-                              maxLines: 6,
-                              minLines: 3,
-                              decoration: InputDecoration(
-                                  fillColor: SolhColors.grey239,
-                                  hintText: "What's on your mind?",
-                                  hintStyle:
-                                      TextStyle(color: Color(0xFFA6A6A6)),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: SolhColors.green)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: SolhColors.green)),
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: SolhColors.green))),
-                              onChanged: (value) async {
-                                if (value == '@') {
-                                  await showMenu(
-                                    context: context,
-                                    position: RelativeRect.fromLTRB(
-                                        200, 150, 100, 100),
-                                    items: [
-                                      PopupMenuItem(
-                                        value: 1,
-                                        child: Text(
-                                          "ROHIT",
-                                          style: TextStyle(
-                                              fontSize: 15.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Roboto',
-                                              color: Colors.green),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 2,
-                                        child: Text(
-                                          "REKHA",
-                                          style: TextStyle(
-                                              fontSize: 15.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Roboto',
-                                              color: Colors.green),
-                                        ),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 3,
-                                        child: Text(
-                                          "DHRUV",
-                                          style: TextStyle(
-                                              fontSize: 15.sp,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Roboto',
-                                              color: Colors.green),
-                                        ),
-                                      ),
-                                    ],
-                                    elevation: 8.0,
-                                  );
-                                }
+        appBar: SolhAppBar(
+          title: Text(
+              journalPageController.selectedGroupId.value == ''
+                  ? "Create Journal"
+                  : "Post in group",
+              style: SolhTextStyles.JournalingUsernameText),
+          isLandingScreen: false,
+          isDiaryBtnShown: true,
+        ),
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: StreamBuilder<UserModel?>(
+                  stream: userBlocNetwork.userStateStream,
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.hasData)
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 4.w, vertical: 2.h),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            UsernameHeader(
+                              userModel: userSnapshot.requireData,
+                              onTypeChanged: (value) {
+                                print("Changed to $value");
+                                _journalType = value;
                               },
                             ),
-                          ),
-                          SizedBox(height: 1.h),
-                          getFeelingTitle(),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          FeelingsContainer(
-                            onFeelingsChanged: (feelings) {
-                              print("feelings changed to: $feelings");
-                            },
-                          ),
-                          SizedBox(height: 2.h),
-                          getMediaContainer(),
-                          SizedBox(height: 10.h),
-                          getCustomFeelingTextBox(),
-                        ],
-                      ),
-                    );
-                  return Center(child: MyLoader());
-                }),
-          ),
-          if (_isPosting)
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              color: SolhColors.green.withOpacity(0.25),
-              child: Center(child: MyLoader()),
+                            SizedBox(height: 2.h),
+                            Container(
+                              child: TextField(
+                                controller:
+                                    journalPageController.descriptionController,
+                                maxLength: 240,
+                                maxLines: 6,
+                                minLines: 3,
+                                decoration: InputDecoration(
+                                    fillColor: SolhColors.grey239,
+                                    hintText: "What's on your mind?",
+                                    hintStyle:
+                                        TextStyle(color: Color(0xFFA6A6A6)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: SolhColors.green)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: SolhColors.green)),
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: SolhColors.green))),
+                                onChanged: (value) async {
+                                  if (value == '@') {
+                                    await showMenu(
+                                      context: context,
+                                      position: RelativeRect.fromLTRB(
+                                          200, 150, 100, 100),
+                                      items: [
+                                        PopupMenuItem(
+                                          value: 1,
+                                          child: Text(
+                                            "ROHIT",
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Roboto',
+                                                color: Colors.green),
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          value: 2,
+                                          child: Text(
+                                            "REKHA",
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Roboto',
+                                                color: Colors.green),
+                                          ),
+                                        ),
+                                        PopupMenuItem(
+                                          value: 3,
+                                          child: Text(
+                                            "DHRUV",
+                                            style: TextStyle(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Roboto',
+                                                color: Colors.green),
+                                          ),
+                                        ),
+                                      ],
+                                      elevation: 8.0,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(height: 1.h),
+                            getFeelingTitle(),
+                            SizedBox(
+                              height: 1.h,
+                            ),
+                            FeelingsContainer(
+                              onFeelingsChanged: (feelings) {
+                                print("feelings changed to: $feelings");
+                              },
+                            ),
+                            SizedBox(height: 2.h),
+                            getMediaContainer(),
+                            SizedBox(height: 10.h),
+                            getCustomFeelingTextBox(),
+                          ],
+                        ),
+                      );
+                    return Center(child: MyLoader());
+                  }),
             ),
-        ],
-      ),
-      floatingActionButton: _isPosting
-          ? Container()
-          : Obx(() {
-              return !feelingsController.isCreatingCustomFeeling.value &&
-                      !feelingsController.isSearching.value
-                  ? FloatingActionButton.extended(
-                      backgroundColor: SolhColors.green,
-                      onPressed: _postJournal,
-                      label: Container(
-                          width: MediaQuery.of(context).size.width - 20.w,
-                          child: Center(child: Text("Post"))))
-                  : Container();
-            }),
-    );
+            if (_isPosting)
+              Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: SolhColors.green.withOpacity(0.25),
+                child: Center(child: MyLoader()),
+              ),
+          ],
+        ),
+        floatingActionButton: _isPosting
+            ? Container()
+            : Obx(() {
+                return journalPageController.isImageUploading.value
+                    ? Container()
+                    : Obx(() {
+                        return !feelingsController
+                                    .isCreatingCustomFeeling.value &&
+                                !feelingsController.isSearching.value
+                            ? FloatingActionButton.extended(
+                                backgroundColor: SolhColors.green,
+                                onPressed: _postJournal,
+                                label: Container(
+                                    width: MediaQuery.of(context).size.width -
+                                        20.w,
+                                    child: Center(child: Text("Post"))))
+                            : Container();
+                      });
+              }));
   }
 
   void _postJournal() async {
@@ -367,10 +380,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
     if (_croppedFile != null ||
         journalPageController.selectedDiary.value.mediaType != null) {
-      Map<String, dynamic> response =
-          journalPageController.selectedDiary.value.mediaType != null
-              ? {}
-              : await _uploadImage();
+      // Map<String, dynamic> response =
+      //     journalPageController.selectedDiary.value.mediaType != null
+      //         ? {}
+      //         : await _uploadImage();
       List<String> feelings = [];
       feelingsController.selectedFeelingsId.value.forEach((element) {
         feelings.add(element);
@@ -379,13 +392,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         postId: journalPageController.selectedDiary.value.id,
         mediaUrl: journalPageController.selectedDiary.value.mediaType != null
             ? journalPageController.selectedDiary.value.mediaUrl
-            : response["imageUrl"],
+            : imgUploadResponse["imageUrl"],
         description: journalPageController.descriptionController.text,
         feelings: feelings,
         journalType: _journalType,
         mimetype: journalPageController.selectedDiary.value.mediaType != null
             ? journalPageController.selectedDiary.value.mediaType
-            : response["mimetype"],
+            : imgUploadResponse["mimetype"],
         groupId: journalPageController.selectedGroupId.value,
       );
       print('posting + ${journalPageController.selectedDiary.value.id}');
@@ -409,7 +422,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           _isPosting = false;
         });
       }
-      Navigator.pop(context);
     } else {
       List<String> feelings = [];
       feelingsController.selectedFeelingsId.value.forEach((element) {
@@ -447,18 +459,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
       }
       //journalsBloc.getJournalsSnapshot();
-
-      Navigator.pop(context);
     }
+    Navigator.pop(context);
   }
 
   Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
+    journalPageController.isImageUploading.value = true;
     print(_croppedFile!.path + " " + _croppedFile!.lengthSync().toString());
     return await Network.uploadFileToServer(
-        "${APIConstants.api}/api/fileupload/journal-image",
-        "file",
-        _croppedFile!,
-        isVideo: isVideoPicked);
+            "${APIConstants.api}/api/fileupload/journal-image",
+            "file",
+            _croppedFile!,
+            isVideo: isVideoPicked)
+        .then((value) {
+      journalPageController.isImageUploading.value = false;
+      return value;
+    });
   }
 
   Widget getCustomFeelingTextBox() {
@@ -704,7 +720,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           icon: Icon(Icons.close, color: SolhColors.black),
                         ),
                       ),
-                    )
+                    ),
+                    Obx(() {
+                      return journalPageController.isImageUploading.value
+                          ? LinearProgressIndicator(
+                              value: 0.0,
+                              backgroundColor: Colors.grey,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  SolhColors.green),
+                            )
+                          : Container();
+                    })
                   ],
                 )
               : _isVideoAdded
@@ -768,6 +794,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                         InkWell(
                           onTap: (() {
+                            FocusScope.of(context).unfocus();
                             _pickImage();
                           }),
                           child: Image.asset('assets/images/add_image.png',

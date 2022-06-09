@@ -23,6 +23,7 @@ class JournalPageController extends GetxController {
   var myVideoPlayerControllers = [].obs;
   var selectedGroupId = "".obs;
   var isScrollingStarted = false.obs;
+  var isImageUploading = false.obs;
 
   Future<void> getAllJournals(int pageNo, {String? groupId}) async {
     print('started gettting all journals $pageNo');
