@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 import '../../constants/api.dart';
 import '../../model/get-help/get_issue_response_model.dart';
+import '../../model/get-help/search_market_model.dart';
 import '../../services/network/error_handling.dart';
 import '../../services/network/network.dart';
 
 class GetHelpController extends GetxController {
   var getIssueResponseModel = GetIssueResponseModel().obs;
   var issueList = [].obs;
+  var topConsultantList = SearchMarketModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
   var isAllIssueShown = false.obs;
 
@@ -52,11 +54,23 @@ class GetHelpController extends GetxController {
     }
   }
 
+  Future<void> getTopConsultant() async {
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequest(
+          "${APIConstants.api}/api/top-consultants");
+
+      topConsultantList.value = SearchMarketModel.fromJson(map);
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     getIssueList();
     getSpecializationList();
+    getTopConsultant();
   }
 }

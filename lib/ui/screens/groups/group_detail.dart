@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -15,14 +16,46 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../routes/routes.gr.dart';
 
-class GroupDetailsPage extends StatelessWidget {
+class GroupDetailsPage extends StatefulWidget {
   GroupDetailsPage({Key? key, required this.group, this.isJoined})
       : super(key: key);
   final GroupList group;
   bool? isJoined;
+
+  @override
+  State<GroupDetailsPage> createState() => _GroupDetailsPageState();
+}
+
+class _GroupDetailsPageState extends State<GroupDetailsPage> {
+  late GroupList groupList;
+  late bool? isJoined;
   JournalPageController journalPageController = Get.find();
+
   CreateGroupController createGroupController = Get.find();
+
   DiscoverGroupController discoverGroupController = Get.find();
+
+  @override
+  void initState() {
+    groupList = widget.group;
+    isJoined = widget.isJoined;
+    if (groupList.groupMembers == null) {
+      getGroupDetails();
+    }
+    discoverGroupController.joinedGroupModel.value.groupList!
+        .forEach((element) {
+      if (element.sId == groupList.sId) {
+        isJoined = true;
+      }
+    });
+    discoverGroupController.createdGroupModel.value.groupList!
+        .forEach((element) {
+      if (element.sId == groupList.sId) {
+        isJoined = true;
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +67,36 @@ class GroupDetailsPage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Hero(
-                  tag: 'groups',
-                  child: Container(
-                    width: double.infinity,
-                    height: 300,
-                    child: group.groupMediaUrl != null
-                        ? CachedNetworkImage(
-                            imageUrl: group.groupMediaUrl != null
-                                ? group.groupMediaUrl ?? ''
-                                : 'https://picsum.photos/200/300',
-                            fit: BoxFit.cover)
-                        : Image.asset('assets/images/group_placeholder.png',
-                            fit: BoxFit.cover),
-                  ),
-                ),
-                getGroupInfo(context),
+                getGroupImg(),
+                Obx(() {
+                  return discoverGroupController.isLoading.value
+                      ? Container()
+                      : getGroupInfo(context);
+                })
               ],
             ),
             SizedBox(
               height: 20,
             ),
-            getPostButton(context),
+            Obx(() {
+              return discoverGroupController.isLoading.value
+                  ? Container()
+                  : getPostButton(context);
+            }),
             SizedBox(
               height: 10,
             ),
-            getGroupDesc(),
+            Obx(() {
+              return discoverGroupController.isLoading.value
+                  ? Container()
+                  : getGroupDesc();
+            }),
             Divider(),
-            getMembersList(context)
+            Obx(() {
+              return discoverGroupController.isLoading.value
+                  ? Container()
+                  : getMembersList(context);
+            })
           ],
         ),
       ),
@@ -72,37 +107,19 @@ class GroupDetailsPage extends StatelessWidget {
     return SolhAppBar(
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
-          group.groupName ?? '' + '(${group.groupType})',
+          groupList.groupName ?? '' + '(${groupList.groupType})',
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
         ),
-        group.defaultAdmin!.id == userBlocNetwork.id
-            ? PopupMenuButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: SolhColors.green,
-                ),
-                itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      child: Text('Edit'),
-                      value: 1,
-                    ),
-                    PopupMenuItem(
-                      child: Text('Delete'),
-                      value: 2,
-                    ),
-                  ];
-                },
-                onSelected: (value) async {
-                  if (value == 1) {
-                  } else {
-                    await discoverGroupController.deleteGroups(group.id ?? '');
-                    Navigator.pop(context);
-                  }
-                },
-              )
-            : Container(),
+        groupList.groupMembers != null
+            ? groupList.defaultAdmin!.id == userBlocNetwork.id
+                ? getPopUpMenuBtn(context)
+                : Container()
+            : Obx(() {
+                return discoverGroupController.isLoading.value
+                    ? Container()
+                    : getPopUpMenuBtn(context);
+              })
       ]),
       isLandingScreen: false,
     );
@@ -137,7 +154,7 @@ class GroupDetailsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                group.groupName ?? '',
+                groupList.groupName ?? '',
                 style: TextStyle(
                   color: SolhColors.white,
                   fontSize: 20,
@@ -151,7 +168,7 @@ class GroupDetailsPage extends StatelessWidget {
                       Image.asset('assets/icons/group/lock.png'),
                       SizedBox(width: 5),
                       Text(
-                        group.groupType ?? '',
+                        groupList.groupType ?? '',
                         style: TextStyle(
                           color: SolhColors.white,
                           fontSize: 12,
@@ -170,7 +187,9 @@ class GroupDetailsPage extends StatelessWidget {
                     children: [
                       Image.asset('assets/icons/group/persons.png'),
                       SizedBox(width: 5),
-                      Text(group.groupMembers!.length.toString() + ' members',
+                      Text(
+                          groupList.groupMembers!.length.toString() +
+                              ' members',
                           style: TextStyle(
                             color: SolhColors.white,
                             fontSize: 12,
@@ -190,7 +209,7 @@ class GroupDetailsPage extends StatelessWidget {
                         'assets/icons/group/edit.png',
                       ),
                       SizedBox(width: 5),
-                      Text(group.journalCount!.toString() + ' posts',
+                      Text(groupList.journalCount!.toString() + ' posts',
                           style: TextStyle(
                             color: SolhColors.white,
                             fontSize: 12,
@@ -219,7 +238,7 @@ class GroupDetailsPage extends StatelessWidget {
                 color: SolhColors.green,
               )),
           ReadMoreText(
-            group.groupDescription ?? '',
+            groupList.groupDescription ?? '',
             style: TextStyle(
               color: SolhColors.grey,
               fontSize: 14,
@@ -235,35 +254,8 @@ class GroupDetailsPage extends StatelessWidget {
   }
 
   // Padding(
-  //   padding: const EdgeInsets.all(8.0),
-  //   child: Container(
-  //     height: 50,
-  //     child: SolhGreenBorderButton(
-  //         height: 50,
-  //         width: MediaQuery.of(context).size.width / 3,
-  //         child: Text(
-  //           'See Post',
-  //           style: SolhTextStyles.GreenBorderButtonText,
-  //         ),
-  //         onPressed: () {
-  //           journalPageController.selectedGroupId.value =
-  //               group.sId ?? '';
-  //           journalPageController.journalsList.clear();
-  //           journalPageController.pageNo = 1;
-  //           journalPageController.endPageLimit = 1;
-  //           journalPageController.getAllJournals(1,
-  //               groupId: group.sId ?? '');
-  //           journalPageController.journalsList.refresh();
-  //           Navigator.push(context,
-  //               MaterialPageRoute(builder: (context) {
-  //             return JournalingScreen();
-  //           }));
-  //         }),
-  //   ),
-  // ),
-
   getPostButton(BuildContext context) {
-    return isJoined != null
+    return isJoined == null
         ? Container(
             height: 50,
             child: Padding(
@@ -277,7 +269,7 @@ class GroupDetailsPage extends StatelessWidget {
                   ),
                   onPressed: () async {
                     await createGroupController.joinGroup(
-                        groupId: group.sId ?? '');
+                        groupId: groupList.sId ?? '');
                     await discoverGroupController.getJoinedGroups();
                     await discoverGroupController.getDiscoverGroups();
 
@@ -298,7 +290,7 @@ class GroupDetailsPage extends StatelessWidget {
                   ),
                   onPressed: () {
                     journalPageController.selectedGroupId.value =
-                        group.sId ?? '';
+                        groupList.sId ?? '';
                     AutoRouter.of(context).push(CreatePostScreenRouter());
                   },
                 ),
@@ -310,12 +302,12 @@ class GroupDetailsPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       journalPageController.selectedGroupId.value =
-                          group.sId ?? '';
+                          groupList.sId ?? '';
                       journalPageController.journalsList.clear();
                       journalPageController.pageNo = 1;
                       journalPageController.endPageLimit = 1;
                       journalPageController.getAllJournals(1,
-                          groupId: group.sId ?? '');
+                          groupId: groupList.sId ?? '');
                       journalPageController.journalsList.refresh();
 
                       AutoRouter.of(context).push(JournalingScreen());
@@ -346,7 +338,7 @@ class GroupDetailsPage extends StatelessWidget {
             ),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
-            itemCount: group.groupMembers!.length,
+            itemCount: groupList.groupMembers!.length,
             itemBuilder: (context, index) {
               return Row(
                 children: [
@@ -355,7 +347,7 @@ class GroupDetailsPage extends StatelessWidget {
                     //   'assets/images/group_placeholder.png',
                     // ),
                     backgroundImage: CachedNetworkImageProvider(
-                        group.groupMembers![index].profilePicture ?? ''),
+                        groupList.groupMembers![index].profilePicture ?? ''),
                     backgroundColor: Colors.transparent,
                   ),
                   SizedBox(
@@ -364,12 +356,12 @@ class GroupDetailsPage extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(group.groupMembers![index].name ?? '',
+                      Text(groupList.groupMembers![index].name ?? '',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w600)),
                       Container(
                         width: MediaQuery.of(context).size.width / 1.2,
-                        child: Text(group.groupMembers![index].bio ?? '',
+                        child: Text(groupList.groupMembers![index].bio ?? '',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 14, color: SolhColors.grey)),
@@ -390,7 +382,7 @@ class GroupDetailsPage extends StatelessWidget {
       children: [
         CircleAvatar(
           backgroundImage: CachedNetworkImageProvider(
-              group.defaultAdmin!.profilePicture ?? ''),
+              groupList.defaultAdmin!.profilePicture ?? ''),
           backgroundColor: Colors.transparent,
         ),
         SizedBox(
@@ -399,17 +391,68 @@ class GroupDetailsPage extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(group.defaultAdmin!.name ?? '',
+            Text(groupList.defaultAdmin!.name ?? '',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
             Container(
               width: MediaQuery.of(context).size.width / 1.2,
-              child: Text(group.defaultAdmin!.bio ?? '',
+              child: Text(groupList.defaultAdmin!.bio ?? '',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 14, color: SolhColors.grey)),
             ),
           ],
         ),
       ],
+    );
+  }
+
+  Widget getGroupImg() {
+    return Hero(
+      tag: 'groups',
+      child: Container(
+        width: double.infinity,
+        height: 300,
+        child: groupList.groupMediaUrl != null
+            ? CachedNetworkImage(
+                imageUrl: groupList.groupMediaUrl != null
+                    ? groupList.groupMediaUrl ?? ''
+                    : 'https://picsum.photos/200/300',
+                fit: BoxFit.cover)
+            : Image.asset('assets/images/group_placeholder.png',
+                fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Future<void> getGroupDetails() async {
+    await discoverGroupController.getGroupDetail(groupList.sId!);
+    groupList = discoverGroupController.groupDetail.value;
+  }
+
+  getPopUpMenuBtn(BuildContext context) {
+    return PopupMenuButton(
+      icon: Icon(
+        Icons.more_vert,
+        color: SolhColors.green,
+      ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            child: Text('Edit'),
+            value: 1,
+          ),
+          PopupMenuItem(
+            child: Text('Delete'),
+            value: 2,
+          ),
+        ];
+      },
+      onSelected: (value) async {
+        if (value == 1) {
+        } else {
+          await discoverGroupController.deleteGroups(groupList.id ?? '');
+          Navigator.pop(context);
+        }
+      },
     );
   }
 }

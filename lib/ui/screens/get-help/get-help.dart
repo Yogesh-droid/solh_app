@@ -264,11 +264,23 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: 6,
-                  itemBuilder: (_, index) => TopConsultantsTile(
-                        bio: _topConsultants[index]["bio"].toString(),
-                        name: _topConsultants[index]["name"].toString(),
-                        mobile: _topConsultants[index]["mobile"].toString(),
-                      )),
+                  itemBuilder: (_, index) {
+                    print(getHelpController.topConsultantList.value
+                        .doctors![index].profilePicture);
+                    return TopConsultantsTile(
+                      bio: getHelpController
+                              .topConsultantList.value.doctors![index].bio ??
+                          '',
+                      name: getHelpController
+                              .topConsultantList.value.doctors![index].name ??
+                          '',
+                      mobile: getHelpController.topConsultantList.value
+                              .doctors![index].contactNumber ??
+                          '',
+                      imgUrl: getHelpController.topConsultantList.value
+                          .doctors![index].profilePicture,
+                    );
+                  }),
             ),
             GetHelpDivider(),
           ],
@@ -318,18 +330,22 @@ class TopConsultantsTile extends StatelessWidget {
     required String name,
     required String bio,
     required String mobile,
+    String? imgUrl,
     Key? key,
   })  : _name = name,
         _bio = bio,
         _mobile = mobile,
+        _imgUrl = imgUrl,
         super(key: key);
 
   final String _mobile;
   final String _name;
   final String _bio;
+  final String? _imgUrl;
 
   @override
   Widget build(BuildContext context) {
+    print(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return Container(
       //width: 70.w,
       //height: 25.h,
@@ -344,11 +360,10 @@ class TopConsultantsTile extends StatelessWidget {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
             child: CachedNetworkImage(
-              imageUrl:
+              imageUrl: _imgUrl ??
                   'https://solh.s3.amazonaws.com/user/profile/1651493729337',
-              color: Color(0xFFD9D9D9),
-              width: 25.w,
-              fit: BoxFit.cover,
+              width: 30.w,
+              fit: BoxFit.fill,
             ),
           ),
           SizedBox(width: 2.w),

@@ -99,7 +99,8 @@ class ManageGroupPage extends StatelessWidget {
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context);
+                      return getGroupCard(groupList[index], context,
+                          isJoined: true);
                     },
                   )
                 : Center(
@@ -117,7 +118,8 @@ class ManageGroupPage extends StatelessWidget {
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context);
+                      return getGroupCard(groupList[index], context,
+                          isJoined: true);
                     },
                   )
                 : Center(
@@ -135,8 +137,10 @@ class ManageGroupPage extends StatelessWidget {
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context,
-                          isJoined: false);
+                      return getGroupCard(
+                        groupList[index],
+                        context,
+                      );
                     },
                   )
                 : Center(
