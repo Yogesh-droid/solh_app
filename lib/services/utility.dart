@@ -36,4 +36,8 @@ class Utility {
           );
         });
   }
+
+  static void hideLoader(BuildContext context) {
+    Navigator.pop(context);
+  }
 }

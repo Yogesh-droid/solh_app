@@ -133,11 +133,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           if (_xFile != null) {
                             widget.trimmer
                                 .loadVideo(videoFile: File(_xFile!.path));
-                            Navigator.of(context).push(
+                            imgUploadResponse =
+                                await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) {
                                 return TrimmerView(File(_xFile!.path));
                               }),
                             );
+                            Navigator.pop(context);
                           }
 
                           ////////////////////////////////////////////////////////////
@@ -223,8 +225,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       _isImageAdded = true;
     }
     if (widget.map != null) {
+      print("map is not null + " + widget.map.toString());
       imgUploadResponse = widget.map!;
-      isVideoPicked = false;
     }
     userBlocNetwork.getMyProfileSnapshot();
   }
@@ -466,6 +468,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
       //journalsBloc.getJournalsSnapshot();
     }
+
     Navigator.pop(context);
   }
 
@@ -698,6 +701,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ],
                   ),
                 )
+          /////////  the above portion was if my diary is selected and below is if my diary is not selected
           : _isImageAdded
               ? Stack(
                   children: [
@@ -729,11 +733,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     ),
                     Obx(() {
                       return journalPageController.isImageUploading.value
-                          ? LinearProgressIndicator(
-                              value: 0.0,
-                              backgroundColor: Colors.grey,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                  SolhColors.green),
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: LinearProgressIndicator(
+                                value: 0.0,
+                                backgroundColor: Colors.blue.withOpacity(0.5),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    SolhColors.green),
+                              ),
                             )
                           : Container();
                     })
@@ -779,7 +787,22 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     Icon(Icons.close, color: SolhColors.black),
                               ),
                             ),
-                          )
+                          ),
+                          Obx(() {
+                            return journalPageController.isImageUploading.value
+                                ? Positioned(
+                                    left: 0,
+                                    top: 0,
+                                    child: LinearProgressIndicator(
+                                      value: 0.0,
+                                      backgroundColor:
+                                          Colors.blue.withOpacity(0.5),
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          SolhColors.green),
+                                    ),
+                                  )
+                                : Container();
+                          })
                         ],
                       );
                     })

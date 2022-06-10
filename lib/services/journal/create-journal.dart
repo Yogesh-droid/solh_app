@@ -25,7 +25,6 @@ class CreateJournal {
 
   Future<String> postJournal() async {
     if (mediaUrl != null) {
-      print(feelings.toString());
       // Map<String, dynamic> apiResponse =
       //     await Network.makeHttpPostRequestWithToken(
       //             url: "${APIConstants.api}/api/create-user-post",
@@ -50,33 +49,35 @@ class CreateJournal {
       //   return {"error": error};
       // });
       // print("resposne: " + apiResponse.toString());
+      Map<String, dynamic> body = groupId != ''
+          ? {
+              "description": description,
+              "mediaType": mimetype,
+              "mediaUrl": mediaUrl,
+              "feelings": feelings,
+              "journalType": journalType,
+              'postIn': 'Group',
+              "groupPostedIn": groupId
+            }
+          : {
+              "description": description,
+              "mediaType": mimetype,
+              "mediaUrl": mediaUrl,
+              "feelings": feelings,
+              "journalType": journalType
+            };
       print('${APIConstants.api}/api/create-user-post');
+      print(body);
+
       await http.post(Uri.parse('${APIConstants.api}/api/create-user-post'),
-          body: groupId != ''
-              ? jsonEncode({
-                  "description": description,
-                  "mediaType": mimetype,
-                  "mediaUrl": mediaUrl,
-                  "feelings": feelings,
-                  "journalType": journalType,
-                  'postIn': 'Group',
-                  "groupPostedIn": groupId
-                })
-              : jsonEncode({
-                  "description": description,
-                  "mediaType": mimetype,
-                  "mediaUrl": mediaUrl,
-                  "feelings": feelings,
-                  "journalType": journalType
-                }),
+          body: jsonEncode(body),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) => print(value.body));
+          }).then((value) {});
 
       return "posted";
     } else {
-      print(feelings.toString());
       // Map<String, dynamic> apiResponse =
       //     await Network.makeHttpPostRequestWithToken(
       //             url: "${APIConstants.api}/api/create-user-post",
@@ -96,25 +97,27 @@ class CreateJournal {
       //         .onError((error, stackTrace) {
       //   return {"error": error};
       // });
+      Map<String, dynamic> body = groupId != ''
+          ? {
+              "description": description,
+              "feelings": feelings,
+              "journalType": journalType,
+              'postIn': 'Group',
+              "groupPostedIn": groupId
+            }
+          : {
+              "description": description,
+              "feelings": feelings,
+              "journalType": journalType
+            };
       print('${APIConstants.api}/api/create-user-post');
+      print(body);
       await http.post(Uri.parse("${APIConstants.api}/api/create-user-post"),
-          body: groupId != ''
-              ? jsonEncode({
-                  "description": description,
-                  "feelings": feelings,
-                  "journalType": journalType,
-                  'postIn': 'Group',
-                  "groupPostedIn": groupId
-                })
-              : jsonEncode({
-                  "description": description,
-                  "feelings": feelings,
-                  "journalType": journalType
-                }),
+          body: jsonEncode(body),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) => print(value.body));
+          }).then((value) {});
 
       return "posted";
     }
