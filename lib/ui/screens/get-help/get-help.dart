@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
@@ -17,6 +18,68 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+final List<Map<String, String>> _solhVolunteers = [
+  {
+    "name": 'PRAKASH CHANDRA',
+    "bio":
+        'Depression, OCD, Behavioural Issues, Couples Therapy, Anxiety, Personality Issues.',
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Ms.Ekta Singh",
+    "bio":
+        "Counselling Psychologist, Educational Psychologist, Psychotherapist, Relationship Counsellor, Child Psychologist",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Dr. Sakshi Gupta",
+    "bio":
+        "Clinical psychologist, Child Counsellor, Career Counsellor,Psychologist,internships",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Lalit Sharma",
+    "bio": "Speech And Language Therapist ",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Nidhi Sharma",
+    "bio": "speech rehabilitation, Occupational Therapy &  special education",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Dr Ankit Goel",
+    "bio": "Psychiatrist,psychologist,behaviour therapy,counselling",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  },
+  {
+    "name": "Ms Mariella Zanoletti",
+    "bio": "Therapist, counselling psychologist, psychotherapist",
+    "like": "45",
+    "helped": "45",
+    "interaction": "45",
+    "image": 'assets/images/Oval2.png',
+  }
+];
 
 class GetHelpScreen extends StatefulWidget {
   const GetHelpScreen({Key? key}) : super(key: key);
@@ -39,47 +102,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
     "Organizational Psychologists",
     "Developmental Psychologists",
     "Expressive Art Therapists"
-  ];
-
-  final List<Map<String, String>> _topConsultants = [
-    {
-      "name": 'DR. PRAKASH CHANDRA',
-      "bio":
-          'Depression, OCD, Behavioural Issues, Couples Therapy, Anxiety, Personality Issues.',
-      "mobile": "9313592008"
-    },
-    {
-      "name": "Ms.Ekta Singh",
-      "bio":
-          "Counselling Psychologist, Educational Psychologist, Psychotherapist, Relationship Counsellor, Child Psychologist",
-      "mobile": "9953553440"
-    },
-    {
-      "name": "Dr. Sakshi Gupta",
-      "bio":
-          "Clinical psychologist, Child Counsellor, Career Counsellor,Psychologist,internships",
-      "mobile": "8860082131"
-    },
-    {
-      "name": "Lalit Sharma",
-      "bio": "Speech And Language Therapist ",
-      "mobile": "8285366721"
-    },
-    {
-      "name": "Nidhi Sharma",
-      "bio": "speech rehabilitation, Occupational Therapy &  special education",
-      "mobile": "9312408234"
-    },
-    {
-      "name": "Dr Ankit Goel",
-      "bio": "Psychiatrist,psychologist,behaviour therapy,counselling",
-      "mobile": "9152571051"
-    },
-    {
-      "name": "Ms Mariella Zanoletti",
-      "bio": "Therapist, counselling psychologist, psychotherapist",
-      "mobile": "9899186443"
-    }
   ];
 
   @override
@@ -121,7 +143,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SolhSearchField(
-                  hintText: 'Anxiety, Corporate Stress, Family Isues',
+                  hintText: 'Anxiety, Corporate Stress, Family Issues',
                   icon: 'assets/icons/app-bar/search.svg',
                   onTap: () {
                     searchMarketController.searchMarketModel.value =
@@ -217,18 +239,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                         color: Color(0xFFEFEFEF)),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 8.w,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                           child: CircleAvatar(
-                            radius: 7.8.w,
-                            backgroundColor: Colors.white,
-                            child: CachedNetworkImage(
-                              imageUrl: getHelpController
-                                      .getSpecializationModel
-                                      .value
-                                      .specializationList![index]
-                                      .displayImage ??
-                                  '',
+                            radius: 8.w,
+                            child: CircleAvatar(
+                              radius: 7.8.w,
+                              backgroundColor: Colors.white,
+                              child: CachedNetworkImage(
+                                imageUrl: getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .displayImage ??
+                                    '',
+                              ),
                             ),
                           ),
                         ),
@@ -283,6 +308,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   }),
             ),
             GetHelpDivider(),
+            SolhVolunteers(),
           ],
         ),
       ),
@@ -354,7 +380,7 @@ class TopConsultantsTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.only(
@@ -363,6 +389,7 @@ class TopConsultantsTile extends StatelessWidget {
               imageUrl: _imgUrl ??
                   'https://solh.s3.amazonaws.com/user/profile/1651493729337',
               width: 30.w,
+              height: double.maxFinite,
               fit: BoxFit.fill,
             ),
           ),
@@ -526,6 +553,222 @@ class GetHelpDivider extends StatelessWidget {
     return Container(
       color: Color(0x30D9D9D9),
       height: 1.8.h,
+    );
+  }
+}
+
+class SolhVolunteers extends StatelessWidget {
+  const SolhVolunteers({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.5.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Solh Volunteers',
+                  style: GoogleFonts.signika(
+                    fontSize: 20,
+                    color: Color(0xFF666666),
+                  ),
+                ),
+                Text(
+                  'View All',
+                  style: GoogleFonts.signika(
+                    fontSize: 14,
+                    color: SolhColors.green,
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: 300,
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _solhVolunteers.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 289,
+                  width: 164,
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 24),
+                  child: Stack(children: [
+                    Container(
+                      height: 52,
+                      width: 164,
+                      decoration: BoxDecoration(
+                        color: SolhColors.green,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      top: 8,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 70,
+                            width: 70,
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle),
+                            child: Container(
+                              child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    backgroundImage: AssetImage(
+                                        _solhVolunteers[index]['image']!),
+                                  )),
+                            ),
+                          ),
+                          Text(_solhVolunteers[index]['name']!),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Solh Expert',
+                                style: GoogleFonts.signika(
+                                  fontSize: 10,
+                                  color: Color(0xFF5F9B8C),
+                                ),
+                              ),
+                              Image(
+                                  image: AssetImage(
+                                      'assets/images/verifiedTick.png')),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Container(
+                            height: 45,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Text(
+                                _solhVolunteers[index]['bio']!,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.signika(
+                                  fontSize: 12,
+                                  color: Color(0xff666666),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 13,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.thumb_up,
+                                      size: 12,
+                                      color: Color(0xff5F9B8C),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      _solhVolunteers[index]['like']!,
+                                      style: GoogleFonts.signika(
+                                          fontSize: 12,
+                                          color: Color(0xff5F9B8C)),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/images/connect.svg',
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      _solhVolunteers[index]['helped']!,
+                                      style: GoogleFonts.signika(
+                                          fontSize: 12,
+                                          color: Color(0xff5F9B8C)),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.group,
+                                      size: 12,
+                                      color: Color(0xff5F9B8C),
+                                    ),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Text(
+                                      _solhVolunteers[index]['interaction']!,
+                                      style: GoogleFonts.signika(
+                                          fontSize: 12,
+                                          color: Color(0xff5F9B8C)),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 33,
+                          ),
+                          Container(
+                            height: 32,
+                            width: 148,
+                            decoration: BoxDecoration(
+                                color: SolhColors.green,
+                                borderRadius: BorderRadius.circular(16)),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/connect.svg',
+                                    height: 14,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Text(
+                                    'Connect',
+                                    style: GoogleFonts.signika(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ]),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

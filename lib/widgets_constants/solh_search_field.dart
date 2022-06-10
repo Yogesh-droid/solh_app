@@ -29,7 +29,7 @@ class SolhSearchField extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Row(
             children: [
               Expanded(
