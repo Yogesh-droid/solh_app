@@ -9,7 +9,9 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import '../../../constants/api.dart';
 import '../../../routes/routes.gr.dart';
+import '../../../services/network/network.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
@@ -109,10 +111,13 @@ class WhatsOnYourMindSection extends StatelessWidget {
                                   ]);
                               _croppedFile = File(croppedFile!.path);
                             }
+                            Map<String, dynamic> map =
+                                await _uploadImage(isVideo: false);
                             // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CreatePostScreen(
                                       croppedFile: _croppedFile,
+                                      map: map,
                                     )));
                           },
                           icon: SvgPicture.asset(
@@ -147,6 +152,17 @@ class WhatsOnYourMindSection extends StatelessWidget {
           ],
         ),
       );
+    });
+  }
+
+  Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
+    return await Network.uploadFileToServer(
+            "${APIConstants.api}/api/fileupload/journal-image",
+            "file",
+            _croppedFile!,
+            isVideo: false)
+        .then((value) {
+      return value;
     });
   }
 }
