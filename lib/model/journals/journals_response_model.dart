@@ -219,7 +219,7 @@ class PostedBy {
       this.lastName});
 
   PostedBy.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+    sId = json['id'];
     gender = json['gender'];
     status = json['status'];
     // if (json['qualification'] != null) {
