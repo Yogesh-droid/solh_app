@@ -26,9 +26,11 @@ import '../../../model/journals/journals_response_model.dart';
 import 'trimmer_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({Key? key, this.croppedFile, this.isPostedFromDiaryDetails})
+  CreatePostScreen(
+      {Key? key, this.croppedFile, this.map, this.isPostedFromDiaryDetails})
       : super(key: key);
   File? croppedFile;
+  Map<String, dynamic>? map;
   Trimmer trimmer = Trimmer();
   final bool? isPostedFromDiaryDetails;
 
@@ -219,6 +221,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (widget.croppedFile != null) {
       _croppedFile = widget.croppedFile;
       _isImageAdded = true;
+    }
+    if (widget.map != null) {
+      imgUploadResponse = widget.map!;
+      isVideoPicked = false;
     }
     userBlocNetwork.getMyProfileSnapshot();
   }
