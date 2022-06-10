@@ -8,6 +8,8 @@ class DiscoverGroupController extends GetxController {
   var createdGroupModel = GetGroupResponseModel().obs;
   var joinedGroupModel = GetGroupResponseModel().obs;
   var discoveredGroupModel = GetGroupResponseModel().obs;
+  var groupDetail = GroupList().obs;
+  var isLoading = false.obs;
 
   @override
   void onInit() {
@@ -46,5 +48,16 @@ class DiscoverGroupController extends GetxController {
         url: '${APIConstants.api}/api/group?groupId=$groupId', body: {});
     getCreatedGroups();
     getJoinedGroups();
+  }
+
+  Future<void> getGroupDetail(String groupId) async {
+    isLoading.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        '${APIConstants.api}/api/group/$groupId');
+
+    if (map['success']) {
+      groupDetail.value = GroupList.fromJson(map['groupList'][0]);
+    }
+    isLoading.value = false;
   }
 }

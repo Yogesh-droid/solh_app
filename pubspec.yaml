@@ -41,6 +41,8 @@ dependencies:
   video_player: ^2.4.0
   new_version: ^0.3.0
   flutter_native_splash: ^2.1.6
+  shimmer: ^2.0.0
+  alt_sms_autofill: ^1.0.0
 
 dev_dependencies:
   build_runner:

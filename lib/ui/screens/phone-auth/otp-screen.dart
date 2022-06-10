@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 import '../../../services/user/session-cookie.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen(
@@ -36,6 +39,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   void initState() {
+    getSms();
     super.initState();
     // _otpInteractor = OTPInteractor();
     // _otpInteractor
@@ -60,9 +64,24 @@ class _OTPScreenState extends State<OTPScreen> {
     //listenOtp();
   }
 
+  Future<void> getSms() async {
+    try {
+      String? commingSms = await AltSmsAutofill().listenForSms;
+      if (commingSms != null) {
+        print(commingSms);
+        _otpController.text = commingSms.substring(0, 6);
+      }
+    } catch (e) {
+      String commingSms = 'Failed to get Sms.';
+    }
+  }
+
+  bool isLoading = false;
+
   @override
   void dispose() {
     //SmsAutoFill().unregisterListener();
+    AltSmsAutofill().unregisterListener();
     print("unregisterListener");
     super.dispose();
   }
@@ -93,6 +112,8 @@ class _OTPScreenState extends State<OTPScreen> {
                       selectedColor: SolhColors.green),
                   length: 6,
                   onCompleted: (String value) async {
+                    isLoading = true;
+                    setState(() {});
                     print(widget._verificationId);
                     print("smscode: ${_otpController.text}");
                     PhoneAuthCredential _phoneAuthCredential =
@@ -124,6 +145,7 @@ class _OTPScreenState extends State<OTPScreen> {
                               CreateProfileScreenRouter(),
                               predicate: (value) => false);
                     }).onError((error, stackTrace) {
+                      isLoading = false;
                       ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(error.toString())));
                     });
@@ -188,14 +210,56 @@ class _OTPScreenState extends State<OTPScreen> {
                       '''Didn’t receive a code?  ''',
                       style: TextStyle(fontWeight: FontWeight.w300),
                     ),
-                    InkWell(onTap: () {}, child: Text("Resend Code"))
+                    InkWell(onTap: () {}, child: TimerWidget())
                   ],
-                )
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.3,
+                ),
+                isLoading ? CircularProgressIndicator() : Container()
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class TimerWidget extends StatefulWidget {
+  const TimerWidget({Key? key}) : super(key: key);
+
+  @override
+  State<TimerWidget> createState() => _TimerWidgetState();
+}
+
+class _TimerWidgetState extends State<TimerWidget> {
+  int time = 60;
+
+  int timeManager() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      time--;
+      if (time == 0) {
+        timer.cancel();
+      }
+      setState(() {});
+    });
+    return time;
+  }
+
+  @override
+  void initState() {
+    timeManager();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('build');
+    return Text(
+      time == 0 ? 'Resend code' : time.toString(),
+      style: TextStyle(fontSize: 14),
     );
   }
 }

@@ -2,15 +2,18 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
@@ -18,6 +21,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:video_player/video_player.dart';
+import '../../groups/group_detail.dart';
 import 'solh_expert_badge.dart';
 
 class JournalTile extends StatefulWidget {
@@ -50,6 +54,21 @@ class _JournalTileState extends State<JournalTile> {
   void initState() {
     super.initState();
     getFeelings();
+  }
+
+  Map getTexts() {
+    List textList = widget._journalModel!.description!.split('@');
+    if (textList.length == 1) {
+      return {
+        'text1': textList[0],
+      };
+    }
+    List textList2 = textList[1].split(' ');
+    String text3 = textList[1].replaceAll(textList2[0], '');
+    print('map++' +
+        {'text1': textList[0], 'text2': text3, 'text3': textList2[0]}
+            .toString());
+    return {'text1': textList[0], 'text2': text3, 'text3': textList2[0]};
   }
 
   @override
@@ -86,6 +105,7 @@ class _JournalTileState extends State<JournalTile> {
     if (widget.feelingList.length > 4) {
       widget.feelingList.removeRange(4, widget.feelingList.length);
     }
+    print(widget.feelingList);
   }
 
   Future<bool> _likeJournal() async {
@@ -112,14 +132,27 @@ class _JournalTileState extends State<JournalTile> {
         left: MediaQuery.of(context).size.width / 35,
       ),
       child: GestureDetector(
-        onTap: () => {
-          connectionController
-              .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
-          print(widget._journalModel!.postedBy!.sId),
-          AutoRouter.of(context).push(ConnectScreenRouter(
-              uid: widget._journalModel!.postedBy!.uid ?? '',
-              sId: widget._journalModel!.postedBy!.sId ?? '')),
-        },
+        onTap: () => widget._journalModel!.group != null &&
+                journalPageController.selectedGroupId.value.length == 0
+            ? {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return GroupDetailsPage(
+                    group: GroupList(
+                      sId: widget._journalModel!.group!.sId,
+                      groupName: widget._journalModel!.group!.groupName,
+                      groupMediaUrl: widget._journalModel!.group!.groupImage,
+                    ),
+                  );
+                }))
+              }
+            : {
+                connectionController
+                    .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
+                print(widget._journalModel!.postedBy!.sId),
+                AutoRouter.of(context).push(ConnectScreenRouter(
+                    uid: widget._journalModel!.postedBy!.uid ?? '',
+                    sId: widget._journalModel!.postedBy!.sId ?? '')),
+              },
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -245,17 +278,36 @@ class _JournalTileState extends State<JournalTile> {
                   style: SolhTextStyles.PinkBorderButtonText)
               : Container(),
           widget._journalModel!.description != null
-              ? ReadMoreText(
-                  widget._journalModel!.description!,
-                  trimLines: 3,
-                  //trimLength: 100,
-                  style: SolhTextStyles.JournalingDescriptionText,
-                  colorClickableText: SolhColors.green,
-                  //trimMode: TrimMode.Length,
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: ' Read more',
-                  trimExpandedText: ' Less',
-                )
+              ? RichText(
+                  text: TextSpan(children: [
+                  TextSpan(
+                      text: getTexts()['text1'] ?? '',
+                      style: SolhTextStyles.JournalingDescriptionText,
+                      children: [
+                        getTexts().containsKey('text3')
+                            ? TextSpan(
+                                text: '@' + getTexts()['text3'],
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () => print('click'),
+                                style: TextStyle(color: Color(0xffE1555A)))
+                            : TextSpan(text: ''),
+                        getTexts().containsKey('text2')
+                            ? TextSpan(text: getTexts()['text2'])
+                            : TextSpan(text: ''),
+                      ]),
+                ]))
+
+              // ? ReadMoreText(
+              //     widget._journalModel!.description!,
+              //     trimLines: 3,
+              //     //trimLength: 100,
+              //     style: SolhTextStyles.JournalingDescriptionText,
+              //     colorClickableText: SolhColors.green,
+              //     //trimMode: TrimMode.Length,
+              //     trimMode: TrimMode.Line,
+              //     trimCollapsedText: ' Read more',
+              //     trimExpandedText: ' Less',
+              //   )
               : Container(),
         ],
       ),
@@ -366,12 +418,19 @@ class _JournalTileState extends State<JournalTile> {
                 margin: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height / 80,
                 ),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                  image:
-                      NetworkImage(widget._journalModel!.mediaUrl.toString()),
+                // decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //   image:
+                //       NetworkImage(widget._journalModel!.mediaUrl.toString()),
+                //   fit: BoxFit.cover,
+                // )),
+                child: CachedNetworkImage(
+                  imageUrl: widget._journalModel!.mediaUrl.toString(),
                   fit: BoxFit.cover,
-                )),
+                  placeholder: (context, url) => getShimmer(),
+                  errorWidget: (context, url, error) =>
+                      Center(child: Icon(Icons.error)),
+                ),
               )
         : Container(
             height: 1.h,
@@ -515,6 +574,26 @@ class _JournalTileState extends State<JournalTile> {
         vertical: MediaQuery.of(context).size.height / 80,
       ),
       color: Colors.black.withOpacity(0.5),
+    );
+  }
+
+  Widget getShimmer() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        vertical: MediaQuery.of(context).size.height / 80,
+      ),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.grey[300],
+          ),
+        ),
+      ),
     );
   }
 }
