@@ -163,6 +163,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _postJournal() async {
+    ////////  post anonymous is done by passing isAnonymous = true
+
     setState(() {
       _isPosting = true;
     });
@@ -188,6 +190,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ? journalPageController.selectedDiary.value.mediaType
             : imgUploadResponse["mimetype"],
         groupId: journalPageController.selectedGroupId.value,
+        isAnonymous: journalPageController.isAnonymousSelected.value,
       );
       print('posting + ${journalPageController.selectedDiary.value.id}');
       journalPageController.selectedDiary.value.id != null
@@ -221,6 +224,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         feelings: feelings,
         journalType: _journalType,
         groupId: journalPageController.selectedGroupId.value,
+        isAnonymous: journalPageController.isAnonymousSelected.value,
       );
       print(_createJournal.groupId);
       print('posting + ${journalPageController.selectedDiary.value.id}');
@@ -934,11 +938,16 @@ class _UsernameHeaderState extends State<UsernameHeader> {
         width: 20.w,
         child: Obx(() {
           return journalPageController.isAnonymousSelected.value
+
+              /// if anonymous is selected
               ? Stack(
                   children: [
                     AnimatedPositioned(
-                      left: journalPageController.nomalProfilePositionL.value,
-                      top: journalPageController.nomalProfilePositionT.value,
+                      ////// this is normal profile and anonymous profile is selected
+                      left:
+                          journalPageController.anonymousProfilePositionL.value,
+                      top:
+                          journalPageController.anonymousProfilePositionT.value,
                       duration: Duration(milliseconds: 500),
                       child: CircleAvatar(
                           radius: journalPageController
@@ -951,9 +960,9 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                     userModel.anonymous != null
                         ? AnimatedPositioned(
                             left: journalPageController
-                                .anonymousProfilePositionL.value,
+                                .nomalProfilePositionL.value,
                             top: journalPageController
-                                .anonymousProfilePositionT.value,
+                                .nomalProfilePositionT.value,
                             duration: Duration(milliseconds: 500),
                             child: CircleAvatar(
                                 backgroundColor: Colors.grey,
@@ -976,18 +985,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                                         .isAnonymousSelected.value;
                                 print(journalPageController
                                     .isAnonymousSelected.value);
-                                journalPageController.nomalProfileRadius.value =
-                                    6.w;
-                                journalPageController
-                                    .anonymousProfileRadius.value = 4.w;
-                                journalPageController
-                                    .nomalProfilePositionL.value = 20;
-                                journalPageController
-                                    .nomalProfilePositionT.value = 4;
-                                journalPageController
-                                    .anonymousProfilePositionL.value = 10;
-                                journalPageController
-                                    .anonymousProfilePositionT.value = 6;
                               },
                               child: Icon(
                                 Icons.swap_horiz,
@@ -1002,6 +999,8 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   children: [
                     userModel!.anonymous != null
                         ? AnimatedPositioned(
+                            //// this is anonymous profile and normal profile is selected
+
                             left: journalPageController
                                 .anonymousProfilePositionL.value,
                             top: journalPageController
@@ -1040,16 +1039,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                                         .isAnonymousSelected.value =
                                     !journalPageController
                                         .isAnonymousSelected.value;
-                                journalPageController.nomalProfileRadius.value =
-                                    6.w;
-                                journalPageController
-                                    .anonymousProfileRadius.value = 4.w;
-                                journalPageController
-                                    .nomalProfilePositionT.value = 6;
-                                journalPageController
-                                    .anonymousProfilePositionL.value = 20;
-                                journalPageController
-                                    .anonymousProfilePositionT.value = 4;
                               },
                               child: Icon(
                                 Icons.swap_horiz,

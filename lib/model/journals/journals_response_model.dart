@@ -65,6 +65,7 @@ class Journals {
   String? updatedAt;
   BestComment? bestComment;
   PostedBy? postedBy;
+  bool? anonymousJournal;
   String? mediaUrl;
   String? mediaType;
   Group? group;
@@ -81,6 +82,7 @@ class Journals {
       this.updatedAt,
       this.bestComment,
       this.postedBy,
+      this.anonymousJournal,
       this.mediaUrl,
       this.mediaType,
       this.group});
@@ -106,6 +108,7 @@ class Journals {
     postedBy = json['postedBy'] != null
         ? new PostedBy.fromJson(json['postedBy'])
         : null;
+    anonymousJournal = json['anonymousJournal'];
     mediaUrl = json['mediaUrl'];
     mediaType = json['mediaType'];
     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
@@ -129,6 +132,7 @@ class Journals {
     if (this.postedBy != null) {
       data['postedBy'] = this.postedBy!.toJson();
     }
+    data['anonymousJournal'] = this.anonymousJournal;
     data['mediaUrl'] = this.mediaUrl;
     data['mediaType'] = this.mediaType;
     if (this.group != null) {
@@ -219,7 +223,7 @@ class PostedBy {
       this.lastName});
 
   PostedBy.fromJson(Map<String, dynamic> json) {
-    sId = json['id'];
+    sId = json['_id'];
     gender = json['gender'];
     status = json['status'];
     // if (json['qualification'] != null) {

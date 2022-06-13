@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
@@ -145,14 +144,19 @@ class _JournalTileState extends State<JournalTile> {
                   );
                 }))
               }
-            : {
-                connectionController
-                    .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
-                print(widget._journalModel!.postedBy!.sId),
-                AutoRouter.of(context).push(ConnectScreenRouter(
-                    uid: widget._journalModel!.postedBy!.uid ?? '',
-                    sId: widget._journalModel!.postedBy!.sId ?? '')),
-              },
+            : widget._journalModel!.postedBy!.sId != null &&
+                    !widget._journalModel!.anonymousJournal!
+                ? {
+                    connectionController
+                        .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
+                    print(widget._journalModel!.postedBy!.sId),
+                    AutoRouter.of(context).push(ConnectScreenRouter(
+                        uid: widget._journalModel!.postedBy!.uid ?? '',
+                        sId: widget._journalModel!.postedBy!.sId ?? '')),
+                  }
+                : {
+                    print(widget._journalModel!.postedBy!.sId),
+                  },
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -526,41 +530,44 @@ class _JournalTileState extends State<JournalTile> {
               // },
             ),
           ),
-          widget._journalModel!.postedBy!.uid !=
-                  FirebaseAuth.instance.currentUser!.uid
-              ? InkWell(
-                  onTap: () async {
-                    await connectionController.addConnection(
-                      widget._journalModel!.postedBy!.sId!,
-                    );
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 3.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/journaling/post-connect.svg",
-                          width: 17,
-                          height: 17,
-                          color: SolhColors.green,
+          widget._journalModel!.anonymousJournal != null &&
+                  widget._journalModel!.anonymousJournal != true
+              ? SizedBox()
+              : widget._journalModel!.postedBy!.uid !=
+                      FirebaseAuth.instance.currentUser!.uid
+                  ? InkWell(
+                      onTap: () async {
+                        await connectionController.addConnection(
+                          widget._journalModel!.postedBy!.sId!,
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/journaling/post-connect.svg",
+                              width: 17,
+                              height: 17,
+                              color: SolhColors.green,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width / 40,
+                              ),
+                              child: Text(
+                                "Connect",
+                                style: SolhTextStyles.GreenBorderButtonText,
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 40,
-                          ),
-                          child: Text(
-                            "Connect",
-                            style: SolhTextStyles.GreenBorderButtonText,
-                          ),
-                        ),
-                      ],
+                      ),
+                    )
+                  : SizedBox(
+                      width: 100,
                     ),
-                  ),
-                )
-              : SizedBox(
-                  width: 100,
-                ),
         ],
       ),
     );
