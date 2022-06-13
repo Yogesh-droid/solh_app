@@ -160,7 +160,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
             "${APIConstants.api}/api/fileupload/journal-image",
             "file",
             _croppedFile!,
-            isVideo: false)
+            isVideo: null)
         .then((value) {
       return value;
     });
