@@ -3,6 +3,7 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/model/user/user_analitics_model.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
@@ -116,6 +117,19 @@ class ConnectionController extends GetxController {
 
     if (map.isNotEmpty) {
       userAnalyticsModel.value = UserAnalyticModel.fromJson(map);
+    }
+  }
+
+  Future getUserprofileData(String user) async {
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+            APIConstants.api + '/api/user-profile' + '?user=' + user)
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+
+    if (map.isNotEmpty) {
+      UserModel value = UserModel.fromJson(map);
     }
   }
 
