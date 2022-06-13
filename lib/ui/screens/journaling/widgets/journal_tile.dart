@@ -197,18 +197,24 @@ class _JournalTileState extends State<JournalTile> {
                             Row(
                               children: [
                                 Text(
-                                  widget._journalModel!.group != null &&
-                                          journalPageController
-                                                  .selectedGroupId ==
+                                  widget._journalModel!.anonymousJournal !=
+                                              null &&
+                                          widget
+                                              ._journalModel!.anonymousJournal!
+                                      ? 'Anonynous'
+                                      : widget._journalModel!.group != null &&
+                                              journalPageController
+                                                      .selectedGroupId ==
+                                                  ''
+                                          ? widget._journalModel!.group!
+                                                  .groupName ??
                                               ''
-                                      ? widget._journalModel!.group!
-                                              .groupName ??
-                                          ''
-                                      : widget._journalModel!.postedBy != null
-                                          ? widget._journalModel!.postedBy!
-                                                  .name ??
-                                              ''
-                                          : '',
+                                          : widget._journalModel!.postedBy !=
+                                                  null
+                                              ? widget._journalModel!.postedBy!
+                                                      .name ??
+                                                  ''
+                                              : '',
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
                                 SizedBox(width: 1.5.w),
@@ -531,7 +537,7 @@ class _JournalTileState extends State<JournalTile> {
             ),
           ),
           widget._journalModel!.anonymousJournal != null &&
-                  widget._journalModel!.anonymousJournal != true
+                  widget._journalModel!.anonymousJournal == true
               ? SizedBox()
               : widget._journalModel!.postedBy!.uid !=
                       FirebaseAuth.instance.currentUser!.uid
