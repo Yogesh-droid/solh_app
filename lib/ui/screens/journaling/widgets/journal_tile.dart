@@ -15,8 +15,10 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -288,7 +290,16 @@ class _JournalTileState extends State<JournalTile> {
                             ? TextSpan(
                                 text: '@' + getTexts()['text3'],
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () => print('click'),
+                                  ..onTap = () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ConnectProfileScreen(
+                                                  username: getTexts()['text3']
+                                                      .toString(),
+                                                )));
+                                  },
                                 style: TextStyle(color: Color(0xffE1555A)))
                             : TextSpan(text: ''),
                         getTexts().containsKey('text2')

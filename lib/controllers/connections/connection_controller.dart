@@ -17,6 +17,7 @@ class ConnectionController extends GetxController {
   var groupInvites = <Group>[].obs;
   var isAddingConnection = false.obs;
   var addingConnectionId = "".obs;
+  var userModel = UserModel().obs;
   DiscoverGroupController discoverGroupController = Get.find();
 
   Future<void> getMyConnection() async {
@@ -128,8 +129,18 @@ class ConnectionController extends GetxController {
       return {};
     });
 
+    if (map.containsKey('connections')) {
+      if (map['connections'] == null) {
+        print("map1" + map.toString());
+        print("null type");
+        update();
+        return null;
+      }
+    }
+
     if (map.isNotEmpty) {
-      UserModel value = UserModel.fromJson(map);
+      print("map" + map.toString());
+      userModel.value = UserModel.fromJson(map['connections']);
     }
   }
 
