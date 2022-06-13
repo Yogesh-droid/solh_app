@@ -254,7 +254,7 @@ class _JournalTileState extends State<JournalTile> {
                       ),
                     ),
                     if (widget._journalModel!.postedBy != null &&
-                        widget._journalModel!.postedBy!.uid ==
+                        widget._journalModel!.postedBy!.sId ==
                             FirebaseAuth.instance.currentUser!.uid)
                       PostMenuButton(
                         journalId: widget._journalModel!.id ?? '',
