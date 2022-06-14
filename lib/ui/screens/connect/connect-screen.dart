@@ -28,19 +28,18 @@ class ConnectProfileScreen extends StatefulWidget {
 class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   final ConnectionController connectionController = Get.find();
 
-  dynamic userReturn = '';
-
   @override
   void initState() {
+    print('it ran');
     getUser();
+
     // TODO: implement initState
 
     super.initState();
   }
 
   getUser() async {
-    userReturn =
-        await connectionController.getUserprofileData(widget._username);
+    await connectionController.getUserprofileData(widget._username);
   }
 
   @override
@@ -60,7 +59,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : userReturn == null
+                  : connectionController.userModel.value.lastName == null
                       ? Center(
                           child: Container(
                             child: Column(

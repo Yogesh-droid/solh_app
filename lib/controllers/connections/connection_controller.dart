@@ -133,14 +133,18 @@ class ConnectionController extends GetxController {
       if (map['connections'] == null) {
         print("map1" + map.toString());
         print("null type");
+
+        userModel.value.lastName = null;
         update();
-        return null;
+        return;
       }
     }
 
     if (map.isNotEmpty) {
       print("map" + map.toString());
+
       userModel.value = UserModel.fromJson(map['connections']);
+      update();
     }
   }
 

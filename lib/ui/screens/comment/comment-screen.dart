@@ -490,16 +490,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                   icon: Icon(Icons.close))
                               : Container())),
                           _isLoading
-                              ? Positioned(
-                                  right: 10,
-                                  bottom: 5,
-                                  child: Container(
-                                      height: 8.w,
-                                      width: 8.w,
-                                      child: MyLoader(
-                                        strokeWidth: 2.5,
-                                      )),
-                                )
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(0, 0, 9, 12),
+                                  height: 8.w,
+                                  width: 8.w,
+                                  child: MyLoader(
+                                    strokeWidth: 2.5,
+                                  ))
                               : Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: MaterialButton(
