@@ -23,6 +23,7 @@
 // }
 
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
+import 'package:solh/model/user/user.dart';
 
 class JournalsResponseModel {
   List<Journals>? journals;
@@ -66,6 +67,7 @@ class Journals {
   BestComment? bestComment;
   PostedBy? postedBy;
   bool? anonymousJournal;
+
   String? mediaUrl;
   String? mediaType;
   Group? group;
@@ -142,6 +144,42 @@ class Journals {
   }
 }
 
+class Anonymous {
+  String? sId;
+
+  String? profilePicture;
+  String? profilePictureType;
+  String? userName;
+  String? primaryAccount;
+
+  Anonymous(
+      {this.sId,
+      this.profilePicture,
+      this.profilePictureType,
+      this.userName,
+      this.primaryAccount});
+
+  Anonymous.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+
+    profilePicture = json['profilePicture'];
+    profilePictureType = json['profilePictureType'];
+    userName = json['userName'];
+    primaryAccount = json['primaryAccount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+
+    data['profilePicture'] = this.profilePicture;
+    data['profilePictureType'] = this.profilePictureType;
+    data['userName'] = this.userName;
+    data['primaryAccount'] = this.primaryAccount;
+    return data;
+  }
+}
+
 class Group {
   String? sId;
   String? groupName;
@@ -191,36 +229,39 @@ class PostedBy {
   String? updatedAt;
   int? iV;
   String? lastName;
+  Anonymous? anonymous;
 
-  PostedBy(
-      {this.sId,
-      this.gender,
-      this.status,
-      this.qualification,
-      this.profilePicture,
-      this.profilePictureType,
-      this.userType,
-      this.isSolhExpert,
-      this.isSolhAdviser,
-      this.isSolhCounselor,
-      this.mobile,
-      this.uid,
-      this.firstName,
-      this.userName,
-      this.dob,
-      this.email,
-      this.name,
-      this.experience,
-      this.connections,
-      this.ratings,
-      this.reviews,
-      this.likes,
-      this.posts,
-      this.bio,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.lastName});
+  PostedBy({
+    this.sId,
+    this.gender,
+    this.status,
+    this.qualification,
+    this.profilePicture,
+    this.profilePictureType,
+    this.userType,
+    this.isSolhExpert,
+    this.isSolhAdviser,
+    this.isSolhCounselor,
+    this.mobile,
+    this.uid,
+    this.firstName,
+    this.userName,
+    this.dob,
+    this.email,
+    this.name,
+    this.experience,
+    this.connections,
+    this.ratings,
+    this.reviews,
+    this.likes,
+    this.posts,
+    this.bio,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.lastName,
+    this.anonymous,
+  });
 
   PostedBy.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -254,6 +295,9 @@ class PostedBy {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     lastName = json['last_name'];
+    anonymous = json['anonymous'] != null
+        ? new Anonymous.fromJson(json['anonymous'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -288,6 +332,9 @@ class PostedBy {
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
     data['last_name'] = this.lastName;
+    if (this.anonymous != null) {
+      data['anonymous'] = this.anonymous!.toJson();
+    }
     return data;
   }
 }

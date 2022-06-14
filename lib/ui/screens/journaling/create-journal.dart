@@ -933,123 +933,129 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   }
 
   Widget getUserImg(UserModel? userModel) {
-    return Container(
-        height: 10.h,
-        width: 20.w,
-        child: Obx(() {
-          return journalPageController.isAnonymousSelected.value
+    return GestureDetector(
+      onTap: () {
+        journalPageController.isAnonymousSelected.value =
+            !journalPageController.isAnonymousSelected.value;
+      },
+      child: Container(
+          height: 10.h,
+          width: 20.w,
+          child: Obx(() {
+            return journalPageController.isAnonymousSelected.value
 
-              /// if anonymous is selected
-              ? Stack(
-                  children: [
-                    AnimatedPositioned(
-                      ////// this is normal profile and anonymous profile is selected
-                      left:
-                          journalPageController.anonymousProfilePositionL.value,
-                      top:
-                          journalPageController.anonymousProfilePositionT.value,
-                      duration: Duration(milliseconds: 500),
-                      child: CircleAvatar(
-                          radius: journalPageController
-                              .anonymousProfileRadius.value,
-                          backgroundImage: CachedNetworkImageProvider(
-                            userModel!.profilePicture ??
-                                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                          )),
-                    ),
-                    userModel.anonymous != null
-                        ? AnimatedPositioned(
-                            left: journalPageController
-                                .nomalProfilePositionL.value,
-                            top: journalPageController
-                                .nomalProfilePositionT.value,
-                            duration: Duration(milliseconds: 500),
-                            child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: journalPageController
-                                    .nomalProfileRadius.value,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  userModel.anonymous!.profilePicture ??
-                                      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                                )))
-                        : Container(),
-                    userModel.anonymous != null
-                        ? Positioned(
-                            left: 0,
-                            top: 0,
-                            child: InkWell(
-                              onTap: () {
-                                journalPageController
-                                        .isAnonymousSelected.value =
-                                    !journalPageController
-                                        .isAnonymousSelected.value;
-                                print(journalPageController
-                                    .isAnonymousSelected.value);
-                              },
-                              child: Icon(
-                                Icons.swap_horiz,
-                                color: SolhColors.green,
+                /// if anonymous is selected
+                ? Stack(
+                    children: [
+                      AnimatedPositioned(
+                        ////// this is normal profile and anonymous profile is selected
+                        left: journalPageController
+                            .anonymousProfilePositionL.value,
+                        top: journalPageController
+                            .anonymousProfilePositionT.value,
+                        duration: Duration(milliseconds: 500),
+                        child: CircleAvatar(
+                            radius: journalPageController
+                                .anonymousProfileRadius.value,
+                            backgroundImage: CachedNetworkImageProvider(
+                              userModel!.profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            )),
+                      ),
+                      userModel.anonymous != null
+                          ? AnimatedPositioned(
+                              left: journalPageController
+                                  .nomalProfilePositionL.value,
+                              top: journalPageController
+                                  .nomalProfilePositionT.value,
+                              duration: Duration(milliseconds: 500),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: journalPageController
+                                      .nomalProfileRadius.value,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    userModel.anonymous!.profilePicture ??
+                                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                  )))
+                          : Container(),
+                      userModel.anonymous != null
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  journalPageController
+                                          .isAnonymousSelected.value =
+                                      !journalPageController
+                                          .isAnonymousSelected.value;
+                                  print(journalPageController
+                                      .isAnonymousSelected.value);
+                                },
+                                child: Icon(
+                                  Icons.swap_horiz,
+                                  color: SolhColors.green,
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                )
-              : Stack(
-                  children: [
-                    userModel!.anonymous != null
-                        ? AnimatedPositioned(
-                            //// this is anonymous profile and normal profile is selected
+                            )
+                          : Container(),
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      userModel!.anonymous != null
+                          ? AnimatedPositioned(
+                              //// this is anonymous profile and normal profile is selected
 
-                            left: journalPageController
-                                .anonymousProfilePositionL.value,
-                            top: journalPageController
-                                .anonymousProfilePositionT.value,
-                            duration: Duration(milliseconds: 500),
-                            child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: journalPageController
-                                    .anonymousProfileRadius.value,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  userModel.anonymous!.profilePicture ??
-                                      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                                )))
-                        : Container(),
-                    AnimatedPositioned(
-                      left: journalPageController.nomalProfilePositionL.value,
-                      top: journalPageController.nomalProfilePositionT.value,
-                      duration: Duration(milliseconds: 500),
-                      child: CircleAvatar(
-                          radius:
-                              journalPageController.nomalProfileRadius.value,
-                          backgroundImage: CachedNetworkImageProvider(
-                            userModel.profilePicture ??
-                                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                          )),
-                    ),
-                    userModel.anonymous != null
-                        ? Positioned(
-                            left: 0,
-                            top: 0,
-                            child: InkWell(
-                              onTap: () {
-                                /// if Anon user is true anonymous, then show anonymous profile picture
+                              left: journalPageController
+                                  .anonymousProfilePositionL.value,
+                              top: journalPageController
+                                  .anonymousProfilePositionT.value,
+                              duration: Duration(milliseconds: 500),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: journalPageController
+                                      .anonymousProfileRadius.value,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    userModel.anonymous!.profilePicture ??
+                                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                  )))
+                          : Container(),
+                      AnimatedPositioned(
+                        left: journalPageController.nomalProfilePositionL.value,
+                        top: journalPageController.nomalProfilePositionT.value,
+                        duration: Duration(milliseconds: 500),
+                        child: CircleAvatar(
+                            radius:
+                                journalPageController.nomalProfileRadius.value,
+                            backgroundImage: CachedNetworkImageProvider(
+                              userModel.profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            )),
+                      ),
+                      userModel.anonymous != null
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  /// if Anon user is true anonymous, then show anonymous profile picture
 
-                                journalPageController
-                                        .isAnonymousSelected.value =
-                                    !journalPageController
-                                        .isAnonymousSelected.value;
-                              },
-                              child: Icon(
-                                Icons.swap_horiz,
-                                color: SolhColors.green,
+                                  journalPageController
+                                          .isAnonymousSelected.value =
+                                      !journalPageController
+                                          .isAnonymousSelected.value;
+                                },
+                                child: Icon(
+                                  Icons.swap_horiz,
+                                  color: SolhColors.green,
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
-                );
-        }));
+                            )
+                          : Container(),
+                    ],
+                  );
+          })),
+    );
   }
 }
 
