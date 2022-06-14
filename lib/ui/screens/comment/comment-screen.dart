@@ -1052,12 +1052,15 @@ class _PostForCommentState extends State<PostForComment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   widget._journalModel!.feelings != null
-                      ? Text(
-                          "Feeling " +
-                              widget._journalModel!.feelings![0].feelingName!,
-                          style:
-                              SolhTextStyles.JournalingDescriptionReadMoreText,
-                        )
+                      ? widget._journalModel!.feelings!.isNotEmpty
+                          ? Text(
+                              "Feeling " +
+                                  widget
+                                      ._journalModel!.feelings![0].feelingName!,
+                              style: SolhTextStyles
+                                  .JournalingDescriptionReadMoreText,
+                            )
+                          : Container()
                       : Container(),
                   ReadMoreText(
                     widget._journalModel!.description ?? '',

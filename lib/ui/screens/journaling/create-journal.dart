@@ -56,160 +56,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   bool _isVideoAdded = false;
   Map<String, dynamic> imgUploadResponse = {};
 
-  void _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    showModalBottomSheet(
-        context: context,
-        builder: (_) => Container(
-              height: 20.h,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Choose your type"),
-                  SizedBox(height: 3.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      IconButton(
-                        iconSize: 40,
-                        icon: Icon(Icons.photo),
-                        onPressed: () async {
-                          print("picking image");
-                          _xFile = await _picker.pickImage(
-                            source: ImageSource.gallery,
-                            // maxWidth: 640,
-                            // maxHeight: 640,
-                            // imageQuality: 100,
-                          );
-                          if (_xFile != null) {
-                            final croppedFile = await ImageCropper().cropImage(
-                                sourcePath: _xFile!.path,
-                                aspectRatioPresets: [
-                                  CropAspectRatioPreset.square,
-                                  // CropAspectRatioPreset.ratio3x2,
-                                  // CropAspectRatioPreset.original,
-                                  // CropAspectRatioPreset.ratio4x3,
-                                  // CropAspectRatioPreset.ratio16x9
-                                ],
-                                uiSettings: [
-                                  AndroidUiSettings(
-                                      toolbarTitle: 'Edit',
-                                      toolbarColor: SolhColors.white,
-                                      toolbarWidgetColor: Colors.black,
-                                      activeControlsWidgetColor:
-                                          SolhColors.green,
-                                      initAspectRatio:
-                                          CropAspectRatioPreset.square,
-                                      lockAspectRatio: true),
-                                  IOSUiSettings(
-                                    minimumAspectRatio: 1.0,
-                                  )
-                                ]);
-
-                            _croppedFile = File(croppedFile!.path);
-
-                            setState(() {
-                              if (_croppedFile != null) _isImageAdded = true;
-                            });
-                            Navigator.pop(context);
-                            imgUploadResponse =
-                                await _uploadImage(isVideo: false);
-                          }
-
-                          // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
-                        },
-                      ),
-                      IconButton(
-                        iconSize: 40,
-                        icon: Icon(Icons.video_camera_back),
-                        onPressed: () async {
-                          print("picking video");
-                          _xFile = await _picker.pickVideo(
-                              source: ImageSource.gallery);
-                          print(_xFile!.path.toString());
-
-                          ////////////////////////////////////////////////////////////
-                          /// For video trimming
-
-                          if (_xFile != null) {
-                            widget.trimmer
-                                .loadVideo(videoFile: File(_xFile!.path));
-                            imgUploadResponse =
-                                await Navigator.of(context).push(
-                              MaterialPageRoute(builder: (context) {
-                                return TrimmerView(File(_xFile!.path));
-                              }),
-                            );
-                            Navigator.pop(context);
-                          }
-
-                          ////////////////////////////////////////////////////////////
-                          ///
-
-                          // _xFileAsUnit8List = await _xFile!.readAsBytes();
-                          // Navigator.of(_).pop();
-                          setState(() {
-                            _isVideoAdded = true;
-                          });
-                        },
-                      ),
-                      IconButton(
-                          onPressed: () async {
-                            _xFile = await _picker.pickImage(
-                              source: ImageSource.camera,
-                              maxWidth: 640,
-                              maxHeight: 640,
-                              imageQuality: 100,
-                            );
-                            if (_xFile != null) {
-                              final croppedFile = await ImageCropper()
-                                  .cropImage(
-                                      sourcePath: _xFile!.path,
-                                      aspectRatioPresets: [
-                                    CropAspectRatioPreset.square,
-                                    // CropAspectRatioPreset.ratio3x2,
-                                    // CropAspectRatioPreset.original,
-                                    // CropAspectRatioPreset.ratio4x3,
-                                    // CropAspectRatioPreset.ratio16x9
-                                  ],
-                                      uiSettings: [
-                                    AndroidUiSettings(
-                                        toolbarTitle: 'Edit',
-                                        toolbarColor: SolhColors.white,
-                                        toolbarWidgetColor: Colors.black,
-                                        activeControlsWidgetColor:
-                                            SolhColors.green,
-                                        initAspectRatio:
-                                            CropAspectRatioPreset.square,
-                                        lockAspectRatio: true),
-                                    IOSUiSettings(
-                                      minimumAspectRatio: 1.0,
-                                    )
-                                  ]);
-
-                              _croppedFile = File(croppedFile!.path);
-
-                              setState(() {
-                                if (_croppedFile != null) _isImageAdded = true;
-                              });
-                              Navigator.pop(context);
-
-                              imgUploadResponse =
-                                  await _uploadImage(isVideo: false);
-                            }
-                            // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
-                          },
-                          icon: Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                          ))
-                    ],
-                  ),
-                ],
-              ),
-            ));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -317,6 +163,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
 
   void _postJournal() async {
+    ////////  post anonymous is done by passing isAnonymous = true
+
     setState(() {
       _isPosting = true;
     });
@@ -342,6 +190,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             ? journalPageController.selectedDiary.value.mediaType
             : imgUploadResponse["mimetype"],
         groupId: journalPageController.selectedGroupId.value,
+        isAnonymous: journalPageController.isAnonymousSelected.value,
       );
       print('posting + ${journalPageController.selectedDiary.value.id}');
       journalPageController.selectedDiary.value.id != null
@@ -375,6 +224,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         feelings: feelings,
         journalType: _journalType,
         groupId: journalPageController.selectedGroupId.value,
+        isAnonymous: journalPageController.isAnonymousSelected.value,
       );
       print(_createJournal.groupId);
       print('posting + ${journalPageController.selectedDiary.value.id}');
@@ -767,6 +617,160 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     );
     });
   }
+
+  void _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => Container(
+              height: 20.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Choose your type"),
+                  SizedBox(height: 3.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.photo),
+                        onPressed: () async {
+                          print("picking image");
+                          _xFile = await _picker.pickImage(
+                            source: ImageSource.gallery,
+                            // maxWidth: 640,
+                            // maxHeight: 640,
+                            // imageQuality: 100,
+                          );
+                          if (_xFile != null) {
+                            final croppedFile = await ImageCropper().cropImage(
+                                sourcePath: _xFile!.path,
+                                aspectRatioPresets: [
+                                  CropAspectRatioPreset.square,
+                                  // CropAspectRatioPreset.ratio3x2,
+                                  // CropAspectRatioPreset.original,
+                                  // CropAspectRatioPreset.ratio4x3,
+                                  // CropAspectRatioPreset.ratio16x9
+                                ],
+                                uiSettings: [
+                                  AndroidUiSettings(
+                                      toolbarTitle: 'Edit',
+                                      toolbarColor: SolhColors.white,
+                                      toolbarWidgetColor: Colors.black,
+                                      activeControlsWidgetColor:
+                                          SolhColors.green,
+                                      initAspectRatio:
+                                          CropAspectRatioPreset.square,
+                                      lockAspectRatio: true),
+                                  IOSUiSettings(
+                                    minimumAspectRatio: 1.0,
+                                  )
+                                ]);
+
+                            _croppedFile = File(croppedFile!.path);
+
+                            setState(() {
+                              if (_croppedFile != null) _isImageAdded = true;
+                            });
+                            Navigator.pop(context);
+                            imgUploadResponse =
+                                await _uploadImage(isVideo: false);
+                          }
+
+                          // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
+                        },
+                      ),
+                      IconButton(
+                        iconSize: 40,
+                        icon: Icon(Icons.video_camera_back),
+                        onPressed: () async {
+                          print("picking video");
+                          _xFile = await _picker.pickVideo(
+                              source: ImageSource.gallery);
+                          print(_xFile!.path.toString());
+
+                          ////////////////////////////////////////////////////////////
+                          /// For video trimming
+
+                          if (_xFile != null) {
+                            widget.trimmer
+                                .loadVideo(videoFile: File(_xFile!.path));
+                            imgUploadResponse =
+                                await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) {
+                                return TrimmerView(File(_xFile!.path));
+                              }),
+                            );
+                            Navigator.pop(context);
+                          }
+
+                          ////////////////////////////////////////////////////////////
+                          ///
+
+                          // _xFileAsUnit8List = await _xFile!.readAsBytes();
+                          // Navigator.of(_).pop();
+                          setState(() {
+                            _isVideoAdded = true;
+                          });
+                        },
+                      ),
+                      IconButton(
+                          onPressed: () async {
+                            _xFile = await _picker.pickImage(
+                              source: ImageSource.camera,
+                              maxWidth: 640,
+                              maxHeight: 640,
+                              imageQuality: 100,
+                            );
+                            if (_xFile != null) {
+                              final croppedFile = await ImageCropper()
+                                  .cropImage(
+                                      sourcePath: _xFile!.path,
+                                      aspectRatioPresets: [
+                                    CropAspectRatioPreset.square,
+                                    // CropAspectRatioPreset.ratio3x2,
+                                    // CropAspectRatioPreset.original,
+                                    // CropAspectRatioPreset.ratio4x3,
+                                    // CropAspectRatioPreset.ratio16x9
+                                  ],
+                                      uiSettings: [
+                                    AndroidUiSettings(
+                                        toolbarTitle: 'Edit',
+                                        toolbarColor: SolhColors.white,
+                                        toolbarWidgetColor: Colors.black,
+                                        activeControlsWidgetColor:
+                                            SolhColors.green,
+                                        initAspectRatio:
+                                            CropAspectRatioPreset.square,
+                                        lockAspectRatio: true),
+                                    IOSUiSettings(
+                                      minimumAspectRatio: 1.0,
+                                    )
+                                  ]);
+
+                              _croppedFile = File(croppedFile!.path);
+
+                              setState(() {
+                                if (_croppedFile != null) _isImageAdded = true;
+                              });
+                              Navigator.pop(context);
+
+                              imgUploadResponse =
+                                  await _uploadImage(isVideo: false);
+                            }
+                            // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
+                          },
+                          icon: Icon(
+                            Icons.camera_alt,
+                            size: 40,
+                          ))
+                    ],
+                  ),
+                ],
+              ),
+            ));
+  }
 }
 
 class FeelingsContainer extends StatefulWidget {
@@ -866,13 +870,9 @@ class _UsernameHeaderState extends State<UsernameHeader> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CircleAvatar(
-                radius: 6.w,
-                backgroundImage: CachedNetworkImageProvider(
-                  widget._userModel!.profilePicture ??
-                      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                )),
+            getUserImg(widget._userModel),
             SizedBox(
               width: 2.w,
             ),
@@ -884,11 +884,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   style: SolhTextStyles.JournalingUsernameText.copyWith(
                       fontWeight: FontWeight.normal, fontSize: 14),
                 ),
-                Text(
-                  "Happiness Maker",
-                  style:
-                      SolhTextStyles.JournalingBadgeText.copyWith(fontSize: 12),
-                )
               ],
             ),
           ],
@@ -934,6 +929,132 @@ class _UsernameHeaderState extends State<UsernameHeader> {
               )
             : Container()
       ],
+    );
+  }
+
+  Widget getUserImg(UserModel? userModel) {
+    return GestureDetector(
+      onTap: () {
+        journalPageController.isAnonymousSelected.value =
+            !journalPageController.isAnonymousSelected.value;
+      },
+      child: Container(
+          height: 10.h,
+          width: 20.w,
+          child: Obx(() {
+            return journalPageController.isAnonymousSelected.value
+
+                /// if anonymous is selected
+                ? Stack(
+                    children: [
+                      AnimatedPositioned(
+                        ////// this is normal profile and anonymous profile is selected
+                        left: journalPageController
+                            .anonymousProfilePositionL.value,
+                        top: journalPageController
+                            .anonymousProfilePositionT.value,
+                        duration: Duration(milliseconds: 500),
+                        child: CircleAvatar(
+                            radius: journalPageController
+                                .anonymousProfileRadius.value,
+                            backgroundImage: CachedNetworkImageProvider(
+                              userModel!.profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            )),
+                      ),
+                      userModel.anonymous != null
+                          ? AnimatedPositioned(
+                              left: journalPageController
+                                  .nomalProfilePositionL.value,
+                              top: journalPageController
+                                  .nomalProfilePositionT.value,
+                              duration: Duration(milliseconds: 500),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: journalPageController
+                                      .nomalProfileRadius.value,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    userModel.anonymous!.profilePicture ??
+                                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                  )))
+                          : Container(),
+                      userModel.anonymous != null
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  journalPageController
+                                          .isAnonymousSelected.value =
+                                      !journalPageController
+                                          .isAnonymousSelected.value;
+                                  print(journalPageController
+                                      .isAnonymousSelected.value);
+                                },
+                                child: Icon(
+                                  Icons.swap_horiz,
+                                  color: SolhColors.green,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  )
+                : Stack(
+                    children: [
+                      userModel!.anonymous != null
+                          ? AnimatedPositioned(
+                              //// this is anonymous profile and normal profile is selected
+
+                              left: journalPageController
+                                  .anonymousProfilePositionL.value,
+                              top: journalPageController
+                                  .anonymousProfilePositionT.value,
+                              duration: Duration(milliseconds: 500),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: journalPageController
+                                      .anonymousProfileRadius.value,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    userModel.anonymous!.profilePicture ??
+                                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                  )))
+                          : Container(),
+                      AnimatedPositioned(
+                        left: journalPageController.nomalProfilePositionL.value,
+                        top: journalPageController.nomalProfilePositionT.value,
+                        duration: Duration(milliseconds: 500),
+                        child: CircleAvatar(
+                            radius:
+                                journalPageController.nomalProfileRadius.value,
+                            backgroundImage: CachedNetworkImageProvider(
+                              userModel.profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            )),
+                      ),
+                      userModel.anonymous != null
+                          ? Positioned(
+                              left: 0,
+                              top: 0,
+                              child: InkWell(
+                                onTap: () {
+                                  /// if Anon user is true anonymous, then show anonymous profile picture
+
+                                  journalPageController
+                                          .isAnonymousSelected.value =
+                                      !journalPageController
+                                          .isAnonymousSelected.value;
+                                },
+                                child: Icon(
+                                  Icons.swap_horiz,
+                                  color: SolhColors.green,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  );
+          })),
     );
   }
 }

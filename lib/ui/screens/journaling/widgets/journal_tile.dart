@@ -6,7 +6,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
@@ -88,7 +87,7 @@ class _JournalTileState extends State<JournalTile> {
               Divider(),
               getPostDetails(),
               getPostMedia(),
-              getPostActionButton(),
+              widget.isMyJournal ? Container() : getPostActionButton(),
             ],
           ),
         ),
@@ -147,14 +146,19 @@ class _JournalTileState extends State<JournalTile> {
                   );
                 }))
               }
-            : {
-                connectionController
-                    .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
-                print(widget._journalModel!.postedBy!.sId),
-                AutoRouter.of(context).push(ConnectScreenRouter(
-                    uid: widget._journalModel!.postedBy!.uid ?? '',
-                    sId: widget._journalModel!.postedBy!.sId ?? '')),
-              },
+            : widget._journalModel!.postedBy!.sId != null &&
+                    !widget._journalModel!.anonymousJournal!
+                ? {
+                    connectionController
+                        .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
+                    print(widget._journalModel!.postedBy!.sId),
+                    AutoRouter.of(context).push(ConnectScreenRouter(
+                        uid: widget._journalModel!.postedBy!.uid ?? '',
+                        sId: widget._journalModel!.postedBy!.sId ?? '')),
+                  }
+                : {
+                    print(widget._journalModel!.postedBy!.sId),
+                  },
         child: Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -165,17 +169,25 @@ class _JournalTileState extends State<JournalTile> {
                 child: Padding(
                   padding: const EdgeInsets.all(1.0),
                   child: CircleAvatar(
-                    backgroundImage: widget._journalModel!.group != null &&
-                            journalPageController
-                                    .selectedGroupId.value.length ==
-                                0
-                        ? widget._journalModel!.group!.groupImage != null
-                            ? CachedNetworkImageProvider(
-                                widget._journalModel!.group!.groupImage!)
-                            : AssetImage('assets/images/group_placeholder.png')
-                                as ImageProvider
-                        : CachedNetworkImageProvider(
-                            widget._journalModel!.postedBy!.profilePicture!),
+                    backgroundImage: widget._journalModel!.anonymousJournal !=
+                                null &&
+                            widget._journalModel!.anonymousJournal! &&
+                            widget._journalModel!.postedBy!.anonymous != null
+                        ? CachedNetworkImageProvider(widget._journalModel!
+                                .postedBy!.anonymous!.profilePicture ??
+                            '')
+                        : widget._journalModel!.group != null &&
+                                journalPageController
+                                        .selectedGroupId.value.length ==
+                                    0
+                            ? widget._journalModel!.group!.groupImage != null
+                                ? CachedNetworkImageProvider(
+                                    widget._journalModel!.group!.groupImage!)
+                                : AssetImage(
+                                        'assets/images/group_placeholder.png')
+                                    as ImageProvider
+                            : CachedNetworkImageProvider(widget
+                                ._journalModel!.postedBy!.profilePicture!),
                     backgroundColor: SolhColors.white,
                   ),
                 ),
@@ -209,6 +221,22 @@ class _JournalTileState extends State<JournalTile> {
                                           : '',
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
+                                widget._journalModel!.anonymousJournal !=
+                                            null &&
+                                        widget._journalModel!
+                                                .anonymousJournal ==
+                                            true
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 3.w,
+                                        ),
+                                        child: Icon(
+                                          Icons.lock_person,
+                                          color: SolhColors.grey,
+                                          size: 12,
+                                        ),
+                                      )
+                                    : Container(),
                                 SizedBox(width: 1.5.w),
                                 if (widget._journalModel!.postedBy != null &&
                                     widget._journalModel!.postedBy!.userType ==
@@ -245,13 +273,28 @@ class _JournalTileState extends State<JournalTile> {
                         ),
                       ),
                     ),
-                    if (widget._journalModel!.postedBy != null &&
-                        widget._journalModel!.postedBy!.uid ==
-                            FirebaseAuth.instance.currentUser!.uid)
-                      PostMenuButton(
-                        journalId: widget._journalModel!.id ?? '',
-                        deletePost: widget._deletePost,
-                      ),
+                    widget._journalModel!.postedBy != null
+                        ? widget._journalModel!.postedBy!.uid ==
+                                    FirebaseAuth.instance.currentUser!.uid ||
+                                widget._journalModel!.anonymousJournal !=
+                                        null &&
+                                    widget._journalModel!.anonymousJournal ==
+                                        true &&
+                                    widget._journalModel!.postedBy!.uid ==
+                                        FirebaseAuth.instance.currentUser!.uid
+                            ? PostMenuButton(
+                                journalId: widget._journalModel!.id ?? '',
+                                deletePost: widget._deletePost,
+                              )
+                            : Container()
+                        : Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                          )
                   ],
                 ),
               ),
@@ -537,41 +580,44 @@ class _JournalTileState extends State<JournalTile> {
               // },
             ),
           ),
-          widget._journalModel!.postedBy!.uid !=
-                  FirebaseAuth.instance.currentUser!.uid
-              ? InkWell(
-                  onTap: () async {
-                    await connectionController.addConnection(
-                      widget._journalModel!.postedBy!.sId!,
-                    );
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 3.5,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/icons/journaling/post-connect.svg",
-                          width: 17,
-                          height: 17,
-                          color: SolhColors.green,
+          widget._journalModel!.anonymousJournal != null &&
+                  widget._journalModel!.anonymousJournal == true
+              ? SizedBox()
+              : widget._journalModel!.postedBy!.uid !=
+                      FirebaseAuth.instance.currentUser!.uid
+                  ? InkWell(
+                      onTap: () async {
+                        await connectionController.addConnection(
+                          widget._journalModel!.postedBy!.sId!,
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 3.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/icons/journaling/post-connect.svg",
+                              width: 17,
+                              height: 17,
+                              color: SolhColors.green,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width / 40,
+                              ),
+                              child: Text(
+                                "Connect",
+                                style: SolhTextStyles.GreenBorderButtonText,
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: MediaQuery.of(context).size.width / 40,
-                          ),
-                          child: Text(
-                            "Connect",
-                            style: SolhTextStyles.GreenBorderButtonText,
-                          ),
-                        ),
-                      ],
+                      ),
+                    )
+                  : SizedBox(
+                      width: 100,
                     ),
-                  ),
-                )
-              : SizedBox(
-                  width: 100,
-                ),
         ],
       ),
     );

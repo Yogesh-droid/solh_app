@@ -12,6 +12,7 @@ class CreateJournal {
   String? postedIn;
   String? groupId;
   String? postId;
+  bool? isAnonymous;
 
   CreateJournal(
       {this.mediaUrl,
@@ -21,7 +22,8 @@ class CreateJournal {
       required this.journalType,
       this.postedIn,
       this.groupId,
-      this.postId});
+      this.postId,
+      this.isAnonymous});
 
   Future<String> postJournal() async {
     if (mediaUrl != null) {
@@ -57,14 +59,16 @@ class CreateJournal {
               "feelings": feelings,
               "journalType": journalType,
               'postIn': 'Group',
-              "groupPostedIn": groupId
+              "groupPostedIn": groupId,
+              "anonymousJournal": isAnonymous
             }
           : {
               "description": description,
               "mediaType": mimetype,
               "mediaUrl": mediaUrl,
               "feelings": feelings,
-              "journalType": journalType
+              "journalType": journalType,
+              "anonymousJournal": isAnonymous
             };
       print('${APIConstants.api}/api/create-user-post');
       print(body);
@@ -78,37 +82,20 @@ class CreateJournal {
 
       return "posted";
     } else {
-      // Map<String, dynamic> apiResponse =
-      //     await Network.makeHttpPostRequestWithToken(
-      //             url: "${APIConstants.api}/api/create-user-post",
-      //             body: groupId != ''
-      //                 ? {
-      //                     "description": description,
-      //                     "feelings": feelings,
-      //                     "journalType": journalType,
-      //                     'postIn': 'Group',
-      //                     "groupPostedIn": groupId
-      //                   }
-      //                 : {
-      //                     "description": description,
-      //                     "feelings": feelings,
-      //                     "journalType": journalType
-      //                   })
-      //         .onError((error, stackTrace) {
-      //   return {"error": error};
-      // });
       Map<String, dynamic> body = groupId != ''
           ? {
               "description": description,
               "feelings": feelings,
               "journalType": journalType,
               'postIn': 'Group',
-              "groupPostedIn": groupId
+              "groupPostedIn": groupId,
+              "anonymousJournal": isAnonymous
             }
           : {
               "description": description,
               "feelings": feelings,
-              "journalType": journalType
+              "journalType": journalType,
+              "anonymousJournal": isAnonymous
             };
       print('${APIConstants.api}/api/create-user-post');
       print(body);
@@ -136,7 +123,8 @@ class CreateJournal {
                   "feelings": feelings,
                   "journalType": journalType,
                   'postIn': 'Group',
-                  "groupPostedIn": groupId
+                  "groupPostedIn": groupId,
+                  "anonymousJournal": isAnonymous
                 })
               : jsonEncode({
                   "postId": postId,
@@ -144,7 +132,8 @@ class CreateJournal {
                   "mediaType": mimetype,
                   "mediaUrl": mediaUrl,
                   "feelings": feelings,
-                  "journalType": journalType
+                  "journalType": journalType,
+                  "anonymousJournal": isAnonymous
                 }),
           headers: {
             'Content-Type': 'application/json',
@@ -162,13 +151,15 @@ class CreateJournal {
                   "feelings": feelings,
                   "journalType": journalType,
                   'postIn': 'Group',
-                  "groupPostedIn": groupId
+                  "groupPostedIn": groupId,
+                  "anonymousJournal": isAnonymous
                 })
               : jsonEncode({
                   'postId': postId,
                   "description": description,
                   "feelings": feelings,
-                  "journalType": journalType
+                  "journalType": journalType,
+                  "anonymousJournal": isAnonymous
                 }),
           headers: {
             'Content-Type': 'application/json',

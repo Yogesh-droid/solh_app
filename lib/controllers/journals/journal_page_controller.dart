@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/network/error_handling.dart';
 import 'package:solh/services/network/network.dart';
@@ -9,6 +10,16 @@ import '../../constants/api.dart';
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;
   TextEditingController descriptionController = TextEditingController();
+  var anonymousProfilePositionL = 6.0.obs;
+
+  var anonymousProfilePositionT = 10.0.obs;
+
+  var nomalProfilePositionL = 20.0.obs;
+  var nomalProfilePositionT = 4.0.obs;
+
+  var isAnonymousSelected = false.obs;
+  var anonymousProfileRadius = 5.w.obs;
+  var nomalProfileRadius = 6.w.obs;
 
   var journalsList = <Journals>[].obs;
   var outputPath = "".obs;
