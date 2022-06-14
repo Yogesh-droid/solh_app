@@ -952,42 +952,47 @@ class _JournalTextFieldState extends State<JournalTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: TextField(
-        controller: journalPageController.descriptionController,
-        maxLength: 240,
-        maxLines: 6,
-        minLines: 3,
-        decoration: InputDecoration(
-            fillColor: SolhColors.grey239,
-            hintText: "What's on your mind?",
-            hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green)),
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green)),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green))),
-        onChanged: (value) async {
-          if (value.substring(value.length - 1, value.length) == '@') {
-            await showMenu(
-              context: context,
-              position: RelativeRect.fromLTRB(0, 291, 0, 0),
-              items: _connectionController
-                  .myConnectionModel.value.myConnections!
-                  .map((connection) => PopupMenuItem(
-                        onTap: () {
-                          journalPageController.descriptionController.text =
-                              journalPageController.descriptionController.text +
-                                  connection.userName!;
-                        },
-                        child: Text(connection.userName ?? ''),
-                        value: connection.sId,
-                      ))
-                  .toList(),
-              elevation: 8.0,
-            );
-          }
-        },
+      child: Stack(
+        children: [
+          TextField(
+            controller: journalPageController.descriptionController,
+            maxLength: 240,
+            maxLines: 6,
+            minLines: 3,
+            decoration: InputDecoration(
+                fillColor: SolhColors.grey239,
+                hintText: "What's on your mind?",
+                hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: SolhColors.green)),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: SolhColors.green)),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide(color: SolhColors.green))),
+            onChanged: (value) async {
+              if (value.substring(value.length - 1, value.length) == '@') {
+                await showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(0, 291, 0, 0),
+                  items: _connectionController
+                      .myConnectionModel.value.myConnections!
+                      .map((connection) => PopupMenuItem(
+                            onTap: () {
+                              journalPageController.descriptionController.text =
+                                  journalPageController
+                                          .descriptionController.text +
+                                      connection.userName!;
+                            },
+                            child: Text(connection.userName ?? ''),
+                            value: connection.sId,
+                          ))
+                      .toList(),
+                  elevation: 8.0,
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

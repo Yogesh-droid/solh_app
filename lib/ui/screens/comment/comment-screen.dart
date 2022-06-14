@@ -491,8 +491,9 @@ class _CommentScreenState extends State<CommentScreen> {
                               : Container())),
                           _isLoading
                               ? Container(
-                                  height: 4.w,
-                                  width: 4.w,
+                                  padding: EdgeInsets.fromLTRB(0, 0, 9, 12),
+                                  height: 8.w,
+                                  width: 8.w,
                                   child: MyLoader(
                                     strokeWidth: 2.5,
                                   ))
