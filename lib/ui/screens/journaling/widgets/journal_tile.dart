@@ -8,13 +8,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
-import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
@@ -147,16 +147,25 @@ class _JournalTileState extends State<JournalTile> {
                 }))
               }
             : widget._journalModel!.postedBy!.sId != null &&
-                    !widget._journalModel!.anonymousJournal!
+                    !widget._journalModel!.anonymousJournal! &&
+                    widget._journalModel!.postedBy!.uid !=
+                        FirebaseAuth.instance.currentUser!.uid
                 ? {
                     connectionController
                         .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
                     print(widget._journalModel!.postedBy!.sId),
-                    AutoRouter.of(context).push(ConnectScreenRouter(
-                        uid: widget._journalModel!.postedBy!.uid ?? '',
-                        sId: widget._journalModel!.postedBy!.sId ?? '')),
+                    // AutoRouter.of(context).push(ConnectScreenRouter(
+                    //     uid: widget._journalModel!.postedBy!.uid ?? '',
+                    //     sId: widget._journalModel!.postedBy!.sId ?? '')
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ConnectProfileScreen(
+                                uid: widget._journalModel!.postedBy!.uid!,
+                                sId: widget._journalModel!.postedBy!.sId!)))
                   }
                 : {
+                    print('this post is anonymous'),
                     print(widget._journalModel!.postedBy!.sId),
                   },
         child: Container(
@@ -341,6 +350,8 @@ class _JournalTileState extends State<JournalTile> {
                                                 ConnectProfileScreen(
                                                   username: getTexts()['text3']
                                                       .toString(),
+                                                  uid: '',
+                                                  sId: '',
                                                 )));
                                   },
                                 style: TextStyle(color: Color(0xffE1555A)))
