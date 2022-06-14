@@ -121,16 +121,6 @@ class AppRouter extends _i11.RootStackRouter {
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData, child: _i15.CreatePostScreen());
     },
-    ConnectScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<ConnectScreenRouterArgs>();
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i16.ConnectProfileScreen(
-            key: args.key,
-            uid: args.uid,
-            sId: args.sId,
-          ));
-    },
     CommentScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CommentScreenRouterArgs>();
       return _i11.MaterialPageX<dynamic>(
