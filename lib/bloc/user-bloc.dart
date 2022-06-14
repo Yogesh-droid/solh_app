@@ -42,6 +42,7 @@ class UserBlocNetwork {
         await _fetchUserDetails(FirebaseAuth.instance.currentUser!.uid)
             .onError((error, stackTrace) {
       _userController.sink.addError(error.toString());
+      return null;
     });
     print('user details fetched ${userModel.toString()}');
     if (userModel != null) {

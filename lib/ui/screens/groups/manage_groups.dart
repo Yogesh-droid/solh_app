@@ -282,7 +282,7 @@ class ManageGroupPage extends StatelessWidget {
                           Image.asset('assets/icons/group/persons.png'),
                           SizedBox(width: 5),
                           Text(
-                              (group.groupMembers!.length + 1).toString() +
+                              (group.groupMembers!.length).toString() +
                                   ' members',
                               style: TextStyle(
                                 color: SolhColors.white,

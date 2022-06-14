@@ -490,12 +490,16 @@ class _CommentScreenState extends State<CommentScreen> {
                                   icon: Icon(Icons.close))
                               : Container())),
                           _isLoading
-                              ? Container(
-                                  height: 4.w,
-                                  width: 4.w,
-                                  child: MyLoader(
-                                    strokeWidth: 2.5,
-                                  ))
+                              ? Positioned(
+                                  right: 10,
+                                  bottom: 5,
+                                  child: Container(
+                                      height: 8.w,
+                                      width: 8.w,
+                                      child: MyLoader(
+                                        strokeWidth: 2.5,
+                                      )),
+                                )
                               : Padding(
                                   padding: const EdgeInsets.all(3.0),
                                   child: MaterialButton(
@@ -1051,12 +1055,15 @@ class _PostForCommentState extends State<PostForComment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   widget._journalModel!.feelings != null
-                      ? Text(
-                          "Feeling " +
-                              widget._journalModel!.feelings![0].feelingName!,
-                          style:
-                              SolhTextStyles.JournalingDescriptionReadMoreText,
-                        )
+                      ? widget._journalModel!.feelings!.isNotEmpty
+                          ? Text(
+                              "Feeling " +
+                                  widget
+                                      ._journalModel!.feelings![0].feelingName!,
+                              style: SolhTextStyles
+                                  .JournalingDescriptionReadMoreText,
+                            )
+                          : Container()
                       : Container(),
                   ReadMoreText(
                     widget._journalModel!.description ?? '',
