@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -57,19 +58,10 @@ class _JournalTileState extends State<JournalTile> {
     getFeelings();
   }
 
-  Map getTexts() {
-    List textList = widget._journalModel!.description!.split('@');
-    if (textList.length == 1) {
-      return {
-        'text1': textList[0],
-      };
-    }
-    List textList2 = textList[1].split(' ');
-    String text3 = textList[1].replaceAll(textList2[0], '');
-    print('map++' +
-        {'text1': textList[0], 'text2': text3, 'text3': textList2[0]}
-            .toString());
-    return {'text1': textList[0], 'text2': text3, 'text3': textList2[0]};
+  List getTexts() {
+    List textList = widget._journalModel!.description!.split(' ');
+
+    return textList;
   }
 
   @override
@@ -341,44 +333,45 @@ class _JournalTileState extends State<JournalTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widget._journalModel!.feelings != null
-              ? Text(
-                  "#Feeling " +
-                      widget.feelingList
-                          .toString()
-                          .replaceAll("[", "")
-                          .replaceAll("]", ""),
-                  style: SolhTextStyles.PinkBorderButtonText)
-              : Container(),
-          widget._journalModel!.description != null
-              ? RichText(
-                  text: TextSpan(children: [
-                  TextSpan(
-                      text: getTexts()['text1'] ?? '',
-                      style: SolhTextStyles.JournalingDescriptionText,
-                      children: [
-                        getTexts().containsKey('text3')
-                            ? TextSpan(
-                                text: '@' + getTexts()['text3'],
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ConnectProfileScreen(
-                                                  username: getTexts()['text3']
-                                                      .toString(),
-                                                  uid: '',
-                                                  sId: '',
-                                                )));
-                                  },
-                                style: TextStyle(color: Color(0xffE1555A)))
-                            : TextSpan(text: ''),
-                        getTexts().containsKey('text2')
-                            ? TextSpan(text: getTexts()['text2'])
-                            : TextSpan(text: ''),
-                      ]),
-                ]))
+              ?
+              //     ? Text(
+              //         "#Feeling " +
+              //             widget.feelingList
+              //                 .toString()
+              //                 .replaceAll("[", "")
+              //                 .replaceAll("]", ""),
+              //         style: SolhTextStyles.PinkBorderButtonText)
+              //     : Container(),
+              // widget._journalModel!.description != null
+              //     ? RichText(
+              //         text: TextSpan(children: [
+              //         TextSpan(
+              //             text: getTexts()['text1'] ?? '',
+              //             style: SolhTextStyles.JournalingDescriptionText,
+              //             children: [
+              //               getTexts().containsKey('text3')
+              //                   ? TextSpan(
+              //                       text: '@' + getTexts()['text3'],
+              //                       recognizer: TapGestureRecognizer()
+              //                         ..onTap = () async {
+              //                           Navigator.push(
+              //                               context,
+              //                               MaterialPageRoute(
+              //                                   builder: (context) =>
+              //                                       ConnectProfileScreen(
+              //                                         username: getTexts()['text3']
+              //                                             .toString(),
+              //                                         uid: '',
+              //                                         sId: '',
+              //                                       )));
+              //                         },
+              //                       style: TextStyle(color: Color(0xffE1555A)))
+              //                   : TextSpan(text: ''),
+              //               getTexts().containsKey('text2')
+              //                   ? TextSpan(text: getTexts()['text2'])
+              //                   : TextSpan(text: ''),
+              //             ]),
+              //       ]))
 
               // ? ReadMoreText(
               //     widget._journalModel!.description!,
@@ -391,6 +384,32 @@ class _JournalTileState extends State<JournalTile> {
               //     trimCollapsedText: ' Read more',
               //     trimExpandedText: ' Less',
               //   )
+              Wrap(
+                  children: getTexts().map((item) {
+                    if (item.toString().trim()[0] == '@') {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConnectProfileScreen(
+                                        username: item
+                                            .toString()
+                                            .substring(1, item.length),
+                                        uid: '',
+                                        sId: '',
+                                      )));
+                        },
+                        child: Text(
+                          item + " ",
+                          style: GoogleFonts.signika(color: Color(0xffE1555A)),
+                        ),
+                      );
+                    } else {
+                      return Text(item + " ");
+                    }
+                  }).toList(),
+                )
               : Container(),
         ],
       ),
