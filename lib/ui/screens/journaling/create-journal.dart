@@ -2,13 +2,16 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/connections/tag_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
@@ -25,6 +28,10 @@ import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import '../../../model/journals/journals_response_model.dart';
 import 'trimmer_view.dart';
+
+// Map selectedItems = {};
+
+// List<bool> isSelected = [];
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen(
@@ -46,6 +53,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _journalType = JournalType.Publicaly.toShortString();
   TextEditingController _customFeelingController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
+  TagsController tagsController = Get.put(TagsController());
   FocusNode _customFeelingFocusNode = FocusNode();
   FocusNode _searchFeelingFocusNode = FocusNode();
   XFile? _xFile;
@@ -162,6 +170,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               }));
   }
 
+  String getDescriptionTags() {
+    String x = '';
+    print('it ran');
+    tagsController.selectedItems.keys.forEach((key) {
+      x += '@' + key + '';
+    });
+
+    return x;
+  }
+
   void _postJournal() async {
     ////////  post anonymous is done by passing isAnonymous = true
 
@@ -220,7 +238,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       });
       CreateJournal _createJournal = CreateJournal(
         postId: journalPageController.selectedDiary.value.id,
-        description: journalPageController.descriptionController.text,
+        description: journalPageController.descriptionController.text +
+            " " +
+            getDescriptionTags(),
         feelings: feelings,
         journalType: _journalType,
         groupId: journalPageController.selectedGroupId.value,
@@ -1069,50 +1089,255 @@ class JournalTextField extends StatefulWidget {
 class _JournalTextFieldState extends State<JournalTextField> {
   JournalPageController journalPageController = Get.find();
   ConnectionController _connectionController = Get.find();
+  TagsController _tagsController = Get.put(TagsController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // selectedItems = {};
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: SolhColors.green)),
       child: Stack(
         children: [
-          TextField(
-            controller: journalPageController.descriptionController,
-            maxLength: 240,
-            maxLines: 6,
-            minLines: 3,
-            decoration: InputDecoration(
-                fillColor: SolhColors.grey239,
-                hintText: "What's on your mind?",
-                hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: SolhColors.green)),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: SolhColors.green)),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(color: SolhColors.green))),
-            onChanged: (value) async {
-              if (value.substring(value.length - 1, value.length) == '@') {
-                await showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(0, 291, 0, 0),
-                  items: _connectionController
-                      .myConnectionModel.value.myConnections!
-                      .map((connection) => PopupMenuItem(
-                            onTap: () {
-                              journalPageController.descriptionController.text =
-                                  journalPageController
-                                          .descriptionController.text +
-                                      connection.userName!;
-                            },
-                            child: Text(connection.userName ?? ''),
-                            value: connection.sId,
-                          ))
-                      .toList(),
-                  elevation: 8.0,
-                );
-              }
-            },
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: journalPageController.descriptionController,
+                maxLines: 6,
+                minLines: 3,
+                decoration: InputDecoration(
+                  fillColor: SolhColors.grey239,
+                  hintText: "What's on your mind?",
+                  hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+                  // enabledBorder: OutlineInputBorder(
+                  //     borderSide: BorderSide(color: SolhColors.green)),
+                  // focusedBorder: OutlineInputBorder(
+                  //     borderSide: BorderSide(color: SolhColors.green)),
+                  // border: OutlineInputBorder(
+                  //     borderSide: BorderSide(color: SolhColors.green))
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                ),
+              ),
+              GetBuilder<TagsController>(
+                  init: _tagsController,
+                  builder: (_tagsController) {
+                    return Container(
+                      width: 80.w,
+                      child: Wrap(
+                        children: _tagsController.selectedItems.keys
+                            .toList()
+                            .map((key) {
+                          return Text(
+                            '@' + key.toString() + '  ',
+                            style: GoogleFonts.signika(
+                              fontSize: 12,
+                              color: SolhColors.green,
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
+              SizedBox(
+                height: 10,
+              )
+            ],
           ),
+          Positioned(
+            bottom: 10,
+            right: 10,
+            child: InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        child: ModalBottomSheetContent(),
+                      );
+                    });
+              },
+              child: Container(
+                height: 24,
+                width: 52,
+                decoration: BoxDecoration(
+                  color: Color(0xffEFEFEF),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(18),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Tag',
+                      style: TextStyle(color: SolhColors.green),
+                    ),
+                    SizedBox(
+                      width: 2,
+                    ),
+                    SvgPicture.asset('assets/images/plus.svg'),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ModalBottomSheetContent extends StatefulWidget {
+  ModalBottomSheetContent({Key? key}) : super(key: key);
+
+  @override
+  State<ModalBottomSheetContent> createState() =>
+      _ModalBottomSheetContentState();
+}
+
+class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
+  ConnectionController _connectionController = Get.find();
+
+  TagsController _tagsController = Get.put(TagsController());
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Select People',
+                  style: GoogleFonts.signika(
+                    fontSize: 16,
+                  ),
+                ),
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: SvgPicture.asset('assets/images/cancle.svg'),
+                    ),
+                    SizedBox(
+                      width: 31,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: _tagsController.selectedItems.length > 0
+                              ? SvgPicture.asset('assets/images/arrow.svg')
+                              : SvgPicture.asset(
+                                  'assets/images/arrowGrey.svg',
+                                  color: Colors.grey,
+                                )),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 14,
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: _connectionController
+                    .myConnectionModel.value.myConnections!.length,
+                itemBuilder: (context, index) {
+                  if (_connectionController
+                          .myConnectionModel.value.myConnections!.length >
+                      _tagsController.selectedTags.length) {
+                    _tagsController.selectedTags.add(false);
+                  }
+                  return Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(_connectionController
+                                .myConnectionModel
+                                .value
+                                .myConnections![index]
+                                .profilePicture!),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 0, 30, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    _connectionController.myConnectionModel
+                                        .value.myConnections![index].name!,
+                                    style: GoogleFonts.signika(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    _connectionController.myConnectionModel
+                                        .value.myConnections![index].bio!,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Checkbox(
+                            checkColor: Colors.white,
+                            activeColor: SolhColors.green,
+                            value: _tagsController.selectedTags[index],
+                            shape: CircleBorder(),
+                            onChanged: (bool? value) {
+                              if (value!) {
+                                _tagsController.selectedTags[index] = value;
+                                _tagsController.selectedItems[
+                                    _connectionController
+                                        .myConnectionModel
+                                        .value
+                                        .myConnections![index]
+                                        .userName!] = true;
+                                _tagsController.update();
+                              }
+                              if (value == false) {
+                                _tagsController.selectedTags[index] = value;
+                                _tagsController.selectedItems.remove(
+                                    _connectionController.myConnectionModel
+                                        .value.myConnections![index].userName!);
+                                _tagsController.update();
+                              }
+                              print(_tagsController.selectedTags.length);
+                              print(_tagsController.selectedItems.toString());
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+          )
         ],
       ),
     );
