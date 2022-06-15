@@ -10,6 +10,7 @@ class DiscoverGroupController extends GetxController {
   var discoveredGroupModel = GetGroupResponseModel().obs;
   var groupDetail = GroupList().obs;
   var isLoading = false.obs;
+  var isDeletingGroup = false.obs;
 
   @override
   void onInit() {
@@ -44,10 +45,12 @@ class DiscoverGroupController extends GetxController {
   }
 
   Future<void> deleteGroups(String groupId) async {
+    isDeletingGroup.value = true;
     Map<String, dynamic> map = await Network.makeHttpDeleteRequestWithToken(
         url: '${APIConstants.api}/api/group?groupId=$groupId', body: {});
     getCreatedGroups();
     getJoinedGroups();
+    isDeletingGroup.value = false;
   }
 
   Future<void> getGroupDetail(String groupId) async {

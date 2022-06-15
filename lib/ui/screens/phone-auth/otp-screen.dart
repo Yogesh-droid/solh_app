@@ -14,7 +14,7 @@ import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 import '../../../services/user/session-cookie.dart';
 import '../../../widgets_constants/constants/colors.dart';
-import 'package:alt_sms_autofill/alt_sms_autofill.dart';
+// import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen(
@@ -39,7 +39,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   void initState() {
-    getSms();
+    // getSms();
     super.initState();
     // _otpInteractor = OTPInteractor();
     // _otpInteractor
@@ -64,24 +64,24 @@ class _OTPScreenState extends State<OTPScreen> {
     //listenOtp();
   }
 
-  Future<void> getSms() async {
-    try {
-      String? commingSms = await AltSmsAutofill().listenForSms;
-      if (commingSms != null) {
-        print(commingSms);
-        _otpController.text = commingSms.substring(0, 6);
-      }
-    } catch (e) {
-      String commingSms = 'Failed to get Sms.';
-    }
-  }
+  // Future<void> getSms() async {
+  //   try {
+  //     String? commingSms = await AltSmsAutofill().listenForSms;
+  //     if (commingSms != null) {
+  //       print(commingSms);
+  //       _otpController.text = commingSms.substring(0, 6);
+  //     }
+  //   } catch (e) {
+  //     String commingSms = 'Failed to get Sms.';
+  //   }
+  // }
 
   bool isLoading = false;
 
   @override
   void dispose() {
     //SmsAutoFill().unregisterListener();
-    AltSmsAutofill().unregisterListener();
+    //AltSmsAutofill().unregisterListener();
     print("unregisterListener");
     super.dispose();
   }

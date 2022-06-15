@@ -13,6 +13,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../../../routes/routes.gr.dart';
 
@@ -61,55 +62,60 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(context),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                getGroupImg(),
-                Obx(() {
-                  return discoverGroupController.isLoading.value
-                      ? Container()
-                      : getGroupInfo(context);
-                })
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Obx(() {
-              return discoverGroupController.isLoading.value
-                  ? Container()
-                  : getPostButton(context);
-            }),
-            SizedBox(
-              height: 10,
-            ),
-            Obx(() {
-              return discoverGroupController.isLoading.value
-                  ? Container()
-                  : getGroupDesc();
-            }),
-            Divider(),
-            Obx(() {
-              return discoverGroupController.isLoading.value
-                  ? Container()
-                  : getMembersList(context);
-            })
-          ],
-        ),
-      ),
+      body: SingleChildScrollView(child: Obx(() {
+        return discoverGroupController.isDeletingGroup.value
+            ? Center(child: MyLoader())
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
+                    children: [
+                      getGroupImg(),
+                      Obx(() {
+                        return discoverGroupController.isLoading.value
+                            ? Container()
+                            : getGroupInfo(context);
+                      })
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Obx(() {
+                    return discoverGroupController.isLoading.value
+                        ? Container()
+                        : getPostButton(context);
+                  }),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Obx(() {
+                    return discoverGroupController.isLoading.value
+                        ? Container()
+                        : getGroupDesc();
+                  }),
+                  Divider(),
+                  Obx(() {
+                    return discoverGroupController.isLoading.value
+                        ? Container()
+                        : getMembersList(context);
+                  })
+                ],
+              );
+      })),
     );
   }
 
   SolhAppBar getAppBar(BuildContext context) {
     return SolhAppBar(
       title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(
-          groupList.groupName ?? '' + '(${groupList.groupType})',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.55,
+          child: Text(
+            groupList.groupName ?? '' + '(${groupList.groupType})',
+            style: TextStyle(
+                fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+          ),
         ),
         groupList.groupMembers != null
             ? groupList.defaultAdmin!.id == userBlocNetwork.id
@@ -264,9 +270,17 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
                   backgroundColor: SolhColors.green,
-                  child: Text(
-                    'Join',
-                  ),
+                  child: Obx(() {
+                    return discoverGroupController.isLoading.value
+                        ? MyLoader()
+                        : Text(
+                            'Join Group',
+                            style: TextStyle(
+                              color: SolhColors.white,
+                              fontSize: 16,
+                            ),
+                          );
+                  }),
                   onPressed: () async {
                     await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');

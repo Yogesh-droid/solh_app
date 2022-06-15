@@ -419,15 +419,18 @@ class _JournalingState extends State<Journaling> {
                     : BoxDecoration(),
             child: InkWell(
               borderRadius: BorderRadius.circular(50),
-              onTap: () async {
-                _journalPageController.selectedGroupId.value = group.sId ?? '';
-                _journalPageController.journalsList.clear();
-                _journalPageController.pageNo = 1;
-                _journalPageController.endPageLimit = 1;
-                await _journalPageController.getAllJournals(1,
-                    groupId: group.sId);
-                _journalPageController.journalsList.refresh();
-              },
+              onTap: !_journalPageController.isLoading.value
+                  ? () async {
+                      _journalPageController.selectedGroupId.value =
+                          group.sId ?? '';
+                      _journalPageController.journalsList.clear();
+                      _journalPageController.pageNo = 1;
+                      _journalPageController.endPageLimit = 1;
+                      await _journalPageController.getAllJournals(1,
+                          groupId: group.sId);
+                      _journalPageController.journalsList.refresh();
+                    }
+                  : null,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Container(

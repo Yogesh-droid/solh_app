@@ -8,6 +8,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/group/create_group_controller.dart';
 import '../../../services/network/network.dart';
@@ -262,11 +263,16 @@ class CreateGroup extends StatelessWidget {
 
   Widget getCreateGroupButton(BuildContext context) {
     return SolhGreenButton(
-      child: Text("Next"),
+      child: Obx((() {
+        return _controller.isLoading.value
+            ? CircularProgressIndicator()
+            : Text("Next");
+      })),
       height: 6.h,
       width: MediaQuery.of(context).size.width / 1.1,
       onPressed: () async {
-        if (_formKey.currentState!.validate()) {
+        if (_formKey.currentState!.validate() &&
+            !_groupController.isLoading.value) {
           if (_croppedFile != null) {
             _controller.path.value = _croppedFile!.path;
           }
