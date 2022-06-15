@@ -134,7 +134,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             SizedBox(height: 2.h),
                             getMediaContainer(),
                             SizedBox(height: 10.h),
-                            getCustomFeelingTextBox(),
+                            // getCustomFeelingTextBox(),
                           ],
                         ),
                       );
@@ -148,6 +148,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 color: SolhColors.green.withOpacity(0.25),
                 child: Center(child: MyLoader()),
               ),
+            Positioned(
+              bottom: 0,
+              child: Container(
+                height: 130,
+                width: MediaQuery.of(context).size.width,
+                child: getCustomFeelingTextBox(),
+              ),
+            ),
           ],
         ),
         floatingActionButton: _isPosting
@@ -175,7 +183,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     String x = '';
     print('it ran');
     tagsController.selectedItems.keys.forEach((key) {
-      x += '@' + key + '';
+      x += '@' + key + ' ';
     });
 
     return x;
@@ -202,7 +210,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         mediaUrl: journalPageController.selectedDiary.value.mediaType != null
             ? journalPageController.selectedDiary.value.mediaUrl
             : imgUploadResponse["imageUrl"],
-        description: journalPageController.descriptionController.text,
+        description: journalPageController.descriptionController.text +
+            " " +
+            getDescriptionTags(),
         feelings: feelings,
         journalType: _journalType,
         mimetype: journalPageController.selectedDiary.value.mediaType != null
