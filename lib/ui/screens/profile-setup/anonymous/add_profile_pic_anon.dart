@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
@@ -8,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/profile-setup/anonymous/anon_landing_page.dart';

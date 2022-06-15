@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/services/utility.dart';
@@ -14,6 +12,7 @@ class CreateGroupController extends GetxController {
   var tagList = [].obs;
   var selectedMembersIndex = [].obs;
   var selectedMembers = [];
+  var isLoading = false.obs;
 
   Future<Map<String, dynamic>> createGroup(
       {required String groupName,
@@ -21,6 +20,7 @@ class CreateGroupController extends GetxController {
       required String groupType,
       String? img,
       String? imgType}) async {
+    isLoading.value = true;
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
             url: APIConstants.api + '/api/group',
             body: img != null
@@ -42,6 +42,7 @@ class CreateGroupController extends GetxController {
       print(error);
       return {};
     });
+    isLoading.value = false;
     return map;
   }
 
@@ -68,6 +69,7 @@ class CreateGroupController extends GetxController {
   }
 
   Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
+    isLoading.value = true;
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
             url: APIConstants.api + '/api/join-group',
             body: {'groupId': groupId, 'userId': userBlocNetwork.id})
@@ -78,6 +80,7 @@ class CreateGroupController extends GetxController {
     if (map['success'] == true) {
       Utility.showToast(map['message']);
     }
+    isLoading.value = false;
     return map;
   }
 }

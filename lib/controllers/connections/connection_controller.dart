@@ -16,7 +16,17 @@ class ConnectionController extends GetxController {
   var userAnalyticsModel = UserAnalyticModel().obs;
   var groupInvites = <Group>[].obs;
   var isAddingConnection = false.obs;
+  var isDecliningConnection = false.obs;
+  var declinedConnectionId = ''.obs;
+  var isCancelingConnection = false.obs;
+
+  /// for canceling connection
+  var canceledConnectionId = ''.obs;
+
+  /// for canceling connection
   var addingConnectionId = "".obs;
+
+  /// for adding connection
   var userModel = UserModel().obs;
   DiscoverGroupController discoverGroupController = Get.find();
 

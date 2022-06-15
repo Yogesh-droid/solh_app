@@ -432,17 +432,17 @@ class Connections extends StatelessWidget {
                             ),
                             Spacer(),
                             inviteButton(
-                                callback: () async {
-                                  connectionController
-                                      .isAddingConnection.value = true;
-                                  await connectionController.acceptConnection(
-                                      connectionController.sentConnections
-                                          .value[index].connectionId!,
-                                      '1');
-                                  connectionController
-                                      .isAddingConnection.value = false;
-                                },
-                                flag: 'sent'),
+                              callback: () async {
+                                connectionController.isAddingConnection.value =
+                                    true;
+                                () {};
+                                connectionController.isAddingConnection.value =
+                                    false;
+                              },
+                              flag: 'sent',
+                              id: connectionController
+                                  .sentConnections.value[index].connectionId!,
+                            ),
                             PopupMenuButton(
                               itemBuilder: (context) {
                                 return [
@@ -475,10 +475,21 @@ class Connections extends StatelessWidget {
                                                   .sId ??
                                               ''));
                                 } else if (value == '2') {
-                                  connectionController.deleteConnectionRequest(
+                                  connectionController
+                                      .isCancelingConnection.value = true;
+                                  connectionController.canceledConnectionId
+                                      .value = connectionController
+                                          .sentConnections
+                                          .value[index]
+                                          .connectionId ??
+                                      '';
+                                  await connectionController
+                                      .deleteConnectionRequest(
                                     connectionController.sentConnections
                                         .value[index].connectionId!,
                                   );
+                                  connectionController
+                                      .isCancelingConnection.value = false;
                                 }
                               },
                             )
@@ -614,7 +625,7 @@ class Connections extends StatelessWidget {
                                   ),
                                 ];
                               },
-                              onSelected: (value) {
+                              onSelected: (value) async {
                                 if (value == '1') {
                                   AutoRouter.of(context).push(
                                       ConnectScreenRouter(
@@ -629,10 +640,20 @@ class Connections extends StatelessWidget {
                                                   .sId ??
                                               ''));
                                 } else if (value == '2') {
-                                  connectionController.acceptConnection(
+                                  connectionController
+                                      .isDecliningConnection.value = true;
+                                  connectionController.declinedConnectionId
+                                      .value = connectionController
+                                          .receivedConnections
+                                          .value[index]
+                                          .connectionId ??
+                                      '';
+                                  await connectionController.acceptConnection(
                                       connectionController.receivedConnections
                                           .value[index].connectionId!,
                                       '0');
+                                  connectionController
+                                      .isDecliningConnection.value = false;
                                 }
                               },
                             )
@@ -836,21 +857,36 @@ class Connections extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
-          child: Obx(() => connectionController.isAddingConnection.value &&
-                  flag == 'received' &&
-                  id == connectionController.addingConnectionId.value
-              ? Container(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(SolhColors.white),
-                    strokeWidth: 2,
-                  ),
-                )
-              : Text(
-                  flag == 'sent' ? 'Waiting' : 'Accept',
-                  style: TextStyle(color: SolhColors.white),
-                )),
+          child: Obx(() {
+            return (connectionController.isAddingConnection.value &&
+                        flag == 'received' &&
+                        id == connectionController.addingConnectionId.value) ||
+
+                    /// this is case when acccept connections
+                    (connectionController.isDecliningConnection.value &&
+                        flag == 'received' &&
+                        id ==
+                            connectionController.declinedConnectionId.value) ||
+
+                    /// this is case when decline connections
+                    (connectionController.isCancelingConnection.value &&
+                        flag == 'sent' &&
+                        id == connectionController.canceledConnectionId.value)
+                ? Container(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      ///  this is for the progress indicator when adding connection
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(SolhColors.white),
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Text(
+                    flag == 'sent' ? 'Waiting' : 'Accept',
+                    style: TextStyle(color: SolhColors.white),
+                  );
+          }),
         ),
       ),
     );

@@ -18,7 +18,7 @@ class JournalPageController extends GetxController {
   var nomalProfilePositionT = 4.0.obs;
 
   var isAnonymousSelected = false.obs;
-  var anonymousProfileRadius = 5.w.obs;
+  var anonymousProfileRadius = 3.5.w.obs;
   var nomalProfileRadius = 6.w.obs;
 
   var journalsList = <Journals>[].obs;

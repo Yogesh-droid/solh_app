@@ -138,6 +138,7 @@ class _JournalTileState extends State<JournalTile> {
             ? {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return GroupDetailsPage(
+                    ///// this case is for group journal
                     group: GroupList(
                       sId: widget._journalModel!.group!.sId,
                       groupName: widget._journalModel!.group!.groupName,
@@ -146,7 +147,8 @@ class _JournalTileState extends State<JournalTile> {
                   );
                 }))
               }
-            : widget._journalModel!.postedBy!.sId != null &&
+            : widget._journalModel!.postedBy!.sId !=
+                        null && ////// this case is for user journal
                     !widget._journalModel!.anonymousJournal! &&
                     widget._journalModel!.postedBy!.uid !=
                         FirebaseAuth.instance.currentUser!.uid
@@ -165,6 +167,11 @@ class _JournalTileState extends State<JournalTile> {
                                 sId: widget._journalModel!.postedBy!.sId!)))
                   }
                 : {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('You can not see this user'),
+                      duration: Duration(milliseconds: 700),
+                      backgroundColor: Colors.black.withOpacity(0.8),
+                    )),
                     print('this post is anonymous'),
                     print(widget._journalModel!.postedBy!.sId),
                   },
@@ -216,18 +223,29 @@ class _JournalTileState extends State<JournalTile> {
                             Row(
                               children: [
                                 Text(
-                                  widget._journalModel!.group != null &&
-                                          journalPageController
-                                                  .selectedGroupId ==
-                                              ''
-                                      ? widget._journalModel!.group!
-                                              .groupName ??
+                                  widget._journalModel!.anonymousJournal !=
+                                              null &&
+                                          widget._journalModel!
+                                              .anonymousJournal! &&
+                                          widget._journalModel!.postedBy!
+                                                  .anonymous !=
+                                              null
+                                      ? widget._journalModel!.postedBy!
+                                              .anonymous!.userName ??
                                           ''
-                                      : widget._journalModel!.postedBy != null
-                                          ? widget._journalModel!.postedBy!
-                                                  .name ??
+                                      : widget._journalModel!.group != null &&
+                                              journalPageController
+                                                      .selectedGroupId ==
+                                                  ''
+                                          ? widget._journalModel!.group!
+                                                  .groupName ??
                                               ''
-                                          : '',
+                                          : widget._journalModel!.postedBy !=
+                                                  null
+                                              ? widget._journalModel!.postedBy!
+                                                      .name ??
+                                                  ''
+                                              : '',
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
                                 widget._journalModel!.anonymousJournal !=
@@ -598,9 +616,28 @@ class _JournalTileState extends State<JournalTile> {
                       FirebaseAuth.instance.currentUser!.uid
                   ? InkWell(
                       onTap: () async {
-                        await connectionController.addConnection(
-                          widget._journalModel!.postedBy!.sId!,
-                        );
+                        widget._journalModel!.group != null &&
+                                journalPageController
+                                        .selectedGroupId.value.length ==
+                                    0
+                            ? {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return GroupDetailsPage(
+                                    ///// this case is for group journal
+                                    group: GroupList(
+                                      sId: widget._journalModel!.group!.sId,
+                                      groupName: widget
+                                          ._journalModel!.group!.groupName,
+                                      groupMediaUrl: widget
+                                          ._journalModel!.group!.groupImage,
+                                    ),
+                                  );
+                                }))
+                              }
+                            : await connectionController.addConnection(
+                                widget._journalModel!.postedBy!.sId!,
+                              );
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 3.5,
@@ -618,7 +655,12 @@ class _JournalTileState extends State<JournalTile> {
                                 left: MediaQuery.of(context).size.width / 40,
                               ),
                               child: Text(
-                                "Connect",
+                                widget._journalModel!.group != null &&
+                                        journalPageController
+                                                .selectedGroupId.value.length ==
+                                            0
+                                    ? 'join'
+                                    : "Connect",
                                 style: SolhTextStyles.GreenBorderButtonText,
                               ),
                             ),
