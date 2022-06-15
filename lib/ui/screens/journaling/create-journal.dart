@@ -27,6 +27,7 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import '../../../model/journals/journals_response_model.dart';
+import '../profile-setup/anonymous/pick_user_name_screen.dart';
 import 'trimmer_view.dart';
 
 // Map selectedItems = {};
@@ -955,8 +956,13 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   Widget getUserImg(UserModel? userModel) {
     return GestureDetector(
       onTap: () {
-        journalPageController.isAnonymousSelected.value =
-            !journalPageController.isAnonymousSelected.value;
+        if (widget._userModel!.anonymous != null) {
+          journalPageController.isAnonymousSelected.value =
+              !journalPageController.isAnonymousSelected.value;
+        } else {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PickUsernameScreen()));
+        }
       },
       child: Container(
           height: 10.h,
