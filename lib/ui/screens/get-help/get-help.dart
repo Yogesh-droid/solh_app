@@ -589,15 +589,25 @@ class SolhVolunteers extends StatelessWidget {
           ),
           Container(
             height: 300,
-            width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+            child: ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(
+                width: 10,
+              ),
+              shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemCount: _solhVolunteers.length,
               itemBuilder: (context, index) {
                 return Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Color(0xFFEFEFEF),
+                      width: 1,
+                    ),
+                  ),
                   height: 289,
                   width: 164,
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 24),
                   child: Stack(children: [
                     Container(
                       height: 52,
@@ -655,6 +665,7 @@ class SolhVolunteers extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 8),
                               child: Text(
                                 _solhVolunteers[index]['bio']!,
+                                textAlign: TextAlign.center,
                                 maxLines: 3,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.signika(

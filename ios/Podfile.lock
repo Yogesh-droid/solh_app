@@ -1,6 +1,4 @@
 PODS:
-  - alt_sms_autofill (0.0.1):
-    - Flutter
   - ffmpeg-kit-ios-https (4.5.1)
   - ffmpeg_kit_flutter (4.5.1):
     - ffmpeg_kit_flutter/https (= 4.5.1)
@@ -105,7 +103,6 @@ PODS:
     - libwebp
 
 DEPENDENCIES:
-  - alt_sms_autofill (from `.symlinks/plugins/alt_sms_autofill/ios`)
   - ffmpeg_kit_flutter (from `.symlinks/plugins/ffmpeg_kit_flutter/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -141,8 +138,6 @@ SPEC REPOS:
     - TOCropViewController
 
 EXTERNAL SOURCES:
-  alt_sms_autofill:
-    :path: ".symlinks/plugins/alt_sms_autofill/ios"
   ffmpeg_kit_flutter:
     :path: ".symlinks/plugins/ffmpeg_kit_flutter/ios"
   firebase_auth:
@@ -177,7 +172,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_thumbnail/ios"
 
 SPEC CHECKSUMS:
-  alt_sms_autofill: 6c623529a8de6a2a9297358bdb7dab3d8ad693e4
   ffmpeg-kit-ios-https: cec24d405b511e4f274980d8a9c751d384f89558
   ffmpeg_kit_flutter: e2f0bd6b75e361faeee3b34c70650d3ec6ec35d0
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
