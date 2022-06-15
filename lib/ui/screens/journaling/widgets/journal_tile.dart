@@ -60,6 +60,7 @@ class _JournalTileState extends State<JournalTile> {
 
   List getTexts() {
     List textList = widget._journalModel!.description!.split(' ');
+    print('textList: $textList');
 
     return textList;
   }
@@ -384,31 +385,36 @@ class _JournalTileState extends State<JournalTile> {
               //     trimCollapsedText: ' Read more',
               //     trimExpandedText: ' Less',
               //   )
+
               Wrap(
-                  children: getTexts().map((item) {
-                    if (item.toString().trim()[0] == '@') {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConnectProfileScreen(
-                                        username: item
-                                            .toString()
-                                            .substring(1, item.length),
-                                        uid: '',
-                                        sId: '',
-                                      )));
-                        },
-                        child: Text(
-                          item + " ",
-                          style: GoogleFonts.signika(color: Color(0xffE1555A)),
-                        ),
-                      );
-                    } else {
-                      return Text(item + " ");
-                    }
-                  }).toList(),
+                  children: widget._journalModel!.description!.length == 0
+                      ? []
+                      : getTexts().map((item) {
+                          if (item.toString().trim()[0] == '@') {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ConnectProfileScreen(
+                                              username: item
+                                                  .toString()
+                                                  .substring(1, item.length),
+                                              uid: '',
+                                              sId: '',
+                                            )));
+                              },
+                              child: Text(
+                                item + " ",
+                                style: GoogleFonts.signika(
+                                    color: Color(0xffE1555A)),
+                              ),
+                            );
+                          } else {
+                            return Text(item + " " ?? '');
+                          }
+                        }).toList(),
                 )
               : Container(),
         ],
