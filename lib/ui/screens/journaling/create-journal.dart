@@ -17,6 +17,8 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/profile-setup/anonymous/pick_user_name_screen.dart';
+import 'package:solh/ui/screens/profile-setup/profile-created.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -935,8 +937,13 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   Widget getUserImg(UserModel? userModel) {
     return GestureDetector(
       onTap: () {
-        journalPageController.isAnonymousSelected.value =
-            !journalPageController.isAnonymousSelected.value;
+        if (widget._userModel!.anonymous != null) {
+          journalPageController.isAnonymousSelected.value =
+              !journalPageController.isAnonymousSelected.value;
+        } else {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PickUsernameScreen()));
+        }
       },
       child: Container(
           height: 10.h,
@@ -978,26 +985,23 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                                         "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
                                   )))
                           : Container(),
-                      userModel.anonymous != null
-                          ? Positioned(
-                              left: 0,
-                              top: 0,
-                              child: InkWell(
-                                onTap: () {
-                                  journalPageController
-                                          .isAnonymousSelected.value =
-                                      !journalPageController
-                                          .isAnonymousSelected.value;
-                                  print(journalPageController
-                                      .isAnonymousSelected.value);
-                                },
-                                child: Icon(
-                                  Icons.swap_horiz,
-                                  color: SolhColors.green,
-                                ),
-                              ),
-                            )
-                          : Container(),
+                      Positioned(
+                        left: 0,
+                        top: 0,
+                        child: InkWell(
+                          onTap: () {
+                            journalPageController.isAnonymousSelected.value =
+                                !journalPageController
+                                    .isAnonymousSelected.value;
+                            print(journalPageController
+                                .isAnonymousSelected.value);
+                          },
+                          child: Icon(
+                            Icons.swap_horiz,
+                            color: SolhColors.green,
+                          ),
+                        ),
+                      )
                     ],
                   )
                 : Stack(
@@ -1019,7 +1023,19 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                                     userModel.anonymous!.profilePicture ??
                                         "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
                                   )))
-                          : Container(),
+                          : Positioned(
+                              left: journalPageController
+                                  .anonymousProfilePositionL.value,
+                              top: journalPageController
+                                  .anonymousProfilePositionT.value,
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: journalPageController
+                                      .anonymousProfileRadius.value,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                  )),
+                            ),
                       AnimatedPositioned(
                         left: journalPageController.nomalProfilePositionL.value,
                         top: journalPageController.nomalProfilePositionT.value,
