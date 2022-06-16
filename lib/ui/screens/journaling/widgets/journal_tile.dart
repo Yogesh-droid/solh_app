@@ -65,6 +65,22 @@ class _JournalTileState extends State<JournalTile> {
     return textList;
   }
 
+  bool checkConnectionExist(username) {
+    bool connectionExits = true;
+
+    for (var i in connectionController.myConnectionModel.value.myConnections!) {
+      print('@' + i.userName.toString() + username.toString());
+      if ('@' + i.userName.toString() == username) {
+        connectionExits = false;
+        break;
+      } else {
+        connectionExits = true;
+      }
+    }
+    print(connectionExits);
+    return connectionExits;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -78,7 +94,7 @@ class _JournalTileState extends State<JournalTile> {
             children: [
               getUserImageAndName(),
               Divider(),
-              getPostDetails(),
+              getPostDetails(connectionController),
               getPostMedia(),
               widget.isMyJournal ? Container() : getPostActionButton(),
             ],
@@ -325,7 +341,7 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  Widget getPostDetails() {
+  Widget getPostDetails(ConnectionController) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width / 35,
@@ -390,18 +406,23 @@ class _JournalTileState extends State<JournalTile> {
                 ? []
                 : getTexts().map((item) {
                     if (item.toString().trim()[0] == '@') {
+                      if (checkConnectionExist(item)) {
+                        print('it ran');
+                        return Text(item + ' ');
+                      }
                       return InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConnectProfileScreen(
-                                        username: item
-                                            .toString()
-                                            .substring(1, item.length),
-                                        uid: '',
-                                        sId: '',
-                                      )));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ConnectProfileScreen(
+                                username:
+                                    item.toString().substring(1, item.length),
+                                uid: '',
+                                sId: '',
+                              ),
+                            ),
+                          );
                         },
                         child: Text(
                           item + " ",
