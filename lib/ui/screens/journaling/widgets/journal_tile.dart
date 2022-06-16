@@ -556,7 +556,7 @@ class _JournalTileState extends State<JournalTile> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          GestureDetector(
+          InkWell(
             onTap: () async {
               if (journalPageController.journalsList[widget.index].isLiked!) {
                 journalPageController.journalsList[widget.index].isLiked =
@@ -576,33 +576,37 @@ class _JournalTileState extends State<JournalTile> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width / 3.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Obx(() {
-                    return Icon(
-                      journalPageController
-                                  .journalsList[widget.index].isLiked ==
-                              true
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: SolhColors.green,
-                      size: 20,
-                    );
-                  }),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 40,
-                    ),
-                    child: Obx(() {
-                      return Text(
-                        journalPageController.journalsList[widget.index].likes
-                            .toString(),
-                        style: SolhTextStyles.GreenBorderButtonText,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 3.5,
+                height: MediaQuery.of(context).size.height / 20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Obx(() {
+                      return Icon(
+                        journalPageController
+                                    .journalsList[widget.index].isLiked ==
+                                true
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: SolhColors.green,
+                        size: 20,
                       );
                     }),
-                  ),
-                ],
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width / 40,
+                      ),
+                      child: Obx(() {
+                        return Text(
+                          journalPageController.journalsList[widget.index].likes
+                              .toString(),
+                          style: SolhTextStyles.GreenBorderButtonText,
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -669,6 +673,7 @@ class _JournalTileState extends State<JournalTile> {
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width / 3.5,
+                        height: MediaQuery.of(context).size.height / 20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
