@@ -334,89 +334,89 @@ class _JournalTileState extends State<JournalTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           widget._journalModel!.feelings != null
-              ?
-              //     ? Text(
-              //         "#Feeling " +
-              //             widget.feelingList
-              //                 .toString()
-              //                 .replaceAll("[", "")
-              //                 .replaceAll("]", ""),
-              //         style: SolhTextStyles.PinkBorderButtonText)
-              //     : Container(),
-              // widget._journalModel!.description != null
-              //     ? RichText(
-              //         text: TextSpan(children: [
-              //         TextSpan(
-              //             text: getTexts()['text1'] ?? '',
-              //             style: SolhTextStyles.JournalingDescriptionText,
-              //             children: [
-              //               getTexts().containsKey('text3')
-              //                   ? TextSpan(
-              //                       text: '@' + getTexts()['text3'],
-              //                       recognizer: TapGestureRecognizer()
-              //                         ..onTap = () async {
-              //                           Navigator.push(
-              //                               context,
-              //                               MaterialPageRoute(
-              //                                   builder: (context) =>
-              //                                       ConnectProfileScreen(
-              //                                         username: getTexts()['text3']
-              //                                             .toString(),
-              //                                         uid: '',
-              //                                         sId: '',
-              //                                       )));
-              //                         },
-              //                       style: TextStyle(color: Color(0xffE1555A)))
-              //                   : TextSpan(text: ''),
-              //               getTexts().containsKey('text2')
-              //                   ? TextSpan(text: getTexts()['text2'])
-              //                   : TextSpan(text: ''),
-              //             ]),
-              //       ]))
-
-              // ? ReadMoreText(
-              //     widget._journalModel!.description!,
-              //     trimLines: 3,
-              //     //trimLength: 100,
-              //     style: SolhTextStyles.JournalingDescriptionText,
-              //     colorClickableText: SolhColors.green,
-              //     //trimMode: TrimMode.Length,
-              //     trimMode: TrimMode.Line,
-              //     trimCollapsedText: ' Read more',
-              //     trimExpandedText: ' Less',
-              //   )
-
-              Wrap(
-                  children: widget._journalModel!.description!.length == 0
-                      ? []
-                      : getTexts().map((item) {
-                          if (item.toString().trim()[0] == '@') {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ConnectProfileScreen(
-                                              username: item
-                                                  .toString()
-                                                  .substring(1, item.length),
-                                              uid: '',
-                                              sId: '',
-                                            )));
-                              },
-                              child: Text(
-                                item + " ",
-                                style: GoogleFonts.signika(
-                                    color: Color(0xffE1555A)),
-                              ),
-                            );
-                          } else {
-                            return Text(item + " " ?? '');
-                          }
-                        }).toList(),
-                )
+              ? Text(
+                  "#Feeling " +
+                      widget.feelingList
+                          .toString()
+                          .replaceAll("[", "")
+                          .replaceAll("]", ""),
+                  style: SolhTextStyles.PinkBorderButtonText)
               : Container(),
+          // widget._journalModel!.description != null
+          //     ? RichText(
+          //         text: TextSpan(children: [
+          //         TextSpan(
+          //             text: getTexts()['text1'] ?? '',
+          //             style: SolhTextStyles.JournalingDescriptionText,
+          //             children: [
+          //               getTexts().containsKey('text3')
+          //                   ? TextSpan(
+          //                       text: '@' + getTexts()['text3'],
+          //                       recognizer: TapGestureRecognizer()
+          //                         ..onTap = () async {
+          //                           Navigator.push(
+          //                               context,
+          //                               MaterialPageRoute(
+          //                                   builder: (context) =>
+          //                                       ConnectProfileScreen(
+          //                                         username: getTexts()['text3']
+          //                                             .toString(),
+          //                                         uid: '',
+          //                                         sId: '',
+          //                                       )));
+          //                         },
+          //                       style: TextStyle(color: Color(0xffE1555A)))
+          //                   : TextSpan(text: ''),
+          //               getTexts().containsKey('text2')
+          //                   ? TextSpan(text: getTexts()['text2'])
+          //                   : TextSpan(text: ''),
+          //             ]),
+          //       ]))
+
+          // ? ReadMoreText(
+          //     widget._journalModel!.description!,
+          //     trimLines: 3,
+          //     //trimLength: 100,
+          //     style: SolhTextStyles.JournalingDescriptionText,
+          //     colorClickableText: SolhColors.green,
+          //     //trimMode: TrimMode.Length,
+          //     trimMode: TrimMode.Line,
+          //     trimCollapsedText: ' Read more',
+          //     trimExpandedText: ' Less',
+          //   )
+
+          Wrap(
+            children: widget._journalModel!.description!.length == 0
+                ? []
+                : getTexts().map((item) {
+                    if (item.toString().trim()[0] == '@') {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ConnectProfileScreen(
+                                        username: item
+                                            .toString()
+                                            .substring(1, item.length),
+                                        uid: '',
+                                        sId: '',
+                                      )));
+                        },
+                        child: Text(
+                          item + " ",
+                          style: GoogleFonts.signika(color: Color(0xffE1555A)),
+                        ),
+                      );
+                    } else {
+                      return Text(
+                        item + " " ?? '',
+                        style: GoogleFonts.signika(
+                            fontSize: 16, color: Color(0xff666666)),
+                      );
+                    }
+                  }).toList(),
+          )
         ],
       ),
     );
@@ -523,6 +523,9 @@ class _JournalTileState extends State<JournalTile> {
             : Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    border:
+                        Border.all(width: 0.5, color: Colors.grey.shade300)),
                 margin: EdgeInsets.symmetric(
                   vertical: MediaQuery.of(context).size.height / 80,
                 ),
