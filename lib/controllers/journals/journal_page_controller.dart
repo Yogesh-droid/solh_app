@@ -10,12 +10,12 @@ import '../../constants/api.dart';
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;
   TextEditingController descriptionController = TextEditingController();
-  var anonymousProfilePositionL = 6.0.obs;
+  var anonymousProfilePositionL = 4.0.obs;
 
   var anonymousProfilePositionT = 15.0.obs;
 
-  var nomalProfilePositionL = 20.0.obs;
-  var nomalProfilePositionT = 4.0.obs;
+  var nomalProfilePositionL = 24.0.obs;
+  var nomalProfilePositionT = 2.0.obs;
 
   var isAnonymousSelected = false.obs;
   var anonymousProfileRadius = 3.5.w.obs;

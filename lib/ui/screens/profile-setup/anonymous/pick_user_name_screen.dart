@@ -41,7 +41,11 @@ class PickUsernameScreen extends StatelessWidget {
                   if (value!.isEmpty) {
                     _anonController.isNameTaken.value = false;
                   }
-                  return value == '' ? "Required*" : null;
+                  return value == ''
+                      ? "Required*"
+                      : value.length < 3
+                          ? "Username must be at least 3 characters long"
+                          : null;
                 },
                 onChanged: (val) {
                   _anonController.isNameTaken.value = false;
