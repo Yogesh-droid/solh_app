@@ -3,7 +3,9 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/my_connection_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
+import 'package:solh/ui/screens/profile-setup/anonymous/pick_user_name_screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -21,8 +23,10 @@ class InviteMembersUI extends StatelessWidget {
       appBar: getAppBar(context),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.only(
+              left: 18.0, right: 18.0, top: 18.0, bottom: 60.0),
           child: ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: connectionController
                   .myConnectionModel.value.myConnections!.length,
@@ -68,9 +72,13 @@ class InviteMembersUI extends StatelessWidget {
       title: Text(connectionController
               .myConnectionModel.value.myConnections![index].name ??
           ''),
-      subtitle: Text(connectionController
-              .myConnectionModel.value.myConnections![index].bio ??
-          ''),
+      subtitle: Text(
+        connectionController
+                .myConnectionModel.value.myConnections![index].bio ??
+            '',
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       onTap: () {
         if (controller.selectedMembers.contains(myConnections.sId)) {
           controller.selectedMembers.remove(myConnections.sId);
@@ -108,9 +116,13 @@ class InviteMembersUI extends StatelessWidget {
       return FloatingActionButton.extended(
         elevation: 0,
         onPressed: () async {
-          await controller.addMembers(
+          await controller
+              .addMembers(
             groupId: groupId,
-          );
+          )
+              .then((value) {
+            Utility.showToast('Invitation sent successfully');
+          });
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return JournalingScreen();
           }));

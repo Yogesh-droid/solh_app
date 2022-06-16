@@ -10,7 +10,8 @@ import '../enter-full-name.dart';
 
 class PickUsernameScreen extends StatelessWidget {
   PickUsernameScreen({Key? key}) : super(key: key);
-  TextEditingController _usernameEditingController = TextEditingController();
+  TextEditingController _usernameEditingController = TextEditingController()
+    ..text = 'Anonymous';
   final AnonController _anonController = Get.put(AnonController());
 
   @override
@@ -33,7 +34,7 @@ class PickUsernameScreen extends StatelessWidget {
                 height: 3.5.h,
               ),
               ProfielTextField(
-                hintText: "Username",
+                hintText: "Anonymous Username",
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 textEditingController: _usernameEditingController,
                 validator: (value) {
