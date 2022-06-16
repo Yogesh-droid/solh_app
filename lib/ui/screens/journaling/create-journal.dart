@@ -897,70 +897,80 @@ class _UsernameHeaderState extends State<UsernameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            getUserImg(widget._userModel),
-            SizedBox(
-              width: 2.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget._userModel!.name ?? "",
-                  style: SolhTextStyles.JournalingUsernameText.copyWith(
-                      fontWeight: FontWeight.normal, fontSize: 14),
-                ),
-              ],
-            ),
-          ],
-        ),
-        journalPageController.selectedGroupId.value == ''
-            ? Container(
-                height: 4.5.h,
-                width: 35.w,
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    border: Border.all(
-                      color: SolhColors.green,
-                    )),
-                child: DropdownButton(
-                    isExpanded: true,
-                    icon: Icon(CupertinoIcons.chevron_down),
-                    iconSize: 18,
-                    iconEnabledColor: SolhColors.green,
-                    underline: SizedBox(),
-                    value: _dropdownValue,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _dropdownValue = newValue!;
-                      });
-                      widget._onTypeChanged.call(_dropdownValue);
-                    },
-                    style: TextStyle(color: SolhColors.green),
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Publicly"),
-                        value: "Publicaly",
-                      ),
-                      DropdownMenuItem(
-                        child: Text("My Diary"),
-                        value: "My_Diary",
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Connections"),
-                        value: "Connections",
-                      ),
-                    ]),
-              )
-            : Container()
-      ],
-    );
+    return Obx(() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              getUserImg(widget._userModel),
+              SizedBox(
+                width: 2.w,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    journalPageController.isAnonymousSelected == true
+                        ? (widget._userModel!.anonymous!.userName!.isNotEmpty
+                            ? widget._userModel!.anonymous!.userName!
+                            : 'Anonymous')
+                        : widget._userModel!.name ?? "",
+                    // journalPageController.isAnonymousSelected == true &&
+                    //         widget._userModel!.anonymous!.userName!.isNotEmpty
+                    //     ? widget._userModel!.anonymous!.userName!
+                    //     : widget._userModel!.name ?? "",
+                    style: SolhTextStyles.JournalingUsernameText.copyWith(
+                        fontWeight: FontWeight.normal, fontSize: 14),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          journalPageController.selectedGroupId.value == ''
+              ? Container(
+                  height: 4.5.h,
+                  width: 35.w,
+                  padding: EdgeInsets.symmetric(horizontal: 4.w),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                      border: Border.all(
+                        color: SolhColors.green,
+                      )),
+                  child: DropdownButton(
+                      isExpanded: true,
+                      icon: Icon(CupertinoIcons.chevron_down),
+                      iconSize: 18,
+                      iconEnabledColor: SolhColors.green,
+                      underline: SizedBox(),
+                      value: _dropdownValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _dropdownValue = newValue!;
+                        });
+                        widget._onTypeChanged.call(_dropdownValue);
+                      },
+                      style: TextStyle(color: SolhColors.green),
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Publicly"),
+                          value: "Publicaly",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("My Diary"),
+                          value: "My_Diary",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Connections"),
+                          value: "Connections",
+                        ),
+                      ]),
+                )
+              : Container()
+        ],
+      );
+    });
   }
 
   Widget getUserImg(UserModel? userModel) {
@@ -1126,6 +1136,60 @@ class _JournalTextFieldState extends State<JournalTextField> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextField(
+                onChanged: (Value) async {
+                  var cursorPos = journalPageController
+                      .descriptionController.selection.base.offset;
+
+                  if (cursorPos - 1 == -1) {
+                    return;
+                  }
+
+                  if (journalPageController
+                          .descriptionController.text[cursorPos - 1] ==
+                      '@') {
+                    await showMenu(
+                        context: context,
+                        constraints: BoxConstraints.expand(
+                            height: _connectionController.myConnectionModel
+                                        .value.myConnections!.length >
+                                    4
+                                ? 200
+                                : _connectionController.myConnectionModel.value
+                                        .myConnections!.length *
+                                    50,
+                            width: 150),
+                        position: RelativeRect.fromLTRB(0, 320, 0, 0),
+                        items: _connectionController
+                            .myConnectionModel.value.myConnections!
+                            .map((e) => PopupMenuItem(
+                                onTap: () {
+                                  if (cursorPos == 1 ||
+                                      cursorPos ==
+                                          journalPageController
+                                              .descriptionController
+                                              .text
+                                              .length) {
+                                    journalPageController.descriptionController
+                                        .text = journalPageController
+                                            .descriptionController.text +
+                                        e.userName.toString() +
+                                        ' ';
+                                  } else {
+                                    journalPageController.descriptionController
+                                        .text = journalPageController
+                                            .descriptionController.text
+                                            .substring(0, cursorPos + 1) +
+                                        e.userName.toString() +
+                                        ' ' +
+                                        journalPageController
+                                            .descriptionController.text
+                                            .substring(cursorPos + 1);
+                                  }
+                                },
+                                child: Text(e.userName!)))
+                            .toList());
+                  }
+                },
                 controller: journalPageController.descriptionController,
                 maxLines: 6,
                 minLines: 3,
