@@ -242,7 +242,7 @@ class _TimerWidgetState extends State<TimerWidget> {
       if (time == 0) {
         timer.cancel();
       }
-      setState(() {});
+      if (mounted) setState(() {});
     });
     return time;
   }

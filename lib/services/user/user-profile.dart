@@ -6,8 +6,7 @@ class UserProfile {
   static Future<UserModel> fetchUserProfile(String sId) async {
     var response = await Network.makeHttpGetRequestWithToken(
         "${APIConstants.api}/api/get-user-profile-details/$sId");
-    print('user profile is fetched successfully $response');
-    print(response);
+    print('user profile is fetched successfully ${response["user"]}');
     return UserModel.fromJson(response["user"]);
   }
 }

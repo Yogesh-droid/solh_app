@@ -40,6 +40,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   }
 
   getUser() async {
+    print('Likes    ' + connectionController.userModel.value.likes.toString());
     if (widget._username != null) {
       print('adhbfjkjknasklmdkamdsmdads,f,d');
       await connectionController.getUserprofileData(widget._username ?? '');
@@ -245,7 +246,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     return FutureBuilder<UserModel>(
         future: UserProfile.fetchUserProfile(widget._uid),
         builder: (context, userProfileSnapshot) {
-          if (userProfileSnapshot.hasData)
+          print('the data is ' + userProfileSnapshot.data.toString());
+          if (userProfileSnapshot.hasData) {
+            print("getUserAnalytics dfijvomdcl;;sdcp[dkasaskapskalsmclm] ");
             return NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) => [
                 SliverList(
@@ -367,8 +370,10 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
               ],
               body: TabView(),
             );
-          else
+          } else {
+            print(' No data is available');
             return Center(child: CircularProgressIndicator());
+          }
         });
   }
 }
