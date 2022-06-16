@@ -27,13 +27,19 @@ class MyConnectionModel {
 
 class MyConnections {
   String? sId;
+  String? uId;
   String? name;
   String? profilePicture;
   String? bio;
   String? userName;
 
   MyConnections(
-      {this.sId, this.name, this.profilePicture, this.bio, this.userName});
+      {this.sId,
+      this.name,
+      this.profilePicture,
+      this.bio,
+      this.userName,
+      this.uId});
 
   MyConnections.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -41,6 +47,7 @@ class MyConnections {
     profilePicture = json['profilePicture'];
     bio = json['bio'];
     userName = json['userName'];
+    uId = json['uId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -50,6 +57,7 @@ class MyConnections {
     data['profilePicture'] = this.profilePicture;
     data['bio'] = this.bio;
     data['userName'] = this.userName;
+    data['uId'] = this.uId;
     return data;
   }
 }

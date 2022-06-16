@@ -6,9 +6,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
-import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/group/create_group_controller.dart';
 import '../../../services/network/network.dart';
@@ -50,10 +48,10 @@ class CreateGroup extends StatelessWidget {
                 height: 2.h,
               ),
               getTagsField(),
-              SizedBox(
-                height: 2.h,
-              ),
-              getPrivacyField(),
+              // SizedBox(
+              //   height: 2.h,
+              // ),
+              //getPrivacyField(),
               SizedBox(
                 height: 2.h,
               ),
@@ -265,7 +263,14 @@ class CreateGroup extends StatelessWidget {
     return SolhGreenButton(
       child: Obx((() {
         return _controller.isLoading.value
-            ? CircularProgressIndicator()
+            ? Container(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(SolhColors.white),
+                  strokeWidth: 2,
+                ),
+              )
             : Text("Next");
       })),
       height: 6.h,

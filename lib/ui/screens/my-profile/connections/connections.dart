@@ -12,6 +12,10 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 
+import '../../../../model/group/get_group_response_model.dart';
+import '../../connect/connect-screen.dart';
+import '../../groups/group_detail.dart';
+
 class Connections extends StatelessWidget {
   Connections({Key? key}) : super(key: key);
   final ConnectionController connectionController = Get.find();
@@ -249,84 +253,33 @@ class Connections extends StatelessWidget {
                     : 0,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  // return ListTile(
-                  //   dense: true,
-                  //   contentPadding: EdgeInsets.all(0),
-                  //   leading: CircleAvatar(
-                  //     radius: 50,
-                  //     backgroundImage: CachedNetworkImageProvider(
-                  //         connectionController.myConnectionModel.value.myConnections![index].profilePicture ??
-                  //             ''),
-                  //   ),
-                  //   title: Text(
-                  //     connectionController.myConnectionModel.value
-                  //             .myConnections![index].name ??
-                  //         '',
-                  //     style: TextStyle(
-                  //         fontSize: 18,
-                  //         fontWeight: FontWeight.w600,
-                  //         color: SolhColors.black34),
-                  //   ),
-                  //   subtitle: Text(
-                  //     connectionController.myConnectionModel.value
-                  //             .myConnections![index].bio ??
-                  //         '',
-                  //     style: TextStyle(
-                  //         fontSize: 14,
-                  //         fontWeight: FontWeight.w600,
-                  //         color: SolhColors.grey196),
-                  //   ),
-                  // );
-
                   return Container(
                     padding: EdgeInsets.all(10),
                     width: MediaQuery.of(context).size.width,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 30,
-                          backgroundImage: CachedNetworkImageProvider(
-                              connectionController.myConnectionModel.value
-                                      .myConnections![index].profilePicture ??
-                                  ''),
-                        ),
+                        getUserImg(
+                            img: connectionController.myConnectionModel.value
+                                    .myConnections![index].profilePicture ??
+                                '',
+                            context: context,
+                            sId: connectionController.myConnectionModel.value
+                                    .myConnections![index].sId ??
+                                '',
+                            uid: connectionController.myConnectionModel.value
+                                    .myConnections![index].uId ??
+                                ''),
                         SizedBox(
                           width: 10,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              connectionController.myConnectionModel.value
-                                      .myConnections![index].name ??
-                                  '',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: SolhColors.black34),
-                            ),
-                            if (connectionController.myConnectionModel.value
-                                    .myConnections![index].bio !=
-                                null)
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.7,
-                                child: Text(
-                                  connectionController.myConnectionModel.value
-                                          .myConnections![index].bio ??
-                                      '',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: SolhColors.grey196),
-                                ),
-                              ),
-                          ],
-                        ),
+                        getUserTitle(
+                            context: context,
+                            name: connectionController.myConnectionModel.value
+                                    .myConnections![index].name ??
+                                '',
+                            bio: connectionController.myConnectionModel.value
+                                .myConnections![index].bio),
                       ],
                     ),
                   );
@@ -389,47 +342,65 @@ class Connections extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: MediaQuery.of(context).size.width * 0.06,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  connectionController.sentConnections
-                                          .value[index].profilePicture ??
-                                      ''),
-                            ),
+                            // CircleAvatar(
+                            //   backgroundColor: Colors.white,
+                            //   radius: MediaQuery.of(context).size.width * 0.06,
+                            //   backgroundImage: CachedNetworkImageProvider(
+                            //       connectionController.sentConnections
+                            //               .value[index].profilePicture ??
+                            //           ''),
+                            // ),
+                            getUserImg(
+                                img: connectionController.sentConnections
+                                        .value[index].profilePicture ??
+                                    '',
+                                uid: connectionController
+                                        .sentConnections.value[index].uId ??
+                                    '',
+                                sId: connectionController
+                                        .sentConnections.value[index].sId ??
+                                    '',
+                                context: context),
                             SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  connectionController
-                                          .sentConnections.value[index].name ??
-                                      '',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: SolhColors.black34),
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.30,
-                                  child: Text(
-                                    connectionController
-                                            .sentConnections.value[index].bio ??
-                                        '',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                        color: SolhColors.grey196),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Column(
+                            //   mainAxisAlignment: MainAxisAlignment.start,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Text(
+                            //       connectionController
+                            //               .sentConnections.value[index].name ??
+                            //           '',
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: TextStyle(
+                            //           fontSize: 15,
+                            //           fontWeight: FontWeight.w600,
+                            //           color: SolhColors.black34),
+                            //     ),
+                            //     Container(
+                            //       width:
+                            //           MediaQuery.of(context).size.width * 0.30,
+                            //       child: Text(
+                            //         connectionController
+                            //                 .sentConnections.value[index].bio ??
+                            //             '',
+                            //         overflow: TextOverflow.ellipsis,
+                            //         style: TextStyle(
+                            //             fontSize: 14,
+                            //             fontWeight: FontWeight.w600,
+                            //             color: SolhColors.grey196),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            getUserTitle(
+                                context: context,
+                                name: connectionController
+                                        .sentConnections.value[index].name ??
+                                    '',
+                                bio: connectionController
+                                    .sentConnections.value[index].bio),
                             Spacer(),
                             inviteButton(
                               callback: () async {
@@ -539,58 +510,76 @@ class Connections extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 30,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  connectionController.receivedConnections
-                                          .value[index].profilePicture ??
-                                      ''),
-                            ),
+                            // CircleAvatar(
+                            //   backgroundColor: Colors.white,
+                            //   radius: 30,
+                            //   backgroundImage: CachedNetworkImageProvider(
+                            //       connectionController.receivedConnections
+                            //               .value[index].profilePicture ??
+                            //           ''),
+                            // ),
+                            getUserImg(
+                                img: connectionController.receivedConnections
+                                        .value[index].profilePicture ??
+                                    '',
+                                uid: connectionController
+                                        .receivedConnections.value[index].uId ??
+                                    '',
+                                sId: connectionController
+                                        .receivedConnections.value[index].sId ??
+                                    '',
+                                context: context),
                             SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  connectionController.receivedConnections
-                                          .value[index].name ??
-                                      '',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: SolhColors.black34),
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.30,
-                                  child: connectionController
-                                              .receivedConnections
-                                              .value[index]
-                                              .bio !=
-                                          null
-                                      ? connectionController.receivedConnections
-                                              .value[index].bio!.isNotEmpty
-                                          ? Text(
-                                              connectionController
-                                                      .receivedConnections
-                                                      .value[index]
-                                                      .bio ??
-                                                  '',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: SolhColors.grey196),
-                                            )
-                                          : Container()
-                                      : Container(),
-                                ),
-                              ],
-                            ),
+                            // Column(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Text(
+                            //       connectionController.receivedConnections
+                            //               .value[index].name ??
+                            //           '',
+                            //       overflow: TextOverflow.ellipsis,
+                            //       style: TextStyle(
+                            //           fontSize: 15,
+                            //           fontWeight: FontWeight.w600,
+                            //           color: SolhColors.black34),
+                            //     ),
+                            //     Container(
+                            //       width:
+                            //           MediaQuery.of(context).size.width * 0.30,
+                            //       child: connectionController
+                            //                   .receivedConnections
+                            //                   .value[index]
+                            //                   .bio !=
+                            //               null
+                            //           ? connectionController.receivedConnections
+                            //                   .value[index].bio!.isNotEmpty
+                            //               ? Text(
+                            //                   connectionController
+                            //                           .receivedConnections
+                            //                           .value[index]
+                            //                           .bio ??
+                            //                       '',
+                            //                   overflow: TextOverflow.ellipsis,
+                            //                   style: TextStyle(
+                            //                       fontSize: 14,
+                            //                       fontWeight: FontWeight.w500,
+                            //                       color: SolhColors.grey196),
+                            //                 )
+                            //               : Container()
+                            //           : Container(),
+                            //     ),
+                            //   ],
+                            // ),
+                            getUserTitle(
+                                context: context,
+                                name: connectionController.receivedConnections
+                                        .value[index].name ??
+                                    '',
+                                bio: connectionController
+                                    .receivedConnections.value[index].bio),
                             Spacer(),
                             inviteButton(
                                 callback: () async {
@@ -677,77 +666,98 @@ class Connections extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         child: Row(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 30,
-                              backgroundImage: connectionController.groupInvites
-                                          .value[index].groupMediaUrl !=
-                                      null
-                                  ? CachedNetworkImageProvider(
-                                      connectionController.groupInvites
-                                              .value[index].groupMediaUrl ??
-                                          '')
-                                  : AssetImage(
-                                          'assets/images/group_placeholder.png')
-                                      as ImageProvider,
-                            ),
+                            // CircleAvatar(
+                            //   backgroundColor: Colors.white,
+                            //   radius: 30,
+                            //   backgroundImage: connectionController.groupInvites
+                            //               .value[index].groupMediaUrl !=
+                            //           null
+                            //       ? CachedNetworkImageProvider(
+                            //           connectionController.groupInvites
+                            //                   .value[index].groupMediaUrl ??
+                            //               '')
+                            //       : AssetImage(
+                            //               'assets/images/group_placeholder.png')
+                            //           as ImageProvider,
+                            // ),
+                            getUserImg(
+                                img: connectionController.groupInvites
+                                        .value[index].groupMediaUrl ??
+                                    '',
+                                context: context,
+                                sId: connectionController
+                                        .groupInvites.value[index].inviteId ??
+                                    '',
+                                isGroup: true,
+                                groupMediaUrl: connectionController
+                                    .groupInvites.value[index].groupMediaUrl,
+                                groupName: connectionController
+                                        .groupInvites.value[index].groupName ??
+                                    ''),
                             SizedBox(
                               width: 10,
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      connectionController.groupInvites
-                                              .value[index].groupName ??
-                                          '',
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: SolhColors.black34),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Icon(
-                                      Icons.people,
-                                      color: SolhColors.grey196,
-                                      size: 14,
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.30,
-                                  child: connectionController.groupInvites
-                                              .value[index].groupDescription !=
-                                          null
-                                      ? connectionController
-                                              .groupInvites
-                                              .value[index]
-                                              .groupDescription!
-                                              .isNotEmpty
-                                          ? Text(
-                                              connectionController
-                                                      .groupInvites
-                                                      .value[index]
-                                                      .groupDescription ??
-                                                  '',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: SolhColors.grey196),
-                                            )
-                                          : Container()
-                                      : Container(),
-                                ),
-                              ],
-                            ),
+                            // Column(
+                            //   mainAxisAlignment: MainAxisAlignment.center,
+                            //   crossAxisAlignment: CrossAxisAlignment.start,
+                            //   children: [
+                            //     Row(
+                            //       children: [
+                            //         Text(
+                            //           connectionController.groupInvites
+                            //                   .value[index].groupName ??
+                            //               '',
+                            //           overflow: TextOverflow.ellipsis,
+                            //           style: TextStyle(
+                            //               fontSize: 15,
+                            //               fontWeight: FontWeight.w600,
+                            //               color: SolhColors.black34),
+                            //         ),
+                            //         SizedBox(
+                            //           width: 10,
+                            //         ),
+                            //         Icon(
+                            //           Icons.people,
+                            //           color: SolhColors.grey196,
+                            //           size: 14,
+                            //         ),
+                            //       ],
+                            //     ),
+                            //     Container(
+                            //       width:
+                            //           MediaQuery.of(context).size.width * 0.30,
+                            //       child: connectionController.groupInvites
+                            //                   .value[index].groupDescription !=
+                            //               null
+                            //           ? connectionController
+                            //                   .groupInvites
+                            //                   .value[index]
+                            //                   .groupDescription!
+                            //                   .isNotEmpty
+                            //               ? Text(
+                            //                   connectionController
+                            //                           .groupInvites
+                            //                           .value[index]
+                            //                           .groupDescription ??
+                            //                       '',
+                            //                   overflow: TextOverflow.ellipsis,
+                            //                   style: TextStyle(
+                            //                       fontSize: 14,
+                            //                       fontWeight: FontWeight.w500,
+                            //                       color: SolhColors.grey196),
+                            //                 )
+                            //               : Container()
+                            //           : Container(),
+                            //     ),
+                            //   ],
+                            // ),
+                            getUserTitle(
+                                context: context,
+                                name: connectionController
+                                        .groupInvites.value[index].groupName ??
+                                    '',
+                                bio: connectionController.groupInvites
+                                    .value[index].groupDescription),
                             Spacer(),
                             inviteButton(
                                 callback: () async {
@@ -889,6 +899,84 @@ class Connections extends StatelessWidget {
           }),
         ),
       ),
+    );
+  }
+
+  Widget getUserImg({
+    String? img,
+    String? uid,
+    String? sId,
+    required BuildContext context,
+    bool? isGroup,
+    String? groupName,
+    String? groupMediaUrl,
+  }) {
+    return InkWell(
+      onTap: isGroup == null
+          ? () {
+              connectionController.getUserAnalytics(sId!);
+              print(sId);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ConnectProfileScreen(uid: uid!, sId: sId)));
+            }
+          : () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return GroupDetailsPage(
+                  ///// this case is for group journal
+                  group: GroupList(
+                    sId: sId,
+                    groupName: groupName,
+                    groupMediaUrl: groupMediaUrl,
+                  ),
+                );
+              }));
+            },
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 30,
+        backgroundImage: isGroup != null
+            ? groupMediaUrl != null
+                ? CachedNetworkImageProvider(groupMediaUrl)
+                : AssetImage('assets/images/group_placeholder.png')
+                    as ImageProvider
+            : CachedNetworkImageProvider(img ?? ''),
+      ),
+    );
+  }
+
+  Widget getUserTitle(
+      {required BuildContext context, required String name, String? bio}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.4,
+          child: Text(
+            name,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: SolhColors.black34),
+          ),
+        ),
+        if (bio != null)
+          Container(
+            width: MediaQuery.of(context).size.width * 0.4,
+            child: Text(
+              bio,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: SolhColors.grey196),
+            ),
+          ),
+      ],
     );
   }
 }
