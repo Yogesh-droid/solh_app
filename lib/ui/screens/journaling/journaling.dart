@@ -290,11 +290,13 @@ class _JournalingState extends State<Journaling> {
               });
               print("opened");
             },
-            child: SvgPicture.asset(
-              "assets/icons/app-bar/app-bar-menu.svg",
-              width: 26,
-              height: 24,
-              color: SolhColors.green,
+            child: Container(
+              child: SvgPicture.asset(
+                "assets/icons/app-bar/app-bar-menu.svg",
+                width: 26,
+                height: 24,
+                color: SolhColors.green,
+              ),
             ),
           ),
           SizedBox(
