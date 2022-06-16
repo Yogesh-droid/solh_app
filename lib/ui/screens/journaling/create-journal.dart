@@ -134,7 +134,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             SizedBox(height: 2.h),
                             getMediaContainer(),
                             SizedBox(height: 10.h),
-                            // getCustomFeelingTextBox(),
+                            //getCustomFeelingTextBox(),
                           ],
                         ),
                       );
@@ -148,13 +148,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 color: SolhColors.green.withOpacity(0.25),
                 child: Center(child: MyLoader()),
               ),
-            Positioned(
-              bottom: 0,
-              child: Container(
-                height: 130,
-                width: MediaQuery.of(context).size.width,
-                child: getCustomFeelingTextBox(),
-              ),
+            Column(
+              children: [
+                Spacer(),
+                getCustomFeelingTextBox(),
+              ],
             ),
           ],
         ),
@@ -306,53 +304,55 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       return feelingsController.isCreatingCustomFeeling.value
           ? Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(40),
-                    border: Border.all(color: SolhColors.green, width: 1),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(width: 5.w),
-                      Expanded(
-                        child: TextField(
-                          focusNode: _customFeelingFocusNode,
-                          controller: _customFeelingController,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: "Feeling/Emotion",
-                            border: InputBorder.none,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(color: SolhColors.green, width: 1),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 5.w),
+                        Expanded(
+                          child: TextField(
+                            focusNode: _customFeelingFocusNode,
+                            controller: _customFeelingController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              hintText: "Feeling/Emotion",
+                              border: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.text,
                           ),
-                          keyboardType: TextInputType.text,
                         ),
-                      ),
-                      SizedBox(width: 10.w),
-                      IconButton(
-                        onPressed: () {
-                          _customFeelingController.clear();
-                          _customFeelingFocusNode.unfocus();
-                          feelingsController.isCreatingCustomFeeling.value =
-                              false;
-                        },
-                        icon: Icon(Icons.clear),
-                      ),
-                      IconButton(
+                        SizedBox(width: 10.w),
+                        IconButton(
                           onPressed: () {
-                            if (_customFeelingController.text != "") {
-                              feelingsController.createCustomFeeling(
-                                  _customFeelingController.text);
-                              _customFeelingController.clear();
-                              _customFeelingFocusNode.unfocus();
-                              feelingsController.isCreatingCustomFeeling.value =
-                                  false;
-                            }
+                            _customFeelingController.clear();
+                            _customFeelingFocusNode.unfocus();
+                            feelingsController.isCreatingCustomFeeling.value =
+                                false;
                           },
-                          icon: Icon(Icons.check))
-                    ],
+                          icon: Icon(Icons.clear),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              if (_customFeelingController.text != "") {
+                                feelingsController.createCustomFeeling(
+                                    _customFeelingController.text);
+                                _customFeelingController.clear();
+                                _customFeelingFocusNode.unfocus();
+                                feelingsController
+                                    .isCreatingCustomFeeling.value = false;
+                              }
+                            },
+                            icon: Icon(Icons.check))
+                      ],
+                    ),
                   ),
                 ),
-                SizedBox(height: 10.h),
               ],
             )
           : Container();
@@ -1017,7 +1017,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       userModel.anonymous != null
                           ? Positioned(
                               left: 0,
-                              top: 0,
+                              top: -5,
                               child: InkWell(
                                 onTap: () {
                                   journalPageController
@@ -1071,7 +1071,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       userModel.anonymous != null
                           ? Positioned(
                               left: 0,
-                              top: 0,
+                              top: -5,
                               child: InkWell(
                                 onTap: () {
                                   /// if Anon user is true anonymous, then show anonymous profile picture
@@ -1234,45 +1234,34 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+            child: Column(
               children: [
-                Text(
-                  'Select People',
-                  style: GoogleFonts.signika(
-                    fontSize: 16,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Select People',
+                        style: GoogleFonts.signika(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: SvgPicture.asset('assets/images/cancle.svg'),
-                    ),
-                    SizedBox(
-                      width: 31,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: _tagsController.selectedItems.length > 0
-                              ? SvgPicture.asset('assets/images/arrow.svg')
-                              : SvgPicture.asset(
-                                  'assets/images/arrowGrey.svg',
-                                  color: Colors.grey,
-                                )),
-                    ),
-                  ],
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  thickness: 1,
                 )
               ],
             ),
           ),
           SizedBox(
-            height: 14,
+            height: 6,
           ),
           Expanded(
             child: ListView.builder(
@@ -1284,71 +1273,87 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                       _tagsController.selectedTags.length) {
                     _tagsController.selectedTags.add(false);
                   }
-                  return Container(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: NetworkImage(_connectionController
-                                .myConnectionModel
-                                .value
-                                .myConnections![index]
-                                .profilePicture!),
-                          ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 30, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    _connectionController.myConnectionModel
-                                        .value.myConnections![index].name!,
-                                    style: GoogleFonts.signika(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
+                  return InkWell(
+                    onTap: () {
+                      if (_tagsController.selectedTags[index] == true) {
+                        print('ran if 1');
+                        _tagsController.selectedTags[index] = false;
+                      } else {
+                        print('ran if 2');
+                        _tagsController.selectedTags[index] = true;
+                      }
+                      // if (_tagsController.selectedTags[index]) {
+                      //   print('ran if 2');
+                      //   _tagsController.selectedTags[index] = true;
+                      // }
+                      print(_tagsController.selectedTags.toString() +
+                          index.toString());
+                      if (_tagsController.selectedTags[index]) {
+                        _tagsController.selectedItems[_connectionController
+                            .myConnectionModel
+                            .value
+                            .myConnections![index]
+                            .userName!] = true;
+                        _tagsController.update();
+                      }
+                      if (_tagsController.selectedTags[index] == false) {
+                        _tagsController.selectedItems.remove(
+                            _connectionController.myConnectionModel.value
+                                .myConnections![index].userName!);
+                        _tagsController.update();
+                      }
+                      print(_tagsController.selectedTags.length);
+                      print(_tagsController.selectedItems.toString());
+                      setState(() {});
+                    },
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 5),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  _connectionController.myConnectionModel.value
+                                      .myConnections![index].profilePicture!),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 30, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _connectionController.myConnectionModel
+                                          .value.myConnections![index].name!,
+                                      style: GoogleFonts.signika(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    _connectionController.myConnectionModel
-                                        .value.myConnections![index].bio!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
+                                    Text(
+                                      _connectionController.myConnectionModel
+                                          .value.myConnections![index].bio!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Checkbox(
-                            checkColor: Colors.white,
-                            activeColor: SolhColors.green,
-                            value: _tagsController.selectedTags[index],
-                            shape: CircleBorder(),
-                            onChanged: (bool? value) {
-                              if (value!) {
-                                _tagsController.selectedTags[index] = value;
-                                _tagsController.selectedItems[
-                                    _connectionController
-                                        .myConnectionModel
-                                        .value
-                                        .myConnections![index]
-                                        .userName!] = true;
-                                _tagsController.update();
-                              }
-                              if (value == false) {
-                                _tagsController.selectedTags[index] = value;
-                                _tagsController.selectedItems.remove(
-                                    _connectionController.myConnectionModel
-                                        .value.myConnections![index].userName!);
-                                _tagsController.update();
-                              }
-                              print(_tagsController.selectedTags.length);
-                              print(_tagsController.selectedItems.toString());
-                              setState(() {});
-                            },
-                          ),
-                        ],
+                            Checkbox(
+                              checkColor: Colors.white,
+                              side: MaterialStateBorderSide.resolveWith(
+                                (states) =>
+                                    BorderSide(width: 1.0, color: Colors.white),
+                              ),
+                              activeColor: SolhColors.green,
+                              value: _tagsController.selectedTags[index],
+                              shape: CircleBorder(),
+                              onChanged: (bool? value) {},
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

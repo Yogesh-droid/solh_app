@@ -12,7 +12,7 @@ class JournalPageController extends GetxController {
   TextEditingController descriptionController = TextEditingController();
   var anonymousProfilePositionL = 6.0.obs;
 
-  var anonymousProfilePositionT = 10.0.obs;
+  var anonymousProfilePositionT = 15.0.obs;
 
   var nomalProfilePositionL = 20.0.obs;
   var nomalProfilePositionT = 4.0.obs;
