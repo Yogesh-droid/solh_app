@@ -905,7 +905,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               getUserImg(widget._userModel),
               SizedBox(
@@ -918,14 +918,22 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   SizedBox(
                     height: 1.h,
                   ),
-                  Text(
-                    journalPageController.isAnonymousSelected == true
-                        ? (widget._userModel!.anonymous!.userName!.isNotEmpty
-                            ? widget._userModel!.anonymous!.userName!
-                            : 'Anonymous')
-                        : widget._userModel!.name ?? "",
-                    style: SolhTextStyles.JournalingUsernameText.copyWith(
-                        fontWeight: FontWeight.normal, fontSize: 14),
+                  Column(
+                    children: [
+                      Text(
+                        journalPageController.isAnonymousSelected == true
+                            ? (widget
+                                    ._userModel!.anonymous!.userName!.isNotEmpty
+                                ? widget._userModel!.anonymous!.userName!
+                                : 'Anonymous')
+                            : widget._userModel!.name ?? "",
+                        style: SolhTextStyles.JournalingUsernameText.copyWith(
+                            fontWeight: FontWeight.normal, fontSize: 14),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      )
+                    ],
                   ),
                   // Text(
                   //   "Happiness Maker",
