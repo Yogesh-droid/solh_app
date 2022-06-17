@@ -40,8 +40,28 @@ class FeelingsController extends GetxController {
       });
 
       if (response['success']) {
-        feelingsList[0] = (Feelings.fromJson(response['feeling']));
-        selectedFeelingsId.value[0] = feelingsList.first.sId!;
+        feelingsList.insert(0, Feelings.fromJson(response['feeling']));
+        feelingsList.refresh();
+        //selectedFeelingsId.value.insert(0, feelingsList.first.sId!);
+      }
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> deleteCustomFeeling(String feelingId, int index) async {
+    try {
+      Map<String, dynamic> response =
+          await Network.makeHttpDeleteRequestWithToken(
+                  body: {'feelingId': feelingId},
+                  url: APIConstants.api + '/api/feelings/$feelingId')
+              .onError((error, stackTrace) {
+        print(error);
+        return {};
+      });
+
+      if (response['success']) {
+        feelingsList.removeWhere((element) => element.sId == feelingId);
         feelingsList.refresh();
       }
     } on Exception catch (e) {

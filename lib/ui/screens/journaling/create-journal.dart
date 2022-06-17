@@ -168,7 +168,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 !feelingsController.isSearching.value
                             ? FloatingActionButton.extended(
                                 backgroundColor: SolhColors.green,
-                                onPressed: _postJournal,
+                                onPressed: () {
+                                  if (journalPageController
+                                          .descriptionController.text.isEmpty &&
+                                      feelingsController
+                                          .selectedFeelingsId.value.isEmpty &&
+                                      _croppedFile == null) {
+                                    Utility.showToast(
+                                        "Please fill one of the fields");
+                                    return;
+                                  }
+                                  _postJournal();
+                                },
                                 label: Container(
                                     width: MediaQuery.of(context).size.width -
                                         20.w,
@@ -821,6 +832,10 @@ class FeelingsContainer extends StatefulWidget {
 class _FeelingsContainerState extends State<FeelingsContainer> {
   FeelingsController feelingsController = Get.find();
   String _selectedFeeling = "Happy";
+  ScrollController _scrollController = ScrollController(
+    initialScrollOffset: 0,
+    keepScrollOffset: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -828,49 +843,69 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
       height: 20.h,
       alignment: Alignment.centerLeft,
       child: Scrollbar(
-        //isAlwaysShown: true,
-        child: Container(
-          //maxWidth: MediaQuery.of(context).size.width,
+        controller: _scrollController,
+        trackVisibility: true,
+        thumbVisibility: true,
+        radius: Radius.circular(30),
+        thickness: 6,
+        scrollbarOrientation: ScrollbarOrientation.bottom,
+        interactive: true,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Container(
+            //maxWidth: MediaQuery.of(context).size.width,
 
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Obx(() {
-            return GridView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisExtent: 15.h, mainAxisSpacing: 0),
-              children: List.generate(
-                feelingsController.feelingsList.length,
-                (index) => FilterChip(
-                    selectedColor: SolhColors.green,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    showCheckmark: false,
-                    label: Text(feelingsController
-                            .feelingsList.value[index].feelingName ??
-                        ''),
-                    labelStyle: TextStyle(
-                        color: feelingsController.selectedFeelingsId.value
-                                .contains(feelingsController
-                                    .feelingsList.value[index].sId!)
-                            ? Colors.white
-                            : Color(0xFF666666)),
-                    onSelected: (value) {
-                      widget._onFeelingsChanged.call(_selectedFeeling);
-                      feelingsController.selectedFeelingsId.contains(
-                              feelingsController.feelingsList.value[index].sId)
-                          ? feelingsController.selectedFeelingsId.remove(
-                              feelingsController.feelingsList.value[index].sId)
-                          : feelingsController.selectedFeelingsId.add(
-                              feelingsController.feelingsList.value[index].sId);
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Obx(() {
+              return GridView(
+                controller: _scrollController,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisExtent: 15.h,
+                    mainAxisSpacing: 0),
+                children: List.generate(
+                  feelingsController.feelingsList.length,
+                  (index) => InkWell(
+                    onLongPress: () {
+                      print("long press");
                     },
-                    selected: feelingsController.selectedFeelingsId.value
-                        .contains(
-                            feelingsController.feelingsList.value[index].sId!)),
-              ),
-            );
-          }),
+                    child: FilterChip(
+                        selectedColor: SolhColors.green,
+                        backgroundColor: Color(0xFFEFEFEF),
+                        showCheckmark: false,
+                        label: Text(feelingsController
+                                .feelingsList.value[index].feelingName ??
+                            ''),
+                        labelStyle: TextStyle(
+                            color: feelingsController.selectedFeelingsId.value
+                                    .contains(feelingsController
+                                        .feelingsList.value[index].sId!)
+                                ? Colors.white
+                                : Color(0xFF666666)),
+                        onSelected: (value) {
+                          widget._onFeelingsChanged.call(_selectedFeeling);
+                          feelingsController.selectedFeelingsId.contains(
+                                  feelingsController
+                                      .feelingsList.value[index].sId)
+                              ? feelingsController.selectedFeelingsId.remove(
+                                  feelingsController
+                                      .feelingsList.value[index].sId)
+                              : feelingsController.selectedFeelingsId.add(
+                                  feelingsController
+                                      .feelingsList.value[index].sId);
+                        },
+                        selected: feelingsController.selectedFeelingsId.value
+                            .contains(feelingsController
+                                .feelingsList.value[index].sId!)),
+                  ),
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );

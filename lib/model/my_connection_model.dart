@@ -47,7 +47,7 @@ class MyConnections {
     profilePicture = json['profilePicture'];
     bio = json['bio'];
     userName = json['userName'];
-    uId = json['uId'];
+    uId = json['uid'];
   }
 
   Map<String, dynamic> toJson() {

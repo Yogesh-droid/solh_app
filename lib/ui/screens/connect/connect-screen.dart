@@ -174,10 +174,11 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                                       width: 2.w,
                                                     ),
                                                     Obx(() => Text(
-                                                          connectionController
-                                                              .userModel
-                                                              .value
-                                                              .likes
+                                                          (connectionController
+                                                                      .userModel
+                                                                      .value
+                                                                      .journalLikeCount ??
+                                                                  0)
                                                               .toString(),
                                                           style: SolhTextStyles
                                                                   .GreenBorderButtonText
@@ -193,10 +194,11 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                             Column(
                                               children: [
                                                 Obx(() => Text(
-                                                      connectionController
-                                                          .userModel
-                                                          .value
-                                                          .connections
+                                                      (connectionController
+                                                                  .userModel
+                                                                  .value
+                                                                  .connectionCount ??
+                                                              0)
                                                           .toString(),
                                                       style: SolhTextStyles
                                                               .GreenBorderButtonText
@@ -232,11 +234,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                             },
                                             width: 90.w,
                                             height: 6.3.h,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [Text("Connect/Join")],
-                                            )),
+                                            child: Text("Connect/Join")),
                                         SizedBox(height: 3.h),
                                       ],
                                     ),
