@@ -119,6 +119,17 @@ class ConnectionController extends GetxController {
     getAllConnection();
   }
 
+  Future<void> deleteConnection(String uid) async {
+    await Network.makeHttpDeleteRequestWithToken(
+        url: APIConstants.api + '/api/connection?userId=${uid}',
+        body: {}).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    getMyConnection();
+    getAllConnection();
+  }
+
   Future<void> getUserAnalytics(String uid) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
             APIConstants.api + '/api/analytics/$uid')

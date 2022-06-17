@@ -128,6 +128,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               height: 1.h,
                             ),
                             FeelingsContainer(
+                              userSnapshot.requireData,
                               onFeelingsChanged: (feelings) {
                                 print("feelings changed to: $feelings");
                               },
@@ -858,13 +859,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 }
 
 class FeelingsContainer extends StatefulWidget {
-  const FeelingsContainer({
+  const FeelingsContainer(
+    UserModel? requireData, {
     Key? key,
     required Function(String) onFeelingsChanged,
   })  : _onFeelingsChanged = onFeelingsChanged,
+        _userModel = requireData,
         super(key: key);
 
   final Function(String) _onFeelingsChanged;
+  final UserModel? _userModel;
 
   @override
   State<FeelingsContainer> createState() => _FeelingsContainerState();
@@ -912,7 +916,12 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                   feelingsController.feelingsList.length,
                   (index) => InkWell(
                     onLongPress: () {
-                      print("long press");
+                      feelingsController.feelingsList[index].createdBy ==
+                              widget._userModel!.sId
+                          ? showDeletePopUp(index)
+                          : null;
+                      print(widget._userModel!.sId);
+                      print(feelingsController.feelingsList[index].createdBy);
                     },
                     child: FilterChip(
                         selectedColor: SolhColors.green,
@@ -949,6 +958,35 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
           ),
         ),
       ),
+    );
+  }
+
+  void showDeletePopUp(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Feeling'),
+          content: Text('Are you sure you want to delete this feeling?'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Delete'),
+              onPressed: () {
+                feelingsController.deleteCustomFeeling(
+                    feelingsController.feelingsList.value[index].sId ?? '',
+                    index);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
