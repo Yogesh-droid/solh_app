@@ -1390,102 +1390,132 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
           SizedBox(
             height: 6,
           ),
-          Expanded(
-            child: ListView.builder(
-                itemCount: _connectionController
-                    .myConnectionModel.value.myConnections!.length,
-                itemBuilder: (context, index) {
-                  if (_connectionController
-                          .myConnectionModel.value.myConnections!.length >
-                      _tagsController.selectedTags.length) {
-                    _tagsController.selectedTags.add(false);
-                  }
-                  return InkWell(
-                    onTap: () {
-                      if (_tagsController.selectedTags[index] == true) {
-                        print('ran if 1');
-                        _tagsController.selectedTags[index] = false;
-                      } else {
-                        print('ran if 2');
-                        _tagsController.selectedTags[index] = true;
-                      }
-                      // if (_tagsController.selectedTags[index]) {
-                      //   print('ran if 2');
-                      //   _tagsController.selectedTags[index] = true;
-                      // }
-                      print(_tagsController.selectedTags.toString() +
-                          index.toString());
-                      if (_tagsController.selectedTags[index]) {
-                        _tagsController.selectedItems[_connectionController
-                            .myConnectionModel
-                            .value
-                            .myConnections![index]
-                            .userName!] = true;
-                        _tagsController.update();
-                      }
-                      if (_tagsController.selectedTags[index] == false) {
-                        _tagsController.selectedItems.remove(
-                            _connectionController.myConnectionModel.value
-                                .myConnections![index].userName!);
-                        _tagsController.update();
-                      }
-                      print(_tagsController.selectedTags.length);
-                      print(_tagsController.selectedItems.toString());
-                      setState(() {});
-                    },
-                    child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              backgroundImage: NetworkImage(
+          _connectionController.myConnectionModel.value.myConnections!.length ==
+                  0
+              ? Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.error,
+                        color: Colors.grey.shade300,
+                        size: 100,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Oops! No connection found.',
+                        style: GoogleFonts.signika(
+                            fontSize: 20, color: Colors.green.shade300),
+                      )
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: ListView.builder(
+                      itemCount: _connectionController
+                          .myConnectionModel.value.myConnections!.length,
+                      itemBuilder: (context, index) {
+                        if (_connectionController
+                                .myConnectionModel.value.myConnections!.length >
+                            _tagsController.selectedTags.length) {
+                          _tagsController.selectedTags.add(false);
+                        }
+                        return InkWell(
+                          onTap: () {
+                            if (_tagsController.selectedTags[index] == true) {
+                              print('ran if 1');
+                              _tagsController.selectedTags[index] = false;
+                            } else {
+                              print('ran if 2');
+                              _tagsController.selectedTags[index] = true;
+                            }
+                            // if (_tagsController.selectedTags[index]) {
+                            //   print('ran if 2');
+                            //   _tagsController.selectedTags[index] = true;
+                            // }
+                            print(_tagsController.selectedTags.toString() +
+                                index.toString());
+                            if (_tagsController.selectedTags[index]) {
+                              _tagsController.selectedItems[
                                   _connectionController.myConnectionModel.value
-                                      .myConnections![index].profilePicture!),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 30, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      _connectionController.myConnectionModel
-                                          .value.myConnections![index].name!,
-                                      style: GoogleFonts.signika(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                      .myConnections![index].userName!] = true;
+                              _tagsController.update();
+                            }
+                            if (_tagsController.selectedTags[index] == false) {
+                              _tagsController.selectedItems.remove(
+                                  _connectionController.myConnectionModel.value
+                                      .myConnections![index].userName!);
+                              _tagsController.update();
+                            }
+                            print(_tagsController.selectedTags.length);
+                            print(_tagsController.selectedItems.toString());
+                            setState(() {});
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundImage: NetworkImage(
+                                        _connectionController
+                                            .myConnectionModel
+                                            .value
+                                            .myConnections![index]
+                                            .profilePicture!),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8, 0, 30, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            _connectionController
+                                                .myConnectionModel
+                                                .value
+                                                .myConnections![index]
+                                                .name!,
+                                            style: GoogleFonts.signika(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            _connectionController
+                                                .myConnectionModel
+                                                .value
+                                                .myConnections![index]
+                                                .bio!,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    Text(
-                                      _connectionController.myConnectionModel
-                                          .value.myConnections![index].bio!,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                  Checkbox(
+                                    checkColor: Colors.white,
+                                    side: MaterialStateBorderSide.resolveWith(
+                                      (states) => BorderSide(
+                                          width: 1.0, color: Colors.white),
+                                    ),
+                                    activeColor: SolhColors.green,
+                                    value: _tagsController.selectedTags[index],
+                                    shape: CircleBorder(),
+                                    onChanged: (bool? value) {},
+                                  ),
+                                ],
                               ),
                             ),
-                            Checkbox(
-                              checkColor: Colors.white,
-                              side: MaterialStateBorderSide.resolveWith(
-                                (states) =>
-                                    BorderSide(width: 1.0, color: Colors.white),
-                              ),
-                              activeColor: SolhColors.green,
-                              value: _tagsController.selectedTags[index],
-                              shape: CircleBorder(),
-                              onChanged: (bool? value) {},
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-          )
+                          ),
+                        );
+                      }),
+                )
         ],
       ),
     );
