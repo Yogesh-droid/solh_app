@@ -686,7 +686,7 @@ class Connections extends StatelessWidget {
                                     '',
                                 context: context,
                                 sId: connectionController
-                                        .groupInvites.value[index].inviteId ??
+                                        .groupInvites.value[index].groupId ??
                                     '',
                                 isGroup: true,
                                 groupMediaUrl: connectionController
@@ -911,11 +911,13 @@ class Connections extends StatelessWidget {
     String? groupName,
     String? groupMediaUrl,
   }) {
+    print(sId);
     return InkWell(
       onTap: isGroup == null
           ? () {
               connectionController.getUserAnalytics(sId!);
               print(sId);
+              print(uid);
               Navigator.push(
                   context,
                   MaterialPageRoute(
