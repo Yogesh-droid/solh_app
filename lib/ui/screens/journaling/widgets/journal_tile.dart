@@ -65,21 +65,21 @@ class _JournalTileState extends State<JournalTile> {
     return textList;
   }
 
-  bool checkConnectionExist(username) {
-    bool connectionExits = true;
+  // bool checkConnectionExist(username) {
+  //   bool connectionExits = true;
 
-    for (var i in connectionController.myConnectionModel.value.myConnections!) {
-      print('@' + i.userName.toString() + username.toString());
-      if ('@' + i.userName.toString() == username) {
-        connectionExits = false;
-        break;
-      } else {
-        connectionExits = true;
-      }
-    }
-    print(connectionExits);
-    return connectionExits;
-  }
+  //   for (var i in connectionController.myConnectionModel.value.myConnections!) {
+  //     print('@' + i.userName.toString() + username.toString());
+  //     if ('@' + i.userName.toString() == username) {
+  //       connectionExits = false;
+  //       break;
+  //     } else {
+  //       connectionExits = true;
+  //     }
+  //   }
+  //   print(connectionExits);
+  //   return connectionExits;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +92,34 @@ class _JournalTileState extends State<JournalTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getUserImageAndName(),
-              Divider(),
+              Container(
+                color: widget._journalModel!.postedBy!.isProvider!
+                    ? Color(0x305F9B8C)
+                    : widget._journalModel!.group != null
+                        ? Color(0xffEBD1FB)
+                        : Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    widget._journalModel!.postedBy!.isProvider! ||
+                            widget._journalModel!.group != null
+                        ? SizedBox(
+                            height: 8,
+                          )
+                        : SizedBox(),
+                    getUserImageAndName(),
+                    widget._journalModel!.postedBy!.isProvider! ||
+                            widget._journalModel!.group != null
+                        ? Container(
+                            height: 10,
+                          )
+                        : Divider(),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
               getPostDetails(connectionController),
               getPostMedia(),
               widget.isMyJournal ? Container() : getPostActionButton(),
@@ -137,204 +163,233 @@ class _JournalTileState extends State<JournalTile> {
   }
 
   Widget getUserImageAndName() {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: MediaQuery.of(context).size.width / 35,
-      ),
-      child: GestureDetector(
-        onTap: () => widget._journalModel!.group != null &&
-                journalPageController.selectedGroupId.value.length == 0
-            ? {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return GroupDetailsPage(
-                    ///// this case is for group journal
-                    group: GroupList(
-                      sId: widget._journalModel!.group!.sId,
-                      groupName: widget._journalModel!.group!.groupName,
-                      groupMediaUrl: widget._journalModel!.group!.groupImage,
+    return Container(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: MediaQuery.of(context).size.width / 35,
+        ),
+        child: GestureDetector(
+          onTap: () => widget._journalModel!.group != null &&
+                  journalPageController.selectedGroupId.value.length == 0
+              ? {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return GroupDetailsPage(
+                      ///// this case is for group journal
+                      group: GroupList(
+                        sId: widget._journalModel!.group!.sId,
+                        groupName: widget._journalModel!.group!.groupName,
+                        groupMediaUrl: widget._journalModel!.group!.groupImage,
+                      ),
+                    );
+                  }))
+                }
+              : widget._journalModel!.postedBy!.sId !=
+                          null && ////// this case is for user journal
+                      !widget._journalModel!.anonymousJournal! &&
+                      widget._journalModel!.postedBy!.uid !=
+                          FirebaseAuth.instance.currentUser!.uid
+                  ? {
+                      connectionController.getUserAnalytics(
+                          widget._journalModel!.postedBy!.sId!),
+                      print(widget._journalModel!.postedBy!.sId),
+                      // AutoRouter.of(context).push(ConnectScreenRouter(
+                      //     uid: widget._journalModel!.postedBy!.uid ?? '',
+                      //     sId: widget._journalModel!.postedBy!.sId ?? '')
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ConnectProfileScreen(
+                                  uid: widget._journalModel!.postedBy!.uid!,
+                                  sId: widget._journalModel!.postedBy!.sId!)))
+                    }
+                  : {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('You can not see this user'),
+                        duration: Duration(milliseconds: 700),
+                        backgroundColor: Colors.black.withOpacity(0.8),
+                      )),
+                      print('this post is anonymous'),
+                      print(widget._journalModel!.postedBy!.sId),
+                    },
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Color(0xFFD9D9D9),
+                  child: Padding(
+                    padding: const EdgeInsets.all(1.0),
+                    child: CircleAvatar(
+                      backgroundImage: widget._journalModel!.anonymousJournal !=
+                                  null &&
+                              widget._journalModel!.anonymousJournal! &&
+                              widget._journalModel!.postedBy!.anonymous != null
+                          ? CachedNetworkImageProvider(widget._journalModel!
+                                  .postedBy!.anonymous!.profilePicture ??
+                              '')
+                          : widget._journalModel!.group != null &&
+                                  journalPageController
+                                          .selectedGroupId.value.length ==
+                                      0
+                              ? widget._journalModel!.group!.groupImage != null
+                                  ? CachedNetworkImageProvider(
+                                      widget._journalModel!.group!.groupImage!)
+                                  : AssetImage(
+                                          'assets/images/group_placeholder.png')
+                                      as ImageProvider
+                              : CachedNetworkImageProvider(widget
+                                  ._journalModel!.postedBy!.profilePicture!),
+                      backgroundColor: SolhColors.white,
                     ),
-                  );
-                }))
-              }
-            : widget._journalModel!.postedBy!.sId !=
-                        null && ////// this case is for user journal
-                    !widget._journalModel!.anonymousJournal! &&
-                    widget._journalModel!.postedBy!.uid !=
-                        FirebaseAuth.instance.currentUser!.uid
-                ? {
-                    connectionController
-                        .getUserAnalytics(widget._journalModel!.postedBy!.sId!),
-                    print(widget._journalModel!.postedBy!.sId),
-                    // AutoRouter.of(context).push(ConnectScreenRouter(
-                    //     uid: widget._journalModel!.postedBy!.uid ?? '',
-                    //     sId: widget._journalModel!.postedBy!.sId ?? '')
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ConnectProfileScreen(
-                                uid: widget._journalModel!.postedBy!.uid!,
-                                sId: widget._journalModel!.postedBy!.sId!)))
-                  }
-                : {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('You can not see this user'),
-                      duration: Duration(milliseconds: 700),
-                      backgroundColor: Colors.black.withOpacity(0.8),
-                    )),
-                    print('this post is anonymous'),
-                    print(widget._journalModel!.postedBy!.sId),
-                  },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              CircleAvatar(
-                backgroundColor: Color(0xFFD9D9D9),
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: CircleAvatar(
-                    backgroundImage: widget._journalModel!.anonymousJournal !=
-                                null &&
-                            widget._journalModel!.anonymousJournal! &&
-                            widget._journalModel!.postedBy!.anonymous != null
-                        ? CachedNetworkImageProvider(widget._journalModel!
-                                .postedBy!.anonymous!.profilePicture ??
-                            '')
-                        : widget._journalModel!.group != null &&
-                                journalPageController
-                                        .selectedGroupId.value.length ==
-                                    0
-                            ? widget._journalModel!.group!.groupImage != null
-                                ? CachedNetworkImageProvider(
-                                    widget._journalModel!.group!.groupImage!)
-                                : AssetImage(
-                                        'assets/images/group_placeholder.png')
-                                    as ImageProvider
-                            : CachedNetworkImageProvider(widget
-                                ._journalModel!.postedBy!.profilePicture!),
-                    backgroundColor: SolhColors.white,
                   ),
                 ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 3.w,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 3.w,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    widget._journalModel!.anonymousJournal !=
+                                                null &&
+                                            widget._journalModel!
+                                                .anonymousJournal! &&
+                                            widget._journalModel!.postedBy!
+                                                    .anonymous !=
+                                                null
+                                        ? widget._journalModel!.postedBy!
+                                                .anonymous!.userName ??
+                                            ''
+                                        : widget._journalModel!.group != null &&
+                                                journalPageController
+                                                        .selectedGroupId ==
+                                                    ''
+                                            ? widget._journalModel!.group!
+                                                    .groupName ??
+                                                ''
+                                            : widget._journalModel!.postedBy !=
+                                                    null
+                                                ? widget._journalModel!
+                                                        .postedBy!.name ??
+                                                    ''
+                                                : '',
+                                    style:
+                                        SolhTextStyles.JournalingUsernameText,
+                                  ),
                                   widget._journalModel!.anonymousJournal !=
                                               null &&
                                           widget._journalModel!
-                                              .anonymousJournal! &&
-                                          widget._journalModel!.postedBy!
-                                                  .anonymous !=
-                                              null
-                                      ? widget._journalModel!.postedBy!
-                                              .anonymous!.userName ??
-                                          ''
-                                      : widget._journalModel!.group != null &&
-                                              journalPageController
-                                                      .selectedGroupId ==
-                                                  ''
-                                          ? widget._journalModel!.group!
-                                                  .groupName ??
-                                              ''
-                                          : widget._journalModel!.postedBy !=
-                                                  null
-                                              ? widget._journalModel!.postedBy!
-                                                      .name ??
-                                                  ''
-                                              : '',
-                                  style: SolhTextStyles.JournalingUsernameText,
-                                ),
-                                widget._journalModel!.anonymousJournal !=
-                                            null &&
-                                        widget._journalModel!
-                                                .anonymousJournal ==
-                                            true
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 3.w,
-                                        ),
-                                        child: Icon(
-                                          Icons.lock_person,
-                                          color: SolhColors.grey,
-                                          size: 12,
-                                        ),
-                                      )
-                                    : Container(),
-                                SizedBox(width: 1.5.w),
-                                if (widget._journalModel!.postedBy != null &&
-                                    widget._journalModel!.postedBy!.userType ==
-                                        "Expert")
-                                  SolhExpertBadge(),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                DateTime.tryParse(
-                                            widget._journalModel!.createdAt ??
-                                                '') !=
-                                        null
-                                    ? Text(
-                                        timeago.format(DateTime.parse(
-                                            widget._journalModel!.createdAt ??
-                                                '')),
-                                        style: SolhTextStyles
-                                            .JournalingTimeStampText,
-                                      )
-                                    : Container(),
-                                SizedBox(
-                                  width: 1.5.w,
-                                ),
-                                widget._journalModel!.group != null
-                                    ? Icon(
-                                        CupertinoIcons.person_3_fill,
-                                        color: Color(0xFFA6A6A6),
-                                      )
-                                    : Container()
-                              ],
-                            )
-                          ],
+                                                  .anonymousJournal ==
+                                              true
+                                      ? Padding(
+                                          padding: EdgeInsets.only(
+                                            left: 3.w,
+                                          ),
+                                          child: Icon(
+                                            Icons.lock_person,
+                                            color: SolhColors.grey,
+                                            size: 12,
+                                          ),
+                                        )
+                                      : Container(),
+                                  SizedBox(width: 1.5.w),
+                                  if (widget._journalModel!.postedBy != null &&
+                                      widget._journalModel!.postedBy!
+                                              .userType ==
+                                          "Expert")
+                                    SolhExpertBadge(),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  DateTime.tryParse(
+                                              widget._journalModel!.createdAt ??
+                                                  '') !=
+                                          null
+                                      ? Text(
+                                          timeago.format(DateTime.parse(
+                                              widget._journalModel!.createdAt ??
+                                                  '')),
+                                          style: SolhTextStyles
+                                              .JournalingTimeStampText,
+                                        )
+                                      : Container(),
+                                  SizedBox(
+                                    width: 1.5.w,
+                                  ),
+                                  widget._journalModel!.group != null
+                                      ? Icon(
+                                          CupertinoIcons.person_3_fill,
+                                          color: Color(0xFFA6A6A6),
+                                        )
+                                      : Container(),
+                                  widget._journalModel!.postedBy!.isProvider!
+                                      ? Row(
+                                          children: [
+                                            Container(
+                                              height: 12,
+                                              width: 1,
+                                              color: SolhColors.grey,
+                                            ),
+                                            SizedBox(
+                                              width: 6,
+                                            ),
+                                            Text(
+                                              'Expert',
+                                              style: GoogleFonts.signika(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: SolhColors.green),
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            SolhExpertBadge()
+                                          ],
+                                        )
+                                      : Container()
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    widget._journalModel!.postedBy != null
-                        ? widget._journalModel!.postedBy!.uid ==
-                                    FirebaseAuth.instance.currentUser!.uid ||
-                                widget._journalModel!.anonymousJournal !=
-                                        null &&
-                                    widget._journalModel!.anonymousJournal ==
-                                        true &&
-                                    widget._journalModel!.postedBy!.uid ==
-                                        FirebaseAuth.instance.currentUser!.uid
-                            ? PostMenuButton(
-                                journalId: widget._journalModel!.id ?? '',
-                                deletePost: widget._deletePost,
-                              )
-                            : Container()
-                        : Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                          )
-                  ],
+                      widget._journalModel!.postedBy != null
+                          ? widget._journalModel!.postedBy!.uid ==
+                                      FirebaseAuth.instance.currentUser!.uid ||
+                                  widget._journalModel!.anonymousJournal !=
+                                          null &&
+                                      widget._journalModel!.anonymousJournal ==
+                                          true &&
+                                      widget._journalModel!.postedBy!.uid ==
+                                          FirebaseAuth.instance.currentUser!.uid
+                              ? PostMenuButton(
+                                  journalId: widget._journalModel!.id ?? '',
+                                  deletePost: widget._deletePost,
+                                )
+                              : Container()
+                          : Container(
+                              width: 10,
+                              height: 10,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -406,14 +461,14 @@ class _JournalTileState extends State<JournalTile> {
                 ? []
                 : getTexts().map((item) {
                     if (item.toString().trim()[0] == '@') {
-                      if (checkConnectionExist(item)) {
-                        print('it ran');
-                        return Text(
-                          item + ' ',
-                          style: GoogleFonts.signika(
-                              fontSize: 16, color: Color(0xff666666)),
-                        );
-                      }
+                      // if (checkConnectionExist(item)) {
+                      //   print('it ran');
+                      //   return Text(
+                      //     item + ' ',
+                      //     style: GoogleFonts.signika(
+                      //         fontSize: 16, color: Color(0xff666666)),
+                      //   );
+                      // }
                       return InkWell(
                         onTap: () {
                           Navigator.push(

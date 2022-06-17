@@ -230,38 +230,39 @@ class PostedBy {
   int? iV;
   String? lastName;
   Anonymous? anonymous;
+  bool? isProvider;
 
-  PostedBy({
-    this.sId,
-    this.gender,
-    this.status,
-    this.qualification,
-    this.profilePicture,
-    this.profilePictureType,
-    this.userType,
-    this.isSolhExpert,
-    this.isSolhAdviser,
-    this.isSolhCounselor,
-    this.mobile,
-    this.uid,
-    this.firstName,
-    this.userName,
-    this.dob,
-    this.email,
-    this.name,
-    this.experience,
-    this.connections,
-    this.ratings,
-    this.reviews,
-    this.likes,
-    this.posts,
-    this.bio,
-    this.createdAt,
-    this.updatedAt,
-    this.iV,
-    this.lastName,
-    this.anonymous,
-  });
+  PostedBy(
+      {this.sId,
+      this.gender,
+      this.status,
+      this.qualification,
+      this.profilePicture,
+      this.profilePictureType,
+      this.userType,
+      this.isSolhExpert,
+      this.isSolhAdviser,
+      this.isSolhCounselor,
+      this.mobile,
+      this.uid,
+      this.firstName,
+      this.userName,
+      this.dob,
+      this.email,
+      this.name,
+      this.experience,
+      this.connections,
+      this.ratings,
+      this.reviews,
+      this.likes,
+      this.posts,
+      this.bio,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.lastName,
+      this.anonymous,
+      this.isProvider});
 
   PostedBy.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -295,6 +296,7 @@ class PostedBy {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     lastName = json['last_name'];
+    isProvider = json['isProvider'];
     anonymous = json['anonymous'] != null
         ? new Anonymous.fromJson(json['anonymous'])
         : null;
