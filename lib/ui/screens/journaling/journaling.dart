@@ -282,23 +282,27 @@ class _JournalingState extends State<Journaling> {
     return SolhAppBar(
       title: Row(
         children: [
-          InkWell(
-            onTap: () {
-              print("side bar tapped");
-              setState(() {
-                _isDrawerOpen = !_isDrawerOpen;
-              });
-              print("opened");
-            },
-            child: Container(
-              height: 40,
-              width: 40,
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-              child: SvgPicture.asset(
-                "assets/icons/app-bar/app-bar-menu.svg",
-                width: 26,
-                height: 24,
-                color: SolhColors.green,
+          Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: InkWell(
+              onTap: () {
+                print("side bar tapped");
+                setState(() {
+                  _isDrawerOpen = !_isDrawerOpen;
+                });
+                print("opened");
+              },
+              child: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                height: 40,
+                width: 40,
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: SvgPicture.asset(
+                  "assets/icons/app-bar/app-bar-menu.svg",
+                  width: 26,
+                  height: 24,
+                  color: SolhColors.green,
+                ),
               ),
             ),
           ),

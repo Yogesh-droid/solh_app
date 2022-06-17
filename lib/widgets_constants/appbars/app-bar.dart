@@ -35,10 +35,14 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         leading: !_isLandingScreen
             ? IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: SolhColors.black,
-                  size: 24,
+                icon: Container(
+                  height: 10.h,
+                  width: 10.h,
+                  child: Icon(
+                    Icons.arrow_back_ios_new_rounded,
+                    color: SolhColors.black,
+                    size: 24,
+                  ),
                 ),
               )
             : null,
