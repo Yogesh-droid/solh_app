@@ -53,17 +53,15 @@ class FeelingsController extends GetxController {
     try {
       Map<String, dynamic> response =
           await Network.makeHttpDeleteRequestWithToken(
-                  body: {'feelingId': feelingId},
-                  url: APIConstants.api + '/api/feelings/$feelingId')
+                  body: {},
+                  url: APIConstants.api + '/api/feeling?feelingId=$feelingId')
               .onError((error, stackTrace) {
         print(error);
         return {};
       });
 
-      if (response['success']) {
-        feelingsList.removeWhere((element) => element.sId == feelingId);
-        feelingsList.refresh();
-      }
+      feelingsList.removeWhere((element) => element.sId == feelingId);
+      feelingsList.refresh();
     } on Exception catch (e) {
       print(e.toString());
     }

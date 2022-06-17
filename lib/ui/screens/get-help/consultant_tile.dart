@@ -229,7 +229,7 @@ class ConsultantsTile extends StatelessWidget {
               style: TextStyle(fontSize: 12),
             ),
             onPressed: () {
-              launchUrl(Uri.parse("tel://${_doctorModel.mobile}"));
+              launchUrl(Uri.parse("tel://${8284848028}"));
             },
           )
         ],

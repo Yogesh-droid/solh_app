@@ -21,6 +21,7 @@ class ConnectProfileScreen extends StatefulWidget {
   final String? _username;
   final String _uid;
   final String _sId;
+  bool isMyConnection = false;
 
   @override
   State<ConnectProfileScreen> createState() => _ConnectProfileScreenState();
@@ -33,6 +34,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   void initState() {
     print('it ran');
     getUser();
+    if (widget._sId.isNotEmpty) {
+      checkIfUserIsMyConnection(widget._sId);
+    }
 
     // TODO: implement initState
 
@@ -44,6 +48,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     if (widget._username != null) {
       print('adhbfjkjknasklmdkamdsmdads,f,d');
       await connectionController.getUserprofileData(widget._username ?? '');
+      checkIfUserIsMyConnection(connectionController.userModel.value.sId!);
     } else {
       print('username is null and anlytics is not');
     }
@@ -363,10 +368,24 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                             },
                             width: 90.w,
                             height: 6.3.h,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [Text("Connect/Join")],
-                            )),
+                            child: widget.isMyConnection
+                                ? Text('Message')
+                                : Text("Connect/Join")),
+                        SizedBox(height: 3.h),
+                        widget.isMyConnection
+                            ? SolhGreenButton(
+                                onPressed: () async {
+                                  await connectionController
+                                      .deleteConnection(widget._sId);
+                                  checkIfUserIsMyConnection(widget._sId);
+                                  setState(() {});
+                                },
+                                width: 90.w,
+                                height: 6.3.h,
+                                child: widget.isMyConnection
+                                    ? Text('Unfriend')
+                                    : Text("Connect/Join"))
+                            : Container(),
                         SizedBox(height: 3.h),
                       ],
                     ),
@@ -380,6 +399,15 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
             return Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  void checkIfUserIsMyConnection(String sId) {
+    connectionController.myConnectionModel.value.myConnections!
+        .forEach((element) {
+      if (element.sId == sId) {
+        widget.isMyConnection = true;
+      }
+    });
   }
 }
 
