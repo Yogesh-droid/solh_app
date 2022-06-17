@@ -50,6 +50,13 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SolhAppBar(
@@ -63,7 +70,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
             ? GetBuilder<ConnectionController>(
                 init: connectionController,
                 builder: (connectionController) {
-                  return connectionController.userModel.value.likes == null
+                  return connectionController.isLoading.value
                       ? Center(
                           child: CircularProgressIndicator(),
                         )

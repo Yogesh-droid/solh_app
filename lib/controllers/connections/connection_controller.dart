@@ -19,6 +19,7 @@ class ConnectionController extends GetxController {
   var isDecliningConnection = false.obs;
   var declinedConnectionId = ''.obs;
   var isCancelingConnection = false.obs;
+  var isLoading = false.obs;
 
   /// for canceling connection
   var canceledConnectionId = ''.obs;
@@ -132,12 +133,14 @@ class ConnectionController extends GetxController {
   }
 
   Future getUserprofileData(String user) async {
+    isLoading(true);
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
             APIConstants.api + '/api/user-profile' + '?user=' + user)
         .onError((error, stackTrace) {
       print(error);
       return {};
     });
+    isLoading(false);
 
     if (map.containsKey('connections')) {
       if (map['connections'] == null) {
