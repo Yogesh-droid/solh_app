@@ -408,7 +408,11 @@ class _JournalTileState extends State<JournalTile> {
                     if (item.toString().trim()[0] == '@') {
                       if (checkConnectionExist(item)) {
                         print('it ran');
-                        return Text(item + ' ');
+                        return Text(
+                          item + ' ',
+                          style: GoogleFonts.signika(
+                              fontSize: 16, color: Color(0xff666666)),
+                        );
                       }
                       return InkWell(
                         onTap: () {
@@ -426,7 +430,8 @@ class _JournalTileState extends State<JournalTile> {
                         },
                         child: Text(
                           item + " ",
-                          style: GoogleFonts.signika(color: Color(0xffE1555A)),
+                          style: GoogleFonts.signika(
+                              fontSize: 16, color: Color(0xffE1555A)),
                         ),
                       );
                     } else {

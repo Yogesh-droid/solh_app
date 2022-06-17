@@ -291,6 +291,9 @@ class _JournalingState extends State<Journaling> {
               print("opened");
             },
             child: Container(
+              height: 40,
+              width: 40,
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
               child: SvgPicture.asset(
                 "assets/icons/app-bar/app-bar-menu.svg",
                 width: 26,
