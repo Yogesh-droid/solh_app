@@ -8,12 +8,19 @@ class ProviderUser {
   String? _bio;
   String? _profilePictureUrl;
   String? _gender;
+  String? _userName;
   String? _dob = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
   set setFirstName(String firstname) {
     _firstname = firstname;
 
     print("firstname changed to: $_firstname");
+  }
+
+  set setUserName(String userName) {
+    _userName = userName;
+
+    print("userName changed to: $_userName");
   }
 
   set setLasttName(String lastanme) {
@@ -42,6 +49,8 @@ class ProviderUser {
   }
 
   Future<bool> updateUserDetails() async {
+    print("$_userName");
+
     var resposne = await Network.makeHttpPutRequestWithToken(
         url: "${APIConstants.api}/api/edit-user-details",
         body: {
@@ -49,6 +58,7 @@ class ProviderUser {
           "last_name": _lastname,
           "bio": _bio,
           "gender": _gender,
+          "userName": _userName,
           "dob": _dob
         });
     print(resposne.toString());

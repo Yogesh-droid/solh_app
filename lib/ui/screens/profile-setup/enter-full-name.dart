@@ -9,6 +9,8 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+import 'enter-username.dart';
+
 class EnterFullNameScreen extends StatefulWidget {
   EnterFullNameScreen({Key? key}) : super(key: key);
 
@@ -33,6 +35,12 @@ class _EnterFullNameScreenState extends State<EnterFullNameScreen> {
                     duration: Duration(milliseconds: 500), curve: Curves.ease),
               ),
               EnterDescriptionPage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
+              EnterUsernameScreen(
                 onBack: () => _pageController.previousPage(
                     duration: Duration(milliseconds: 500), curve: Curves.ease),
                 onNext: () => _pageController.nextPage(

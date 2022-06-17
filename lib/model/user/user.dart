@@ -176,6 +176,9 @@ class UserModel {
   String? updatedAt;
   int? iV;
   String? lastName;
+  int? journalLikeCount;
+  int? commentCount;
+  String? connectionCount;
 
   UserModel(
       {this.sId,
@@ -206,7 +209,10 @@ class UserModel {
       this.isProvider,
       this.updatedAt,
       this.iV,
-      this.lastName});
+      this.lastName,
+      this.journalLikeCount,
+      this.commentCount,
+      this.connectionCount});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -242,6 +248,9 @@ class UserModel {
     isProvider = json['isProvider'];
     iV = json['__v'];
     lastName = json['last_name'];
+    journalLikeCount = json['journalLikeCount'];
+    commentCount = json['commentCount'];
+    connectionCount = json['connectionCount'];
   }
 
   Map<String, dynamic> toJson() {

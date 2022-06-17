@@ -168,7 +168,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 !feelingsController.isSearching.value
                             ? FloatingActionButton.extended(
                                 backgroundColor: SolhColors.green,
-                                onPressed: _postJournal,
+                                onPressed: () {
+                                  if (journalPageController
+                                          .descriptionController.text.isEmpty &&
+                                      feelingsController
+                                          .selectedFeelingsId.value.isEmpty &&
+                                      _croppedFile == null) {
+                                    Utility.showToast(
+                                        "Please fill one of the fields");
+                                    return;
+                                  }
+                                  _postJournal();
+                                },
                                 label: Container(
                                     width: MediaQuery.of(context).size.width -
                                         20.w,
@@ -329,27 +340,68 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ),
                         ),
                         SizedBox(width: 10.w),
-                        IconButton(
-                          onPressed: () {
-                            _customFeelingController.clear();
-                            _customFeelingFocusNode.unfocus();
-                            feelingsController.isCreatingCustomFeeling.value =
-                                false;
-                          },
-                          icon: Icon(Icons.clear),
-                        ),
-                        IconButton(
-                            onPressed: () {
-                              if (_customFeelingController.text != "") {
-                                feelingsController.createCustomFeeling(
-                                    _customFeelingController.text);
+                        Stack(
+                          children: [
+                            Positioned(
+                              top: 5,
+                              left: 7,
+                              child: Center(
+                                child: Container(
+                                    height: 36,
+                                    width: 36,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(0xffEFEFEF),
+                                    )),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
                                 _customFeelingController.clear();
                                 _customFeelingFocusNode.unfocus();
                                 feelingsController
                                     .isCreatingCustomFeeling.value = false;
-                              }
-                            },
-                            icon: Icon(Icons.check))
+                              },
+                              icon: Icon(
+                                Icons.clear,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Stack(
+                          children: [
+                            Positioned(
+                              top: 5,
+                              left: 7,
+                              child: Center(
+                                child: Container(
+                                    height: 36,
+                                    width: 36,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: SolhColors.green,
+                                    )),
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  if (_customFeelingController.text != "") {
+                                    feelingsController.createCustomFeeling(
+                                        _customFeelingController.text);
+                                    _customFeelingController.clear();
+                                    _customFeelingFocusNode.unfocus();
+                                    feelingsController
+                                        .isCreatingCustomFeeling.value = false;
+                                  }
+                                },
+                                icon: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 20,
+                                )),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -821,6 +873,10 @@ class FeelingsContainer extends StatefulWidget {
 class _FeelingsContainerState extends State<FeelingsContainer> {
   FeelingsController feelingsController = Get.find();
   String _selectedFeeling = "Happy";
+  ScrollController _scrollController = ScrollController(
+    initialScrollOffset: 0,
+    keepScrollOffset: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -828,49 +884,69 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
       height: 20.h,
       alignment: Alignment.centerLeft,
       child: Scrollbar(
-        //isAlwaysShown: true,
-        child: Container(
-          //maxWidth: MediaQuery.of(context).size.width,
+        controller: _scrollController,
+        trackVisibility: true,
+        thumbVisibility: true,
+        radius: Radius.circular(30),
+        thickness: 6,
+        scrollbarOrientation: ScrollbarOrientation.bottom,
+        interactive: true,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 18.0),
+          child: Container(
+            //maxWidth: MediaQuery.of(context).size.width,
 
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Obx(() {
-            return GridView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, mainAxisExtent: 15.h, mainAxisSpacing: 0),
-              children: List.generate(
-                feelingsController.feelingsList.length,
-                (index) => FilterChip(
-                    selectedColor: SolhColors.green,
-                    backgroundColor: Color(0xFFEFEFEF),
-                    showCheckmark: false,
-                    label: Text(feelingsController
-                            .feelingsList.value[index].feelingName ??
-                        ''),
-                    labelStyle: TextStyle(
-                        color: feelingsController.selectedFeelingsId.value
-                                .contains(feelingsController
-                                    .feelingsList.value[index].sId!)
-                            ? Colors.white
-                            : Color(0xFF666666)),
-                    onSelected: (value) {
-                      widget._onFeelingsChanged.call(_selectedFeeling);
-                      feelingsController.selectedFeelingsId.contains(
-                              feelingsController.feelingsList.value[index].sId)
-                          ? feelingsController.selectedFeelingsId.remove(
-                              feelingsController.feelingsList.value[index].sId)
-                          : feelingsController.selectedFeelingsId.add(
-                              feelingsController.feelingsList.value[index].sId);
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Obx(() {
+              return GridView(
+                controller: _scrollController,
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    mainAxisExtent: 15.h,
+                    mainAxisSpacing: 0),
+                children: List.generate(
+                  feelingsController.feelingsList.length,
+                  (index) => InkWell(
+                    onLongPress: () {
+                      print("long press");
                     },
-                    selected: feelingsController.selectedFeelingsId.value
-                        .contains(
-                            feelingsController.feelingsList.value[index].sId!)),
-              ),
-            );
-          }),
+                    child: FilterChip(
+                        selectedColor: SolhColors.green,
+                        backgroundColor: Color(0xFFEFEFEF),
+                        showCheckmark: false,
+                        label: Text(feelingsController
+                                .feelingsList.value[index].feelingName ??
+                            ''),
+                        labelStyle: TextStyle(
+                            color: feelingsController.selectedFeelingsId.value
+                                    .contains(feelingsController
+                                        .feelingsList.value[index].sId!)
+                                ? Colors.white
+                                : Color(0xFF666666)),
+                        onSelected: (value) {
+                          widget._onFeelingsChanged.call(_selectedFeeling);
+                          feelingsController.selectedFeelingsId.contains(
+                                  feelingsController
+                                      .feelingsList.value[index].sId)
+                              ? feelingsController.selectedFeelingsId.remove(
+                                  feelingsController
+                                      .feelingsList.value[index].sId)
+                              : feelingsController.selectedFeelingsId.add(
+                                  feelingsController
+                                      .feelingsList.value[index].sId);
+                        },
+                        selected: feelingsController.selectedFeelingsId.value
+                            .contains(feelingsController
+                                .feelingsList.value[index].sId!)),
+                  ),
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
@@ -1195,108 +1271,113 @@ class _JournalTextFieldState extends State<JournalTextField> {
           border: Border.all(color: SolhColors.green)),
       child: Stack(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                onChanged: (Value) async {
-                  var cursorPos = journalPageController
-                      .descriptionController.selection.base.offset;
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  onChanged: (Value) async {
+                    var cursorPos = journalPageController
+                        .descriptionController.selection.base.offset;
 
-                  if (cursorPos - 1 == -1) {
-                    return;
-                  }
+                    if (cursorPos - 1 == -1) {
+                      return;
+                    }
 
-                  if (journalPageController
-                          .descriptionController.text[cursorPos - 1] ==
-                      '@') {
-                    await showMenu(
-                        context: context,
-                        constraints: BoxConstraints.expand(
-                            height: _connectionController.myConnectionModel
-                                        .value.myConnections!.length >
-                                    4
-                                ? 200
-                                : _connectionController.myConnectionModel.value
-                                        .myConnections!.length *
-                                    50,
-                            width: 150),
-                        position: RelativeRect.fromLTRB(0, 320, 0, 0),
-                        items: _connectionController
-                            .myConnectionModel.value.myConnections!
-                            .map((e) => PopupMenuItem(
-                                onTap: () {
-                                  if (cursorPos == 1 ||
-                                      cursorPos ==
+                    if (journalPageController
+                            .descriptionController.text[cursorPos - 1] ==
+                        '@') {
+                      await showMenu(
+                          context: context,
+                          constraints: BoxConstraints.expand(
+                              height: _connectionController.myConnectionModel
+                                          .value.myConnections!.length >
+                                      4
+                                  ? 200
+                                  : _connectionController.myConnectionModel
+                                          .value.myConnections!.length *
+                                      50,
+                              width: 150),
+                          position: RelativeRect.fromLTRB(0, 320, 0, 0),
+                          items: _connectionController
+                              .myConnectionModel.value.myConnections!
+                              .map((e) => PopupMenuItem(
+                                  onTap: () {
+                                    if (cursorPos == 1 ||
+                                        cursorPos ==
+                                            journalPageController
+                                                .descriptionController
+                                                .text
+                                                .length) {
+                                      journalPageController
+                                          .descriptionController
+                                          .text = journalPageController
+                                              .descriptionController.text +
+                                          e.userName.toString() +
+                                          ' ';
+                                    } else {
+                                      journalPageController
+                                          .descriptionController
+                                          .text = journalPageController
+                                              .descriptionController.text
+                                              .substring(0, cursorPos + 1) +
+                                          e.userName.toString() +
+                                          ' ' +
                                           journalPageController
-                                              .descriptionController
-                                              .text
-                                              .length) {
-                                    journalPageController.descriptionController
-                                        .text = journalPageController
-                                            .descriptionController.text +
-                                        e.userName.toString() +
-                                        ' ';
-                                  } else {
-                                    journalPageController.descriptionController
-                                        .text = journalPageController
-                                            .descriptionController.text
-                                            .substring(0, cursorPos + 1) +
-                                        e.userName.toString() +
-                                        ' ' +
-                                        journalPageController
-                                            .descriptionController.text
-                                            .substring(cursorPos + 1);
-                                  }
-                                },
-                                child: Text(e.userName!)))
-                            .toList());
-                  }
-                },
-                controller: journalPageController.descriptionController,
-                maxLines: 6,
-                minLines: 3,
-                decoration: InputDecoration(
-                  fillColor: SolhColors.grey239,
-                  hintText: "What's on your mind?",
-                  hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-                  // enabledBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(color: SolhColors.green)),
-                  // focusedBorder: OutlineInputBorder(
-                  //     borderSide: BorderSide(color: SolhColors.green)),
-                  // border: OutlineInputBorder(
-                  //     borderSide: BorderSide(color: SolhColors.green))
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
+                                              .descriptionController.text
+                                              .substring(cursorPos + 1);
+                                    }
+                                  },
+                                  child: Text(e.userName!)))
+                              .toList());
+                    }
+                  },
+                  controller: journalPageController.descriptionController,
+                  maxLines: 6,
+                  minLines: 3,
+                  decoration: InputDecoration(
+                    fillColor: SolhColors.grey239,
+                    hintText: "What's on your mind?",
+                    hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
+                    // enabledBorder: OutlineInputBorder(
+                    //     borderSide: BorderSide(color: SolhColors.green)),
+                    // focusedBorder: OutlineInputBorder(
+                    //     borderSide: BorderSide(color: SolhColors.green)),
+                    // border: OutlineInputBorder(
+                    //     borderSide: BorderSide(color: SolhColors.green))
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
                 ),
-              ),
-              GetBuilder<TagsController>(
-                  init: _tagsController,
-                  builder: (_tagsController) {
-                    return Container(
-                      width: 80.w,
-                      child: Wrap(
-                        children: _tagsController.selectedItems.keys
-                            .toList()
-                            .map((key) {
-                          return Text(
-                            '@' + key.toString() + '  ',
-                            style: GoogleFonts.signika(
-                              fontSize: 12,
-                              color: SolhColors.green,
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }),
-              SizedBox(
-                height: 10,
-              )
-            ],
+                GetBuilder<TagsController>(
+                    init: _tagsController,
+                    builder: (_tagsController) {
+                      return Container(
+                        width: 80.w,
+                        child: Wrap(
+                          children: _tagsController.selectedItems.keys
+                              .toList()
+                              .map((key) {
+                            return Text(
+                              '@' + key.toString() + '  ',
+                              style: GoogleFonts.signika(
+                                fontSize: 12,
+                                color: SolhColors.green,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
           ),
           Positioned(
             bottom: 10,
@@ -1459,6 +1540,7 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                               child: Row(
                                 children: [
                                   CircleAvatar(
+                                    backgroundColor: Colors.grey,
                                     backgroundImage: NetworkImage(
                                         _connectionController
                                             .myConnectionModel
@@ -1507,7 +1589,49 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                                     activeColor: SolhColors.green,
                                     value: _tagsController.selectedTags[index],
                                     shape: CircleBorder(),
-                                    onChanged: (bool? value) {},
+                                    onChanged: (bool? value) {
+                                      if (_tagsController.selectedTags[index] ==
+                                          true) {
+                                        print('ran if 1');
+                                        _tagsController.selectedTags[index] =
+                                            false;
+                                      } else {
+                                        print('ran if 2');
+                                        _tagsController.selectedTags[index] =
+                                            true;
+                                      }
+                                      // if (_tagsController.selectedTags[index]) {
+                                      //   print('ran if 2');
+                                      //   _tagsController.selectedTags[index] = true;
+                                      // }
+                                      print(_tagsController.selectedTags
+                                              .toString() +
+                                          index.toString());
+                                      if (_tagsController.selectedTags[index]) {
+                                        _tagsController.selectedItems[
+                                            _connectionController
+                                                .myConnectionModel
+                                                .value
+                                                .myConnections![index]
+                                                .userName!] = true;
+                                        _tagsController.update();
+                                      }
+                                      if (_tagsController.selectedTags[index] ==
+                                          false) {
+                                        _tagsController.selectedItems.remove(
+                                            _connectionController
+                                                .myConnectionModel
+                                                .value
+                                                .myConnections![index]
+                                                .userName!);
+                                        _tagsController.update();
+                                      }
+                                      print(
+                                          _tagsController.selectedTags.length);
+                                      print(_tagsController.selectedItems
+                                          .toString());
+                                      setState(() {});
+                                    },
                                   ),
                                 ],
                               ),

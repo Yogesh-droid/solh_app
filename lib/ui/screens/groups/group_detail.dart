@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
@@ -97,12 +98,58 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   Divider(),
                   Obx(() {
                     return discoverGroupController.isLoading.value
-                        ? Container()
+                        ? getShimmer()
                         : getMembersList(context);
                   })
                 ],
               );
       })),
+    );
+  }
+
+  Widget getShimmer() {
+    return Padding(
+      padding: const EdgeInsets.all(14.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          height: 200,
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 50,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 20,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.grey[300],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 20,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.grey[300],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
