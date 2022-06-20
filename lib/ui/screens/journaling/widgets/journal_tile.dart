@@ -95,7 +95,8 @@ class _JournalTileState extends State<JournalTile> {
               Container(
                 color: widget._journalModel!.postedBy!.isProvider!
                     ? Color(0x305F9B8C)
-                    : widget._journalModel!.group != null
+                    : widget._journalModel!.group != null &&
+                            journalPageController.selectedGroupId.value.isEmpty
                         ? Color(0xffEBD1FB)
                         : Colors.transparent,
                 child: Column(
@@ -186,6 +187,7 @@ class _JournalTileState extends State<JournalTile> {
               : widget._journalModel!.postedBy!.sId !=
                           null && ////// this case is for user journal
                       !widget._journalModel!.anonymousJournal! &&
+                      widget._journalModel!.anonymousJournal != null &&
                       widget._journalModel!.postedBy!.uid !=
                           FirebaseAuth.instance.currentUser!.uid
                   ? {
@@ -460,7 +462,8 @@ class _JournalTileState extends State<JournalTile> {
             children: widget._journalModel!.description!.length == 0
                 ? []
                 : getTexts().map((item) {
-                    if (item.toString().trim()[0] == '@') {
+                    if (item.toString().trim().isNotEmpty &&
+                        item.toString().trim()[0] == '@') {
                       // if (checkConnectionExist(item)) {
                       //   print('it ran');
                       //   return Text(
