@@ -4,24 +4,38 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ConsultantProfile extends StatefulWidget {
-  const ConsultantProfile({Key? key}) : super(key: key);
+  const ConsultantProfile({Key? key, required id})
+      : id = id,
+        super(key: key);
 
+  final String id;
   @override
   State<ConsultantProfile> createState() => _ConsultantProfileState();
 }
 
 class _ConsultantProfileState extends State<ConsultantProfile> {
+  ConsultantController _controller = Get.put(ConsultantController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _controller.getConsultantDataController(widget.id);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Obx(() {
+      return Scaffold(
         appBar: SolhAppBar(
           isLandingScreen: false,
           title: Text(
@@ -29,33 +43,37 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
             style: GoogleFonts.signika(color: SolhColors.black),
           ),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 24,
-            ),
-            consultantProfileImage(),
-            SizedBox(
-              height: 12,
-            ),
-            consultantInfo(context),
-            SizedBox(
-              height: 29.5,
-            ),
-            consultantStatistics(),
-            SizedBox(
-              height: 32,
-            ),
-            ConsultantBio(context),
-            SizedBox(
-              height: 41,
-            ),
-            BookAppointmentWidget()
-          ],
-        ),
-      ),
-    );
+        body: _controller.isLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 24,
+                  ),
+                  consultantProfileImage(),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  consultantInfo(context, _controller),
+                  SizedBox(
+                    height: 29.5,
+                  ),
+                  consultantStatistics(),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  ConsultantBio(context, _controller),
+                  SizedBox(
+                    height: 41,
+                  ),
+                  BookAppointmentWidget()
+                ],
+              ),
+      );
+    });
   }
 }
 
@@ -72,7 +90,7 @@ consultantProfileImage() {
   );
 }
 
-consultantInfo(context) {
+consultantInfo(context, ConsultantController controller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
@@ -80,7 +98,7 @@ consultantInfo(context) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Dr. Priyanka Trivedi (PhD)',
+            controller.consultantModelController.value.provder!.name ?? '',
             style:
                 GoogleFonts.signika(fontSize: 20, fontWeight: FontWeight.w400),
           ),
@@ -96,21 +114,31 @@ consultantInfo(context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            '07 Year of  Experience',
-            style: GoogleFonts.signika(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: SolhColors.green),
-          ),
-          SizedBox(
-            width: 8,
-          ),
-          Container(
-            width: 2,
-            height: 12,
-            color: Colors.grey.shade300,
-          ),
+          controller.consultantModelController.value.provder!.experience != null
+              ? Row(
+                  children: [
+                    Text(
+                      (controller.consultantModelController.value.provder!
+                                      .experience ??
+                                  ' ')
+                              .toString() +
+                          ' Year of  Experience',
+                      style: GoogleFonts.signika(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: SolhColors.green),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      width: 2,
+                      height: 12,
+                      color: Colors.grey.shade300,
+                    ),
+                  ],
+                )
+              : Container(),
           SizedBox(
             width: 8,
           ),
@@ -126,13 +154,15 @@ consultantInfo(context) {
       Container(
         width: MediaQuery.of(context).size.width * 0.6,
         child: Text(
-            'PhD - Psychology, MA - Psychology Health Psychologist, Psychotherapist...',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.signika(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            )),
+          controller.consultantModelController.value.provder!.specialization ??
+              '',
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: GoogleFonts.signika(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     ],
   );
@@ -215,11 +245,11 @@ consultantStatistics() {
   );
 }
 
-ConsultantBio(context) {
+ConsultantBio(context, ConsultantController controller) {
   return Container(
     width: MediaQuery.of(context).size.width * 0.8,
     child: ReadMoreText(
-      'Flutter is Googles mobile UI open source framework to build high-quality native (super fast) interfaces for iOS and Android apps with the unified codebase.',
+      controller.consultantModelController.value.provder!.bio ?? '',
       textAlign: TextAlign.center,
       style: GoogleFonts.signika(
           fontSize: 14,

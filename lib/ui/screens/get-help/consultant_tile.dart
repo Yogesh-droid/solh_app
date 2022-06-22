@@ -19,8 +19,10 @@ class ConsultantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ConsultantProfile())),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ConsultantProfile(
+                id: _doctorModel.id,
+              ))),
       child: Container(
           height: 180,
           decoration: BoxDecoration(
