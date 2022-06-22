@@ -109,10 +109,16 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   child: Text("Next"),
                   onPressed: () async {
                     widget._onNext();
-                    await Provider.of<ProviderUser>(context, listen: false)
-                        .updateUserDetails();
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => ProfileCreated()));
+
+                    try {
+                      Provider.of<ProviderUser>(context, listen: false)
+                          .updateUserDetails();
+                    } catch (e) {
+                      print(e);
+                    } finally {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfileCreated()));
+                    }
                   }),
               SizedBox(
                 height: 3.h,

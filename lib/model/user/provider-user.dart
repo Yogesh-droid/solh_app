@@ -60,7 +60,10 @@ class ProviderUser {
           "gender": _gender,
           "userName": _userName,
           "dob": _dob
-        });
+        }).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
     print(resposne.toString());
     return false;
   }

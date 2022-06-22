@@ -38,19 +38,23 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     super.initState();
     _phoneController = TextEditingController();
     _focusNode = FocusNode();
-    _focusNode.addListener(() async {
-      if (_focusNode.hasFocus && !_hintShown) {
-        _hintShown = true;
-        scheduleMicrotask(() {
-          _askPhoneHint();
-        });
-      }
-    });
+    // _focusNode.addListener(() async {
+    //   if (_focusNode.hasFocus && !_hintShown) {
+    //     _hintShown = true;
+    //     scheduleMicrotask(() {
+    //       _askPhoneHint();
+    //     });
+    //   }
+    // });
   }
 
   Future<void> _askPhoneHint() async {
     String? hint = await _autoFill.hint;
-    _phoneController.value = TextEditingValue(text: hint!.substring(3));
+    if (hint != null) {
+      _phoneController.value =
+          TextEditingValue(text: hint.substring(hint.length - 10, hint.length));
+    }
+    print(_phoneController.value.text);
   }
 
   @override

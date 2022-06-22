@@ -2,14 +2,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
@@ -93,7 +91,8 @@ class _JournalTileState extends State<JournalTile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                color: widget._journalModel!.postedBy!.isProvider!
+                color: widget._journalModel!.postedBy!.isProvider! &&
+                        widget._journalModel!.anonymousJournal == false
                     ? Color(0x305F9B8C)
                     : widget._journalModel!.group != null &&
                             journalPageController.selectedGroupId.value.isEmpty
@@ -186,10 +185,8 @@ class _JournalTileState extends State<JournalTile> {
                 }
               : widget._journalModel!.postedBy!.sId !=
                           null && ////// this case is for user journal
-                      !widget._journalModel!.anonymousJournal! &&
                       widget._journalModel!.anonymousJournal != null &&
-                      widget._journalModel!.postedBy!.uid !=
-                          FirebaseAuth.instance.currentUser!.uid
+                      !widget._journalModel!.anonymousJournal!
                   ? {
                       connectionController.getUserAnalytics(
                           widget._journalModel!.postedBy!.sId!),
@@ -227,9 +224,12 @@ class _JournalTileState extends State<JournalTile> {
                                   null &&
                               widget._journalModel!.anonymousJournal! &&
                               widget._journalModel!.postedBy!.anonymous != null
-                          ? CachedNetworkImageProvider(widget._journalModel!
-                                  .postedBy!.anonymous!.profilePicture ??
-                              '')
+                          ? widget._journalModel!.group != null
+                              ? CachedNetworkImageProvider(
+                                  widget._journalModel!.group!.groupImage ?? '')
+                              : CachedNetworkImageProvider(widget._journalModel!
+                                      .postedBy!.anonymous!.profilePicture ??
+                                  '')
                           : widget._journalModel!.group != null &&
                                   journalPageController
                                           .selectedGroupId.value.length ==
@@ -240,8 +240,8 @@ class _JournalTileState extends State<JournalTile> {
                                   : AssetImage(
                                           'assets/images/group_placeholder.png')
                                       as ImageProvider
-                              : CachedNetworkImageProvider(widget
-                                  ._journalModel!.postedBy!.profilePicture!),
+                              : CachedNetworkImageProvider(
+                                  widget._journalModel!.postedBy!.profilePicture!),
                       backgroundColor: SolhColors.white,
                     ),
                   ),
@@ -260,32 +260,51 @@ class _JournalTileState extends State<JournalTile> {
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    widget._journalModel!.anonymousJournal !=
-                                                null &&
-                                            widget._journalModel!
-                                                .anonymousJournal! &&
-                                            widget._journalModel!.postedBy!
-                                                    .anonymous !=
-                                                null
-                                        ? widget._journalModel!.postedBy!
-                                                .anonymous!.userName ??
-                                            ''
-                                        : widget._journalModel!.group != null &&
-                                                journalPageController
-                                                        .selectedGroupId ==
-                                                    ''
-                                            ? widget._journalModel!.group!
-                                                    .groupName ??
-                                                ''
-                                            : widget._journalModel!.postedBy !=
-                                                    null
-                                                ? widget._journalModel!
-                                                        .postedBy!.name ??
-                                                    ''
-                                                : '',
-                                    style:
-                                        SolhTextStyles.JournalingUsernameText,
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.8,
+                                    child: Text(
+                                      widget._journalModel!.anonymousJournal != null &&
+                                              widget._journalModel!
+                                                  .anonymousJournal! &&
+                                              widget._journalModel!.postedBy!
+                                                      .anonymous !=
+                                                  null
+                                          ? widget._journalModel!.group != null
+                                              ? widget._journalModel!.group!.groupName ??
+                                                  ''
+                                              : widget._journalModel!.postedBy!
+                                                      .anonymous!.userName ??
+                                                  ''
+                                          : widget._journalModel!.group != null &&
+                                                  journalPageController
+                                                          .selectedGroupId ==
+                                                      ''
+                                              ? widget._journalModel!.group!.groupName ??
+                                                  ''
+                                              : widget._journalModel!.postedBy !=
+                                                      null
+                                                  ? widget
+                                                                  ._journalModel!
+                                                                  .postedBy!
+                                                                  .anonymous !=
+                                                              null &&
+                                                          widget._journalModel!
+                                                              .anonymousJournal!
+                                                      ? widget
+                                                              ._journalModel!
+                                                              .postedBy!
+                                                              .anonymous!
+                                                              .userName ??
+                                                          ''
+                                                      : widget._journalModel!
+                                                              .postedBy!.name ??
+                                                          ''
+                                                  : '',
+                                      style:
+                                          SolhTextStyles.JournalingUsernameText,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                   widget._journalModel!.anonymousJournal !=
                                               null &&
@@ -296,12 +315,17 @@ class _JournalTileState extends State<JournalTile> {
                                           padding: EdgeInsets.only(
                                             left: 3.w,
                                           ),
-                                          child: Icon(
-                                            Icons.lock_person,
+                                          child: CachedNetworkImage(
+                                            imageUrl: widget
+                                                    ._journalModel!
+                                                    .postedBy!
+                                                    .anonymous!
+                                                    .profilePicture ??
+                                                '',
+                                            width: 12,
+                                            height: 12,
                                             color: SolhColors.grey,
-                                            size: 12,
-                                          ),
-                                        )
+                                          ))
                                       : Container(),
                                   SizedBox(width: 1.5.w),
                                   if (widget._journalModel!.postedBy != null &&
@@ -334,7 +358,10 @@ class _JournalTileState extends State<JournalTile> {
                                           color: Color(0xFFA6A6A6),
                                         )
                                       : Container(),
-                                  widget._journalModel!.postedBy!.isProvider!
+                                  widget._journalModel!.postedBy!.isProvider! &&
+                                          widget._journalModel!
+                                                  .anonymousJournal ==
+                                              false
                                       ? Row(
                                           children: [
                                             Container(
