@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -245,17 +246,20 @@ class _JournalingState extends State<Journaling> {
                                       ),
                                     );
                             })
-                          : Container(
-                              child: Column(
-                                children: [
-                                  groupRow(),
-                                  SizedBox(
-                                    height: 25.h,
-                                  ),
-                                  MyLoader(),
-                                ],
-                              ),
-                            );
+                          :
+                          // : Container(
+                          //     child: Column(
+                          //       children: [
+                          //         groupRow(),
+                          //         SizedBox(
+                          //           height: 25.h,
+                          //         ),
+                          //         //MyLoader(),
+                          //         getShimmer(context)
+                          //       ],
+                          //     ),
+                          //   );
+                          getShimmer(context);
                     }),
                   ),
                   if (_fetchingMore) Center(child: MyLoader()),
@@ -373,34 +377,36 @@ class _JournalingState extends State<Journaling> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.13,
-      child: CustomScrollView(
-        scrollDirection: Axis.horizontal,
-        slivers: [
-          SliverToBoxAdapter(
-            child: getSolhGrouContainer(),
-          ),
-          discoverGroupController.joinedGroupModel.value.groupList != null
-              ? SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                  return getGroupContainer(discoverGroupController
-                      .joinedGroupModel.value.groupList![index]);
-                },
-                      childCount: discoverGroupController
-                          .joinedGroupModel.value.groupList!.length))
-              : SliverToBoxAdapter(),
-          discoverGroupController.createdGroupModel.value.groupList != null
-              ? SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                  return getGroupContainer(discoverGroupController
-                      .createdGroupModel.value.groupList![index]);
-                },
-                      childCount: discoverGroupController
-                          .createdGroupModel.value.groupList!.length))
-              : SliverToBoxAdapter(),
-        ],
-      ),
+      child: Obx(() {
+        return CustomScrollView(
+          scrollDirection: Axis.horizontal,
+          slivers: [
+            SliverToBoxAdapter(
+              child: getSolhGrouContainer(),
+            ),
+            discoverGroupController.joinedGroupModel.value.groupList != null
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                    return getGroupContainer(discoverGroupController
+                        .joinedGroupModel.value.groupList![index]);
+                  },
+                        childCount: discoverGroupController
+                            .joinedGroupModel.value.groupList!.length))
+                : getGroupShimmer(context),
+            discoverGroupController.createdGroupModel.value.groupList != null
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                    return getGroupContainer(discoverGroupController
+                        .createdGroupModel.value.groupList![index]);
+                  },
+                        childCount: discoverGroupController
+                            .createdGroupModel.value.groupList!.length))
+                : getGroupShimmer(context),
+          ],
+        );
+      }),
     );
   }
 
@@ -619,5 +625,96 @@ class _JournalingState extends State<Journaling> {
       },
       isMyJournal: false,
     );
+  }
+
+  getShimmer(BuildContext context) {
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: 10,
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return groupRow();
+          }
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(children: [
+                  Container(
+                    width: double.infinity,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 70,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.width * 0.6,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ])),
+          );
+        });
+  }
+
+  getGroupShimmer(BuildContext context) {
+    return SliverToBoxAdapter(
+        child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.grey[300],
+            ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Container(
+            width: 70,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(10),
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }

@@ -887,7 +887,8 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
     return Container(
       height: 20.h,
       alignment: Alignment.centerLeft,
-      child: Scrollbar(
+      child: RawScrollbar(
+        thumbColor: Color(0xFFA6A6A6),
         controller: _scrollController,
         trackVisibility: true,
         thumbVisibility: true,

@@ -41,9 +41,9 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       TextEditingController();
   TextEditingController _bioTextEditingController = TextEditingController();
   TextEditingController _phoneTextEditingController = TextEditingController();
-  TextEditingController _emailIdTextEditingController = TextEditingController();
   TextEditingController _genderTextEditingController = TextEditingController();
   TextEditingController _dobTextEditingController = TextEditingController();
+  TextEditingController _userNameController = TextEditingController();
   final AgeController _ageController = Get.find();
 
   bool _isLoading = false;
@@ -97,6 +97,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                 DateTime.parse(userSnapshot.requireData!.dob!))
                             .toString()
                         : '';
+                    _userNameController.text =
+                        userSnapshot.requireData!.userName ?? '';
                     print(_firstNameTextEditingController.text);
                     return Column(
                       children: [
@@ -178,6 +180,10 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                         ),
                         Container(
                           child: Text(""),
+                        ),
+                        TextFieldB(
+                          label: "Username",
+                          textEditingController: _userNameController,
                         ),
                         TextFieldB(
                           label: "Your First Name",
@@ -304,7 +310,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                     "bio": _bioTextEditingController.text,
                                     "dob": _ageController.DOB.value,
                                     "isProvider":
-                                        _ageController.isProvider.value
+                                        _ageController.isProvider.value,
+                                    //'username': _userNameController.text   ////// ==> To be implemented for username
                                   }),
                                   headers: {
                                     "Content-Type": "application/json",
