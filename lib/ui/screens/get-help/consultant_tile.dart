@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/ui/screens/get-help/consultant_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../model/doctor.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -18,7 +19,8 @@ class ConsultantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onTap,
+      onTap: () => Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ConsultantProfile())),
       child: Container(
           height: 180,
           decoration: BoxDecoration(
@@ -30,7 +32,7 @@ class ConsultantsTile extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                getProfileDetails(),
+                getProfileDetails(context),
                 getActivityDetails(),
               ],
             ),
@@ -38,7 +40,7 @@ class ConsultantsTile extends StatelessWidget {
     );
   }
 
-  getProfileDetails() {
+  getProfileDetails(context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -130,8 +132,7 @@ class ConsultantsTile extends StatelessWidget {
         backgroundColor: Colors.white,
         radius: 45,
         backgroundImage: NetworkImage(
-          profilePicture ??
-              'https://solh.s3.amazonaws.com/user/profile/1651493729337',
+          'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
         ),
       ),
     );

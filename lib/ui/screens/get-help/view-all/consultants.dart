@@ -278,6 +278,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                                           .doctors![index].email ??
                                       '',
                                   clinic: '',
+                                  id: searchMarketController.issueModel.value.doctors![index].sId?? '',
                                   locality:
                                       searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
                                   pincode: '',
@@ -314,6 +315,8 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                                           .provider![index]
                                           .contactNumber ??
                                       '',
+                                      id: searchMarketController.issueModel.value.provider![index].sId ??
+                                      '', 
                                   email: searchMarketController.issueModel.value
                                           .provider![index].email ??
                                       '',

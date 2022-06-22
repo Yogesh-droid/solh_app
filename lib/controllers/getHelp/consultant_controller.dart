@@ -1,0 +1,31 @@
+import 'package:get/get.dart';
+import 'package:solh/constants/api.dart';
+import 'package:solh/model/user/consultant_model.dart';
+import 'package:solh/services/network/network.dart';
+
+class ConsultantController extends GetxController {
+  var isLoading = false.obs;
+
+  var consultantModelController = ConsultantModel().obs;
+  ConsultantDataService _consultantDataService = ConsultantDataService();
+
+  getConsultantDataController(id) async {
+    var response = await _consultantDataService.getConsultantData(id);
+    consultantModelController.value = response;
+  }
+}
+
+class ConsultantDataService {
+  getConsultantData(id) async {
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+            APIConstants.api + '/api/provider-profile?provider=$id')
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+
+    if (map.isNotEmpty) {
+      return ConsultantModel.fromJson(map);
+    }
+  }
+}

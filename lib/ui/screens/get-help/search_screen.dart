@@ -179,6 +179,9 @@ class SearchScreen extends StatelessWidget {
                                                   .doctors![index]
                                                   .profilePicture ??
                                               '',
+                                          id: searchMarketController.issueModel
+                                                  .value.provider![index].sId ??
+                                              '',
                                         ),
                                         onTap: () {},
                                       ),
@@ -199,6 +202,9 @@ class SearchScreen extends StatelessWidget {
                                                   .value
                                                   .provider![index]
                                                   .name ??
+                                              '',
+                                          id: searchMarketController.issueModel
+                                                  .value.provider![index].sId ??
                                               '',
                                           mobile: searchMarketController
                                                   .searchMarketModel
