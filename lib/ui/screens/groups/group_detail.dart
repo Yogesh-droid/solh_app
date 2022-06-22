@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -393,6 +395,68 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           SizedBox(
             height: 10,
           ),
+
+          Row(
+            children: [
+              CircleAvatar(
+                // backgroundImage: AssetImage(
+                //   'assets/images/group_placeholder.png',
+                // ),
+                backgroundImage: CachedNetworkImageProvider(
+                    groupList.defaultAdmin!.profilePicture ?? ''),
+                backgroundColor: Colors.transparent,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        child: Text(groupList.defaultAdmin!.name ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 2,
+                        height: 14,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Admin',
+                        style: GoogleFonts.signika(color: SolhColors.green),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/admin.svg',
+                      )
+                    ],
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: Text(groupList.defaultAdmin!.bio ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 14, color: SolhColors.grey)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
           ListView.separated(
             separatorBuilder: (context, index) => SizedBox(
               height: 10,
@@ -417,11 +481,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(groupList.groupMembers![index].name ?? '',
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w600)),
                       Container(
-                        width: MediaQuery.of(context).size.width / 1.2,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Text(groupList.groupMembers![index].name ?? '',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
                         child: Text(groupList.groupMembers![index].bio ?? '',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
