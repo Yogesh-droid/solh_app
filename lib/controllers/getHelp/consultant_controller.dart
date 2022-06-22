@@ -10,7 +10,10 @@ class ConsultantController extends GetxController {
   ConsultantDataService _consultantDataService = ConsultantDataService();
 
   getConsultantDataController(id) async {
+    isLoading(true);
     var response = await _consultantDataService.getConsultantData(id);
+    isLoading(false);
+    print(response.toString());
     consultantModelController.value = response;
   }
 }
