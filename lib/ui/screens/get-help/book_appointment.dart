@@ -13,168 +13,166 @@ class BookAppointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: SolhAppBar(
-          isLandingScreen: false,
-          title: Text('Book appointment',
-              style: GoogleFonts.signika(color: SolhColors.black)),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 49),
-            child: Column(
-              children: [
-                Text(
-                  'You are about to book an appointment, Please fill the details below',
-                  style: GoogleFonts.signika(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xffA6A6A6),
+    return Scaffold(
+      appBar: SolhAppBar(
+        isLandingScreen: false,
+        title: Text('Book appointment',
+            style: GoogleFonts.signika(color: SolhColors.black)),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 49),
+          child: Column(
+            children: [
+              Text(
+                'You are about to book an appointment, Please fill the details below',
+                style: GoogleFonts.signika(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xffA6A6A6),
+                ),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mobile No.',
+                    style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff666666),
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Mobile No.',
-                      style: GoogleFonts.signika(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff666666),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffA6A6A6),
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
-                    SizedBox(
-                      height: 4,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email-Id.',
+                    style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff666666),
                     ),
-                    Container(
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffA6A6A6),
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Preffered date & time.',
+                    style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff666666),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffA6A6A6),
+                        ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xffA6A6A6),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email-Id.',
-                      style: GoogleFonts.signika(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff666666),
+                        height: 48,
+                        child: GetDateAndTime(),
                       ),
                     ),
-                    SizedBox(
-                      height: 4,
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'How Can we help ? (optional)',
+                    style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: Color(0xff666666),
                     ),
-                    Container(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xffA6A6A6),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.17,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Color(0xffA6A6A6),
                         ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
                         ),
                       ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Preffered date & time.',
-                      style: GoogleFonts.signika(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff666666),
-                      ),
                     ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xffA6A6A6),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Container(
-                          height: 48,
-                          child: GetDateAndTime(),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'How Can we help ? (optional)',
-                      style: GoogleFonts.signika(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff666666),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Container(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.17,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Color(0xffA6A6A6),
-                          ),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                BookAppointmentWidget(),
-              ],
-            ),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              BookAppointmentWidget(),
+            ],
           ),
         ),
       ),
@@ -264,45 +262,46 @@ class _DayPickerState extends State<DayPicker> {
     '14:00-14:30': false,
     '15:00-15:30': false,
   };
+  List<String> days = [];
+  List<String> updatedList = [];
+  // getUpcomingMap() {
+  //   var date = DateTime.now();
+  //   String today = DateFormat('EEEE').format(date);
 
-  getUpcomingMap() {
-    var date = DateTime.now();
-    String today = DateFormat('EEEE').format(date);
+  //   Map newMap = {};
+  //   var index;
+  //   for (var i = 0; i < 6; i++) {
+  //     if (day.keys.elementAt(i) == today) {
+  //       index = i;
+  //       break;
+  //     }
+  //   }
+  //   print(index);
+  //   for (var i = index; i < 6; i++) {
+  //     int count = 1;
+  //     if (day.keys.elementAt(i) == today) {
+  //       newMap['Today'] = false;
+  //     } else {
+  //       newMap[day.keys.elementAt(i)] = false;
+  //     }
 
-    Map newMap = {};
-    var index;
-    for (var i = 0; i < 6; i++) {
-      if (day.keys.elementAt(i) == today) {
-        index = i;
-        break;
-      }
-    }
-    print(index);
-    for (var i = index; i < 6; i++) {
-      int count = 1;
-      if (day.keys.elementAt(i) == today) {
-        newMap['Today'] = false;
-      } else {
-        newMap[day.keys.elementAt(i)] = false;
-      }
+  //     if (count < 5 && i == 5) {
+  //       print('it ran');
+  //       print(count);
+  //       i = 0;
+  //     }
 
-      if (count < 5 && i == 5) {
-        print('it ran');
-        print(count);
-        i = 0;
-      }
+  //     if (day.keys.elementAt(index) == day.keys.elementAt(i + 1)) {
+  //       print('it ran2');
+  //       print(i);
+  //       break;
+  //     }
+  //     count = count++;
+  //   }
 
-      if (day.keys.elementAt(index) == day.keys.elementAt(i + 1)) {
-        print('it ran2');
-        print(i);
-        break;
-      }
-      count = count++;
-    }
-
-    print(newMap.toString());
-    return newMap;
-  }
+  //   print(newMap.toString());
+  //   return newMap;
+  // }
 
   @override
   void initState() {
@@ -340,7 +339,7 @@ class _DayPickerState extends State<DayPicker> {
           child: ListView.builder(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: getUpcomingMap().length,
+              itemCount: days.length,
               itemBuilder: ((context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -351,9 +350,10 @@ class _DayPickerState extends State<DayPicker> {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          getUpcomingMap().keys.elementAt(index),
-                        ),
+                        // child: Text(
+                        //   getUpcomingMap().keys.elementAt(index),
+                        // ),
+                        child: Text(days[index]),
                       ),
                     ),
                   ),
@@ -382,6 +382,20 @@ class _DayPickerState extends State<DayPicker> {
         )
       ],
     );
+  }
+
+  void getUpcomingMap() {
+    updatedList = [];
+    days = [];
+    for (int i = 0; i < 7; i++) {
+      updatedList.add(
+          DateFormat('EEEE').format(DateTime.now().add(Duration(days: i))));
+    }
+    updatedList.forEach((element) {
+      if (element != 'Sunday') {
+        days.add(element);
+      }
+    });
   }
 }
 
