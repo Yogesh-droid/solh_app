@@ -3,13 +3,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/model/user/user.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
-class BookAppointment extends StatelessWidget {
+class BookAppointment extends StatefulWidget {
   const BookAppointment({Key? key}) : super(key: key);
+
+  @override
+  State<BookAppointment> createState() => _BookAppointmentState();
+}
+
+class _BookAppointmentState extends State<BookAppointment> {
+  TextEditingController mobileNumberController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
+  ConnectionController controller = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    mobileNumberController.text = controller.userModel.value.name ?? '';
+    emailController.text = controller.userModel.value.email ?? '';
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +81,7 @@ class BookAppointment extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextField(
+                        controller: mobileNumberController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -92,6 +116,7 @@ class BookAppointment extends StatelessWidget {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -223,17 +248,26 @@ class GetDateAndTime extends StatefulWidget {
 }
 
 class _GetDateAndTimeState extends State<GetDateAndTime> {
+  BookAppointmentController _controller = Get.find();
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) {
-                return DayPicker();
-              });
-        },
-        child: Container());
+    return InkWell(onTap: () {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext context) {
+            return DayPicker();
+          });
+    }, child: Obx(() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Today' == _controller.selectedDay.value
+              ? 'Today'
+              : 'Upcoming ${_controller.selectedDay.value}'),
+          Text(_controller.selectedTimeSlot.value)
+        ],
+      );
+    }));
   }
 }
 
@@ -245,6 +279,7 @@ class DayPicker extends StatefulWidget {
 }
 
 class _DayPickerState extends State<DayPicker> {
+  var _controller = Get.put(BookAppointmentController());
   Map day = {
     'Monday': false,
     'Tuesday': false,
@@ -262,6 +297,7 @@ class _DayPickerState extends State<DayPicker> {
     '14:00-14:30': false,
     '15:00-15:30': false,
   };
+
   List<String> days = [];
   List<String> updatedList = [];
   // getUpcomingMap() {
@@ -343,19 +379,39 @@ class _DayPickerState extends State<DayPicker> {
               itemBuilder: ((context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: SolhColors.green),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        // child: Text(
-                        //   getUpcomingMap().keys.elementAt(index),
-                        // ),
-                        child: Text(days[index]),
-                      ),
-                    ),
+                  child: InkWell(
+                    onTap: () {
+                      _controller.selectedDay.value = days[index];
+                      print('+++++' + _controller.selectedDay.value);
+                      print('----' + days[index]);
+                    },
+                    child: Obx(() {
+                      return Container(
+                        decoration: BoxDecoration(
+                            color: _controller.selectedDay.value == days[index]
+                                ? SolhColors.green
+                                : Colors.white,
+                            border: Border.all(color: SolhColors.green),
+                            borderRadius: BorderRadius.circular(18)),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            // child: Text(
+                            //   getUpcomingMap().keys.elementAt(index),
+                            // ),
+                            child: Text(
+                              days[index],
+                              style: GoogleFonts.montserrat(
+                                color:
+                                    _controller.selectedDay.value == days[index]
+                                        ? SolhColors.white
+                                        : SolhColors.green,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 );
               })),
@@ -363,23 +419,43 @@ class _DayPickerState extends State<DayPicker> {
         SizedBox(
           height: 40,
         ),
-        Wrap(
-          children: timeSlot.keys.map((e) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Container(
-                width: 100,
-                decoration: BoxDecoration(
-                    border: Border.all(color: SolhColors.green),
-                    borderRadius: BorderRadius.circular(18)),
+        Obx(() {
+          return Wrap(
+            children: timeSlot.keys.map((e) {
+              return InkWell(
+                onTap: () {
+                  _controller.selectedTimeSlot.value = e;
+                  print(e + "++" + _controller.selectedTimeSlot.value);
+                },
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(child: Text(e)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: Container(
+                    width: 100,
+                    decoration: BoxDecoration(
+                        color: _controller.selectedTimeSlot.value == e
+                            ? SolhColors.green
+                            : SolhColors.white,
+                        border: Border.all(color: SolhColors.green),
+                        borderRadius: BorderRadius.circular(18)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text(
+                        e,
+                        style: GoogleFonts.montserrat(
+                          color: _controller.selectedTimeSlot.value == e
+                              ? SolhColors.white
+                              : SolhColors.green,
+                        ),
+                      )),
+                    ),
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
-        )
+              );
+            }).toList(),
+          );
+        })
       ],
     );
   }
@@ -392,8 +468,13 @@ class _DayPickerState extends State<DayPicker> {
           DateFormat('EEEE').format(DateTime.now().add(Duration(days: i))));
     }
     updatedList.forEach((element) {
+      if (DateFormat('EEEE').format(DateTime.now()) == element) {}
       if (element != 'Sunday') {
-        days.add(element);
+        if (DateFormat('EEEE').format(DateTime.now()) == element) {
+          days.add('Today');
+        } else {
+          days.add(element);
+        }
       }
     });
   }
