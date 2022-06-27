@@ -106,7 +106,7 @@ class Network {
     }
   }
 
-  static Future<Map<String, dynamic>> makeHttpPostRequestWithToken({
+  static Future<dynamic> makeHttpPostRequestWithToken({
     required String url,
     required Map<String, dynamic> body,
   }) async {
@@ -123,6 +123,7 @@ class Network {
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));
+        print(jsonDecode(apiResponse.body)["body"]);
         return jsonDecode(apiResponse.body)["body"];
       } else if (apiResponse.statusCode == 200) {
         print(jsonDecode(apiResponse.body));

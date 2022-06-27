@@ -286,6 +286,13 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
   BookAppointmentController _controller = Get.put(BookAppointmentController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     _controller.selectedDay.value = '';
@@ -324,6 +331,7 @@ class DayPicker extends StatefulWidget {
 
 class _DayPickerState extends State<DayPicker> {
   var _controller = Get.put(BookAppointmentController());
+
   Map day = {
     'Monday': false,
     'Tuesday': false,
@@ -387,7 +395,16 @@ class _DayPickerState extends State<DayPicker> {
   void initState() {
     // TODO: implement initState
     getUpcomingMap();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    print(
+        getdateTime(_controller.selectedDay, _controller.selectedTimeSlot, 0));
+    super.dispose();
   }
 
   @override
@@ -521,6 +538,8 @@ class _DayPickerState extends State<DayPicker> {
         }
       }
     });
+
+    _controller.days = days;
   }
 }
 
@@ -581,7 +600,7 @@ class BookAppointmentPopup extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 Map<String, dynamic> body = {
                   'provider': _consultantController
                               .consultantModelController.value.provder!.type ==
@@ -596,9 +615,25 @@ class BookAppointmentPopup extends StatelessWidget {
                           .consultantModelController.value.provder!.sId
                       : '',
                   'start': getdateTime(
-                      _controller.selectedDay, _controller.selectedTimeSlot),
+                      _controller.selectedDay, _controller.selectedTimeSlot, 0),
+                  'end': getdateTime(
+                      _controller.selectedDay, _controller.selectedTimeSlot, 1),
+                  'from': _controller.selectedTimeSlot.split('-')[0],
+                  'to': _controller.selectedTimeSlot.split('-')[1],
+                  "type": "app",
+                  "duration": "30"
                 };
-                _controller.bookAppointment(body);
+                String response = await _controller.bookAppointment(body);
+
+                Navigator.of(context).pop();
+
+                if (response == 'Successfully created appointment.') {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return appointmentConfirmationPopup(response);
+                      });
+                }
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -643,7 +678,7 @@ validator(
   }
 }
 
-getdateTime(selectedDay, selectedSlot, [itemNoinList]) {
+getdateTime(selectedDay, selectedSlot, itemNoinList) {
   BookAppointmentController _controller = Get.find();
 
   var now = new DateTime.now();
@@ -651,12 +686,80 @@ getdateTime(selectedDay, selectedSlot, [itemNoinList]) {
   getDate() {
     if (selectedDay == 'Today') {
       return DateFormat('yyyy-MM-dd').format(now);
+    } else if (_controller.days!.indexOf(selectedDay.toString()) <
+        _controller.days!
+            .indexOf(DateFormat('yyyy-MM-dd').format(now).toString())) {
+      return now.add(Duration(
+          days: _controller.days!.indexOf(selectedDay.toString()) + 1));
     } else {
-      return now.add(Duration(days: _controller.days!.indexOf(selectedDay)));
+      return now.add(
+          Duration(days: _controller.days!.indexOf(selectedDay.toString())));
     }
   }
 
   getTime() {
-    List timeList = selectedSlot.toString().split('-');
+    return selectedSlot.toString().split('-');
   }
+
+  return DateFormat('yy-MM-dd').format(getDate() as DateTime) +
+      'T' +
+      getTime()[itemNoinList].toString() +
+      ':00';
 }
+
+Widget appointmentConfirmationPopup(data) {
+  return AlertDialog(
+    content: data == 'Successfully created appointment.'
+        ? Container(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Text('Successfully created appointment.',
+                      textAlign: TextAlign.center),
+                )
+              ],
+            ),
+          )
+        : Container(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(child: Text('   Oops! Something went wrong'))
+              ],
+            ),
+          ),
+  );
+}
+
+
+
+
+//  if (data == 'Successfully created appointment.') {
+//     return Container(
+//       child: Row(
+//         children: [
+//           Icon(Icons.check),
+//           Text('   Successfully created appointment.')
+//         ],
+//       ),
+//     );
+//   } else {
+//     return Container(
+//       child: Row(
+//         children: [Icon(Icons.check), Text('   Oops! Something went wrong')],
+//       ),
+//     );
+//   }

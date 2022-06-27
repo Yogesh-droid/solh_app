@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
@@ -12,9 +15,10 @@ class BookAppointmentController extends GetxController {
   TextEditingController mobileNotextEditingController = TextEditingController();
 
   Future bookAppointment(Map<String, dynamic> body) async {
+    print(APIConstants.api + '/api/appointment');
     var response = await Network.makeHttpPostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);
-
-    print(response.toString());
+    print('---' + response.toString());
+    return response;
   }
 }
