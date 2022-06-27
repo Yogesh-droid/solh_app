@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -24,14 +25,24 @@ class _BookAppointmentState extends State<BookAppointment> {
   TextEditingController emailController = TextEditingController();
 
   ConnectionController controller = Get.find();
+  var _bookingController = Get.put(BookAppointmentController());
 
   @override
   void initState() {
     // TODO: implement initState
-    mobileNumberController.text = controller.userModel.value.name ?? '';
-    emailController.text = controller.userModel.value.email ?? '';
+    _bookingController.mobileNotextEditingController.text =
+        controller.userModel.value.name ?? '';
+    _bookingController.emailTextEditingController.text =
+        controller.userModel.value.email ?? '';
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   @override
@@ -81,7 +92,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextField(
-                        controller: mobileNumberController,
+                        controller:
+                            _bookingController.mobileNotextEditingController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -116,7 +128,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextField(
-                        controller: emailController,
+                        controller:
+                            _bookingController.emailTextEditingController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -206,20 +219,42 @@ class _BookAppointmentState extends State<BookAppointment> {
 }
 
 class BookAppointmentWidget extends StatelessWidget {
-  const BookAppointmentWidget({Key? key}) : super(key: key);
+  BookAppointmentWidget({Key? key}) : super(key: key);
+  var _controller = Get.put(BookAppointmentController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: BookAppointmentPopup());
-            });
+        var value = validator(
+            mobile_no: _controller.mobileNotextEditingController.text,
+            email: _controller.emailTextEditingController.text,
+            selected_day: _controller.selectedDay.value,
+            time_slot: _controller.selectedTimeSlot.value);
+
+        print(value.toString());
+        if (value is bool) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: BookAppointmentPopup());
+              });
+        } else {
+          final snackBar = SnackBar(
+            content: Text(value!.toString()),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       },
       child: Container(
         height: 48,
@@ -248,7 +283,16 @@ class GetDateAndTime extends StatefulWidget {
 }
 
 class _GetDateAndTimeState extends State<GetDateAndTime> {
-  BookAppointmentController _controller = Get.find();
+  BookAppointmentController _controller = Get.put(BookAppointmentController());
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.selectedDay.value = '';
+    _controller.selectedTimeSlot.value = '';
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(onTap: () {
@@ -462,7 +506,7 @@ class _DayPickerState extends State<DayPicker> {
 
   void getUpcomingMap() {
     updatedList = [];
-    days = [];
+    _controller.days = days = [];
     for (int i = 0; i < 7; i++) {
       updatedList.add(
           DateFormat('EEEE').format(DateTime.now().add(Duration(days: i))));
@@ -481,7 +525,11 @@ class _DayPickerState extends State<DayPicker> {
 }
 
 class BookAppointmentPopup extends StatelessWidget {
-  const BookAppointmentPopup({Key? key}) : super(key: key);
+  BookAppointmentPopup({Key? key}) : super(key: key);
+
+  BookAppointmentController _controller = Get.find();
+
+  ConsultantController _consultantController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -489,12 +537,29 @@ class BookAppointmentPopup extends StatelessWidget {
       title: Text('Booking appointment'),
       content: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.3,
+        height: MediaQuery.of(context).size.height * 0.17,
         child: Column(
           children: [
-            Text('You are about to book an appointment with'),
-            Text('Dr. Priyanka Trivadi(PhD)'),
-            Text('')
+            Text('You are about to book an appointment with :'),
+            SizedBox(
+              height: 7,
+            ),
+            Text(
+              _controller.doctorName ?? '',
+              style: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(
+              height: 7,
+            ),
+            Text(
+              _controller.selectedDay.value +
+                  " ," +
+                  _controller.selectedTimeSlot.value,
+              style: GoogleFonts.montserrat(
+                color: SolhColors.green,
+              ),
+            ),
           ],
         ),
       ),
@@ -502,28 +567,96 @@ class BookAppointmentPopup extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.05,
-              width: MediaQuery.of(context).size.width * 0.3,
-              decoration: BoxDecoration(
-                  border: Border.all(color: SolhColors.green),
-                  borderRadius: BorderRadius.circular(24)),
-              child: Center(
-                child: Text('Cancel'),
+            InkWell(
+              onTap: () => Navigator.of(context).pop(),
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                    border: Border.all(color: SolhColors.green),
+                    borderRadius: BorderRadius.circular(24)),
+                child: Center(
+                  child: Text('Cancel'),
+                ),
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.05,
-              width: MediaQuery.of(context).size.width * 0.3,
-              decoration: BoxDecoration(
-                  color: SolhColors.green,
-                  border: Border.all(color: SolhColors.green),
-                  borderRadius: BorderRadius.circular(24)),
-              child: Center(child: Text('Confirm')),
+            InkWell(
+              onTap: () {
+                Map<String, dynamic> body = {
+                  'provider': _consultantController
+                              .consultantModelController.value.provder!.type ==
+                          'provider'
+                      ? _consultantController
+                          .consultantModelController.value.provder!.sId
+                      : '',
+                  'doctor': _consultantController
+                              .consultantModelController.value.provder!.type ==
+                          'doctor'
+                      ? _consultantController
+                          .consultantModelController.value.provder!.sId
+                      : '',
+                  'start': getdateTime(
+                      _controller.selectedDay, _controller.selectedTimeSlot),
+                };
+                _controller.bookAppointment(body);
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.05,
+                width: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                    color: SolhColors.green,
+                    border: Border.all(color: SolhColors.green),
+                    borderRadius: BorderRadius.circular(24)),
+                child: Center(
+                  child: Text('Confirm',
+                      style: GoogleFonts.montserrat(
+                        color: SolhColors.white,
+                      )),
+                ),
+              ),
             )
           ],
         )
       ],
     );
+  }
+}
+
+validator(
+    {required String mobile_no,
+    required email,
+    required selected_day,
+    required time_slot}) {
+  if (mobile_no.isEmpty) {
+    return 'Mobile no. is required';
+  }
+  if (email.isEmpty) {
+    return 'Email is required';
+  }
+  if (selected_day == '') {
+    return 'You need to select day of appointment.';
+  }
+  if (time_slot == '') {
+    return 'You need to select time slot of appointment.';
+  } else {
+    return true;
+  }
+}
+
+getdateTime(selectedDay, selectedSlot, [itemNoinList]) {
+  BookAppointmentController _controller = Get.find();
+
+  var now = new DateTime.now();
+
+  getDate() {
+    if (selectedDay == 'Today') {
+      return DateFormat('yyyy-MM-dd').format(now);
+    } else {
+      return now.add(Duration(days: _controller.days!.indexOf(selectedDay)));
+    }
+  }
+
+  getTime() {
+    List timeList = selectedSlot.toString().split('-');
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -267,16 +268,24 @@ ConsultantBio(context, ConsultantController controller) {
 }
 
 class BookAppointmentWidget extends StatelessWidget {
-  const BookAppointmentWidget({Key? key}) : super(key: key);
+  BookAppointmentWidget({Key? key}) : super(key: key);
+
+  var _controller = Get.put(BookAppointmentController());
+  var _consultantController = Get.put(ConsultantController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => BookAppointment(),
-        ),
-      ),
+      onTap: () {
+        _controller.doctorName = _consultantController
+                .consultantModelController.value.provder!.name ??
+            "";
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BookAppointment(),
+          ),
+        );
+      },
       child: Container(
         height: 48,
         width: MediaQuery.of(context).size.width * 0.8,

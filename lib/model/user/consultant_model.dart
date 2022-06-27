@@ -34,6 +34,7 @@ class Provder {
   String? sId;
   String? uid;
   int? prefix;
+  String? type;
 
   Provder(
       {this.offlineSession,
@@ -48,7 +49,8 @@ class Provder {
       this.solhCertified,
       this.sId,
       this.uid,
-      this.prefix});
+      this.prefix,
+      this.type});
 
   Provder.fromJson(Map<String, dynamic> json) {
     offlineSession = json['offlineSession'];
@@ -64,6 +66,7 @@ class Provder {
     sId = json['_id'];
     uid = json['uid'];
     prefix = json['prefix'];
+    type = json['type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +84,7 @@ class Provder {
     data['_id'] = this.sId;
     data['uid'] = this.uid;
     data['prefix'] = this.prefix;
+    data['type'] = this.type;
     return data;
   }
 }
