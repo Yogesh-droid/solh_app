@@ -31,7 +31,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   void initState() {
     // TODO: implement initState
     _bookingController.mobileNotextEditingController.text =
-        controller.userModel.value.name ?? '';
+        controller.userModel.value.mobile ?? '';
     _bookingController.emailTextEditingController.text =
         controller.userModel.value.email ?? '';
 
@@ -402,8 +402,17 @@ class _DayPickerState extends State<DayPicker> {
   @override
   void dispose() {
     // TODO: implement dispose
-    print(
-        getdateTime(_controller.selectedDay, _controller.selectedTimeSlot, 0));
+
+    Future.delayed(Duration(microseconds: 10), () {
+      if (DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                  ' ' +
+                  _controller.selectedTimeSlot.split('-')[1])
+              .isBefore(DateTime.now()) &&
+          _controller.selectedDay == 'Today') {
+        _controller.selectedTimeSlot.value = '';
+      }
+    });
+
     super.dispose();
   }
 
@@ -483,37 +492,66 @@ class _DayPickerState extends State<DayPicker> {
         Obx(() {
           return Wrap(
             children: timeSlot.keys.map((e) {
-              return InkWell(
-                onTap: () {
-                  _controller.selectedTimeSlot.value = e;
-                  print(e + "++" + _controller.selectedTimeSlot.value);
-                },
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: Container(
-                    width: 100,
-                    decoration: BoxDecoration(
-                        color: _controller.selectedTimeSlot.value == e
-                            ? SolhColors.green
-                            : SolhColors.white,
-                        border: Border.all(color: SolhColors.green),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                          child: Text(
-                        e,
-                        style: GoogleFonts.montserrat(
-                          color: _controller.selectedTimeSlot.value == e
-                              ? SolhColors.white
-                              : SolhColors.green,
+              return DateTime.parse(
+                              DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                                  ' ' +
+                                  e.split('-')[1])
+                          .isBefore(DateTime.now()) &&
+                      _controller.selectedDay == 'Today'
+                  ? Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              border: Border.all(color: SolhColors.green),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                                child: Text(
+                              e,
+                              style: GoogleFonts.montserrat(
+                                color: SolhColors.green,
+                              ),
+                            )),
+                          ),
                         ),
-                      )),
-                    ),
-                  ),
-                ),
-              );
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        _controller.selectedTimeSlot.value = e;
+                        print(e + "++" + _controller.selectedTimeSlot.value);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: _controller.selectedTimeSlot.value == e
+                                  ? SolhColors.green
+                                  : SolhColors.white,
+                              border: Border.all(color: SolhColors.green),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                                child: Text(
+                              e,
+                              style: GoogleFonts.montserrat(
+                                color: _controller.selectedTimeSlot.value == e
+                                    ? SolhColors.white
+                                    : SolhColors.green,
+                              ),
+                            )),
+                          ),
+                        ),
+                      ),
+                    );
             }).toList(),
           );
         })
@@ -662,12 +700,14 @@ validator(
     required email,
     required selected_day,
     required time_slot}) {
+  BookAppointmentController _controller = Get.find();
   if (mobile_no.isEmpty) {
     return 'Mobile no. is required';
   }
   if (email.isEmpty) {
     return 'Email is required';
   }
+
   if (selected_day == '') {
     return 'You need to select day of appointment.';
   }
@@ -701,7 +741,7 @@ getdateTime(selectedDay, selectedSlot, itemNoinList) {
     return selectedSlot.toString().split('-');
   }
 
-  return DateFormat('yy-MM-dd').format(getDate() as DateTime) +
+  return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
       'T' +
       getTime()[itemNoinList].toString() +
       ':00';
@@ -737,29 +777,9 @@ Widget appointmentConfirmationPopup(data) {
                 SizedBox(
                   width: 8,
                 ),
-                Expanded(child: Text('   Oops! Something went wrong'))
+                Expanded(child: Text('Oops! Something went wrong'))
               ],
             ),
           ),
   );
 }
-
-
-
-
-//  if (data == 'Successfully created appointment.') {
-//     return Container(
-//       child: Row(
-//         children: [
-//           Icon(Icons.check),
-//           Text('   Successfully created appointment.')
-//         ],
-//       ),
-//     );
-//   } else {
-//     return Container(
-//       child: Row(
-//         children: [Icon(Icons.check), Text('   Oops! Something went wrong')],
-//       ),
-//     );
-//   }
