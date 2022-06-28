@@ -105,6 +105,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   ];
 
   @override
+  void initState() {
+    print('issuelist ${getHelpController.issueList}');
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
@@ -220,8 +227,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 2),
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: getHelpController
-                    .getSpecializationModel.value.specializationList!.length,
+                itemCount: getHelpController.getSpecializationModel.value
+                        .specializationList!.length ??
+                    0,
                 shrinkWrap: true,
                 itemBuilder: (_, index) => GestureDetector(
                   onTap: () {
