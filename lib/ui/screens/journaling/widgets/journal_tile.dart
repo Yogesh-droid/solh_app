@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
@@ -92,11 +93,12 @@ class _JournalTileState extends State<JournalTile> {
             children: [
               Container(
                 color: widget._journalModel!.postedBy!.isProvider! &&
-                        widget._journalModel!.anonymousJournal == false
+                        widget._journalModel!.anonymousJournal == false &&
+                        widget._journalModel!.group == null
                     ? Color(0x305F9B8C)
                     : widget._journalModel!.group != null &&
                             journalPageController.selectedGroupId.value.isEmpty
-                        ? Color(0xffEBD1FB)
+                        ? Color(0xffF8EDFF)
                         : Colors.transparent,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -190,10 +192,6 @@ class _JournalTileState extends State<JournalTile> {
                   ? {
                       connectionController.getUserAnalytics(
                           widget._journalModel!.postedBy!.sId!),
-                      print(widget._journalModel!.postedBy!.sId),
-                      // AutoRouter.of(context).push(ConnectScreenRouter(
-                      //     uid: widget._journalModel!.postedBy!.uid ?? '',
-                      //     sId: widget._journalModel!.postedBy!.sId ?? '')
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -207,8 +205,6 @@ class _JournalTileState extends State<JournalTile> {
                         duration: Duration(milliseconds: 700),
                         backgroundColor: Colors.black.withOpacity(0.8),
                       )),
-                      print('this post is anonymous'),
-                      print(widget._journalModel!.postedBy!.sId),
                     },
           child: Container(
             child: Row(
@@ -328,11 +324,11 @@ class _JournalTileState extends State<JournalTile> {
                                           ))
                                       : Container(),
                                   SizedBox(width: 1.5.w),
-                                  if (widget._journalModel!.postedBy != null &&
-                                      widget._journalModel!.postedBy!
-                                              .userType ==
-                                          "Expert")
-                                    SolhExpertBadge(),
+                                  // if (widget._journalModel!.postedBy != null &&
+                                  //     widget._journalModel!.postedBy!
+                                  //             .userType ==
+                                  //         "Expert")
+                                  //   SolhExpertBadge(),
                                 ],
                               ),
                               Row(
@@ -352,7 +348,10 @@ class _JournalTileState extends State<JournalTile> {
                                   SizedBox(
                                     width: 1.5.w,
                                   ),
-                                  widget._journalModel!.group != null
+                                  widget._journalModel!.group != null &&
+                                          journalPageController.selectedGroupId
+                                                  .value.length ==
+                                              0
                                       ? Icon(
                                           CupertinoIcons.person_3_fill,
                                           color: Color(0xFFA6A6A6),
@@ -361,7 +360,8 @@ class _JournalTileState extends State<JournalTile> {
                                   widget._journalModel!.postedBy!.isProvider! &&
                                           widget._journalModel!
                                                   .anonymousJournal ==
-                                              false
+                                              false &&
+                                          widget._journalModel!.group == null
                                       ? Row(
                                           children: [
                                             Container(
@@ -650,8 +650,9 @@ class _JournalTileState extends State<JournalTile> {
                   imageUrl: widget._journalModel!.mediaUrl.toString(),
                   fit: BoxFit.cover,
                   placeholder: (context, url) => getShimmer(),
-                  errorWidget: (context, url, error) =>
-                      Center(child: Icon(Icons.error)),
+                  errorWidget: (context, url, error) => Center(
+                    child: Lottie.asset('assets/images/not-found.json'),
+                  ),
                 ),
               )
         : Container(

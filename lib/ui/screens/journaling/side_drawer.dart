@@ -5,6 +5,7 @@ import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
+import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
@@ -125,7 +126,10 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Mood Tracker",
                 comingSoon: true,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MoodMeter()));
+                },
               ),
             ]),
             Expanded(
