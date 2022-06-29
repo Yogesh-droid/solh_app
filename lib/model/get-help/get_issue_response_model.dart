@@ -4,9 +4,9 @@ class GetIssueResponseModel {
   GetIssueResponseModel({this.specializationList});
 
   GetIssueResponseModel.fromJson(Map<String, dynamic> json) {
-    if (json['specializationList'] != null) {
+    if (json['specialization'] != null) {
       specializationList = <SpecializationList>[];
-      json['specializationList'].forEach((v) {
+      json['specialization'].forEach((v) {
         specializationList!.add(new SpecializationList.fromJson(v));
       });
     }
@@ -15,7 +15,7 @@ class GetIssueResponseModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.specializationList != null) {
-      data['specializationList'] =
+      data['specialization'] =
           this.specializationList!.map((v) => v.toJson()).toList();
     }
     return data;

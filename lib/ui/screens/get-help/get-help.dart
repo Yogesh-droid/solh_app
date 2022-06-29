@@ -218,69 +218,72 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             GetHelpCategory(
               title: "Search by speciality",
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 2.5.w,
-                    crossAxisSpacing: 2.5.w,
-                    crossAxisCount: 2,
-                    childAspectRatio: 2),
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: getHelpController.getSpecializationModel.value
-                        .specializationList!.length ??
-                    0,
-                shrinkWrap: true,
-                itemBuilder: (_, index) => GestureDetector(
-                  onTap: () {
-                    AutoRouter.of(context).push(ConsultantsScreenRouter(
-                        slug: getHelpController.getSpecializationModel.value
-                                .specializationList![index].slug ??
-                            '',
-                        type: 'specialization'));
-                  },
-                  child: Container(
-                    height: 1.h,
-                    width: 10.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xFFEFEFEF)),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                          child: CircleAvatar(
-                            radius: 8.w,
-                            child: CircleAvatar(
-                              radius: 7.8.w,
-                              backgroundColor: Colors.white,
-                              child: CachedNetworkImage(
-                                imageUrl: getHelpController
-                                        .getSpecializationModel
-                                        .value
-                                        .specializationList![index]
-                                        .displayImage ??
-                                    '',
+            getHelpController.getSpecializationModel.value.specializationList !=
+                    null
+                ? Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 2.5.w,
+                          crossAxisSpacing: 2.5.w,
+                          crossAxisCount: 2,
+                          childAspectRatio: 2),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: getHelpController.getSpecializationModel.value
+                          .specializationList!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) => GestureDetector(
+                        onTap: () {
+                          AutoRouter.of(context).push(ConsultantsScreenRouter(
+                              slug: getHelpController.getSpecializationModel
+                                      .value.specializationList![index].slug ??
+                                  '',
+                              type: 'specialization'));
+                        },
+                        child: Container(
+                          height: 1.h,
+                          width: 10.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xFFEFEFEF)),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                                child: CircleAvatar(
+                                  radius: 8.w,
+                                  child: CircleAvatar(
+                                    radius: 7.8.w,
+                                    backgroundColor: Colors.white,
+                                    child: CachedNetworkImage(
+                                      imageUrl: getHelpController
+                                              .getSpecializationModel
+                                              .value
+                                              .specializationList![index]
+                                              .displayImage ??
+                                          '',
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 2.w),
+                              Container(
+                                width: 25.w,
+                                child: Text(
+                                  getHelpController.getSpecializationModel.value
+                                          .specializationList![index].name ??
+                                      '',
+                                  style: TextStyle(),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(width: 2.w),
-                        Container(
-                          width: 25.w,
-                          child: Text(
-                            getHelpController.getSpecializationModel.value
-                                    .specializationList![index].name ??
-                                '',
-                            style: TextStyle(),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             GetHelpDivider(),
             GetHelpCategory(
               title: "Top Consultants",
