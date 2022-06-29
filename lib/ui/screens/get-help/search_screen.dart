@@ -179,8 +179,11 @@ class SearchScreen extends StatelessWidget {
                                                   .doctors![index]
                                                   .profilePicture ??
                                               '',
-                                          id: searchMarketController.issueModel
-                                                  .value.provider![index].sId ??
+                                          id: searchMarketController
+                                                  .searchMarketModel
+                                                  .value
+                                                  .doctors![index]
+                                                  .sId ??
                                               '',
                                         ),
                                         onTap: () {},
@@ -203,8 +206,11 @@ class SearchScreen extends StatelessWidget {
                                                   .provider![index]
                                                   .name ??
                                               '',
-                                          id: searchMarketController.issueModel
-                                                  .value.provider![index].sId ??
+                                          id: searchMarketController
+                                                  .searchMarketModel
+                                                  .value
+                                                  .provider![index]
+                                                  .sId ??
                                               '',
                                           mobile: searchMarketController
                                                   .searchMarketModel
@@ -254,7 +260,7 @@ class SearchScreen extends StatelessWidget {
                                           .provider!
                                           .length,
                                     ),
-                                  ),
+                                  )
                                 ],
                               )
                             : Container(),

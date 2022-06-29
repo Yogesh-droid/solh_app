@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:new_version/new_version.dart';
+import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
+  final moodMeterController = Get.put(MoodMeterController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
