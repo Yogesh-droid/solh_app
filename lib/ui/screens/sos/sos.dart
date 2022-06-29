@@ -12,7 +12,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 class SOSDialog extends StatelessWidget {
   const SOSDialog({Key? key}) : super(key: key);
 
-  final bool _isAdded = true;
+  final bool _isAdded = false;
 
   @override
   Widget build(BuildContext context) {

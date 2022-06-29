@@ -87,7 +87,7 @@ class AppRouter extends _i11.RootStackRouter {
     },
     SetupSOSScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.SetupSOSScreen());
+          routeData: routeData, child: _i8.SetupSOSScreen());
     },
     VideoCallCounsellorRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
