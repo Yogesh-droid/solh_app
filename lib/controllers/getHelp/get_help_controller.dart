@@ -17,6 +17,8 @@ class GetHelpController extends GetxController {
       Map<String, dynamic> map =
           await Network.makeGetRequest("${APIConstants.api}/api/issues");
 
+      print('issues $map');
+
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
       issueList.value = getIssueResponseModel.value.specializationList != null
           ? getIssueResponseModel.value.specializationList!.length > 8

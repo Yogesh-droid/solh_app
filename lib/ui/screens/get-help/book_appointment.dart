@@ -31,7 +31,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   void initState() {
     // TODO: implement initState
     _bookingController.mobileNotextEditingController.text =
-        controller.userModel.value.name ?? '';
+        controller.userModel.value.mobile ?? '';
     _bookingController.emailTextEditingController.text =
         controller.userModel.value.email ?? '';
 
@@ -286,6 +286,13 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
   BookAppointmentController _controller = Get.put(BookAppointmentController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
   void dispose() {
     // TODO: implement dispose
     _controller.selectedDay.value = '';
@@ -324,6 +331,7 @@ class DayPicker extends StatefulWidget {
 
 class _DayPickerState extends State<DayPicker> {
   var _controller = Get.put(BookAppointmentController());
+
   Map day = {
     'Monday': false,
     'Tuesday': false,
@@ -387,7 +395,25 @@ class _DayPickerState extends State<DayPicker> {
   void initState() {
     // TODO: implement initState
     getUpcomingMap();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    Future.delayed(Duration(microseconds: 10), () {
+      if (DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                  ' ' +
+                  _controller.selectedTimeSlot.split('-')[1])
+              .isBefore(DateTime.now()) &&
+          _controller.selectedDay == 'Today') {
+        _controller.selectedTimeSlot.value = '';
+      }
+    });
+
+    super.dispose();
   }
 
   @override
@@ -466,37 +492,66 @@ class _DayPickerState extends State<DayPicker> {
         Obx(() {
           return Wrap(
             children: timeSlot.keys.map((e) {
-              return InkWell(
-                onTap: () {
-                  _controller.selectedTimeSlot.value = e;
-                  print(e + "++" + _controller.selectedTimeSlot.value);
-                },
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: Container(
-                    width: 100,
-                    decoration: BoxDecoration(
-                        color: _controller.selectedTimeSlot.value == e
-                            ? SolhColors.green
-                            : SolhColors.white,
-                        border: Border.all(color: SolhColors.green),
-                        borderRadius: BorderRadius.circular(18)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                          child: Text(
-                        e,
-                        style: GoogleFonts.montserrat(
-                          color: _controller.selectedTimeSlot.value == e
-                              ? SolhColors.white
-                              : SolhColors.green,
+              return DateTime.parse(
+                              DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                                  ' ' +
+                                  e.split('-')[1])
+                          .isBefore(DateTime.now()) &&
+                      _controller.selectedDay == 'Today'
+                  ? Container(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.grey,
+                              border: Border.all(color: SolhColors.green),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                                child: Text(
+                              e,
+                              style: GoogleFonts.montserrat(
+                                color: SolhColors.green,
+                              ),
+                            )),
+                          ),
                         ),
-                      )),
-                    ),
-                  ),
-                ),
-              );
+                      ),
+                    )
+                  : InkWell(
+                      onTap: () {
+                        _controller.selectedTimeSlot.value = e;
+                        print(e + "++" + _controller.selectedTimeSlot.value);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 8),
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: _controller.selectedTimeSlot.value == e
+                                  ? SolhColors.green
+                                  : SolhColors.white,
+                              border: Border.all(color: SolhColors.green),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                                child: Text(
+                              e,
+                              style: GoogleFonts.montserrat(
+                                color: _controller.selectedTimeSlot.value == e
+                                    ? SolhColors.white
+                                    : SolhColors.green,
+                              ),
+                            )),
+                          ),
+                        ),
+                      ),
+                    );
             }).toList(),
           );
         })
@@ -521,6 +576,8 @@ class _DayPickerState extends State<DayPicker> {
         }
       }
     });
+
+    _controller.days = days;
   }
 }
 
@@ -581,7 +638,7 @@ class BookAppointmentPopup extends StatelessWidget {
               ),
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 Map<String, dynamic> body = {
                   'provider': _consultantController
                               .consultantModelController.value.provder!.type ==
@@ -596,9 +653,25 @@ class BookAppointmentPopup extends StatelessWidget {
                           .consultantModelController.value.provder!.sId
                       : '',
                   'start': getdateTime(
-                      _controller.selectedDay, _controller.selectedTimeSlot),
+                      _controller.selectedDay, _controller.selectedTimeSlot, 0),
+                  'end': getdateTime(
+                      _controller.selectedDay, _controller.selectedTimeSlot, 1),
+                  'from': _controller.selectedTimeSlot.split('-')[0],
+                  'to': _controller.selectedTimeSlot.split('-')[1],
+                  "type": "app",
+                  "duration": "30"
                 };
-                _controller.bookAppointment(body);
+                String response = await _controller.bookAppointment(body);
+
+                Navigator.of(context).pop();
+
+                if (response == 'Successfully created appointment.') {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return appointmentConfirmationPopup(response);
+                      });
+                }
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -627,12 +700,14 @@ validator(
     required email,
     required selected_day,
     required time_slot}) {
+  BookAppointmentController _controller = Get.find();
   if (mobile_no.isEmpty) {
     return 'Mobile no. is required';
   }
   if (email.isEmpty) {
     return 'Email is required';
   }
+
   if (selected_day == '') {
     return 'You need to select day of appointment.';
   }
@@ -643,7 +718,7 @@ validator(
   }
 }
 
-getdateTime(selectedDay, selectedSlot, [itemNoinList]) {
+getdateTime(selectedDay, selectedSlot, itemNoinList) {
   BookAppointmentController _controller = Get.find();
 
   var now = new DateTime.now();
@@ -651,12 +726,60 @@ getdateTime(selectedDay, selectedSlot, [itemNoinList]) {
   getDate() {
     if (selectedDay == 'Today') {
       return DateFormat('yyyy-MM-dd').format(now);
+    } else if (_controller.days!.indexOf(selectedDay.toString()) <
+        _controller.days!
+            .indexOf(DateFormat('yyyy-MM-dd').format(now).toString())) {
+      return now.add(Duration(
+          days: _controller.days!.indexOf(selectedDay.toString()) + 1));
     } else {
-      return now.add(Duration(days: _controller.days!.indexOf(selectedDay)));
+      return now.add(
+          Duration(days: _controller.days!.indexOf(selectedDay.toString())));
     }
   }
 
   getTime() {
-    List timeList = selectedSlot.toString().split('-');
+    return selectedSlot.toString().split('-');
   }
+
+  return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+      'T' +
+      getTime()[itemNoinList].toString() +
+      ':00';
+}
+
+Widget appointmentConfirmationPopup(data) {
+  return AlertDialog(
+    content: data == 'Successfully created appointment.'
+        ? Container(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.check,
+                  color: Colors.green,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Text('Successfully created appointment.',
+                      textAlign: TextAlign.center),
+                )
+              ],
+            ),
+          )
+        : Container(
+            child: Row(
+              children: [
+                Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Expanded(child: Text('Oops! Something went wrong'))
+              ],
+            ),
+          ),
+  );
 }
