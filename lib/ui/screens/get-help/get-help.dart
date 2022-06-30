@@ -9,6 +9,7 @@ import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -18,6 +19,8 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'consultant_profile.dart';
 
 final List<Map<String, String>> _solhVolunteers = [
   {
@@ -315,6 +318,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           '',
                       imgUrl: getHelpController.topConsultantList.value
                           .doctors![index].profilePicture,
+                      sId: getHelpController
+                          .topConsultantList.value.doctors![index].sId,
                     );
                   }),
             ),
@@ -368,17 +373,20 @@ class TopConsultantsTile extends StatelessWidget {
     required String bio,
     required String mobile,
     String? imgUrl,
+    String? sId,
     Key? key,
   })  : _name = name,
         _bio = bio,
         _mobile = mobile,
         _imgUrl = imgUrl,
+        _sId = sId,
         super(key: key);
 
   final String _mobile;
   final String _name;
   final String _bio;
   final String? _imgUrl;
+  final String? _sId;
 
   @override
   Widget build(BuildContext context) {
@@ -433,7 +441,9 @@ class TopConsultantsTile extends StatelessWidget {
                         style: TextStyle(fontSize: 12),
                       ),
                       onPressed: () {
-                        launch("tel://$_mobile");
+                        //launch("tel://$_mobile");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ConsultantProfile(id: _sId)));
                       },
                     ),
                   )
