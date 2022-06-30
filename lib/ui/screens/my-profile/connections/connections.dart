@@ -9,7 +9,7 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
-import 'package:solh/ui/screens/goal-setting/goal_main_screen.dart';
+
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
@@ -260,7 +260,13 @@ class Connections extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => GoalMainScreen()));
+                              builder: (context) => ConnectProfileScreen(
+                                  uid: connectionController.myConnectionModel
+                                          .value.myConnections![index].uId ??
+                                      '',
+                                  sId: connectionController.myConnectionModel
+                                          .value.myConnections![index].sId ??
+                                      '')));
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),

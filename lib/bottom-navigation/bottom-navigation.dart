@@ -22,10 +22,10 @@ class _MasterScreenState extends State<MasterScreen> {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        // HomeScreenRouter(),
+        HomeScreenRouter(),
         JournalingScreenRouter(),
         GetHelpScreenRouter(),
-        // MyGoalsScreenRouter(),
+        MyGoalsScreenRouter(),
         MyProfileScreenRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -56,31 +56,31 @@ class _MasterScreenState extends State<MasterScreen> {
           // },
           onTap: (index) => tabsRouter.setActiveIndex(index),
           items: [
-            // BottomNavigationBarItem(
-            //     icon: Icon(
-            //       tabsRouter.activeIndex == 0
-            //           ? CupertinoIcons.house_fill
-            //           : CupertinoIcons.house,
-            //     ),
-            //     label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(tabsRouter.activeIndex == 0
+                icon: Icon(
+                  tabsRouter.activeIndex == 0
+                      ? CupertinoIcons.house_fill
+                      : CupertinoIcons.house,
+                ),
+                label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(tabsRouter.activeIndex == 1
                     ? CupertinoIcons.person_3_fill
                     : CupertinoIcons.person_3),
                 label: "journaling"),
             BottomNavigationBarItem(
-              icon: tabsRouter.activeIndex == 1
+              icon: tabsRouter.activeIndex == 2
                   ? SvgPicture.asset(
                       "assets/icons/bottom-navigation-bar/get-help.svg")
                   : SvgPicture.asset(
                       "assets/icons/bottom-navigation-bar/get-help-outline.svg"),
               label: "Get Help",
             ),
-            // BottomNavigationBarItem(
-            //     icon: Icon(tabsRouter.activeIndex == 3
-            //         ? CupertinoIcons.check_mark_circled_solid
-            //         : CupertinoIcons.check_mark_circled),
-            //     label: "My Goals"),
+            BottomNavigationBarItem(
+                icon: Icon(tabsRouter.activeIndex == 3
+                    ? CupertinoIcons.check_mark_circled_solid
+                    : CupertinoIcons.check_mark_circled),
+                label: "My Goals"),
             BottomNavigationBarItem(
                 icon: Icon(
                   CupertinoIcons.line_horizontal_3,

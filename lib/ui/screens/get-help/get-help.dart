@@ -9,6 +9,7 @@ import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -18,6 +19,8 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'consultant_profile.dart';
 
 final List<Map<String, String>> _solhVolunteers = [
   {
@@ -218,69 +221,72 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             GetHelpCategory(
               title: "Search by speciality",
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 2.5.w,
-                    crossAxisSpacing: 2.5.w,
-                    crossAxisCount: 2,
-                    childAspectRatio: 2),
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: getHelpController.getSpecializationModel.value
-                        .specializationList!.length ??
-                    0,
-                shrinkWrap: true,
-                itemBuilder: (_, index) => GestureDetector(
-                  onTap: () {
-                    AutoRouter.of(context).push(ConsultantsScreenRouter(
-                        slug: getHelpController.getSpecializationModel.value
-                                .specializationList![index].slug ??
-                            '',
-                        type: 'specialization'));
-                  },
-                  child: Container(
-                    height: 1.h,
-                    width: 10.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xFFEFEFEF)),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                          child: CircleAvatar(
-                            radius: 8.w,
-                            child: CircleAvatar(
-                              radius: 7.8.w,
-                              backgroundColor: Colors.white,
-                              child: CachedNetworkImage(
-                                imageUrl: getHelpController
-                                        .getSpecializationModel
-                                        .value
-                                        .specializationList![index]
-                                        .displayImage ??
-                                    '',
+            getHelpController.getSpecializationModel.value.specializationList !=
+                    null
+                ? Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 2.5.w,
+                          crossAxisSpacing: 2.5.w,
+                          crossAxisCount: 2,
+                          childAspectRatio: 2),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: getHelpController.getSpecializationModel.value
+                          .specializationList!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) => GestureDetector(
+                        onTap: () {
+                          AutoRouter.of(context).push(ConsultantsScreenRouter(
+                              slug: getHelpController.getSpecializationModel
+                                      .value.specializationList![index].slug ??
+                                  '',
+                              type: 'specialization'));
+                        },
+                        child: Container(
+                          height: 1.h,
+                          width: 10.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xFFEFEFEF)),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                                child: CircleAvatar(
+                                  radius: 8.w,
+                                  child: CircleAvatar(
+                                    radius: 7.8.w,
+                                    backgroundColor: Colors.white,
+                                    child: CachedNetworkImage(
+                                      imageUrl: getHelpController
+                                              .getSpecializationModel
+                                              .value
+                                              .specializationList![index]
+                                              .displayImage ??
+                                          '',
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(width: 2.w),
+                              Container(
+                                width: 25.w,
+                                child: Text(
+                                  getHelpController.getSpecializationModel.value
+                                          .specializationList![index].name ??
+                                      '',
+                                  style: TextStyle(),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(width: 2.w),
-                        Container(
-                          width: 25.w,
-                          child: Text(
-                            getHelpController.getSpecializationModel.value
-                                    .specializationList![index].name ??
-                                '',
-                            style: TextStyle(),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-            ),
+                  )
+                : Container(),
             GetHelpDivider(),
             GetHelpCategory(
               title: "Top Consultants",
@@ -312,6 +318,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           '',
                       imgUrl: getHelpController.topConsultantList.value
                           .doctors![index].profilePicture,
+                      sId: getHelpController
+                          .topConsultantList.value.doctors![index].sId,
                     );
                   }),
             ),
@@ -365,17 +373,20 @@ class TopConsultantsTile extends StatelessWidget {
     required String bio,
     required String mobile,
     String? imgUrl,
+    String? sId,
     Key? key,
   })  : _name = name,
         _bio = bio,
         _mobile = mobile,
         _imgUrl = imgUrl,
+        _sId = sId,
         super(key: key);
 
   final String _mobile;
   final String _name;
   final String _bio;
   final String? _imgUrl;
+  final String? _sId;
 
   @override
   Widget build(BuildContext context) {
@@ -430,7 +441,9 @@ class TopConsultantsTile extends StatelessWidget {
                         style: TextStyle(fontSize: 12),
                       ),
                       onPressed: () {
-                        launch("tel://$_mobile");
+                        //launch("tel://$_mobile");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ConsultantProfile(id: _sId)));
                       },
                     ),
                   )

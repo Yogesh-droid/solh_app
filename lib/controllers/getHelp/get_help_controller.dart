@@ -15,7 +15,7 @@ class GetHelpController extends GetxController {
   void getIssueList() async {
     try {
       Map<String, dynamic> map =
-          await Network.makeGetRequest("${APIConstants.api}/api/issues");
+          await Network.makeGetRequest("${APIConstants.api}/api/issue");
 
       print('issues $map');
 
@@ -48,7 +48,7 @@ class GetHelpController extends GetxController {
   void getSpecializationList() async {
     try {
       Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/specialization");
+          "${APIConstants.api}/api/get-app-specialization");
 
       getSpecializationModel.value = GetIssueResponseModel.fromJson(map);
     } on Exception catch (e) {

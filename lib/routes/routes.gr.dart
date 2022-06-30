@@ -107,7 +107,7 @@ class AppRouter extends _i11.RootStackRouter {
     },
     MyGoalsScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i13.MyGoalsScreen());
+          routeData: routeData, child: _i13.MyGoalsScreen());
     },
     MyProfileScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
