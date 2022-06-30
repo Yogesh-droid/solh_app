@@ -35,7 +35,7 @@ class ConsultantsTile extends StatelessWidget {
             child: Column(
               children: [
                 getProfileDetails(context),
-                getActivityDetails(),
+                getActivityDetails(context),
               ],
             ),
           )),
@@ -191,39 +191,22 @@ class ConsultantsTile extends StatelessWidget {
     );
   }
 
-  Widget getActivityDetails() {
+  Widget getActivityDetails(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Row(
-          //   children: [
-          //     CircleAvatar(
-          //       radius: 8,
-          //       backgroundColor: Colors.red,
-          //     ),
-          //     SizedBox(width: 3.w),
-          //     Text('Active',
-          //         style: TextStyle(
-          //           color: SolhColors.black,
-          //           fontSize: 12,
-          //         )),
-          //   ],
-          // ),
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              launchUrl(Uri.parse("tel://${8284848028}"));
+            },
             child: Text('Call',
                 style: TextStyle(
                   color: SolhColors.green,
                   fontSize: 14,
                 )),
           ),
-          // SolhGreenBtn48(
-          //     onPress: () {
-          //       launch("tel://${_doctorModel.mobile}");
-          //     },
-          //     text: 'Book Appointment'),
           SolhGreenButton(
             height: 6.h,
             width: 35.w,
@@ -232,7 +215,10 @@ class ConsultantsTile extends StatelessWidget {
               style: TextStyle(fontSize: 12),
             ),
             onPressed: () {
-              launchUrl(Uri.parse("tel://${8284848028}"));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ConsultantProfile(
+                        id: _doctorModel.id,
+                      )));
             },
           )
         ],

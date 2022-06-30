@@ -8,6 +8,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/chat/chat.dart';
+
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
