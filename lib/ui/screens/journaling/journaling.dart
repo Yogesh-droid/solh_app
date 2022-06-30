@@ -4,17 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
-import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
-import 'package:solh/controllers/journals/journal_comment_controller.dart';
-import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -24,10 +20,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import '../../../controllers/group/create_group_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
-import '../../../controllers/mood-meter/mood_meter_controller.dart';
-import '../mood-meter/mood_meter.dart';
 
 class JournalingScreen extends StatefulWidget {
   const JournalingScreen({Key? key}) : super(key: key);
@@ -38,16 +31,10 @@ class JournalingScreen extends StatefulWidget {
 
 class _JournalingScreenState extends State<JournalingScreen> {
   FeelingsController feelingsController = Get.put(FeelingsController());
-  final CreateGroupController _controller = Get.put(CreateGroupController());
+
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
-  JournalPageController _journalPageController =
-      Get.put(JournalPageController());
-  MyDiaryController myDiaryController = Get.put(MyDiaryController());
-  JournalCommentController journalCommentController =
-      Get.put(JournalCommentController());
-  GetHelpController getHelpController = Get.put(GetHelpController());
 
   // final _newPostKey = GlobalKey<FormState>();
 
@@ -78,13 +65,11 @@ class Journaling extends StatefulWidget {
 class _JournalingState extends State<Journaling> {
   JournalPageController _journalPageController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
-  MoodMeterController moodMeterController = Get.find();
+
   late ScrollController _journalsScrollController;
   late RefreshController _refreshController;
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;
-  late DateTime _lastDateMoodMeterShown;
-  late bool isMoodMeterShown;
 
   void initState() {
     super.initState();
@@ -127,8 +112,6 @@ class _JournalingState extends State<Journaling> {
         _journalPageController.isScrollingStarted.value = false;
       }
     });
-
-    openMoodMeter();
   }
 
   void _onRefresh() async {
@@ -717,144 +700,5 @@ class _JournalingState extends State<Journaling> {
         ],
       ),
     ));
-  }
-
-  Future<void> openMoodMeter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('lastDateShown') != null) {
-      if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
-              .day ==
-          DateTime.now().day) {
-        return;
-      } else {
-        await moodMeterController.getMoodList();
-        if (moodMeterController.moodList.length > 0) {
-          showBottomSheet(
-              enableDrag: true,
-              context: context,
-              builder: (context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(child: Container()),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: MoodMeter(),
-                      ),
-                    ],
-                  ),
-                );
-              });
-        }
-
-        prefs.setBool('moodMeterShown', true);
-        prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
-      }
-    } else {
-      await moodMeterController.getMoodList();
-      if (moodMeterController.moodList.length > 0) {
-        showBottomSheet(
-            enableDrag: true,
-            context: context,
-            builder: (context) {
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  image: DecorationImage(
-                    image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: MoodMeter(),
-                    ),
-                  ],
-                ),
-              );
-            });
-      }
-
-      prefs.setBool('moodMeterShown', true);
-      prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
-    }
   }
 }

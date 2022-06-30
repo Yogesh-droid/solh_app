@@ -51,6 +51,10 @@ class WhatsOnYourMindSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  SvgPicture.asset('assets/icons/app-bar/mood-meter.svg'),
+                  SizedBox(
+                    width: 5,
+                  ),
                   SolhGreenBorderMiniButton(
                       height: MediaQuery.of(context).size.height / 18,
                       width: 60.w,

@@ -54,14 +54,6 @@ class _JournalTileState extends State<JournalTile> {
   @override
   void initState() {
     super.initState();
-    getFeelings();
-  }
-
-  List getTexts() {
-    List textList = widget._journalModel!.description!.split(' ');
-    print('textList: $textList');
-
-    return textList;
   }
 
   // bool checkConnectionExist(username) {
@@ -122,8 +114,10 @@ class _JournalTileState extends State<JournalTile> {
               SizedBox(
                 height: 4,
               ),
-              getPostDetails(connectionController),
-              getPostMedia(),
+              PostContentWidget(
+                  journalModel: widget._journalModel ?? Journals(),
+                  index: widget.index,
+                  isMyJournal: widget.isMyJournal),
               widget.isMyJournal ? Container() : getPostActionButton(),
             ],
           ),
@@ -134,16 +128,6 @@ class _JournalTileState extends State<JournalTile> {
             color: Color(0xFFF6F6F8)),
       ],
     );
-  }
-
-  void getFeelings() {
-    widget._journalModel!.feelings!.forEach((element) {
-      widget.feelingList.add(element.feelingName ?? '');
-    });
-    if (widget.feelingList.length > 4) {
-      widget.feelingList.removeRange(4, widget.feelingList.length);
-    }
-    print(widget.feelingList);
   }
 
   Future<bool> _likeJournal() async {
@@ -425,241 +409,6 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  Widget getPostDetails(ConnectionController) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 35,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          widget._journalModel!.feelings != null
-              ? Text(
-                  "#Feeling " +
-                      widget.feelingList
-                          .toString()
-                          .replaceAll("[", "")
-                          .replaceAll("]", ""),
-                  style: SolhTextStyles.PinkBorderButtonText)
-              : Container(),
-          // widget._journalModel!.description != null
-          //     ? RichText(
-          //         text: TextSpan(children: [
-          //         TextSpan(
-          //             text: getTexts()['text1'] ?? '',
-          //             style: SolhTextStyles.JournalingDescriptionText,
-          //             children: [
-          //               getTexts().containsKey('text3')
-          //                   ? TextSpan(
-          //                       text: '@' + getTexts()['text3'],
-          //                       recognizer: TapGestureRecognizer()
-          //                         ..onTap = () async {
-          //                           Navigator.push(
-          //                               context,
-          //                               MaterialPageRoute(
-          //                                   builder: (context) =>
-          //                                       ConnectProfileScreen(
-          //                                         username: getTexts()['text3']
-          //                                             .toString(),
-          //                                         uid: '',
-          //                                         sId: '',
-          //                                       )));
-          //                         },
-          //                       style: TextStyle(color: Color(0xffE1555A)))
-          //                   : TextSpan(text: ''),
-          //               getTexts().containsKey('text2')
-          //                   ? TextSpan(text: getTexts()['text2'])
-          //                   : TextSpan(text: ''),
-          //             ]),
-          //       ]))
-
-          // ? ReadMoreText(
-          //     widget._journalModel!.description!,
-          //     trimLines: 3,
-          //     //trimLength: 100,
-          //     style: SolhTextStyles.JournalingDescriptionText,
-          //     colorClickableText: SolhColors.green,
-          //     //trimMode: TrimMode.Length,
-          //     trimMode: TrimMode.Line,
-          //     trimCollapsedText: ' Read more',
-          //     trimExpandedText: ' Less',
-          //   )
-
-          Wrap(
-            children: widget._journalModel!.description!.length == 0
-                ? []
-                : getTexts().map((item) {
-                    if (item.toString().trim().isNotEmpty &&
-                        item.toString().trim()[0] == '@') {
-                      // if (checkConnectionExist(item)) {
-                      //   print('it ran');
-                      //   return Text(
-                      //     item + ' ',
-                      //     style: GoogleFonts.signika(
-                      //         fontSize: 16, color: Color(0xff666666)),
-                      //   );
-                      // }
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ConnectProfileScreen(
-                                username:
-                                    item.toString().substring(1, item.length),
-                                uid: '',
-                                sId: '',
-                              ),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          item + " ",
-                          style: GoogleFonts.signika(
-                              fontSize: 16, color: Color(0xffE1555A)),
-                        ),
-                      );
-                    } else {
-                      return Text(
-                        item + " " ?? '',
-                        style: GoogleFonts.signika(
-                            fontSize: 16, color: Color(0xff666666)),
-                      );
-                    }
-                  }).toList(),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getPostMedia() {
-    return widget._journalModel!.mediaUrl != null &&
-            widget._journalModel!.mediaUrl != ''
-        ?
-        //// For Video player ////
-        widget._journalModel!.mediaType == 'video/mp4'
-            ? InkWell(
-                onTap: () {
-                  widget.isMyJournal
-                      ? journalPageController.playMyPostVideo(
-                          widget.index,
-                        )
-                      : journalPageController.playVideo(
-                          widget.index,
-                        );
-                  widget.isMyJournal
-                      ? journalPageController.myVideoPlayerControllers.refresh()
-                      : journalPageController.videoPlayerController.refresh();
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height / 80,
-                        ),
-                        child: VideoPlayer(
-                          widget.isMyJournal
-                              ? journalPageController.myVideoPlayerControllers
-                                  .value[widget.index][widget.index]
-                              : journalPageController.videoPlayerController
-                                  .value[widget.index][widget.index],
-                        )),
-                    Obx(() {
-                      return !widget.isMyJournal &&
-                                  !journalPageController
-                                      .videoPlayerController
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying ||
-                              widget.isMyJournal &&
-                                  !journalPageController
-                                      .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying
-                          ? getBlackOverlay()
-                          : Container();
-                    }),
-                    Obx(() {
-                      return !widget.isMyJournal &&
-                                  !journalPageController
-                                      .videoPlayerController
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying ||
-                              widget.isMyJournal &&
-                                  !journalPageController
-                                      .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying
-                          ? Positioned(
-                              bottom: MediaQuery.of(context).size.height / 5,
-                              left: MediaQuery.of(context).size.width / 2 -
-                                  MediaQuery.of(context).size.width / 10,
-                              child: IconButton(
-                                onPressed: () {
-                                  widget.isMyJournal
-                                      ? journalPageController.playMyPostVideo(
-                                          widget.index,
-                                        )
-                                      : journalPageController.playVideo(
-                                          widget.index,
-                                        );
-                                  widget.isMyJournal
-                                      ? journalPageController
-                                          .myVideoPlayerControllers
-                                          .refresh()
-                                      : journalPageController
-                                          .videoPlayerController
-                                          .refresh();
-                                },
-                                icon: Image.asset(
-                                  'assets/images/play_icon.png',
-                                  fit: BoxFit.fill,
-                                ),
-                                iconSize: MediaQuery.of(context).size.width / 8,
-                                color: SolhColors.green,
-                              ),
-                            )
-                          : Container();
-                    }),
-                  ],
-                ),
-              )
-            ///// Below for image only
-            : Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    border:
-                        Border.all(width: 0.5, color: Colors.grey.shade300)),
-                margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height / 80,
-                ),
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //   image:
-                //       NetworkImage(widget._journalModel!.mediaUrl.toString()),
-                //   fit: BoxFit.cover,
-                // )),
-                child: CachedNetworkImage(
-                  imageUrl: widget._journalModel!.mediaUrl.toString(),
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => getShimmer(),
-                  errorWidget: (context, url, error) => Center(
-                    child: Lottie.asset('assets/images/not-found.json'),
-                  ),
-                ),
-              )
-        : Container(
-            height: 1.h,
-          );
-  }
-
   Widget getPostActionButton() {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -820,8 +569,292 @@ class _JournalTileState extends State<JournalTile> {
       ),
     );
   }
+}
 
-  Widget getBlackOverlay() {
+class PostContentWidget extends StatefulWidget {
+  PostContentWidget(
+      {Key? key,
+      required this.journalModel,
+      required this.index,
+      required this.isMyJournal})
+      : super(key: key);
+  final Journals journalModel;
+  final int index;
+  final bool isMyJournal;
+
+  @override
+  State<PostContentWidget> createState() => _PostContentWidgetState();
+}
+
+class _PostContentWidgetState extends State<PostContentWidget> {
+  List<String> feelingList = [];
+  List<String> descriptionTexts = [];
+  bool showMoreBtn = false;
+  bool isExpanded = false;
+
+  @override
+  void initState() {
+    getFeelings();
+    getTexts();
+    super.initState();
+  }
+
+  final JournalPageController journalPageController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 35,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                widget.journalModel.feelings != null
+                    ? Text(
+                        "#Feeling " +
+                            feelingList
+                                .toString()
+                                .replaceAll("[", "")
+                                .replaceAll("]", ""),
+                        style: SolhTextStyles.PinkBorderButtonText)
+                    : Container(),
+                // widget._journalModel!.description != null
+                //     ? RichText(
+                //         text: TextSpan(children: [
+                //         TextSpan(
+                //             text: getTexts()['text1'] ?? '',
+                //             style: SolhTextStyles.JournalingDescriptionText,
+                //             children: [
+                //               getTexts().containsKey('text3')
+                //                   ? TextSpan(
+                //                       text: '@' + getTexts()['text3'],
+                //                       recognizer: TapGestureRecognizer()
+                //                         ..onTap = () async {
+                //                           Navigator.push(
+                //                               context,
+                //                               MaterialPageRoute(
+                //                                   builder: (context) =>
+                //                                       ConnectProfileScreen(
+                //                                         username: getTexts()['text3']
+                //                                             .toString(),
+                //                                         uid: '',
+                //                                         sId: '',
+                //                                       )));
+                //                         },
+                //                       style: TextStyle(color: Color(0xffE1555A)))
+                //                   : TextSpan(text: ''),
+                //               getTexts().containsKey('text2')
+                //                   ? TextSpan(text: getTexts()['text2'])
+                //                   : TextSpan(text: ''),
+                //             ]),
+                //       ]))
+
+                // ? ReadMoreText(
+                //     widget._journalModel!.description!,
+                //     trimLines: 3,
+                //     //trimLength: 100,
+                //     style: SolhTextStyles.JournalingDescriptionText,
+                //     colorClickableText: SolhColors.green,
+                //     //trimMode: TrimMode.Length,
+                //     trimMode: TrimMode.Line,
+                //     trimCollapsedText: ' Read more',
+                //     trimExpandedText: ' Less',
+                //   )
+
+                Wrap(children: [
+                  Wrap(
+                    children: widget.journalModel.description!.length == 0
+                        ? []
+                        : !showMoreBtn
+                            ? descriptionTexts.map((item) {
+                                return getDescriptionText(item);
+                              }).toList()
+                            : descriptionTexts.sublist(0, 10).map((item) {
+                                return getDescriptionText(item);
+                              }).toList(),
+                  ),
+                  showMoreBtn
+                      ? InkWell(
+                          child: Text(
+                            !isExpanded ? '...show more' : '...show less',
+                          ),
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                        )
+                      : Container()
+                ])
+              ],
+            ),
+          ),
+          widget.journalModel.mediaUrl != null &&
+                  widget.journalModel.mediaUrl != ''
+              ?
+              //// For Video player ////
+              widget.journalModel.mediaType == 'video/mp4'
+                  ? InkWell(
+                      onTap: () {
+                        widget.isMyJournal
+                            ? journalPageController.playMyPostVideo(
+                                widget.index,
+                              )
+                            : journalPageController.playVideo(
+                                widget.index,
+                              );
+                        widget.isMyJournal
+                            ? journalPageController.myVideoPlayerControllers
+                                .refresh()
+                            : journalPageController.videoPlayerController
+                                .refresh();
+                      },
+                      child: Stack(
+                        children: [
+                          Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.width,
+                              margin: EdgeInsets.symmetric(
+                                vertical:
+                                    MediaQuery.of(context).size.height / 80,
+                              ),
+                              child: VideoPlayer(
+                                widget.isMyJournal
+                                    ? journalPageController
+                                        .myVideoPlayerControllers
+                                        .value[widget.index][widget.index]
+                                    : journalPageController
+                                        .videoPlayerController
+                                        .value[widget.index][widget.index],
+                              )),
+                          Obx(() {
+                            return !widget.isMyJournal &&
+                                        !journalPageController
+                                            .videoPlayerController
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying ||
+                                    widget.isMyJournal &&
+                                        !journalPageController
+                                            .myVideoPlayerControllers
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying
+                                ? getBlackOverlay(context)
+                                : Container();
+                          }),
+                          Obx(() {
+                            return !widget.isMyJournal &&
+                                        !journalPageController
+                                            .videoPlayerController
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying ||
+                                    widget.isMyJournal &&
+                                        !journalPageController
+                                            .myVideoPlayerControllers
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying
+                                ? Positioned(
+                                    bottom:
+                                        MediaQuery.of(context).size.height / 5,
+                                    left: MediaQuery.of(context).size.width /
+                                            2 -
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        widget.isMyJournal
+                                            ? journalPageController
+                                                .playMyPostVideo(
+                                                widget.index,
+                                              )
+                                            : journalPageController.playVideo(
+                                                widget.index,
+                                              );
+                                        widget.isMyJournal
+                                            ? journalPageController
+                                                .myVideoPlayerControllers
+                                                .refresh()
+                                            : journalPageController
+                                                .videoPlayerController
+                                                .refresh();
+                                      },
+                                      icon: Image.asset(
+                                        'assets/images/play_icon.png',
+                                        fit: BoxFit.fill,
+                                      ),
+                                      iconSize:
+                                          MediaQuery.of(context).size.width / 8,
+                                      color: SolhColors.green,
+                                    ),
+                                  )
+                                : Container();
+                          }),
+                        ],
+                      ),
+                    )
+                  ///// Below for image only
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 0.5, color: Colors.grey.shade300)),
+                      margin: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height / 80,
+                      ),
+                      // decoration: BoxDecoration(
+                      //     image: DecorationImage(
+                      //   image:
+                      //       NetworkImage(widget._journalModel!.mediaUrl.toString()),
+                      //   fit: BoxFit.cover,
+                      // )),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.journalModel.mediaUrl.toString(),
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => getShimmer(context),
+                        errorWidget: (context, url, error) => Center(
+                          child: Lottie.asset('assets/images/not-found.json'),
+                        ),
+                      ),
+                    )
+              : Container(
+                  height: 1.h,
+                )
+        ],
+      ),
+    );
+  }
+
+  List getTexts() {
+    List<String> textList = widget.journalModel.description!.split(' ');
+    if (textList.length > 10) {
+      showMoreBtn = true;
+    }
+    descriptionTexts = textList;
+    print('textList: $textList');
+
+    return textList;
+  }
+
+  void getFeelings() {
+    widget.journalModel.feelings!.forEach((element) {
+      feelingList.add(element.feelingName ?? '');
+    });
+    if (feelingList.length > 4) {
+      feelingList.removeRange(4, feelingList.length);
+    }
+    print(feelingList);
+  }
+
+  Widget getBlackOverlay(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
@@ -832,7 +865,7 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  Widget getShimmer() {
+  Widget getShimmer(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
@@ -850,6 +883,35 @@ class _JournalTileState extends State<JournalTile> {
         ),
       ),
     );
+  }
+
+  Widget getDescriptionText(
+    item,
+  ) {
+    return item.toString().trim().isNotEmpty && item.toString().trim()[0] == '@'
+        ? InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConnectProfileScreen(
+                    username: item.toString().substring(1, item.length),
+                    uid: '',
+                    sId: '',
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              item + " ",
+              style:
+                  GoogleFonts.signika(fontSize: 16, color: Color(0xffE1555A)),
+            ),
+          )
+        : Text(
+            item + " " ?? '',
+            style: GoogleFonts.signika(fontSize: 16, color: Color(0xff666666)),
+          );
   }
 }
 
