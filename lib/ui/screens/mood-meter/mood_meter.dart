@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/ui/screens/mood-meter/mood-reason-page.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -12,91 +13,148 @@ class MoodMeter extends StatelessWidget {
   MoodMeter({Key? key}) : super(key: key);
   final MoodMeterController moodMeterController = Get.find();
   LinearGradient gradient = LinearGradient(colors: <Color>[
-    Colors.green,
-    Colors.red,
+    Color(0xFFE1555A),
+    Colors.yellow,
+    Colors.blue,
+    SolhColors.green,
   ]);
   @override
   Widget build(BuildContext context) {
-    return Container(child: Obx(() {
-      return moodMeterController.isLoading.value
-          ? getShimmer()
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "How are you feeling right now?",
-                  style: SolhTextStyles.ProfileMenuGreyText,
-                ),
-                Expanded(
-                  child: Container(),
-                ),
-                Obx(() {
-                  return ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: moodMeterController.selectedGif.value,
-                        height: 200,
-                        width: 200,
-                        fit: BoxFit.fill,
-                      ));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                Obx(() {
-                  return Text(
-                    moodMeterController.selectedMood.value,
-                    style: SolhTextStyles.ProfileMenuGreyText,
-                  );
-                }),
-                Expanded(
-                  child: Container(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SliderTheme(
-                      data: SliderThemeData(
-                          trackShape: GradientRectSliderTrackShape(
-                              gradient: gradient, darkenInactive: true),
-                          thumbShape: MyThumbShape(),
-                          overlayShape: RoundSliderOverlayShape(
-                            overlayRadius: 20.0,
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        height: MediaQuery.of(context).size.height - 100,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          image: DecorationImage(
+            image: AssetImage('assets/intro/png/mood_meter_bg.png'),
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        child: Obx(() {
+          return moodMeterController.isLoading.value
+              ? getShimmer()
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(child: Container()),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                shape: BoxShape.circle,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                           ),
-                          overlayColor: SolhColors.black.withOpacity(0.2),
-                          tickMarkShape: MyTickerShape()),
-                      child: Obx(() {
-                        return Slider(
-                            thumbColor: Colors.white,
-                            divisions: moodMeterController
-                                    .moodMeterModel.value.moodList!.length -
-                                1,
-                            min: 0,
-                            max: moodMeterController
-                                    .moodMeterModel.value.moodList!.length -
-                                1.toDouble(),
-                            value: moodMeterController.selectedValue.value,
-                            onChanged: (value) {
-                              moodMeterController.selectedValue.value = value;
-                              moodMeterController.changeImg(value);
-                              print(value);
-                            });
-                      })),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SolhGreenButton(
-                      child: Text("Done"),
-                      onPressed: () {
-                        moodMeterController.saveMoodOfday();
-                        Navigator.pop(context);
-                      }),
-                ),
-              ],
-            );
-    }));
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "How are you feeling right now?",
+                      style:
+                          TextStyle(fontSize: 20, color: SolhColors.black166),
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Obx(() {
+                      return ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl: moodMeterController.selectedGif.value,
+                            height: 200,
+                            width: 200,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => Shimmer.fromColors(
+                              child: Container(
+                                color: Colors.grey,
+                              ),
+                              baseColor: Colors.grey[300]!,
+                              highlightColor: Colors.grey[100]!,
+                            ),
+                          ));
+                    }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Obx(() {
+                      return Text(
+                        moodMeterController.selectedMood.value,
+                        style: SolhTextStyles.ProfileMenuGreyText,
+                      );
+                    }),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SliderTheme(
+                          data: SliderThemeData(
+                              trackShape: GradientRectSliderTrackShape(
+                                  gradient: gradient, darkenInactive: true),
+                              thumbShape: MyThumbShape(),
+                              overlayShape: RoundSliderOverlayShape(
+                                overlayRadius: 20.0,
+                              ),
+                              overlayColor: SolhColors.black.withOpacity(0.2),
+                              tickMarkShape: MyTickerShape()),
+                          child: Obx(() {
+                            return Slider(
+                                thumbColor: Colors.white,
+                                divisions: moodMeterController
+                                        .moodMeterModel.value.moodList!.length -
+                                    1,
+                                min: 0,
+                                max: moodMeterController
+                                        .moodMeterModel.value.moodList!.length -
+                                    1.toDouble(),
+                                value: moodMeterController.selectedValue.value,
+                                onChanged: (value) {
+                                  moodMeterController.selectedValue.value =
+                                      value;
+                                  moodMeterController.changeImg(value);
+                                  print(value);
+                                });
+                          })),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SolhGreenButton(
+                          height: 50,
+                          child: Text("Done"),
+                          onPressed: () {
+                            //moodMeterController.saveMoodOfday();
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) {
+                              return MoodReasonPage();
+                            }));
+                          }),
+                    ),
+                  ],
+                );
+        }));
   }
 
   getShimmer() {

@@ -15,6 +15,14 @@ class SosController extends GetxController {
   var selectedTags = [].obs;
   var selectedItems = {}.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    getSosContacts();
+
+    super.onInit();
+  }
+
   Future addSosContacts(body) async {
     return await http.put(Uri.parse('${APIConstants.api}/api/sosContact'),
         body: jsonEncode(body),
@@ -26,4 +34,15 @@ class SosController extends GetxController {
       return value.body;
     });
   }
+}
+
+Future getSosContacts() async {
+  return await http
+      .get(Uri.parse('${APIConstants.api}/api/sosContact'), headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
+  }).then((value) {
+    print(value.body);
+    return value.body;
+  });
 }

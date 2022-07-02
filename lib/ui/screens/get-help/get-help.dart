@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -18,7 +18,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'consultant_profile.dart';
 
@@ -266,6 +265,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                               .specializationList![index]
                                               .displayImage ??
                                           '',
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                              child: Container(
+                                                height: 1.h,
+                                                width: 1.w,
+                                                color: Colors.grey,
+                                              ),
+                                              baseColor: Colors.grey,
+                                              highlightColor: Colors.white),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -299,32 +313,78 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             Container(
               height: 17.h,
               margin: EdgeInsets.only(bottom: 2.h),
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 6,
-                  itemBuilder: (_, index) {
-                    print(getHelpController.topConsultantList.value
-                        .doctors![index].profilePicture);
-                    return TopConsultantsTile(
-                      bio: getHelpController
-                              .topConsultantList.value.doctors![index].bio ??
-                          '',
-                      name: getHelpController
-                              .topConsultantList.value.doctors![index].name ??
-                          '',
-                      mobile: getHelpController.topConsultantList.value
-                              .doctors![index].contactNumber ??
-                          '',
-                      imgUrl: getHelpController.topConsultantList.value
-                          .doctors![index].profilePicture,
-                      sId: getHelpController
-                          .topConsultantList.value.doctors![index].sId,
-                    );
-                  }),
+              child: Container(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    itemBuilder: (_, index) {
+                      print(getHelpController.topConsultantList.value
+                          .doctors![index].profilePicture);
+                      return TopConsultantsTile(
+                        bio: getHelpController
+                                .topConsultantList.value.doctors![index].bio ??
+                            '',
+                        name: getHelpController
+                                .topConsultantList.value.doctors![index].name ??
+                            '',
+                        mobile: getHelpController.topConsultantList.value
+                                .doctors![index].contactNumber ??
+                            '',
+                        imgUrl: getHelpController.topConsultantList.value
+                            .doctors![index].profilePicture,
+                        sId: getHelpController
+                            .topConsultantList.value.doctors![index].sId,
+                      );
+                    }),
+              ),
             ),
             GetHelpDivider(),
-            SolhVolunteers(),
+            GetHelpCategory(
+              title: "Solh Volunteer",
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => ConsultantsScreen(
+                        slug: '',
+                        type: 'topconsultant',
+                      ))),
+            ),
+            Container(
+              height: 38.h,
+              margin: EdgeInsets.only(bottom: 2.h),
+              child: Container(
+                child: ListView.separated(
+                  separatorBuilder: (_, __) => SizedBox(width: 2.w),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: getHelpController
+                      .solhVolunteerList.value.provider!.length,
+                  itemBuilder: (context, index) => SolhVolunteers(
+                    bio: getHelpController
+                            .solhVolunteerList.value.provider![index].bio ??
+                        '',
+                    name: getHelpController
+                            .solhVolunteerList.value.provider![index].name ??
+                        '',
+                    mobile: getHelpController.solhVolunteerList.value
+                            .provider![index].contactNumber ??
+                        '',
+                    imgUrl: getHelpController.solhVolunteerList.value
+                        .provider![index].profilePicture,
+                    sId: getHelpController
+                        .solhVolunteerList.value.provider![index].sId,
+                    comments: getHelpController
+                        .solhVolunteerList.value.provider![index].commentCount
+                        .toString(),
+                    connections: getHelpController.solhVolunteerList.value
+                        .provider![index].connectionsCount
+                        .toString(),
+                    likes: getHelpController
+                        .solhVolunteerList.value.provider![index].likesCount
+                        .toString(),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -579,228 +639,425 @@ class GetHelpDivider extends StatelessWidget {
 }
 
 class SolhVolunteers extends StatelessWidget {
-  const SolhVolunteers({Key? key}) : super(key: key);
+  SolhVolunteers(
+      {Key? key,
+      required this.mobile,
+      required this.name,
+      required this.bio,
+      this.imgUrl,
+      this.sId,
+      this.comments,
+      this.connections,
+      this.likes})
+      : super(key: key);
+  final String? mobile;
+  final String? name;
+  final String? bio;
+  final String? imgUrl;
+  final String? sId;
+  final String? likes;
+  final String? connections;
+  final String? comments;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.5.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Solh Volunteers',
-                  style: GoogleFonts.signika(
-                    fontSize: 20,
-                    color: Color(0xFF666666),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Color(0xFFEFEFEF),
+          width: 1,
+        ),
+      ),
+      height: 289,
+      width: 164,
+      child: Stack(children: [
+        Container(
+          height: 52,
+          width: 164,
+          decoration: BoxDecoration(
+            color: SolhColors.green,
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          right: 0,
+          top: 8,
+          child: Column(
+            children: [
+              Container(
+                height: 70,
+                width: 70,
+                padding: EdgeInsets.all(1),
+                decoration:
+                    BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                child: Container(
+                  child: FittedBox(
+                    fit: BoxFit.fill,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 35,
+                        backgroundImage: CachedNetworkImageProvider(
+                          imgUrl ?? "",
+                        ),
+                        // child: CachedNetworkImage(
+                        //   imageUrl: imgUrl ?? '',
+                        //   fit: BoxFit.fill,
+                        //   placeholder: (context, url) => Shimmer.fromColors(
+                        //       child: CircleAvatar(
+                        //         backgroundColor: Colors.grey,
+                        //       ),
+                        //       baseColor: Colors.grey[300]!,
+                        //       highlightColor: Colors.grey[300]!),
+                        //   errorWidget: (context, url, error) =>
+                        //       Icon(Icons.person, size: 35, color: Colors.grey),
+                        // ),
+                      ),
+                    ),
                   ),
                 ),
-                Text(
-                  'View All',
-                  style: GoogleFonts.signika(
-                    fontSize: 14,
-                    color: SolhColors.green,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            height: 300,
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-            child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 10,
               ),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: _solhVolunteers.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: Color(0xFFEFEFEF),
-                      width: 1,
+              Text(name ?? ''),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Solh Expert',
+                    style: GoogleFonts.signika(
+                      fontSize: 10,
+                      color: Color(0xFF5F9B8C),
                     ),
                   ),
-                  height: 289,
-                  width: 164,
-                  child: Stack(children: [
-                    Container(
-                      height: 52,
-                      width: 164,
-                      decoration: BoxDecoration(
-                        color: SolhColors.green,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+                  Image(image: AssetImage('assets/images/verifiedTick.png')),
+                ],
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Container(
+                height: 45,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    bio ?? '',
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.signika(
+                      fontSize: 12,
+                      color: Color(0xff666666),
                     ),
-                    Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 8,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 70,
-                            width: 70,
-                            padding: EdgeInsets.all(1),
-                            decoration: BoxDecoration(
-                                color: Colors.white, shape: BoxShape.circle),
-                            child: Container(
-                              child: FittedBox(
-                                  fit: BoxFit.fill,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: AssetImage(
-                                        _solhVolunteers[index]['image']!),
-                                  )),
-                            ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 13,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.comment,
+                          color: Color(0xFF5F9B8C),
+                          size: 12,
+                        ),
+                        SizedBox(
+                          width: 2,
+                        ),
+                        Text(
+                          comments ?? '',
+                          style: GoogleFonts.signika(
+                            fontSize: 12,
+                            color: Color(0xFF5F9B8C),
                           ),
-                          Text(_solhVolunteers[index]['name']!),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Solh Expert',
-                                style: GoogleFonts.signika(
-                                  fontSize: 10,
-                                  color: Color(0xFF5F9B8C),
-                                ),
-                              ),
-                              Image(
-                                  image: AssetImage(
-                                      'assets/images/verifiedTick.png')),
-                            ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.thumb_up,
+                          size: 12,
+                          color: Color(0xff5F9B8C),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          likes ?? '',
+                          style: GoogleFonts.signika(
+                              fontSize: 12, color: Color(0xff5F9B8C)),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.group,
+                          size: 12,
+                          color: Color(0xff5F9B8C),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          connections ?? '',
+                          style: GoogleFonts.signika(
+                              fontSize: 12, color: Color(0xff5F9B8C)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 33,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ConsultantProfile(id: sId)));
+                },
+                child: Container(
+                  height: 32,
+                  width: 148,
+                  decoration: BoxDecoration(
+                      color: SolhColors.green,
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/images/connect.svg',
+                          height: 14,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          'Connect',
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            color: Colors.white,
                           ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Container(
-                            height: 45,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              child: Text(
-                                _solhVolunteers[index]['bio']!,
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.signika(
-                                  fontSize: 12,
-                                  color: Color(0xff666666),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 13,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.thumb_up,
-                                      size: 12,
-                                      color: Color(0xff5F9B8C),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      _solhVolunteers[index]['like']!,
-                                      style: GoogleFonts.signika(
-                                          fontSize: 12,
-                                          color: Color(0xff5F9B8C)),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/images/connect.svg',
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      _solhVolunteers[index]['helped']!,
-                                      style: GoogleFonts.signika(
-                                          fontSize: 12,
-                                          color: Color(0xff5F9B8C)),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.group,
-                                      size: 12,
-                                      color: Color(0xff5F9B8C),
-                                    ),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    Text(
-                                      _solhVolunteers[index]['interaction']!,
-                                      style: GoogleFonts.signika(
-                                          fontSize: 12,
-                                          color: Color(0xff5F9B8C)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 33,
-                          ),
-                          Container(
-                            height: 32,
-                            width: 148,
-                            decoration: BoxDecoration(
-                                color: SolhColors.green,
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/images/connect.svg',
-                                    height: 14,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Text(
-                                    'Connect',
-                                    style: GoogleFonts.signika(
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  ]),
-                );
-              },
-            ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
-        ],
-      ),
+        )
+      ]),
     );
+
+    // return Container(
+    //   child: Column(
+    //     children: [
+
+    //       // Container(
+    //       //   height: 300,
+    //       //   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+    //       //   child: ListView.separated(
+    //       //     separatorBuilder: (context, index) => SizedBox(
+    //       //       width: 10,
+    //       //     ),
+    //       //     shrinkWrap: true,
+    //       //     scrollDirection: Axis.horizontal,
+    //       //     itemCount: _solhVolunteers.length,
+    //       //     itemBuilder: (context, index) {
+    //       //       return Container(
+    //       //         decoration: BoxDecoration(
+    //       //           borderRadius: BorderRadius.circular(8),
+    //       //           border: Border.all(
+    //       //             color: Color(0xFFEFEFEF),
+    //       //             width: 1,
+    //       //           ),
+    //       //         ),
+    //       //         height: 289,
+    //       //         width: 164,
+    //       //         child: Stack(children: [
+    //       //           Container(
+    //       //             height: 52,
+    //       //             width: 164,
+    //       //             decoration: BoxDecoration(
+    //       //               color: SolhColors.green,
+    //       //               borderRadius: BorderRadius.circular(8),
+    //       //             ),
+    //       //           ),
+    //       //           Positioned(
+    //       //             left: 0,
+    //       //             right: 0,
+    //       //             top: 8,
+    //       //             child: Column(
+    //       //               children: [
+    //       //                 Container(
+    //       //                   height: 70,
+    //       //                   width: 70,
+    //       //                   padding: EdgeInsets.all(1),
+    //       //                   decoration: BoxDecoration(
+    //       //                       color: Colors.white, shape: BoxShape.circle),
+    //       //                   child: Container(
+    //       //                     child: FittedBox(
+    //       //                         fit: BoxFit.fill,
+    //       //                         child: CircleAvatar(
+    //       //                           backgroundColor: Colors.white,
+    //       //                           backgroundImage: AssetImage(
+    //       //                               _solhVolunteers[index]['image']!),
+    //       //                         )),
+    //       //                   ),
+    //       //                 ),
+    //       //                 Text(_solhVolunteers[index]['name']!),
+    //       //                 Row(
+    //       //                   mainAxisAlignment: MainAxisAlignment.center,
+    //       //                   children: [
+    //       //                     Text(
+    //       //                       'Solh Expert',
+    //       //                       style: GoogleFonts.signika(
+    //       //                         fontSize: 10,
+    //       //                         color: Color(0xFF5F9B8C),
+    //       //                       ),
+    //       //                     ),
+    //       //                     Image(
+    //       //                         image: AssetImage(
+    //       //                             'assets/images/verifiedTick.png')),
+    //       //                   ],
+    //       //                 ),
+    //       //                 SizedBox(
+    //       //                   height: 4,
+    //       //                 ),
+    //       //                 Container(
+    //       //                   height: 45,
+    //       //                   child: Padding(
+    //       //                     padding:
+    //       //                         const EdgeInsets.symmetric(horizontal: 8),
+    //       //                     child: Text(
+    //       //                       _solhVolunteers[index]['bio']!,
+    //       //                       textAlign: TextAlign.center,
+    //       //                       maxLines: 3,
+    //       //                       overflow: TextOverflow.ellipsis,
+    //       //                       style: GoogleFonts.signika(
+    //       //                         fontSize: 12,
+    //       //                         color: Color(0xff666666),
+    //       //                       ),
+    //       //                     ),
+    //       //                   ),
+    //       //                 ),
+    //       //                 SizedBox(
+    //       //                   height: 13,
+    //       //                 ),
+    //       //                 Padding(
+    //       //                   padding: const EdgeInsets.symmetric(horizontal: 8),
+    //       //                   child: Row(
+    //       //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       //                     children: [
+    //       //                       Row(
+    //       //                         children: [
+    //       //                           Icon(
+    //       //                             Icons.thumb_up,
+    //       //                             size: 12,
+    //       //                             color: Color(0xff5F9B8C),
+    //       //                           ),
+    //       //                           SizedBox(
+    //       //                             width: 4,
+    //       //                           ),
+    //       //                           Text(
+    //       //                             _solhVolunteers[index]['like']!,
+    //       //                             style: GoogleFonts.signika(
+    //       //                                 fontSize: 12,
+    //       //                                 color: Color(0xff5F9B8C)),
+    //       //                           ),
+    //       //                         ],
+    //       //                       ),
+    //       //                       Row(
+    //       //                         children: [
+    //       //                           SvgPicture.asset(
+    //       //                             'assets/images/connect.svg',
+    //       //                           ),
+    //       //                           SizedBox(
+    //       //                             width: 4,
+    //       //                           ),
+    //       //                           Text(
+    //       //                             _solhVolunteers[index]['helped']!,
+    //       //                             style: GoogleFonts.signika(
+    //       //                                 fontSize: 12,
+    //       //                                 color: Color(0xff5F9B8C)),
+    //       //                           ),
+    //       //                         ],
+    //       //                       ),
+    //       //                       Row(
+    //       //                         children: [
+    //       //                           Icon(
+    //       //                             Icons.group,
+    //       //                             size: 12,
+    //       //                             color: Color(0xff5F9B8C),
+    //       //                           ),
+    //       //                           SizedBox(
+    //       //                             width: 4,
+    //       //                           ),
+    //       //                           Text(
+    //       //                             _solhVolunteers[index]['interaction']!,
+    //       //                             style: GoogleFonts.signika(
+    //       //                                 fontSize: 12,
+    //       //                                 color: Color(0xff5F9B8C)),
+    //       //                           ),
+    //       //                         ],
+    //       //                       ),
+    //       //                     ],
+    //       //                   ),
+    //       //                 ),
+    //       //                 SizedBox(
+    //       //                   height: 33,
+    //       //                 ),
+    //       //                 Container(
+    //       //                   height: 32,
+    //       //                   width: 148,
+    //       //                   decoration: BoxDecoration(
+    //       //                       color: SolhColors.green,
+    //       //                       borderRadius: BorderRadius.circular(16)),
+    //       //                   child: Center(
+    //       //                     child: Row(
+    //       //                       mainAxisAlignment: MainAxisAlignment.center,
+    //       //                       children: [
+    //       //                         SvgPicture.asset(
+    //       //                           'assets/images/connect.svg',
+    //       //                           height: 14,
+    //       //                           color: Colors.white,
+    //       //                         ),
+    //       //                         SizedBox(
+    //       //                           width: 4,
+    //       //                         ),
+    //       //                         Text(
+    //       //                           'Connect',
+    //       //                           style: GoogleFonts.signika(
+    //       //                             fontSize: 14,
+    //       //                             color: Colors.white,
+    //       //                           ),
+    //       //                         ),
+    //       //                       ],
+    //       //                     ),
+    //       //                   ),
+    //       //                 )
+    //       //               ],
+    //       //             ),
+    //       //           )
+    //       //         ]),
+    //       //       );
+    //       //     },
+    //       //   ),
+    //       // ),
+    //     ],
+    //   ),
+    // );
   }
 }

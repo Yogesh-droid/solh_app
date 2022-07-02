@@ -19,6 +19,7 @@ class JournalPageController extends GetxController {
   var nomalProfileRadius = 6.w.obs;
 
   var journalsList = <Journals>[].obs;
+  var trendingJournalsList = <Journals>[].obs;
   var outputPath = "".obs;
   var selectedDiary = Journals().obs;
   var isLoading = false.obs;
@@ -26,8 +27,11 @@ class JournalPageController extends GetxController {
   int pageNo = 1;
   int videoIndex = 0;
   int myVideoIndex = 0;
+  int trendingVideoIndex = 0;
   bool isPlayingMyPostVideo = false;
+  bool isPlayingTrendingPostVideo = false;
   var videoPlayerController = [].obs;
+  var tredingVideoPlayerController = [].obs;
   var myVideoPlayerControllers = [].obs;
   var selectedGroupId = "".obs;
   var isScrollingStarted = false.obs;
@@ -83,8 +87,44 @@ class JournalPageController extends GetxController {
     isLoading.value = false;
   }
 
+  Future<void> getTrendingJournals() async {
+    try {
+      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
+          "${APIConstants.api}/api/get-journals?page=1&filter=trending");
+      journalsResponseModel.value = JournalsResponseModel.fromJson(map);
+      trendingJournalsList.value
+          .addAll(journalsResponseModel.value.journals ?? []);
+      tredingVideoPlayerController.value.forEach((element) {
+        if (element != null) {
+          element.forEach((key, value) {
+            value.dispose();
+          });
+        }
+      });
+      tredingVideoPlayerController.value.clear();
+      for (int i = 0; i < trendingJournalsList.value.length; i++) {
+        if (trendingJournalsList[i].mediaType == "video/mp4") {
+          if (videoPlayerController.value.isEmpty) {
+            videoIndex = i;
+          }
+
+          tredingVideoPlayerController.value.add({
+            i: VideoPlayerController.network(
+                trendingJournalsList.value[i].mediaUrl!)
+              ..initialize()
+          });
+        } else {
+          tredingVideoPlayerController.value.add(null);
+        }
+      }
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+  }
+
   void playVideo(int index) {
     isPlayingMyPostVideo = false;
+    isPlayingTrendingPostVideo = false;
     if (videoPlayerController.value[index] != null) {
       if (videoIndex != index) {
         videoPlayerController.value[index]![index]!.pause();
@@ -92,7 +132,7 @@ class JournalPageController extends GetxController {
       if (videoPlayerController.value[index]![index]!.value.isPlaying) {
         videoPlayerController.value[index]![index]!.pause();
       } else {
-        if (!isPlayingMyPostVideo) {
+        if (!isPlayingMyPostVideo && !isPlayingTrendingPostVideo) {
           videoPlayerController.value[index]![index]!.play();
           videoIndex = index;
         }
@@ -115,9 +155,25 @@ class JournalPageController extends GetxController {
     }
   }
 
+  void playTrendingPostVideo(int index) {
+    isPlayingTrendingPostVideo = true;
+    if (tredingVideoPlayerController.value[index] != null) {
+      if (trendingVideoIndex != index) {
+        tredingVideoPlayerController.value[index]![index]!.pause();
+      }
+      if (tredingVideoPlayerController.value[index]![index]!.value.isPlaying) {
+        tredingVideoPlayerController.value[index]![index]!.pause();
+      } else {
+        tredingVideoPlayerController.value[index]![index]!.play();
+        trendingVideoIndex = index;
+      }
+    }
+  }
+
   @override
   void onInit() {
     getAllJournals(1);
+    getTrendingJournals();
     super.onInit();
   }
 }

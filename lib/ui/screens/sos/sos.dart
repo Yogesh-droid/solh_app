@@ -1,18 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/sos/emergency-consultation.dart';
+import 'package:solh/ui/screens/sos/sos_controller/sos_controller.dart';
 import 'package:solh/ui/screens/sos/triger-sos.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class SOSDialog extends StatelessWidget {
-  const SOSDialog({Key? key}) : super(key: key);
+  SOSDialog({Key? key}) : super(key: key);
 
-  final bool _isAdded = false;
+  var _controller = Get.put(SosController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class SOSDialog extends StatelessWidget {
         height: MediaQuery.of(context).size.height / 1.7,
         padding: EdgeInsets.only(
           top: 2.h,
-          bottom: _isAdded ? 9.h : 7.h,
+          bottom: _controller.isAdded ? 9.h : 7.h,
         ),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18), color: Colors.white),
@@ -31,11 +33,11 @@ class SOSDialog extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
-              mainAxisAlignment: _isAdded
+              mainAxisAlignment: _controller.isAdded
                   ? MainAxisAlignment.spaceBetween
                   : MainAxisAlignment.end,
               children: [
-                if (_isAdded)
+                if (_controller.isAdded)
                   Padding(
                     padding: EdgeInsets.only(left: 2.w),
                     child: CircleAvatar(
@@ -60,7 +62,7 @@ class SOSDialog extends StatelessWidget {
                     ))
               ],
             ),
-            if (_isAdded)
+            if (_controller.isAdded)
               Padding(
                 padding: EdgeInsets.only(left: 5.w, right: 5.w),
                 child: Column(

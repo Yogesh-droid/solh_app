@@ -1,14 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:swipe_deck/swipe_deck.dart';
-
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -16,6 +13,7 @@ import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
+import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
@@ -302,33 +300,164 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  // Widget getTrendingPostUI() {
+  //   return CarouselSlider(
+  //       items: _journalPageController.journalsList.map((journal) {
+  //         return PostContentWidget(
+  //           journalModel: journal,
+  //           index: _journalPageController.journalsList.indexOf(journal),
+  //           isMyJournal: false,
+  //         );
+  //       }).toList(),
+  //       options: CarouselOptions(
+  //         height: MediaQuery.of(context).size.height * 0.5,
+  //         aspectRatio: 3 / 4,
+  //         viewportFraction: 0.8,
+  //         initialPage: 0,
+  //         enableInfiniteScroll: true,
+  //         reverse: false,
+  //         autoPlay: false,
+  //         autoPlayInterval: Duration(seconds: 3),
+  //         autoPlayAnimationDuration: Duration(milliseconds: 2000),
+  //         autoPlayCurve: Curves.fastOutSlowIn,
+  //         enlargeCenterPage: true,
+  //         onPageChanged: (index, reason) {
+  //           setState(() {});
+  //         },
+  //         scrollDirection: Axis.horizontal,
+  //       ));
+  // }
+
   Widget getTrendingPostUI() {
-    return CarouselSlider(
-        items: _journalPageController.journalsList.map((journal) {
-          return Container(
-            child: PostContentWidget(
-              journalModel: journal,
-              index: _journalPageController.journalsList.indexOf(journal),
-              isMyJournal: false,
-            ),
+    return Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: Obx(() {
+          return Stack(
+            children: [
+              getDragTarget(),
+              _journalPageController.trendingJournalsList.length > 2
+                  ? Positioned(
+                      right: 15,
+                      top: 70,
+                      left: 30,
+                      child: getPostCard2(
+                          _journalPageController.trendingJournalsList[2]))
+                  : Container(),
+              _journalPageController.trendingJournalsList.length > 1
+                  ? Positioned(
+                      right: 30,
+                      top: 40,
+                      left: 30,
+                      child: getPostCard(
+                          _journalPageController.trendingJournalsList[1]))
+                  : Container(),
+              Positioned(
+                  left: 20,
+                  top: 10,
+                  child: getDraggable(
+                      _journalPageController.trendingJournalsList[0]))
+            ],
           );
-        }).toList(),
-        options: CarouselOptions(
-          height: 300,
-          aspectRatio: 3 / 4,
-          viewportFraction: 0.8,
-          initialPage: 0,
-          enableInfiniteScroll: true,
-          reverse: false,
-          autoPlay: false,
-          autoPlayInterval: Duration(seconds: 3),
-          autoPlayAnimationDuration: Duration(milliseconds: 2000),
-          autoPlayCurve: Curves.fastOutSlowIn,
-          enlargeCenterPage: true,
-          onPageChanged: (index, reason) {
-            setState(() {});
-          },
-          scrollDirection: Axis.horizontal,
-        ));
+        }));
+  }
+
+  Widget getDragTarget() {
+    return Positioned(
+      left: 0,
+      child: DragTarget(
+        onWillAccept: (data) {
+          return true;
+        },
+        onAccept: (data) {
+          print("accepted");
+          if (_journalPageController.trendingJournalsList.length > 1) {
+            _journalPageController.trendingJournalsList.removeAt(0);
+            _journalPageController.trendingJournalsList.refresh();
+          }
+        },
+        onLeave: (data) {
+          print("left");
+        },
+        builder: (context, candidateData, rejectedData) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width * 0.5,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget getDraggable(Journals journal) {
+    return Draggable(
+      data: "data",
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 5,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: SolhColors.greyS200,
+              )),
+          child: Column(
+            children: [
+              Text(journal.postedBy!.name ?? ''),
+              Text(journal.description ?? ''),
+            ],
+          ),
+        ),
+      ),
+      feedback: Card(
+        elevation: 5,
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
+          color: Colors.white,
+          child: Column(
+            children: [
+              Text(journal.postedBy!.name ?? ''),
+              Text(journal.description ?? ''),
+            ],
+          ),
+        ),
+      ),
+      childWhenDragging: Container(),
+      onDragEnd: (data) {
+        print("dragged");
+      },
+    );
+  }
+
+  getPostCard(Journals journal) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+      child: Column(
+        children: [
+          Text(journal.postedBy!.name ?? ''),
+          Text(journal.description ?? ''),
+        ],
+      ),
+    );
+  }
+
+  getPostCard2(Journals journal) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.3,
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+      child: Column(
+        children: [
+          Text(journal.postedBy!.name ?? ''),
+          Text(journal.description ?? ''),
+        ],
+      ),
+    );
   }
 }

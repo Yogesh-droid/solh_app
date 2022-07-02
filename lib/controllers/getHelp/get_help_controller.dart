@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:solh/model/get-help/solh_volunteer_model.dart';
 import '../../constants/api.dart';
 import '../../model/get-help/get_issue_response_model.dart';
 import '../../model/get-help/search_market_model.dart';
@@ -9,6 +10,7 @@ class GetHelpController extends GetxController {
   var getIssueResponseModel = GetIssueResponseModel().obs;
   var issueList = [].obs;
   var topConsultantList = SearchMarketModel().obs;
+  var solhVolunteerList = SolhVolunteerModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
   var isAllIssueShown = false.obs;
 
@@ -67,6 +69,18 @@ class GetHelpController extends GetxController {
     }
   }
 
+  Future<void> getSolhVolunteerList() async {
+    print('getSolhVolunteerList');
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/volunteers");
+      print('getSolhVolunteerList $map');
+      solhVolunteerList.value = SolhVolunteerModel.fromJson(map);
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+  }
+
   @override
   void onInit() {
     // TODO: implement onInit
@@ -74,5 +88,6 @@ class GetHelpController extends GetxController {
     getIssueList();
     getSpecializationList();
     getTopConsultant();
+    getSolhVolunteerList();
   }
 }

@@ -1,15 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
-import 'package:solh/model/user/user.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -29,20 +26,12 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _bookingController.mobileNotextEditingController.text =
-        controller.userModel.value.mobile ?? '';
+        userBlocNetwork.userMobileNo;
     _bookingController.emailTextEditingController.text =
-        controller.userModel.value.email ?? '';
+        userBlocNetwork.userEmail;
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
   }
 
   @override
@@ -198,6 +187,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: TextField(
+                        controller: _bookingController.catTextEditingController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                         ),
@@ -659,7 +649,8 @@ class BookAppointmentPopup extends StatelessWidget {
                   'from': _controller.selectedTimeSlot.split('-')[0],
                   'to': _controller.selectedTimeSlot.split('-')[1],
                   "type": "app",
-                  "duration": "30"
+                  "duration": "30",
+                  "label": _controller.catTextEditingController.value.text,
                 };
                 String response = await _controller.bookAppointment(body);
 

@@ -576,11 +576,13 @@ class PostContentWidget extends StatefulWidget {
       {Key? key,
       required this.journalModel,
       required this.index,
-      required this.isMyJournal})
+      required this.isMyJournal,
+      this.isHomePage})
       : super(key: key);
   final Journals journalModel;
   final int index;
   final bool isMyJournal;
+  final bool? isHomePage;
 
   @override
   State<PostContentWidget> createState() => _PostContentWidgetState();
@@ -671,11 +673,15 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                   Wrap(
                     children: widget.journalModel.description!.length == 0
                         ? []
-                        : !showMoreBtn
-                            ? descriptionTexts.map((item) {
-                                return getDescriptionText(item);
-                              }).toList()
-                            : descriptionTexts.sublist(0, 10).map((item) {
+                        : showMoreBtn
+                            ? isExpanded
+                                ? descriptionTexts.map((item) {
+                                    return getDescriptionText(item);
+                                  }).toList()
+                                : descriptionTexts.sublist(0, 10).map((item) {
+                                    return getDescriptionText(item);
+                                  }).toList()
+                            : descriptionTexts.map((item) {
                                 return getDescriptionText(item);
                               }).toList(),
                   ),
@@ -718,8 +724,6 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                       child: Stack(
                         children: [
                           Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.width,
                               margin: EdgeInsets.symmetric(
                                 vertical:
                                     MediaQuery.of(context).size.height / 80,
