@@ -2,8 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../controllers/goal-setting/goal_setting_controller.dart';
 
 class MasterScreen extends StatefulWidget {
   MasterScreen({this.index});
@@ -13,6 +16,8 @@ class MasterScreen extends StatefulWidget {
 }
 
 class _MasterScreenState extends State<MasterScreen> {
+  GoalSettingController goalSettingController =
+      Get.put(GoalSettingController());
   @override
   void initState() {
     super.initState();
@@ -22,10 +27,10 @@ class _MasterScreenState extends State<MasterScreen> {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        //HomeScreenRouter(),
+        HomeScreenRouter(),
         JournalingScreenRouter(),
         GetHelpScreenRouter(),
-        //MyGoalsScreenRouter(),
+        MyGoalsScreenRouter(),
         MyProfileScreenRouter(),
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -56,31 +61,31 @@ class _MasterScreenState extends State<MasterScreen> {
           // },
           onTap: (index) => tabsRouter.setActiveIndex(index),
           items: [
-            // BottomNavigationBarItem(
-            //     icon: Icon(
-            //       tabsRouter.activeIndex == 0
-            //           ? CupertinoIcons.house_fill
-            //           : CupertinoIcons.house,
-            //     ),
-            //     label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(tabsRouter.activeIndex == 0
+                icon: Icon(
+                  tabsRouter.activeIndex == 0
+                      ? CupertinoIcons.house_fill
+                      : CupertinoIcons.house,
+                ),
+                label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(tabsRouter.activeIndex == 1
                     ? CupertinoIcons.person_3_fill
                     : CupertinoIcons.person_3),
                 label: "journaling"),
             BottomNavigationBarItem(
-              icon: tabsRouter.activeIndex == 1
+              icon: tabsRouter.activeIndex == 2
                   ? SvgPicture.asset(
                       "assets/icons/bottom-navigation-bar/get-help.svg")
                   : SvgPicture.asset(
                       "assets/icons/bottom-navigation-bar/get-help-outline.svg"),
               label: "Get Help",
             ),
-            // BottomNavigationBarItem(
-            //     icon: Icon(tabsRouter.activeIndex == 3
-            //         ? CupertinoIcons.check_mark_circled_solid
-            //         : CupertinoIcons.check_mark_circled),
-            //     label: "My Goals"),
+            BottomNavigationBarItem(
+                icon: Icon(tabsRouter.activeIndex == 3
+                    ? CupertinoIcons.check_mark_circled_solid
+                    : CupertinoIcons.check_mark_circled),
+                label: "My Goals"),
             BottomNavigationBarItem(
                 icon: Icon(
                   CupertinoIcons.line_horizontal_3,

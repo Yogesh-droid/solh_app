@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/journal-bloc.dart';
@@ -21,13 +20,9 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import '../../../controllers/getHelp/get_help_controller.dart';
-import '../../../controllers/group/create_group_controller.dart';
 import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
-import '../../../controllers/my_diary/my_diary_controller.dart';
-import '../mood-meter/mood_meter.dart';
 
 class JournalingScreen extends StatefulWidget {
   const JournalingScreen({Key? key}) : super(key: key);
@@ -37,21 +32,15 @@ class JournalingScreen extends StatefulWidget {
 }
 
 class _JournalingScreenState extends State<JournalingScreen> {
-  FeelingsController feelingsController = Get.put(FeelingsController());
-  final CreateGroupController _controller = Get.put(CreateGroupController());
-  JournalPageController _journalPageController =
-      Get.put(JournalPageController());
-  MyDiaryController myDiaryController = Get.put(MyDiaryController());
-  GetHelpController getHelpController = Get.put(GetHelpController());
-  JournalCommentController journalCommentController =
-      Get.put(JournalCommentController());
+  FeelingsController feelingsController = Get.find();
+  JournalCommentController journalCommentController = Get.find();
   MoodMeterController moodMeterController = Get.find();
   late DateTime _lastDateMoodMeterShown;
   late bool isMoodMeterShown;
 
-  final DiscoverGroupController discoverGroupController =
-      Get.put(DiscoverGroupController());
-  ConnectionController connectionController = Get.put(ConnectionController());
+  final DiscoverGroupController discoverGroupController = Get.find();
+
+  ConnectionController connectionController = Get.find();
 
   // final _newPostKey = GlobalKey<FormState>();
 
@@ -98,9 +87,9 @@ class _JournalingState extends State<Journaling> {
     super.initState();
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
-    userBlocNetwork.getMyProfileSnapshot();
+
     journalsBloc.getJournalsSnapshot();
-    openMoodMeter();
+    //openMoodMeter();
     _journalsScrollController.addListener(() async {
       if (_journalsScrollController.position.pixels ==
           _journalsScrollController.position.minScrollExtent) {
@@ -726,94 +715,94 @@ class _JournalingState extends State<Journaling> {
     ));
   }
 
-  Future<void> openMoodMeter() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getInt('lastDateShown') != null) {
-      if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
-              .day ==
-          DateTime.now().day) {
-        return;
-      } else {
-        await moodMeterController.getMoodList();
-        if (moodMeterController.moodList.length > 0) {
-          /* showModalBottomSheet(
-              isScrollControlled: true,
-              context: context,
-              builder: (context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(child: Container()),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        child: MoodMeter(),
-                      ),
-                    ],
-                  ),
-                );
-              }); */
+  // Future<void> openMoodMeter() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   if (prefs.getInt('lastDateShown') != null) {
+  //     if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
+  //             .day ==
+  //         DateTime.now().day) {
+  //       return;
+  //     } else {
+  //       await moodMeterController.getMoodList();
+  //       if (moodMeterController.moodList.length > 0) {
+  //         /* showModalBottomSheet(
+  //             isScrollControlled: true,
+  //             context: context,
+  //             builder: (context) {
+  //               return Container(
+  //                 height: MediaQuery.of(context).size.height * 0.8,
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.white,
+  //                   borderRadius: BorderRadius.only(
+  //                     topLeft: Radius.circular(20),
+  //                     topRight: Radius.circular(20),
+  //                   ),
+  //                   image: DecorationImage(
+  //                     image: AssetImage('assets/intro/png/mood_meter_bg.png'),
+  //                     fit: BoxFit.fill,
+  //                   ),
+  //                 ),
+  //                 child: Column(
+  //                   children: [
+  //                     Row(
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Expanded(child: Container()),
+  //                         InkWell(
+  //                           onTap: () {
+  //                             Navigator.pop(context);
+  //                           },
+  //                           child: Padding(
+  //                             padding: const EdgeInsets.all(8.0),
+  //                             child: Container(
+  //                               decoration: BoxDecoration(
+  //                                 color: Colors.grey[200],
+  //                                 shape: BoxShape.circle,
+  //                               ),
+  //                               child: Padding(
+  //                                 padding: const EdgeInsets.all(3.0),
+  //                                 child: Icon(
+  //                                   Icons.close,
+  //                                   color: Colors.grey,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                     SizedBox(
+  //                       height: 10,
+  //                     ),
+  //                     Container(
+  //                       height: MediaQuery.of(context).size.height * 0.8,
+  //                       child: MoodMeter(),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               );
+  //             }); */
 
-          showGeneralDialog(
-              context: context,
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(body: MoodMeter());
-              });
-        }
+  //         showGeneralDialog(
+  //             context: context,
+  //             pageBuilder: (context, animation, secondaryAnimation) {
+  //               return Scaffold(body: MoodMeter());
+  //             });
+  //       }
 
-        prefs.setBool('moodMeterShown', true);
-        prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
-      }
-    } else {
-      await moodMeterController.getMoodList();
-      showGeneralDialog(
-          context: context,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Scaffold(body: MoodMeter());
-          });
+  //       prefs.setBool('moodMeterShown', true);
+  //       prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
+  //     }
+  //   } else {
+  //     await moodMeterController.getMoodList();
+  //     showGeneralDialog(
+  //         context: context,
+  //         pageBuilder: (context, animation, secondaryAnimation) {
+  //           return Scaffold(body: MoodMeter());
+  //         });
 
-      prefs.setBool('moodMeterShown', true);
-      prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
-    }
-  }
+  //     prefs.setBool('moodMeterShown', true);
+  //     prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
+  //   }
+  // }
 }

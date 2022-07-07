@@ -102,20 +102,20 @@ class SOSDialog extends StatelessWidget {
                     Text("Add SOS", style: SolhTextStyles.SOSGreenHeading),
                     SizedBox(height: 0.6.h),
                     Text(
-                      "During any emergency ask for help immediately with just one click",
+                      "Seek immediate help during emergency with just one click",
                       textAlign: TextAlign.center,
                       style: SolhTextStyles.SOSGreyText,
                     ),
                     SizedBox(height: 1.5.h),
                     Text(
-                      "No Contact Details found.",
+                      "No contact details found.",
                       style: TextStyle(color: Color(0xFFC4C4C4)),
                     ),
                     SizedBox(height: 2.5.h),
                     SolhGreenBorderButton(
                       height: 6.h,
                       child: Text(
-                        "Add Details",
+                        "Add contact",
                         style: TextStyle(color: SolhColors.green),
                       ),
                       onPressed: () {
@@ -142,7 +142,7 @@ class SOSDialog extends StatelessWidget {
                   ),
                   SizedBox(height: 0.6.h),
                   Text(
-                    "In case of emergency, connect with best posible & instantly available Paid consultant.",
+                    "In case of emergency, connect with best possible and instantly available Paid consultant.",
                     textAlign: TextAlign.center,
                     style: SolhTextStyles.SOSGreyText,
                   ),
@@ -150,7 +150,7 @@ class SOSDialog extends StatelessWidget {
                   SolhGreenButton(
                     height: 6.h,
                     child: Text(
-                      "Consultant Now",
+                      "Consult Now",
                       style:
                           SolhTextStyles.GreenButtonText.copyWith(fontSize: 16),
                     ),

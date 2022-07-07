@@ -36,6 +36,7 @@ class JournalPageController extends GetxController {
   var selectedGroupId = "".obs;
   var isScrollingStarted = false.obs;
   var isImageUploading = false.obs;
+  var isTrendingLoading = false.obs;
 
   Future<void> getAllJournals(int pageNo, {String? groupId}) async {
     print('started gettting all journals $pageNo');
@@ -88,6 +89,7 @@ class JournalPageController extends GetxController {
   }
 
   Future<void> getTrendingJournals() async {
+    isTrendingLoading.value = true;
     try {
       Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
           "${APIConstants.api}/api/get-journals?page=1&filter=trending");
@@ -120,6 +122,7 @@ class JournalPageController extends GetxController {
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }
+    isTrendingLoading.value = false;
   }
 
   void playVideo(int index) {

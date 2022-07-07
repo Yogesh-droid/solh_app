@@ -20,141 +20,144 @@ class MoodMeter extends StatelessWidget {
   ]);
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        height: MediaQuery.of(context).size.height - 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+    return Scaffold(
+      body: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          height: MediaQuery.of(context).size.height - 100,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+            image: DecorationImage(
+              image: AssetImage('assets/intro/png/mood_meter_bg.png'),
+              fit: BoxFit.fitHeight,
+            ),
           ),
-          image: DecorationImage(
-            image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-            fit: BoxFit.fitHeight,
-          ),
-        ),
-        child: Obx(() {
-          return moodMeterController.isLoading.value
-              ? getShimmer()
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.grey,
+          child: Obx(() {
+            return moodMeterController.isLoading.value
+                ? getShimmer()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 30),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(child: Container()),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: Icon(
+                                    Icons.close,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      "How are you feeling right now?",
-                      style:
-                          TextStyle(fontSize: 20, color: SolhColors.black166),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Obx(() {
-                      return ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            imageUrl: moodMeterController.selectedGif.value,
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.fill,
-                            placeholder: (context, url) => Shimmer.fromColors(
-                              child: Container(
-                                color: Colors.grey,
+                        ],
+                      ),
+                      Text(
+                        "How are you feeling right now?",
+                        style:
+                            TextStyle(fontSize: 20, color: SolhColors.black166),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Obx(() {
+                        return ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl: moodMeterController.selectedGif.value,
+                              height: 200,
+                              width: 200,
+                              fit: BoxFit.fill,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                child: Container(
+                                  color: Colors.grey,
+                                ),
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
                               ),
-                              baseColor: Colors.grey[300]!,
-                              highlightColor: Colors.grey[100]!,
-                            ),
-                          ));
-                    }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Obx(() {
-                      return Text(
-                        moodMeterController.selectedMood.value,
-                        style: SolhTextStyles.ProfileMenuGreyText,
-                      );
-                    }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SliderTheme(
-                          data: SliderThemeData(
-                              trackShape: GradientRectSliderTrackShape(
-                                  gradient: gradient, darkenInactive: true),
-                              thumbShape: MyThumbShape(),
-                              overlayShape: RoundSliderOverlayShape(
-                                overlayRadius: 20.0,
-                              ),
-                              overlayColor: SolhColors.black.withOpacity(0.2),
-                              tickMarkShape: MyTickerShape()),
-                          child: Obx(() {
-                            return Slider(
-                                thumbColor: Colors.white,
-                                divisions: moodMeterController
-                                        .moodMeterModel.value.moodList!.length -
-                                    1,
-                                min: 0,
-                                max: moodMeterController
-                                        .moodMeterModel.value.moodList!.length -
-                                    1.toDouble(),
-                                value: moodMeterController.selectedValue.value,
-                                onChanged: (value) {
-                                  moodMeterController.selectedValue.value =
-                                      value;
-                                  moodMeterController.changeImg(value);
-                                  print(value);
-                                });
-                          })),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SolhGreenButton(
-                          height: 50,
-                          child: Text("Done"),
-                          onPressed: () {
-                            //moodMeterController.saveMoodOfday();
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) {
-                              return MoodReasonPage();
-                            }));
-                          }),
-                    ),
-                  ],
-                );
-        }));
+                            ));
+                      }),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Obx(() {
+                        return Text(
+                          moodMeterController.selectedMood.value,
+                          style: SolhTextStyles.ProfileMenuGreyText,
+                        );
+                      }),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SliderTheme(
+                            data: SliderThemeData(
+                                trackShape: GradientRectSliderTrackShape(
+                                    gradient: gradient, darkenInactive: true),
+                                thumbShape: MyThumbShape(),
+                                overlayShape: RoundSliderOverlayShape(
+                                  overlayRadius: 20.0,
+                                ),
+                                overlayColor: SolhColors.black.withOpacity(0.2),
+                                tickMarkShape: MyTickerShape()),
+                            child: Obx(() {
+                              return Slider(
+                                  thumbColor: Colors.white,
+                                  divisions: moodMeterController.moodMeterModel
+                                          .value.moodList!.length -
+                                      1,
+                                  min: 0,
+                                  max: moodMeterController.moodMeterModel.value
+                                          .moodList!.length -
+                                      1.toDouble(),
+                                  value:
+                                      moodMeterController.selectedValue.value,
+                                  onChanged: (value) {
+                                    moodMeterController.selectedValue.value =
+                                        value;
+                                    moodMeterController.changeImg(value);
+                                    print(value);
+                                  });
+                            })),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SolhGreenButton(
+                            height: 50,
+                            child: Text("Done"),
+                            onPressed: () {
+                              //moodMeterController.saveMoodOfday();
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(builder: (context) {
+                                return MoodReasonPage();
+                              }));
+                            }),
+                      ),
+                    ],
+                  );
+          })),
+    );
   }
 
   getShimmer() {
@@ -162,20 +165,26 @@ class MoodMeter extends StatelessWidget {
       baseColor: Colors.grey[300]!,
       highlightColor: Colors.grey[100]!,
       child: Container(
-        height: 200,
-        width: 200,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 10,
-              width: 200,
-              color: Colors.grey[300],
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                shape: BoxShape.circle,
+              ),
+              height: 100,
+            ),
+            SizedBox(
+              height: 30,
             ),
             Container(
               height: 10,
-              width: 200,
+              width: double.infinity,
               color: Colors.grey[300],
+            ),
+            SizedBox(
+              height: 30,
             ),
             Container(
               height: 10,

@@ -107,13 +107,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   ];
 
   @override
-  void initState() {
-    print('issuelist ${getHelpController.issueList}');
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
@@ -314,29 +307,34 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               height: 17.h,
               margin: EdgeInsets.only(bottom: 2.h),
               child: Container(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 6,
-                    itemBuilder: (_, index) {
-                      print(getHelpController.topConsultantList.value
-                          .doctors![index].profilePicture);
-                      return TopConsultantsTile(
-                        bio: getHelpController
-                                .topConsultantList.value.doctors![index].bio ??
-                            '',
-                        name: getHelpController
-                                .topConsultantList.value.doctors![index].name ??
-                            '',
-                        mobile: getHelpController.topConsultantList.value
-                                .doctors![index].contactNumber ??
-                            '',
-                        imgUrl: getHelpController.topConsultantList.value
-                            .doctors![index].profilePicture,
-                        sId: getHelpController
-                            .topConsultantList.value.doctors![index].sId,
-                      );
-                    }),
+                child: getHelpController.topConsultantList.value.doctors != null
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 6,
+                        itemBuilder: (_, index) {
+                          print(getHelpController.topConsultantList.value
+                              .doctors![index].profilePicture);
+                          return TopConsultantsTile(
+                            bio: getHelpController.topConsultantList.value
+                                    .doctors![index].bio ??
+                                '',
+                            name: getHelpController.topConsultantList.value
+                                    .doctors![index].name ??
+                                '',
+                            mobile: getHelpController.topConsultantList.value
+                                    .doctors![index].contactNumber ??
+                                '',
+                            imgUrl: getHelpController.topConsultantList.value
+                                .doctors![index].profilePicture,
+                            sId: getHelpController
+                                .topConsultantList.value.doctors![index].sId,
+                          );
+                        })
+                    : Container(
+                        child: Center(
+                        child: Text('No Doctors Found'),
+                      )),
               ),
             ),
             GetHelpDivider(),
@@ -351,40 +349,47 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             Container(
               height: 38.h,
               margin: EdgeInsets.only(bottom: 2.h),
-              child: Container(
-                child: ListView.separated(
-                  separatorBuilder: (_, __) => SizedBox(width: 2.w),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: getHelpController
-                      .solhVolunteerList.value.provider!.length,
-                  itemBuilder: (context, index) => SolhVolunteers(
-                    bio: getHelpController
-                            .solhVolunteerList.value.provider![index].bio ??
-                        '',
-                    name: getHelpController
-                            .solhVolunteerList.value.provider![index].name ??
-                        '',
-                    mobile: getHelpController.solhVolunteerList.value
-                            .provider![index].contactNumber ??
-                        '',
-                    imgUrl: getHelpController.solhVolunteerList.value
-                        .provider![index].profilePicture,
-                    sId: getHelpController
-                        .solhVolunteerList.value.provider![index].sId,
-                    comments: getHelpController
-                        .solhVolunteerList.value.provider![index].commentCount
-                        .toString(),
-                    connections: getHelpController.solhVolunteerList.value
-                        .provider![index].connectionsCount
-                        .toString(),
-                    likes: getHelpController
-                        .solhVolunteerList.value.provider![index].likesCount
-                        .toString(),
-                  ),
-                ),
-              ),
-            ),
+              child: Container(child: Obx(() {
+                return getHelpController.solhVolunteerList.value.provider !=
+                        null
+                    ? ListView.separated(
+                        separatorBuilder: (_, __) => SizedBox(width: 2.w),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: getHelpController
+                            .solhVolunteerList.value.provider!.length,
+                        itemBuilder: (context, index) => SolhVolunteers(
+                          bio: getHelpController.solhVolunteerList.value
+                                  .provider![index].bio ??
+                              '',
+                          name: getHelpController.solhVolunteerList.value
+                                  .provider![index].name ??
+                              '',
+                          mobile: getHelpController.solhVolunteerList.value
+                                  .provider![index].contactNumber ??
+                              '',
+                          imgUrl: getHelpController.solhVolunteerList.value
+                              .provider![index].profilePicture,
+                          sId: getHelpController
+                              .solhVolunteerList.value.provider![index].sId,
+                          comments: getHelpController.solhVolunteerList.value
+                              .provider![index].commentCount
+                              .toString(),
+                          connections: getHelpController.solhVolunteerList.value
+                              .provider![index].connectionsCount
+                              .toString(),
+                          likes: getHelpController.solhVolunteerList.value
+                              .provider![index].likesCount
+                              .toString(),
+                        ),
+                      )
+                    : Container(
+                        child: Center(
+                          child: Text('No Volunteers Found'),
+                        ),
+                      );
+              })),
+            )
           ],
         ),
       ),

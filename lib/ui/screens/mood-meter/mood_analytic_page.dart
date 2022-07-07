@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -122,8 +123,25 @@ class MoodAnalyticPage extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          getMoodPieChartWidget(context),
-          getMoodCountListWidget(context),
+          Obx(() {
+            return moodMeterController.isFetchingMoodAnalytics.value
+                ? Shimmer.fromColors(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      height: 50,
+                      width: 50,
+                    ),
+                    baseColor: Colors.grey[200]!,
+                    highlightColor: Colors.grey[200]!)
+                : getMoodPieChartWidget(context);
+          }),
+          Obx(() {
+            return moodMeterController.isFetchingMoodAnalytics.value
+                ? Container()
+                : getMoodCountListWidget(context);
+          })
         ],
       ),
     );

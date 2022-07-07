@@ -17,7 +17,6 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../routes/routes.gr.dart';
 
 class GroupDetailsPage extends StatefulWidget {
@@ -167,13 +166,15 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           ),
         ),
         groupList.groupMembers != null
-            ? groupList.defaultAdmin!.id == userBlocNetwork.id
+            ? groupList.defaultAdmin!.id ==
+                    userBlocNetwork.id //// this is for the admin
                 ? getPopUpMenuBtn(context)
                 : Container()
             : Obx(() {
                 return discoverGroupController.isLoading.value
                     ? Container()
-                    : getPopUpMenuBtn(context);
+                    // : getPopUpMenuBtn(context);
+                    : Container();
               })
       ]),
       isLandingScreen: false,

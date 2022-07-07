@@ -130,7 +130,7 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Emotional Spectrum",
                 onPressed: () async {
-                  await moodMeterController.getMoodList();
+                  moodMeterController.getMoodAnalytics(7);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

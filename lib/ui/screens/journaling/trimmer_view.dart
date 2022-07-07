@@ -179,12 +179,19 @@ class _TrimmerViewState extends State<TrimmerView> {
 
   Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
     journalPageController.isImageUploading.value = true;
-    Map<String, dynamic> map = await Network.uploadFileToServer(
-        "${APIConstants.api}/api/fileupload/journal-image",
-        "file",
-        File(journalPageController.outputPath.value),
-        isVideo: true);
-    journalPageController.isImageUploading.value = false;
+    Map<String, dynamic> map = {};
+
+    try {
+      map = await Network.uploadFileToServer(
+          "${APIConstants.api}/api/fileupload/journal-image",
+          "file",
+          File(journalPageController.outputPath.value),
+          isVideo: true);
+      journalPageController.isImageUploading.value = false;
+    } on Exception catch (e) {
+      Utility.showToast('Something went wrong');
+      Navigator.pop(context);
+    }
     return map;
   }
 }

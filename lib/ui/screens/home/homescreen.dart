@@ -1,20 +1,30 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-controller/my_goal_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
+import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
+import '../../../controllers/group/discover_group_controller.dart';
+import '../../../controllers/journals/feelings_controller.dart';
 import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import '../get-help/get-help.dart';
+import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../mood-meter/mood_meter.dart';
@@ -32,6 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(JournalPageController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   GetHelpController getHelpController = Get.put(GetHelpController());
+  final DiscoverGroupController discoverGroupController =
+      Get.put(DiscoverGroupController());
+  ConnectionController connectionController = Get.put(ConnectionController());
+  FeelingsController feelingsController = Get.put(FeelingsController());
+
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
   MoodMeterController moodMeterController = Get.find();
@@ -70,62 +85,10 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         await moodMeterController.getMoodList();
         if (moodMeterController.moodList.length > 0) {
-          showBottomSheet(
-              enableDrag: true,
+          showGeneralDialog(
               context: context,
-              builder: (context) {
-                return Container(
-                  height: MediaQuery.of(context).size.height * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(child: Container()),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.7,
-                        child: MoodMeter(),
-                      ),
-                    ],
-                  ),
-                );
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return Scaffold(body: MoodMeter());
               });
         }
 
@@ -134,65 +97,11 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } else {
       await moodMeterController.getMoodList();
-      if (moodMeterController.moodList.length > 0) {
-        showBottomSheet(
-            enableDrag: true,
-            context: context,
-            builder: (context) {
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.8,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  image: DecorationImage(
-                    image: AssetImage('assets/intro/png/mood_meter_bg.png'),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(child: Container()),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                shape: BoxShape.circle,
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: MoodMeter(),
-                    ),
-                  ],
-                ),
-              );
-            });
-      }
+      showGeneralDialog(
+          context: context,
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Scaffold(body: MoodMeter());
+          });
 
       prefs.setBool('moodMeterShown', true);
       prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
@@ -209,7 +118,16 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   JournalPageController _journalPageController = Get.find();
+  GetHelpController getHelpController = Get.find();
+  DiscoverGroupController discoverGroupController = Get.find();
   bool _isDrawerOpen = false;
+  List<String> feelingList = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedPositioned(
@@ -236,13 +154,91 @@ class _HomePageState extends State<HomePage> {
           children: [
             Scaffold(
               appBar: getAppBar(),
-              body: Column(children: [
-                WhatsOnYourMindSection(),
-                SizedBox(
-                  height: 10,
-                ),
-                getTrendingPostUI(),
-              ]),
+              body: SingleChildScrollView(
+                child: Column(children: [
+                  WhatsOnYourMindSection(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GetHelpCategory(title: 'Trending Posts', onPressed: () {}),
+                  Obx(() {
+                    return _journalPageController.isTrendingLoading.value
+                        ? getTrendingPostShimmer()
+                        : getTrendingPostUI();
+                  }),
+                  GetHelpDivider(),
+                  GetHelpCategory(title: 'Solh Buddies', onPressed: () {}),
+                  getSolhBuddiesUI(),
+                  GetHelpDivider(),
+                  GetHelpCategory(
+                      title: 'Recommended groups', onPressed: () {}),
+                  Obx(() {
+                    return discoverGroupController
+                                .discoveredGroupModel.value.groupList !=
+                            null
+                        ? getRecommendedGroupsUI()
+                        : Container();
+                  }),
+                  GetHelpDivider(),
+                  // GetHelpCategory(
+                  //     title: 'People You May Know', onPressed: () {}),
+                  // getPeopleYouMayKnowUI(),
+                  GetHelpCategory(
+                    title: "Top Consultants",
+                    onPressed: () =>
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => ConsultantsScreen(
+                                  slug: '',
+                                  type: 'topconsultant',
+                                ))),
+                  ),
+                  Container(
+                    height: 17.h,
+                    margin: EdgeInsets.only(bottom: 2.h),
+                    child: Obx(() => Container(
+                          child: getHelpController
+                                      .topConsultantList.value.doctors !=
+                                  null
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 6,
+                                  itemBuilder: (_, index) {
+                                    print(getHelpController.topConsultantList
+                                        .value.doctors![index].profilePicture);
+                                    return TopConsultantsTile(
+                                      bio: getHelpController.topConsultantList
+                                              .value.doctors![index].bio ??
+                                          '',
+                                      name: getHelpController.topConsultantList
+                                              .value.doctors![index].name ??
+                                          '',
+                                      mobile: getHelpController
+                                              .topConsultantList
+                                              .value
+                                              .doctors![index]
+                                              .contactNumber ??
+                                          '',
+                                      imgUrl: getHelpController
+                                          .topConsultantList
+                                          .value
+                                          .doctors![index]
+                                          .profilePicture,
+                                      sId: getHelpController.topConsultantList
+                                          .value.doctors![index].sId,
+                                    );
+                                  })
+                              : Container(
+                                  child: Center(
+                                  child: Text('No Doctors Found'),
+                                )),
+                        )),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
+                ]),
+              ),
             ),
             if (_isDrawerOpen)
               GestureDetector(
@@ -300,41 +296,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Widget getTrendingPostUI() {
-  //   return CarouselSlider(
-  //       items: _journalPageController.journalsList.map((journal) {
-  //         return PostContentWidget(
-  //           journalModel: journal,
-  //           index: _journalPageController.journalsList.indexOf(journal),
-  //           isMyJournal: false,
-  //         );
-  //       }).toList(),
-  //       options: CarouselOptions(
-  //         height: MediaQuery.of(context).size.height * 0.5,
-  //         aspectRatio: 3 / 4,
-  //         viewportFraction: 0.8,
-  //         initialPage: 0,
-  //         enableInfiniteScroll: true,
-  //         reverse: false,
-  //         autoPlay: false,
-  //         autoPlayInterval: Duration(seconds: 3),
-  //         autoPlayAnimationDuration: Duration(milliseconds: 2000),
-  //         autoPlayCurve: Curves.fastOutSlowIn,
-  //         enlargeCenterPage: true,
-  //         onPageChanged: (index, reason) {
-  //           setState(() {});
-  //         },
-  //         scrollDirection: Axis.horizontal,
-  //       ));
-  // }
-
   Widget getTrendingPostUI() {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.55,
         child: Obx(() {
           return Stack(
             children: [
-              getDragTarget(),
+              // getDragTarget(),
               _journalPageController.trendingJournalsList.length > 2
                   ? Positioned(
                       right: 15,
@@ -361,73 +329,94 @@ class _HomePageState extends State<HomePage> {
         }));
   }
 
-  Widget getDragTarget() {
-    return Positioned(
-      left: 0,
-      child: DragTarget(
-        onWillAccept: (data) {
-          return true;
-        },
-        onAccept: (data) {
-          print("accepted");
-          if (_journalPageController.trendingJournalsList.length > 1) {
-            _journalPageController.trendingJournalsList.removeAt(0);
-            _journalPageController.trendingJournalsList.refresh();
-          }
-        },
-        onLeave: (data) {
-          print("left");
-        },
-        builder: (context, candidateData, rejectedData) {
-          return Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width * 0.5,
-          );
-        },
-      ),
-    );
-  }
+  // Widget getDragTarget() {
+  //   return Positioned(
+  //     left: 0,
+  //     child: DragTarget(
+  //       onWillAccept: (data) {
+  //         return true;
+  //       },
+  //       onAccept: (data) {
+  //         print("accepted");
+  //         // _journalPageController.trendingJournalsList
+  //         //     .insert(10, _journalPageController.trendingJournalsList[0]);
+  //         // _journalPageController.trendingJournalsList.removeAt(0);
+
+  //         // _journalPageController.trendingJournalsList.refresh();
+  //       },
+  //       onLeave: (data) {
+  //         print("left");
+  //       },
+  //       builder: (context, candidateData, rejectedData) {
+  //         return Container(
+  //           height: MediaQuery.of(context).size.height,
+  //           width: MediaQuery.of(context).size.width * 0.7,
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget getDraggable(Journals journal) {
     return Draggable(
+      affinity: Axis.horizontal,
       data: "data",
-      child: Card(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        width: MediaQuery.of(context).size.width * 0.8,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: SolhColors.grey217,
+                offset: const Offset(
+                  5.0,
+                  0.0,
+                ),
+                blurRadius: 5.0,
+                spreadRadius: 0,
+              )
+            ],
+            border: Border.all(
+              color: SolhColors.greyS200,
+            )),
+        child: getPostContent(journal),
+      ),
+      feedback: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        elevation: 5,
         child: Container(
           height: MediaQuery.of(context).size.height * 0.5,
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: SolhColors.grey217,
+                  offset: const Offset(
+                    5.0,
+                    0.0,
+                  ),
+                  blurRadius: 5.0,
+                  spreadRadius: 0,
+                )
+              ],
               border: Border.all(
                 color: SolhColors.greyS200,
               )),
-          child: Column(
-            children: [
-              Text(journal.postedBy!.name ?? ''),
-              Text(journal.description ?? ''),
-            ],
-          ),
-        ),
-      ),
-      feedback: Card(
-        elevation: 5,
-        child: Container(
-          height: MediaQuery.of(context).size.height * 0.5,
-          width: MediaQuery.of(context).size.width * 0.8,
-          color: Colors.white,
-          child: Column(
-            children: [
-              Text(journal.postedBy!.name ?? ''),
-              Text(journal.description ?? ''),
-            ],
-          ),
+          child: getPostContent(journal),
         ),
       ),
       childWhenDragging: Container(),
       onDragEnd: (data) {
+        _journalPageController.trendingJournalsList
+            .insert(10, _journalPageController.trendingJournalsList[0]);
+        _journalPageController.trendingJournalsList.removeAt(0);
+
+        _journalPageController.trendingJournalsList.refresh();
         print("dragged");
       },
     );
@@ -438,12 +427,7 @@ class _HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey[200]!), color: Colors.white),
-      child: Column(
-        children: [
-          Text(journal.postedBy!.name ?? ''),
-          Text(journal.description ?? ''),
-        ],
-      ),
+      child: getPostContent(journal),
     );
   }
 
@@ -452,12 +436,268 @@ class _HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height * 0.3,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey[200]!), color: Colors.white),
-      child: Column(
-        children: [
-          Text(journal.postedBy!.name ?? ''),
-          Text(journal.description ?? ''),
+      child: getPostContent(journal),
+    );
+  }
+
+  Widget getTrendingPostShimmer() {
+    return Shimmer(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Colors.grey[400]!,
+          Colors.grey[500]!,
+          Colors.grey[600]!,
+          Colors.grey[700]!,
         ],
       ),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.5,
+        width: MediaQuery.of(context).size.width * 0.8,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+      ),
     );
+  }
+
+  Widget getPostContent(Journals journal) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        journal.feelings!.length > 0
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Wrap(
+                  children: journal.feelings!
+                      .map((e) => Text(
+                            '# ${e.feelingName}',
+                            style: SolhTextStyles.JournalingHashtagText,
+                          ))
+                      .toList(),
+                ),
+              )
+            : Container(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            journal.description ?? '',
+            style: SolhTextStyles.LandingParaText,
+            maxLines: 3,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: journal.mediaUrl ?? '',
+                fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Image.asset(
+                  'assets/images/no-image-available_err.png',
+                  fit: BoxFit.cover,
+                ),
+                placeholder: (context, url) => getImgShimmer(),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget getImgShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.3,
+        width: MediaQuery.of(context).size.width * 0.8,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+      ),
+    );
+  }
+
+  Widget getSolhBuddiesUI() {
+    return Container(
+      height: 38.h,
+      margin: EdgeInsets.only(bottom: 2.h),
+      child: Container(child: Obx(() {
+        return getHelpController.solhVolunteerList.value.provider != null
+            ? ListView.separated(
+                separatorBuilder: (_, __) => SizedBox(width: 2.w),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount:
+                    getHelpController.solhVolunteerList.value.provider!.length,
+                itemBuilder: (context, index) => SolhVolunteers(
+                  bio: getHelpController
+                          .solhVolunteerList.value.provider![index].bio ??
+                      '',
+                  name: getHelpController
+                          .solhVolunteerList.value.provider![index].name ??
+                      '',
+                  mobile: getHelpController.solhVolunteerList.value
+                          .provider![index].contactNumber ??
+                      '',
+                  imgUrl: getHelpController
+                      .solhVolunteerList.value.provider![index].profilePicture,
+                  sId: getHelpController
+                      .solhVolunteerList.value.provider![index].sId,
+                  comments: getHelpController
+                      .solhVolunteerList.value.provider![index].commentCount
+                      .toString(),
+                  connections: getHelpController
+                      .solhVolunteerList.value.provider![index].connectionsCount
+                      .toString(),
+                  likes: getHelpController
+                      .solhVolunteerList.value.provider![index].likesCount
+                      .toString(),
+                ),
+              )
+            : Container(
+                child: Center(
+                  child: Text('No Volunteers Found'),
+                ),
+              );
+      })),
+    );
+  }
+
+  Widget getRecommendedGroupsUI() {
+    return Container(
+        padding: EdgeInsets.only(left: 2.h, bottom: 2.h),
+        height: MediaQuery.of(context).size.height * 0.4,
+        child: ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: SolhColors.greyS200,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.2,
+                      width: MediaQuery.of(context).size.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                        ),
+                        child: discoverGroupController.discoveredGroupModel
+                                    .value.groupList![index].groupMediaUrl !=
+                                null
+                            ? CachedNetworkImage(
+                                imageUrl: discoverGroupController
+                                        .discoveredGroupModel
+                                        .value
+                                        .groupList![index]
+                                        .groupMediaUrl ??
+                                    '',
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) =>
+                                    Image.asset(
+                                  'assets/images/no-image-available_err.png',
+                                  fit: BoxFit.cover,
+                                ),
+                                placeholder: (context, url) => getImgShimmer(),
+                              )
+                            : Image.asset(
+                                'assets/images/group_placeholder.png',
+                                fit: BoxFit.fill,
+                              ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        top: 8,
+                      ),
+                      child: Text(
+                        discoverGroupController.discoveredGroupModel.value
+                                .groupList![index].groupName ??
+                            '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: SolhTextStyles.AppBarText,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.person_3,
+                            color: SolhColors.green,
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Text(
+                            discoverGroupController.discoveredGroupModel.value
+                                .groupList![index].groupMembers!.length
+                                .toString(),
+                            style: SolhTextStyles.JournalingHintText,
+                          ),
+                          SizedBox(
+                            width: 4.w,
+                          ),
+                          Image.asset(
+                            'assets/icons/group/edit.png',
+                            color: SolhColors.green,
+                          ),
+                          SizedBox(
+                            width: 2.w,
+                          ),
+                          Text(
+                            discoverGroupController.discoveredGroupModel.value
+                                .groupList![index].journalCount
+                                .toString(),
+                            style: SolhTextStyles.JournalingHintText,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        discoverGroupController.discoveredGroupModel.value
+                                .groupList![index].groupDescription ??
+                            '',
+                        style: SolhTextStyles.JournalingHintText,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 10,
+              );
+            },
+            itemCount: discoverGroupController
+                .discoveredGroupModel.value.groupList!.length));
+  }
+
+  Widget getPeopleYouMayKnowUI() {
+    return Container();
   }
 }
