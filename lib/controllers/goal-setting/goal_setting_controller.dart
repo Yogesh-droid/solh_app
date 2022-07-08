@@ -21,6 +21,8 @@ class GoalSettingController extends GetxController {
   var noOfTasks = 1.obs;
   var task = [].obs;
   var isExpanded = ''.obs;
+  var isExpandedPanelExpanded = false.obs;
+  var expandedIndex = ''.obs;
   var noOfGoalsCompleted = 0.obs;
   var noOfGoals = 0.obs;
 
@@ -30,6 +32,9 @@ class GoalSettingController extends GetxController {
   var loadingCat = false.obs;
   var isPersonalGoalLoading = false.obs;
   var isSampleGoalLoading = false.obs;
+  var isSavingGoal = false.obs;
+  var isUpdateGoal = false.obs;
+  var isDeletingGoal = false.obs;
 
   Future<void> getPersonalGoals() async {
     Map<String, dynamic> map;
@@ -38,7 +43,10 @@ class GoalSettingController extends GetxController {
         '${APIConstants.api}/api/personal-goals');
     if (map['success']) {
       pesonalGoalModel.value = PersonalGoalModel.fromJson(map);
+      noOfGoals.value = pesonalGoalModel.value.milestone!;
+      noOfGoalsCompleted.value = pesonalGoalModel.value.milestoneReached!;
     }
+    isPersonalGoalLoading.value = false;
   }
 
   Future<void> getSampleGoal(String id) async {
@@ -91,6 +99,7 @@ class GoalSettingController extends GetxController {
       String? goalId,
       String? goalCatId}) async {
     List activity = [];
+    isSavingGoal.value = true;
     if (goalType == 'custom') {
       task.value.forEach((element) {
         activity.add({
@@ -109,7 +118,7 @@ class GoalSettingController extends GetxController {
       print(userBlocNetwork.getSessionCookie);
       print('${APIConstants.api}/api/personal-goals');
 
-      http.post(
+      await http.post(
         Uri.parse('${APIConstants.api}/api/personal-goals'),
         body: body,
         headers: {
@@ -132,11 +141,23 @@ class GoalSettingController extends GetxController {
             "goalId": goalId
           });
     }
+    isSavingGoal.value = false;
+    getPersonalGoals();
+  }
+
+  Future<void> deleteGoal(String id) async {
+    Map<String, dynamic> map;
+    isDeletingGoal.value = true;
+
+    map = await Network.makeHttpDeleteRequestWithToken(
+        body: {}, url: '${APIConstants.api}/api/goal?goalId=$id');
+    isDeletingGoal.value = false;
     getPersonalGoals();
   }
 
   Future<void> updateActivity(String goalId, String activityId) async {
     Map<String, dynamic> map;
+    isUpdateGoal.value = true;
     map = await Network.makePutRequestWithToken(
         url: '${APIConstants.api}/api/activity-status?goal=$goalId',
         body: {
@@ -153,6 +174,7 @@ class GoalSettingController extends GetxController {
         if (element.activity!.every((element) => element.isComplete ?? true)) {
           pesonalGoalModel.value.milestoneReached! + 1;
           pesonalGoalModel.refresh();
+          noOfGoalsCompleted.value = noOfGoalsCompleted.value + 1;
         }
       }
     });
@@ -160,6 +182,7 @@ class GoalSettingController extends GetxController {
     if (map['success']) {
       pesonalGoalModel.refresh();
     }
+    isUpdateGoal.value = false;
   }
 
   @override

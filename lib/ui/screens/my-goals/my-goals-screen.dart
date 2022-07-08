@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/goal-setting/personal_goal_model.dart';
@@ -27,32 +28,55 @@ class MyGoalsScreen extends StatelessWidget {
         isLandingScreen: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 18,
-            ),
-            getTodayGoal(context),
-            GetHelpDivider(),
-            GoalName(),
-            SizedBox(
-              height: 10,
-            ),
-            GetHelpDivider(),
-            // SizedBox(
-            //   height: 24,
-            // ),
-            // MileStone(),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'I want to work on',
-              style: goalFontStyle(14.0, Color(0xffA6A6A6)),
-            ),
-            IWantToWorkOn()
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 0,
+              ),
+              getTodayGoal(context),
+              Obx(() {
+                return goalSettingController.pesonalGoalModel.value.goalList !=
+                            null &&
+                        goalSettingController
+                                .pesonalGoalModel.value.goalList!.length >
+                            0
+                    ? GetHelpDivider()
+                    : Container();
+              }),
+              Obx(() {
+                return !goalSettingController.isPersonalGoalLoading.value
+                    ? GoalName()
+                    : personalGoallistShimmer();
+              }),
+              SizedBox(
+                height: 10,
+              ),
+              Obx(() {
+                return goalSettingController.pesonalGoalModel.value.goalList !=
+                            null &&
+                        goalSettingController
+                                .pesonalGoalModel.value.goalList!.length >
+                            0
+                    ? GetHelpDivider()
+                    : Container();
+              }),
+              // SizedBox(
+              //   height: 24,
+              // ),
+              // MileStone(),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'I want to work on',
+                style: goalFontStyle(14.0, Color(0xffA6A6A6)),
+              ),
+              IWantToWorkOn()
+            ],
+          ),
         ),
       ),
     );
@@ -146,6 +170,31 @@ class MyGoalsScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget personalGoallistShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[300]!,
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 3,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 70,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                color: Colors.white,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }
 
 goalFontStyle(
@@ -185,7 +234,7 @@ class TodaysGoal extends StatelessWidget {
                     height: 60,
                     child: Center(
                       child: Text(
-                        '${_goalSettingController.pesonalGoalModel.value.milestoneReached}/${_goalSettingController.pesonalGoalModel.value.milestone}\nCompleted',
+                        '${_goalSettingController.noOfGoalsCompleted.value}/${_goalSettingController.noOfGoals}\nCompleted',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12,
@@ -202,16 +251,13 @@ class TodaysGoal extends StatelessWidget {
                       valueColor:
                           AlwaysStoppedAnimation<Color>(SolhColors.green),
                       backgroundColor: SolhColors.grey.withOpacity(0.5),
-                      value: _goalSettingController
-                                  .pesonalGoalModel.value.milestoneReached ==
-                              0
+                      value: _goalSettingController.noOfGoalsCompleted == 0
                           ? 0
                           : double.parse(_goalSettingController
-                                  .pesonalGoalModel.value.milestoneReached
+                                  .noOfGoalsCompleted
                                   .toString()) /
-                              double.parse(_goalSettingController
-                                  .pesonalGoalModel.value.milestone
-                                  .toString()),
+                              double.parse(
+                                  _goalSettingController.noOfGoals.toString()),
                     ),
                   ),
                 ],
@@ -284,25 +330,31 @@ class GoalName extends StatelessWidget {
       ),
     ); */
 
-    return Obx(
-        () => _goalSettingController.pesonalGoalModel.value.goalList != null
-            ? ExpansionPanelList(
-                elevation: 1,
-                children: _goalSettingController
-                    .pesonalGoalModel.value.goalList!
-                    .map((e) => getExpasionPanel(e))
-                    .toList(),
-                expansionCallback: (int index, bool isExpanded) {
-                  _goalSettingController.isExpanded.value =
-                      _goalSettingController
-                              .pesonalGoalModel.value.goalList![index].sId ??
-                          '';
-                },
-              )
-            : Container());
+    return Obx(() => _goalSettingController.pesonalGoalModel.value.goalList !=
+                null &&
+            _goalSettingController.pesonalGoalModel.value.goalList!.length > 0
+        ? ExpansionPanelList(
+            elevation: 1,
+            children: _goalSettingController.pesonalGoalModel.value.goalList!
+                .map((e) => getExpasionPanel(context, e))
+                .toList(),
+            expansionCallback: (int index, bool isExpanded) {
+              print('Hello this is $isExpanded');
+              _goalSettingController.isExpandedPanelExpanded.value = isExpanded;
+              _goalSettingController.expandedIndex.value =
+                  _goalSettingController
+                          .pesonalGoalModel.value.goalList![index].sId ??
+                      '';
+
+              _goalSettingController.isExpanded.value = _goalSettingController
+                      .pesonalGoalModel.value.goalList![index].sId ??
+                  '';
+            },
+          )
+        : Container());
   }
 
-  ExpansionPanel getExpasionPanel(GoalList e) {
+  ExpansionPanel getExpasionPanel(BuildContext context, GoalList e) {
     return ExpansionPanel(
       canTapOnHeader: true,
       headerBuilder: (context, isExpanded) {
@@ -357,13 +409,43 @@ class GoalName extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              InkWell(
-                onTap: () {},
-                child: Icon(
-                  Icons.more_vert,
-                  color: SolhColors.green,
-                ),
-              )
+              Obx(() {
+                print(
+                    'isExpanded ${_goalSettingController.isExpandedPanelExpanded.value}');
+                print(
+                    'expandedIndex ${_goalSettingController.expandedIndex.value}');
+                return
+                    // _goalSettingController.isExpandedPanelExpanded.value ==
+                    //             true &&
+                    _goalSettingController.expandedIndex.value == e.sId
+                        ? PopupMenuButton(
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: SolhColors.green,
+                            ),
+                            itemBuilder: (context) => <PopupMenuEntry<String>>[
+                              PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Edit'),
+                              ),
+                              PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Delete'),
+                              ),
+                            ],
+                            onSelected: (value) {
+                              if (value == 'edit') {
+                                //Get.toNamed('/goal-setting/edit-goal',arguments: e);
+                              } else if (value == 'delete') {
+                                showDeleteAlert(context, e);
+                              }
+                            },
+                          )
+                        : Icon(
+                            Icons.arrow_drop_down_circle,
+                            color: SolhColors.green,
+                          );
+              })
             ],
           ),
         );
@@ -371,7 +453,8 @@ class GoalName extends StatelessWidget {
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: e.activity!.map((e1) => getActivity(e1, e)).toList(),
+          children:
+              e.activity!.map((e1) => getActivity(context, e1, e)).toList(),
         ),
       ),
       isExpanded: _goalSettingController.isExpanded.value.toString() ==
@@ -379,7 +462,7 @@ class GoalName extends StatelessWidget {
     );
   }
 
-  Widget getActivity(Activity e1, GoalList e) {
+  Widget getActivity(BuildContext context, Activity e1, GoalList e) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: Container(
@@ -393,17 +476,20 @@ class GoalName extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 80.w,
+              width: 70.w,
               child: Text(e1.task ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: SolhTextStyles.ProfileMenuGreyText),
             ),
             InkWell(
-              onTap: () {
-                _goalSettingController.updateActivity(
-                    e.sId ?? '', e1.sId ?? '');
-              },
+              onTap: _goalSettingController.isUpdateGoal.value
+                  ? () {}
+                  : () {
+                      showAlertDialog(context, e.sId!, e1.sId!);
+                      // _goalSettingController.updateActivity(
+                      //     e.sId ?? '', e1.sId ?? '');
+                    },
               child: Container(
                 height: 20,
                 width: 20,
@@ -411,20 +497,104 @@ class GoalName extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: SolhColors.white,
                     border: Border.all(color: SolhColors.grey239)),
-                child: e1.isComplete != null
-                    ? e1.isComplete!
-                        ? Icon(
-                            Icons.check,
-                            color: SolhColors.green,
-                            size: 16,
-                          )
-                        : Container()
-                    : Container(),
+                child: _goalSettingController.isUpdateGoal.value
+                    ? CircularProgressIndicator(
+                        strokeWidth: 2,
+                      )
+                    : e1.isComplete != null
+                        ? e1.isComplete!
+                            ? Icon(
+                                Icons.check,
+                                color: SolhColors.green,
+                                size: 16,
+                              )
+                            : Container()
+                        : Container(),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void showAlertDialog(BuildContext context, String goalId, String activityId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Is activity completed ?',
+            style: goalFontStyle(
+              18.0,
+              Color(0xff666666),
+            ),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              color: SolhColors.white,
+              child: Text(
+                'Not yet',
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            MaterialButton(
+              color: SolhColors.green,
+              child: Text(
+                'Yes',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                _goalSettingController.updateActivity(goalId, activityId);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showDeleteAlert(BuildContext context, GoalList e) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Are you sure you want to delete this goal ?',
+            style: goalFontStyle(
+              18.0,
+              Color(0xff666666),
+            ),
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              color: SolhColors.white,
+              child: Text(
+                'No',
+                style: TextStyle(color: Colors.grey),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            MaterialButton(
+              color: SolhColors.green,
+              child: Text(
+                'Yes',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                _goalSettingController.deleteGoal(e.sId!);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -92,8 +94,8 @@ class GetHelpScreen extends StatefulWidget {
 
 class _GetHelpScreenState extends State<GetHelpScreen> {
   GetHelpController getHelpController = Get.find();
-  SearchMarketController searchMarketController =
-      Get.put(SearchMarketController());
+  SearchMarketController searchMarketController = Get.find();
+  BookAppointmentController bookAppointmentController = Get.find();
   bool _isDrawerOpen = false;
   List<String> _specialities = [
     "Psychotherapist",
@@ -202,6 +204,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                       return IssuesTile(
                         title: issue.name ?? '',
                         onPressed: () {
+                          bookAppointmentController.query = issue.name;
                           AutoRouter.of(context).push(ConsultantsScreenRouter(
                               slug: issue.slug ?? '', type: 'issue'));
                         },
@@ -230,6 +233,11 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                       shrinkWrap: true,
                       itemBuilder: (_, index) => GestureDetector(
                         onTap: () {
+                          bookAppointmentController.query = getHelpController
+                              .getSpecializationModel
+                              .value
+                              .specializationList![index]
+                              .name;
                           AutoRouter.of(context).push(ConsultantsScreenRouter(
                               slug: getHelpController.getSpecializationModel
                                       .value.specializationList![index].slug ??
@@ -372,6 +380,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                               .provider![index].profilePicture,
                           sId: getHelpController
                               .solhVolunteerList.value.provider![index].sId,
+                          uid: getHelpController
+                              .solhVolunteerList.value.provider![index].uid,
                           comments: getHelpController.solhVolunteerList.value
                               .provider![index].commentCount
                               .toString(),
@@ -644,17 +654,18 @@ class GetHelpDivider extends StatelessWidget {
 }
 
 class SolhVolunteers extends StatelessWidget {
-  SolhVolunteers(
-      {Key? key,
-      required this.mobile,
-      required this.name,
-      required this.bio,
-      this.imgUrl,
-      this.sId,
-      this.comments,
-      this.connections,
-      this.likes})
-      : super(key: key);
+  SolhVolunteers({
+    Key? key,
+    required this.mobile,
+    required this.name,
+    required this.bio,
+    this.imgUrl,
+    this.sId,
+    this.comments,
+    this.connections,
+    this.likes,
+    this.uid,
+  }) : super(key: key);
   final String? mobile;
   final String? name;
   final String? bio;
@@ -663,6 +674,7 @@ class SolhVolunteers extends StatelessWidget {
   final String? likes;
   final String? connections;
   final String? comments;
+  final String? uid;
 
   @override
   Widget build(BuildContext context) {
@@ -828,7 +840,10 @@ class SolhVolunteers extends StatelessWidget {
               InkWell(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ConsultantProfile(id: sId)));
+                      builder: (context) => ConnectProfileScreen(
+                            sId: sId!,
+                            uid: uid!,
+                          )));
                 },
                 child: Container(
                   height: 32,

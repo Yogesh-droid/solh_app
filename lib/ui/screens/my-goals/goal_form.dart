@@ -14,10 +14,9 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../constants/api.dart';
-import '../../../routes/routes.gr.dart';
 import '../../../services/network/network.dart';
+import '../../../services/utility.dart';
 import '../my-profile/profile/edit-profile.dart';
-import 'my-goals-screen.dart';
 
 bool isCustomGoal = false;
 
@@ -131,6 +130,7 @@ class _GoalFormState extends State<GoalForm> {
                       goalType: 'custom',
                       goalName: _goalNameController.text,
                       imageUrl: _imageUrl);
+                  Utility.showToast('Goal set successfully');
                   AutoRouter.of(context).popUntil(((route) => route.isFirst));
                 },
               ),
@@ -321,7 +321,7 @@ class _GoalFormState extends State<GoalForm> {
               Categories cat = value as Categories;
               _goalSettingController.selectedSubCat.value = cat;
             },
-            value: _goalSettingController.selectedSubCat.value.name,
+            // value: _goalSettingController.selectedSubCat.value.name,
             items: _goalSettingController.SubCatModel.value.categories!
                 .map((value) {
               return DropdownMenuItem(

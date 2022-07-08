@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/ui/screens/get-help/consultant_tile.dart';
@@ -9,6 +10,7 @@ class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
   final SearchMarketController searchMarketController = Get.find();
   final TextEditingController searchController = TextEditingController();
+  BookAppointmentController bookAppointmentController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -355,6 +357,7 @@ class SearchScreen extends StatelessWidget {
               searchMarketController.suggestionList.clear();
               searchController.text = item['name'];
               await searchMarketController.getSearchResults(item['name']);
+              bookAppointmentController.query = item['name'];
               searchMarketController.suggestionList.refresh();
             },
             child: Padding(

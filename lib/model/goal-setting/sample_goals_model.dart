@@ -31,7 +31,7 @@ class GoalList {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  Null? parent;
+  String? parent;
   String? displayImage;
 
   GoalList(
@@ -56,7 +56,7 @@ class GoalList {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    parent = json['parent'];
+    parent = json['parent'] != null ? json['parent'] : null;
     displayImage = json['displayImage'];
   }
 

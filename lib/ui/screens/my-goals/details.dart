@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/goal-setting/sample_goals_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -55,6 +56,7 @@ class Details extends StatelessWidget {
                         goalType: 'sample',
                         goalId: sampleGoal.sId,
                         goalCatId: goalId);
+                    Utility.showToast('Goal set successfully');
                     AutoRouter.of(context).popUntil(((route) => route.isFirst));
                   },
                 ),

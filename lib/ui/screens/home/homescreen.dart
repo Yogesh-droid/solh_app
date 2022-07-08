@@ -160,22 +160,36 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  GetHelpCategory(title: 'Trending Posts', onPressed: () {}),
+                  GetHelpCategory(
+                    title: 'Trending Posts',
+                  ),
                   Obx(() {
                     return _journalPageController.isTrendingLoading.value
                         ? getTrendingPostShimmer()
                         : getTrendingPostUI();
                   }),
                   GetHelpDivider(),
-                  GetHelpCategory(title: 'Solh Buddies', onPressed: () {}),
+                  GetHelpCategory(
+                    title: 'Solh Buddies',
+                  ),
                   getSolhBuddiesUI(),
                   GetHelpDivider(),
-                  GetHelpCategory(
-                      title: 'Recommended groups', onPressed: () {}),
+                  Obx(() => discoverGroupController
+                                  .discoveredGroupModel.value.groupList !=
+                              null &&
+                          discoverGroupController.discoveredGroupModel.value
+                                  .groupList!.length >
+                              0
+                      ? GetHelpCategory(
+                          title: 'Recommended groups', onPressed: () {})
+                      : Container()),
                   Obx(() {
                     return discoverGroupController
-                                .discoveredGroupModel.value.groupList !=
-                            null
+                                    .discoveredGroupModel.value.groupList !=
+                                null &&
+                            discoverGroupController.discoveredGroupModel.value
+                                    .groupList!.length >
+                                0
                         ? getRecommendedGroupsUI()
                         : Container();
                   }),
@@ -529,7 +543,8 @@ class _HomePageState extends State<HomePage> {
       height: 38.h,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Container(child: Obx(() {
-        return getHelpController.solhVolunteerList.value.provider != null
+        return getHelpController.solhVolunteerList.value.provider != null &&
+                getHelpController.solhVolunteerList.value.provider!.length > 0
             ? ListView.separated(
                 separatorBuilder: (_, __) => SizedBox(width: 2.w),
                 shrinkWrap: true,
@@ -550,6 +565,8 @@ class _HomePageState extends State<HomePage> {
                       .solhVolunteerList.value.provider![index].profilePicture,
                   sId: getHelpController
                       .solhVolunteerList.value.provider![index].sId,
+                  uid: getHelpController
+                      .solhVolunteerList.value.provider![index].uid,
                   comments: getHelpController
                       .solhVolunteerList.value.provider![index].commentCount
                       .toString(),

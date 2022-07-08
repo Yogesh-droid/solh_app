@@ -135,7 +135,21 @@ class MoodAnalyticPage extends StatelessWidget {
                     ),
                     baseColor: Colors.grey[200]!,
                     highlightColor: Colors.grey[200]!)
-                : getMoodPieChartWidget(context);
+                : moodMeterController
+                            .moodAnlyticsModel.value.moodAnalytic!.length >
+                        0
+                    ? getMoodPieChartWidget(context)
+                    : Container(
+                        child: Center(
+                          child: Text(
+                            'No moods yet',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF666666),
+                            ),
+                          ),
+                        ),
+                      );
           }),
           Obx(() {
             return moodMeterController.isFetchingMoodAnalytics.value
