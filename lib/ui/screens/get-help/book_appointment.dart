@@ -1,15 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
-import 'package:solh/model/user/user.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -25,24 +24,17 @@ class _BookAppointmentState extends State<BookAppointment> {
   TextEditingController emailController = TextEditingController();
 
   ConnectionController controller = Get.find();
-  var _bookingController = Get.put(BookAppointmentController());
+  //var _bookingController = Get.put(BookAppointmentController());
+  BookAppointmentController _bookingController = Get.find();
 
   @override
   void initState() {
-    // TODO: implement initState
     _bookingController.mobileNotextEditingController.text =
-        controller.userModel.value.mobile ?? '';
+        userBlocNetwork.userMobileNo;
     _bookingController.emailTextEditingController.text =
-        controller.userModel.value.email ?? '';
+        userBlocNetwork.userEmail;
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
   }
 
   @override
@@ -91,11 +83,16 @@ class _BookAppointmentState extends State<BookAppointment> {
                         ),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: TextField(
-                        controller:
-                            _bookingController.mobileNotextEditingController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: TextField(
+                          controller:
+                              _bookingController.mobileNotextEditingController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
@@ -127,11 +124,16 @@ class _BookAppointmentState extends State<BookAppointment> {
                         ),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: TextField(
-                        controller:
-                            _bookingController.emailTextEditingController,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                        ),
+                        child: TextField(
+                          controller:
+                              _bookingController.emailTextEditingController,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
@@ -157,6 +159,9 @@ class _BookAppointmentState extends State<BookAppointment> {
                   ),
                   Container(
                     child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                      ),
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Color(0xffA6A6A6),
@@ -189,18 +194,20 @@ class _BookAppointmentState extends State<BookAppointment> {
                     height: 4,
                   ),
                   Container(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.17,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xffA6A6A6),
-                        ),
-                        borderRadius: BorderRadius.circular(4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.17,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xffA6A6A6),
                       ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                        ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: TextField(
+                      controller: _bookingController.catTextEditingController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
                       ),
                     ),
                   )
@@ -220,7 +227,8 @@ class _BookAppointmentState extends State<BookAppointment> {
 
 class BookAppointmentWidget extends StatelessWidget {
   BookAppointmentWidget({Key? key}) : super(key: key);
-  var _controller = Get.put(BookAppointmentController());
+  //var _controller = Get.put(BookAppointmentController());
+  BookAppointmentController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -283,7 +291,8 @@ class GetDateAndTime extends StatefulWidget {
 }
 
 class _GetDateAndTimeState extends State<GetDateAndTime> {
-  BookAppointmentController _controller = Get.put(BookAppointmentController());
+  //BookAppointmentController _controller = Get.put(BookAppointmentController());
+  BookAppointmentController _controller = Get.find();
 
   @override
   void initState() {
@@ -330,7 +339,8 @@ class DayPicker extends StatefulWidget {
 }
 
 class _DayPickerState extends State<DayPicker> {
-  var _controller = Get.put(BookAppointmentController());
+  //var _controller = Get.put(BookAppointmentController());
+  BookAppointmentController _controller = Get.find();
 
   Map day = {
     'Monday': false,
@@ -659,19 +669,29 @@ class BookAppointmentPopup extends StatelessWidget {
                   'from': _controller.selectedTimeSlot.split('-')[0],
                   'to': _controller.selectedTimeSlot.split('-')[1],
                   "type": "app",
-                  "duration": "30"
+                  "duration": "30",
+                  "label": _controller.catTextEditingController.value.text,
+                  "concern": _controller.query ?? ''
                 };
+                // Navigator.pop(context);
+                Utility.showLoader(context);
+                // await Future.delayed(Duration(seconds: 2), () {});
                 String response = await _controller.bookAppointment(body);
+                Navigator.pop(context);
+                Navigator.pop(context);
 
-                Navigator.of(context).pop();
-
-                if (response == 'Successfully created appointment.') {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return appointmentConfirmationPopup(response);
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Future.delayed(Duration(seconds: 1), () {
+                        Navigator.pop(context);
+                        if (response == 'Successfully created appointment.') {
+                          AutoRouter.of(context)
+                              .popUntil(((route) => route.isFirst));
+                        }
                       });
-                }
+                      return appointmentConfirmationPopup(response);
+                    });
               },
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -691,6 +711,43 @@ class BookAppointmentPopup extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+
+  Widget appointmentConfirmationPopup(data) {
+    return AlertDialog(
+      content: data == 'Successfully created appointment.'
+          ? Container(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check,
+                    color: Colors.green,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(
+                    child: Text('Successfully created appointment.',
+                        textAlign: TextAlign.center),
+                  )
+                ],
+              ),
+            )
+          : Container(
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Expanded(child: Text('Oops! Something went wrong'))
+                ],
+              ),
+            ),
     );
   }
 }
@@ -745,41 +802,4 @@ getdateTime(selectedDay, selectedSlot, itemNoinList) {
       'T' +
       getTime()[itemNoinList].toString() +
       ':00';
-}
-
-Widget appointmentConfirmationPopup(data) {
-  return AlertDialog(
-    content: data == 'Successfully created appointment.'
-        ? Container(
-            child: Row(
-              children: [
-                Icon(
-                  Icons.check,
-                  color: Colors.green,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  child: Text('Successfully created appointment.',
-                      textAlign: TextAlign.center),
-                )
-              ],
-            ),
-          )
-        : Container(
-            child: Row(
-              children: [
-                Icon(
-                  Icons.error,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(child: Text('Oops! Something went wrong'))
-              ],
-            ),
-          ),
-  );
 }

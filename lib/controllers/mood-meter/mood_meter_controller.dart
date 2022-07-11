@@ -1,46 +1,27 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/model/mood-meter/mood_analytics_model.dart';
 import 'package:solh/model/mood-meter/mood_meter.dart';
 import 'package:solh/services/network/network.dart';
-
-/* 
- 'Bohut jyada happy',
-    'happy',
-    'Thoda happy',
-    'Thoda confused',
-    'Confused',
-    'bohut jyada frustrated',
-    'bahut jyada sad',
-    'Ekdum hyper',
-    'very angry',
-    'toot gaya hoo ekdum',
-    'bas bahut hua, dekh li duniya',
-
- 'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif',
-    'https://media.giphy.com/media/d1E2IByItLUuONMc/giphy.gif',
-    'https://media.giphy.com/media/6pUBXVTai18Iw/giphy.gif',
-    'https://media.giphy.com/media/100QWMdxQJzQC4/giphy.gif',
-    'https://media.giphy.com/media/Xev2JdopBxGj1LuGvt/giphy.gif',
-    'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif',
-    'https://media.giphy.com/media/d1E2IByItLUuONMc/giphy.gif',
-    'https://media.giphy.com/media/6pUBXVTai18Iw/giphy.gif',
-    'https://media.giphy.com/media/100QWMdxQJzQC4/giphy.gif',
-    'https://media.giphy.com/media/Xev2JdopBxGj1LuGvt/giphy.gif',
-    'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif',
-    'https://media.giphy.com/media/d1E2IByItLUuONMc/giphy.gif',
-    
-
-
- */
 
 class MoodMeterController extends GetxController {
   var isLoading = false.obs;
   List<String> gifList = [];
   List<String> moodList = [];
   var moodMeterModel = MoodMeterModel().obs;
+  var moodAnlyticsModel = MoodAnalyticsModel().obs;
+  var selectedFrequency = '7'.obs;
+  RxMap<String, double> selectedFrequencyMoodMap = Map<String, double>().obs;
+  // var selectedFrequencyMoodMap = {}.obs;
+  var isFetchingMoodAnalytics = false.obs;
 
   var selectedGif = 'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif'.obs;
-  var selectedMood = 'Bohut jyada happy'.obs;
+  var selectedMood = 'happy'.obs;
+  //var colorList = [].obs;
+  RxList<Color> colorList = RxList<Color>();
 
   var selectedValue = 0.0.obs;
 
@@ -76,5 +57,21 @@ class MoodMeterController extends GetxController {
           'mood':
               moodMeterModel.value.moodList![selectedValue.value.toInt()].sId
         });
+  }
+
+  Future<void> getMoodAnalytics(int days) async {
+    isFetchingMoodAnalytics.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        '${APIConstants.api}/api/mood-analytics?days=$days');
+    moodAnlyticsModel.value = MoodAnalyticsModel.fromJson(map);
+    selectedFrequencyMoodMap.value.clear();
+    colorList.value.clear();
+    moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
+      selectedFrequencyMoodMap.value[element.name ?? ''] =
+          element.moodCount!.toDouble();
+      int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
+      colorList.value.add(Color(color));
+    });
+    isFetchingMoodAnalytics.value = false;
   }
 }

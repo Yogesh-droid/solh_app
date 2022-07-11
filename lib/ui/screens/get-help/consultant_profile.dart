@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,7 +24,6 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller.getConsultantDataController(widget.id);
     super.initState();
   }
@@ -98,11 +93,14 @@ consultantInfo(context, ConsultantController controller) {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            controller.consultantModelController.value.provder!.name ?? '',
-            style:
-                GoogleFonts.signika(fontSize: 20, fontWeight: FontWeight.w400),
-          ),
+          controller.consultantModelController.value.provder != null
+              ? Text(
+                  controller.consultantModelController.value.provder!.name ??
+                      '',
+                  style: GoogleFonts.signika(
+                      fontSize: 20, fontWeight: FontWeight.w400),
+                )
+              : Container(),
           SizedBox(
             width: 8,
           ),
@@ -270,7 +268,7 @@ ConsultantBio(context, ConsultantController controller) {
 class BookAppointmentWidget extends StatelessWidget {
   BookAppointmentWidget({Key? key}) : super(key: key);
 
-  var _controller = Get.put(BookAppointmentController());
+  BookAppointmentController _controller = Get.find();
   var _consultantController = Get.put(ConsultantController());
 
   @override

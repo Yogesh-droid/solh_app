@@ -1,17 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/model/mood-meter/mood_analytics_model.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
+import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import '../../../bloc/user-bloc.dart';
+import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../my-profile/my-profile-screen.dart';
-import '../profile-setup/profile-created.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({
@@ -23,6 +26,7 @@ class SideDrawer extends StatefulWidget {
 }
 
 class _SideDrawerState extends State<SideDrawer> {
+  final MoodMeterController moodMeterController = Get.find();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -124,11 +128,13 @@ class _SideDrawerState extends State<SideDrawer> {
                 },
               ),
               SideDrawerMenuTile(
-                title: "Mood Tracker",
-                comingSoon: true,
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MoodMeter()));
+                title: "Emotional Spectrum",
+                onPressed: () async {
+                  moodMeterController.getMoodAnalytics(7);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MoodAnalyticPage()));
                 },
               ),
             ]),

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
@@ -11,14 +8,19 @@ class BookAppointmentController extends GetxController {
   var selectedTimeSlot = ''.obs;
   String? doctorName;
   List? days;
+  String? query;
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController mobileNotextEditingController = TextEditingController();
+  TextEditingController catTextEditingController = TextEditingController();
+  var isLoading = false.obs;
 
-  Future bookAppointment(Map<String, dynamic> body) async {
+  Future<String> bookAppointment(Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
+    isLoading.value = true;
     var response = await Network.makeHttpPostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);
     print('---' + response.toString());
+    isLoading.value = false;
     return response;
   }
 }

@@ -90,7 +90,7 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AuthAppBar(
-          primaryTitle: "Verify Phone No.",
+          primaryTitle: "Verify your number",
           secondaryTitle: "Please enter the 6 digit code sent to"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

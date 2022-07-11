@@ -99,13 +99,13 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                   DropdownMenuItem(
                     value: 'My Diary',
                     child: Text(
-                      "My Diary",
+                      "Diary Entries",
                       style: TextStyle(color: SolhColors.green),
                     ),
                   ),
                   DropdownMenuItem(
                     value: "Thoughts",
-                    child: Text("Thoughts",
+                    child: Text("Affirmations",
                         style: TextStyle(color: SolhColors.green)),
                   ),
                 ],

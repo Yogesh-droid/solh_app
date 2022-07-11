@@ -11,6 +11,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
@@ -50,18 +51,20 @@ class _JournalTileState extends State<JournalTile> {
   JournalCommentController journalCommentController = Get.find();
   ConnectionController connectionController = Get.find();
   JournalPageController journalPageController = Get.find();
+  DiscoverGroupController discoverGroupController = Get.find();
+  bool isGroupJoined = false;
 
   @override
   void initState() {
     super.initState();
-    getFeelings();
-  }
-
-  List getTexts() {
-    List textList = widget._journalModel!.description!.split(' ');
-    print('textList: $textList');
-
-    return textList;
+    if (widget._journalModel!.group != null) {
+      discoverGroupController.joinedGroupModel.value.groupList!
+          .forEach((element) {
+        if (element.sId == widget._journalModel!.group!.sId) {
+          isGroupJoined = true;
+        }
+      });
+    }
   }
 
   // bool checkConnectionExist(username) {
@@ -91,39 +94,44 @@ class _JournalTileState extends State<JournalTile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                color: widget._journalModel!.postedBy!.isProvider! &&
-                        widget._journalModel!.anonymousJournal == false &&
-                        widget._journalModel!.group == null
-                    ? Color(0x305F9B8C)
-                    : widget._journalModel!.group != null &&
-                            journalPageController.selectedGroupId.value.isEmpty
-                        ? Color(0xffF8EDFF)
-                        : Colors.transparent,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    widget._journalModel!.postedBy!.isProvider! ||
-                            widget._journalModel!.group != null
-                        ? SizedBox(
-                            height: 8,
-                          )
-                        : SizedBox(),
-                    getUserImageAndName(),
-                    widget._journalModel!.postedBy!.isProvider! ||
-                            widget._journalModel!.group != null
-                        ? Container(
-                            height: 10,
-                          )
-                        : Divider(),
-                  ],
-                ),
-              ),
+              widget._journalModel!.postedBy != null
+                  ? Container(
+                      color: widget._journalModel!.postedBy!.isProvider! &&
+                              widget._journalModel!.anonymousJournal == false &&
+                              widget._journalModel!.group == null
+                          ? Color(0x305F9B8C)
+                          : widget._journalModel!.group != null &&
+                                  journalPageController
+                                      .selectedGroupId.value.isEmpty
+                              ? Color(0xffF8EDFF)
+                              : Colors.transparent,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          widget._journalModel!.postedBy!.isProvider! ||
+                                  widget._journalModel!.group != null
+                              ? SizedBox(
+                                  height: 8,
+                                )
+                              : SizedBox(),
+                          getUserImageAndName(),
+                          widget._journalModel!.postedBy!.isProvider! ||
+                                  widget._journalModel!.group != null
+                              ? Container(
+                                  height: 10,
+                                )
+                              : Divider(),
+                        ],
+                      ),
+                    )
+                  : Container(),
               SizedBox(
                 height: 4,
               ),
-              getPostDetails(connectionController),
-              getPostMedia(),
+              PostContentWidget(
+                  journalModel: widget._journalModel ?? Journals(),
+                  index: widget.index,
+                  isMyJournal: widget.isMyJournal),
               widget.isMyJournal ? Container() : getPostActionButton(),
             ],
           ),
@@ -134,16 +142,6 @@ class _JournalTileState extends State<JournalTile> {
             color: Color(0xFFF6F6F8)),
       ],
     );
-  }
-
-  void getFeelings() {
-    widget._journalModel!.feelings!.forEach((element) {
-      widget.feelingList.add(element.feelingName ?? '');
-    });
-    if (widget.feelingList.length > 4) {
-      widget.feelingList.removeRange(4, widget.feelingList.length);
-    }
-    print(widget.feelingList);
   }
 
   Future<bool> _likeJournal() async {
@@ -318,6 +316,7 @@ class _JournalTileState extends State<JournalTile> {
                                                     .anonymous!
                                                     .profilePicture ??
                                                 '',
+                                            fit: BoxFit.fitWidth,
                                             width: 12,
                                             height: 12,
                                             color: SolhColors.grey,
@@ -425,241 +424,6 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  Widget getPostDetails(ConnectionController) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width / 35,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          widget._journalModel!.feelings != null
-              ? Text(
-                  "#Feeling " +
-                      widget.feelingList
-                          .toString()
-                          .replaceAll("[", "")
-                          .replaceAll("]", ""),
-                  style: SolhTextStyles.PinkBorderButtonText)
-              : Container(),
-          // widget._journalModel!.description != null
-          //     ? RichText(
-          //         text: TextSpan(children: [
-          //         TextSpan(
-          //             text: getTexts()['text1'] ?? '',
-          //             style: SolhTextStyles.JournalingDescriptionText,
-          //             children: [
-          //               getTexts().containsKey('text3')
-          //                   ? TextSpan(
-          //                       text: '@' + getTexts()['text3'],
-          //                       recognizer: TapGestureRecognizer()
-          //                         ..onTap = () async {
-          //                           Navigator.push(
-          //                               context,
-          //                               MaterialPageRoute(
-          //                                   builder: (context) =>
-          //                                       ConnectProfileScreen(
-          //                                         username: getTexts()['text3']
-          //                                             .toString(),
-          //                                         uid: '',
-          //                                         sId: '',
-          //                                       )));
-          //                         },
-          //                       style: TextStyle(color: Color(0xffE1555A)))
-          //                   : TextSpan(text: ''),
-          //               getTexts().containsKey('text2')
-          //                   ? TextSpan(text: getTexts()['text2'])
-          //                   : TextSpan(text: ''),
-          //             ]),
-          //       ]))
-
-          // ? ReadMoreText(
-          //     widget._journalModel!.description!,
-          //     trimLines: 3,
-          //     //trimLength: 100,
-          //     style: SolhTextStyles.JournalingDescriptionText,
-          //     colorClickableText: SolhColors.green,
-          //     //trimMode: TrimMode.Length,
-          //     trimMode: TrimMode.Line,
-          //     trimCollapsedText: ' Read more',
-          //     trimExpandedText: ' Less',
-          //   )
-
-          Wrap(
-            children: widget._journalModel!.description!.length == 0
-                ? []
-                : getTexts().map((item) {
-                    if (item.toString().trim().isNotEmpty &&
-                        item.toString().trim()[0] == '@') {
-                      // if (checkConnectionExist(item)) {
-                      //   print('it ran');
-                      //   return Text(
-                      //     item + ' ',
-                      //     style: GoogleFonts.signika(
-                      //         fontSize: 16, color: Color(0xff666666)),
-                      //   );
-                      // }
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ConnectProfileScreen(
-                                username:
-                                    item.toString().substring(1, item.length),
-                                uid: '',
-                                sId: '',
-                              ),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          item + " ",
-                          style: GoogleFonts.signika(
-                              fontSize: 16, color: Color(0xffE1555A)),
-                        ),
-                      );
-                    } else {
-                      return Text(
-                        item + " " ?? '',
-                        style: GoogleFonts.signika(
-                            fontSize: 16, color: Color(0xff666666)),
-                      );
-                    }
-                  }).toList(),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget getPostMedia() {
-    return widget._journalModel!.mediaUrl != null &&
-            widget._journalModel!.mediaUrl != ''
-        ?
-        //// For Video player ////
-        widget._journalModel!.mediaType == 'video/mp4'
-            ? InkWell(
-                onTap: () {
-                  widget.isMyJournal
-                      ? journalPageController.playMyPostVideo(
-                          widget.index,
-                        )
-                      : journalPageController.playVideo(
-                          widget.index,
-                        );
-                  widget.isMyJournal
-                      ? journalPageController.myVideoPlayerControllers.refresh()
-                      : journalPageController.videoPlayerController.refresh();
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height / 80,
-                        ),
-                        child: VideoPlayer(
-                          widget.isMyJournal
-                              ? journalPageController.myVideoPlayerControllers
-                                  .value[widget.index][widget.index]
-                              : journalPageController.videoPlayerController
-                                  .value[widget.index][widget.index],
-                        )),
-                    Obx(() {
-                      return !widget.isMyJournal &&
-                                  !journalPageController
-                                      .videoPlayerController
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying ||
-                              widget.isMyJournal &&
-                                  !journalPageController
-                                      .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying
-                          ? getBlackOverlay()
-                          : Container();
-                    }),
-                    Obx(() {
-                      return !widget.isMyJournal &&
-                                  !journalPageController
-                                      .videoPlayerController
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying ||
-                              widget.isMyJournal &&
-                                  !journalPageController
-                                      .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]!
-                                      .value
-                                      .isPlaying
-                          ? Positioned(
-                              bottom: MediaQuery.of(context).size.height / 5,
-                              left: MediaQuery.of(context).size.width / 2 -
-                                  MediaQuery.of(context).size.width / 10,
-                              child: IconButton(
-                                onPressed: () {
-                                  widget.isMyJournal
-                                      ? journalPageController.playMyPostVideo(
-                                          widget.index,
-                                        )
-                                      : journalPageController.playVideo(
-                                          widget.index,
-                                        );
-                                  widget.isMyJournal
-                                      ? journalPageController
-                                          .myVideoPlayerControllers
-                                          .refresh()
-                                      : journalPageController
-                                          .videoPlayerController
-                                          .refresh();
-                                },
-                                icon: Image.asset(
-                                  'assets/images/play_icon.png',
-                                  fit: BoxFit.fill,
-                                ),
-                                iconSize: MediaQuery.of(context).size.width / 8,
-                                color: SolhColors.green,
-                              ),
-                            )
-                          : Container();
-                    }),
-                  ],
-                ),
-              )
-            ///// Below for image only
-            : Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                    border:
-                        Border.all(width: 0.5, color: Colors.grey.shade300)),
-                margin: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height / 80,
-                ),
-                // decoration: BoxDecoration(
-                //     image: DecorationImage(
-                //   image:
-                //       NetworkImage(widget._journalModel!.mediaUrl.toString()),
-                //   fit: BoxFit.cover,
-                // )),
-                child: CachedNetworkImage(
-                  imageUrl: widget._journalModel!.mediaUrl.toString(),
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => getShimmer(),
-                  errorWidget: (context, url, error) => Center(
-                    child: Lottie.asset('assets/images/not-found.json'),
-                  ),
-                ),
-              )
-        : Container(
-            height: 1.h,
-          );
-  }
-
   Widget getPostActionButton() {
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -753,86 +517,371 @@ class _JournalTileState extends State<JournalTile> {
               // },
             ),
           ),
-          widget._journalModel!.anonymousJournal != null &&
-                  widget._journalModel!.anonymousJournal == true
-              ? SizedBox()
-              : widget._journalModel!.postedBy!.uid !=
-                      FirebaseAuth.instance.currentUser!.uid
-                  ? InkWell(
-                      onTap: () async {
-                        widget._journalModel!.group != null &&
-                                journalPageController
-                                        .selectedGroupId.value.length ==
-                                    0
-                            ? {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return GroupDetailsPage(
-                                    ///// this case is for group journal
-                                    group: GroupList(
-                                      sId: widget._journalModel!.group!.sId,
-                                      groupName: widget
-                                          ._journalModel!.group!.groupName,
-                                      groupMediaUrl: widget
-                                          ._journalModel!.group!.groupImage,
-                                    ),
+          widget._journalModel!.postedBy != null
+              ? widget._journalModel!.anonymousJournal != null &&
+                      widget._journalModel!.anonymousJournal == true
+                  ? SizedBox()
+                  : widget._journalModel!.postedBy!.uid !=
+                          FirebaseAuth.instance.currentUser!.uid
+                      ? InkWell(
+                          onTap: () async {
+                            widget._journalModel!.group != null &&
+                                    journalPageController
+                                            .selectedGroupId.value.length ==
+                                        0
+                                ? {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return GroupDetailsPage(
+                                        ///// this case is for group journal
+                                        group: GroupList(
+                                          sId: widget._journalModel!.group!.sId,
+                                          groupName: widget
+                                              ._journalModel!.group!.groupName,
+                                          groupMediaUrl: widget
+                                              ._journalModel!.group!.groupImage,
+                                        ),
+                                      );
+                                    }))
+                                  }
+                                : await connectionController.addConnection(
+                                    widget._journalModel!.postedBy!.sId!,
                                   );
-                                }))
-                              }
-                            : await connectionController.addConnection(
-                                widget._journalModel!.postedBy!.sId!,
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            height: MediaQuery.of(context).size.height / 20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/icons/journaling/post-connect.svg",
+                                  width: 17,
+                                  height: 17,
+                                  color: SolhColors.green,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    left:
+                                        MediaQuery.of(context).size.width / 40,
+                                  ),
+                                  child: Text(
+                                    widget._journalModel!.group != null &&
+                                            journalPageController
+                                                    .selectedGroupId
+                                                    .value
+                                                    .length ==
+                                                0
+                                        ? isGroupJoined
+                                            ? 'Go To Group'
+                                            : 'join'
+                                        : "Connect",
+                                    style: SolhTextStyles.GreenBorderButtonText,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          width: 100,
+                        )
+              : SizedBox(),
+        ],
+      ),
+    );
+  }
+}
+
+class PostContentWidget extends StatefulWidget {
+  PostContentWidget(
+      {Key? key,
+      required this.journalModel,
+      required this.index,
+      required this.isMyJournal,
+      this.isHomePage})
+      : super(key: key);
+  final Journals journalModel;
+  final int index;
+  final bool isMyJournal;
+  final bool? isHomePage;
+
+  @override
+  State<PostContentWidget> createState() => _PostContentWidgetState();
+}
+
+class _PostContentWidgetState extends State<PostContentWidget> {
+  List<String> feelingList = [];
+  List<String> descriptionTexts = [];
+  bool showMoreBtn = false;
+  bool isExpanded = false;
+
+  @override
+  void initState() {
+    getFeelings();
+    getTexts();
+    super.initState();
+  }
+
+  final JournalPageController journalPageController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 35,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                widget.journalModel.feelings != null
+                    ? Text(
+                        "#Feeling " +
+                            feelingList
+                                .toString()
+                                .replaceAll("[", "")
+                                .replaceAll("]", ""),
+                        style: SolhTextStyles.PinkBorderButtonText)
+                    : Container(),
+                // widget._journalModel!.description != null
+                //     ? RichText(
+                //         text: TextSpan(children: [
+                //         TextSpan(
+                //             text: getTexts()['text1'] ?? '',
+                //             style: SolhTextStyles.JournalingDescriptionText,
+                //             children: [
+                //               getTexts().containsKey('text3')
+                //                   ? TextSpan(
+                //                       text: '@' + getTexts()['text3'],
+                //                       recognizer: TapGestureRecognizer()
+                //                         ..onTap = () async {
+                //                           Navigator.push(
+                //                               context,
+                //                               MaterialPageRoute(
+                //                                   builder: (context) =>
+                //                                       ConnectProfileScreen(
+                //                                         username: getTexts()['text3']
+                //                                             .toString(),
+                //                                         uid: '',
+                //                                         sId: '',
+                //                                       )));
+                //                         },
+                //                       style: TextStyle(color: Color(0xffE1555A)))
+                //                   : TextSpan(text: ''),
+                //               getTexts().containsKey('text2')
+                //                   ? TextSpan(text: getTexts()['text2'])
+                //                   : TextSpan(text: ''),
+                //             ]),
+                //       ]))
+
+                // ? ReadMoreText(
+                //     widget._journalModel!.description!,
+                //     trimLines: 3,
+                //     //trimLength: 100,
+                //     style: SolhTextStyles.JournalingDescriptionText,
+                //     colorClickableText: SolhColors.green,
+                //     //trimMode: TrimMode.Length,
+                //     trimMode: TrimMode.Line,
+                //     trimCollapsedText: ' Read more',
+                //     trimExpandedText: ' Less',
+                //   )
+
+                Wrap(children: [
+                  Wrap(
+                    children: widget.journalModel.description!.length == 0
+                        ? []
+                        : showMoreBtn
+                            ? isExpanded
+                                ? descriptionTexts.map((item) {
+                                    return getDescriptionText(item);
+                                  }).toList()
+                                : descriptionTexts.sublist(0, 10).map((item) {
+                                    return getDescriptionText(item);
+                                  }).toList()
+                            : descriptionTexts.map((item) {
+                                return getDescriptionText(item);
+                              }).toList(),
+                  ),
+                  showMoreBtn
+                      ? InkWell(
+                          child: Text(
+                            !isExpanded ? '...show more' : '...show less',
+                          ),
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                        )
+                      : Container()
+                ])
+              ],
+            ),
+          ),
+          widget.journalModel.mediaUrl != null &&
+                  widget.journalModel.mediaUrl != ''
+              ?
+              //// For Video player ////
+              widget.journalModel.mediaType == 'video/mp4'
+                  ? InkWell(
+                      onTap: () {
+                        widget.isMyJournal
+                            ? journalPageController.playMyPostVideo(
+                                widget.index,
+                              )
+                            : journalPageController.playVideo(
+                                widget.index,
                               );
+                        widget.isMyJournal
+                            ? journalPageController.myVideoPlayerControllers
+                                .refresh()
+                            : journalPageController.videoPlayerController
+                                .refresh();
                       },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width / 3.5,
-                        height: MediaQuery.of(context).size.height / 20,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/icons/journaling/post-connect.svg",
-                              width: 17,
-                              height: 17,
-                              color: SolhColors.green,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.width,
+                            child: VideoPlayer(
+                              widget.isMyJournal
+                                  ? journalPageController
+                                      .myVideoPlayerControllers
+                                      .value[widget.index][widget.index]
+                                  : journalPageController.videoPlayerController
+                                      .value[widget.index][widget.index],
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: MediaQuery.of(context).size.width / 40,
-                              ),
-                              child: Text(
-                                widget._journalModel!.group != null &&
-                                        journalPageController
-                                                .selectedGroupId.value.length ==
-                                            0
-                                    ? 'join'
-                                    : "Connect",
-                                style: SolhTextStyles.GreenBorderButtonText,
-                              ),
-                            ),
-                          ],
+                          ),
+                          Obx(() {
+                            return !widget.isMyJournal &&
+                                        !journalPageController
+                                            .videoPlayerController
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying ||
+                                    widget.isMyJournal &&
+                                        !journalPageController
+                                            .myVideoPlayerControllers
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying
+                                ? getBlackOverlay(context)
+                                : Container();
+                          }),
+                          Obx(() {
+                            return !widget.isMyJournal &&
+                                        !journalPageController
+                                            .videoPlayerController
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying ||
+                                    widget.isMyJournal &&
+                                        !journalPageController
+                                            .myVideoPlayerControllers
+                                            .value[widget.index][widget.index]!
+                                            .value
+                                            .isPlaying
+                                ? Positioned(
+                                    bottom:
+                                        MediaQuery.of(context).size.height / 5,
+                                    left: MediaQuery.of(context).size.width /
+                                            2 -
+                                        MediaQuery.of(context).size.width / 10,
+                                    child: IconButton(
+                                      onPressed: () {
+                                        widget.isMyJournal
+                                            ? journalPageController
+                                                .playMyPostVideo(
+                                                widget.index,
+                                              )
+                                            : journalPageController.playVideo(
+                                                widget.index,
+                                              );
+                                        widget.isMyJournal
+                                            ? journalPageController
+                                                .myVideoPlayerControllers
+                                                .refresh()
+                                            : journalPageController
+                                                .videoPlayerController
+                                                .refresh();
+                                      },
+                                      icon: Image.asset(
+                                        'assets/images/play_icon.png',
+                                        fit: BoxFit.fill,
+                                      ),
+                                      iconSize:
+                                          MediaQuery.of(context).size.width / 8,
+                                      color: SolhColors.green,
+                                    ),
+                                  )
+                                : Container();
+                          }),
+                        ],
+                      ),
+                    )
+                  ///// Below for image only
+                  : Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 0.5, color: Colors.grey.shade300)),
+                      margin: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height / 80,
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: widget.journalModel.mediaUrl.toString(),
+                        fit: BoxFit.fitWidth,
+                        placeholder: (context, url) => getShimmer(context),
+                        errorWidget: (context, url, error) => Center(
+                          child: Lottie.asset('assets/images/not-found.json'),
                         ),
                       ),
                     )
-                  : SizedBox(
-                      width: 100,
-                    ),
+              : Container(
+                  height: 1.h,
+                )
         ],
       ),
     );
   }
 
-  Widget getBlackOverlay() {
+  List getTexts() {
+    List<String> textList = widget.journalModel.description!.split(' ');
+    if (textList.length > 10) {
+      showMoreBtn = true;
+    }
+    descriptionTexts = textList;
+    print('textList: $textList');
+
+    return textList;
+  }
+
+  void getFeelings() {
+    widget.journalModel.feelings!.forEach((element) {
+      feelingList.add(element.feelingName ?? '');
+    });
+    if (feelingList.length > 4) {
+      feelingList.removeRange(4, feelingList.length);
+    }
+    print(feelingList);
+  }
+
+  Widget getBlackOverlay(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height / 80,
+        vertical: MediaQuery.of(context).size.height / 200,
       ),
       color: Colors.black.withOpacity(0.5),
     );
   }
 
-  Widget getShimmer() {
+  Widget getShimmer(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.width,
@@ -850,6 +899,35 @@ class _JournalTileState extends State<JournalTile> {
         ),
       ),
     );
+  }
+
+  Widget getDescriptionText(
+    item,
+  ) {
+    return item.toString().trim().isNotEmpty && item.toString().trim()[0] == '@'
+        ? InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConnectProfileScreen(
+                    username: item.toString().substring(1, item.length),
+                    uid: '',
+                    sId: '',
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              item + " ",
+              style:
+                  GoogleFonts.signika(fontSize: 16, color: Color(0xffE1555A)),
+            ),
+          )
+        : Text(
+            item + " " ?? '',
+            style: GoogleFonts.signika(fontSize: 16, color: Color(0xff666666)),
+          );
   }
 }
 

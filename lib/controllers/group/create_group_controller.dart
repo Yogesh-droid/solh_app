@@ -68,6 +68,38 @@ class CreateGroupController extends GetxController {
     return {};
   }
 
+  Future<void> updateGroupDetails(
+      {required String groupId,
+      required String groupName,
+      required String desc,
+      required String groupType,
+      String? img,
+      String? imgType}) async {
+    isLoading.value = true;
+    await Network.makePutRequestWithToken(
+            url: APIConstants.api + '/api/group?groupId=${groupId}',
+            body: img != null
+                ? {
+                    'groupName': groupName,
+                    'groupDescription': desc,
+                    'groupType': groupType,
+                    'groupMediaUrl': img,
+                    'groupMediaType': imgType,
+                    'groupTags': tagList.value.join(',')
+                  }
+                : {
+                    'groupName': groupName,
+                    'groupDescription': desc,
+                    'groupType': groupType,
+                    'groupTags': tagList.value.join(',')
+                  })
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    isLoading.value = false;
+  }
+
   Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
     isLoading.value = true;
     Map<String, dynamic> map = await Network.makePostRequestWithToken(

@@ -1,15 +1,26 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:ui';
+
+import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/model/goal-setting/sample_goals_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import '../../../widgets_constants/constants/textstyles.dart';
+import 'goal_form.dart';
 
 class Details extends StatelessWidget {
-  const Details({Key? key}) : super(key: key);
-
+  Details({Key? key, required this.sampleGoal, required this.goalId})
+      : super(key: key);
+  final SampleGoal sampleGoal;
+  final String goalId;
+  final GoalSettingController goalSettingController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,15 +35,32 @@ class Details extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              GoalNameStack(),
+              GoalNameStack(sampleGoal: sampleGoal),
               SizedBox(
                 height: 24,
               ),
-              TaskList(),
+              TaskList(sampleGoal: sampleGoal),
               SizedBox(
                 height: 40,
               ),
-              DoneButton(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SolhGreenButton(
+                  child: Text(
+                    'Set Goal',
+                    style: GoogleFonts.signika(color: Colors.white),
+                  ),
+                  height: 50,
+                  onPressed: () {
+                    goalSettingController.saveGoal(
+                        goalType: 'sample',
+                        goalId: sampleGoal.sId,
+                        goalCatId: goalId);
+                    Utility.showToast('Goal set successfully');
+                    AutoRouter.of(context).popUntil(((route) => route.isFirst));
+                  },
+                ),
+              ),
               SizedBox(
                 height: 40,
               ),
@@ -45,8 +73,8 @@ class Details extends StatelessWidget {
 }
 
 class GoalNameStack extends StatelessWidget {
-  const GoalNameStack({Key? key}) : super(key: key);
-
+  const GoalNameStack({Key? key, required this.sampleGoal}) : super(key: key);
+  final SampleGoal sampleGoal;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,11 +83,22 @@ class GoalNameStack extends StatelessWidget {
           Container(
             height: 40.h,
             width: 100.w,
-            child: FittedBox(
+            child: CachedNetworkImage(
+              imageUrl: sampleGoal.image ?? '',
               fit: BoxFit.cover,
-              child: Image(
-                image: NetworkImage(
-                    'https://img.freepik.com/free-photo/human-hand-holding-cigarette-world-no-tobacco-day-concept_1150-44244.jpg?w=740&t=st=1656577005~exp=1656577605~hmac=7984259e30c61238f69760608f60cdbc1a7878f12ced2cd1404d736f72bc6713'),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 12.h,
+              child: ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                  child: Container(),
+                ),
               ),
             ),
           ),
@@ -71,9 +110,7 @@ class GoalNameStack extends StatelessWidget {
               height: 12.h,
               width: 100.w,
               decoration: BoxDecoration(
-                color: Color(
-                  0x90ffffff,
-                ),
+                color: Colors.white.withOpacity(0.8),
               ),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -84,56 +121,56 @@ class GoalNameStack extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Name of the Goal',
+                        '${sampleGoal.name}',
                         style: GoogleFonts.signika(
                           fontSize: 18,
                         ),
                       ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.punch_clock_outlined,
-                                    color: SolhColors.green,
-                                  ),
-                                  Text(
-                                    '5 min',
-                                    style: GoogleFonts.signika(
-                                        fontSize: 14, color: SolhColors.green),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Container(
-                                height: 18,
-                                width: 1,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: SolhColors.green,
-                                  ),
-                                  Text(
-                                    '4.5',
-                                    style: GoogleFonts.signika(
-                                        fontSize: 14, color: SolhColors.green),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
+                      // Column(
+                      //   children: [
+                      //     Row(
+                      //       children: [
+                      //         Row(
+                      //           children: [
+                      //             Icon(
+                      //               Icons.punch_clock_outlined,
+                      //               color: SolhColors.green,
+                      //             ),
+                      //             Text(
+                      //               '5 min',
+                      //               style: GoogleFonts.signika(
+                      //                   fontSize: 14, color: SolhColors.green),
+                      //             )
+                      //           ],
+                      //         ),
+                      //         SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Container(
+                      //           height: 18,
+                      //           width: 1,
+                      //           color: Colors.grey,
+                      //         ),
+                      //         SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Row(
+                      //           children: [
+                      //             Icon(
+                      //               Icons.star,
+                      //               color: SolhColors.green,
+                      //             ),
+                      //             Text(
+                      //               '4.5',
+                      //               style: GoogleFonts.signika(
+                      //                   fontSize: 14, color: SolhColors.green),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 ),
@@ -147,7 +184,9 @@ class GoalNameStack extends StatelessWidget {
 }
 
 class TaskList extends StatelessWidget {
-  const TaskList({Key? key}) : super(key: key);
+  TaskList({Key? key, required this.sampleGoal}) : super(key: key);
+  final SampleGoal sampleGoal;
+  GoalSettingController _goalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -156,101 +195,111 @@ class TaskList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('You will be achiveing this goal by doing following :-'),
+          Container(
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                color: SolhColors.green,
+              ),
+              child: Center(
+                  child: Text(
+                      'You will be achiveing this goal by doing following :-'))),
           SizedBox(
             height: 16,
           ),
-          Container(
-            height: 30 * 4,
-            child: ListView.builder(
-                itemCount: 4,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle_sharp,
-                            color: SolhColors.green,
-                          ),
-                          Text('Drink 16 Glass of water Daily')
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
-                  );
-                }),
-          ),
+          Column(
+              children: sampleGoal.activity!.map((e) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.arrow_circle_right_rounded,
+                    color: SolhColors.green,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(e.task ?? '')
+                ],
+              ),
+            );
+          }).toList()),
           SizedBox(
             height: 24,
           ),
-          Text(
-            'Occurance',
-            style: GoogleFonts.signika(
-              color: Color(0xff666666),
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color(0xffA6A6A6),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Quit smoking',
-                  hintStyle: GoogleFonts.signika(
-                    color: Color(
-                      0xffA6A6A6,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Text(
-            'Max Reminders',
-            style: GoogleFonts.signika(
-              color: Color(0xff666666),
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Color(0xffA6A6A6),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: TextField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Quit smoking',
-                  hintStyle: GoogleFonts.signika(
-                    color: Color(
-                      0xffA6A6A6,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // getOccuranceBox(),
+          // SizedBox(
+          //   height: 24,
+          // ),
+          MaxReminder()
         ],
       ),
+    );
+  }
+
+  Widget getOccuranceBox() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Occurance",
+              style: SolhTextStyles.JournalingHintText,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: DropdownButtonFormField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  borderSide: BorderSide(
+                    color: SolhColors.grey,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(4),
+                  borderSide: BorderSide(
+                    color: SolhColors.grey,
+                  ),
+                ),
+                filled: true,
+                fillColor: SolhColors.white,
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return "Please select a subcategory";
+                }
+                return null;
+              },
+              onChanged: (value) {
+                // map.update(map.keys.first, (value) => value,
+                //     ifAbsent: () => value.toString());
+                //_goalSettingController.task.value.elementAt(0)[map.keys.first] = value.toString();
+              },
+              value: '1',
+              items: [
+                DropdownMenuItem(
+                  value: '1',
+                  child: Text('Once'),
+                ),
+                DropdownMenuItem(
+                  value: '365',
+                  child: Text('Daily'),
+                ),
+              ]),
+        )
+      ],
     );
   }
 }
@@ -271,7 +320,7 @@ class DoneButton extends StatelessWidget {
             )),
         child: Center(
           child: Text(
-            'set Goal',
+            'Set Goal',
             style: GoogleFonts.signika(
               color: Colors.white,
             ),

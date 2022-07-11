@@ -84,7 +84,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       print("map is not null + " + widget.map.toString());
       imgUploadResponse = widget.map!;
     }
-    userBlocNetwork.getMyProfileSnapshot();
+    //userBlocNetwork.getMyProfileSnapshot();
   }
 
   @override
@@ -102,7 +102,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         body: Stack(
           children: [
             SingleChildScrollView(
-              child: StreamBuilder<UserModel?>(
+              /*  child: StreamBuilder<UserModel?>(
                   stream: userBlocNetwork.userStateStream,
                   builder: (context, userSnapshot) {
                     if (userSnapshot.hasData)
@@ -141,7 +141,40 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         ),
                       );
                     return Center(child: MyLoader());
-                  }),
+                  }), */
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    UsernameHeader(
+                      userModel: userBlocNetwork.myData,
+                      onTypeChanged: (value) {
+                        print("Changed to $value");
+                        _journalType = value;
+                      },
+                    ),
+                    SizedBox(height: 2.h),
+                    JournalTextField(),
+                    SizedBox(height: 1.h),
+                    getFeelingTitle(),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    FeelingsContainer(
+                      userBlocNetwork.myData,
+                      onFeelingsChanged: (feelings) {
+                        print("feelings changed to: $feelings");
+                      },
+                    ),
+                    SizedBox(height: 2.h),
+                    getMediaContainer(),
+                    SizedBox(height: 10.h),
+                    //getCustomFeelingTextBox(),
+                  ],
+                ),
+              ),
             ),
             if (_isPosting)
               Container(
