@@ -466,94 +466,101 @@ class TopConsultantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
-    return Container(
-      //width: 70.w,
-      //height: 25.h,
-      margin: EdgeInsets.symmetric(horizontal: 2.5.w),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
-            child: CachedNetworkImage(
-              imageUrl: _imgUrl ??
-                  'https://solh.s3.amazonaws.com/user/profile/1651493729337',
-              width: 30.w,
-              height: double.maxFinite,
-              fit: BoxFit.fill,
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ConsultantProfile(id: _sId)));
+      },
+      child: Container(
+        //width: 70.w,
+        //height: 25.h,
+        margin: EdgeInsets.symmetric(horizontal: 2.5.w),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+              child: CachedNetworkImage(
+                imageUrl: _imgUrl ??
+                    'https://solh.s3.amazonaws.com/user/profile/1651493729337',
+                width: 30.w,
+                height: double.maxFinite,
+                fit: BoxFit.fill,
+              ),
             ),
-          ),
-          SizedBox(width: 2.w),
-          Container(
-              width: 42.w,
-              // height: 15.h,
-              padding: EdgeInsets.symmetric(vertical: 1.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(_name),
-                  // Text(_qualification),
-                  Text(
-                    _bio,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF666666),
-                        fontWeight: FontWeight.w300),
-                  ),
-                  Center(
-                    child: SolhGreenButton(
-                      height: 5.h,
-                      width: 35.w,
-                      child: Text(
-                        "Book Appointment",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      onPressed: () {
-                        //launch("tel://$_mobile");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ConsultantProfile(id: _sId)));
-                      },
+            SizedBox(width: 2.w),
+            Container(
+                width: 42.w,
+                // height: 15.h,
+                padding: EdgeInsets.symmetric(vertical: 1.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(_name),
+                    // Text(_qualification),
+                    Text(
+                      _bio,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF666666),
+                          fontWeight: FontWeight.w300),
                     ),
-                  )
-                  // Text(
-                  //   "07 Year of Experience",
-                  //   style: TextStyle(fontSize: 12),
-                  // ),
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 1.w),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Row(
-                  //         children: [
-                  //           Icon(
-                  //             Icons.people,
-                  //             color: SolhColors.green,
-                  //             size: 18,
-                  //           ),
-                  //           Text(
-                  //             "72",
-                  //             style: SolhTextStyles.GreenBorderButtonText,
-                  //           )
-                  //         ],
-                  //       ),
-                  //       Text(
-                  //         "Free",
-                  //         style: TextStyle(color: SolhColors.green),
-                  //       )
-                  //     ],
-                  //   ),
-                  // )
-                ],
-              )),
-        ],
+                    Center(
+                      child: SolhGreenButton(
+                        height: 5.h,
+                        width: 35.w,
+                        child: Text(
+                          "Book Appointment",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        onPressed: () {
+                          //launch("tel://$_mobile");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  ConsultantProfile(id: _sId)));
+                        },
+                      ),
+                    )
+                    // Text(
+                    //   "07 Year of Experience",
+                    //   style: TextStyle(fontSize: 12),
+                    // ),
+                    // Padding(
+                    //   padding: EdgeInsets.symmetric(horizontal: 1.w),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           Icon(
+                    //             Icons.people,
+                    //             color: SolhColors.green,
+                    //             size: 18,
+                    //           ),
+                    //           Text(
+                    //             "72",
+                    //             style: SolhTextStyles.GreenBorderButtonText,
+                    //           )
+                    //         ],
+                    //       ),
+                    //       Text(
+                    //         "Free",
+                    //         style: TextStyle(color: SolhColors.green),
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
+                  ],
+                )),
+          ],
+        ),
       ),
     );
   }

@@ -36,16 +36,16 @@ class SOSSentDialog extends StatelessWidget {
                   style: SolhTextStyles.SOSGreenHeading.copyWith(
                       color: Colors.black),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 0.7.h,
-                  ),
-                  child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Venenatis bibendum dui ipsum tellus. Porttitor id ut a in ut sed accumsan eu.",
-                    style: SolhTextStyles.SOSGreyText,
-                  ),
-                )
+                // Padding(
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 10.w,
+                //     vertical: 0.7.h,
+                //   ),
+                //   child: Text(
+                //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Venenatis bibendum dui ipsum tellus. Porttitor id ut a in ut sed accumsan eu.",
+                //     style: SolhTextStyles.SOSGreyText,
+                //   ),
+                // )
               ],
             ),
             Expanded(
