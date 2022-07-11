@@ -8,7 +8,7 @@ import 'package:solh/services/network/network.dart';
 import 'package:http/http.dart' as http;
 
 class SosController extends GetxController {
-  var isAdded = false;
+  var isAdded = true;
 
   var selectedPersons = 0.obs;
 
@@ -18,9 +18,24 @@ class SosController extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
-    getSosContacts();
-
+    checkIfUserAdded();
+    print('onInit Ran');
     super.onInit();
+  }
+
+  checkIfUserAdded() async {
+    var response = await getSosContacts();
+    Map result = json.decode(response);
+
+    if (result['contactList'].isEmpty) {
+      print('false added');
+      isAdded = false;
+    } else {
+      print('true added');
+      isAdded = true;
+    }
+    print(result['contactList']);
+    update();
   }
 
   Future addSosContacts(body) async {
