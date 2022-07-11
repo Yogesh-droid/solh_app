@@ -37,37 +37,35 @@ class FirebaseNetwork {
           phoneNumber: phoneNo,
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
-            print("verification completed");
-            print(phoneAuthCredential.smsCode.toString());
-            otpVerificationController
-                .updateOtp(phoneAuthCredential.smsCode ?? '');
-            print(phoneAuthCredential.verificationId);
-            // print(phoneAuthCredential.providerId);
-            UserCredential userCredential =
-                await signInWithPhoneCredential(phoneAuthCredential);
-            print("user token" + userCredential.credential!.token.toString());
-            print("verified");
+            // print("verification completed");
+            // print(phoneAuthCredential.smsCode.toString());
+            // print(phoneAuthCredential.verificationId);
+            // // print(phoneAuthCredential.providerId);
+            // UserCredential userCredential =
+            //     await signInWithPhoneCredential(phoneAuthCredential);
+            // print("user token" + userCredential.credential!.token.toString());
+            // print("verified");
 
-            print("user idToken: ${userCredential.credential!.token}");
-            bool isSessionCookieCreated =
-                await SessionCookie.createSessionCookie(
-                    userCredential.credential!.token.toString());
-            print(isSessionCookieCreated);
-            print("checking is profile created");
-            bool isProfileCreated = await userBlocNetwork.isProfileCreated();
-            print("profile checking complete");
+            // print("user idToken: ${userCredential.credential!.token}");
+            // bool isSessionCookieCreated =
+            //     await SessionCookie.createSessionCookie(
+            //         userCredential.credential!.token.toString());
+            // print(isSessionCookieCreated);
+            // print("checking is profile created");
+            // bool isProfileCreated = await userBlocNetwork.isProfileCreated();
+            // print("profile checking complete");
 
-            print("^" * 30 +
-                "Is Profile Created:" +
-                isProfileCreated.toString() +
-                "^" * 30);
-            isProfileCreated
-                ? AutoRouter.of(globalNavigatorKey.currentState!.context)
-                    .pushAndPopUntil(MasterScreenRouter(),
-                        predicate: (value) => false)
-                : AutoRouter.of(globalNavigatorKey.currentState!.context)
-                    .pushAndPopUntil(CreateProfileScreenRouter(),
-                        predicate: (value) => false);
+            // print("^" * 30 +
+            //     "Is Profile Created:" +
+            //     isProfileCreated.toString() +
+            //     "^" * 30);
+            // isProfileCreated
+            //     ? AutoRouter.of(globalNavigatorKey.currentState!.context)
+            //         .pushAndPopUntil(MasterScreenRouter(),
+            //             predicate: (value) => false)
+            //     : AutoRouter.of(globalNavigatorKey.currentState!.context)
+            //         .pushAndPopUntil(CreateProfileScreenRouter(),
+            //             predicate: (value) => false);
           });
     } on FirebaseAuthException catch (e) {
       print("bdkasbfk fk sbg kbjkrgb kajdfngljnealrgnalsf ;lawrnh");
@@ -82,6 +80,50 @@ class FirebaseNetwork {
     // print(_user.verificationId);
     // _user.confirm(verificationCode);
   }
+
+  /* void signInWithPhoneNumber(String phoneNo,
+      {required Function(String) onCodeSent}) {
+    FirebaseAuth.instance.verifyPhoneNumber(
+        timeout: const Duration(seconds: 120),
+        phoneNumber: phoneNo,
+        verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async {
+          print("verification completed");
+          print(phoneAuthCredential.smsCode.toString());
+
+          print(phoneAuthCredential.verificationId);
+          // print(phoneAuthCredential.providerId);
+          UserCredential userCredential =
+              await signInWithPhoneCredential(phoneAuthCredential);
+          print("user token" + userCredential.toString());
+          print("user token" + userCredential.credential!.token.toString());
+          print("verified");
+          bool isSessionCookieCreated = await SessionCookie.createSessionCookie(
+              userCredential.credential!.token.toString());
+          print(isSessionCookieCreated);
+          print("checking is profile created");
+          bool isProfileCreated = await userBlocNetwork.isProfileCreated();
+          print("profile checking complete");
+
+          print("^" * 30 +
+              "Is Profile Created:" +
+              isProfileCreated.toString() +
+              "^" * 30);
+          isProfileCreated
+              ? AutoRouter.of(globalNavigatorKey.currentState!.context)
+                  .pushAndPopUntil(MasterScreenRouter(),
+                      predicate: (value) => false)
+              : AutoRouter.of(globalNavigatorKey.currentState!.context)
+                  .pushAndPopUntil(CreateProfileScreenRouter(),
+                      predicate: (value) => false);
+        },
+        verificationFailed: (FirebaseAuthException e) {},
+        codeSent: (String verificationId, int? resendToken) {},
+        codeAutoRetrievalTimeout: (String verificationId) {
+          AutoRouter.of(globalNavigatorKey.currentState!.context).push(
+              OTPScreenRouter(
+                  phoneNo: phoneNo, verificationId: verificationId));
+        });
+  } */
 
   static Future<UserCredential> signInWithPhoneCredential(
       AuthCredential credential) async {

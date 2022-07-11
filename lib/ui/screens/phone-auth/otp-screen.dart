@@ -14,7 +14,6 @@ import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 import '../../../services/user/session-cookie.dart';
 import '../../../widgets_constants/constants/colors.dart';
-// import 'package:alt_sms_autofill/alt_sms_autofill.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen(
@@ -256,7 +255,6 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Text(
       time == 0 ? 'Resend code' : time.toString(),
       style: TextStyle(fontSize: 14),
