@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-controller/my_goal_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -182,7 +183,11 @@ class _HomePageState extends State<HomePage> {
                                   .groupList!.length >
                               0
                       ? GetHelpCategory(
-                          title: 'Recommended groups', onPressed: () {})
+                          title: 'Recommended groups',
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ManageGroupPage()));
+                          })
                       : Container()),
                   Obx(() {
                     return discoverGroupController
