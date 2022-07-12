@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-
 import '../../../bloc/journals/user-journal-bloc.dart';
 import '../../../routes/routes.gr.dart';
 import '../../../services/controllers/otp_verification_controller.dart';
@@ -32,55 +30,15 @@ class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _otpController = TextEditingController();
   OtpVerificationController otpVerificationController = Get.find();
   final scaffoldKey = GlobalKey();
-  //late OTPTextEditController controller;
-  //late OTPInteractor _otpInteractor;
-  String codeValue = "";
-
   @override
   void initState() {
-    // getSms();
     super.initState();
-    // _otpInteractor = OTPInteractor();
-    // _otpInteractor
-    //     .getAppSignature()
-    //     //ignore: avoid_print
-    //     .then((value) => print('signature - $value'));
-
-    // controller = OTPTextEditController(
-    //   codeLength: 6,
-    //   //ignore: avoid_print
-    //   onCodeReceive: (code) => print('Your Application receive code - $code'),
-    //   otpInteractor: _otpInteractor,
-    // )..startListenUserConsent(
-    //     (code) {
-    //       final exp = RegExp(r'(\d{6})');
-    //       return exp.stringMatch(code ?? '') ?? '';
-    //     },
-    //     strategies: [
-    //       //SampleStrategy(),
-    //     ],
-    //   );
-    //listenOtp();
   }
-
-  // Future<void> getSms() async {
-  //   try {
-  //     String? commingSms = await AltSmsAutofill().listenForSms;
-  //     if (commingSms != null) {
-  //       print(commingSms);
-  //       _otpController.text = commingSms.substring(0, 6);
-  //     }
-  //   } catch (e) {
-  //     String commingSms = 'Failed to get Sms.';
-  //   }
-  // }
 
   bool isLoading = false;
 
   @override
   void dispose() {
-    //SmsAutoFill().unregisterListener();
-    //AltSmsAutofill().unregisterListener();
     print("unregisterListener");
     super.dispose();
   }

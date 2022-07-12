@@ -73,9 +73,12 @@ class _MasterScreenState extends State<MasterScreen> {
                 ),
                 label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(tabsRouter.activeIndex == 1
-                    ? CupertinoIcons.person_3_fill
-                    : CupertinoIcons.person_3),
+                icon: Icon(
+                  tabsRouter.activeIndex == 1
+                      ? CupertinoIcons.person_3_fill
+                      : CupertinoIcons.person_3,
+                  size: 25,
+                ),
                 label: "journaling"),
             BottomNavigationBarItem(
               icon: tabsRouter.activeIndex == 2

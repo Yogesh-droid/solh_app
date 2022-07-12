@@ -119,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+  BottomNavigatorController _controller = Get.find();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -437,16 +438,11 @@ class _HomePageState extends State<HomePage> {
                       child: getPostCard(
                           _journalPageController.trendingJournalsList[1]))
                   : Container(),
-              InkWell(
-                onTap: () {
-                  _controller.tabrouter!.setActiveIndex(1);
-                },
-                child: Positioned(
-                    left: 20,
-                    top: 10,
-                    child: getDraggable(
-                        _journalPageController.trendingJournalsList[0])),
-              )
+              Positioned(
+                  left: 20,
+                  top: 10,
+                  child: getDraggable(
+                      _journalPageController.trendingJournalsList[0]))
             ],
           );
         }));
@@ -484,27 +480,32 @@ class _HomePageState extends State<HomePage> {
     return Draggable(
       affinity: Axis.horizontal,
       data: "data",
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.5,
-        width: MediaQuery.of(context).size.width * 0.8,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: SolhColors.grey217,
-                offset: const Offset(
-                  5.0,
-                  0.0,
-                ),
-                blurRadius: 5.0,
-                spreadRadius: 0,
-              )
-            ],
-            border: Border.all(
-              color: SolhColors.greyS200,
-            )),
-        child: getPostContent(journal),
+      child: InkWell(
+        onTap: () {
+          _bottomNavigatorController.tabrouter!.setActiveIndex(1);
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: SolhColors.grey217,
+                  offset: const Offset(
+                    5.0,
+                    0.0,
+                  ),
+                  blurRadius: 5.0,
+                  spreadRadius: 0,
+                )
+              ],
+              border: Border.all(
+                color: SolhColors.greyS200,
+              )),
+          child: getPostContent(journal),
+        ),
       ),
       feedback: Card(
         shape: RoundedRectangleBorder(
