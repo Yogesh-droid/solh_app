@@ -167,7 +167,9 @@ class _HomePageState extends State<HomePage> {
               appBar: getAppBar(),
               body: SingleChildScrollView(
                 child: Column(children: [
+                  GetHelpDivider(),
                   WhatsOnYourMindSection(),
+                  GetHelpDivider(),
                   SizedBox(
                     height: 10,
                   ),
@@ -648,7 +650,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getSolhBuddiesUI() {
     return Container(
-      height: 38.h,
+      height: 35.h,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Container(child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&

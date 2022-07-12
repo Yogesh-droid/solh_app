@@ -382,31 +382,33 @@ class GoalName extends StatelessWidget {
               SizedBox(
                 width: 16,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    e.goalName ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: goalFontStyle(
-                      18.0,
-                      Color(0xff666666),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                      'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
+                    Text(
+                      e.goalName ?? '',
+                      overflow: TextOverflow.ellipsis,
                       style: goalFontStyle(
-                        14.0,
-                        Color(0xffA6A6A6),
-                        FontWeight.w300,
-                      )),
-                ],
+                        18.0,
+                        Color(0xff666666),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                        'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
+                        style: goalFontStyle(
+                          14.0,
+                          Color(0xffA6A6A6),
+                          FontWeight.w300,
+                        )),
+                  ],
+                ),
               ),
               Spacer(),
               Obx(() {
@@ -477,39 +479,43 @@ class GoalName extends StatelessWidget {
           children: [
             Container(
               width: 70.w,
-              child: Text(e1.task ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: SolhTextStyles.ProfileMenuGreyText),
+              child: Expanded(
+                child: Text(e1.task ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: SolhTextStyles.ProfileMenuGreyText),
+              ),
             ),
-            InkWell(
-              onTap: _goalSettingController.isUpdateGoal.value
-                  ? () {}
-                  : () {
-                      showAlertDialog(context, e.sId!, e1.sId!);
-                      // _goalSettingController.updateActivity(
-                      //     e.sId ?? '', e1.sId ?? '');
-                    },
-              child: Container(
-                height: 20,
-                width: 20,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: SolhColors.white,
-                    border: Border.all(color: SolhColors.grey239)),
-                child: _goalSettingController.isUpdateGoal.value
-                    ? CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )
-                    : e1.isComplete != null
-                        ? e1.isComplete!
-                            ? Icon(
-                                Icons.check,
-                                color: SolhColors.green,
-                                size: 16,
-                              )
-                            : Container()
-                        : Container(),
+            Expanded(
+              child: InkWell(
+                onTap: _goalSettingController.isUpdateGoal.value
+                    ? () {}
+                    : () {
+                        showAlertDialog(context, e.sId!, e1.sId!);
+                        // _goalSettingController.updateActivity(
+                        //     e.sId ?? '', e1.sId ?? '');
+                      },
+                child: Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: SolhColors.white,
+                      border: Border.all(color: SolhColors.grey239)),
+                  child: _goalSettingController.isUpdateGoal.value
+                      ? CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )
+                      : e1.isComplete != null
+                          ? e1.isComplete!
+                              ? Icon(
+                                  Icons.check,
+                                  color: SolhColors.green,
+                                  size: 16,
+                                )
+                              : Container()
+                          : Container(),
+                ),
               ),
             ),
           ],
