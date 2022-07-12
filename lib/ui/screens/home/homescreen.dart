@@ -1,15 +1,24 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/ui/screens/groups/group_detail.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
+import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-controller/my_goal_controller.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/connections/connection_controller.dart';
@@ -110,7 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+  BottomNavigatorController _controller = Get.find();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -120,6 +130,7 @@ class _HomePageState extends State<HomePage> {
   JournalPageController _journalPageController = Get.find();
   GetHelpController getHelpController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
+  BottomNavigatorController _bottomNavigatorController = Get.find();
   bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -160,8 +171,41 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  GetHelpCategory(
-                    title: 'Trending Posts',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Trending Posts',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(1);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Journaling',
+                                  style: GoogleFonts.signika(
+                                    color: SolhColors.green,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: SolhColors.green,
+                                  size: 14,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   Obx(() {
                     return _journalPageController.isTrendingLoading.value
@@ -174,6 +218,60 @@ class _HomePageState extends State<HomePage> {
                   ),
                   getSolhBuddiesUI(),
                   GetHelpDivider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Goals',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(3);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Goal Setting',
+                                style: GoogleFonts.signika(
+                                  color: SolhColors.green,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: SolhColors.green,
+                                size: 14,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  getGoalSettingUI(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SolhGreenButton(
+                      child: Text('Add Goals +'),
+                      height: 50,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectGoal()));
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GetHelpDivider(),
                   Obx(() => discoverGroupController
                                   .discoveredGroupModel.value.groupList !=
                               null &&
@@ -181,7 +279,11 @@ class _HomePageState extends State<HomePage> {
                                   .groupList!.length >
                               0
                       ? GetHelpCategory(
-                          title: 'Recommended groups', onPressed: () {})
+                          title: 'Recommended groups',
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => ManageGroupPage()));
+                          })
                       : Container()),
                   Obx(() {
                     return discoverGroupController
@@ -311,6 +413,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getTrendingPostUI() {
+    BottomNavigatorController _controller = Get.find();
     return Container(
         height: MediaQuery.of(context).size.height * 0.55,
         child: Obx(() {
@@ -375,27 +478,32 @@ class _HomePageState extends State<HomePage> {
     return Draggable(
       affinity: Axis.horizontal,
       data: "data",
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.5,
-        width: MediaQuery.of(context).size.width * 0.8,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: SolhColors.grey217,
-                offset: const Offset(
-                  5.0,
-                  0.0,
-                ),
-                blurRadius: 5.0,
-                spreadRadius: 0,
-              )
-            ],
-            border: Border.all(
-              color: SolhColors.greyS200,
-            )),
-        child: getPostContent(journal),
+      child: InkWell(
+        onTap: () {
+          _bottomNavigatorController.tabrouter!.setActiveIndex(1);
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height * 0.5,
+          width: MediaQuery.of(context).size.width * 0.8,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: SolhColors.grey217,
+                  offset: const Offset(
+                    5.0,
+                    0.0,
+                  ),
+                  blurRadius: 5.0,
+                  spreadRadius: 0,
+                )
+              ],
+              border: Border.all(
+                color: SolhColors.greyS200,
+              )),
+          child: getPostContent(journal),
+        ),
       ),
       feedback: Card(
         shape: RoundedRectangleBorder(
@@ -587,6 +695,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget getGoalSettingUI() {
+    return Container(
+      child: GoalName(),
+    );
+  }
+
   Widget getRecommendedGroupsUI() {
     return Container(
         padding: EdgeInsets.only(left: 2.h, bottom: 2.h),
@@ -595,113 +709,123 @@ class _HomePageState extends State<HomePage> {
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return Container(
-                width: MediaQuery.of(context).size.width * 0.5,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: SolhColors.greyS200,
+              return InkWell(
+                onTap: (() {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => GroupDetailsPage(
+                            group: discoverGroupController
+                                .discoveredGroupModel.value.groupList![index],
+                          )));
+                }),
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: SolhColors.greyS200,
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                        child: discoverGroupController.discoveredGroupModel
-                                    .value.groupList![index].groupMediaUrl !=
-                                null
-                            ? CachedNetworkImage(
-                                imageUrl: discoverGroupController
-                                        .discoveredGroupModel
-                                        .value
-                                        .groupList![index]
-                                        .groupMediaUrl ??
-                                    '',
-                                fit: BoxFit.cover,
-                                errorWidget: (context, url, error) =>
-                                    Image.asset(
-                                  'assets/images/no-image-available_err.png',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                          child: discoverGroupController.discoveredGroupModel
+                                      .value.groupList![index].groupMediaUrl !=
+                                  null
+                              ? CachedNetworkImage(
+                                  imageUrl: discoverGroupController
+                                          .discoveredGroupModel
+                                          .value
+                                          .groupList![index]
+                                          .groupMediaUrl ??
+                                      '',
                                   fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/no-image-available_err.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                  placeholder: (context, url) =>
+                                      getImgShimmer(),
+                                )
+                              : Image.asset(
+                                  'assets/images/group_placeholder.png',
+                                  fit: BoxFit.fill,
                                 ),
-                                placeholder: (context, url) => getImgShimmer(),
-                              )
-                            : Image.asset(
-                                'assets/images/group_placeholder.png',
-                                fit: BoxFit.fill,
-                              ),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                        top: 8,
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                          top: 8,
+                        ),
+                        child: Text(
+                          discoverGroupController.discoveredGroupModel.value
+                                  .groupList![index].groupName ??
+                              '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: SolhTextStyles.AppBarText,
+                        ),
                       ),
-                      child: Text(
-                        discoverGroupController.discoveredGroupModel.value
-                                .groupList![index].groupName ??
-                            '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: SolhTextStyles.AppBarText,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              CupertinoIcons.person_3,
+                              color: SolhColors.green,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Text(
+                              discoverGroupController.discoveredGroupModel.value
+                                  .groupList![index].groupMembers!.length
+                                  .toString(),
+                              style: SolhTextStyles.JournalingHintText,
+                            ),
+                            SizedBox(
+                              width: 4.w,
+                            ),
+                            Image.asset(
+                              'assets/icons/group/edit.png',
+                              color: SolhColors.green,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Text(
+                              discoverGroupController.discoveredGroupModel.value
+                                  .groupList![index].journalCount
+                                  .toString(),
+                              style: SolhTextStyles.JournalingHintText,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            CupertinoIcons.person_3,
-                            color: SolhColors.green,
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Text(
-                            discoverGroupController.discoveredGroupModel.value
-                                .groupList![index].groupMembers!.length
-                                .toString(),
-                            style: SolhTextStyles.JournalingHintText,
-                          ),
-                          SizedBox(
-                            width: 4.w,
-                          ),
-                          Image.asset(
-                            'assets/icons/group/edit.png',
-                            color: SolhColors.green,
-                          ),
-                          SizedBox(
-                            width: 2.w,
-                          ),
-                          Text(
-                            discoverGroupController.discoveredGroupModel.value
-                                .groupList![index].journalCount
-                                .toString(),
-                            style: SolhTextStyles.JournalingHintText,
-                          ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.only(left: 8.0),
+                        child: Text(
+                          discoverGroupController.discoveredGroupModel.value
+                                  .groupList![index].groupDescription ??
+                              '',
+                          style: SolhTextStyles.JournalingHintText,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        discoverGroupController.discoveredGroupModel.value
-                                .groupList![index].groupDescription ??
-                            '',
-                        style: SolhTextStyles.JournalingHintText,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },

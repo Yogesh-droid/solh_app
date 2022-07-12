@@ -1068,15 +1068,24 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   ),
                   Column(
                     children: [
-                      Text(
-                        journalPageController.isAnonymousSelected == true
-                            ? (widget
-                                    ._userModel!.anonymous!.userName!.isNotEmpty
-                                ? widget._userModel!.anonymous!.userName!
-                                : 'Anonymous')
-                            : widget._userModel!.name ?? "",
-                        style: SolhTextStyles.JournalingUsernameText.copyWith(
-                            fontWeight: FontWeight.normal, fontSize: 14),
+                      Row(
+                        children: [
+                          Text(
+                            journalPageController.isAnonymousSelected == true
+                                ? (widget._userModel!.anonymous!.userName!
+                                        .isNotEmpty
+                                    ? widget._userModel!.anonymous!.userName!
+                                    : 'Anonymous')
+                                : widget._userModel!.name ?? "",
+                            style:
+                                SolhTextStyles.JournalingUsernameText.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                          ),
+                          journalPageController.isAnonymousSelected == false
+                              ? Text(widget._userModel!.isSolhExpert! ? '' : '')
+                              : Container()
+                        ],
                       ),
                       SizedBox(
                         height: 5.h,

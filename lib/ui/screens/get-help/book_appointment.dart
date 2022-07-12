@@ -783,9 +783,8 @@ getdateTime(selectedDay, selectedSlot, itemNoinList) {
   getDate() {
     if (selectedDay == 'Today') {
       return DateFormat('yyyy-MM-dd').format(now);
-    } else if (_controller.days!.indexOf(selectedDay.toString()) <
-        _controller.days!
-            .indexOf(DateFormat('yyyy-MM-dd').format(now).toString())) {
+    } else if (_controller.days!.indexOf(selectedDay.toString()) >
+        _controller.days!.indexOf(_controller.days!.indexOf('Saturday'))) {
       return now.add(Duration(
           days: _controller.days!.indexOf(selectedDay.toString()) + 1));
     } else {
@@ -798,6 +797,10 @@ getdateTime(selectedDay, selectedSlot, itemNoinList) {
     return selectedSlot.toString().split('-');
   }
 
+  print(DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+      'T' +
+      getTime()[itemNoinList].toString() +
+      ':00');
   return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
       'T' +
       getTime()[itemNoinList].toString() +
