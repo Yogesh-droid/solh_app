@@ -24,7 +24,6 @@ class GroupDetailsPage extends StatefulWidget {
       : super(key: key);
   final GroupList group;
   bool? isJoined;
-
   @override
   State<GroupDetailsPage> createState() => _GroupDetailsPageState();
 }
@@ -221,7 +220,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 children: [
                   Row(
                     children: [
-                      Image.asset('assets/icons/group/lock.png'),
+                      Image.asset('assets/images/Earth.png'),
                       SizedBox(width: 5),
                       Text(
                         groupList.groupType ?? '',
