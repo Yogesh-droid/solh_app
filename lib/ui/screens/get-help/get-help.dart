@@ -751,7 +751,7 @@ class SolhVolunteers extends StatelessWidget {
                   Text(
                     'Solh Expert',
                     style: GoogleFonts.signika(
-                      fontSize: 10,
+                      fontSize: 12,
                       color: Color(0xFF5F9B8C),
                     ),
                   ),
