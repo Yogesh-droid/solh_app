@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -18,6 +19,8 @@ class MasterScreen extends StatefulWidget {
 class _MasterScreenState extends State<MasterScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
+  BottomNavigatorController bottomNavigatorController =
+      Get.put(BottomNavigatorController());
   @override
   void initState() {
     super.initState();
@@ -35,6 +38,7 @@ class _MasterScreenState extends State<MasterScreen> {
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
         // if (widget.index != null) tabsRouter.setActiveIndex(widget.index!);
+        bottomNavigatorController.tabrouter = tabsRouter;
         return BottomNavigationBar(
           enableFeedback: true,
           type: BottomNavigationBarType.fixed,
