@@ -54,6 +54,7 @@ class MyGoalsScreen extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
+
               Obx(() {
                 return goalSettingController.pesonalGoalModel.value.goalList !=
                             null &&
@@ -486,36 +487,34 @@ class GoalName extends StatelessWidget {
                     style: SolhTextStyles.ProfileMenuGreyText),
               ),
             ),
-            Expanded(
-              child: InkWell(
-                onTap: _goalSettingController.isUpdateGoal.value
-                    ? () {}
-                    : () {
-                        showAlertDialog(context, e.sId!, e1.sId!);
-                        // _goalSettingController.updateActivity(
-                        //     e.sId ?? '', e1.sId ?? '');
-                      },
-                child: Container(
-                  height: 20,
-                  width: 20,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: SolhColors.white,
-                      border: Border.all(color: SolhColors.grey239)),
-                  child: _goalSettingController.isUpdateGoal.value
-                      ? CircularProgressIndicator(
-                          strokeWidth: 2,
-                        )
-                      : e1.isComplete != null
-                          ? e1.isComplete!
-                              ? Icon(
-                                  Icons.check,
-                                  color: SolhColors.green,
-                                  size: 16,
-                                )
-                              : Container()
-                          : Container(),
-                ),
+            InkWell(
+              onTap: _goalSettingController.isUpdateGoal.value
+                  ? () {}
+                  : () {
+                      showAlertDialog(context, e.sId!, e1.sId!);
+                      // _goalSettingController.updateActivity(
+                      //     e.sId ?? '', e1.sId ?? '');
+                    },
+              child: Container(
+                height: 20,
+                width: 20,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: SolhColors.white,
+                    border: Border.all(color: SolhColors.grey239)),
+                child: _goalSettingController.isUpdateGoal.value
+                    ? CircularProgressIndicator(
+                        strokeWidth: 2,
+                      )
+                    : e1.isComplete != null
+                        ? e1.isComplete!
+                            ? Icon(
+                                Icons.check,
+                                color: SolhColors.green,
+                                size: 16,
+                              )
+                            : Container()
+                        : Container(),
               ),
             ),
           ],

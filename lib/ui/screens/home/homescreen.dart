@@ -10,7 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
@@ -55,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
   FeelingsController feelingsController = Get.put(FeelingsController());
+  BookAppointmentController bookAppointmentController = Get.find();
 
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
@@ -131,6 +134,9 @@ class _HomePageState extends State<HomePage> {
   GetHelpController getHelpController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
   BottomNavigatorController _bottomNavigatorController = Get.find();
+  BookAppointmentController bookAppointmentController = Get.find();
+  GoalSettingController goalSettingController =
+      Get.put(GoalSettingController());
   bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -253,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  getGoalSettingUI(),
+                  getGoalSettingUI(goalSettingController),
                   SizedBox(
                     height: 10,
                   ),
@@ -352,6 +358,43 @@ class _HomePageState extends State<HomePage> {
                                 )),
                         )),
                   ),
+
+                  GetHelpDivider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Search by issues',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(2);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Get Help',
+                                style: GoogleFonts.signika(
+                                  color: SolhColors.green,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: SolhColors.green,
+                                size: 14,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  getIssueUI(
+                      bookAppointmentController, getHelpController, context),
                   SizedBox(
                     height: 100,
                   ),
@@ -650,7 +693,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getSolhBuddiesUI() {
     return Container(
-      height: 35.h,
+      height: 36.h,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Container(child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&
@@ -697,10 +740,22 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget getGoalSettingUI() {
-    return Container(
-      child: GoalName(),
-    );
+  Widget getGoalSettingUI(GoalSettingController goalSettingController) {
+    return Obx(() {
+      return Container(
+        child: goalSettingController.pesonalGoalModel.value.goalList != null
+            ? (goalSettingController.pesonalGoalModel.value.goalList!.length ==
+                    0
+                ? Text('No Goals found',
+                    style: GoogleFonts.signika(
+                      color: Colors.grey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ))
+                : GoalName())
+            : Container(),
+      );
+    });
   }
 
   Widget getRecommendedGroupsUI() {
@@ -776,7 +831,11 @@ class _HomePageState extends State<HomePage> {
                               '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: SolhTextStyles.AppBarText,
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff222222),
+                          ),
                         ),
                       ),
                       Padding(
@@ -799,8 +858,8 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(
                               width: 4.w,
                             ),
-                            Image.asset(
-                              'assets/icons/group/edit.png',
+                            SvgPicture.asset(
+                              'assets/images/eye.svg',
                               color: SolhColors.green,
                             ),
                             SizedBox(
@@ -843,4 +902,23 @@ class _HomePageState extends State<HomePage> {
   Widget getPeopleYouMayKnowUI() {
     return Container();
   }
+}
+
+Widget getIssueUI(bookAppointmentController, getHelpController, context) {
+  return Container(
+      margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
+      child: Obx(() {
+        return Wrap(
+          children: getHelpController.issueList.value.map<Widget>((issue) {
+            return IssuesTile(
+              title: issue.name ?? '',
+              onPressed: () {
+                bookAppointmentController.query = issue.name;
+                AutoRouter.of(context).push(ConsultantsScreenRouter(
+                    slug: issue.slug ?? '', type: 'issue'));
+              },
+            );
+          }).toList(),
+        );
+      }));
 }

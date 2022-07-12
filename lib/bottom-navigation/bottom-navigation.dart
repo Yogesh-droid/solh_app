@@ -89,9 +89,15 @@ class _MasterScreenState extends State<MasterScreen> {
               label: "Get Help",
             ),
             BottomNavigationBarItem(
-                icon: Icon(tabsRouter.activeIndex == 3
-                    ? CupertinoIcons.check_mark_circled_solid
-                    : CupertinoIcons.check_mark_circled),
+                icon: tabsRouter.activeIndex == 3
+                    ? SvgPicture.asset(
+                        'assets/images/groal tab vector.svg',
+                        color: SolhColors.green,
+                      )
+                    : SvgPicture.asset(
+                        'assets/images/groal tab vector.svg',
+                        color: Colors.grey.shade600,
+                      ),
                 label: "My Goals"),
             BottomNavigationBarItem(
                 icon: Icon(

@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -27,6 +28,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
   File? _croppedFile;
   final JournalPageController _journalPageController = Get.find();
   final MoodMeterController moodMeterController = Get.find();
+  final BottomNavigatorController bottomNavigatorController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(() {
