@@ -1,17 +1,24 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
+import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-controller/my_goal_controller.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/connections/connection_controller.dart';
@@ -122,6 +129,7 @@ class _HomePageState extends State<HomePage> {
   JournalPageController _journalPageController = Get.find();
   GetHelpController getHelpController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
+  BottomNavigatorController _bottomNavigatorController = Get.find();
   bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -162,8 +170,41 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  GetHelpCategory(
-                    title: 'Trending Posts',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Trending Posts',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(1);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Journaling',
+                                  style: GoogleFonts.signika(
+                                    color: SolhColors.green,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: SolhColors.green,
+                                  size: 14,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   Obx(() {
                     return _journalPageController.isTrendingLoading.value
@@ -175,6 +216,60 @@ class _HomePageState extends State<HomePage> {
                     title: 'Solh Buddies',
                   ),
                   getSolhBuddiesUI(),
+                  GetHelpDivider(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Goals',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(3);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Goal Setting',
+                                style: GoogleFonts.signika(
+                                  color: SolhColors.green,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: SolhColors.green,
+                                size: 14,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  getGoalSettingUI(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SolhGreenButton(
+                      child: Text('Add Goals +'),
+                      height: 50,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectGoal()));
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   GetHelpDivider(),
                   Obx(() => discoverGroupController
                                   .discoveredGroupModel.value.groupList !=
@@ -317,6 +412,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getTrendingPostUI() {
+    BottomNavigatorController _controller = Get.find();
     return Container(
         height: MediaQuery.of(context).size.height * 0.55,
         child: Obx(() {
@@ -339,11 +435,16 @@ class _HomePageState extends State<HomePage> {
                       child: getPostCard(
                           _journalPageController.trendingJournalsList[1]))
                   : Container(),
-              Positioned(
-                  left: 20,
-                  top: 10,
-                  child: getDraggable(
-                      _journalPageController.trendingJournalsList[0]))
+              InkWell(
+                onTap: () {
+                  _controller.tabrouter!.setActiveIndex(1);
+                },
+                child: Positioned(
+                    left: 20,
+                    top: 10,
+                    child: getDraggable(
+                        _journalPageController.trendingJournalsList[0])),
+              )
             ],
           );
         }));
@@ -590,6 +691,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
       })),
+    );
+  }
+
+  Widget getGoalSettingUI() {
+    return Container(
+      child: GoalName(),
     );
   }
 
