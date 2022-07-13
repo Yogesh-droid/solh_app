@@ -32,33 +32,23 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
 
   @override
   void initState() {
-    print('it ran');
+    print('UID: ${widget._uid}');
+    print('SID: ${widget._sId}');
+    getUserAnalyticsFromApi(sid: widget._sId);
     getUser();
     if (widget._sId.isNotEmpty) {
       checkIfUserIsMyConnection(widget._sId);
     }
-
-    // TODO: implement initState
-
     super.initState();
   }
 
   getUser() async {
-    print('Likes    ' + connectionController.userModel.value.likes.toString());
     if (widget._username != null) {
-      print('adhbfjkjknasklmdkamdsmdads,f,d');
       await connectionController.getUserprofileData(widget._username ?? '');
       checkIfUserIsMyConnection(connectionController.userModel.value.sId!);
     } else {
       print('username is null and anlytics is not');
     }
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-
-    super.dispose();
   }
 
   @override
@@ -408,6 +398,10 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
         widget.isMyConnection = true;
       }
     });
+  }
+
+  Future<void> getUserAnalyticsFromApi({required String sid}) async {
+    await connectionController.getUserAnalytics(sid);
   }
 }
 

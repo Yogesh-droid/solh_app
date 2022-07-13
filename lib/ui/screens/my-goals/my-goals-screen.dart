@@ -72,7 +72,7 @@ class MyGoalsScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
-                'I want to work on',
+                '  I want to work on',
                 style: goalFontStyle(14.0, Color(0xffA6A6A6)),
               ),
               IWantToWorkOn()
@@ -328,33 +328,31 @@ class GoalName extends StatelessWidget {
               SizedBox(
                 width: 16,
               ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 8,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                    e.goalName ?? '',
+                    overflow: TextOverflow.ellipsis,
+                    style: goalFontStyle(
+                      18.0,
+                      Color(0xff666666),
                     ),
-                    Text(
-                      e.goalName ?? '',
-                      overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text(
+                      'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
                       style: goalFontStyle(
-                        18.0,
-                        Color(0xff666666),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                        'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
-                        style: goalFontStyle(
-                          14.0,
-                          Color(0xffA6A6A6),
-                          FontWeight.w300,
-                        )),
-                  ],
-                ),
+                        14.0,
+                        Color(0xffA6A6A6),
+                        FontWeight.w300,
+                      )),
+                ],
               ),
               Spacer(),
               Obx(() {
@@ -425,12 +423,10 @@ class GoalName extends StatelessWidget {
           children: [
             Container(
               width: 70.w,
-              child: Expanded(
-                child: Text(e1.task ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: SolhTextStyles.ProfileMenuGreyText),
-              ),
+              child: Text(e1.task ?? '',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: SolhTextStyles.ProfileMenuGreyText),
             ),
             InkWell(
               onTap: _goalSettingController.isUpdateGoal.value

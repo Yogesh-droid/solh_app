@@ -58,12 +58,14 @@ class _JournalTileState extends State<JournalTile> {
   void initState() {
     super.initState();
     if (widget._journalModel!.group != null) {
-      discoverGroupController.joinedGroupModel.value.groupList!
-          .forEach((element) {
-        if (element.sId == widget._journalModel!.group!.sId) {
-          isGroupJoined = true;
-        }
-      });
+      if (discoverGroupController.joinedGroupModel.value.groupList != null) {
+        discoverGroupController.joinedGroupModel.value.groupList!
+            .forEach((element) {
+          if (element.sId == widget._journalModel!.group!.sId) {
+            isGroupJoined = true;
+          }
+        });
+      }
     }
   }
 
@@ -188,8 +190,8 @@ class _JournalTileState extends State<JournalTile> {
                       widget._journalModel!.anonymousJournal != null &&
                       !widget._journalModel!.anonymousJournal!
                   ? {
-                      connectionController.getUserAnalytics(
-                          widget._journalModel!.postedBy!.sId!),
+                      // connectionController.getUserAnalytics(
+                      //     widget._journalModel!.postedBy!.sId!),
                       Navigator.push(
                           context,
                           MaterialPageRoute(

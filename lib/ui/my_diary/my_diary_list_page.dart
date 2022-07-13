@@ -177,13 +177,16 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                                 fontWeight: FontWeight.w500),
                           ),
                           SizedBox(height: 2.0),
-                          Text(
-                              myDiaryController.myJournalsList.value[index]
-                                  .feelings![0].feelingName!,
-                              style: TextStyle(
-                                  color: SolhColors.pink224,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500)),
+                          myDiaryController.myJournalsList.value[index]
+                                  .feelings!.isNotEmpty
+                              ? Text(
+                                  myDiaryController.myJournalsList.value[index]
+                                      .feelings![0].feelingName!,
+                                  style: TextStyle(
+                                      color: SolhColors.pink224,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500))
+                              : Container(),
                           SizedBox(height: 2),
                           Text(
                             myDiaryController
