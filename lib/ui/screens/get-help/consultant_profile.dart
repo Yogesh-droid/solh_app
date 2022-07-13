@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -61,7 +62,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                   SizedBox(
                     height: 32,
                   ),
-                  ConsultantBio(context, _controller),
+                  ConsultantBio(),
                   SizedBox(
                     height: 41,
                   ),
@@ -71,198 +72,204 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
       );
     });
   }
-}
 
-consultantProfileImage() {
-  return Container(
-    padding: EdgeInsets.all(4),
-    height: 124,
-    width: 124,
-    decoration: BoxDecoration(shape: BoxShape.circle, color: SolhColors.green),
-    child: CircleAvatar(
-      backgroundImage: NetworkImage(
-          'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
-    ),
-  );
-}
-
-consultantInfo(context, ConsultantController controller) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          controller.consultantModelController.value.provder != null
-              ? Text(
-                  controller.consultantModelController.value.provder!.name ??
-                      '',
-                  style: GoogleFonts.signika(
-                      fontSize: 20, fontWeight: FontWeight.w400),
-                )
-              : Container(),
-          SizedBox(
-            width: 8,
-          ),
-          SvgPicture.asset(
-            'assets/images/solh_certified_consultant.svg',
-            color: SolhColors.green,
-          ),
-        ],
+  consultantProfileImage() {
+    return Container(
+      padding: EdgeInsets.all(4),
+      height: 124,
+      width: 124,
+      decoration:
+          BoxDecoration(shape: BoxShape.circle, color: SolhColors.green),
+      child: CircleAvatar(
+        backgroundImage: CachedNetworkImageProvider(_controller
+                .consultantModelController.value.provder!.profilePicture ??
+            'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
+        // NetworkImage(
+        //     'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
       ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          controller.consultantModelController.value.provder!.experience != null
-              ? Row(
-                  children: [
-                    Text(
-                      (controller.consultantModelController.value.provder!
-                                      .experience ??
-                                  ' ')
-                              .toString() +
-                          ' Year of  Experience',
-                      style: GoogleFonts.signika(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: SolhColors.green),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      width: 2,
-                      height: 12,
-                      color: Colors.grey.shade300,
-                    ),
-                  ],
-                )
-              : Container(),
-          SizedBox(
-            width: 8,
-          ),
-          Text(
-            'Free',
+    );
+  }
+
+  consultantInfo(context, ConsultantController controller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            controller.consultantModelController.value.provder != null
+                ? Text(
+                    controller.consultantModelController.value.provder!.name ??
+                        '',
+                    style: GoogleFonts.signika(
+                        fontSize: 20, fontWeight: FontWeight.w400),
+                  )
+                : Container(),
+            SizedBox(
+              width: 8,
+            ),
+            SvgPicture.asset(
+              'assets/images/solh_certified_consultant.svg',
+              color: SolhColors.green,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            controller.consultantModelController.value.provder!.experience !=
+                    null
+                ? Row(
+                    children: [
+                      Text(
+                        (controller.consultantModelController.value.provder!
+                                        .experience ??
+                                    ' ')
+                                .toString() +
+                            ' Year of  Experience',
+                        style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: SolhColors.green),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Container(
+                        width: 2,
+                        height: 12,
+                        color: Colors.grey.shade300,
+                      ),
+                    ],
+                  )
+                : Container(),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              'Free',
+              style: GoogleFonts.signika(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: SolhColors.pink224),
+            ),
+          ],
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.6,
+          child: Text(
+            controller
+                    .consultantModelController.value.provder!.specialization ??
+                '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.signika(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: SolhColors.pink224),
-          ),
-        ],
-      ),
-      Container(
-        width: MediaQuery.of(context).size.width * 0.6,
-        child: Text(
-          controller.consultantModelController.value.provder!.specialization ??
-              '',
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: GoogleFonts.signika(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
-consultantStatistics() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-      Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.thumb_up,
-                color: SolhColors.green,
-              ),
-              Text(
-                ' 27',
+  consultantStatistics() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.thumb_up,
+                  color: SolhColors.green,
+                ),
+                Text(
+                  ' 0',
+                  style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: SolhColors.green),
+                ),
+              ],
+            ),
+            Text('Likes',
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green),
-              ),
-            ],
-          ),
-          Text('Likes',
-              style: GoogleFonts.signika(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: SolhColors.green))
-        ],
-      ),
-      Column(
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.group,
-                color: SolhColors.green,
-              ),
-              Text(
-                ' 72',
+                    color: SolhColors.green))
+          ],
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.group,
+                  color: SolhColors.green,
+                ),
+                Text(
+                  ' 0',
+                  style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: SolhColors.green),
+                ),
+              ],
+            ),
+            Text('Consultations',
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green),
-              ),
-            ],
-          ),
-          Text('Consultations',
-              style: GoogleFonts.signika(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: SolhColors.green))
-        ],
-      ),
-      Column(
-        children: [
-          Row(
-            children: [
-              SvgPicture.asset('assets/images/Reviews.svg'),
-              Text(
-                ' 17',
+                    color: SolhColors.green))
+          ],
+        ),
+        Column(
+          children: [
+            Row(
+              children: [
+                SvgPicture.asset('assets/images/Reviews.svg'),
+                Text(
+                  ' 0',
+                  style: GoogleFonts.signika(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      color: SolhColors.green),
+                ),
+              ],
+            ),
+            Text('Reviews',
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green),
-              ),
-            ],
-          ),
-          Text('Reviews',
-              style: GoogleFonts.signika(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: SolhColors.green))
-        ],
-      )
-    ],
-  );
-}
+                    color: SolhColors.green))
+          ],
+        )
+      ],
+    );
+  }
 
-ConsultantBio(context, ConsultantController controller) {
-  return Container(
-    width: MediaQuery.of(context).size.width * 0.8,
-    child: ReadMoreText(
-      controller.consultantModelController.value.provder!.bio ?? '',
-      textAlign: TextAlign.center,
-      style: GoogleFonts.signika(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Colors.grey.shade700),
-      trimLines: 4,
-      colorClickableText: SolhColors.green,
-      trimMode: TrimMode.Line,
-      trimCollapsedText: ' More',
-      trimExpandedText: 'Read less',
-      moreStyle: TextStyle(
-          color: SolhColors.green, fontSize: 14, fontWeight: FontWeight.bold),
-    ),
-  );
+  ConsultantBio() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.8,
+      child: ReadMoreText(
+        _controller.consultantModelController.value.provder!.bio ?? '',
+        textAlign: TextAlign.center,
+        style: GoogleFonts.signika(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.grey.shade700),
+        trimLines: 4,
+        colorClickableText: SolhColors.green,
+        trimMode: TrimMode.Line,
+        trimCollapsedText: ' More',
+        trimExpandedText: 'Read less',
+        moreStyle: TextStyle(
+            color: SolhColors.green, fontSize: 14, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
 }
 
 class BookAppointmentWidget extends StatelessWidget {

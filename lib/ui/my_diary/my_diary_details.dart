@@ -4,6 +4,7 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
@@ -49,11 +50,13 @@ class MyDiaryDetails extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Text(myDiary.feelings![0].feelingName!,
-                style: TextStyle(
-                    color: SolhColors.pink224,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500)),
+            myDiary.feelings!.isNotEmpty
+                ? Text(myDiary.feelings![0].feelingName!,
+                    style: TextStyle(
+                        color: SolhColors.pink224,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500))
+                : Container(),
             SizedBox(height: 12.0),
             Text(
               myDiary.description!,
@@ -68,6 +71,7 @@ class MyDiaryDetails extends StatelessWidget {
                 height: 300,
                 width: double.infinity,
                 imageUrl: myDiary.mediaUrl ?? '',
+                placeholder: (context, url) => getImgShimmer(),
                 errorWidget: (context, url, error) => Container(),
                 fit: BoxFit.cover),
           ],
@@ -207,5 +211,21 @@ class MyDiaryDetails extends StatelessWidget {
             builder: (context) => CreatePostScreen(
                   isPostedFromDiaryDetails: true,
                 )));
+  }
+
+  Widget getImgShimmer() {
+    return Container(
+      height: 300,
+      width: double.infinity,
+      child: Shimmer.fromColors(
+        baseColor: SolhColors.grey239,
+        highlightColor: SolhColors.grey102,
+        child: Container(
+          height: 300,
+          width: double.infinity,
+          color: SolhColors.grey239,
+        ),
+      ),
+    );
   }
 }

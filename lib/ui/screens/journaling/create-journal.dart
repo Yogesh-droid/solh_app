@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,6 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -640,11 +638,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           ? Positioned(
                               left: 0,
                               top: 0,
-                              child: LinearProgressIndicator(
-                                value: 0.0,
-                                backgroundColor: Colors.blue.withOpacity(0.5),
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    SolhColors.green),
+                              child: Container(
+                                height: 7,
+                                width: MediaQuery.of(context).size.width - 20,
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.red.withOpacity(0.5),
+                                  color: SolhColors.green,
+                                ),
                               ),
                             )
                           : Container();
@@ -764,6 +764,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             // imageQuality: 100,
                           );
                           if (_xFile != null) {
+                            print("image picked");
+                            print(
+                                'Size Original is ${File(_xFile!.path).lengthSync()}');
                             final croppedFile = await ImageCropper().cropImage(
                                 sourcePath: _xFile!.path,
                                 aspectRatioPresets: [
@@ -773,6 +776,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   // CropAspectRatioPreset.ratio4x3,
                                   // CropAspectRatioPreset.ratio16x9
                                 ],
+                                compressQuality:
+                                    File(_xFile!.path).lengthSync() > 400000
+                                        ? 70
+                                        : 100,
                                 uiSettings: [
                                   AndroidUiSettings(
                                       toolbarTitle: 'Edit',
@@ -791,11 +798,13 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             _croppedFile = File(croppedFile!.path);
 
                             setState(() {
+                              print(
+                                  'Size Cropped is ${_croppedFile!.lengthSync()}');
                               if (_croppedFile != null) _isImageAdded = true;
                             });
                             Navigator.pop(context);
-                            imgUploadResponse =
-                                await _uploadImage(isVideo: false);
+                            // imgUploadResponse =
+                            //     await _uploadImage(isVideo: false);
                           }
 
                           // _xFileAsUnit8List = await _croppedFile!.readAsBytes();

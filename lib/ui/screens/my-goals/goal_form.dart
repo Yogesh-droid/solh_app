@@ -349,7 +349,7 @@ class _GoalFormState extends State<GoalForm> {
         ),
         child: Center(
           child: Text(
-            "You will be achieving this goal by doing following",
+            "You can achieve the goal by using the recommended activities",
             style: SolhTextStyles.GreenButtonText,
           ),
         ));
@@ -385,7 +385,7 @@ class _GoalFormState extends State<GoalForm> {
                           child: Icon(Icons.close, color: SolhColors.grey)),
                     ))
                 : Container(),
-            TextFieldB(label: 'Taks ', textEditingController: map.keys.first),
+            TextFieldB(label: 'Tasks ', textEditingController: map.keys.first),
             SizedBox(
               height: 8,
             ),
@@ -394,7 +394,7 @@ class _GoalFormState extends State<GoalForm> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Occurance",
+                  "Occurence",
                   style: SolhTextStyles.JournalingHintText,
                 ),
               ),
