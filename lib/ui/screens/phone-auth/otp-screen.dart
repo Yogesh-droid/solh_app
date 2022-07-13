@@ -59,7 +59,7 @@ class _OTPScreenState extends State<OTPScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 PinCodeTextField(
-                  controller: _otpController,
+                  controller: otpVerificationController.otpController,
                   appContext: context,
                   onChanged: (String value) {},
                   keyboardType: TextInputType.number,
@@ -76,7 +76,8 @@ class _OTPScreenState extends State<OTPScreen> {
                     PhoneAuthCredential _phoneAuthCredential =
                         PhoneAuthProvider.credential(
                             verificationId: widget._verificationId,
-                            smsCode: _otpController.text);
+                            smsCode:
+                                otpVerificationController.otpController.text);
 
                     await FirebaseNetwork.signInWithPhoneCredential(
                             _phoneAuthCredential)

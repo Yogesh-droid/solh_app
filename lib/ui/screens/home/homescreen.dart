@@ -15,8 +15,6 @@ import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
-import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
-import 'package:solh/ui/screens/my-goals/my-goals-controller/my_goal_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -491,34 +489,6 @@ class _HomePageState extends State<HomePage> {
         }));
   }
 
-  // Widget getDragTarget() {
-  //   return Positioned(
-  //     left: 0,
-  //     child: DragTarget(
-  //       onWillAccept: (data) {
-  //         return true;
-  //       },
-  //       onAccept: (data) {
-  //         print("accepted");
-  //         // _journalPageController.trendingJournalsList
-  //         //     .insert(10, _journalPageController.trendingJournalsList[0]);
-  //         // _journalPageController.trendingJournalsList.removeAt(0);
-
-  //         // _journalPageController.trendingJournalsList.refresh();
-  //       },
-  //       onLeave: (data) {
-  //         print("left");
-  //       },
-  //       builder: (context, candidateData, rejectedData) {
-  //         return Container(
-  //           height: MediaQuery.of(context).size.height,
-  //           width: MediaQuery.of(context).size.width * 0.7,
-  //         );
-  //       },
-  //     ),
-  //   );
-  // }
-
   Widget getDraggable(Journals journal) {
     return Draggable(
       affinity: Axis.horizontal,
@@ -693,9 +663,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget getSolhBuddiesUI() {
     return Container(
-      height: 36.h,
+      height: 270,
       margin: EdgeInsets.only(bottom: 2.h),
-      child: Container(child: Obx(() {
+      child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&
                 getHelpController.solhVolunteerList.value.provider!.length > 0
             ? ListView.separated(
@@ -736,25 +706,22 @@ class _HomePageState extends State<HomePage> {
                   child: Text('No Volunteers Found'),
                 ),
               );
-      })),
+      }),
     );
   }
 
   Widget getGoalSettingUI(GoalSettingController goalSettingController) {
     return Obx(() {
-      return Container(
-        child: goalSettingController.pesonalGoalModel.value.goalList != null
-            ? (goalSettingController.pesonalGoalModel.value.goalList!.length ==
-                    0
-                ? Text('No Goals found',
-                    style: GoogleFonts.signika(
-                      color: Colors.grey,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ))
-                : GoalName())
-            : Container(),
-      );
+      return goalSettingController.pesonalGoalModel.value.goalList != null
+          ? (goalSettingController.pesonalGoalModel.value.goalList!.length == 0
+              ? Text('No Goals found',
+                  style: GoogleFonts.signika(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ))
+              : GoalName())
+          : Container();
     });
   }
 

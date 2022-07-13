@@ -231,6 +231,7 @@ class TodaysGoal extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Container(
+                    color: Colors.white,
                     width: 60,
                     height: 60,
                     child: Center(
@@ -248,7 +249,7 @@ class TodaysGoal extends StatelessWidget {
                   Container(
                     width: 70,
                     height: 70,
-                    child: CircularProgressIndicator.adaptive(
+                    child: CircularProgressIndicator(
                       valueColor:
                           AlwaysStoppedAnimation<Color>(SolhColors.green),
                       backgroundColor: SolhColors.grey.withOpacity(0.5),
@@ -275,62 +276,6 @@ class GoalName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /* return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Goal Name',
-                style: goalFontStyle(
-                  18.0,
-                  Color(0xff666666),
-                ),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Persnonal Development',
-                    style: goalFontStyle(
-                      14.0,
-                      Color(0xffA6A6A6),
-                      FontWeight.w300,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Container(
-                    height: 14,
-                    color: Color(0xffA6A6A6),
-                    width: 2,
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Text(
-                    '10:30 PM',
-                    style: goalFontStyle(
-                      14.0,
-                      Color(0xffA6A6A6),
-                      FontWeight.w300,
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-          Icon(
-            Icons.more_vert,
-            color: SolhColors.green,
-          )
-        ],
-      ),
-    ); */
-
     return Obx(() => _goalSettingController.pesonalGoalModel.value.goalList !=
                 null &&
             _goalSettingController.pesonalGoalModel.value.goalList!.length > 0
