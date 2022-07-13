@@ -37,8 +37,8 @@ class FirebaseNetwork {
               (PhoneAuthCredential phoneAuthCredential) async {
             // print("verification completed");
 
-            // otpVerificationController
-            //     .updateOtp(phoneAuthCredential.smsCode.toString());
+            otpVerificationController
+                .updateOtp(phoneAuthCredential.smsCode.toString());
 
             // print(phoneAuthCredential.smsCode.toString());
             // print(phoneAuthCredential.verificationId);
