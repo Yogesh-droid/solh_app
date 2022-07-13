@@ -13,6 +13,7 @@ import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
@@ -495,7 +496,9 @@ class _HomePageState extends State<HomePage> {
       data: "data",
       child: InkWell(
         onTap: () {
-          _bottomNavigatorController.tabrouter!.setActiveIndex(1);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  CommentScreen(journalModel: journal, index: 0)));
         },
         child: Container(
           height: MediaQuery.of(context).size.height * 0.5,

@@ -73,19 +73,18 @@ class _MasterScreenState extends State<MasterScreen> {
                 ),
                 label: "Home"),
             BottomNavigationBarItem(
-                icon: Icon(
-                  tabsRouter.activeIndex == 1
-                      ? CupertinoIcons.person_3_fill
-                      : CupertinoIcons.person_3,
-                  size: 25,
-                ),
+                icon: tabsRouter.activeIndex == 1
+                    ? SvgPicture.asset('assets/images/journaling.svg')
+                    : SvgPicture.asset('assets/images/journalling outline.svg',
+                        color: Colors.grey.shade500),
                 label: "journaling"),
             BottomNavigationBarItem(
               icon: tabsRouter.activeIndex == 2
-                  ? SvgPicture.asset(
-                      "assets/icons/bottom-navigation-bar/get-help.svg")
+                  ? SvgPicture.asset("assets/images/get help tab.svg")
                   : SvgPicture.asset(
-                      "assets/icons/bottom-navigation-bar/get-help-outline.svg"),
+                      "assets/images/get help. outline.svg",
+                      color: Colors.grey.shade600,
+                    ),
               label: "Get Help",
             ),
             BottomNavigationBarItem(
