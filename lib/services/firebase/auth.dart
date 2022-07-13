@@ -19,6 +19,7 @@ class FirebaseNetwork {
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
             print(error.message);
+            otpVerificationController.isLoading.value = false;
             ScaffoldMessenger.of(globalNavigatorKey.currentState!.context)
                 .showSnackBar(SnackBar(content: Text(error.code.toString())));
           },
