@@ -5,17 +5,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:readmore/readmore.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/comment.dart';
+import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -46,6 +50,7 @@ class _CommentScreenState extends State<CommentScreen> {
   final TextEditingController _commentEditingController =
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
+
   bool _isLoading = false;
 
   @override
@@ -1038,6 +1043,7 @@ class PostForComment extends StatefulWidget {
 
 class _PostForCommentState extends State<PostForComment> {
   final JournalPageController _journalPageController = Get.find();
+  final ConnectionController connectionController = ConnectionController();
   bool _isLiked = false;
 
   @override
@@ -1070,12 +1076,13 @@ class _PostForCommentState extends State<PostForComment> {
                     trimLines: 3,
                     trimMode: TrimMode.Line,
                   ),
+                  getMedia(widget._journalModel, context),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       getLikeBtn(),
                       getCommentsBtn(),
-                      getConnectBtn(),
+                      getConnectBtn(connectionController),
                       //getShareBtn(),
                     ],
                   )
@@ -1114,6 +1121,7 @@ class _PostForCommentState extends State<PostForComment> {
           /// below is for checking if liked by me or not
           _journalPageController.journalsList[widget.index].isLiked =
               !_journalPageController.journalsList[widget.index].isLiked!;
+
           ///////
           /// below is for updating the like number
           _journalPageController.journalsList[widget.index].isLiked!
@@ -1163,7 +1171,8 @@ class _PostForCommentState extends State<PostForComment> {
     );
   }
 
-  Widget getConnectBtn() {
+  Widget getConnectBtn(connectionController) {
+    var isGroupJoined = false;
     return Row(
       children: [
         IconButton(
@@ -1175,9 +1184,35 @@ class _PostForCommentState extends State<PostForComment> {
             color: SolhColors.green,
           ),
         ),
-        Text(
-          'connect',
-          style: TextStyle(color: Colors.grey),
+        InkWell(
+          onTap: () async {
+            widget._journalModel!.group != null
+                ? {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return GroupDetailsPage(
+                        ///// this case is for group journal
+                        group: GroupList(
+                          sId: widget._journalModel!.group!.sId,
+                          groupName: widget._journalModel!.group!.groupName,
+                          groupMediaUrl:
+                              widget._journalModel!.group!.groupImage,
+                        ),
+                      );
+                    }))
+                  }
+                : await connectionController.addConnection(
+                    widget._journalModel!.postedBy!.sId!,
+                  );
+          },
+          child: Text(
+            widget._journalModel!.group != null
+                ? isGroupJoined
+                    ? 'Go To Group'
+                    : 'join'
+                : "Connect",
+            style: SolhTextStyles.GreenBorderButtonText,
+          ),
         ),
       ],
     );
@@ -1302,4 +1337,139 @@ class BestCommentWidget extends StatelessWidget {
       ),
     );
   }
+}
+
+getMedia(journalModel, context) {
+  return journalModel.mediaUrl != null && journalModel.mediaUrl != ''
+      ?
+      //// For Video player ////
+      journalModel.mediaType == 'video/mp4'
+          ?
+          // ? InkWell(
+          //     onTap: () {
+          //       widget.isMyJournal
+          //           ? journalPageController.playMyPostVideo(
+          //               widget.index,
+          //             )
+          //           : journalPageController.playVideo(
+          //               widget.index,
+          //             );
+          //       isMyJournal
+          //           ? journalPageController.myVideoPlayerControllers.refresh()
+          //           : journalPageController.videoPlayerController.refresh();
+          //     },
+          //     child: Stack(
+          //       children: [
+          //         Container(
+          //           height: MediaQuery.of(context).size.width,
+          //           child: VideoPlayer(
+          //             widget.isMyJournal
+          //                 ? journalPageController.myVideoPlayerControllers
+          //                     .value[widget.index][widget.index]
+          //                 : journalPageController.videoPlayerController
+          //                     .value[widget.index][widget.index],
+          //           ),
+          //         ),
+          //         Obx(() {
+          //           return journalPageController
+          //                       .videoPlayerController
+          //                       .value[widget.index][widget.index]!
+          //                       .value
+          //                       .isPlaying ||
+          //                   isMyJournal &&
+          //                       !journalPageController
+          //                           .myVideoPlayerControllers
+          //                           .value[widget.index][widget.index]!
+          //                           .value
+          //                           .isPlaying
+          //               ? getBlackOverlay(context)
+          //               : Container();
+          //         }),
+          //         Obx(() {
+          //           return !journalPageController
+          //                       .videoPlayerController
+          //                       .value[widget.index][widget.index]!
+          //                       .value
+          //                       .isPlaying ||
+
+          //                       journalPageController
+          //                           .myVideoPlayerControllers
+          //                           .value[widget.index][widget.index]!
+          //                           .value
+          //                           .isPlaying
+          //               ? Positioned(
+          //                   bottom: MediaQuery.of(context).size.height / 5,
+          //                   left: MediaQuery.of(context).size.width / 2 -
+          //                       MediaQuery.of(context).size.width / 10,
+          //                   child: IconButton(
+          //                     onPressed: () {
+          //                       widget.isMyJournal
+          //                           ? journalPageController.playMyPostVideo(
+          //                               widget.index,
+          //                             )
+          //                           : journalPageController.playVideo(
+          //                               widget.index,
+          //                             );
+          //                       widget.isMyJournal
+          //                           ? journalPageController
+          //                               .myVideoPlayerControllers
+          //                               .refresh()
+          //                           : journalPageController
+          //                               .videoPlayerController
+          //                               .refresh();
+          //                     },
+          //                     icon: Image.asset(
+          //                       'assets/images/play_icon.png',
+          //                       fit: BoxFit.fill,
+          //                     ),
+          //                     iconSize: MediaQuery.of(context).size.width / 8,
+          //                     color: SolhColors.green,
+          //                   ),
+          //                 )
+          //               : Container();
+          //         }),
+          //       ],
+          //     ),
+          //   )
+          ///// Below for image only
+          Container()
+          : Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  border: Border.all(width: 0.5, color: Colors.grey.shade300)),
+              margin: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height / 80,
+              ),
+              child: CachedNetworkImage(
+                imageUrl: journalModel.mediaUrl.toString(),
+                fit: BoxFit.fitWidth,
+                placeholder: (context, url) => getShimmer(context),
+                errorWidget: (context, url, error) => Center(
+                  child: Lottie.asset('assets/images/not-found.json'),
+                ),
+              ),
+            )
+      : Container(
+          height: 1.h,
+        );
+}
+
+Widget getShimmer(BuildContext context) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    height: MediaQuery.of(context).size.width,
+    margin: EdgeInsets.symmetric(
+      vertical: MediaQuery.of(context).size.height / 80,
+    ),
+    child: Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.grey[300],
+        ),
+      ),
+    ),
+  );
 }
