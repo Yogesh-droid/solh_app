@@ -168,7 +168,11 @@ class _OTPScreenState extends State<OTPScreen> {
                       '''Didn’t receive a code?  ''',
                       style: TextStyle(fontWeight: FontWeight.w300),
                     ),
-                    InkWell(onTap: () {}, child: TimerWidget())
+                    InkWell(
+                        onTap: () {},
+                        child: TimerWidget(
+                          phoneNo: widget._phoneNo,
+                        ))
                   ],
                 ),
                 SizedBox(
@@ -185,7 +189,8 @@ class _OTPScreenState extends State<OTPScreen> {
 }
 
 class TimerWidget extends StatefulWidget {
-  const TimerWidget({Key? key}) : super(key: key);
+  TimerWidget({Key? key, this.phoneNo}) : super(key: key);
+  final String? phoneNo;
 
   @override
   State<TimerWidget> createState() => _TimerWidgetState();
@@ -214,9 +219,21 @@ class _TimerWidgetState extends State<TimerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      time == 0 ? 'Resend code' : time.toString(),
-      style: TextStyle(fontSize: 14),
+    return InkWell(
+      onTap: () {
+        FirebaseNetwork().resendOtp(
+          widget.phoneNo ?? '',
+        );
+      },
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            time == 0 ? 'Resend code' : time.toString(),
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+      ),
     );
   }
 }
