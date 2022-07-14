@@ -58,8 +58,10 @@ class _CommentScreenState extends State<CommentScreen> {
     super.initState();
     //commentsBloc.getcommentsSnapshot(widget._journalModel!.id ?? '');
     getComments();
-    _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
-        FirebaseAuth.instance.currentUser!.uid;
+    if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
+      _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
+          FirebaseAuth.instance.currentUser!.uid;
+    }
     journalCommentController.repliedTo.value = '';
     journalCommentController.isReplying.value = false;
   }
@@ -815,8 +817,9 @@ class CommentBoxWidget extends StatelessWidget {
                           : SizedBox(),
                       if (commentModel.user![0].uid ==
                               FirebaseAuth.instance.currentUser!.uid ||
-                          _journalModel.postedBy!.uid ==
-                              FirebaseAuth.instance.currentUser!.uid)
+                          _journalModel.postedBy != null &&
+                              _journalModel.postedBy!.uid ==
+                                  FirebaseAuth.instance.currentUser!.uid)
                         CommentMenuButton(
                           makeBestComment: _makeBestComment,
                           commentId: commentModel.sId!,
