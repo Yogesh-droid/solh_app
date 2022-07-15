@@ -147,7 +147,7 @@ class MoodMeter extends StatelessWidget {
                             height: 50,
                             child: Text("Done"),
                             onPressed: () {
-                              //moodMeterController.saveMoodOfday();
+                              moodMeterController.saveMoodOfday();
                               Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(builder: (context) {
                                 return MoodReasonPage();

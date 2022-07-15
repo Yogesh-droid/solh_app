@@ -642,7 +642,7 @@ class IWantToWorkOn extends StatelessWidget {
                                     .categories![index].name ??
                                 '',
                             style: goalFontStyle(
-                                18.0, Color(0xff666666), FontWeight.w400),
+                                14.0, Color(0xff666666), FontWeight.w400),
                           )),
                         ]),
                       ),

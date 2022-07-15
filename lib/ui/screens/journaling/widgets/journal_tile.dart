@@ -695,6 +695,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
 
                 Wrap(children: [
                   Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.end,
                     children: widget.journalModel.description!.length == 0
                         ? []
                         : showMoreBtn
@@ -702,7 +703,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                 ? descriptionTexts.map((item) {
                                     return getDescriptionText(item);
                                   }).toList()
-                                : descriptionTexts.sublist(0, 10).map((item) {
+                                : descriptionTexts.sublist(0, 30).map((item) {
                                     return getDescriptionText(item);
                                   }).toList()
                             : descriptionTexts.map((item) {
@@ -852,12 +853,13 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   }
 
   List getTexts() {
-    List<String> textList = widget.journalModel.description!.split(' ');
-    if (textList.length > 10) {
+    String desc = widget.journalModel.description!.replaceAll('\n', ' ');
+    List<String> textList = desc.split(' ');
+    if (textList.length > 30) {
       showMoreBtn = true;
     }
     descriptionTexts = textList;
-    print('textList: $textList');
+    print('textList: $descriptionTexts');
 
     return textList;
   }

@@ -552,8 +552,9 @@ class _HomePageState extends State<HomePage> {
       ),
       childWhenDragging: Container(),
       onDragEnd: (data) {
-        _journalPageController.trendingJournalsList
-            .insert(10, _journalPageController.trendingJournalsList[0]);
+        _journalPageController.trendingJournalsList.insert(
+            _journalPageController.trendingJournalsList.length,
+            _journalPageController.trendingJournalsList[0]);
         _journalPageController.trendingJournalsList.removeAt(0);
 
         _journalPageController.trendingJournalsList.refresh();
