@@ -276,6 +276,8 @@ class GoalName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'goal name  ${_goalSettingController.pesonalGoalModel.value.goalList!.length}');
     return Obx(() => _goalSettingController.pesonalGoalModel.value.goalList !=
                 null &&
             _goalSettingController.pesonalGoalModel.value.goalList!.length > 0

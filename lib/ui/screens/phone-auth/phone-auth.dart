@@ -19,8 +19,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? _countryCode = '+91';
   late FocusNode _focusNode;
   late TextEditingController _phoneController;
-  OtpVerificationController _otpVerificationController =
-      Get.put(OtpVerificationController());
+  OtpVerificationController _otpVerificationController = Get.put(
+    OtpVerificationController(),
+  );
 
   bool _hintShown = false;
 

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:new_version/new_version.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
@@ -19,6 +20,8 @@ import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+import 'services/controllers/otp_verification_controller.dart';
+
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
 
@@ -31,6 +34,7 @@ void main() async {
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
   final moodMeterController = Get.put(MoodMeterController());
+  final AnonController anonController = Get.put(AnonController());
   SearchMarketController searchMarketController =
       Get.put(SearchMarketController());
   BookAppointmentController bookAppointment =
