@@ -132,16 +132,77 @@ class Connections extends StatelessWidget {
   Widget getChatsView() {
     return Container(
       child: Column(children: [
-        SizedBox(
-          height: 150,
-        ),
-        Text(
-          'No Chats',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFFA6A6A6),
-          ),
+        Expanded(
+          child: Obx(() => ListView.builder(
+                itemCount: connectionController
+                            .myConnectionModel.value.myConnections !=
+                        null
+                    ? connectionController
+                        .myConnectionModel.value.myConnections!.length
+                    : 0,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => ChatScreen(
+                      //               name: connectionController.myConnectionModel
+                      //                       .value.myConnections![index].name ??
+                      //                   '',
+                      //               imageUrl: connectionController
+                      //                       .myConnectionModel
+                      //                       .value
+                      //                       .myConnections![index]
+                      //                       .profilePicture ??
+                      //                   '',
+                      //               sId: connectionController.myConnectionModel
+                      //                       .value.myConnections![index].sId ??
+                      //                   '',
+                      //             )
+                      //         // ConnectProfileScreen(
+                      //         //     uid: connectionController.myConnectionModel
+                      //         //             .value.myConnections![index].uId ??
+                      //         //         '',
+                      //         //     sId: connectionController.myConnectionModel
+                      //         //             .value.myConnections![index].sId ??
+                      //         //         '')
+                      //         ));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          getUserImg(
+                              img: connectionController.myConnectionModel.value
+                                      .myConnections![index].profilePicture ??
+                                  '',
+                              context: context,
+                              sId: connectionController.myConnectionModel.value
+                                      .myConnections![index].sId ??
+                                  '',
+                              uid: connectionController.myConnectionModel.value
+                                      .myConnections![index].uId ??
+                                  ''),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          getUserTitle(
+                              context: context,
+                              name: connectionController.myConnectionModel.value
+                                      .myConnections![index].name ??
+                                  '',
+                              bio: connectionController.myConnectionModel.value
+                                  .myConnections![index].bio),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              )),
         )
       ]),
     );
@@ -260,13 +321,28 @@ class Connections extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ConnectProfileScreen(
-                                  uid: connectionController.myConnectionModel
-                                          .value.myConnections![index].uId ??
-                                      '',
-                                  sId: connectionController.myConnectionModel
-                                          .value.myConnections![index].sId ??
-                                      '')));
+                              builder: (context) => ChatScreen(
+                                    name: connectionController.myConnectionModel
+                                            .value.myConnections![index].name ??
+                                        '',
+                                    imageUrl: connectionController
+                                            .myConnectionModel
+                                            .value
+                                            .myConnections![index]
+                                            .profilePicture ??
+                                        '',
+                                    sId: connectionController.myConnectionModel
+                                            .value.myConnections![index].sId ??
+                                        '',
+                                  )
+                              // ConnectProfileScreen(
+                              //     uid: connectionController.myConnectionModel
+                              //             .value.myConnections![index].uId ??
+                              //         '',
+                              //     sId: connectionController.myConnectionModel
+                              //             .value.myConnections![index].sId ??
+                              //         '')
+                              ));
                     },
                     child: Container(
                       padding: EdgeInsets.all(10),

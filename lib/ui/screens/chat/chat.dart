@@ -1,12 +1,29 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
+import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
+import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen(
+      {Key? key,
+      required String imageUrl,
+      required String name,
+      required String sId})
+      : _imageUrl = imageUrl,
+        _name = name,
+        _sId = sId,
+        super(key: key);
+
+  final String _imageUrl;
+  final String _name;
+  final String _sId;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -14,22 +31,31 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    // SocketService.connectAndListen();
+    // SocketService.setUserName(widget._name);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          height: double.maxFinite,
+          height: MediaQuery.of(context).size.height,
           width: double.maxFinite,
-          child: Stack(
+          child: Column(
             children: [
-              ChatAppbar(),
-              Positioned(
-                bottom: 10,
-                left: 0,
-                right: 0,
-                child: MessageBox(),
+              ChatAppbar(imageUrl: widget._imageUrl, name: widget._name),
+              MessageList(
+                sId: widget._sId,
               ),
-              Positioned(bottom: 20, child: MessageList())
+              // Align(
+              //     alignment: Alignment.bottomCenter,
+              //     child: MessageBox(
+              //       sId: widget._sId,
+              //     ))
             ],
           ),
         ),
@@ -39,8 +65,13 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatAppbar extends StatelessWidget {
-  const ChatAppbar({Key? key}) : super(key: key);
+  const ChatAppbar({Key? key, required String imageUrl, required name})
+      : _imageUrl = imageUrl,
+        _name = name,
+        super(key: key);
 
+  final String _imageUrl;
+  final String _name;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,19 +87,25 @@ class ChatAppbar extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Row(
           children: [
-            Icon(Icons.arrow_back_ios_new),
+            InkWell(
+                onTap: (() {
+                  Navigator.of(context).pop();
+                }),
+                child: Icon(Icons.arrow_back_ios_new)),
             SizedBox(
               width: 6,
             ),
             CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://180dc.org/wp-content/uploads/2016/08/default-profile.png'),
+              backgroundColor: Colors.grey.shade300,
+              backgroundImage: CachedNetworkImageProvider(_imageUrl == ''
+                  ? 'https://180dc.org/wp-content/uploads/2016/08/default-profile.png'
+                  : _imageUrl),
             ),
             SizedBox(
               width: 6,
             ),
             Text(
-              'Akriti handa',
+              _name == '' ? '' : _name,
               style: GoogleFonts.signika(
                 fontWeight: FontWeight.w600,
                 fontSize: 16,
@@ -82,14 +119,19 @@ class ChatAppbar extends StatelessWidget {
 }
 
 class MessageBox extends StatelessWidget {
-  MessageBox({Key? key}) : super(key: key);
+  MessageBox({Key? key, required String sId})
+      : _sId = sId,
+        super(key: key);
 
-  TextEditingController messageController = TextEditingController();
+  final String _sId;
+
+  ChatController _controller = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.maxFinite,
+      margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
           border: Border.all(
             color: SolhColors.green,
@@ -102,18 +144,26 @@ class MessageBox extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: TextField(
-                controller: messageController,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Write message',
-                ),
+            TextField(
+              controller: _controller.messageEditingController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Write message',
               ),
             ),
-            Icon(
-              Icons.send,
-              color: SolhColors.green,
+            InkWell(
+              onTap: () {
+                _controller.sendMessageController(
+                  _controller.messageEditingController.text,
+                  _sId,
+                  'users',
+                  'connection',
+                );
+              },
+              child: Icon(
+                Icons.send,
+                color: SolhColors.green,
+              ),
             )
           ],
         ),
@@ -123,81 +173,96 @@ class MessageBox extends StatelessWidget {
 }
 
 class MessageList extends StatefulWidget {
-  MessageList({Key? key}) : super(key: key);
-  List message = [
-    {
-      'sender': 'user1',
-      'message': 'Hii',
-    },
-    {
-      'sender': 'user2',
-      'message': 'Hello',
-    },
-    {
-      'sender': 'user1',
-      'message': 'How is everthing going!!',
-    },
-    {
-      'sender': 'user2',
-      'message': 'Everthing good , what about you?',
-    },
-    {
-      'sender': 'user2',
-      'message': 'Yeah ,good',
-    },
-    {
-      'sender': 'user1',
-      'message': "ooo...how's weather",
-    },
-    {
-      'sender': 'user2',
-      'message': 'So ...hot yaar!!',
-    },
-    {
-      'sender': 'user2',
-      'message': 'i have already took bath 2 times!!',
-    },
-  ];
+  MessageList({
+    Key? key,
+    required String sId,
+  })  : _sId = sId,
+        super(key: key);
+
+  final String _sId;
 
   @override
   State<MessageList> createState() => _MessageListState();
 }
 
 class _MessageListState extends State<MessageList> {
+  ChatController _controller = Get.put(ChatController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _controller.getChatController(widget._sId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: widget.message.length,
-          itemBuilder: (context, index) {
-            return MessageTile(
-              message: widget.message[index]['message'],
-              sender: widget.message[index]['sender'],
+    return Obx(() {
+      return _controller.isLoading == true
+          ? Column(
+              children: [
+                CircularProgressIndicator(),
+              ],
+            )
+          : Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _controller.convo.length,
+                    itemBuilder: (context, index) {
+                      return MessageTile(
+                        message: _controller.convo.value[index].body,
+                        authorId: _controller.convo.value[index].authorId,
+                        sId: widget._sId,
+                      );
+                    }),
+              ),
             );
-          }),
-    );
+    });
   }
 }
 
 class MessageTile extends StatelessWidget {
-  const MessageTile({Key? key, required message, required sender})
+  const MessageTile(
+      {Key? key, required message, required authorId, required sId})
       : _message = message,
-        _sender = sender,
+        _authorId = authorId,
+        _sId = sId,
         super(key: key);
 
   final String _message;
-  final String _sender;
+  final String _authorId;
+  final String _sId;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: SolhColors.green,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        mainAxisAlignment:
+            _authorId == _sId ? MainAxisAlignment.start : MainAxisAlignment.end,
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey.shade200,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Text(
+                //   _authorId,
+                //   style: GoogleFonts.signika(color: Colors.lightGreen),
+                // ),
+                Text(_message),
+              ],
+            ),
+          ),
+        ],
       ),
-      child: Text(_message),
     );
   }
 }
