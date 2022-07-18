@@ -777,8 +777,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   // CropAspectRatioPreset.ratio16x9
                                 ],
                                 compressQuality:
-                                    File(_xFile!.path).lengthSync() > 400000
-                                        ? 70
+                                    File(_xFile!.path).lengthSync() > 600000
+                                        ? 20
                                         : 100,
                                 uiSettings: [
                                   AndroidUiSettings(
@@ -803,8 +803,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                               if (_croppedFile != null) _isImageAdded = true;
                             });
                             Navigator.pop(context);
-                            // imgUploadResponse =
-                            //     await _uploadImage(isVideo: false);
+                            imgUploadResponse =
+                                await _uploadImage(isVideo: false);
                           }
 
                           // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
@@ -1428,6 +1428,8 @@ class _JournalTextFieldState extends State<JournalTextField> {
                   controller: journalPageController.descriptionController,
                   maxLines: 6,
                   minLines: 3,
+                  autocorrect: true,
+                  enableSuggestions: true,
                   decoration: InputDecoration(
                     fillColor: SolhColors.grey239,
                     hintText: "What's on your mind?",

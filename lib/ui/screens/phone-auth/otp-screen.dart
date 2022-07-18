@@ -33,6 +33,7 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void initState() {
     super.initState();
+    otpVerificationController.otpController = TextEditingController();
   }
 
   bool isLoading = false;

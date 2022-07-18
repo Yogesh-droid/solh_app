@@ -50,6 +50,9 @@ class ProviderUser {
 
   Future<bool> updateUserDetails() async {
     print("$_userName");
+    print(_firstname);
+    print(_bio);
+    print(_lastname);
 
     var resposne = await Network.makeHttpPutRequestWithToken(
         url: "${APIConstants.api}/api/edit-user-details",

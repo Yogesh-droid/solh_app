@@ -7,9 +7,7 @@ import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/controllers/otp_verification_controller.dart';
 
 class FirebaseNetwork {
-  OtpVerificationController otpVerificationController = Get.put(
-    OtpVerificationController(),
-  );
+  OtpVerificationController otpVerificationController = Get.find();
   int? resendToken;
 
   void signInWithPhoneNumber(String phoneNo,

@@ -11,8 +11,8 @@ import '../enter-full-name.dart';
 class PickUsernameScreen extends StatelessWidget {
   PickUsernameScreen({Key? key}) : super(key: key);
   TextEditingController _usernameEditingController = TextEditingController()
-    ..text = 'Anonymous';
-  final AnonController _anonController = Get.put(AnonController());
+    ..text = 'Anonymous User';
+  final AnonController _anonController = Get.find();
 
   @override
   Widget build(BuildContext context) {

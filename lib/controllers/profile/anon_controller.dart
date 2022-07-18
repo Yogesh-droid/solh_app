@@ -4,6 +4,7 @@ import 'package:solh/services/network/network.dart';
 
 class AnonController extends GetxController {
   var isNameTaken = false.obs;
+  var isNormalNameTaken = false.obs;
   var userName = "".obs;
   var avtarImageUrl = "".obs;
   var avtarType = "".obs;
@@ -11,9 +12,16 @@ class AnonController extends GetxController {
 
   Future<void> checkIfUserNameTaken(String name) async {
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
+        url: '${APIConstants.api}/api/userName-taken',
+        body: {'userName': name});
+    isNameTaken.value = !map['flag'];
+  }
+
+  Future<void> checkIfNormalUserNameTaken(String name) async {
+    Map<String, dynamic> map = await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/is-username-taken',
         body: {'first_name': name});
-    isNameTaken.value = map['body']['isCreated'];
+    isNormalNameTaken.value = map['body']['isCreated'];
   }
 
   Future<String?> createAnonProfile() async {

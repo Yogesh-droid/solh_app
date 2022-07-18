@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -29,7 +31,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   void initState() {
-    connectionController.getUserAnalytics(userBlocNetwork.id);
+    getMyProfile();
     super.initState();
   }
 
@@ -91,6 +93,32 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           onPressed: () {
                             FirebaseAuth.instance.signOut().then((value) {
                               userBlocNetwork.updateSessionCookie = "";
+                              Get.delete<GoalSettingController>();
+                              Get.delete<ConnectionController>();
+                              AutoRouter.of(context).pushAndPopUntil(
+                                  IntroCarouselScreenRouter(),
+                                  predicate: (route) => false);
+                            });
+                          }),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SolhGreenButton(
+                          height: 50,
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          child: Text(
+                            "Delete Account",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut().then((value) async {
+                              Get.delete<GoalSettingController>();
+                              Get.delete<ConnectionController>();
+                              Utility.showLoader(context);
+                              await userBlocNetwork.deleteAccount();
+                              Utility.hideLoader(context);
                               AutoRouter.of(context).pushAndPopUntil(
                                   IntroCarouselScreenRouter(),
                                   predicate: (route) => false);
@@ -112,6 +140,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             }),
       ),
     );
+  }
+
+  getMyProfile() async {
+    connectionController.getUserAnalytics(userBlocNetwork.id);
   }
 }
 

@@ -276,6 +276,8 @@ class GoalName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(
+        'goal name  ${_goalSettingController.pesonalGoalModel.value.goalList!.length}');
     return Obx(() => _goalSettingController.pesonalGoalModel.value.goalList !=
                 null &&
             _goalSettingController.pesonalGoalModel.value.goalList!.length > 0
@@ -642,7 +644,7 @@ class IWantToWorkOn extends StatelessWidget {
                                     .categories![index].name ??
                                 '',
                             style: goalFontStyle(
-                                18.0, Color(0xff666666), FontWeight.w400),
+                                14.0, Color(0xff666666), FontWeight.w400),
                           )),
                         ]),
                       ),

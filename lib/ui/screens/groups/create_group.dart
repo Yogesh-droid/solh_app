@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -291,12 +292,13 @@ class CreateGroup extends StatelessWidget {
           if (map['success']) {
             _groupController.getJoinedGroups();
             _groupController.getCreatedGroups();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InviteMembersUI(
-                          groupId: map['groupDetails']['_id'],
-                        )));
+            AutoRouter.of(context).popUntil(((route) => route.isFirst));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => InviteMembersUI(
+            //               groupId: map['groupDetails']['_id'],
+            //             )));
           }
         }
       },
