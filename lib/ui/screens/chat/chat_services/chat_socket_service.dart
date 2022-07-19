@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:solh/model/user/user.dart';
@@ -12,7 +13,9 @@ import 'package:socket_io_client/socket_io_client.dart' as io;
 class SocketService {
   static late StreamController<Conversation> _socketResponse;
   static late StreamController<List<String>> _userResponse;
-  ChatController _controller = ChatController();
+  final ChatController _chatController = Get.find();
+
+  // ChatController _chatController = ChatController();
   static late io.Socket _socket = io.io(
       serverUrl,
       io.OptionBuilder()
@@ -46,7 +49,7 @@ class SocketService {
     });
   }
 
-  static void connectAndListen() {
+  void connectAndListen() {
     _socketResponse = StreamController<Conversation>();
     _userResponse = StreamController<List<String>>();
 
@@ -60,16 +63,29 @@ class SocketService {
         print(data);
       },
     );
-    print(_socket.connected);
-    print(_socket.query);
+
+    _socket.on('message:received', (data) {
+      print('message:received $data');
+      _chatController.convo.add(Conversation(
+          author: data['author'],
+          authorId: data['authorId'],
+          authorType: data['authorType'],
+          body: data['authorType'],
+          dateTime: '',
+          sId: data['authorType']));
+
+      print('_chatcontroller ' + _chatController.convo[3].body!);
+    });
 
     //When an event recieved from server, data is added to the stream
     _socket.on('message', (data) {
+      print('message $data');
       _socketResponse.sink.add(Conversation.fromJson(data));
     });
 
     //when users are connected or disconnected
     _socket.on('users', (data) {
+      print('users $data');
       var users = (data as List<dynamic>).map((e) => e.toString()).toList();
       _userResponse.sink.add(users);
     });

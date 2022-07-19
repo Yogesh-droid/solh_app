@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:new_version/new_version.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
@@ -24,17 +25,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
 
-class MyHttpOverrides extends HttpOverrides {
-  @override
-  HttpClient createHttpClient(SecurityContext? context) {
-    return super.createHttpClient(context)
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-  }
-}
-
 void main() async {
-  HttpOverrides.global = MyHttpOverrides();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -42,6 +33,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
+
   final moodMeterController = Get.put(MoodMeterController());
   SearchMarketController searchMarketController =
       Get.put(SearchMarketController());

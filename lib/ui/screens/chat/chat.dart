@@ -30,11 +30,13 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  SocketService _service = SocketService();
   @override
   void initState() {
     // TODO: implement initState
-    // SocketService.connectAndListen();
-    // SocketService.setUserName(widget._name);
+    Get.put(ChatController());
+    _service.connectAndListen();
+    SocketService.setUserName(widget._name);
     super.initState();
   }
 
@@ -48,14 +50,16 @@ class _ChatScreenState extends State<ChatScreen> {
           child: Column(
             children: [
               ChatAppbar(imageUrl: widget._imageUrl, name: widget._name),
-              MessageList(
-                sId: widget._sId,
+              Expanded(
+                child: MessageList(
+                  sId: widget._sId,
+                ),
               ),
-              // Align(
-              //     alignment: Alignment.bottomCenter,
-              //     child: MessageBox(
-              //       sId: widget._sId,
-              //     ))
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: MessageBox(
+                    sId: widget._sId,
+                  ))
             ],
           ),
         ),
@@ -144,11 +148,13 @@ class MessageBox extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextField(
-              controller: _controller.messageEditingController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Write message',
+            Expanded(
+              child: TextField(
+                controller: _controller.messageEditingController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Write message',
+                ),
               ),
             ),
             InkWell(
