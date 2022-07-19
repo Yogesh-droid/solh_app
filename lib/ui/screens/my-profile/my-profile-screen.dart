@@ -65,20 +65,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     else
                       ProfileContainer(userModel: snapshot.requireData),
                     ProfileMenu(),
-                    // ProfileMenuTile(
-                    //     title: "Logout",
-                    //     svgIconPath: "assets/icons/profile/logout.svg",
-                    //     onPressed: () {
-                    //       FirebaseAuth.instance.signOut().then((value) {
-                    //         userBlocNetwork.updateSessionCookie = "";
-                    //         AutoRouter.of(context).pushAndPopUntil(
-                    //             IntroCarouselScreenRouter(),
-                    //             predicate: (route) => false);
-                    //       });
-                    //     })
-
                     SizedBox(height: 5.h),
-
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SolhGreenBorderButton(
@@ -101,7 +88,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             });
                           }),
                     ),
-                    Padding(
+                    /* Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SolhGreenButton(
                           height: 50,
@@ -124,7 +111,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   predicate: (route) => false);
                             });
                           }),
-                    )
+                    ) */
                   ],
                 );
               }
@@ -176,18 +163,20 @@ class ProfileMenu extends StatelessWidget {
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
-          // ProfileMenuTile(
-          //   title: "Settings",
-          //   onPressed: () {
-          //     AutoRouter.of(context).push(SettingsScreenRouter());
-          //   },
-          //   svgIconPath: "assets/icons/profile/settings.svg",
-          // ),
-          // ProfileMenuTile(
-          //   title: "Medical Reports",
-          //   onPressed: () {},
-          //   svgIconPath: "assets/icons/profile/medical-reports.svg",
-          // ),
+          ProfileMenuTile(
+            title: "Settings",
+            onPressed: () {
+              AutoRouter.of(context).push(SettingsScreenRouter());
+            },
+            svgIconPath: "assets/icons/profile/settings.svg",
+          ),
+          ProfileMenuTile(
+            title: "Medical Reports",
+            onPressed: () {
+              AutoRouter.of(context).push(CreateProfileScreenRouter());
+            },
+            svgIconPath: "assets/icons/profile/medical-reports.svg",
+          ),
           // ProfileMenuTile(
           //   title: "Personal Issues & Medical Backgrounds",
           //   onPressed: () {},

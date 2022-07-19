@@ -9,6 +9,7 @@ class ProviderUser {
   String? _profilePictureUrl;
   String? _gender;
   String? _userName;
+  String? _userType;
   String? _dob = DateFormat('dd MMMM yyyy').format(DateTime.now());
 
   set setFirstName(String firstname) {
@@ -31,6 +32,11 @@ class ProviderUser {
   set setBio(String bio) {
     _bio = bio;
     print("bio changed to: $_bio");
+  }
+
+  set setUserType(String userType) {
+    _userType = userType;
+    print("userType changed to: $_userType");
   }
 
   set setProfilePictureUrl(String profilePictureUrl) {
@@ -62,7 +68,8 @@ class ProviderUser {
           "bio": _bio,
           "gender": _gender,
           "userName": _userName,
-          "dob": _dob
+          "dob": _dob,
+          "userType": _userType
         }).onError((error, stackTrace) {
       print(error);
       return {};

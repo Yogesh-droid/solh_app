@@ -31,7 +31,9 @@ class AccountPrivacyScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 0.5.h),
                   Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacinia a penatibus gravida ut viverra sodales feugiat justo, tempus. Ante semper nisl vitae et faucibus amet ac. At nascetur volutpat quam.",
+                    '''Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. 
+
+You will have to create a new account and start your journey from the beginning if you wish to return.''',
                     style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 14),
                   ),
                   SizedBox(
