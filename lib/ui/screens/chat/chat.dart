@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +33,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   SocketService _service = SocketService();
+  var _controller = Get.put(ChatController());
   @override
   void initState() {
     // TODO: implement initState
-    Get.put(ChatController());
+
     _service.connectAndListen();
+    _controller.getChatController(widget._sId);
+    super.initState();
     SocketService.setUserName(widget._name);
     super.initState();
   }
@@ -130,6 +135,7 @@ class MessageBox extends StatelessWidget {
   final String _sId;
 
   ChatController _controller = Get.put(ChatController());
+  SocketService service = SocketService();
 
   @override
   Widget build(BuildContext context) {
@@ -194,11 +200,11 @@ class MessageList extends StatefulWidget {
 class _MessageListState extends State<MessageList> {
   ChatController _controller = Get.put(ChatController());
 
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
-    _controller.getChatController(widget._sId);
-    super.initState();
   }
 
   @override
@@ -216,11 +222,16 @@ class _MessageListState extends State<MessageList> {
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
                     shrinkWrap: true,
+                    reverse: true,
                     itemCount: _controller.convo.length,
                     itemBuilder: (context, index) {
+                      final reversedIndex =
+                          _controller.convo.length - 1 - index;
+
                       return MessageTile(
-                        message: _controller.convo.value[index].body,
-                        authorId: _controller.convo.value[index].authorId,
+                        message: _controller.convo.value[reversedIndex].body,
+                        authorId:
+                            _controller.convo.value[reversedIndex].authorId,
                         sId: widget._sId,
                       );
                     }),
@@ -246,28 +257,37 @@ class MessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Row(
-        mainAxisAlignment:
-            _authorId == _sId ? MainAxisAlignment.start : MainAxisAlignment.end,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey.shade200,
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.7,
+        child: Row(
+          mainAxisAlignment: _authorId == _sId
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey.shade200,
+              ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Text(
+                    //   _authorId,
+                    //   style: GoogleFonts.signika(color: Colors.lightGreen),
+                    // ),
+                    Text(_message),
+                  ],
+                ),
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Text(
-                //   _authorId,
-                //   style: GoogleFonts.signika(color: Colors.lightGreen),
-                // ),
-                Text(_message),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
