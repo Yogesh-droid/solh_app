@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/chat-list/chat_controller.dart';
 
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
@@ -15,6 +16,7 @@ class ChatController extends GetxController {
   var convo = <Conversation>[].obs;
 
   TextEditingController messageEditingController = TextEditingController();
+  ChatListController chatListController = Get.find();
 
   ChatServices services = ChatServices();
 
@@ -31,7 +33,7 @@ class ChatController extends GetxController {
           dateTime: '',
           sId: data['']));
 
-      print('_chatcontroller ' + convo[3].body!);
+      chatListController.chatListController();
     });
     super.onInit();
   }

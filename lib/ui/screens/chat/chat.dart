@@ -7,6 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
@@ -136,6 +137,7 @@ class MessageBox extends StatelessWidget {
 
   ChatController _controller = Get.put(ChatController());
   SocketService service = SocketService();
+  ChatListController chatListController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -165,12 +167,17 @@ class MessageBox extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                _controller.sendMessageController(
-                  _controller.messageEditingController.text,
-                  _sId,
-                  'users',
-                  'connection',
-                );
+                if (_controller.messageEditingController.text.trim() == '') {
+                  return;
+                } else {
+                  _controller.sendMessageController(
+                    _controller.messageEditingController.text,
+                    _sId,
+                    'users',
+                    'connection',
+                  );
+                }
+                chatListController.chatListController();
               },
               child: Icon(
                 Icons.send,

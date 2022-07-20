@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/controllers/chat-list/chat_controller.dart';
 
 import 'package:solh/model/user/user.dart';
 import 'package:solh/bloc/user-bloc.dart';
