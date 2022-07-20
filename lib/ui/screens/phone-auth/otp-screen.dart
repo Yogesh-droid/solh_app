@@ -90,7 +90,8 @@ class _OTPScreenState extends State<OTPScreen> {
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =
-                          await userBlocNetwork.isProfileCreated();
+                          await userBlocNetwork.isProfileCreated() &&
+                              !isSessionCookieCreated;
                       print("profile checking complete");
                       print("^" * 30 +
                           "Is Profile Created:" +

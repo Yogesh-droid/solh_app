@@ -11,6 +11,7 @@ class ProviderUser {
   String? _userName;
   String? _userType;
   String? _dob = DateFormat('dd MMMM yyyy').format(DateTime.now());
+  String? _email = '';
 
   set setFirstName(String firstname) {
     _firstname = firstname;
@@ -22,6 +23,12 @@ class ProviderUser {
     _userName = userName;
 
     print("userName changed to: $_userName");
+  }
+
+  set setEmail(String email) {
+    _email = email;
+
+    print("email changed to: $_email");
   }
 
   set setLasttName(String lastanme) {
@@ -69,7 +76,8 @@ class ProviderUser {
           "gender": _gender,
           "userName": _userName,
           "dob": _dob,
-          "userType": _userType
+          "userType": _userType,
+          "email": _email
         }).onError((error, stackTrace) {
       print(error);
       return {};

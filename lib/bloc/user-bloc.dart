@@ -89,12 +89,12 @@ class UserBlocNetwork {
     }
   }
 
-  Future<String?> CreateSessionCookie(String idToken) async {
-    Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
-        url: "${APIConstants.api}/create-session-cookie",
-        body: {"idToken": idToken});
-    print(apiResponse);
-  }
+  // Future<String?> CreateSessionCookie(String idToken) async {
+  //   Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
+  //       url: "${APIConstants.api}/create-session-cookie",
+  //       body: {"idToken": idToken});
+  //   print(apiResponse);
+  // }
 
   Future<String> deleteAccount() async {
     String msg = '';
@@ -103,7 +103,7 @@ class UserBlocNetwork {
       map = await Network.makeHttpDeleteRequestWithToken(
           url: "${APIConstants.api}/api/delete-user?user=$id", body: {});
 
-      if (map["success"]) {
+      if (map["accountDeleted"]) {
         msg = "Account deleted successfully";
       }
     } on Exception catch (e) {

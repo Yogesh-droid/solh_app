@@ -40,10 +40,10 @@ void main() async {
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     print("*" * 30 + "\n" + "Id Token: $idToken");
-    await SessionCookie.createSessionCookie(idToken);
+    bool isNewUser = await SessionCookie.createSessionCookie(idToken);
     Map<String, dynamic> _initialAppData = await initApp();
     runApp(SolhApp(
-      isProfileCreated: _initialAppData["isProfileCreated"],
+      isProfileCreated: _initialAppData["isProfileCreated"] && !isNewUser,
     ));
   } else
     runApp(SolhApp(

@@ -170,13 +170,13 @@ class ProfileMenu extends StatelessWidget {
             },
             svgIconPath: "assets/icons/profile/settings.svg",
           ),
-          ProfileMenuTile(
-            title: "Medical Reports",
-            onPressed: () {
-              AutoRouter.of(context).push(CreateProfileScreenRouter());
-            },
-            svgIconPath: "assets/icons/profile/medical-reports.svg",
-          ),
+          // ProfileMenuTile(
+          //   title: "Medical Reports",
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(CreateProfileScreenRouter());
+          //   },
+          //   svgIconPath: "assets/icons/profile/medical-reports.svg",
+          // ),
           // ProfileMenuTile(
           //   title: "Personal Issues & Medical Backgrounds",
           //   onPressed: () {},
