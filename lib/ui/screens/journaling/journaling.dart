@@ -13,6 +13,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
@@ -321,57 +322,6 @@ class _JournalingState extends State<Journaling> {
   }
 
   Widget groupRow() {
-    // return Row(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     getSolhGrouContainer(),
-    //     Expanded(
-    //       child: Obx(() {
-    //         return discoverGroupController.joinedGroupModel.value.groupList !=
-    //                 null
-    //             ? discoverGroupController
-    //                     .joinedGroupModel.value.groupList!.isNotEmpty
-    //                 ? Container(
-    //                     height: MediaQuery.of(context).size.height * 0.13,
-    //                     child: ListView.builder(
-    //                         shrinkWrap: true,
-    //                         scrollDirection: Axis.horizontal,
-    //                         itemCount: discoverGroupController
-    //                             .joinedGroupModel.value.groupList!.length,
-    //                         itemBuilder: (BuildContext context, int index) {
-    //                           return getGroupContainer(discoverGroupController
-    //                               .joinedGroupModel.value.groupList![index]);
-    //                         }),
-    //                   )
-    //                 : Container()
-    //             : Container();
-    //       }),
-    //     ),
-    //     Expanded(
-    //       child: Obx(() {
-    //         return discoverGroupController.createdGroupModel.value.groupList !=
-    //                 null
-    //             ? discoverGroupController
-    //                     .createdGroupModel.value.groupList!.isNotEmpty
-    //                 ? Container(
-    //                     height: MediaQuery.of(context).size.height * 0.13,
-    //                     child: ListView.builder(
-    //                         shrinkWrap: true,
-    //                         scrollDirection: Axis.horizontal,
-    //                         itemCount: discoverGroupController
-    //                             .createdGroupModel.value.groupList!.length,
-    //                         itemBuilder: (BuildContext context, int index) {
-    //                           return getGroupContainer(discoverGroupController
-    //                               .createdGroupModel.value.groupList![index]);
-    //                         }),
-    //                   )
-    //                 : Container()
-    //             : Container();
-    //       }),
-    //     ),
-    //   ],
-    // );
-
     return Container(
       height: MediaQuery.of(context).size.height * 0.13,
       child: Obx(() {
@@ -380,6 +330,9 @@ class _JournalingState extends State<Journaling> {
           slivers: [
             SliverToBoxAdapter(
               child: getSolhGrouContainer(),
+            ),
+            SliverToBoxAdapter(
+              child: getGroupAddButton(),
             ),
             discoverGroupController.joinedGroupModel.value.groupList != null
                 ? SliverList(
@@ -413,8 +366,8 @@ class _JournalingState extends State<Journaling> {
       children: [
         Obx(() {
           return Container(
-            width: 60,
-            height: 60,
+            width: 76,
+            height: 64,
             decoration:
                 _journalPageController.selectedGroupId.value == group.sId
                     ? BoxDecoration(
@@ -444,7 +397,7 @@ class _JournalingState extends State<Journaling> {
                     }
                   : null,
               child: Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(7.0),
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -500,8 +453,8 @@ class _JournalingState extends State<Journaling> {
       children: [
         Obx(() {
           return Container(
-            width: 60,
-            height: 60,
+            width: 76,
+            height: 64,
             decoration: _journalPageController.selectedGroupId.value == ''
                 ? BoxDecoration(
                     shape: BoxShape.circle,
@@ -526,7 +479,7 @@ class _JournalingState extends State<Journaling> {
                 _journalPageController.journalsList.refresh();
               },
               child: Padding(
-                padding: const EdgeInsets.all(5.0),
+                padding: const EdgeInsets.all(7.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -539,7 +492,7 @@ class _JournalingState extends State<Journaling> {
                           ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(7.0),
                     child: Image.asset(
                       'assets/images/logo/solh-logo.png',
                       fit: BoxFit.scaleDown,
@@ -713,6 +666,65 @@ class _JournalingState extends State<Journaling> {
         ],
       ),
     ));
+  }
+
+  Widget getGroupAddButton() {
+    return Column(
+      children: [
+        Container(
+          width: 76,
+          height: 64,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: SolhColors.white,
+              width: 2,
+            ),
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ManageGroupPage(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: SolhColors.green,
+                    width: 2,
+                  ),
+                ),
+                child: Icon(
+                  Icons.add,
+                  color: SolhColors.green,
+                  size: 30,
+                ),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          "Discover",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[300],
+            fontWeight: FontWeight.w400,
+            height: 1.23, //Figma Line Height 17.25
+          ),
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
   }
 
   // Future<void> openMoodMeter() async {

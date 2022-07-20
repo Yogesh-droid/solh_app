@@ -27,11 +27,7 @@ class AddSelectGoal extends StatelessWidget {
             ),
           ),
           isLandingScreen: false),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 18,
-        ),
+      body: SingleChildScrollView(
         child: Column(
           children: [
             SampleGoals(),
@@ -53,46 +49,49 @@ class GoalsFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Custom Goals',
-              style: GoogleFonts.signika(
-                  color: Color(
-                    0xffA6A6A6A6,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Custom Goals',
+                style: GoogleFonts.signika(
+                    color: Color(
+                      0xffA6A6A6A6,
+                    ),
+                    fontSize: 16),
+              ),
+              SizedBox(
+                height: 53,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'No Goals Found',
+                    style: GoogleFonts.signika(
+                        color: Color(
+                          0xffA6A6A6A6,
+                        ),
+                        fontSize: 16),
                   ),
-                  fontSize: 16),
-            ),
-            SizedBox(
-              height: 53,
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'No Goals Found',
-                  style: GoogleFonts.signika(
-                      color: Color(
-                        0xffA6A6A6A6,
-                      ),
-                      fontSize: 16),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            SolhGreenButton(
-                child: Text('Add Goal'),
-                height: 50,
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => GoalForm()));
-                }),
-          ]),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              SolhGreenButton(
+                  child: Text('Add Goal'),
+                  height: 50,
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => GoalForm()));
+                  }),
+            ]),
+      ),
     );
   }
 }
@@ -128,141 +127,150 @@ class SampleGoals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Sample Goals',
-              style: GoogleFonts.signika(
-                  color: Color(0xff666666),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
-            ),
-            SizedBox(
-              height: 26,
-            ),
-            ///////    Sample Goals List   ///////
-            Obx(() {
-              return _goalSettingController.isSampleGoalLoading.value
-                  ? getShimmer()
-                  : _goalSettingController
-                              .sampleGoalModel.value.goalList!.length >
-                          0
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: _goalSettingController.sampleGoalModel
-                              .value.goalList![0].sampleGoal!.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                InkWell(
-                                  onTap: () => Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                          builder: (context) => Details(
-                                                sampleGoal:
-                                                    _goalSettingController
-                                                        .sampleGoalModel
-                                                        .value
-                                                        .goalList![0]
-                                                        .sampleGoal![index],
-                                                goalId: _goalSettingController
-                                                    .sampleGoalModel
-                                                    .value
-                                                    .goalList![0]
-                                                    .sId!,
-                                              ))),
-                                  child: Container(
-                                    height: 100,
-                                    width: double.maxFinite,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Color(0xffA6A6A6),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Sample Goals',
+                style: GoogleFonts.signika(
+                    color: Color(0xff666666),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                height: 26,
+              ),
+              ///////    Sample Goals List   ///////
+              Obx(() {
+                return _goalSettingController.isSampleGoalLoading.value
+                    ? getShimmer()
+                    : _goalSettingController
+                                .sampleGoalModel.value.goalList!.length >
+                            0
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _goalSettingController.sampleGoalModel
+                                .value.goalList![0].sampleGoal!.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  InkWell(
+                                    onTap: () => Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => Details(
+                                                  sampleGoal:
+                                                      _goalSettingController
+                                                          .sampleGoalModel
+                                                          .value
+                                                          .goalList![0]
+                                                          .sampleGoal![index],
+                                                  goalId: _goalSettingController
+                                                      .sampleGoalModel
+                                                      .value
+                                                      .goalList![0]
+                                                      .sId!,
+                                                ))),
+                                    child: Container(
+                                      height: 100,
+                                      width: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Color(0xffA6A6A6),
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(12),
-                                              topLeft: Radius.circular(12)),
-                                          child: CachedNetworkImage(
-                                            imageUrl: _goalSettingController
-                                                    .sampleGoalModel
-                                                    .value
-                                                    .goalList![0]
-                                                    .sampleGoal![index]
-                                                    .image ??
-                                                '',
-                                            fit: BoxFit.cover,
-                                            width: 100,
-                                            height: 100,
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(12),
+                                                topLeft: Radius.circular(12)),
+                                            child: CachedNetworkImage(
+                                              imageUrl: _goalSettingController
+                                                      .sampleGoalModel
+                                                      .value
+                                                      .goalList![0]
+                                                      .sampleGoal![index]
+                                                      .image ??
+                                                  '',
+                                              errorWidget: (context, url,
+                                                      error) =>
+                                                  Image.asset(
+                                                      'assets/images/no-image-available.png'),
+                                              fit: BoxFit.cover,
+                                              width: 100,
+                                              height: 100,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                _goalSettingController
-                                                        .sampleGoalModel
-                                                        .value
-                                                        .goalList![0]
-                                                        .sampleGoal![index]
-                                                        .name ??
-                                                    '',
-                                                style: GoogleFonts.signika(
-                                                    color: Color(0xff666666),
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Container(
-                                                width: 200,
-                                                child: Text(
-                                                  '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![0].task ?? ''}' +
-                                                      ', ' +
-                                                      '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![1].task ?? ''}',
-                                                  maxLines: 2,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  _goalSettingController
+                                                          .sampleGoalModel
+                                                          .value
+                                                          .goalList![0]
+                                                          .sampleGoal![index]
+                                                          .name ??
+                                                      '',
                                                   style: GoogleFonts.signika(
-                                                      color: Color(0xffA6A6A6),
-                                                      fontSize: 13,
+                                                      color: Color(0xff666666),
+                                                      fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.w400),
                                                 ),
-                                              )
-                                            ]),
-                                      ],
+                                                SizedBox(
+                                                  height: 5,
+                                                ),
+                                                Container(
+                                                  width: 200,
+                                                  child: Text(
+                                                    '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![0].task ?? ''}' +
+                                                        ', ' +
+                                                        '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![1].task ?? ''}',
+                                                    maxLines: 2,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: GoogleFonts.signika(
+                                                        color:
+                                                            Color(0xffA6A6A6),
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                )
+                                              ]),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            );
-                          })
-                      : Center(
-                          child: Text(
-                          'No Goals Found',
-                          style: GoogleFonts.signika(
-                              color: Color(0xffA6A6A6),
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
-                        ));
-            })
-          ]),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              );
+                            })
+                        : Center(
+                            child: Text(
+                            'No Goals Found',
+                            style: GoogleFonts.signika(
+                                color: Color(0xffA6A6A6),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400),
+                          ));
+              })
+            ]),
+      ),
     );
   }
 

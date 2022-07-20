@@ -1,7 +1,18 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
+import '../../../../bloc/user-bloc.dart';
+import '../../../../controllers/connections/connection_controller.dart';
+import '../../../../controllers/goal-setting/goal_setting_controller.dart';
+import '../../../../routes/routes.gr.dart';
+import '../../../../services/utility.dart';
 
 class AccountPrivacyScreen extends StatelessWidget {
   const AccountPrivacyScreen({Key? key}) : super(key: key);
@@ -31,7 +42,9 @@ class AccountPrivacyScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 0.5.h),
                   Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacinia a penatibus gravida ut viverra sodales feugiat justo, tempus. Ante semper nisl vitae et faucibus amet ac. At nascetur volutpat quam.",
+                    '''Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. 
+
+You will have to create a new account and start your journey from the beginning if you wish to return.''',
                     style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 14),
                   ),
                   SizedBox(
@@ -41,7 +54,122 @@ class AccountPrivacyScreen extends StatelessWidget {
                     child: SolhGreenButton(
                         width: MediaQuery.of(context).size.width / 1.1,
                         height: 6.5.h,
-                        child: Text("Delete")),
+                        child: Text("Delete"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => Center(
+                                    child: Card(
+                                      child: Container(
+                                        padding: EdgeInsets.all(14.0),
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                2,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.white,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Icon(
+                                                  Icons.close,
+                                                  size: 30,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.h,
+                                            ),
+                                            Text(
+                                              "Delete Account",
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            SizedBox(height: 2.h),
+                                            Text(
+                                              '''Are you sure ? Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. ''',
+                                              style: SolhTextStyles
+                                                  .ProfileSetupSubHeading,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Spacer(),
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: SolhGreenBorderButton(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            1.1,
+                                                    height: 6.5.h,
+                                                    child: Text("Cancel",
+                                                        style: TextStyle(
+                                                            color: SolhColors
+                                                                .green)),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ),
+                                                SizedBox(width: 4.w),
+                                                Expanded(
+                                                  child: SolhGreenButton(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            1.1,
+                                                    height: 6.5.h,
+                                                    child: Text("Confirm"),
+                                                    onPressed: () {
+                                                      FirebaseAuth.instance
+                                                          .signOut()
+                                                          .then((value) async {
+                                                        Get.delete<
+                                                            GoalSettingController>();
+                                                        Get.delete<
+                                                            ConnectionController>();
+                                                        Get.delete<
+                                                            ConnectionController>();
+                                                        Utility.showLoader(
+                                                            context);
+                                                        await userBlocNetwork
+                                                            .deleteAccount();
+                                                        Utility.hideLoader(
+                                                            context);
+                                                        AutoRouter.of(context)
+                                                            .pushAndPopUntil(
+                                                                IntroCarouselScreenRouter(),
+                                                                predicate:
+                                                                    (route) =>
+                                                                        false);
+                                                      });
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 7.h),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ));
+                        }),
                   ),
                 ],
               ),

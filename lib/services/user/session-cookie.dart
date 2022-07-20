@@ -12,6 +12,6 @@ class SessionCookie {
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];
     print("New session cookie: " + userBlocNetwork.getSessionCookie);
     print("*" * 30 + "\n");
-    return true;
+    return response["newProfile"] ?? false;
   }
 }

@@ -28,56 +28,53 @@ class MyGoalsScreen extends StatelessWidget {
         isLandingScreen: true,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 0,
-              ),
-              getTodayGoal(context),
-              Obx(() {
-                return goalSettingController.pesonalGoalModel.value.goalList !=
-                            null &&
-                        goalSettingController
-                                .pesonalGoalModel.value.goalList!.length >
-                            0
-                    ? GetHelpDivider()
-                    : Container();
-              }),
-              Obx(() {
-                return !goalSettingController.isPersonalGoalLoading.value
-                    ? GoalName()
-                    : personalGoallistShimmer();
-              }),
-              SizedBox(
-                height: 10,
-              ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 0,
+            ),
+            getTodayGoal(context),
+            Obx(() {
+              return goalSettingController.pesonalGoalModel.value.goalList !=
+                          null &&
+                      goalSettingController
+                              .pesonalGoalModel.value.goalList!.length >
+                          0
+                  ? GetHelpDivider()
+                  : Container();
+            }),
+            Obx(() {
+              return !goalSettingController.isPersonalGoalLoading.value
+                  ? GoalName()
+                  : personalGoallistShimmer();
+            }),
+            SizedBox(
+              height: 10,
+            ),
 
-              Obx(() {
-                return goalSettingController.pesonalGoalModel.value.goalList !=
-                            null &&
-                        goalSettingController
-                                .pesonalGoalModel.value.goalList!.length >
-                            0
-                    ? GetHelpDivider()
-                    : Container();
-              }),
-              // SizedBox(
-              //   height: 24,
-              // ),
-              // MileStone(),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                '  I want to work on',
-                style: goalFontStyle(14.0, Color(0xffA6A6A6)),
-              ),
-              IWantToWorkOn()
-            ],
-          ),
+            Obx(() {
+              return goalSettingController
+                              .pesonalGoalModel.value.goalList !=
+                          null &&
+                      goalSettingController
+                              .pesonalGoalModel.value.goalList!.length >
+                          0 &&
+                      goalSettingController.isExpanded.value.toString() !=
+                          goalSettingController
+                              .pesonalGoalModel.value.goalList!.last.sId
+                              .toString()
+                  ? GetHelpDivider()
+                  : Container();
+            }),
+
+            // MileStone(),
+            SizedBox(
+              height: 10,
+            ),
+            GetHelpCategory(title: "I want to work on"),
+            IWantToWorkOn()
+          ],
         ),
       ),
     );
@@ -85,7 +82,7 @@ class MyGoalsScreen extends StatelessWidget {
 
   Widget getTodayGoal(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(18.0),
       child: Column(
         children: [
           Row(
@@ -125,29 +122,32 @@ class MyGoalsScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  PopupMenuButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: SolhColors.green,
-                      ),
-                      padding: EdgeInsets.zero,
-                      iconSize: 18,
-                      itemBuilder: ((context) => [
-                            PopupMenuItem(
-                              child: Text(
-                                'my Goals',
-                                style: goalFontStyle(14.0, SolhColors.green),
+                  Container(
+                    width: 20,
+                    child: PopupMenuButton(
+                        position: PopupMenuPosition.under,
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: SolhColors.green,
+                        ),
+                        iconSize: 18,
+                        itemBuilder: ((context) => [
+                              PopupMenuItem(
+                                child: Text(
+                                  'my Goals',
+                                  style: goalFontStyle(14.0, SolhColors.green),
+                                ),
+                                value: 1,
                               ),
-                              value: 1,
-                            ),
-                            PopupMenuItem(
-                              child: Text(
-                                'Settings',
-                                style: goalFontStyle(14.0, SolhColors.green),
+                              PopupMenuItem(
+                                child: Text(
+                                  'Settings',
+                                  style: goalFontStyle(14.0, SolhColors.green),
+                                ),
+                                value: 2,
                               ),
-                              value: 2,
-                            ),
-                          ])),
+                            ])),
+                  ),
                 ],
               )
             ],
@@ -282,21 +282,34 @@ class GoalName extends StatelessWidget {
                 null &&
             _goalSettingController.pesonalGoalModel.value.goalList!.length > 0
         ? ExpansionPanelList(
-            elevation: 1,
+            elevation: 0,
+            dividerColor: Color(0x30D9D9D9),
             children: _goalSettingController.pesonalGoalModel.value.goalList!
                 .map((e) => getExpasionPanel(context, e))
                 .toList(),
             expansionCallback: (int index, bool isExpanded) {
               print('Hello this is $isExpanded');
-              _goalSettingController.isExpandedPanelExpanded.value = isExpanded;
-              _goalSettingController.expandedIndex.value =
-                  _goalSettingController
-                          .pesonalGoalModel.value.goalList![index].sId ??
-                      '';
+              _goalSettingController.isExpandedPanelExpanded.value =
+                  !_goalSettingController.isExpandedPanelExpanded.value;
+              if (_goalSettingController.expandedIndex.value != '' &&
+                  _goalSettingController.expandedIndex.value ==
+                      _goalSettingController
+                          .pesonalGoalModel.value.goalList![index].sId) {
+                _goalSettingController.expandedIndex.value = '';
+                _goalSettingController.isExpanded.value = '';
+              } else {
+                _goalSettingController.expandedIndex.value =
+                    _goalSettingController
+                            .pesonalGoalModel.value.goalList![index].sId ??
+                        '';
+                _goalSettingController.isExpanded.value = _goalSettingController
+                        .pesonalGoalModel.value.goalList![index].sId ??
+                    '';
+              }
 
-              _goalSettingController.isExpanded.value = _goalSettingController
-                      .pesonalGoalModel.value.goalList![index].sId ??
-                  '';
+              // _goalSettingController.isExpanded.value = _goalSettingController
+              //         .pesonalGoalModel.value.goalList![index].sId ??
+              //     '';
             },
           )
         : Container());
@@ -306,103 +319,127 @@ class GoalName extends StatelessWidget {
     return ExpansionPanel(
       canTapOnHeader: true,
       headerBuilder: (context, isExpanded) {
-        return Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: SolhColors.greyS200),
-                    borderRadius: BorderRadius.circular(8),
-                    color: SolhColors.greyS200.withOpacity(0.1)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: CachedNetworkImage(
-                      imageUrl: e.goalImage ?? '',
-                      height: 80,
-                      width: 80,
-                      fit: BoxFit.cover,
-                      errorWidget: (context, url, error) => Image.asset(
-                          'assets/images/no-image-available_err.png')),
+        return Column(
+          children: [
+            e.sId == _goalSettingController.expandedIndex.value &&
+                    e.sId !=
+                        _goalSettingController
+                            .pesonalGoalModel.value.goalList!.first.sId
+                ? GetHelpDivider()
+                : Container(),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Container(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: SolhColors.greyS200),
+                          borderRadius: BorderRadius.circular(8),
+                          color: SolhColors.greyS200.withOpacity(0.1)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: CachedNetworkImage(
+                            imageUrl: e.goalImage ?? '',
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.cover,
+                            errorWidget: (context, url, error) => Image.asset(
+                                'assets/images/no-image-available_err.png')),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Text(
+                            e.goalName ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            style: goalFontStyle(
+                              18.0,
+                              Color(0xff666666),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
+                            style: goalFontStyle(
+                              14.0,
+                              Color(0xffA6A6A6),
+                              FontWeight.w300,
+                            )),
+                      ],
+                    ),
+                    Spacer(),
+                    Obx(() {
+                      print(
+                          'isExpanded ${_goalSettingController.isExpandedPanelExpanded.value}');
+                      print(
+                          'expandedIndex ${_goalSettingController.expandedIndex.value}');
+                      return
+                          // _goalSettingController.isExpandedPanelExpanded.value ==
+                          //             true &&
+                          _goalSettingController.expandedIndex.value == e.sId
+                              ? Container(
+                                  width: 30,
+                                  child: PopupMenuButton(
+                                    icon: Icon(
+                                      Icons.more_vert,
+                                      color: SolhColors.green,
+                                    ),
+                                    itemBuilder: (context) =>
+                                        <PopupMenuEntry<String>>[
+                                      PopupMenuItem(
+                                        value: 'edit',
+                                        child: Text('Edit'),
+                                      ),
+                                      PopupMenuItem(
+                                        value: 'delete',
+                                        child: Text('Delete'),
+                                      ),
+                                    ],
+                                    onSelected: (value) {
+                                      if (value == 'edit') {
+                                        //Get.toNamed('/goal-setting/edit-goal',arguments: e);
+                                      } else if (value == 'delete') {
+                                        showDeleteAlert(context, e);
+                                      }
+                                    },
+                                  ),
+                                )
+                              : Icon(
+                                  Icons.arrow_drop_down_circle,
+                                  color: SolhColors.green,
+                                );
+                    })
+                  ],
                 ),
               ),
-              SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    e.goalName ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: goalFontStyle(
-                      18.0,
-                      Color(0xff666666),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                      'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
-                      style: goalFontStyle(
-                        14.0,
-                        Color(0xffA6A6A6),
-                        FontWeight.w300,
-                      )),
-                ],
-              ),
-              Spacer(),
-              Obx(() {
-                print(
-                    'isExpanded ${_goalSettingController.isExpandedPanelExpanded.value}');
-                print(
-                    'expandedIndex ${_goalSettingController.expandedIndex.value}');
-                return
-                    // _goalSettingController.isExpandedPanelExpanded.value ==
-                    //             true &&
-                    _goalSettingController.expandedIndex.value == e.sId
-                        ? PopupMenuButton(
-                            icon: Icon(
-                              Icons.more_vert,
-                              color: SolhColors.green,
-                            ),
-                            itemBuilder: (context) => <PopupMenuEntry<String>>[
-                              PopupMenuItem(
-                                value: 'edit',
-                                child: Text('Edit'),
-                              ),
-                              PopupMenuItem(
-                                value: 'delete',
-                                child: Text('Delete'),
-                              ),
-                            ],
-                            onSelected: (value) {
-                              if (value == 'edit') {
-                                //Get.toNamed('/goal-setting/edit-goal',arguments: e);
-                              } else if (value == 'delete') {
-                                showDeleteAlert(context, e);
-                              }
-                            },
-                          )
-                        : Icon(
-                            Icons.arrow_drop_down_circle,
-                            color: SolhColors.green,
-                          );
-              })
-            ],
-          ),
+            ),
+          ],
         );
       },
       body: Container(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-              e.activity!.map((e1) => getActivity(context, e1, e)).toList(),
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:
+                  e.activity!.map((e1) => getActivity(context, e1, e)).toList(),
+            ),
+            GetHelpDivider()
+          ],
         ),
       ),
       isExpanded: _goalSettingController.isExpanded.value.toString() ==
@@ -420,25 +457,25 @@ class GoalName extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           color: SolhColors.green.withOpacity(0.3),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 70.w,
-              child: Text(e1.task ?? '',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: SolhTextStyles.ProfileMenuGreyText),
-            ),
-            InkWell(
-              onTap: _goalSettingController.isUpdateGoal.value
-                  ? () {}
-                  : () {
-                      showAlertDialog(context, e.sId!, e1.sId!);
-                      // _goalSettingController.updateActivity(
-                      //     e.sId ?? '', e1.sId ?? '');
-                    },
-              child: Container(
+        child: InkWell(
+          onTap: _goalSettingController.isUpdateGoal.value
+              ? () {}
+              : () {
+                  showAlertDialog(context, e.sId!, e1.sId!);
+                  // _goalSettingController.updateActivity(
+                  //     e.sId ?? '', e1.sId ?? '');
+                },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 70.w,
+                child: Text(e1.task ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: SolhTextStyles.ProfileMenuGreyText),
+              ),
+              Container(
                 height: 20,
                 width: 20,
                 decoration: BoxDecoration(
@@ -459,8 +496,8 @@ class GoalName extends StatelessWidget {
                             : Container()
                         : Container(),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -595,62 +632,72 @@ class IWantToWorkOn extends StatelessWidget {
     return Obx(() => _goalSettingController.loadingCat.value
         ? CircularProgressIndicator()
         : _goalSettingController.goalsCatModel.value.categories != null
-            ? GridView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8),
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _goalSettingController
-                    .goalsCatModel.value.categories!.length,
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
-                    childAspectRatio: 3 / 1.2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 20),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: (() {
-                      _goalSettingController.getSubCat(_goalSettingController
-                              .goalsCatModel.value.categories![index].sId ??
-                          '');
-                      _goalSettingController.getSampleGoal(
-                          _goalSettingController
-                                  .goalsCatModel.value.categories![index].sId ??
-                              '');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddSelectGoal()));
-                    }),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Color(0xffA6A6A6)),
-                          borderRadius: BorderRadius.circular(
-                            8,
-                          )),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(children: [
-                          CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
+            ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                child: GridView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: _goalSettingController
+                        .goalsCatModel.value.categories!.length,
+                    shrinkWrap: true,
+                    // gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    //     maxCrossAxisExtent: 200,
+                    //     childAspectRatio: 3 / 1.2,
+                    //     crossAxisSpacing: 20,
+                    //     mainAxisSpacing: 20),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 2.5.w,
+                        crossAxisSpacing: 2.5.w,
+                        crossAxisCount: 2,
+                        childAspectRatio: 2),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: (() {
+                          _goalSettingController.getSubCat(
                               _goalSettingController.goalsCatModel.value
-                                      .categories![index].displayImage ??
-                                  '',
-                            ),
+                                      .categories![index].sId ??
+                                  '');
+                          _goalSettingController.getSampleGoal(
+                              _goalSettingController.goalsCatModel.value
+                                      .categories![index].sId ??
+                                  '');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AddSelectGoal()));
+                        }),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Color(0xffA6A6A6)),
+                              borderRadius: BorderRadius.circular(
+                                8,
+                              )),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(children: [
+                              CircleAvatar(
+                                radius: 7.8.w,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  _goalSettingController.goalsCatModel.value
+                                          .categories![index].displayImage ??
+                                      '',
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                  child: Text(
+                                _goalSettingController.goalsCatModel.value
+                                        .categories![index].name ??
+                                    '',
+                                style: goalFontStyle(
+                                    14.0, Color(0xff666666), FontWeight.w400),
+                              )),
+                            ]),
                           ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                              child: Text(
-                            _goalSettingController.goalsCatModel.value
-                                    .categories![index].name ??
-                                '',
-                            style: goalFontStyle(
-                                14.0, Color(0xff666666), FontWeight.w400),
-                          )),
-                        ]),
-                      ),
-                    ),
-                  );
-                })
+                        ),
+                      );
+                    }),
+              )
             : Container());
   }
 }

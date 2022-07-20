@@ -26,7 +26,6 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../journaling/widgets/comment_menu_btn.dart';
-import '../journaling/widgets/solh_expert_badge.dart';
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen(
@@ -82,70 +81,6 @@ class _CommentScreenState extends State<CommentScreen> {
             padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
             child: Column(
               children: [
-                // Expanded(
-                //   child: StreamBuilder<List<CommentModel?>>(
-                //       stream: commentsBloc.commentsStateStream,
-                //       builder: (context, commentSnapshot) {
-                //         if (commentSnapshot.hasData)
-                //           return CustomScrollView(
-                //             controller: _scrollController,
-                //             slivers: [
-                //               SliverToBoxAdapter(
-                //                 child: PostForComment(
-                //                   journalModel: widget._journalModel,
-                //                   bestComment: commentsBloc.getBestComment,
-                //                 ),
-                //               ),
-                //               SliverList(
-                //                   delegate: SliverChildBuilderDelegate(
-                //                       (_, index) => CommentBoxWidget(
-                //                             deleteComment: () async {
-                //                               await _commentNetwork
-                //                                   .deleteComment(
-                //                                       journalId: widget
-                //                                           ._journalModel!.id,
-                //                                       commentId: commentSnapshot
-                //                                           .requireData[index]!
-                //                                           .id);
-                //                               setState(() {
-                //                                 commentSnapshot.requireData
-                //                                     .remove(commentSnapshot
-                //                                         .requireData[index]);
-                //                               });
-                //                               print("deleted");
-                //                             },
-                //                             makeBestComment: () async {
-                //                               await _commentNetwork
-                //                                   .makeBestComment(
-                //                                       journalId: widget
-                //                                           ._journalModel!.id,
-                //                                       commentId: commentSnapshot
-                //                                           .requireData[index]!
-                //                                           .id);
-                //                               setState(() {
-                //                                 commentsBloc.setBestComment =
-                //                                     commentSnapshot
-                //                                         .requireData[index];
-                //                                 print(commentsBloc
-                //                                     .getBestComment);
-                //                               });
-                //                             },
-                //                             journalModel: widget._journalModel!,
-                //                             commentModel: commentSnapshot
-                //                                 .requireData[index],
-                //                             isUserPost:
-                //                                 _isLoginedUserJournal ?? false,
-                //                           ),
-                //                       childCount:
-                //                           commentSnapshot.requireData.length)),
-                //             ],
-                //           );
-                //         else
-                //           return Center(
-                //             child: MyLoader(),
-                //           );
-                //       }),
-                // ),
                 Expanded(
                     child: Obx(() => !journalCommentController.isLoading.value
                         ? CustomScrollView(
