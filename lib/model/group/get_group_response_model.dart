@@ -38,6 +38,7 @@ class GroupList {
   String? id;
   String? groupMediaUrl;
   String? groupMediaType;
+  List<String>? groupTags;
 
   GroupList(
       {this.sId,
@@ -52,7 +53,8 @@ class GroupList {
       this.iV,
       this.id,
       this.groupMediaUrl,
-      this.groupMediaType});
+      this.groupMediaType,
+      this.groupTags});
 
   GroupList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -75,6 +77,12 @@ class GroupList {
     id = json['id'];
     groupMediaUrl = json['groupMediaUrl'];
     groupMediaType = json['groupMediaType'];
+    if (json['groupTags'] != null) {
+      groupTags = <String>[];
+      json['groupTags'].forEach((v) {
+        groupTags!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -96,6 +104,9 @@ class GroupList {
     data['id'] = this.id;
     data['groupMediaUrl'] = this.groupMediaUrl;
     data['groupMediaType'] = this.groupMediaType;
+    if (this.groupTags != null) {
+      data['groupTags'] = this.groupTags;
+    }
     return data;
   }
 }

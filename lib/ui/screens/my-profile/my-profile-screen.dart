@@ -9,6 +9,8 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/group/create_group_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/utility.dart';
@@ -82,6 +84,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               userBlocNetwork.updateSessionCookie = "";
                               Get.delete<GoalSettingController>();
                               Get.delete<ConnectionController>();
+                              Get.delete<DiscoverGroupController>();
+                              Get.delete<CreateGroupController>();
                               AutoRouter.of(context).pushAndPopUntil(
                                   IntroCarouselScreenRouter(),
                                   predicate: (route) => false);

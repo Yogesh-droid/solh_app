@@ -125,31 +125,22 @@ class MoodAnalyticPage extends StatelessWidget {
           ),
           Obx(() {
             return moodMeterController.isFetchingMoodAnalytics.value
-                ? Shimmer.fromColors(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
+                ? Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    child: Shimmer.fromColors(
+                      baseColor: SolhColors.grey,
+                      highlightColor: SolhColors.greyS200,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: SolhColors.greyS200, shape: BoxShape.circle),
                       ),
-                      height: 50,
-                      width: 50,
                     ),
-                    baseColor: Colors.grey[200]!,
-                    highlightColor: Colors.grey[200]!)
+                  )
                 : moodMeterController
                             .moodAnlyticsModel.value.moodAnalytic!.length >
                         0
                     ? getMoodPieChartWidget(context)
-                    : Container(
-                        child: Center(
-                          child: Text(
-                            'No moods yet',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF666666),
-                            ),
-                          ),
-                        ),
-                      );
+                    : noMoodContainer(context);
           }),
           Obx(() {
             return moodMeterController.isFetchingMoodAnalytics.value
@@ -317,5 +308,20 @@ class MoodAnalyticPage extends StatelessWidget {
         ],
       );
     });
+  }
+
+  Widget noMoodContainer(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: Center(
+        child: Text(
+          'No mood found',
+          style: TextStyle(
+            fontSize: 16,
+            color: SolhColors.grey,
+          ),
+        ),
+      ),
+    );
   }
 }

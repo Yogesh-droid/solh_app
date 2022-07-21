@@ -66,12 +66,12 @@ class MoodMeterController extends GetxController {
     moodAnlyticsModel.value = MoodAnalyticsModel.fromJson(map);
     selectedFrequencyMoodMap.value.clear();
     colorList.value.clear();
-    moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
-      selectedFrequencyMoodMap.value[element.name ?? ''] =
-          element.moodCount!.toDouble();
-      int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
-      colorList.value.add(Color(color));
-    });
+    // moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
+    //   selectedFrequencyMoodMap.value[element.name ?? ''] =
+    //       element.moodCount!.toDouble();
+    //   int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
+    //   colorList.value.add(Color(color));
+    // });
     isFetchingMoodAnalytics.value = false;
   }
 }

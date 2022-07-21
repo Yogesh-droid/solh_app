@@ -128,7 +128,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 },
               ),
               SideDrawerMenuTile(
-                title: "Emotional Spectrum",
+                title: "Wheel of Emotions",
                 onPressed: () async {
                   moodMeterController.getMoodAnalytics(7);
                   Navigator.push(
