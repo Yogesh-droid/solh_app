@@ -168,17 +168,19 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
           ),
         ),
-        groupList.groupMembers != null
-            ? groupList.defaultAdmin!.id ==
-                    userBlocNetwork.id //// this is for the admin
-                ? getPopUpMenuBtn(context)
-                : Container()
-            : Obx(() {
-                return discoverGroupController.isLoading.value
-                    ? Container()
-                    // : getPopUpMenuBtn(context);
-                    : Container();
-              })
+        // groupList.groupMembers != null
+        //     ?
+        groupList.defaultAdmin!.id ==
+                userBlocNetwork.id //// this is for the admin
+            ? getPopUpMenuBtn(context)
+            : Container()
+        // : Container()
+        // : Obx(() {
+        //     return discoverGroupController.isLoading.value
+        //         ? Container()
+        //         // : getPopUpMenuBtn(context);
+        //         : Container();
+        //   })
       ]),
       isLandingScreen: false,
     );
@@ -336,15 +338,16 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   }),
                   onPressed: () async {
                     Utility.showLoader(context);
-                    await createGroupController.joinGroup(
+                    String success = await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');
                     await discoverGroupController.getJoinedGroups();
                     await discoverGroupController
                         .getDiscoverGroups()
                         .then((value) {
-                      Navigator.pop(context);
+                      Utility.showToast(success);
                       Navigator.of(context).pop();
                     });
+                    Navigator.of(context).pop();
                   }),
             ),
           )

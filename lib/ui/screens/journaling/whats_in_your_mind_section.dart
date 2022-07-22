@@ -56,7 +56,6 @@ class WhatsOnYourMindSection extends StatelessWidget {
                 children: [
                   InkWell(
                       onTap: () async {
-                        moodMeterController.getMoodList();
                         Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -113,19 +113,21 @@ class CreateGroupController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
+  Future<String> joinGroup({required String groupId}) async {
     isLoading.value = true;
+    String success = '';
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
             url: APIConstants.api + '/api/join-group',
             body: {'groupId': groupId, 'userId': userBlocNetwork.id})
         .onError((error, stackTrace) {
       print(error);
+      success = 'error joining group';
       return {};
     });
     if (map['success'] == true) {
-      Utility.showToast(map['message']);
+      success = map['message'];
     }
     isLoading.value = false;
-    return map;
+    return success;
   }
 }

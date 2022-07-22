@@ -45,15 +45,21 @@ class _CreateGroupState extends State<CreateGroup> {
 
   @override
   void initState() {
+    print('initState');
     if (widget.group != null) {
+      print('initState && widget.group != null');
       _controller.tagList.clear();
       _nameEditingController.text = widget.group!.groupName ?? '';
       _descriptionEditingController.text = widget.group!.groupDescription ?? '';
       _groupMediaUrl = widget.group!.groupMediaUrl;
-      _controller.tagList.value.forEach((element) {
+      widget.group!.groupTags!.forEach((element) {
+        print(element);
         _controller.tagList.add(element);
       });
+      _controller.tagList.refresh();
     }
+    _croppedFile = null;
+    _controller.path.value = '';
     super.initState();
   }
 
@@ -141,10 +147,10 @@ class _CreateGroupState extends State<CreateGroup> {
       if (croppedFile != null) {
         _controller.path.value = croppedFile.path;
         _croppedFile = File(croppedFile.path);
+        setState(() {});
         Map<String, dynamic> response = await _uploadImage();
         _groupMediaUrl = response["imageUrl"];
         _groupMediaType = response["mimetype"];
-        setState(() {});
       }
     }
     // Navigator.of(context).pop();
@@ -322,6 +328,7 @@ class _CreateGroupState extends State<CreateGroup> {
           if (map['success']) {
             _groupController.getJoinedGroups();
             _groupController.getCreatedGroups();
+            _croppedFile = null;
             //AutoRouter.of(context).popUntil(((route) => route.isFirst));
             Navigator.push(
                 context,

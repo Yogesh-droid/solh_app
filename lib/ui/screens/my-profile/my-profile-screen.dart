@@ -13,7 +13,6 @@ import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -168,12 +167,18 @@ class ProfileMenu extends StatelessWidget {
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
           ProfileMenuTile(
-            title: "Settings",
-            onPressed: () {
-              AutoRouter.of(context).push(SettingsScreenRouter());
-            },
-            svgIconPath: "assets/icons/profile/settings.svg",
-          ),
+              title: "Account Privacy",
+              svgIconPath: "assets/icons/profile/privacy.svg",
+              onPressed: () {
+                AutoRouter.of(context).push(AccountPrivacyScreenRouter());
+              }),
+          // ProfileMenuTile(
+          //   title: "Settings",
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(SettingsScreenRouter());
+          //   },
+          //   svgIconPath: "assets/icons/profile/settings.svg",
+          // ),
           // ProfileMenuTile(
           //   title: "Medical Reports",
           //   onPressed: () {

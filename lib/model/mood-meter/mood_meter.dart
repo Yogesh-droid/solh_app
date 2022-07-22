@@ -29,14 +29,16 @@ class MoodList {
   String? name;
   int? energyLevel;
   String? media;
+  String? color;
 
-  MoodList({this.sId, this.name, this.energyLevel, this.media});
+  MoodList({this.sId, this.name, this.energyLevel, this.media, this.color});
 
   MoodList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
     energyLevel = json['energyLevel'];
     media = json['media'];
+    color = json['hexCode'];
   }
 
   Map<String, dynamic> toJson() {
@@ -45,6 +47,7 @@ class MoodList {
     data['name'] = this.name;
     data['energyLevel'] = this.energyLevel;
     data['media'] = this.media;
+    data['hexCode'] = this.color;
     return data;
   }
 }

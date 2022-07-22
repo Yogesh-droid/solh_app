@@ -94,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
           DateTime.now().day) {
         return;
       } else {
-        await moodMeterController.getMoodList();
+        //await moodMeterController.getMoodList();
         if (moodMeterController.moodList.length > 0) {
           showGeneralDialog(
               context: context,
@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
         prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
       }
     } else {
-      await moodMeterController.getMoodList();
+      // await moodMeterController.getMoodList();
       showGeneralDialog(
           context: context,
           pageBuilder: (context, animation, secondaryAnimation) {

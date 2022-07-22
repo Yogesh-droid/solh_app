@@ -137,8 +137,11 @@ class MoodAnalyticPage extends StatelessWidget {
                     ),
                   )
                 : moodMeterController
-                            .moodAnlyticsModel.value.moodAnalytic!.length >
-                        0
+                                .moodAnlyticsModel.value.moodAnalytic!.length >
+                            0 &&
+                        moodMeterController
+                                .selectedFrequencyMoodMap.value.length >
+                            0
                     ? getMoodPieChartWidget(context)
                     : noMoodContainer(context);
           }),
@@ -239,7 +242,7 @@ class MoodAnalyticPage extends StatelessWidget {
             PieChart(
                 dataMap: moodMeterController.selectedFrequencyMoodMap.value,
                 animationDuration: Duration(milliseconds: 800),
-                colorList: moodMeterController.colorList.value,
+                colorList: moodMeterController.activeColorList.value,
                 baseChartColor: SolhColors.grey,
                 chartType: ChartType.ring,
                 chartValuesOptions: ChartValuesOptions(
@@ -264,63 +267,88 @@ class MoodAnalyticPage extends StatelessWidget {
   }
 
   Widget getMoodCountListWidget(BuildContext context) {
-    return Obx(() {
-      return Wrap(
-        direction: Axis.horizontal,
-        children: [
-          for (var mood
-              in moodMeterController.selectedFrequencyMoodMap.value.keys)
-            Container(
-              width: MediaQuery.of(context).size.width * 0.3,
-              margin: EdgeInsets.only(top: 10),
-              child: Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: moodMeterController.colorList.value[
-                          moodMeterController.selectedFrequencyMoodMap.keys
-                              .toList()
-                              .indexOf(mood)],
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      '${moodMeterController.selectedFrequencyMoodMap.value[mood]}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFFFFFFFF),
-                      ),
-                    ),
+    return Wrap(
+      direction: Axis.horizontal,
+      children: [
+        for (var mood in moodMeterController.moodList)
+          Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            margin: EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    // color: moodMeterController.colorList.value[
+                    //     moodMeterController.selectedFrequencyMoodMap.keys
+                    //         .toList()
+                    //         .indexOf(mood)],
+                    color: moodMeterController.colorList
+                        .value[moodMeterController.moodList.indexOf(mood)],
+                    borderRadius: BorderRadius.circular(4),
                   ),
-                  SizedBox(
-                    width: 5,
+                  child: Obx(() => Text(
+                        '${moodMeterController.selectedFrequencyMoodMap.value[mood] ?? 0}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFFFFFFFF),
+                          shadows: [
+                            Shadow(
+                              blurRadius: 2,
+                              color: Color(0xFF000000),
+                              offset: Offset(1, 1),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  '$mood',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF666666),
                   ),
-                  Text(
-                    '$mood',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xFF666666),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-        ],
-      );
-    });
+          ),
+      ],
+    );
   }
 
   Widget noMoodContainer(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.4,
-      child: Center(
-        child: Text(
-          'No mood found',
-          style: TextStyle(
-            fontSize: 16,
-            color: SolhColors.grey,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width * 0.6,
+            decoration: BoxDecoration(
+              color: SolhColors.greyS200,
+              shape: BoxShape.circle,
+            ),
           ),
-        ),
+          Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            width: MediaQuery.of(context).size.width * 0.4,
+            decoration: BoxDecoration(
+              color: SolhColors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+          Text(
+            'No mood found',
+            style: TextStyle(
+              fontSize: 16,
+              color: SolhColors.grey,
+            ),
+          ),
+        ],
       ),
     );
   }

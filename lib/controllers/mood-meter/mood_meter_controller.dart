@@ -22,6 +22,7 @@ class MoodMeterController extends GetxController {
   var selectedMood = 'happy'.obs;
   //var colorList = [].obs;
   RxList<Color> colorList = RxList<Color>();
+  RxList<Color> activeColorList = RxList<Color>();
 
   var selectedValue = 0.0.obs;
 
@@ -40,13 +41,19 @@ class MoodMeterController extends GetxController {
 
     if (map['success']) {
       moodMeterModel.value = MoodMeterModel.fromJson(map);
+      colorList.value.clear();
       moodMeterModel.value.moodList!.forEach((element) {
         moodList.add(element.name ?? '');
         gifList.add(element.media ?? '');
+        int color = int.parse((element.color!.replaceAll('#', '0xFF')));
+        colorList.value.add(Color(color));
       });
       selectedGif.value = gifList[0];
       selectedMood.value = moodList[0];
     }
+    print(moodList.length.toString() + ' this is the length of the list');
+    print(
+        colorList.value.length.toString() + ' this is the length of the list');
     isLoading.value = false;
   }
 
@@ -65,13 +72,19 @@ class MoodMeterController extends GetxController {
         '${APIConstants.api}/api/mood-analytics?days=$days');
     moodAnlyticsModel.value = MoodAnalyticsModel.fromJson(map);
     selectedFrequencyMoodMap.value.clear();
-    colorList.value.clear();
-    // moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
-    //   selectedFrequencyMoodMap.value[element.name ?? ''] =
-    //       element.moodCount!.toDouble();
-    //   int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
-    //   colorList.value.add(Color(color));
-    // });
+    activeColorList.value.clear();
+    moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
+      selectedFrequencyMoodMap.value[element.name ?? ''] =
+          element.moodCount!.toDouble();
+      int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
+      activeColorList.value.add(Color(color));
+    });
     isFetchingMoodAnalytics.value = false;
+  }
+
+  @override
+  void onInit() {
+    getMoodList();
+    super.onInit();
   }
 }

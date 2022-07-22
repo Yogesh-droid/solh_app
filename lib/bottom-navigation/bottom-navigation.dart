@@ -101,7 +101,8 @@ class _MasterScreenState extends State<MasterScreen> {
                 label: "My Goals"),
             BottomNavigationBarItem(
                 icon: Icon(
-                  CupertinoIcons.line_horizontal_3,
+                  CupertinoIcons.person_circle,
+                  size: 24,
                 ),
                 label: "My profile")
           ],
