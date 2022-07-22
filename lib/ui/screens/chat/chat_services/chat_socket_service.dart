@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 
 import 'package:solh/model/user/user.dart';
@@ -18,7 +19,7 @@ class SocketService {
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
-      serverUrl,
+      APIConstants.api,
       io.OptionBuilder()
           .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
 

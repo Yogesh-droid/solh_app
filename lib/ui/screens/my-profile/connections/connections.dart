@@ -6,6 +6,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
@@ -199,27 +200,32 @@ class Connections extends StatelessWidget {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        chatListController
-                                            .chatList.value[index].user!.name!,
-                                        style: GoogleFonts.signika(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 16)),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      chatListController.chatList.value[index]
-                                          .conversation!.body!,
-                                      style: GoogleFonts.signika(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.grey.shade400,
+                                Container(
+                                  width: 60.w,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          chatListController.chatList
+                                              .value[index].user!.name!,
+                                          style: GoogleFonts.signika(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16)),
+                                      SizedBox(
+                                        width: 10,
                                       ),
-                                    )
-                                  ],
+                                      Text(
+                                        chatListController.chatList.value[index]
+                                            .conversation!.body!,
+                                        style: GoogleFonts.signika(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),

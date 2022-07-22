@@ -17,15 +17,10 @@ class ChatListController extends GetxController {
 
   Future chatListController() async {
     isLoading(true);
-    ChatListModel response = await getAllChat();
+    var response = await getAllChat();
     isLoading(false);
 
-    if (response != null) {
-      print(response.chatList);
-      print(response);
-      print('---------------');
-      print(chatList.value);
-
+    if (response.chatList != null) {
       chatList.value = response.chatList!;
     } else {
       print(response);

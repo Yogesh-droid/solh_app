@@ -7,6 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
@@ -288,7 +289,23 @@ class MessageTile extends StatelessWidget {
                     //   _authorId,
                     //   style: GoogleFonts.signika(color: Colors.lightGreen),
                     // ),
-                    Text(_message),
+                    ReadMoreText(
+                      _message,
+                      style: GoogleFonts.signika(color: Colors.black),
+                      trimLines: 8,
+                      colorClickableText: Colors.pink,
+                      trimCollapsedText: 'Show more',
+                      trimExpandedText: 'Show less',
+                      trimMode: TrimMode.Line,
+                      moreStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: SolhColors.green),
+                      lessStyle: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: SolhColors.green),
+                    ),
                   ],
                 ),
               ),
