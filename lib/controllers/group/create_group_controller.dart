@@ -19,31 +19,43 @@ class CreateGroupController extends GetxController {
       required String desc,
       required String groupType,
       String? img,
-      String? imgType}) async {
+      String? imgType,
+      String? groupId}) async {
     isLoading.value = true;
-    Map<String, dynamic> map = await Network.makePostRequestWithToken(
-            url: APIConstants.api + '/api/group',
-            body: img != null
-                ? {
-                    'groupName': groupName,
-                    'groupDescription': desc,
-                    'groupType': groupType,
-                    'groupMediaUrl': img,
-                    'groupMediaType': imgType,
-                    'groupTags': tagList.value.join(',')
-                  }
-                : {
-                    'groupName': groupName,
-                    'groupDescription': desc,
-                    'groupType': groupType,
-                    'groupTags': tagList.value.join(',')
-                  })
-        .onError((error, stackTrace) {
-      print(error);
-      return {};
-    });
+    Map<String, dynamic> body = img != null
+        ? {
+            'groupName': groupName,
+            'groupDescription': desc,
+            'groupType': groupType,
+            'groupMediaUrl': img,
+            'groupMediaType': imgType,
+            'groupTags': tagList.value.join(',')
+          }
+        : {
+            'groupName': groupName,
+            'groupDescription': desc,
+            'groupType': groupType,
+            'groupTags': tagList.value.join(',')
+          };
+    print(body);
+    print(groupId);
+    Map<String, dynamic> map = groupId == null
+        ? await Network.makePostRequestWithToken(
+                url: APIConstants.api + '/api/group', body: body)
+            .onError((error, stackTrace) {
+            print(error);
+            return {};
+          })
+        : await Network.makePutRequestWithToken(
+                url: APIConstants.api + '/api/group?groupId=$groupId',
+                body: body)
+            .onError((error, stackTrace) {
+            print(error);
+            return {};
+          });
     isLoading.value = false;
     return map;
+    return {};
   }
 
   Future<Map<String, dynamic>> addMembers({
@@ -64,6 +76,7 @@ class CreateGroupController extends GetxController {
         }).then((value) {
       print(value.body);
     });
+    print(list);
 
     return {};
   }
@@ -100,19 +113,21 @@ class CreateGroupController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<Map<String, dynamic>> joinGroup({required String groupId}) async {
+  Future<String> joinGroup({required String groupId}) async {
     isLoading.value = true;
+    String success = '';
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
             url: APIConstants.api + '/api/join-group',
             body: {'groupId': groupId, 'userId': userBlocNetwork.id})
         .onError((error, stackTrace) {
       print(error);
+      success = 'error joining group';
       return {};
     });
     if (map['success'] == true) {
-      Utility.showToast(map['message']);
+      success = map['message'];
     }
     isLoading.value = false;
-    return map;
+    return success;
   }
 }

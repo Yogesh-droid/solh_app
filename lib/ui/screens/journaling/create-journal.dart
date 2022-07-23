@@ -770,11 +770,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             final croppedFile = await ImageCropper().cropImage(
                                 sourcePath: _xFile!.path,
                                 aspectRatioPresets: [
-                                  CropAspectRatioPreset.square,
                                   // CropAspectRatioPreset.ratio3x2,
-                                  // CropAspectRatioPreset.original,
+                                  CropAspectRatioPreset.original,
+                                  CropAspectRatioPreset.square,
                                   // CropAspectRatioPreset.ratio4x3,
-                                  // CropAspectRatioPreset.ratio16x9
+                                  // CropAspectRatioPreset.ratio16x9,
                                 ],
                                 compressQuality:
                                     File(_xFile!.path).lengthSync() > 600000
@@ -789,7 +789,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           SolhColors.green,
                                       initAspectRatio:
                                           CropAspectRatioPreset.square,
-                                      lockAspectRatio: true),
+                                      lockAspectRatio: false),
                                   IOSUiSettings(
                                     minimumAspectRatio: 1.0,
                                   )
@@ -1138,7 +1138,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       style: TextStyle(color: SolhColors.green),
                       items: [
                         DropdownMenuItem(
-                          child: Text("Publicly"),
+                          child: Text("publically"),
                           value: "Publicaly",
                         ),
                         DropdownMenuItem(

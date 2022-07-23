@@ -348,6 +348,7 @@ class Connections extends StatelessWidget {
         //getConnectionFilterChips(),
         Expanded(
           child: Obx(() => SmartRefresher(
+
             controller: _refreshController,
             onRefresh: () async {
                   await connectionController.getMyConnection();
@@ -368,6 +369,7 @@ class Connections extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
+
                                 builder: (context) => ChatScreen(
                                       name: connectionController.myConnectionModel
                                               .value.myConnections![index].name ??
@@ -413,6 +415,7 @@ class Connections extends StatelessWidget {
                             ),
                             getUserTitle(
                                 context: context,
+
                                 name: connectionController.myConnectionModel.value
                                         .myConnections![index].name ??
                                     '',
@@ -424,7 +427,9 @@ class Connections extends StatelessWidget {
                     );
                   },
                 ),
-          )),
+
+              )),
+
         ),
       ],
     );

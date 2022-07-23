@@ -14,6 +14,7 @@ import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
+import '../../../widgets_constants/privacy_web.dart';
 import '../my-profile/my-profile-screen.dart';
 
 class SideDrawer extends StatefulWidget {
@@ -128,7 +129,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 },
               ),
               SideDrawerMenuTile(
-                title: "Emotional Spectrum",
+                title: "Wheel of Emotions",
                 onPressed: () async {
                   moodMeterController.getMoodAnalytics(7);
                   Navigator.push(
@@ -149,10 +150,29 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Privacy Policy",
                 isBottomMenu: true,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: 'Privacy policy',
+                                url: "https://solhapp.com/privacypolicy.html",
+                              )));
+                },
               ),
               SideDrawerMenuTile(
                 title: "Terms of Use",
                 isBottomMenu: true,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyWeb(
+                          url: 'https://solhapp.com/termsandcondition.html',
+                          title: 'Terms and condtions'),
+                    ),
+                  );
+                },
               ),
               SideDrawerMenuTile(
                 title: "Give Feedback",

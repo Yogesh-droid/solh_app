@@ -13,6 +13,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -45,18 +46,20 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     if (groupList.groupMembers == null) {
       getGroupDetails();
     }
-    discoverGroupController.joinedGroupModel.value.groupList!
-        .forEach((element) {
-      if (element.sId == groupList.sId) {
-        isJoined = true;
-      }
-    });
-    discoverGroupController.createdGroupModel.value.groupList!
-        .forEach((element) {
-      if (element.sId == groupList.sId) {
-        isJoined = true;
-      }
-    });
+    if (widget.isJoined == null) {
+      discoverGroupController.joinedGroupModel.value.groupList!
+          .forEach((element) {
+        if (element.sId == groupList.sId) {
+          isJoined = true;
+        }
+      });
+      discoverGroupController.createdGroupModel.value.groupList!
+          .forEach((element) {
+        if (element.sId == groupList.sId) {
+          isJoined = true;
+        }
+      });
+    }
     super.initState();
   }
 
@@ -165,17 +168,19 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
           ),
         ),
-        groupList.groupMembers != null
-            ? groupList.defaultAdmin!.id ==
-                    userBlocNetwork.id //// this is for the admin
-                ? getPopUpMenuBtn(context)
-                : Container()
-            : Obx(() {
-                return discoverGroupController.isLoading.value
-                    ? Container()
-                    // : getPopUpMenuBtn(context);
-                    : Container();
-              })
+        // groupList.groupMembers != null
+        //     ?
+        groupList.defaultAdmin!.id ==
+                userBlocNetwork.id //// this is for the admin
+            ? getPopUpMenuBtn(context)
+            : Container()
+        // : Container()
+        // : Obx(() {
+        //     return discoverGroupController.isLoading.value
+        //         ? Container()
+        //         // : getPopUpMenuBtn(context);
+        //         : Container();
+        //   })
       ]),
       isLandingScreen: false,
     );
@@ -333,15 +338,16 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   }),
                   onPressed: () async {
                     Utility.showLoader(context);
-                    await createGroupController.joinGroup(
+                    String success = await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');
                     await discoverGroupController.getJoinedGroups();
                     await discoverGroupController
                         .getDiscoverGroups()
                         .then((value) {
-                      Navigator.pop(context);
+                      Utility.showToast(success);
                       Navigator.of(context).pop();
                     });
+                    Navigator.of(context).pop();
                   }),
             ),
           )
@@ -581,6 +587,11 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       },
       onSelected: (value) async {
         if (value == 1) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CreateGroup(
+              group: widget.group,
+            );
+          }));
         } else {
           await discoverGroupController.deleteGroups(groupList.id ?? '');
           Navigator.pop(context);

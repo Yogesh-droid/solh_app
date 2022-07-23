@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/profile-setup/enter-full-name.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/privacy_web.dart';
 
 import '../../../model/user/provider-user.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
@@ -167,7 +168,14 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      print("Tapped");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                              url: 'https://solhapp.com/termsandcondition.html',
+                              title: 'Terms and condtions'),
+                        ),
+                      );
                     }),
             ],
           )),

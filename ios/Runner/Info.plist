@@ -34,11 +34,11 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>Used to demonstrate image picker plugin</string>
+		<string>Allowing this will let you directly capture and express your high and low moments of your life</string>
 		<key>NSMicrophoneUsageDescription</key>
 		<string>Used to capture audio for image picker plugin</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Used to demonstrate image picker plugin</string>
+		<string>Allowing this will let you express yourself through photos and videos in your gallery</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
