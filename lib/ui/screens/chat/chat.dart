@@ -7,6 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
@@ -211,11 +212,6 @@ class _MessageListState extends State<MessageList> {
   ScrollController _scrollController = ScrollController();
 
   @override
-  void initState() {
-    // TODO: implement initState
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Obx(() {
       return _controller.isLoading == true
@@ -238,6 +234,8 @@ class _MessageListState extends State<MessageList> {
 
                       return MessageTile(
                         message: _controller.convo.value[reversedIndex].body,
+                        dateTime:
+                            _controller.convo.value[reversedIndex].dateTime,
                         authorId:
                             _controller.convo.value[reversedIndex].authorId,
                         sId: widget._sId,
@@ -251,15 +249,21 @@ class _MessageListState extends State<MessageList> {
 
 class MessageTile extends StatelessWidget {
   const MessageTile(
-      {Key? key, required message, required authorId, required sId})
+      {Key? key,
+      required message,
+      required authorId,
+      required sId,
+      String? dateTime})
       : _message = message,
         _authorId = authorId,
         _sId = sId,
+        _dateTime = dateTime ?? '',
         super(key: key);
 
   final String _message;
   final String _authorId;
   final String _sId;
+  final String _dateTime;
 
   @override
   Widget build(BuildContext context) {
@@ -308,6 +312,16 @@ class MessageTile extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+            ),
+            Text(
+              _dateTime == null
+                  ? ''
+                  : DateFormat('dd MMM kk:mm')
+                      .format(DateTime.parse(_dateTime).toLocal()),
+              style: GoogleFonts.signika(
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
               ),
             ),
           ],

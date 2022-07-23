@@ -5,6 +5,7 @@ import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
@@ -230,9 +231,13 @@ class Connections extends StatelessWidget {
                               ],
                             ),
                             Text(
-                                chatListController.chatList.value[index]
-                                    .conversation!.dateTime!
-                                    .substring(11, 16),
+                                // chatListController.chatList.value[index]
+                                //     .conversation!.dateTime!
+                                //     .substring(11, 16),
+                                DateFormat('hh:mm a').format(DateTime.parse(
+                                    chatListController.chatList.value[index]
+                                        .conversation!.dateTime!
+                                        .toString())),
                                 style: GoogleFonts.signika(
                                     color: Colors.grey.shade400,
                                     fontWeight: FontWeight.w600,
@@ -348,14 +353,13 @@ class Connections extends StatelessWidget {
         //getConnectionFilterChips(),
         Expanded(
           child: Obx(() => SmartRefresher(
-
-            controller: _refreshController,
-            onRefresh: () async {
+                controller: _refreshController,
+                onRefresh: () async {
                   await connectionController.getMyConnection();
 
                   _refreshController.refreshCompleted();
-            },
-            child: ListView.builder(
+                },
+                child: ListView.builder(
                   itemCount: connectionController
                               .myConnectionModel.value.myConnections !=
                           null
@@ -369,10 +373,12 @@ class Connections extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-
                                 builder: (context) => ChatScreen(
-                                      name: connectionController.myConnectionModel
-                                              .value.myConnections![index].name ??
+                                      name: connectionController
+                                              .myConnectionModel
+                                              .value
+                                              .myConnections![index]
+                                              .name ??
                                           '',
                                       imageUrl: connectionController
                                               .myConnectionModel
@@ -380,8 +386,11 @@ class Connections extends StatelessWidget {
                                               .myConnections![index]
                                               .profilePicture ??
                                           '',
-                                      sId: connectionController.myConnectionModel
-                                              .value.myConnections![index].sId ??
+                                      sId: connectionController
+                                              .myConnectionModel
+                                              .value
+                                              .myConnections![index]
+                                              .sId ??
                                           '',
                                     )
                                 // ConnectProfileScreen(
@@ -400,36 +409,36 @@ class Connections extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             getUserImg(
-                                img: connectionController.myConnectionModel.value
-                                        .myConnections![index].profilePicture ??
+                                img: connectionController
+                                        .myConnectionModel
+                                        .value
+                                        .myConnections![index]
+                                        .profilePicture ??
                                     '',
                                 context: context,
-                                sId: connectionController.myConnectionModel.value
-                                        .myConnections![index].sId ??
+                                sId: connectionController.myConnectionModel
+                                        .value.myConnections![index].sId ??
                                     '',
-                                uid: connectionController.myConnectionModel.value
-                                        .myConnections![index].uId ??
+                                uid: connectionController.myConnectionModel
+                                        .value.myConnections![index].uId ??
                                     ''),
                             SizedBox(
                               width: 10,
                             ),
                             getUserTitle(
                                 context: context,
-
-                                name: connectionController.myConnectionModel.value
-                                        .myConnections![index].name ??
+                                name: connectionController.myConnectionModel
+                                        .value.myConnections![index].name ??
                                     '',
-                                bio: connectionController.myConnectionModel.value
-                                    .myConnections![index].bio),
+                                bio: connectionController.myConnectionModel
+                                    .value.myConnections![index].bio),
                           ],
                         ),
                       ),
                     );
                   },
                 ),
-
               )),
-
         ),
       ],
     );

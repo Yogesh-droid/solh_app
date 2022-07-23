@@ -22,7 +22,6 @@ class ChatController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     SocketService.socket.on('message:received', (data) {
       print('message:received $data');
       convo.add(Conversation(
@@ -62,7 +61,7 @@ class ChatController extends GetxController {
         authorId: userBlocNetwork.id,
         authorType: autherType,
         body: message,
-        dateTime: '',
+        dateTime: DateTime.now().toString(),
         sId: ''));
   }
 }

@@ -5,12 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:new_version/new_version.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
-<<<<<<< HEAD
-import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
-import 'package:solh/ui/screens/get-help/book_appointment.dart';
-=======
 import 'package:solh/controllers/profile/anon_controller.dart';
->>>>>>> development
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'firebase_options.dart';

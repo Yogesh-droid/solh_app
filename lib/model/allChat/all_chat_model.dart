@@ -51,7 +51,7 @@ class ChatList {
 
 class Conversation {
   String? body;
-  String? dateTime;
+  int? dateTime;
   String? author;
 
   Conversation({this.body, this.dateTime, this.author});
