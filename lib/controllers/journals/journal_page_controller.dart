@@ -92,7 +92,7 @@ class JournalPageController extends GetxController {
     isTrendingLoading.value = true;
     try {
       Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/get-journals?page=1&filter=trending");
+          "${APIConstants.api}/api/trending");
       journalsResponseModel.value = JournalsResponseModel.fromJson(map);
       trendingJournalsList.value
           .addAll(journalsResponseModel.value.journals ?? []);

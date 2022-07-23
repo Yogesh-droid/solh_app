@@ -6,6 +6,7 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
 
 class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
@@ -39,7 +40,7 @@ class UserBlocNetwork {
     }
   }
 
-  void getMyProfileSnapshot() async {
+  getMyProfileSnapshot() async {
     print('getting user details');
     UserModel? userModel =
         await _fetchUserDetails(FirebaseAuth.instance.currentUser!.uid)
@@ -88,11 +89,27 @@ class UserBlocNetwork {
     }
   }
 
-  Future<String?> CreateSessionCookie(String idToken) async {
-    Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
-        url: "${APIConstants.api}/create-session-cookie",
-        body: {"idToken": idToken});
-    print(apiResponse);
+  // Future<String?> CreateSessionCookie(String idToken) async {
+  //   Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
+  //       url: "${APIConstants.api}/create-session-cookie",
+  //       body: {"idToken": idToken});
+  //   print(apiResponse);
+  // }
+
+  Future<String> deleteAccount() async {
+    String msg = '';
+    var map;
+    try {
+      map = await Network.makeHttpDeleteRequestWithToken(
+          url: "${APIConstants.api}/api/delete-user?user=$id", body: {});
+
+      if (map["accountDeleted"]) {
+        msg = "Account deleted successfully";
+      }
+    } on Exception catch (e) {
+      msg = e.toString();
+    }
+    return msg;
   }
 
   void dispose() {

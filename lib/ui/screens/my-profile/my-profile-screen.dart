@@ -8,8 +8,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -29,7 +31,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   void initState() {
-    connectionController.getUserAnalytics(userBlocNetwork.id);
+    getMyProfile();
     super.initState();
   }
 
@@ -63,20 +65,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     else
                       ProfileContainer(userModel: snapshot.requireData),
                     ProfileMenu(),
-                    // ProfileMenuTile(
-                    //     title: "Logout",
-                    //     svgIconPath: "assets/icons/profile/logout.svg",
-                    //     onPressed: () {
-                    //       FirebaseAuth.instance.signOut().then((value) {
-                    //         userBlocNetwork.updateSessionCookie = "";
-                    //         AutoRouter.of(context).pushAndPopUntil(
-                    //             IntroCarouselScreenRouter(),
-                    //             predicate: (route) => false);
-                    //       });
-                    //     })
-
                     SizedBox(height: 5.h),
-
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SolhGreenBorderButton(
@@ -91,12 +80,38 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           onPressed: () {
                             FirebaseAuth.instance.signOut().then((value) {
                               userBlocNetwork.updateSessionCookie = "";
+                              Get.delete<GoalSettingController>();
+                              Get.delete<ConnectionController>();
                               AutoRouter.of(context).pushAndPopUntil(
                                   IntroCarouselScreenRouter(),
                                   predicate: (route) => false);
                             });
                           }),
-                    )
+                    ),
+                    /* Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SolhGreenButton(
+                          height: 50,
+                          backgroundColor: Colors.red,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.w, vertical: 10.h),
+                          child: Text(
+                            "Delete Account",
+                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          ),
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut().then((value) async {
+                              Get.delete<GoalSettingController>();
+                              Get.delete<ConnectionController>();
+                              Utility.showLoader(context);
+                              await userBlocNetwork.deleteAccount();
+                              Utility.hideLoader(context);
+                              AutoRouter.of(context).pushAndPopUntil(
+                                  IntroCarouselScreenRouter(),
+                                  predicate: (route) => false);
+                            });
+                          }),
+                    ) */
                   ],
                 );
               }
@@ -112,6 +127,10 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             }),
       ),
     );
+  }
+
+  getMyProfile() async {
+    connectionController.getUserAnalytics(userBlocNetwork.id);
   }
 }
 
@@ -144,16 +163,18 @@ class ProfileMenu extends StatelessWidget {
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
-          // ProfileMenuTile(
-          //   title: "Settings",
-          //   onPressed: () {
-          //     AutoRouter.of(context).push(SettingsScreenRouter());
-          //   },
-          //   svgIconPath: "assets/icons/profile/settings.svg",
-          // ),
+          ProfileMenuTile(
+            title: "Settings",
+            onPressed: () {
+              AutoRouter.of(context).push(SettingsScreenRouter());
+            },
+            svgIconPath: "assets/icons/profile/settings.svg",
+          ),
           // ProfileMenuTile(
           //   title: "Medical Reports",
-          //   onPressed: () {},
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(CreateProfileScreenRouter());
+          //   },
           //   svgIconPath: "assets/icons/profile/medical-reports.svg",
           // ),
           // ProfileMenuTile(

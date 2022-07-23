@@ -12,6 +12,7 @@ import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -331,12 +332,16 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           );
                   }),
                   onPressed: () async {
+                    Utility.showLoader(context);
                     await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');
                     await discoverGroupController.getJoinedGroups();
-                    await discoverGroupController.getDiscoverGroups();
-
-                    Navigator.pop(context);
+                    await discoverGroupController
+                        .getDiscoverGroups()
+                        .then((value) {
+                      Navigator.pop(context);
+                      Navigator.of(context).pop();
+                    });
                   }),
             ),
           )

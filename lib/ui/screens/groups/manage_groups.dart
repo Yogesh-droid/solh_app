@@ -11,37 +11,50 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'group_detail.dart';
 
-class ManageGroupPage extends StatelessWidget {
+class ManageGroupPage extends StatefulWidget {
+  @override
+  State<ManageGroupPage> createState() => _ManageGroupPageState();
+}
+
+class _ManageGroupPageState extends State<ManageGroupPage>
+    with SingleTickerProviderStateMixin {
+  late final TabController tabController;
+
   DiscoverGroupController _groupController = Get.find();
+
+  @override
+  void initState() {
+    tabController = TabController(length: 3, vsync: this)..animateTo(2);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: getAppBar(context),
-        body: Column(
-          children: [
-            getTabBar(),
-            Expanded(
-              child: TabBarView(
-                children: [
-                  Obx(() {
-                    return joinedGroupList(
-                        _groupController.joinedGroupModel.value.groupList);
-                  }),
-                  Obx(() {
-                    return createdGroupList(
-                        _groupController.createdGroupModel.value.groupList);
-                  }),
-                  Obx(() {
-                    return discoverGroupList(
-                        _groupController.discoveredGroupModel.value.groupList);
-                  })
-                ],
-              ),
+    return Scaffold(
+      appBar: getAppBar(context),
+      body: Column(
+        children: [
+          getTabBar(),
+          Expanded(
+            child: TabBarView(
+              controller: tabController,
+              children: [
+                Obx(() {
+                  return joinedGroupList(
+                      _groupController.joinedGroupModel.value.groupList);
+                }),
+                Obx(() {
+                  return createdGroupList(
+                      _groupController.createdGroupModel.value.groupList);
+                }),
+                Obx(() {
+                  return discoverGroupList(
+                      _groupController.discoveredGroupModel.value.groupList);
+                })
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -74,6 +87,10 @@ class ManageGroupPage extends StatelessWidget {
 
   Widget getTabBar() {
     return TabBar(
+      onTap: (index) {
+        tabController.animateTo(index);
+      },
+      controller: tabController,
       labelColor: SolhColors.green,
       unselectedLabelColor: SolhColors.grey,
       indicatorColor: SolhColors.green,

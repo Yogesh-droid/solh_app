@@ -134,8 +134,7 @@ class _HomePageState extends State<HomePage> {
   DiscoverGroupController discoverGroupController = Get.find();
   BottomNavigatorController _bottomNavigatorController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
-  GoalSettingController goalSettingController =
-      Get.put(GoalSettingController());
+  GoalSettingController goalSettingController = Get.find();
   bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -458,36 +457,38 @@ class _HomePageState extends State<HomePage> {
 
   Widget getTrendingPostUI() {
     BottomNavigatorController _controller = Get.find();
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.55,
-        child: Obx(() {
-          return Stack(
-            children: [
-              // getDragTarget(),
-              _journalPageController.trendingJournalsList.length > 2
-                  ? Positioned(
-                      right: 15,
-                      top: 70,
-                      left: 30,
-                      child: getPostCard2(
-                          _journalPageController.trendingJournalsList[2]))
-                  : Container(),
-              _journalPageController.trendingJournalsList.length > 1
-                  ? Positioned(
-                      right: 30,
-                      top: 40,
-                      left: 30,
-                      child: getPostCard(
-                          _journalPageController.trendingJournalsList[1]))
-                  : Container(),
-              Positioned(
-                  left: 20,
-                  top: 10,
-                  child: getDraggable(
-                      _journalPageController.trendingJournalsList[0]))
-            ],
-          );
-        }));
+    return _journalPageController.trendingJournalsList.isNotEmpty
+        ? Container(
+            height: MediaQuery.of(context).size.height * 0.55,
+            child: Obx(() {
+              return Stack(
+                children: [
+                  // getDragTarget(),
+                  _journalPageController.trendingJournalsList.length > 2
+                      ? Positioned(
+                          right: 15,
+                          top: 70,
+                          left: 30,
+                          child: getPostCard2(
+                              _journalPageController.trendingJournalsList[2]))
+                      : Container(),
+                  _journalPageController.trendingJournalsList.length > 1
+                      ? Positioned(
+                          right: 30,
+                          top: 40,
+                          left: 30,
+                          child: getPostCard(
+                              _journalPageController.trendingJournalsList[1]))
+                      : Container(),
+                  Positioned(
+                      left: 20,
+                      top: 10,
+                      child: getDraggable(
+                          _journalPageController.trendingJournalsList[0]))
+                ],
+              );
+            }))
+        : Container();
   }
 
   Widget getDraggable(Journals journal) {
@@ -552,8 +553,9 @@ class _HomePageState extends State<HomePage> {
       ),
       childWhenDragging: Container(),
       onDragEnd: (data) {
-        _journalPageController.trendingJournalsList
-            .insert(10, _journalPageController.trendingJournalsList[0]);
+        _journalPageController.trendingJournalsList.insert(
+            _journalPageController.trendingJournalsList.length,
+            _journalPageController.trendingJournalsList[0]);
         _journalPageController.trendingJournalsList.removeAt(0);
 
         _journalPageController.trendingJournalsList.refresh();
@@ -639,7 +641,7 @@ class _HomePageState extends State<HomePage> {
                 imageUrl: journal.mediaUrl ?? '',
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Image.asset(
-                  'assets/images/no-image-available_err.png',
+                  'assets/images/no-image-available.png',
                   fit: BoxFit.cover,
                 ),
                 placeholder: (context, url) => getImgShimmer(),

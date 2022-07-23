@@ -8,8 +8,8 @@ import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-
 import 'enter-username.dart';
+import 'user_type_screen.dart';
 
 class EnterFullNameScreen extends StatefulWidget {
   EnterFullNameScreen({Key? key}) : super(key: key);
@@ -30,7 +30,13 @@ class _EnterFullNameScreenState extends State<EnterFullNameScreen> {
             physics: NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: [
+              UserTypeScreen(
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
               EnterNamePage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
                 onNext: () => _pageController.nextPage(
                     duration: Duration(milliseconds: 500), curve: Curves.ease),
               ),
@@ -65,11 +71,14 @@ class _EnterFullNameScreenState extends State<EnterFullNameScreen> {
 }
 
 class EnterNamePage extends StatelessWidget {
-  EnterNamePage({Key? key, required VoidCallback onNext})
+  EnterNamePage(
+      {Key? key, required VoidCallback onNext, required VoidCallback onBack})
       : _onNext = onNext,
+        _onBack = onBack,
         super(key: key);
 
   final VoidCallback _onNext;
+  final VoidCallback _onBack;
   final TextEditingController _firstnameEditingController =
       TextEditingController();
   final TextEditingController _lastnameEditingController =
@@ -78,55 +87,62 @@ class EnterNamePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: ProfileSetupAppBar(
-        title: "Enter your details",
-        onBackButton: () => Navigator.pop(context),
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5.w),
-        child: Column(
-          children: [
-            Text(
-              "What do you want people to call you?",
-              style: SolhTextStyles.ProfileSetupSubHeading,
-            ),
-            SizedBox(
-              height: 3.5.h,
-            ),
-            Form(
-              key: _formKey,
-              child: ProfielTextField(
-                hintText: "Firstname",
-                // autovalidateMode: AutovalidateMode.onUserInteraction,
-                textEditingController: _firstnameEditingController,
-                validator: (value) => value == '' ? "Required*" : null,
+    return WillPopScope(
+      onWillPop: () async {
+        _onBack();
+        return false;
+      },
+      child: Scaffold(
+        appBar: ProfileSetupAppBar(
+            title: "Enter your details",
+            onBackButton: () {
+              _onBack();
+            }),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: Column(
+            children: [
+              Text(
+                "What do you want people to call you?",
+                style: SolhTextStyles.ProfileSetupSubHeading,
               ),
-            ),
-            SizedBox(
-              height: 3.5.h,
-            ),
-            ProfielTextField(
-              hintText: "Lastname",
-              textEditingController: _lastnameEditingController,
-            ),
-            SizedBox(
-              height: 6.h,
-            ),
-            SolhGreenButton(
+              SizedBox(
+                height: 3.5.h,
+              ),
+              Form(
+                key: _formKey,
+                child: ProfielTextField(
+                  hintText: "Firstname",
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textEditingController: _firstnameEditingController,
+                  validator: (value) => value == '' ? "Required*" : null,
+                ),
+              ),
+              SizedBox(
+                height: 3.5.h,
+              ),
+              ProfielTextField(
+                hintText: "Lastname",
+                textEditingController: _lastnameEditingController,
+              ),
+              SizedBox(
                 height: 6.h,
-                child: Text("Next"),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    Provider.of<ProviderUser>(context, listen: false)
-                        .setFirstName = _firstnameEditingController.text;
-                    Provider.of<ProviderUser>(context, listen: false)
-                        .setLasttName = _lastnameEditingController.text;
+              ),
+              SolhGreenButton(
+                  height: 6.h,
+                  child: Text("Next"),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Provider.of<ProviderUser>(context, listen: false)
+                          .setFirstName = _firstnameEditingController.text;
+                      Provider.of<ProviderUser>(context, listen: false)
+                          .setLasttName = _lastnameEditingController.text;
 
-                    _onNext();
-                  }
-                })
-          ],
+                      _onNext();
+                    }
+                  })
+            ],
+          ),
         ),
       ),
     );

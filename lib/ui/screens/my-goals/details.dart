@@ -86,6 +86,8 @@ class GoalNameStack extends StatelessWidget {
             child: CachedNetworkImage(
               imageUrl: sampleGoal.image ?? '',
               fit: BoxFit.cover,
+              errorWidget: (context, url, error) =>
+                  Image.asset('assets/images/no-image-available.png'),
             ),
           ),
           Positioned(
@@ -206,28 +208,33 @@ class TaskList extends StatelessWidget {
               ),
               child: Center(
                   child: Text(
-                      'You will be achiveing this goal by doing following :-'))),
+                'You will be achiveing this goal by doing following :-',
+                style: TextStyle(color: Colors.white),
+              ))),
           SizedBox(
             height: 16,
           ),
           Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: sampleGoal.activity!.map((e) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.arrow_circle_right_rounded,
-                    color: SolhColors.green,
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_circle_right_rounded,
+                        color: SolhColors.green,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(e.task ?? ''))
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(e.task ?? '')
-                ],
-              ),
-            );
-          }).toList()),
+                );
+              }).toList()),
           SizedBox(
             height: 24,
           ),

@@ -18,9 +18,11 @@ class FeelingsController extends GetxController {
         return {};
       });
 
-      response['feelings'].forEach((element) {
-        feelingsList.add(Feelings.fromJson(element));
-      });
+      if (response['feelings'] != null) {
+        response['feelings'].forEach((element) {
+          feelingsList.add(Feelings.fromJson(element));
+        });
+      }
       if (feelingsList.isNotEmpty) {
         selectedFeelingsId.value.add(feelingsList.first.sId!);
       }

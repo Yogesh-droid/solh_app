@@ -297,9 +297,10 @@ class PostedBy {
     iV = json['__v'];
     lastName = json['last_name'];
     isProvider = json['isProvider'];
-    anonymous = json['anonymous'] != null
-        ? new Anonymous.fromJson(json['anonymous'])
-        : null;
+    anonymous =
+        json['anonymous'] != null || json['anonymous'].runtimeType == String
+            ? new Anonymous.fromJson(json['anonymous'])
+            : null;
   }
 
   Map<String, dynamic> toJson() {

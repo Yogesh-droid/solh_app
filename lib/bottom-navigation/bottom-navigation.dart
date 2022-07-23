@@ -23,6 +23,7 @@ class _MasterScreenState extends State<MasterScreen> {
       Get.put(BottomNavigatorController());
   @override
   void initState() {
+    print("MasterScreen initState");
     super.initState();
   }
 

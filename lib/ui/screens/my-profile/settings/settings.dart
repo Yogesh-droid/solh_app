@@ -25,18 +25,18 @@ class SettingsScreen extends StatelessWidget {
               onPressed: () {
                 AutoRouter.of(context).push(AccountPrivacyScreenRouter());
               }),
-          ProfileMenuTile(
-              title: "Change Mobile No.",
-              svgIconPath: "assets/icons/profile/phone.svg",
-              onPressed: () {}),
-          ProfileMenuTile(
-              title: "Language",
-              svgIconPath: "assets/icons/profile/language.svg",
-              onPressed: () {}),
-          ProfileMenuTile(
-              title: "Block/unblock",
-              svgIconPath: "assets/icons/profile/block.svg",
-              onPressed: () {}),
+          // ProfileMenuTile(
+          //     title: "Change Mobile No.",
+          //     svgIconPath: "assets/icons/profile/phone.svg",
+          //     onPressed: () {}),
+          // ProfileMenuTile(
+          //     title: "Language",
+          //     svgIconPath: "assets/icons/profile/language.svg",
+          //     onPressed: () {}),
+          // ProfileMenuTile(
+          //     title: "Block/unblock",
+          //     svgIconPath: "assets/icons/profile/block.svg",
+          //     onPressed: () {}),
         ],
       ),
     );
