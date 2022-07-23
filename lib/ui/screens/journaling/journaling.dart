@@ -80,6 +80,8 @@ class _JournalingState extends State<Journaling> {
   DiscoverGroupController discoverGroupController = Get.find();
   MoodMeterController moodMeterController = Get.find();
   late ScrollController _journalsScrollController;
+  ScrollController _customScrollController = ScrollController();
+  var _customScrollViewPosition = 0.0;
   late RefreshController _refreshController;
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;
@@ -322,10 +324,14 @@ class _JournalingState extends State<Journaling> {
   }
 
   Widget groupRow() {
+    print('rendering group row');
     return Container(
-      height: MediaQuery.of(context).size.height * 0.13,
-      child: Obx(() {
-        return CustomScrollView(
+        height: MediaQuery.of(context).size.height * 0.13,
+        child:
+            // Obx(() {
+            //   return
+            CustomScrollView(
+          controller: _customScrollController,
           scrollDirection: Axis.horizontal,
           slivers: [
             SliverToBoxAdapter(
@@ -355,9 +361,9 @@ class _JournalingState extends State<Journaling> {
                             .createdGroupModel.value.groupList!.length))
                 : getGroupShimmer(context),
           ],
+        )
+        //}),
         );
-      }),
-    );
   }
 
   Widget getGroupContainer(GroupList group) {
@@ -386,6 +392,9 @@ class _JournalingState extends State<Journaling> {
               borderRadius: BorderRadius.circular(50),
               onTap: !_journalPageController.isLoading.value
                   ? () async {
+                      _customScrollViewPosition =
+                          _customScrollController.position.pixels;
+                      print(_customScrollViewPosition);
                       _journalPageController.selectedGroupId.value =
                           group.sId ?? '';
                       _journalPageController.journalsList.clear();
@@ -394,6 +403,10 @@ class _JournalingState extends State<Journaling> {
                       await _journalPageController.getAllJournals(1,
                           groupId: group.sId);
                       _journalPageController.journalsList.refresh();
+                      //_customScrollController.jumpTo(_customScrollViewPosition);
+                      _customScrollController.animateTo(200,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeInOut);
                     }
                   : null,
               child: Padding(
@@ -716,7 +729,7 @@ class _JournalingState extends State<Journaling> {
           "Discover",
           style: TextStyle(
             fontSize: 14,
-            color: Colors.grey[300],
+            color: Color(0xFF666666),
             fontWeight: FontWeight.w400,
             height: 1.23, //Figma Line Height 17.25
           ),

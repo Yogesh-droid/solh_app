@@ -394,7 +394,7 @@ class _GoalFormState extends State<GoalForm> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Occurence",
+                  "occurrence",
                   style: SolhTextStyles.JournalingHintText,
                 ),
               ),

@@ -9,9 +9,10 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/group/create_group_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -82,6 +83,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               userBlocNetwork.updateSessionCookie = "";
                               Get.delete<GoalSettingController>();
                               Get.delete<ConnectionController>();
+                              Get.delete<DiscoverGroupController>();
+                              Get.delete<CreateGroupController>();
                               AutoRouter.of(context).pushAndPopUntil(
                                   IntroCarouselScreenRouter(),
                                   predicate: (route) => false);
@@ -164,12 +167,18 @@ class ProfileMenu extends StatelessWidget {
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
           ProfileMenuTile(
-            title: "Settings",
-            onPressed: () {
-              AutoRouter.of(context).push(SettingsScreenRouter());
-            },
-            svgIconPath: "assets/icons/profile/settings.svg",
-          ),
+              title: "Account Privacy",
+              svgIconPath: "assets/icons/profile/privacy.svg",
+              onPressed: () {
+                AutoRouter.of(context).push(AccountPrivacyScreenRouter());
+              }),
+          // ProfileMenuTile(
+          //   title: "Settings",
+          //   onPressed: () {
+          //     AutoRouter.of(context).push(SettingsScreenRouter());
+          //   },
+          //   svgIconPath: "assets/icons/profile/settings.svg",
+          // ),
           // ProfileMenuTile(
           //   title: "Medical Reports",
           //   onPressed: () {

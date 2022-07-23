@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -7,9 +8,9 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/group/create_group_controller.dart';
+import '../../../model/group/get_group_response_model.dart';
 import '../../../services/network/network.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -17,8 +18,19 @@ import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
 import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
+import 'invite_member_ui.dart';
 
-class CreateGroup extends StatelessWidget {
+class CreateGroup extends StatefulWidget {
+  final GroupList? group;
+  const CreateGroup({
+    Key? key,
+    this.group,
+  }) : super(key: key);
+  @override
+  State<CreateGroup> createState() => _CreateGroupState();
+}
+
+class _CreateGroupState extends State<CreateGroup> {
   final CreateGroupController _controller = Get.find();
   final DiscoverGroupController _groupController = Get.find();
   XFile? _xFile;
@@ -32,6 +44,26 @@ class CreateGroup extends StatelessWidget {
   final TextEditingController _tagEditingController = TextEditingController();
 
   @override
+  void initState() {
+    print('initState');
+    if (widget.group != null) {
+      print('initState && widget.group != null');
+      _controller.tagList.clear();
+      _nameEditingController.text = widget.group!.groupName ?? '';
+      _descriptionEditingController.text = widget.group!.groupDescription ?? '';
+      _groupMediaUrl = widget.group!.groupMediaUrl;
+      widget.group!.groupTags!.forEach((element) {
+        print(element);
+        _controller.tagList.add(element);
+      });
+      _controller.tagList.refresh();
+    }
+    _croppedFile = null;
+    _controller.path.value = '';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(context),
@@ -40,7 +72,9 @@ class CreateGroup extends StatelessWidget {
           padding: const EdgeInsets.all(18.0),
           child: Column(
             children: [
-              getGroupImg(),
+              widget.group != null && _controller.path.value.isEmpty
+                  ? getEditGroupImage()
+                  : getGroupImg(),
               SizedBox(
                 height: 10.h,
               ),
@@ -78,7 +112,7 @@ class CreateGroup extends StatelessWidget {
             width: 2.h,
           ),
           Text(
-            "Create Group",
+            widget.group != null ? "Edit Group Details" : "Create Group",
             style: SolhTextStyles.AppBarText,
           ),
         ],
@@ -113,6 +147,7 @@ class CreateGroup extends StatelessWidget {
       if (croppedFile != null) {
         _controller.path.value = croppedFile.path;
         _croppedFile = File(croppedFile.path);
+        setState(() {});
         Map<String, dynamic> response = await _uploadImage();
         _groupMediaUrl = response["imageUrl"];
         _groupMediaType = response["mimetype"];
@@ -272,7 +307,7 @@ class CreateGroup extends StatelessWidget {
                   strokeWidth: 2,
                 ),
               )
-            : Text("Next");
+            : Text(widget.group != null ? "Save" : "Next");
       })),
       height: 6.h,
       width: MediaQuery.of(context).size.width / 1.1,
@@ -287,21 +322,55 @@ class CreateGroup extends StatelessWidget {
             desc: _descriptionEditingController.text,
             groupType: 'Public',
             img: _groupMediaUrl,
-            imgType: _groupMediaType,
+            imgType: _groupMediaType ?? 'image/png',
+            groupId: widget.group != null ? widget.group!.sId : null,
           );
           if (map['success']) {
             _groupController.getJoinedGroups();
             _groupController.getCreatedGroups();
-            AutoRouter.of(context).popUntil(((route) => route.isFirst));
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => InviteMembersUI(
-            //               groupId: map['groupDetails']['_id'],
-            //             )));
+            _croppedFile = null;
+            //AutoRouter.of(context).popUntil(((route) => route.isFirst));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => InviteMembersUI(
+                          groupId: widget.group != null
+                              ? widget.group!.sId
+                              : map['groupDetails']['_id'],
+                        )));
           }
         }
       },
+    );
+  }
+
+  Widget getEditGroupImage() {
+    return Stack(
+      children: [
+        Container(
+          width: 130,
+          child: CircleAvatar(
+            backgroundColor: Colors.grey,
+            radius: 50,
+            backgroundImage: _groupMediaUrl != null
+                ? CachedNetworkImageProvider(
+                    _groupMediaUrl ?? '',
+                  )
+                : AssetImage('assets/images/group_placeholder.png')
+                    as ImageProvider,
+          ),
+        ),
+        Positioned(
+          child: IconButton(
+              icon: Icon(
+                Icons.edit,
+                color: SolhColors.green,
+              ),
+              onPressed: _pickImage),
+          top: 0,
+          right: 0,
+        )
+      ],
     );
   }
 }

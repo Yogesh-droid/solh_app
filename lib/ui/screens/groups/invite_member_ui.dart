@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -5,7 +6,6 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
-import 'package:solh/ui/screens/profile-setup/anonymous/pick_user_name_screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -52,9 +52,7 @@ class InviteMembersUI extends StatelessWidget {
           Text('Invite Members', style: SolhTextStyles.JournalingUsernameText),
           MaterialButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return JournalingScreen();
-                }));
+                AutoRouter.of(context).popUntil(((route) => route.isFirst));
               },
               child: Text(
                 'Skip',
