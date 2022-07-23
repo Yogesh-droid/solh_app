@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
@@ -23,6 +26,7 @@ class Connections extends StatelessWidget {
   final ConnectionController connectionController = Get.find();
   final RefreshController _refreshController = RefreshController();
   final DiscoverGroupController groupController = Get.find();
+  final ChatListController chatListController = Get.put(ChatListController());
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -132,16 +136,113 @@ class Connections extends StatelessWidget {
   Widget getChatsView() {
     return Container(
       child: Column(children: [
-        SizedBox(
-          height: 150,
-        ),
-        Text(
-          'No Chats',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFFA6A6A6),
-          ),
+        Expanded(
+          child: Obx(() => chatListController.isLoading.value
+              ? Column(
+                  children: [
+                    CircularProgressIndicator(),
+                  ],
+                )
+              : ListView.builder(
+                  itemCount: chatListController.chatList.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                      name: chatListController.chatList
+                                              .value[index].user!.name ??
+                                          '',
+                                      imageUrl: chatListController
+                                              .chatList
+                                              .value[index]
+                                              .user!
+                                              .profilePicture ??
+                                          '',
+                                      sId: chatListController.chatList
+                                              .value[index].user!.sId ??
+                                          '',
+                                    )));
+                        //         // ConnectProfileScreen(
+                        //         //     uid: connectionController.myConnectionModel
+                        //         //             .value.myConnections![index].uId ??
+                        //         //         '',
+                        //         //     sId: connectionController.myConnectionModel
+                        //         //             .value.myConnections![index].sId ??
+                        //         //         '')
+                        //         ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                getUserImg(
+                                    img: chatListController
+                                            .chatList
+                                            .value[index]
+                                            .user!
+                                            .profilePicture ??
+                                        '',
+                                    context: context,
+                                    sId: chatListController
+                                            .chatList.value[index].user!.sId ??
+                                        '',
+                                    uid: chatListController
+                                        .chatList.value[index].user!.uid),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  width: 60.w,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          chatListController.chatList
+                                              .value[index].user!.name!,
+                                          style: GoogleFonts.signika(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16)),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        chatListController.chatList.value[index]
+                                            .conversation!.body!,
+                                        style: GoogleFonts.signika(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.grey.shade400,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                                chatListController.chatList.value[index]
+                                    .conversation!.dateTime!
+                                    .substring(11, 16),
+                                style: GoogleFonts.signika(
+                                    color: Colors.grey.shade400,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14))
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )),
         )
       ]),
     );
@@ -247,13 +348,14 @@ class Connections extends StatelessWidget {
         //getConnectionFilterChips(),
         Expanded(
           child: Obx(() => SmartRefresher(
-                controller: _refreshController,
-                onRefresh: () async {
+
+            controller: _refreshController,
+            onRefresh: () async {
                   await connectionController.getMyConnection();
 
                   _refreshController.refreshCompleted();
-                },
-                child: ListView.builder(
+            },
+            child: ListView.builder(
                   itemCount: connectionController
                               .myConnectionModel.value.myConnections !=
                           null
@@ -267,13 +369,29 @@ class Connections extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ConnectProfileScreen(
-                                    uid: connectionController.myConnectionModel
-                                            .value.myConnections![index].uId ??
-                                        '',
-                                    sId: connectionController.myConnectionModel
-                                            .value.myConnections![index].sId ??
-                                        '')));
+
+                                builder: (context) => ChatScreen(
+                                      name: connectionController.myConnectionModel
+                                              .value.myConnections![index].name ??
+                                          '',
+                                      imageUrl: connectionController
+                                              .myConnectionModel
+                                              .value
+                                              .myConnections![index]
+                                              .profilePicture ??
+                                          '',
+                                      sId: connectionController.myConnectionModel
+                                              .value.myConnections![index].sId ??
+                                          '',
+                                    )
+                                // ConnectProfileScreen(
+                                //     uid: connectionController.myConnectionModel
+                                //             .value.myConnections![index].uId ??
+                                //         '',
+                                //     sId: connectionController.myConnectionModel
+                                //             .value.myConnections![index].sId ??
+                                //         '')
+                                ));
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -282,36 +400,36 @@ class Connections extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             getUserImg(
-                                img: connectionController
-                                        .myConnectionModel
-                                        .value
-                                        .myConnections![index]
-                                        .profilePicture ??
+                                img: connectionController.myConnectionModel.value
+                                        .myConnections![index].profilePicture ??
                                     '',
                                 context: context,
-                                sId: connectionController.myConnectionModel
-                                        .value.myConnections![index].sId ??
+                                sId: connectionController.myConnectionModel.value
+                                        .myConnections![index].sId ??
                                     '',
-                                uid: connectionController.myConnectionModel
-                                        .value.myConnections![index].uId ??
+                                uid: connectionController.myConnectionModel.value
+                                        .myConnections![index].uId ??
                                     ''),
                             SizedBox(
                               width: 10,
                             ),
                             getUserTitle(
                                 context: context,
-                                name: connectionController.myConnectionModel
-                                        .value.myConnections![index].name ??
+
+                                name: connectionController.myConnectionModel.value
+                                        .myConnections![index].name ??
                                     '',
-                                bio: connectionController.myConnectionModel
-                                    .value.myConnections![index].bio),
+                                bio: connectionController.myConnectionModel.value
+                                    .myConnections![index].bio),
                           ],
                         ),
                       ),
                     );
                   },
                 ),
+
               )),
+
         ),
       ],
     );
