@@ -317,8 +317,10 @@ class MessageTile extends StatelessWidget {
             Text(
               _dateTime == null
                   ? ''
-                  : DateFormat('dd MMM kk:mm')
-                      .format(DateTime.parse(_dateTime).toLocal()),
+                  : DateTime.tryParse(_dateTime) != null
+                      ? DateFormat('dd MMM kk:mm')
+                          .format(DateTime.parse(_dateTime).toLocal())
+                      : '',
               style: GoogleFonts.signika(
                 fontWeight: FontWeight.w600,
                 fontSize: 12,

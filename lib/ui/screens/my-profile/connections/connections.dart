@@ -26,6 +26,7 @@ class Connections extends StatelessWidget {
   Connections({Key? key}) : super(key: key);
   final ConnectionController connectionController = Get.find();
   final RefreshController _refreshController = RefreshController();
+  final RefreshController _allConnectionRefreshcontroller = RefreshController();
   final DiscoverGroupController groupController = Get.find();
   final ChatListController chatListController = Get.put(ChatListController());
   @override
@@ -167,14 +168,14 @@ class Connections extends StatelessWidget {
                                               .value[index].user!.sId ??
                                           '',
                                     )));
-                        //         // ConnectProfileScreen(
-                        //         //     uid: connectionController.myConnectionModel
-                        //         //             .value.myConnections![index].uId ??
-                        //         //         '',
-                        //         //     sId: connectionController.myConnectionModel
-                        //         //             .value.myConnections![index].sId ??
-                        //         //         '')
-                        //         ));
+                        // ConnectProfileScreen(
+                        //     uid: connectionController.myConnectionModel
+                        //             .value.myConnections![index].uId ??
+                        //         '',
+                        //     sId: connectionController.myConnectionModel
+                        //             .value.myConnections![index].sId ??
+                        //         '')
+                        // ));
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -233,11 +234,22 @@ class Connections extends StatelessWidget {
                             Text(
                                 // chatListController.chatList.value[index]
                                 //     .conversation!.dateTime!
-                                //     .substring(11, 16),
-                                DateFormat('hh:mm a').format(DateTime.parse(
-                                    chatListController.chatList.value[index]
-                                        .conversation!.dateTime!
-                                        .toString())),
+                                //     .toString(),
+                                DateTime.tryParse(chatListController
+                                            .chatList
+                                            .value[index]
+                                            .conversation!
+                                            .dateTime!
+                                            .toString()) !=
+                                        null
+                                    ? DateFormat('hh:mm a').format(
+                                        DateTime.parse(chatListController
+                                            .chatList
+                                            .value[index]
+                                            .conversation!
+                                            .dateTime!
+                                            .toString()))
+                                    : '',
                                 style: GoogleFonts.signika(
                                     color: Colors.grey.shade400,
                                     fontWeight: FontWeight.w600,
@@ -353,7 +365,7 @@ class Connections extends StatelessWidget {
         //getConnectionFilterChips(),
         Expanded(
           child: Obx(() => SmartRefresher(
-                controller: _refreshController,
+                controller: _allConnectionRefreshcontroller,
                 onRefresh: () async {
                   await connectionController.getMyConnection();
 
