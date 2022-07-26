@@ -135,6 +135,7 @@ class _HomePageState extends State<HomePage> {
   BottomNavigatorController _bottomNavigatorController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
   GoalSettingController goalSettingController = Get.find();
+  ConnectionController connectionController = Get.find();
   bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -302,9 +303,39 @@ class _HomePageState extends State<HomePage> {
                         : Container();
                   }),
                   GetHelpDivider(),
-                  // GetHelpCategory(
-                  //     title: 'People You May Know', onPressed: () {}),
-                  // getPeopleYouMayKnowUI(),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpCategory(title: 'People You May Know')
+                            : Container()
+                        : Container();
+                  }),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? getPeopleYouMayKnowUI()
+                            : Container()
+                        : Container();
+                  }),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpDivider()
+                            : Container()
+                        : Container();
+                  }),
                   GetHelpCategory(
                     title: "Top Consultants",
                     onPressed: () =>
@@ -356,7 +387,6 @@ class _HomePageState extends State<HomePage> {
                                 )),
                         )),
                   ),
-
                   GetHelpDivider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -872,7 +902,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getPeopleYouMayKnowUI() {
-    return Container();
+    return Container(
+      height: 270,
+      margin: EdgeInsets.only(bottom: 2.h),
+      child: Obx(() {
+        return ListView.separated(
+          separatorBuilder: (_, __) => SizedBox(width: 2.w),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: connectionController
+              .peopleYouMayKnow.value.reccomendation!.length,
+          itemBuilder: (context, index) => SolhVolunteers(
+            bio: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .bio,
+            name: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .name,
+            mobile: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .mobile,
+            imgUrl: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .profilePicture,
+            sId: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .sId,
+            uid: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .uid,
+            comments: '',
+            connections: connectionController
+                .peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .connections
+                .toString(),
+            likes: connectionController.peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .likes
+                .toString(),
+          ),
+        );
+      }),
+    );
   }
 }
 

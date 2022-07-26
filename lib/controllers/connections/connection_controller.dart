@@ -3,6 +3,7 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
+import 'package:solh/model/people_you_may_know_model.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/model/user/user_analitics_model.dart';
 import 'package:solh/services/network/network.dart';
@@ -11,6 +12,7 @@ import 'package:solh/services/utility.dart';
 class ConnectionController extends GetxController {
   var myConnectionModel = MyConnectionModel().obs;
   var allConnectionModel = GetConnectionResponse().obs;
+  var peopleYouMayKnow = PeopleYouMayKnowModel().obs;
   var receivedConnections = <Connections>[].obs;
   var sentConnections = <Connections>[].obs;
   var userAnalyticsModel = UserAnalyticModel().obs;
@@ -20,6 +22,7 @@ class ConnectionController extends GetxController {
   var declinedConnectionId = ''.obs;
   var isCancelingConnection = false.obs;
   var isLoading = false.obs;
+  var isRecommnedationLoading = false.obs;
 
   /// for canceling connection
   var canceledConnectionId = ''.obs;
@@ -172,10 +175,27 @@ class ConnectionController extends GetxController {
     }
   }
 
+  Future<void> getPeopleYouMayKnow() async {
+    isRecommnedationLoading.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+            APIConstants.api + '/api/connection-recommendation')
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    if (map.isNotEmpty) {
+      peopleYouMayKnow.value = PeopleYouMayKnowModel.fromJson(map);
+      print("peopleYouMayKnow" +
+          peopleYouMayKnow.value.reccomendation!.length.toString());
+    }
+    isRecommnedationLoading.value = false;
+  }
+
   @override
   void onInit() {
     getMyConnection();
     getAllConnection();
+    getPeopleYouMayKnow();
     super.onInit();
   }
 }

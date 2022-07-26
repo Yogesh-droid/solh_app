@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
-
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
-import 'package:solh/ui/screens/journaling/widgets/solh_expert_badge.dart';
 
 class ChatController extends GetxController {
   var isLoading = false.obs;
@@ -29,7 +25,7 @@ class ChatController extends GetxController {
           authorId: data['authorId'],
           authorType: data['authorType'],
           body: data['body'],
-          dateTime: '',
+          dateTime: DateTime.now().toString(),
           sId: data['']));
 
       chatListController.chatListController();
