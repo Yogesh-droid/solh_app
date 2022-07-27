@@ -748,8 +748,16 @@ class SolhVolunteers extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Text(
+                  //   'Solh Expert',
+                  //   style: GoogleFonts.signika(
+                  //     fontSize: 12,
+                  //     color: Color(0xFF5F9B8C),
+                  //   ),
+                  // ),
+                  // Image(image: AssetImage('assets/images/verifiedTick.png')),
                   Text(
-                    'Solh Expert',
+                    'Volunteer',
                     style: GoogleFonts.signika(
                       fontSize: 12,
                       color: Color(0xFF5F9B8C),

@@ -216,10 +216,9 @@ class _JournalTileState extends State<JournalTile> {
                   child: Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: CircleAvatar(
-                      backgroundImage: widget._journalModel!.anonymousJournal !=
+                      backgroundImage: widget._journalModel!.anonymousJournal ==
                                   null &&
-                              widget._journalModel!.anonymousJournal! &&
-                              widget._journalModel!.postedBy!.anonymous != null
+                              widget._journalModel!.postedBy!.anonymous == null
                           ? widget._journalModel!.group != null
                               ? CachedNetworkImageProvider(
                                   widget._journalModel!.group!.groupImage ?? '')
@@ -261,12 +260,16 @@ class _JournalTileState extends State<JournalTile> {
                                         MediaQuery.of(context).size.width / 1.8,
                                     child: Text(
                                       widget._journalModel!.anonymousJournal != null &&
+                                              widget._journalModel!.postedBy!.anonymous !=
+                                                  null &&
                                               widget._journalModel!
-                                                  .anonymousJournal! &&
-                                              widget._journalModel!.postedBy!
-                                                      .anonymous !=
-                                                  null
-                                          ? widget._journalModel!.group != null
+                                                  .anonymousJournal!
+                                          ? widget._journalModel!.group != null &&
+                                                  journalPageController
+                                                          .selectedGroupId
+                                                          .value
+                                                          .length ==
+                                                      0
                                               ? widget._journalModel!.group!.groupName ??
                                                   ''
                                               : widget._journalModel!.postedBy!
@@ -274,17 +277,15 @@ class _JournalTileState extends State<JournalTile> {
                                                   ''
                                           : widget._journalModel!.group != null &&
                                                   journalPageController
-                                                          .selectedGroupId ==
-                                                      ''
+                                                          .selectedGroupId
+                                                          .value
+                                                          .length ==
+                                                      0
                                               ? widget._journalModel!.group!.groupName ??
                                                   ''
                                               : widget._journalModel!.postedBy !=
                                                       null
-                                                  ? widget
-                                                                  ._journalModel!
-                                                                  .postedBy!
-                                                                  .anonymous !=
-                                                              null &&
+                                                  ? widget._journalModel!.postedBy!.anonymous != null &&
                                                           widget._journalModel!
                                                               .anonymousJournal!
                                                       ? widget
@@ -293,9 +294,7 @@ class _JournalTileState extends State<JournalTile> {
                                                               .anonymous!
                                                               .userName ??
                                                           ''
-                                                      : widget._journalModel!
-                                                              .postedBy!.name ??
-                                                          ''
+                                                      : widget._journalModel!.postedBy!.name ?? ''
                                                   : '',
                                       style:
                                           SolhTextStyles.JournalingUsernameText,
@@ -374,7 +373,7 @@ class _JournalTileState extends State<JournalTile> {
                                               width: 6,
                                             ),
                                             Text(
-                                              'Expert',
+                                              'Volunteer',
                                               style: GoogleFonts.signika(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w400,

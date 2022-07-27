@@ -33,6 +33,7 @@ class GroupDetailsPage extends StatefulWidget {
 class _GroupDetailsPageState extends State<GroupDetailsPage> {
   late GroupList groupList;
   late bool? isJoined;
+  late bool isDefaultAdmin;
   JournalPageController journalPageController = Get.find();
 
   CreateGroupController createGroupController = Get.find();
@@ -46,13 +47,18 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     if (groupList.groupMembers == null) {
       getGroupDetails();
     }
+    isDefaultAdmin = groupList.defaultAdmin != null
+        ? groupList.defaultAdmin!.id == userBlocNetwork.id
+        : false; //// this is for the admin
     if (widget.isJoined == null) {
-      discoverGroupController.joinedGroupModel.value.groupList!
-          .forEach((element) {
-        if (element.sId == groupList.sId) {
-          isJoined = true;
-        }
-      });
+      discoverGroupController.joinedGroupModel.value.groupList != null
+          ? discoverGroupController.joinedGroupModel.value.groupList!
+              .forEach((element) {
+              if (element.sId == groupList.sId) {
+                isJoined = true;
+              }
+            })
+          : null;
       discoverGroupController.createdGroupModel.value.groupList!
           .forEach((element) {
         if (element.sId == groupList.sId) {
@@ -170,10 +176,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         ),
         // groupList.groupMembers != null
         //     ?
-        groupList.defaultAdmin!.id ==
-                userBlocNetwork.id //// this is for the admin
-            ? getPopUpMenuBtn(context)
-            : Container()
+        isDefaultAdmin ? getPopUpMenuBtn(context) : Container()
         // : Container()
         // : Obx(() {
         //     return discoverGroupController.isLoading.value
@@ -565,6 +568,10 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   Future<void> getGroupDetails() async {
     await discoverGroupController.getGroupDetail(groupList.sId!);
     groupList = discoverGroupController.groupDetail.value;
+    if (!isDefaultAdmin) {
+      isDefaultAdmin = groupList.defaultAdmin!.sId == userBlocNetwork.id;
+    }
+    setState(() {});
   }
 
   getPopUpMenuBtn(BuildContext context) {

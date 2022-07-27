@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
@@ -133,9 +134,9 @@ class ConsultantsTile extends StatelessWidget {
       child: CircleAvatar(
         backgroundColor: Colors.white,
         radius: 45,
-        backgroundImage: NetworkImage(
-          'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
-        ),
+        backgroundImage: CachedNetworkImageProvider(profilePicture!.isNotEmpty
+            ? profilePicture
+            : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
       ),
     );
   }

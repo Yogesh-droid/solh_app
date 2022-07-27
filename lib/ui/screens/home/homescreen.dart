@@ -220,11 +220,39 @@ class _HomePageState extends State<HomePage> {
                         : getTrendingPostUI();
                   }),
                   GetHelpDivider(),
-                  GetHelpCategory(
-                    title: 'Solh Buddies',
-                  ),
-                  getSolhBuddiesUI(),
-                  GetHelpDivider(),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpCategory(title: 'Sohl Mates')
+                            : Container()
+                        : Container();
+                  }),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? getPeopleYouMayKnowUI()
+                            : Container()
+                        : Container();
+                  }),
+                  Obx(() {
+                    return !connectionController.isRecommnedationLoading.value
+                        ? connectionController.peopleYouMayKnow.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnow.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpDivider()
+                            : Container()
+                        : Container();
+                  }),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -259,9 +287,6 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   getGoalSettingUI(goalSettingController),
-                  SizedBox(
-                    height: 10,
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: SolhGreenButton(
@@ -286,7 +311,7 @@ class _HomePageState extends State<HomePage> {
                                   .groupList!.length >
                               0
                       ? GetHelpCategory(
-                          title: 'Recommended groups',
+                          title: 'Groups For You',
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => ManageGroupPage()));
@@ -303,39 +328,45 @@ class _HomePageState extends State<HomePage> {
                         : Container();
                   }),
                   GetHelpDivider(),
-                  Obx(() {
-                    return !connectionController.isRecommnedationLoading.value
-                        ? connectionController.peopleYouMayKnow.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnow.value
-                                    .reccomendation!.isNotEmpty
-                            ? GetHelpCategory(title: 'People You May Know')
-                            : Container()
-                        : Container();
-                  }),
-                  Obx(() {
-                    return !connectionController.isRecommnedationLoading.value
-                        ? connectionController.peopleYouMayKnow.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnow.value
-                                    .reccomendation!.isNotEmpty
-                            ? getPeopleYouMayKnowUI()
-                            : Container()
-                        : Container();
-                  }),
-                  Obx(() {
-                    return !connectionController.isRecommnedationLoading.value
-                        ? connectionController.peopleYouMayKnow.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnow.value
-                                    .reccomendation!.isNotEmpty
-                            ? GetHelpDivider()
-                            : Container()
-                        : Container();
-                  }),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetHelpCategory(
+                        title: 'Search by issues',
+                      ),
+                      InkWell(
+                        onTap: () {
+                          _bottomNavigatorController.tabrouter!
+                              .setActiveIndex(2);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Get Help',
+                                style: GoogleFonts.signika(
+                                  color: SolhColors.green,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward,
+                                color: SolhColors.green,
+                                size: 14,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  getIssueUI(
+                      bookAppointmentController, getHelpController, context),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GetHelpDivider(),
                   GetHelpCategory(
                     title: "Top Consultants",
                     onPressed: () =>
@@ -388,41 +419,10 @@ class _HomePageState extends State<HomePage> {
                         )),
                   ),
                   GetHelpDivider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GetHelpCategory(
-                        title: 'Search by issues',
-                      ),
-                      InkWell(
-                        onTap: () {
-                          _bottomNavigatorController.tabrouter!
-                              .setActiveIndex(2);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Get Help',
-                                style: GoogleFonts.signika(
-                                  color: SolhColors.green,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: SolhColors.green,
-                                size: 14,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                  GetHelpCategory(
+                    title: 'Solh Buddies to Talk',
                   ),
-                  getIssueUI(
-                      bookAppointmentController, getHelpController, context),
+                  getSolhBuddiesUI(),
                   SizedBox(
                     height: 100,
                   ),
@@ -493,7 +493,6 @@ class _HomePageState extends State<HomePage> {
             child: Obx(() {
               return Stack(
                 children: [
-                  // getDragTarget(),
                   _journalPageController.trendingJournalsList.length > 2
                       ? Positioned(
                           right: 15,
@@ -551,7 +550,7 @@ class _HomePageState extends State<HomePage> {
               border: Border.all(
                 color: SolhColors.greyS200,
               )),
-          child: getPostContent(journal),
+          child: getPostContent(journal, 12),
         ),
       ),
       feedback: Card(
@@ -578,7 +577,7 @@ class _HomePageState extends State<HomePage> {
               border: Border.all(
                 color: SolhColors.greyS200,
               )),
-          child: getPostContent(journal),
+          child: getPostContent(journal, 12),
         ),
       ),
       childWhenDragging: Container(),
@@ -599,7 +598,7 @@ class _HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height * 0.4,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey[200]!), color: Colors.white),
-      child: getPostContent(journal),
+      child: getPostContent(journal, 10),
     );
   }
 
@@ -608,7 +607,7 @@ class _HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height * 0.3,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey[200]!), color: Colors.white),
-      child: getPostContent(journal),
+      child: getPostContent(journal, 7),
     );
   }
 
@@ -633,7 +632,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget getPostContent(Journals journal) {
+  Widget getPostContent(Journals journal, int maxLine) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -656,29 +655,24 @@ class _HomePageState extends State<HomePage> {
           child: Text(
             journal.description ?? '',
             style: SolhTextStyles.LandingParaText,
-            maxLines: 3,
+            maxLines: journal.mediaUrl == null ? maxLine : 3,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Expanded(
           child: Container(
             width: MediaQuery.of(context).size.width,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
               child: CachedNetworkImage(
                 imageUrl: journal.mediaUrl ?? '',
                 fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Image.asset(
-                  'assets/images/no-image-available.png',
-                  fit: BoxFit.cover,
-                ),
+                errorWidget: (context, url, error) => Container(),
                 placeholder: (context, url) => getImgShimmer(),
               ),
             ),
           ),
-        )
+        ),
+        getInteractionButton(journal),
       ],
     );
   }
@@ -945,6 +939,65 @@ class _HomePageState extends State<HomePage> {
         );
       }),
     );
+  }
+
+  getInteractionButton(Journals journal) {
+    return Container(
+        height: 50,
+        decoration: BoxDecoration(
+          border: Border.fromBorderSide(
+            BorderSide(
+              color: SolhColors.greyS200,
+              width: 1,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.thumb_up_alt_outlined,
+                  color: SolhColors.green,
+                ),
+                SizedBox(
+                  width: 2.w,
+                ),
+                Text(
+                  journal.likes.toString(),
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: SolhColors.green,
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              width: 1,
+              height: 20,
+              color: SolhColors.green,
+            ),
+            Row(
+              children: [
+                Icon(
+                  CupertinoIcons.chat_bubble,
+                  color: SolhColors.green,
+                ),
+                SizedBox(
+                  width: 2.w,
+                ),
+                Text(
+                  journal.comments.toString(),
+                  style: TextStyle(
+                    color: SolhColors.green,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
 

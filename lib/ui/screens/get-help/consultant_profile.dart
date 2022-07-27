@@ -162,6 +162,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                     .consultantModelController.value.provder!.specialization ??
                 '',
             maxLines: 2,
+            textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.signika(
               fontSize: 14,
