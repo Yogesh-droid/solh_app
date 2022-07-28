@@ -341,16 +341,7 @@ class DayPicker extends StatefulWidget {
 class _DayPickerState extends State<DayPicker> {
   //var _controller = Get.put(BookAppointmentController());
   BookAppointmentController _controller = Get.find();
-
-  Map day = {
-    'Monday': false,
-    'Tuesday': false,
-    'Wednesday': false,
-    'Thursday': false,
-    'Friday': false,
-    'Saturday': false,
-  };
-
+  ConsultantController _consultantController = Get.find();
   Map timeSlot = {
     '10:00-10:30': false,
     '11:00-11:30': false,
@@ -360,8 +351,8 @@ class _DayPickerState extends State<DayPicker> {
     '15:00-15:30': false,
   };
 
-  List<String> days = [];
-  List<String> updatedList = [];
+  List<DateTime> days = [];
+  List<DateTime> updatedList = [];
   // getUpcomingMap() {
   //   var date = DateTime.now();
   //   String today = DateFormat('EEEE').format(date);
@@ -411,8 +402,6 @@ class _DayPickerState extends State<DayPicker> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-
     Future.delayed(Duration(microseconds: 10), () {
       if (DateTime.parse(DateFormat('yyyy-MM-dd').format(DateTime.now()) +
                   ' ' +
@@ -460,10 +449,16 @@ class _DayPickerState extends State<DayPicker> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: InkWell(
-                    onTap: () {
-                      _controller.selectedDay.value = days[index];
+                    onTap: () async {
+                      //_controller.selectedDay.value = days[index];
+                      await _controller.getTimeSlot(
+                          date: DateFormat('yyyy-MM-dd').format(days[index]),
+                          providerId: _consultantController
+                              .consultantModelController.value.provder!.sId);
+                      _controller.selectedDay.value =
+                          DateFormat('EEEE').format(days[index]);
                       print('+++++' + _controller.selectedDay.value);
-                      print('----' + days[index]);
+                      print('----' + DateFormat('EEEE').format(days[index]));
                     },
                     child: Obx(() {
                       return Container(
@@ -480,7 +475,7 @@ class _DayPickerState extends State<DayPicker> {
                             //   getUpcomingMap().keys.elementAt(index),
                             // ),
                             child: Text(
-                              days[index],
+                              DateFormat('EEEE').format(days[index]),
                               style: GoogleFonts.montserrat(
                                 color:
                                     _controller.selectedDay.value == days[index]
@@ -501,19 +496,20 @@ class _DayPickerState extends State<DayPicker> {
         ),
         Obx(() {
           return Wrap(
-            children: timeSlot.keys.map((e) {
+            children: _controller.timeSlotList.map((e) {
               return DateTime.parse(
-                              DateFormat('yyyy-MM-dd').format(DateTime.now()) +
-                                  ' ' +
-                                  e.split('-')[1])
-                          .isBefore(DateTime.now()) &&
-                      _controller.selectedDay == 'Today'
+                          DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                              ' ' +
+                              e.split('-')[1])
+                      .isBefore(DateTime.now())
+                  //      &&
+                  // _controller.selectedDay == 'Today'
                   ? Container(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),
                         child: Container(
-                          width: 100,
+                          width: 110,
                           decoration: BoxDecoration(
                               color: Colors.grey,
                               border: Border.all(color: SolhColors.green),
@@ -540,7 +536,7 @@ class _DayPickerState extends State<DayPicker> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 8),
                         child: Container(
-                          width: 100,
+                          width: 110,
                           decoration: BoxDecoration(
                               color: _controller.selectedTimeSlot.value == e
                                   ? SolhColors.green
@@ -573,19 +569,29 @@ class _DayPickerState extends State<DayPicker> {
     updatedList = [];
     _controller.days = days = [];
     for (int i = 0; i < 7; i++) {
-      updatedList.add(
-          DateFormat('EEEE').format(DateTime.now().add(Duration(days: i))));
+      updatedList.add(DateTime.now().add(Duration(days: i)));
     }
     updatedList.forEach((element) {
-      if (DateFormat('EEEE').format(DateTime.now()) == element) {}
-      if (element != 'Sunday') {
-        if (DateFormat('EEEE').format(DateTime.now()) == element) {
-          days.add('Today');
-        } else {
-          days.add(element);
-        }
+      if (DateTime.now() == element) {}
+      if (DateFormat('EEEE').format(element) != 'Sunday') {
+        days.add(element);
       }
     });
+
+    // for (int i = 0; i < 7; i++) {
+    //   updatedList.add(
+    //       DateFormat('EEEE').format(DateTime.now().add(Duration(days: i))));
+    // }
+    // updatedList.forEach((element) {
+    //   if (DateFormat('EEEE').format(DateTime.now()) == element) {}
+    //   if (element != 'Sunday') {
+    //     if (DateFormat('EEEE').format(DateTime.now()) == element) {
+    //       days.add('Today');
+    //     } else {
+    //       days.add(element);
+    //     }
+    //   }
+    // });
 
     _controller.days = days;
   }
