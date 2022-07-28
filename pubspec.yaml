@@ -47,6 +47,7 @@ dependencies:
   socket_io_client: ^2.0.0
 
   webview_flutter: ^3.0.4
+  flutter_local_notifications: ^9.7.0
 
   #alt_sms_autofill: ^1.0.0
 

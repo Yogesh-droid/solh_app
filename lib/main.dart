@@ -1,9 +1,10 @@
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:new_version/new_version.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
+import 'package:solh/services/firebase/local_notification.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'firebase_options.dart';
@@ -21,6 +22,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
+Future<void> backgroundMessageHandler(RemoteMessage remoteMessage) async {
+  print("backgroundMessageHandler");
+  print(remoteMessage.data);
+  print(remoteMessage.notification!.title);
+}
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +34,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
 
@@ -99,21 +106,61 @@ void main() async {
   )); */
 }
 
-Future<void> checkVersion() async {
-  final newVersion = NewVersion();
-  await newVersion.getVersionStatus().then((value) {
-    print(value!.localVersion.toString());
-    print(value.storeVersion.toString());
-  });
-}
-
-class SolhApp extends StatelessWidget {
+class SolhApp extends StatefulWidget {
   SolhApp({Key? key, required bool isProfileCreated})
       : _isProfileCreated = isProfileCreated,
         super(key: key);
 
   final bool _isProfileCreated;
+
+  @override
+  State<SolhApp> createState() => _SolhAppState();
+}
+
+class _SolhAppState extends State<SolhApp> {
   final _appRouter = AppRouter(globalNavigatorKey);
+
+  @override
+  void initState() {
+    LocalNotificationService.initialize(context);
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          print("New Notification");
+
+          /// we can handle routing here
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+      LocalNotificationService.createanddisplaynotification(message);
+      // If `onMessage` is triggered with a notification, construct our own
+      // local notification to show to users using the created channel.
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data22 ${message.data['_id']}");
+        }
+      },
+    );
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,8 +171,9 @@ class SolhApp extends StatelessWidget {
         ],
         localizationsDelegates: [CountryLocalizations.delegate],
         routerDelegate: _appRouter.delegate(
-            initialDeepLink:
-                _isProfileCreated ? "MasterScreen" : "IntroCarouselScreen"),
+            initialDeepLink: widget._isProfileCreated
+                ? "MasterScreen"
+                : "IntroCarouselScreen"),
         routeInformationParser: _appRouter.defaultRouteParser(),
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
