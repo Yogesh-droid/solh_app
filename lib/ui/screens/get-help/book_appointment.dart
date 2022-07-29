@@ -10,6 +10,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class BookAppointment extends StatefulWidget {
@@ -232,7 +233,7 @@ class BookAppointmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    /* return InkWell(
       onTap: () {
         var value = validator(
             mobile_no: _controller.mobileNotextEditingController.text,
@@ -279,6 +280,41 @@ class BookAppointmentWidget extends StatelessWidget {
           ),
         ),
       ),
+    ); */
+    return SolhGreenButton(
+      height: 48,
+      child: Text('Book Appointment'),
+      onPressed: () {
+        var value = validator(
+            mobile_no: _controller.mobileNotextEditingController.text,
+            email: _controller.emailTextEditingController.text,
+            selected_day: _controller.selectedDay.value,
+            time_slot: _controller.selectedTimeSlot.value);
+
+        print(value.toString());
+        if (value is bool) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: BookAppointmentPopup());
+              });
+        } else {
+          final snackBar = SnackBar(
+            content: Text(value!.toString()),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      },
     );
   }
 }
@@ -291,19 +327,10 @@ class GetDateAndTime extends StatefulWidget {
 }
 
 class _GetDateAndTimeState extends State<GetDateAndTime> {
-  //BookAppointmentController _controller = Get.put(BookAppointmentController());
   BookAppointmentController _controller = Get.find();
 
   @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
-
-  @override
   void dispose() {
-    // TODO: implement dispose
     _controller.selectedDay.value = '';
     _controller.selectedTimeSlot.value = '';
     super.dispose();
@@ -339,17 +366,16 @@ class DayPicker extends StatefulWidget {
 }
 
 class _DayPickerState extends State<DayPicker> {
-  //var _controller = Get.put(BookAppointmentController());
   BookAppointmentController _controller = Get.find();
   ConsultantController _consultantController = Get.find();
-  Map timeSlot = {
+  /* Map timeSlot = {
     '10:00-10:30': false,
     '11:00-11:30': false,
     '12:00-12:30': false,
     '13:00-13:30': false,
     '14:00-14:30': false,
     '15:00-15:30': false,
-  };
+  }; */
 
   List<DateTime> days = [];
   List<DateTime> updatedList = [];
@@ -394,9 +420,7 @@ class _DayPickerState extends State<DayPicker> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getUpcomingMap();
-
     super.initState();
   }
 
@@ -457,6 +481,7 @@ class _DayPickerState extends State<DayPicker> {
                               .consultantModelController.value.provder!.sId);
                       _controller.selectedDay.value =
                           DateFormat('EEEE').format(days[index]);
+                      _controller.selectedDate.value = days[index];
                       print('+++++' + _controller.selectedDay.value);
                       print('----' + DateFormat('EEEE').format(days[index]));
                     },
@@ -497,67 +522,69 @@ class _DayPickerState extends State<DayPicker> {
         Obx(() {
           return Wrap(
             children: _controller.timeSlotList.map((e) {
-              return DateTime.parse(
-                          DateFormat('yyyy-MM-dd').format(DateTime.now()) +
-                              ' ' +
-                              e.split('-')[1])
-                      .isBefore(DateTime.now())
-                  //      &&
-                  // _controller.selectedDay == 'Today'
-                  ? Container(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 8),
-                        child: Container(
-                          width: 110,
-                          decoration: BoxDecoration(
-                              color: Colors.grey,
-                              border: Border.all(color: SolhColors.green),
-                              borderRadius: BorderRadius.circular(18)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: Text(
-                              e,
-                              style: GoogleFonts.montserrat(
-                                color: SolhColors.green,
-                              ),
-                            )),
-                          ),
+              return
+                  // DateTime.parse(
+                  //             DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                  //                 ' ' +
+                  //                 e.split('-')[1])
+                  //         .isBefore(DateTime.now())
+                  //     //      &&
+                  //     // _controller.selectedDay == 'Today'
+                  //     ? Container(
+                  //         child: Padding(
+                  //           padding: const EdgeInsets.symmetric(
+                  //               horizontal: 8, vertical: 8),
+                  //           child: Container(
+                  //             width: 110,
+                  //             decoration: BoxDecoration(
+                  //                 color: Colors.grey,
+                  //                 border: Border.all(color: SolhColors.green),
+                  //                 borderRadius: BorderRadius.circular(18)),
+                  //             child: Padding(
+                  //               padding: const EdgeInsets.all(8.0),
+                  //               child: Center(
+                  //                   child: Text(
+                  //                 e,
+                  //                 style: GoogleFonts.montserrat(
+                  //                   color: SolhColors.green,
+                  //                 ),
+                  //               )),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       )
+                  //:
+                  InkWell(
+                onTap: () {
+                  _controller.selectedTimeSlot.value = e;
+                  print(e + "++" + _controller.selectedTimeSlot.value);
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: Container(
+                    width: 110,
+                    decoration: BoxDecoration(
+                        color: _controller.selectedTimeSlot.value == e
+                            ? SolhColors.green
+                            : SolhColors.white,
+                        border: Border.all(color: SolhColors.green),
+                        borderRadius: BorderRadius.circular(18)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                          child: Text(
+                        e,
+                        style: GoogleFonts.montserrat(
+                          color: _controller.selectedTimeSlot.value == e
+                              ? SolhColors.white
+                              : SolhColors.green,
                         ),
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        _controller.selectedTimeSlot.value = e;
-                        print(e + "++" + _controller.selectedTimeSlot.value);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 8),
-                        child: Container(
-                          width: 110,
-                          decoration: BoxDecoration(
-                              color: _controller.selectedTimeSlot.value == e
-                                  ? SolhColors.green
-                                  : SolhColors.white,
-                              border: Border.all(color: SolhColors.green),
-                              borderRadius: BorderRadius.circular(18)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: Text(
-                              e,
-                              style: GoogleFonts.montserrat(
-                                color: _controller.selectedTimeSlot.value == e
-                                    ? SolhColors.white
-                                    : SolhColors.green,
-                              ),
-                            )),
-                          ),
-                        ),
-                      ),
-                    );
+                      )),
+                    ),
+                  ),
+                ),
+              );
             }).toList(),
           );
         })
@@ -669,9 +696,15 @@ class BookAppointmentPopup extends StatelessWidget {
                           .consultantModelController.value.provder!.sId
                       : '',
                   'start': getdateTime(
-                      _controller.selectedDay, _controller.selectedTimeSlot, 0),
+                      _controller.selectedDay,
+                      _controller.selectedTimeSlot,
+                      0,
+                      _controller.selectedDate.value),
                   'end': getdateTime(
-                      _controller.selectedDay, _controller.selectedTimeSlot, 1),
+                      _controller.selectedDay,
+                      _controller.selectedTimeSlot,
+                      1,
+                      _controller.selectedDate.value),
                   'from': _controller.selectedTimeSlot.split('-')[0],
                   'to': _controller.selectedTimeSlot.split('-')[1],
                   "type": "app",
@@ -781,21 +814,21 @@ validator(
   }
 }
 
-getdateTime(selectedDay, selectedSlot, itemNoinList) {
+getdateTime(selectedDay, selectedSlot, itemNoinList, DateTime selectedDate) {
   BookAppointmentController _controller = Get.find();
 
   var now = new DateTime.now();
 
   getDate() {
-    if (selectedDay == 'Today') {
+    if (selectedDay == DateFormat('EEEE').format(now)) {
       return DateFormat('yyyy-MM-dd').format(now);
     } else if (_controller.days!.indexOf(selectedDay.toString()) >
         _controller.days!.indexOf(_controller.days!.indexOf('Saturday'))) {
       return now.add(Duration(
           days: _controller.days!.indexOf(selectedDay.toString()) + 1));
     } else {
-      return now.add(
-          Duration(days: _controller.days!.indexOf(selectedDay.toString())));
+      return now.add(Duration(
+          days: _controller.days!.indexOf(selectedDay.toString()) + 1));
     }
   }
 
@@ -803,11 +836,19 @@ getdateTime(selectedDay, selectedSlot, itemNoinList) {
     return selectedSlot.toString().split('-');
   }
 
-  print(DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+  // print(DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+  //     'T' +
+  //     getTime()[itemNoinList].toString() +
+  //     ':00');
+  // return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+  //     'T' +
+  //     getTime()[itemNoinList].toString() +
+  //     ':00';
+  print(DateFormat('yyyy-MM-dd').format(selectedDate) +
       'T' +
       getTime()[itemNoinList].toString() +
       ':00');
-  return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
+  return DateFormat('yyyy-MM-dd').format(selectedDate) +
       'T' +
       getTime()[itemNoinList].toString() +
       ':00';
