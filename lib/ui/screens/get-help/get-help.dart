@@ -23,68 +23,6 @@ import 'package:solh/widgets_constants/solh_search_field.dart';
 
 import 'consultant_profile.dart';
 
-final List<Map<String, String>> _solhVolunteers = [
-  {
-    "name": 'PRAKASH CHANDRA',
-    "bio":
-        'Depression, OCD, Behavioural Issues, Couples Therapy, Anxiety, Personality Issues.',
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Ms.Ekta Singh",
-    "bio":
-        "Counselling Psychologist, Educational Psychologist, Psychotherapist, Relationship Counsellor, Child Psychologist",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Dr. Sakshi Gupta",
-    "bio":
-        "Clinical psychologist, Child Counsellor, Career Counsellor,Psychologist,internships",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Lalit Sharma",
-    "bio": "Speech And Language Therapist ",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Nidhi Sharma",
-    "bio": "speech rehabilitation, Occupational Therapy &  special education",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Dr Ankit Goel",
-    "bio": "Psychiatrist,psychologist,behaviour therapy,counselling",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  },
-  {
-    "name": "Ms Mariella Zanoletti",
-    "bio": "Therapist, counselling psychologist, psychotherapist",
-    "like": "45",
-    "helped": "45",
-    "interaction": "45",
-    "image": 'assets/images/Oval2.png',
-  }
-];
-
 class GetHelpScreen extends StatefulWidget {
   const GetHelpScreen({Key? key}) : super(key: key);
 
@@ -96,17 +34,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   GetHelpController getHelpController = Get.find();
   SearchMarketController searchMarketController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
-  bool _isDrawerOpen = false;
-  List<String> _specialities = [
-    "Psychotherapist",
-    "Psychologist",
-    "Counseling Psychologists",
-    "Psychiatrist",
-    "Cognitive Behavioural Therapistt",
-    "Organizational Psychologists",
-    "Developmental Psychologists",
-    "Expressive Art Therapists"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -114,21 +41,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
       appBar: SolhAppBar(
         title: Row(
           children: [
-            // GestureDetector(
-            //   onTap: () {
-            //     print("side bar tapped");
-            //     setState(() {
-            //       _isDrawerOpen = !_isDrawerOpen;
-            //     });
-            //     print("opened");
-            //   },
-            //   child: SvgPicture.asset(
-            //     "assets/icons/app-bar/app-bar-menu.svg",
-            //     width: 26,
-            //     height: 24,
-            //     color: SolhColors.green,
-            //   ),
-            // ),
             SizedBox(
               width: 2.h,
             ),
@@ -391,6 +303,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           likes: getHelpController.solhVolunteerList.value
                               .provider![index].likesCount
                               .toString(),
+                          userType: getHelpController.solhVolunteerList.value
+                              .provider![index].userType,
                         ),
                       )
                     : Container(
@@ -661,18 +575,19 @@ class GetHelpDivider extends StatelessWidget {
 }
 
 class SolhVolunteers extends StatelessWidget {
-  SolhVolunteers({
-    Key? key,
-    required this.mobile,
-    required this.name,
-    required this.bio,
-    this.imgUrl,
-    this.sId,
-    this.comments,
-    this.connections,
-    this.likes,
-    this.uid,
-  }) : super(key: key);
+  SolhVolunteers(
+      {Key? key,
+      required this.mobile,
+      required this.name,
+      required this.bio,
+      this.imgUrl,
+      this.sId,
+      this.comments,
+      this.connections,
+      this.likes,
+      this.uid,
+      this.userType})
+      : super(key: key);
   final String? mobile;
   final String? name;
   final String? bio;
@@ -682,6 +597,7 @@ class SolhVolunteers extends StatelessWidget {
   final String? connections;
   final String? comments;
   final String? uid;
+  final String? userType;
 
   @override
   Widget build(BuildContext context) {
@@ -757,13 +673,16 @@ class SolhVolunteers extends StatelessWidget {
                   // ),
                   // Image(image: AssetImage('assets/images/verifiedTick.png')),
                   Text(
-                    'Volunteer',
+                    userType ?? '',
                     style: GoogleFonts.signika(
                       fontSize: 12,
                       color: Color(0xFF5F9B8C),
                     ),
                   ),
-                  Image(image: AssetImage('assets/images/verifiedTick.png')),
+                  userType != null
+                      ? Image(
+                          image: AssetImage('assets/images/verifiedTick.png'))
+                      : Container(),
                 ],
               ),
               SizedBox(

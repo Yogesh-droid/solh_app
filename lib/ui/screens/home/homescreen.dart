@@ -227,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                                     null &&
                                 connectionController.peopleYouMayKnow.value
                                     .reccomendation!.isNotEmpty
-                            ? GetHelpCategory(title: 'Sohl Mates')
+                            ? GetHelpCategory(title: 'Solh Mates')
                             : Container()
                         : Container();
                   }),
@@ -935,6 +935,15 @@ class _HomePageState extends State<HomePage> {
                 .elementAt(index)
                 .likes
                 .toString(),
+            userType: connectionController
+                        .peopleYouMayKnow.value.reccomendation!
+                        .elementAt(index)
+                        .userType !=
+                    'Seeker'
+                ? connectionController.peopleYouMayKnow.value.reccomendation!
+                    .elementAt(index)
+                    .userType
+                : null,
           ),
         );
       }),

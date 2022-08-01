@@ -35,18 +35,20 @@ class Provider {
   int? likesCount;
   int? commentCount;
   int? connectionsCount;
+  String userType = 'volunteer';
 
-  Provider(
-      {this.name,
-      this.bio,
-      this.contactNumber,
-      this.email,
-      this.profilePicture,
-      this.sId,
-      this.uid,
-      this.likesCount,
-      this.commentCount,
-      this.connectionsCount});
+  Provider({
+    this.name,
+    this.bio,
+    this.contactNumber,
+    this.email,
+    this.profilePicture,
+    this.sId,
+    this.uid,
+    this.likesCount,
+    this.commentCount,
+    this.connectionsCount,
+  });
 
   Provider.fromJson(Map<String, dynamic> json) {
     name = json['name'];

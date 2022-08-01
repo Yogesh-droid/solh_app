@@ -158,6 +158,17 @@ class _SolhAppState extends State<SolhApp> {
         }
       },
     );
+    FirebaseMessaging.instance.onTokenRefresh.listen(
+      (token) {
+        print("FirebaseMessaging.instance.onTokenRefresh");
+        print('FirebaseMessaging.instance.onTokenRefresh' + token.toString());
+      },
+    );
+
+    FirebaseMessaging.instance.getToken().then((token) {
+      print("FirebaseMessaging.instance.getToken");
+      print('FirebaseMessaging.instance.getToken' + token.toString());
+    });
 
     super.initState();
   }

@@ -1,13 +1,5 @@
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:solh/constants/api.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
-
-import 'package:solh/model/user/user.dart';
 import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
-import 'package:solh/ui/screens/chat/constants/constants.dart';
 
 import 'dart:async';
 import 'package:socket_io_client/socket_io_client.dart' as io;
@@ -19,7 +11,8 @@ class SocketService {
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
-      APIConstants.api,
+      // APIConstants.api,
+      'https://api.solhapp.com/api/schat',
       io.OptionBuilder()
           .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
 
@@ -41,7 +34,7 @@ class SocketService {
 
   static void sendMessage(
       String message, String sId, String autherType, String ct) {
-    print(socket.id);
+    print('SocketId  ' + socket.id.toString());
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
@@ -60,6 +53,7 @@ class SocketService {
     socket.connect();
 
     socket.onConnect((data) {
+      print('Connected to server');
       print('connected');
       print(socket.id);
       socket.emit('uconnect', {
@@ -69,6 +63,7 @@ class SocketService {
     });
     socket.onConnectError(
       (data) {
+        print('err to server');
         print(data);
       },
     );
