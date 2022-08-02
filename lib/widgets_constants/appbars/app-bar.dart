@@ -14,13 +14,18 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       double? height,
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
-      PreferredSize? bottom})
+      PreferredSize? bottom,
+      Widget? menuButton})
       : _title = title,
         _isLandingScreen = isLandingScreen,
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
         _isDiaryBtnShown = isDiaryBtnShown,
-        _bottom = bottom;
+        _bottom = bottom,
+        _menuButton = menuButton;
+
+
+
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
@@ -28,6 +33,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? _height;
   final bool? _isDiaryBtnShown;
   final PreferredSize? _bottom;
+  final Widget? _menuButton;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +78,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               : Container(),
           if (!_isVideoCallScreen) AssistanceButton(),
+          if(_menuButton != null) _menuButton!,
         ]);
   }
 

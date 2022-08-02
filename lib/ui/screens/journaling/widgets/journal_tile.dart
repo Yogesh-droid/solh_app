@@ -19,6 +19,9 @@ import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -434,7 +437,9 @@ class _JournalTileState extends State<JournalTile> {
                                   journalId: widget._journalModel!.id ?? '',
                                   deletePost: widget._deletePost,
                                 )
-                              : Container()
+                              : PostMenuButton(
+                                  journalId: widget._journalModel!.id ?? '',
+                                )
                           : Container(
                               width: 10,
                               height: 10,
@@ -964,14 +969,17 @@ class _PostContentWidgetState extends State<PostContentWidget> {
 }
 
 class PostMenuButton extends StatelessWidget {
-  const PostMenuButton(
-      {Key? key, required String journalId, required VoidCallback deletePost})
+  PostMenuButton(
+      {Key? key, required String journalId, VoidCallback? deletePost})
       : _journalId = journalId,
         _deletePost = deletePost,
         super(key: key);
 
   final String _journalId;
-  final VoidCallback _deletePost;
+  final VoidCallback? _deletePost;
+  final JournalCommentController journalCommentController =
+      Get.find();
+      final TextEditingController reasonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -985,35 +993,6 @@ class PostMenuButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         offset: Offset(10, 0),
         itemBuilder: (context) => [
-              // PopupMenuItem(
-              //   child: Container(
-              //     alignment: Alignment.centerRight,
-              //     padding: EdgeInsets.only(
-              //       right: MediaQuery.of(context).size.width/20,
-              //       bottom: MediaQuery.of(context).size.height/30,
-              //     ),
-              //     decoration: BoxDecoration(
-              //       border: Border(bottom: BorderSide(color: SolhColors.grey239),
-              //       )
-              //     ),
-              //     child: SizedBox(
-              //       width: 18,
-              //       height: 18,
-              //       child: IconButton(
-              //         onPressed: () => Navigator.pop(context),
-              //         icon: Icon(
-              //           Icons.close,
-              //         ),
-              //         iconSize: 18,
-              //         color: SolhColors.grey102,
-              //         splashRadius: 16,
-              //         ),
-              //     ),
-              //   ),
-              //   value: 0,
-              //   textStyle: SolhTextStyles.JournalingPostMenuText,
-              //   padding: EdgeInsets.zero,
-              // ),
               PopupMenuItem(
                 child: Container(
                   alignment: Alignment.centerLeft,
@@ -1022,10 +1001,19 @@ class PostMenuButton extends StatelessWidget {
                     vertical: MediaQuery.of(context).size.height / 80,
                   ),
                   child: Text(
-                    "Delete this post",
+                    _deletePost!=null ? "Delete this post": "Report this post",
                   ),
                 ),
-                onTap: _deletePost,
+                onTap: _deletePost!=null ? _deletePost : () {
+                  journalCommentController.isReportingPost.value = false;
+                  showDialog(
+                    context: context,
+                    builder: (context) => ReportPostDialog(
+                      context,
+                      journalId: _journalId,
+                    ),
+                  );
+                },
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
@@ -1088,5 +1076,56 @@ class PostMenuButton extends StatelessWidget {
               //   padding: EdgeInsets.zero,
               // ),
             ]);
+  }
+  
+  ReportPostDialog(BuildContext context, {required String journalId}) {
+    return Dialog(
+      insetPadding: EdgeInsets.zero,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 20,
+          vertical: MediaQuery.of(context).size.height / 80,
+        ),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height / 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: SolhColors.white,
+        ),
+        child: Column(children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.close,color: SolhColors.black,))),
+            SizedBox(height: 10),
+          Text(
+            "We are sorry for your inconvenience due to this post/person. Please let us know what is the problem with this post/person.",
+            style: SolhTextStyles.JournalingPostMenuText,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 40,
+          ),
+          TextFieldB(label: 'Reason',maxLine: 4,textEditingController: reasonController,),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 40,
+          ),
+          SolhGreenButton(child: Obx((){
+            return !journalCommentController.isReportingPost.value ? Text('Report',style: SolhTextStyles.GreenButtonText,): Container(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(color: SolhColors.white,strokeWidth: 1,));
+          }),onPressed: journalCommentController.isReportingPost.value ? null : () async {
+            await journalCommentController.reportPost(journalId: journalId, reason: reasonController.text,type: 'post');
+            Navigator.pop(context);
+          },),
+        ]),
+      
+      ),
+    );
   }
 }

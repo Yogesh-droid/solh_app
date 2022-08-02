@@ -1,18 +1,17 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../model/user/user.dart';
-import '../../../routes/routes.gr.dart';
 import '../../../services/user/user-profile.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../my-profile/posts/post.dart';
+import '../my-profile/profile/edit-profile.dart';
 
 class ConnectProfileScreen extends StatefulWidget {
   ConnectProfileScreen(
@@ -33,7 +32,8 @@ class ConnectProfileScreen extends StatefulWidget {
 
 class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   final ConnectionController connectionController = Get.find();
-
+  JournalCommentController journalCommentController = Get.find();
+  final TextEditingController reasonController = TextEditingController();
   @override
   void initState() {
     print('UID: ${widget._uid}');
@@ -64,6 +64,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
             "Connect",
             style: SolhTextStyles.AppBarText,
           ),
+          menuButton: getpopUpMenu(),
         ),
         body: widget._username != null
             ? GetBuilder<ConnectionController>(
@@ -402,6 +403,8 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
         .forEach((element) {
       if (element.sId == sId) {
         widget.isMyConnection = true;
+      }else{
+        widget.isMyConnection = false;
       }
     });
   }
@@ -409,6 +412,81 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   Future<void> getUserAnalyticsFromApi({required String sid}) async {
     await connectionController.getUserAnalytics(sid);
   }
+  
+  getpopUpMenu() {
+    return PopupMenuButton(
+      icon: Icon(Icons.more_vert,color: SolhColors.black,),
+      itemBuilder: (context){
+      return [
+        PopupMenuItem(child: Text('Report this person'), value: 1,),
+        PopupMenuItem(child: Text('Block'), value: 2,),
+      ];
+    }, onSelected: (value) {
+      if(value == 1){
+        showDialog(
+                    context: context,
+                    builder: (context) => ReportUserDialog(
+                      context,
+                      userId: widget._sId,
+                    ),
+                  );
+      }else{
+        print('Block');
+      }
+    },);
+  }
+  ReportUserDialog(BuildContext context, {required String userId}) {
+    return Dialog(
+      insetPadding: EdgeInsets.zero,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 20,
+          vertical: MediaQuery.of(context).size.height / 80,
+        ),
+        width: double.infinity,
+        height: MediaQuery.of(context).size.height / 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: SolhColors.white,
+        ),
+        child: Column(children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: InkWell(
+              onTap: (){
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.close,color: SolhColors.black,))),
+            SizedBox(height: 10),
+          Text(
+            "We are sorry for your inconvenience due to this post/person. Please let us know what is the problem with this post/person.",
+            style: SolhTextStyles.JournalingPostMenuText,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 40,
+          ),
+          TextFieldB(label: 'Reason',maxLine: 4,textEditingController: reasonController,),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 40,
+          ),
+          SolhGreenButton(child: Obx((){
+            return !journalCommentController.isReportingPost.value ? Text('Report',style: SolhTextStyles.GreenButtonText,): Container(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(color: SolhColors.white,strokeWidth: 1,));
+          }),onPressed: journalCommentController.isReportingPost.value ? null : () async {
+            await journalCommentController.reportPost(journalId: userId, reason: reasonController.text,type: 'user');
+            Navigator.pop(context);
+          },),
+        ]),
+      
+      ),
+    );
+  }
+  
+  
 }
 
 class TabView extends StatefulWidget {

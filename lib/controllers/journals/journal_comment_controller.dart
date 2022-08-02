@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
-
 import '../../constants/api.dart';
 import '../../services/network/error_handling.dart';
 import '../../services/network/network.dart';
@@ -19,6 +18,7 @@ class JournalCommentController extends GetxController {
   var reactingToComment = false.obs;
   int pageNo = 1;
   int endPage = 1;
+  var isReportingPost = false.obs;
 
   Future<void> getJournalComment(
       {required String postId, required int pageNo}) async {
@@ -136,6 +136,21 @@ class JournalCommentController extends GetxController {
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }
+  }
+
+  Future<bool> reportPost(
+      {required String journalId, required String reason,required String type}) async {
+    isReportingPost.value = true;
+    var response = await Network.makeHttpPostRequestWithToken(
+        url: "${APIConstants.api}/api/reportpost",
+        body: {
+          "type": type,
+          "postId": '628631c9ec62bc0b8d775dab',
+          "reason": reason
+        });
+    isReportingPost.value = false;
+    print(response);
+    return false;
   }
 
   @override
