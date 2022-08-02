@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:rxdart/rxdart.dart';
@@ -23,14 +22,16 @@ class MyJournalsBloc {
   Stream<List<Journals?>> get journalsStateStream =>
       _myJournalController.stream;
 
-  Future<List<Journals?>> _fetchDetailsFirstTime() async {
+  Future<List<Journals?>> _fetchDetailsFirstTime(String? sId) async {
     print("getting my journals for the first time...");
 
     _currentPage = 1;
     // try {
     Map<String, dynamic> apiResponse =
+        // await Network.makeHttpGetRequestWithToken(
+        //     "${APIConstants.api}/api/get-my-journal");
         await Network.makeHttpGetRequestWithToken(
-            "${APIConstants.api}/api/get-my-journal");
+            "${APIConstants.api}/api/user-journal/${sId}?page=$_currentPage");
 
     List<Journals> _journals = <Journals>[];
 
@@ -76,11 +77,12 @@ class MyJournalsBloc {
     // }
   }
 
-  Future<List<Journals?>> _fetchDetailsNextPage() async {
+  Future<List<Journals?>> _fetchDetailsNextPage(String? sId) async {
     print("getting journals for the next page...");
     try {
-      Map<String, dynamic> apiResponse = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/user-journal/${FirebaseAuth.instance.currentUser!.uid}?page=$_currentPage");
+      Map<String, dynamic> apiResponse =
+          await Network.makeHttpGetRequestWithToken(
+              "${APIConstants.api}/api/user-journal/${sId}?page=$_currentPage");
 
       List<Journals> _journals = <Journals>[];
       for (var journal in apiResponse["journals"]) {
@@ -93,9 +95,9 @@ class MyJournalsBloc {
     }
   }
 
-  Future getJournalsSnapshot() async {
+  Future getJournalsSnapshot(String? sId) async {
     _journalsList = [];
-    await _fetchDetailsFirstTime().then((journals) {
+    await _fetchDetailsFirstTime(sId).then((journals) {
       _journalsList.addAll(journals);
       print("journals fetched: " + journals.length.toString());
       _journalsList.forEach((journal) {
@@ -106,11 +108,11 @@ class MyJournalsBloc {
         _myJournalController.sink.addError(error.toString()));
   }
 
-  Future getNextPageJournalsSnapshot() async {
+  Future getNextPageJournalsSnapshot(String? sId) async {
     print("fetching next page journals.............");
     _currentPage++;
     if (_currentPage <= _endPageLimit) {
-      await _fetchDetailsNextPage().then((journals) {
+      await _fetchDetailsNextPage(sId).then((journals) {
         _journalsList.addAll(journals);
         return _myJournalController.add(_journalsList);
       }).onError((error, stackTrace) =>

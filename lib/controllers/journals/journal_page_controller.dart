@@ -34,6 +34,7 @@ class JournalPageController extends GetxController {
   var tredingVideoPlayerController = [].obs;
   var myVideoPlayerControllers = [].obs;
   var selectedGroupId = "".obs;
+  int selectedGroupIndex = 0;
   var isScrollingStarted = false.obs;
   var isImageUploading = false.obs;
   var isTrendingLoading = false.obs;

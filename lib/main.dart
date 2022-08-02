@@ -44,11 +44,18 @@ void main() async {
       Get.put(SearchMarketController());
   BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
+  String? fcmToken;
+
+  FirebaseMessaging.instance.getToken().then((token) {
+    print("FirebaseMessaging.instance.getToken");
+    print('FirebaseMessaging.instance.getToken' + token.toString());
+    fcmToken = token;
+  });
 
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
     print("*" * 30 + "\n" + "Id Token: $idToken");
-    bool isNewUser = await SessionCookie.createSessionCookie(idToken);
+    bool isNewUser = await SessionCookie.createSessionCookie(idToken, fcmToken);
     Map<String, dynamic> _initialAppData = await initApp();
     runApp(SolhApp(
       isProfileCreated: _initialAppData["isProfileCreated"] && !isNewUser,
@@ -164,11 +171,6 @@ class _SolhAppState extends State<SolhApp> {
         print('FirebaseMessaging.instance.onTokenRefresh' + token.toString());
       },
     );
-
-    FirebaseMessaging.instance.getToken().then((token) {
-      print("FirebaseMessaging.instance.getToken");
-      print('FirebaseMessaging.instance.getToken' + token.toString());
-    });
 
     super.initState();
   }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/constants/api.dart';
@@ -9,14 +8,17 @@ class DiscoverGroupController extends GetxController {
   var createdGroupModel = GetGroupResponseModel().obs;
   var joinedGroupModel = GetGroupResponseModel().obs;
   var discoveredGroupModel = GetGroupResponseModel().obs;
+  List<String> groupsShownOnHome =
+      []; ////  groups shown on home screen discover + joined groups// used to find index of selected group
+  ////  So that we can animate the controller to its partcular position
   var groupDetail = GroupList().obs;
   var isLoading = false.obs;
   var isDeletingGroup = false.obs;
 
   @override
   void onInit() {
-    getCreatedGroups();
     getJoinedGroups();
+    getCreatedGroups();
     getDiscoverGroups();
     super.onInit();
   }
@@ -27,6 +29,9 @@ class DiscoverGroupController extends GetxController {
     if (map['success']) {
       createdGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
+    createdGroupModel.value.groupList!.forEach((group) {
+      groupsShownOnHome.add(group.id!);
+    });
   }
 
   Future<void> getJoinedGroups() async {
@@ -35,6 +40,9 @@ class DiscoverGroupController extends GetxController {
     if (map['success']) {
       joinedGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
+    joinedGroupModel.value.groupList!.forEach((group) {
+      groupsShownOnHome.add(group.id!);
+    });
   }
 
   Future<void> getDiscoverGroups() async {

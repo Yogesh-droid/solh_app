@@ -136,8 +136,12 @@ class AppRouter extends _i11.RootStackRouter {
           routeData: routeData, child: const _i18.MyProfileScreen());
     },
     PostScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<PostScreenRouterArgs>();
       return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i19.PostScreen());
+          routeData: routeData,
+          child: _i19.PostScreen(
+            sId: args.sId,
+          ));
     },
     SettingsScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
@@ -486,9 +490,25 @@ class MyProfileScreen extends _i11.PageRouteInfo<void> {
 /// generated route for
 /// [_i19.PostScreen]
 class PostScreenRouter extends _i11.PageRouteInfo<void> {
-  const PostScreenRouter() : super(PostScreenRouter.name, path: 'PostScreen');
+  PostScreenRouter({required String? sId})
+      : super(PostScreenRouter.name,
+            path: 'PostScreen', args: PostScreenRouterArgs(sId: sId));
 
   static const String name = 'PostScreenRouter';
+}
+
+class PostScreenRouterArgs {
+  const PostScreenRouterArgs({
+    this.key,
+    required this.sId,
+  });
+
+  final _i23.Key? key;
+  final String? sId;
+  @override
+  String toString() {
+    return 'PostScreenRouterArgs{key: $key, sId: $sId}';
+  }
 }
 
 /// generated route for

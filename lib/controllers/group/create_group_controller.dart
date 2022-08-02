@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:solh/services/utility.dart';
 import '../../bloc/user-bloc.dart';
 import '../../constants/api.dart';
 import '../../services/network/network.dart';
@@ -127,6 +126,7 @@ class CreateGroupController extends GetxController {
     if (map['success'] == true) {
       success = map['message'];
     }
+
     isLoading.value = false;
     return success;
   }

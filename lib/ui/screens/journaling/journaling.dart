@@ -91,6 +91,8 @@ class _JournalingState extends State<Journaling> {
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
 
+    /////   Loop for fetching groups shown on home screen discover + joined groups ////
+
     journalsBloc.getJournalsSnapshot();
     //openMoodMeter();
     _journalsScrollController.addListener(() async {
@@ -105,6 +107,7 @@ class _JournalingState extends State<Journaling> {
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&
           !_fetchingMore) {
+        print("fetching more");
         setState(() {
           _fetchingMore = true;
         });
@@ -127,6 +130,14 @@ class _JournalingState extends State<Journaling> {
         _journalPageController.isScrollingStarted.value = false;
       }
     });
+
+    // if (_journalPageController.selectedGroupId.value != '') {
+    //   _customScrollController.jumpTo(80 *
+    //       _groupsShownOnHome
+    //           .indexOf(_journalPageController.selectedGroupId.value)
+    //           .toDouble());
+    // }
+
     userBlocNetwork.getMyProfileSnapshot();
   }
 
@@ -149,6 +160,12 @@ class _JournalingState extends State<Journaling> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_journalPageController.selectedGroupId.value != '') {
+        _customScrollController
+            .jumpTo(80 * _journalPageController.selectedGroupIndex.toDouble());
+      }
+    });
     return AnimatedPositioned(
       duration: Duration(milliseconds: 300),
       left: _isDrawerOpen ? 78.w : 0,
@@ -173,98 +190,69 @@ class _JournalingState extends State<Journaling> {
           children: [
             Scaffold(
               appBar: getAppBar(),
-              body: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  WhatsOnYourMindSection(),
-                  //groupRow(),
-                  Expanded(
-                    child: Obx(() {
-                      return !_journalPageController.isLoading.value
-                          ? Obx(() {
-                              return _journalPageController
-                                      .journalsList.value.isNotEmpty
-                                  ? SmartRefresher(
-                                      controller: _refreshController,
-                                      onRefresh: _onRefresh,
-                                      child: ListView.builder(
+              body: SmartRefresher(
+                controller: _refreshController,
+                onRefresh: _onRefresh,
+                child: ListView(
+                  controller: _journalsScrollController,
+                  children: [
+                    Column(
+                      children: [
+                        groupRow(),
+                        Obx(() {
+                          return !_journalPageController.isLoading.value
+                              ? Obx(() {
+                                  return _journalPageController
+                                          .journalsList.value.isNotEmpty
+                                      ? ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
-                                          controller: _journalsScrollController,
                                           itemCount: _journalPageController
-                                                  .journalsList.length +
-                                              1,
+                                              .journalsList.length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
-                                            if (index == 0) {
-                                              return Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  groupRow(),
-                                                  Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 1.h),
-                                                      height: 0.8.h,
-                                                      color: Color(0xFFF6F6F8)),
-                                                ],
-                                              );
-                                            }
-
                                             return _journalPageController
                                                         .journalsList
-                                                        .value[index - 1]
+                                                        .value[index]
                                                         .id !=
                                                     null
                                                 ? getJournalTile(index)
                                                 : Container();
-                                          }),
-                                    )
-                                  : Center(
-                                      child: Column(
-                                        children: [
-                                          groupRow(),
-                                          SizedBox(
-                                            height: 25.h,
-                                          ),
-                                          Obx(() {
-                                            return Text(
-                                              _journalPageController
-                                                          .selectedGroupId
-                                                          .value ==
-                                                      ''
-                                                  ? "No Journals"
-                                                  : 'No Post',
-                                              style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Color(0xFFD9D9D9)),
-                                            );
                                           })
-                                        ],
-                                      ),
-                                    );
-                            })
-                          :
-                          // : Container(
-                          //     child: Column(
-                          //       children: [
-                          //         groupRow(),
-                          //         SizedBox(
-                          //           height: 25.h,
-                          //         ),
-                          //         //MyLoader(),
-                          //         getShimmer(context)
-                          //       ],
-                          //     ),
-                          //   );
-                          getShimmer(context);
-                    }),
-                  ),
-                  if (_fetchingMore) Center(child: MyLoader()),
-                  SizedBox(height: Platform.isIOS ? 80 : 50),
-                ],
+                                      : Center(
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 25.h,
+                                              ),
+                                              Obx(() {
+                                                return Text(
+                                                  _journalPageController
+                                                              .selectedGroupId
+                                                              .value ==
+                                                          ''
+                                                      ? "No Journals"
+                                                      : 'No Post',
+                                                  style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFFD9D9D9)),
+                                                );
+                                              })
+                                            ],
+                                          ),
+                                        );
+                                })
+                              : getShimmer(context);
+                        }),
+                      ],
+                    ),
+                    if (_fetchingMore) Center(child: MyLoader()),
+                    SizedBox(height: Platform.isIOS ? 80 : 50),
+                  ],
+                ),
               ),
             ),
             if (_isDrawerOpen)
@@ -284,6 +272,7 @@ class _JournalingState extends State<Journaling> {
 
   SolhAppBar getAppBar() {
     return SolhAppBar(
+      height: 110,
       title: Row(
         children: [
           Container(
@@ -319,6 +308,8 @@ class _JournalingState extends State<Journaling> {
           ),
         ],
       ),
+      bottom: PreferredSize(
+          preferredSize: Size.fromHeight(0), child: WhatsOnYourMindSection()),
       isLandingScreen: true,
     );
   }
@@ -326,14 +317,15 @@ class _JournalingState extends State<Journaling> {
   Widget groupRow() {
     print('rendering group row');
     return Container(
-        height: MediaQuery.of(context).size.height * 0.13,
-        child:
-            // Obx(() {
-            //   return
-            CustomScrollView(
+      height: MediaQuery.of(context).size.height * 0.13,
+      child: Obx(() {
+        return CustomScrollView(
           controller: _customScrollController,
           scrollDirection: Axis.horizontal,
           slivers: [
+            SliverToBoxAdapter(
+              child: Divider(),
+            ),
             SliverToBoxAdapter(
               child: getSolhGrouContainer(),
             ),
@@ -361,9 +353,9 @@ class _JournalingState extends State<Journaling> {
                             .createdGroupModel.value.groupList!.length))
                 : getGroupShimmer(context),
           ],
-        )
-        //}),
         );
+      }),
+    );
   }
 
   Widget getGroupContainer(GroupList group) {
@@ -392,9 +384,9 @@ class _JournalingState extends State<Journaling> {
               borderRadius: BorderRadius.circular(50),
               onTap: !_journalPageController.isLoading.value
                   ? () async {
-                      _customScrollViewPosition =
-                          _customScrollController.position.pixels;
-                      print(_customScrollViewPosition);
+                      // _customScrollViewPosition =
+                      //     _customScrollController.position.pixels;
+                      // print(_customScrollViewPosition);
                       _journalPageController.selectedGroupId.value =
                           group.sId ?? '';
                       _journalPageController.journalsList.clear();
@@ -404,9 +396,9 @@ class _JournalingState extends State<Journaling> {
                           groupId: group.sId);
                       _journalPageController.journalsList.refresh();
                       //_customScrollController.jumpTo(_customScrollViewPosition);
-                      _customScrollController.animateTo(200,
-                          duration: Duration(milliseconds: 500),
-                          curve: Curves.easeInOut);
+                      // _customScrollController.animateTo(200,
+                      //     duration: Duration(milliseconds: 500),
+                      //     curve: Curves.easeInOut);
                     }
                   : null,
               child: Padding(
@@ -555,7 +547,7 @@ class _JournalingState extends State<Journaling> {
   Future<void> deletePost(int index) async {
     print("deleting post");
     DeleteJournal _deleteJournal = DeleteJournal(
-        journalId: _journalPageController.journalsList.value[index - 1].id!);
+        journalId: _journalPageController.journalsList.value[index].id!);
     await _deleteJournal.deletePost();
     // _journalPageController
     //     .videoPlayerController
@@ -581,8 +573,8 @@ class _JournalingState extends State<Journaling> {
 
   Widget getJournalTile(int index) {
     return JournalTile(
-      journalModel: _journalPageController.journalsList.value[index - 1],
-      index: index - 1,
+      journalModel: _journalPageController.journalsList.value[index],
+      index: index,
       deletePost: () async {
         deletePost(index);
       },
@@ -592,12 +584,10 @@ class _JournalingState extends State<Journaling> {
 
   getShimmer(BuildContext context) {
     return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, index) {
-          if (index == 0) {
-            return groupRow();
-          }
           return Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,

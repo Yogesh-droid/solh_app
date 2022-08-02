@@ -22,6 +22,8 @@ class GetGroupResponseModel {
     }
     return data;
   }
+
+  void forEach(Null Function(dynamic element) param0) {}
 }
 
 class GroupList {

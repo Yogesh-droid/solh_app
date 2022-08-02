@@ -162,7 +162,8 @@ class ProfileMenu extends StatelessWidget {
           ProfileMenuTile(
             title: "Posts",
             onPressed: () {
-              AutoRouter.of(context).push(PostScreenRouter());
+              AutoRouter.of(context).push(PostScreenRouter(
+                  sId: FirebaseAuth.instance.currentUser!.uid));
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),

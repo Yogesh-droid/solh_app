@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:solh/bloc/journals/my-journal-bloc.dart';
-import 'package:solh/model/journal.dart';
 import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
-import 'package:solh/ui/screens/journaling/widgets/my_journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../controllers/journals/journal_page_controller.dart';
 import '../../../../model/journals/journals_response_model.dart';
-import 'package:solh/ui/screens/journaling/journaling.dart';
 
 class PostScreen extends StatefulWidget {
-  PostScreen({Key? key}) : super(key: key);
-
+  PostScreen({Key? key, this.sId}) : super(key: key);
+  final String? sId;
+// FirebaseAuth.instance.currentUser!.uid
   @override
   State<PostScreen> createState() => _PostScreenState();
 }
@@ -23,11 +21,19 @@ class PostScreen extends StatefulWidget {
 class _PostScreenState extends State<PostScreen> {
   JournalPageController _journalPageController = Get.find();
   late RefreshController _refreshController;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    getMyJournals();
+    getMyJournals(widget.sId);
+    _refreshController = RefreshController();
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        // getMyJournals();
+      }
+    });
   }
 
   @override
@@ -60,6 +66,7 @@ class _PostScreenState extends State<PostScreen> {
               return Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
+                    controller: _scrollController,
                     shrinkWrap: true,
                     itemCount: journalsSnapshot.requireData.length,
                     itemBuilder: (_, index) {
@@ -80,8 +87,8 @@ class _PostScreenState extends State<PostScreen> {
     );
   }
 
-  Future<void> getMyJournals() async {
-    await myJournalsBloc.getJournalsSnapshot();
+  Future<void> getMyJournals(String? sId) async {
+    await myJournalsBloc.getJournalsSnapshot(sId);
   }
 }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -85,8 +86,11 @@ class _OTPScreenState extends State<OTPScreen> {
                         .then((value) async {
                       String idToken = await value.user!.getIdToken();
                       print("user idToken: $idToken");
+                      String? fcmToken =
+                          await FirebaseMessaging.instance.getToken();
                       bool isSessionCookieCreated =
-                          await SessionCookie.createSessionCookie(idToken);
+                          await SessionCookie.createSessionCookie(
+                              idToken, fcmToken);
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =

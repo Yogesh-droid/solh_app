@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -7,8 +9,10 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../model/user/user.dart';
+import '../../../routes/routes.gr.dart';
 import '../../../services/user/user-profile.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
+import '../my-profile/posts/post.dart';
 
 class ConnectProfileScreen extends StatefulWidget {
   ConnectProfileScreen(
@@ -236,7 +240,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                   ]),
                                 )
                               ],
-                              body: TabView(),
+                              body: TabView(sId: widget._sId),
                             );
                 })
             : getUserAnalytics());
@@ -382,7 +386,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                   ]),
                 )
               ],
-              body: TabView(),
+              body: TabView(
+                sId: widget._sId,
+              ),
             );
           } else {
             print(' No data is available');
@@ -408,7 +414,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
 class TabView extends StatefulWidget {
   const TabView({
     Key? key,
+    this.sId,
   }) : super(key: key);
+  final String? sId;
 
   @override
   _TabViewState createState() => _TabViewState();
@@ -429,7 +437,18 @@ class _TabViewState extends State<TabView> {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             GestureDetector(
               onTap: () {
-                _pageController.jumpToPage(0);
+                print("Tab 1");
+                print(widget.sId);
+                // AutoRouter.of(context).push(PostScreenRouter(
+                //     sId: FirebaseAuth.instance.currentUser!.uid));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PostScreen(
+                      sId: widget.sId,
+                    ),
+                  ),
+                );
               },
               child: Text(
                 "Posts",

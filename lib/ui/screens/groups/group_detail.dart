@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +18,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import '../../../routes/routes.gr.dart';
+import '../journaling/create-journal.dart';
+import '../journaling/journaling.dart';
 
 class GroupDetailsPage extends StatefulWidget {
   GroupDetailsPage({Key? key, required this.group, this.isJoined})
@@ -343,13 +343,17 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     Utility.showLoader(context);
                     String success = await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');
-                    await discoverGroupController.getJoinedGroups();
-                    await discoverGroupController
-                        .getDiscoverGroups()
-                        .then((value) {
-                      Utility.showToast(success);
-                      Navigator.of(context).pop();
-                    });
+                    discoverGroupController.joinedGroupModel.value.groupList!
+                        .add(groupList);
+                    discoverGroupController
+                        .discoveredGroupModel.value.groupList!
+                        .remove(groupList);
+                    discoverGroupController.discoveredGroupModel.refresh();
+                    discoverGroupController.joinedGroupModel.refresh();
+                    // await discoverGroupController.getJoinedGroups();
+                    // await discoverGroupController.getDiscoverGroups();
+                    Navigator.of(context).pop();
+                    Utility.showToast(success);
                     Navigator.of(context).pop();
                   }),
             ),
@@ -368,7 +372,11 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   onPressed: () {
                     journalPageController.selectedGroupId.value =
                         groupList.sId ?? '';
-                    AutoRouter.of(context).push(CreatePostScreenRouter());
+                    //AutoRouter.of(context).push(CreatePostScreenRouter());
+                    Navigator.of(context)
+                        .pushReplacement(MaterialPageRoute(builder: (context) {
+                      return CreatePostScreen();
+                    }));
                   },
                 ),
                 SolhGreenBorderButton(
@@ -387,7 +395,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           groupId: groupList.sId ?? '');
                       journalPageController.journalsList.refresh();
 
-                      AutoRouter.of(context).push(JournalingScreen());
+                      //AutoRouter.of(context).push(JournalingScreen());
+                      journalPageController.selectedGroupIndex =
+                          discoverGroupController.groupsShownOnHome
+                              .indexOf(groupList.sId!);
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return Journaling();
+                      }));
                     }),
               ],
             ),

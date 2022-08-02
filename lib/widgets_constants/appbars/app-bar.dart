@@ -13,24 +13,28 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       required bool isLandingScreen,
       double? height,
       bool isVideoCallScreen = false,
-      bool? isDiaryBtnShown})
+      bool? isDiaryBtnShown,
+      PreferredSize? bottom})
       : _title = title,
         _isLandingScreen = isLandingScreen,
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
-        _isDiaryBtnShown = isDiaryBtnShown;
+        _isDiaryBtnShown = isDiaryBtnShown,
+        _bottom = bottom;
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
   final Widget? _title;
   final double? _height;
   final bool? _isDiaryBtnShown;
+  final PreferredSize? _bottom;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
         title: _title,
         centerTitle: false,
+        bottom: _bottom,
         leadingWidth: _isLandingScreen ? 0 : 30,
         leading: !_isLandingScreen
             ? IconButton(
