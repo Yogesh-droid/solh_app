@@ -4,6 +4,8 @@ import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'dart:async';
 import 'package:socket_io_client/socket_io_client.dart' as io;
 
+import '../../../../constants/api.dart';
+
 class SocketService {
   static late StreamController<Conversation> _socketResponse;
   static late StreamController<List<String>> _userResponse;
@@ -11,8 +13,8 @@ class SocketService {
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
-      // APIConstants.api,
-      'https://api.solhapp.com/api/schat',
+      APIConstants.api,
+      //'https://api.solhapp.com/api/schat',
       io.OptionBuilder()
           .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
 
