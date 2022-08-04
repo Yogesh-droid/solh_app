@@ -439,6 +439,8 @@ class _JournalTileState extends State<JournalTile> {
                                 )
                               : PostMenuButton(
                                   journalId: widget._journalModel!.id ?? '',
+                                  userId:
+                                      widget._journalModel!.postedBy!.sId ?? '',
                                 )
                           : Container(
                               width: 10,
@@ -970,16 +972,20 @@ class _PostContentWidgetState extends State<PostContentWidget> {
 
 class PostMenuButton extends StatelessWidget {
   PostMenuButton(
-      {Key? key, required String journalId, VoidCallback? deletePost})
+      {Key? key,
+      required String journalId,
+      VoidCallback? deletePost,
+      String? userId})
       : _journalId = journalId,
         _deletePost = deletePost,
+        _userId = userId ?? '',
         super(key: key);
 
   final String _journalId;
   final VoidCallback? _deletePost;
-  final JournalCommentController journalCommentController =
-      Get.find();
-      final TextEditingController reasonController = TextEditingController();
+  final String _userId;
+  final JournalCommentController journalCommentController = Get.find();
+  final TextEditingController reasonController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -1001,42 +1007,56 @@ class PostMenuButton extends StatelessWidget {
                     vertical: MediaQuery.of(context).size.height / 80,
                   ),
                   child: Text(
-                    _deletePost!=null ? "Delete this post": "Report this post",
+                    _deletePost != null
+                        ? "Delete this post"
+                        : "Report this post",
                   ),
                 ),
-                onTap: _deletePost!=null ? _deletePost : () {
-                  journalCommentController.isReportingPost.value = false;
-                  showDialog(
-                    context: context,
-                    builder: (context) => ReportPostDialog(
-                      context,
-                      journalId: _journalId,
-                    ),
-                  );
-                },
+                onTap: _deletePost != null
+                    ? _deletePost
+                    : () {
+                        journalCommentController.isReportingPost.value = false;
+                        showDialog(
+                          context: context,
+                          builder: (context) => ReportPostDialog(context,
+                              journalId: _journalId, type: 'post'),
+                        );
+                      },
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
               ),
-              // PopupMenuItem(
-              //   child: Container(
-              //     alignment: Alignment.centerLeft,
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: MediaQuery.of(context).size.width / 20,
-              //       vertical: MediaQuery.of(context).size.height / 80,
-              //     ),
-              //     decoration: BoxDecoration(
-              //         border: Border(
-              //       bottom: BorderSide(color: SolhColors.grey239),
-              //     )),
-              //     child: Text(
-              //       "Don't see this post again",
-              //     ),
-              //   ),
-              //   value: 2,
-              //   textStyle: SolhTextStyles.JournalingPostMenuText,
-              //   padding: EdgeInsets.zero,
-              // ),
+              PopupMenuItem(
+                child: _deletePost == null
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 20,
+                          vertical: MediaQuery.of(context).size.height / 80,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(color: SolhColors.grey239),
+                        )),
+                        child: Text(
+                          "Report this person",
+                        ),
+                      )
+                    : Container(),
+                onTap: _deletePost != null
+                    ? _deletePost
+                    : () {
+                        journalCommentController.isReportingPost.value = false;
+                        showDialog(
+                          context: context,
+                          builder: (context) => ReportPostDialog(context,
+                              journalId: _userId, type: 'user'),
+                        );
+                      },
+                value: 2,
+                textStyle: SolhTextStyles.JournalingPostMenuText,
+                padding: EdgeInsets.zero,
+              ),
               // PopupMenuItem(
               //   child: Container(
               //     alignment: Alignment.centerLeft,
@@ -1077,8 +1097,9 @@ class PostMenuButton extends StatelessWidget {
               // ),
             ]);
   }
-  
-  ReportPostDialog(BuildContext context, {required String journalId}) {
+
+  ReportPostDialog(BuildContext context,
+      {required String journalId, required String type}) {
     return Dialog(
       insetPadding: EdgeInsets.zero,
       backgroundColor: Colors.transparent,
@@ -1095,13 +1116,16 @@ class PostMenuButton extends StatelessWidget {
         ),
         child: Column(children: [
           Align(
-            alignment: Alignment.topRight,
-            child: InkWell(
-              onTap: (){
-                Navigator.pop(context);
-              },
-              child: Icon(Icons.close,color: SolhColors.black,))),
-            SizedBox(height: 10),
+              alignment: Alignment.topRight,
+              child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: SolhColors.black,
+                  ))),
+          SizedBox(height: 10),
           Text(
             "We are sorry for your inconvenience due to this post/person. Please let us know what is the problem with this post/person.",
             style: SolhTextStyles.JournalingPostMenuText,
@@ -1110,21 +1134,40 @@ class PostMenuButton extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height / 40,
           ),
-          TextFieldB(label: 'Reason',maxLine: 4,textEditingController: reasonController,),
+          TextFieldB(
+            label: 'Reason',
+            maxLine: 4,
+            textEditingController: reasonController,
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height / 40,
           ),
-          SolhGreenButton(child: Obx((){
-            return !journalCommentController.isReportingPost.value ? Text('Report',style: SolhTextStyles.GreenButtonText,): Container(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(color: SolhColors.white,strokeWidth: 1,));
-          }),onPressed: journalCommentController.isReportingPost.value ? null : () async {
-            await journalCommentController.reportPost(journalId: journalId, reason: reasonController.text,type: 'post');
-            Navigator.pop(context);
-          },),
+          SolhGreenButton(
+            child: Obx(() {
+              return !journalCommentController.isReportingPost.value
+                  ? Text(
+                      'Report',
+                      style: SolhTextStyles.GreenButtonText,
+                    )
+                  : Container(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        color: SolhColors.white,
+                        strokeWidth: 1,
+                      ));
+            }),
+            onPressed: journalCommentController.isReportingPost.value
+                ? null
+                : () async {
+                    await journalCommentController.reportPost(
+                        journalId: journalId,
+                        reason: reasonController.text,
+                        type: type);
+                    Navigator.pop(context);
+                  },
+          ),
         ]),
-      
       ),
     );
   }
