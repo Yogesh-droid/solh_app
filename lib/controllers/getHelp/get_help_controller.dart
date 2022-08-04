@@ -83,7 +83,6 @@ class GetHelpController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getIssueList();
     getSpecializationList();

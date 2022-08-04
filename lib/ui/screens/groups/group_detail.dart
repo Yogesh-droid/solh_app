@@ -33,7 +33,7 @@ class GroupDetailsPage extends StatefulWidget {
 class _GroupDetailsPageState extends State<GroupDetailsPage> {
   late GroupList groupList;
   late bool? isJoined;
-  late bool isDefaultAdmin;
+  late bool isDefaultAdmin = false;
   JournalPageController journalPageController = Get.find();
 
   CreateGroupController createGroupController = Get.find();
@@ -47,9 +47,18 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     if (groupList.groupMembers == null) {
       getGroupDetails();
     }
-    isDefaultAdmin = groupList.defaultAdmin != null
-        ? groupList.defaultAdmin!.id == userBlocNetwork.id
-        : false; //// this is for the admin
+    // isDefaultAdmin = groupList.defaultAdmin != null
+    //     ? groupList.defaultAdmin!.id == userBlocNetwork.id
+    //     : false; //// this is for the admin
+
+    groupList.defaultAdmin?.forEach((element) {
+      print(element.id);
+      print(userBlocNetwork.id);
+      if (element.id == userBlocNetwork.id) {
+        isDefaultAdmin = true;
+      }
+    });
+
     if (widget.isJoined == null) {
       discoverGroupController.joinedGroupModel.value.groupList != null
           ? discoverGroupController.joinedGroupModel.value.groupList!
@@ -424,65 +433,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           SizedBox(
             height: 10,
           ),
-
-          Row(
-            children: [
-              CircleAvatar(
-                // backgroundImage: AssetImage(
-                //   'assets/images/group_placeholder.png',
-                // ),
-                backgroundImage: CachedNetworkImageProvider(
-                    groupList.defaultAdmin!.profilePicture ?? ''),
-                backgroundColor: Colors.transparent,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        child: Text(groupList.defaultAdmin!.name ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 2,
-                        height: 14,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'Admin',
-                        style: GoogleFonts.signika(color: SolhColors.green),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      SvgPicture.asset(
-                        'assets/images/admin.svg',
-                      )
-                    ],
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: Text(groupList.defaultAdmin!.bio ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 14, color: SolhColors.grey)),
-                  ),
-                ],
-              ),
-            ],
-          ),
+          getDefaultAdmin(context),
           SizedBox(
             height: 10,
           ),
@@ -535,30 +486,81 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   }
 
   Widget getDefaultAdmin(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(
-              groupList.defaultAdmin!.profilePicture ?? ''),
-          backgroundColor: Colors.transparent,
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(groupList.defaultAdmin!.name ?? '',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
-            Container(
-              width: MediaQuery.of(context).size.width / 1.2,
-              child: Text(groupList.defaultAdmin!.bio ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 14, color: SolhColors.grey)),
-            ),
-          ],
-        ),
-      ],
+    return ListView(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: groupList.defaultAdmin!.map((defaultAdmin) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    // backgroundImage: AssetImage(
+                    //   'assets/images/group_placeholder.png',
+                    // ),
+                    backgroundImage: CachedNetworkImageProvider(
+                      defaultAdmin.profilePicture ?? '',
+                    ),
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            child: Text(defaultAdmin.name ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.w600)),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 2,
+                            height: 14,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Admin',
+                            style: GoogleFonts.signika(color: SolhColors.green),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          SvgPicture.asset(
+                            'assets/images/admin.svg',
+                          )
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        child: Text(defaultAdmin.bio ?? '',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 14, color: SolhColors.grey)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -584,7 +586,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     await discoverGroupController.getGroupDetail(groupList.sId!);
     groupList = discoverGroupController.groupDetail.value;
     if (!isDefaultAdmin) {
-      isDefaultAdmin = groupList.defaultAdmin!.sId == userBlocNetwork.id;
+      //isDefaultAdmin = groupList.defaultAdmin!.sId == userBlocNetwork.id;
+      groupList.defaultAdmin?.forEach((element) {
+        if (element.sId == userBlocNetwork.id) {
+          isDefaultAdmin = true;
+        }
+      });
     }
     setState(() {});
   }

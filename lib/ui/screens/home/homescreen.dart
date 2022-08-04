@@ -704,32 +704,35 @@ class _HomePageState extends State<HomePage> {
                 itemCount:
                     getHelpController.solhVolunteerList.value.provider!.length,
                 itemBuilder: (context, index) => SolhVolunteers(
-                  bio: getHelpController
-                          .solhVolunteerList.value.provider![index].bio ??
-                      '',
-                  name: getHelpController
-                          .solhVolunteerList.value.provider![index].name ??
-                      '',
-                  mobile: getHelpController.solhVolunteerList.value
-                          .provider![index].contactNumber ??
-                      '',
-                  imgUrl: getHelpController
-                      .solhVolunteerList.value.provider![index].profilePicture,
-                  sId: getHelpController
-                      .solhVolunteerList.value.provider![index].sId,
-                  uid: getHelpController
-                      .solhVolunteerList.value.provider![index].uid,
-                  comments: getHelpController
-                      .solhVolunteerList.value.provider![index].commentCount
-                      .toString(),
-                  connections: getHelpController
-                      .solhVolunteerList.value.provider![index].connectionsCount
-                      .toString(),
-                  likes: getHelpController
-                      .solhVolunteerList.value.provider![index].likesCount
-                      .toString(),
-                ),
-              )
+                      bio: getHelpController
+                              .solhVolunteerList.value.provider![index].bio ??
+                          '',
+                      name: getHelpController
+                              .solhVolunteerList.value.provider![index].name ??
+                          '',
+                      mobile: getHelpController.solhVolunteerList.value
+                              .provider![index].contactNumber ??
+                          '',
+                      imgUrl: getHelpController.solhVolunteerList.value
+                          .provider![index].profilePicture,
+                      sId: getHelpController
+                          .solhVolunteerList.value.provider![index].sId,
+                      uid: getHelpController
+                          .solhVolunteerList.value.provider![index].uid,
+                      comments: getHelpController
+                          .solhVolunteerList.value.provider![index].commentCount
+                          .toString(),
+                      connections: getHelpController.solhVolunteerList.value
+                          .provider![index].connectionsCount
+                          .toString(),
+                      likes: getHelpController
+                          .solhVolunteerList.value.provider![index].likesCount
+                          .toString(),
+
+                      /// ye deepak ne phir dobara se activete karwaya hai ///  featured only
+                      userType: getHelpController
+                          .solhVolunteerList.value.provider![index].userType,
+                    ))
             : Container(
                 child: Center(
                   child: Text('No Volunteers Found'),

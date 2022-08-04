@@ -36,15 +36,11 @@ class _JournalingScreenState extends State<JournalingScreen> {
   FeelingsController feelingsController = Get.find();
   JournalCommentController journalCommentController = Get.find();
   MoodMeterController moodMeterController = Get.find();
-  late DateTime _lastDateMoodMeterShown;
   late bool isMoodMeterShown;
 
   final DiscoverGroupController discoverGroupController = Get.find();
 
   ConnectionController connectionController = Get.find();
-
-  // final _newPostKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +77,6 @@ class _JournalingState extends State<Journaling> {
   MoodMeterController moodMeterController = Get.find();
   late ScrollController _journalsScrollController;
   ScrollController _customScrollController = ScrollController();
-  var _customScrollViewPosition = 0.0;
   late RefreshController _refreshController;
   bool _isDrawerOpen = false;
   bool _fetchingMore = false;

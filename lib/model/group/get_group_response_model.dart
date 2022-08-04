@@ -32,7 +32,7 @@ class GroupList {
   String? groupType;
   String? groupName;
   String? groupDescription;
-  GroupMembers? defaultAdmin;
+  List<GroupMembers>? defaultAdmin;
   int? journalCount;
   String? createdAt;
   String? updatedAt;
@@ -69,9 +69,15 @@ class GroupList {
     groupType = json['groupType'];
     groupName = json['groupName'];
     groupDescription = json['groupDescription'];
-    defaultAdmin = json['defaultAdmin'] != null
-        ? new GroupMembers.fromJson(json['defaultAdmin'])
-        : null;
+    // defaultAdmin = json['defaultAdmin'] != null
+    //     ? new GroupMembers.fromJson(json['defaultAdmin'])
+    //     : null;
+    if (json['defaultAdmin'] != null) {
+      defaultAdmin = <GroupMembers>[];
+      json['defaultAdmin'].forEach((v) {
+        defaultAdmin!.add(new GroupMembers.fromJson(v));
+      });
+    }
     journalCount = json['journalCount'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -97,7 +103,7 @@ class GroupList {
     data['groupName'] = this.groupName;
     data['groupDescription'] = this.groupDescription;
     if (this.defaultAdmin != null) {
-      data['defaultAdmin'] = this.defaultAdmin!.toJson();
+      data['defaultAdmin'] = this.defaultAdmin!.map((v) => v.toJson()).toList();
     }
     data['journalCount'] = this.journalCount;
     data['createdAt'] = this.createdAt;
