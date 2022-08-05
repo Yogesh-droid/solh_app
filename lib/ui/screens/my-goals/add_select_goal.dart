@@ -122,7 +122,7 @@ class AddGoalButton extends StatelessWidget {
 
 class SampleGoals extends StatelessWidget {
   SampleGoals({Key? key}) : super(key: key);
-  GoalSettingController _goalSettingController = Get.find();
+  final GoalSettingController _goalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {

@@ -417,12 +417,14 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   }
 
   void checkIfUserIsMyConnection(String sId) {
-    connectionController.myConnectionModel.value.myConnections!
-        .forEach((element) {
-      if (element.sId == sId) {
-        widget.isMyConnection = true;
-      }
-    });
+    connectionController.myConnectionModel.value.myConnections != null
+        ? connectionController.myConnectionModel.value.myConnections!
+            .forEach((element) {
+            if (element.sId == sId) {
+              widget.isMyConnection = true;
+            }
+          })
+        : null;
   }
 
   Future<void> getUserAnalyticsFromApi({required String sid}) async {

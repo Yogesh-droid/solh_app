@@ -130,4 +130,18 @@ class CreateGroupController extends GetxController {
     isLoading.value = false;
     return success;
   }
+
+  Future<String> exitGroup({required String groupId}) async {
+    Map<String, dynamic> map = await Network.makeHttpDeleteRequestWithToken(
+        url: APIConstants.api + '/api/exitGroup?groupId=$groupId',
+        body: {}).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    String message = '';
+    if (map['message'] == 'Exited from group') {
+      message = map['message'];
+    }
+    return message;
+  }
 }

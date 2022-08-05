@@ -1,21 +1,18 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/services/utility.dart';
 
 class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
-  final AgeController _ageController = Get.find();
   UserModel myData = UserModel();
   String _sessionCookie = "";
   String id = '';
   String userMobileNo = '';
   String userEmail = '';
+  List<String> hiddenPosts = [];
 
   Stream<UserModel?> get userStateStream => _userController.stream;
 

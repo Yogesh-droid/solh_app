@@ -13,8 +13,8 @@ class SocketService {
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
-      APIConstants.api,
-      //'https://api.solhapp.com/api/schat',
+      // APIConstants.api,
+      'https://api.solhapp.com',
       io.OptionBuilder()
           .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
 

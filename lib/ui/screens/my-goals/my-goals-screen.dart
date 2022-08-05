@@ -12,6 +12,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'details.dart';
 import 'select_goal.dart';
 
 class MyGoalsScreen extends StatelessWidget {
@@ -196,6 +197,93 @@ class MyGoalsScreen extends StatelessWidget {
       ),
     );
   }
+
+  // getFeaturedGoals(FeaturedGoalModel value) {
+  //   return ListView.builder(
+  //       physics: NeverScrollableScrollPhysics(),
+  //       shrinkWrap: true,
+  //       itemCount: value.goal![0].sampleGoal!.length,
+  //       itemBuilder: (context, index) {
+  //         return Column(
+  //           children: [
+  //             InkWell(
+  //               onTap: () => Navigator.of(context).push(MaterialPageRoute(
+  //                   builder: (context) => Details(
+  //                         sampleGoal: value.goal![0].sampleGoal![index],
+  //                         goalId: _goalSettingController
+  //                             .sampleGoalModel.value.goalList![0].sId!,
+  //                       ))),
+  //               child: Container(
+  //                 height: 100,
+  //                 width: double.maxFinite,
+  //                 decoration: BoxDecoration(
+  //                   border: Border.all(
+  //                     color: Color(0xffA6A6A6),
+  //                   ),
+  //                   borderRadius: BorderRadius.circular(12),
+  //                 ),
+  //                 child: Row(
+  //                   children: [
+  //                     ClipRRect(
+  //                       borderRadius: BorderRadius.only(
+  //                           bottomLeft: Radius.circular(12),
+  //                           topLeft: Radius.circular(12)),
+  //                       child: CachedNetworkImage(
+  //                         imageUrl: _goalSettingController.sampleGoalModel.value
+  //                                 .goalList![0].sampleGoal![index].image ??
+  //                             '',
+  //                         errorWidget: (context, url, error) => Image.asset(
+  //                             'assets/images/no-image-available.png'),
+  //                         fit: BoxFit.cover,
+  //                         width: 100,
+  //                         height: 100,
+  //                       ),
+  //                     ),
+  //                     SizedBox(
+  //                       width: 20,
+  //                     ),
+  //                     Column(
+  //                         crossAxisAlignment: CrossAxisAlignment.start,
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         children: [
+  //                           Text(
+  //                             _goalSettingController.sampleGoalModel.value
+  //                                     .goalList![0].sampleGoal![index].name ??
+  //                                 '',
+  //                             style: GoogleFonts.signika(
+  //                                 color: Color(0xff666666),
+  //                                 fontSize: 16,
+  //                                 fontWeight: FontWeight.w400),
+  //                           ),
+  //                           SizedBox(
+  //                             height: 5,
+  //                           ),
+  //                           Container(
+  //                             width: 200,
+  //                             child: Text(
+  //                               '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![0].task ?? ''}' +
+  //                                   ', ' +
+  //                                   '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![1].task ?? ''}',
+  //                               maxLines: 2,
+  //                               overflow: TextOverflow.ellipsis,
+  //                               style: GoogleFonts.signika(
+  //                                   color: Color(0xffA6A6A6),
+  //                                   fontSize: 13,
+  //                                   fontWeight: FontWeight.w400),
+  //                             ),
+  //                           )
+  //                         ]),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+  //             SizedBox(
+  //               height: 10,
+  //             ),
+  //           ],
+  //         );
+  //       });
+  // }
 }
 
 goalFontStyle(

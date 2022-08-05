@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
@@ -985,6 +986,7 @@ class PostMenuButton extends StatelessWidget {
   final VoidCallback? _deletePost;
   final String _userId;
   final JournalCommentController journalCommentController = Get.find();
+  final JournalPageController journalPageController = Get.find();
   final TextEditingController reasonController = TextEditingController();
 
   @override
@@ -1027,6 +1029,7 @@ class PostMenuButton extends StatelessWidget {
                 padding: EdgeInsets.zero,
               ),
               PopupMenuItem(
+                height: _deletePost != null ? 0 : 48,
                 child: _deletePost == null
                     ? Container(
                         alignment: Alignment.centerLeft,
@@ -1044,7 +1047,7 @@ class PostMenuButton extends StatelessWidget {
                       )
                     : Container(),
                 onTap: _deletePost != null
-                    ? _deletePost
+                    ? null
                     : () {
                         journalCommentController.isReportingPost.value = false;
                         showDialog(
@@ -1057,25 +1060,39 @@ class PostMenuButton extends StatelessWidget {
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
               ),
-              // PopupMenuItem(
-              //   child: Container(
-              //     alignment: Alignment.centerLeft,
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: MediaQuery.of(context).size.width / 20,
-              //       vertical: MediaQuery.of(context).size.height / 80,
-              //     ),
-              //     decoration: BoxDecoration(
-              //         border: Border(
-              //       bottom: BorderSide(color: SolhColors.grey239),
-              //     )),
-              //     child: Text(
-              //       "Block this person",
-              //     ),
-              //   ),
-              //   value: 3,
-              //   textStyle: SolhTextStyles.JournalingPostMenuText,
-              //   padding: EdgeInsets.zero,
-              // ),
+              PopupMenuItem(
+                height: _deletePost != null ? 0 : 48,
+                child: _deletePost == null
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 20,
+                          vertical: MediaQuery.of(context).size.height / 80,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(color: SolhColors.grey239),
+                        )),
+                        child: Text(
+                          "Don't show this post again",
+                        ),
+                      )
+                    : Container(),
+                onTap: _deletePost == null
+                    ? () {
+                        journalPageController.journalsList
+                            .removeWhere((element) => element.id == _journalId);
+                        journalPageController.journalsList.refresh();
+                        userBlocNetwork.hiddenPosts.add(_journalId);
+                        journalPageController.hidePost(
+                          journalId: _journalId,
+                        );
+                      }
+                    : null,
+                value: 3,
+                textStyle: SolhTextStyles.JournalingPostMenuText,
+                padding: EdgeInsets.zero,
+              ),
               // PopupMenuItem(
               //   child: Container(
               //     alignment: Alignment.centerLeft,

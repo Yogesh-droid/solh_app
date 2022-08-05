@@ -2,13 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/model/mood-meter/mood_analytics_model.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
-import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
-import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../model/user/user.dart';
@@ -28,6 +26,7 @@ class SideDrawer extends StatefulWidget {
 
 class _SideDrawerState extends State<SideDrawer> {
   final MoodMeterController moodMeterController = Get.find();
+  BottomNavigatorController bottomNavigatorController = Get.find();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -44,10 +43,13 @@ class _SideDrawerState extends State<SideDrawer> {
                       padding: EdgeInsets.symmetric(
                           vertical: 2.5.h, horizontal: 3.8.w),
                       child: InkWell(
-                        onTap: () => Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return MyProfileScreen();
-                        })),
+                        onTap: () {
+                          bottomNavigatorController.isDrawerOpen.value = false;
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return MyProfileScreen();
+                          }));
+                        },
                         child: Row(
                           children: [
                             CircleAvatar(
@@ -113,6 +115,7 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "My Diary",
                 onPressed: () {
+                  bottomNavigatorController.isDrawerOpen.value = false;
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -122,6 +125,7 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Groups",
                 onPressed: () {
+                  bottomNavigatorController.isDrawerOpen.value = false;
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -144,8 +148,17 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             Column(children: [
               SideDrawerMenuTile(
-                title: "FAQ",
+                title: "Contact Us",
                 isBottomMenu: true,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: "Contact Us",
+                                url: "https://solhapp.com/contact-us.html",
+                              )));
+                },
               ),
               SideDrawerMenuTile(
                 title: "Privacy Policy",

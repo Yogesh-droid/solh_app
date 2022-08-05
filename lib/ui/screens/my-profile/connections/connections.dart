@@ -13,11 +13,9 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
-
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
-
 import '../../../../model/group/get_group_response_model.dart';
 import '../../connect/connect-screen.dart';
 import '../../groups/group_detail.dart';
@@ -369,7 +367,7 @@ class Connections extends StatelessWidget {
                 onRefresh: () async {
                   await connectionController.getMyConnection();
 
-                  _refreshController.refreshCompleted();
+                  _allConnectionRefreshcontroller.refreshCompleted();
                 },
                 child: ListView.builder(
                   itemCount: connectionController

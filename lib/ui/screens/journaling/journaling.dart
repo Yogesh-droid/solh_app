@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
@@ -75,6 +76,7 @@ class _JournalingState extends State<Journaling> {
   JournalPageController _journalPageController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
   MoodMeterController moodMeterController = Get.find();
+  BottomNavigatorController bottomNavigatorController = Get.find();
   late ScrollController _journalsScrollController;
   ScrollController _customScrollController = ScrollController();
   late RefreshController _refreshController;
@@ -161,108 +163,121 @@ class _JournalingState extends State<Journaling> {
             .jumpTo(80 * _journalPageController.selectedGroupIndex.toDouble());
       }
     });
-    return AnimatedPositioned(
-      duration: Duration(milliseconds: 300),
-      left: _isDrawerOpen ? 78.w : 0,
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(40),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.35),
-                offset: const Offset(
-                  14.0,
-                  14.0,
-                ),
-                blurRadius: 20.0,
-                spreadRadius: 4.0,
-              )
-            ],
-            color: Colors.white),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            Scaffold(
-              appBar: getAppBar(),
-              body: SmartRefresher(
-                controller: _refreshController,
-                onRefresh: _onRefresh,
-                child: ListView(
-                  controller: _journalsScrollController,
-                  children: [
-                    Column(
+    return Obx(() => AnimatedPositioned(
+          duration: Duration(milliseconds: 300),
+          left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.35),
+                    offset: const Offset(
+                      14.0,
+                      14.0,
+                    ),
+                    blurRadius: 20.0,
+                    spreadRadius: 4.0,
+                  )
+                ],
+                color: Colors.white),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                Scaffold(
+                  appBar: getAppBar(),
+                  body: SmartRefresher(
+                    controller: _refreshController,
+                    onRefresh: _onRefresh,
+                    child: ListView(
+                      controller: _journalsScrollController,
                       children: [
-                        groupRow(),
-                        Obx(() {
-                          return !_journalPageController.isLoading.value
-                              ? Obx(() {
-                                  return _journalPageController
-                                          .journalsList.value.isNotEmpty
-                                      ? ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          itemCount: _journalPageController
-                                              .journalsList.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return _journalPageController
-                                                        .journalsList
-                                                        .value[index]
-                                                        .id !=
-                                                    null
-                                                ? getJournalTile(index)
-                                                : Container();
-                                          })
-                                      : Center(
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 25.h,
-                                              ),
-                                              Obx(() {
-                                                return Text(
-                                                  _journalPageController
-                                                              .selectedGroupId
-                                                              .value ==
-                                                          ''
-                                                      ? "No Journals"
-                                                      : 'No Post',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Color(0xFFD9D9D9)),
-                                                );
+                        Column(
+                          children: [
+                            groupRow(),
+                            Obx(() {
+                              return !_journalPageController.isLoading.value
+                                  ? Obx(() {
+                                      return _journalPageController
+                                              .journalsList.value.isNotEmpty
+                                          ? ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: _journalPageController
+                                                  .journalsList.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return _journalPageController
+                                                                .journalsList
+                                                                .value[index]
+                                                                .id !=
+                                                            null &&
+                                                        !userBlocNetwork
+                                                            .hiddenPosts
+                                                            .contains(
+                                                                _journalPageController
+                                                                    .journalsList
+                                                                    .value[
+                                                                        index]
+                                                                    .id)
+                                                    ? getJournalTile(index)
+                                                    : Container();
                                               })
-                                            ],
-                                          ),
-                                        );
-                                })
-                              : getShimmer(context);
-                        }),
+                                          : Center(
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 25.h,
+                                                  ),
+                                                  Obx(() {
+                                                    return Text(
+                                                      _journalPageController
+                                                                  .selectedGroupId
+                                                                  .value ==
+                                                              ''
+                                                          ? "No Journals"
+                                                          : 'No Post',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Color(
+                                                              0xFFD9D9D9)),
+                                                    );
+                                                  })
+                                                ],
+                                              ),
+                                            );
+                                    })
+                                  : getShimmer(context);
+                            }),
+                          ],
+                        ),
+                        if (_fetchingMore) Center(child: MyLoader()),
+                        SizedBox(height: Platform.isIOS ? 80 : 50),
                       ],
                     ),
-                    if (_fetchingMore) Center(child: MyLoader()),
-                    SizedBox(height: Platform.isIOS ? 80 : 50),
-                  ],
+                  ),
                 ),
-              ),
+                if (bottomNavigatorController.isDrawerOpen.value)
+                  GestureDetector(
+                    // onTap: () => setState(() => _isDrawerOpen = false),
+                    onTap: () {
+                      bottomNavigatorController.isDrawerOpen.value = false;
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
+              ],
             ),
-            if (_isDrawerOpen)
-              GestureDetector(
-                onTap: () => setState(() => _isDrawerOpen = false),
-                child: Container(
-                  color: Colors.transparent,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   SolhAppBar getAppBar() {
@@ -275,9 +290,10 @@ class _JournalingState extends State<Journaling> {
             child: InkWell(
               onTap: () {
                 print("side bar tapped");
-                setState(() {
-                  _isDrawerOpen = !_isDrawerOpen;
-                });
+                bottomNavigatorController.isDrawerOpen.value = true;
+                // setState(() {
+                //   _isDrawerOpen = !_isDrawerOpen;
+                // });
                 print("opened");
               },
               child: Container(

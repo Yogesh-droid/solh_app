@@ -11,6 +11,12 @@ class SessionCookie {
         body: {"idToken": idToken, "deviceId": fcmToken ?? ''});
     print("*" * 30 + "\n" + "Response: $response");
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];
+    response["hiddenPosts"] != null
+        ? response["hiddenPosts"].forEach((post) {
+            print("*" * 30 + "\n" + "Hidden Post: $post");
+            userBlocNetwork.hiddenPosts.add(post);
+          })
+        : null;
     print("New session cookie: " + userBlocNetwork.getSessionCookie);
     print("*" * 30 + "\n");
     return response["newProfile"] ?? false;

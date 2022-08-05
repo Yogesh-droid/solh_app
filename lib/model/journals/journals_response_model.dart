@@ -23,7 +23,6 @@
 // }
 
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
-import 'package:solh/model/user/user.dart';
 
 class JournalsResponseModel {
   List<Journals>? journals;

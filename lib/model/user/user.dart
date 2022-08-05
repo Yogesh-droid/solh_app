@@ -179,6 +179,7 @@ class UserModel {
   int? journalLikeCount;
   int? commentCount;
   String? connectionCount;
+  List<String>? hiddenposts;
 
   UserModel(
       {this.sId,
@@ -212,7 +213,8 @@ class UserModel {
       this.lastName,
       this.journalLikeCount,
       this.commentCount,
-      this.connectionCount});
+      this.connectionCount,
+      this.hiddenposts});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -251,6 +253,9 @@ class UserModel {
     journalLikeCount = json['journalLikeCount'];
     commentCount = json['commentCount'];
     connectionCount = json['connectionCount'];
+    hiddenposts = json['hiddenposts'] != null
+        ? new List<String>.from(json['hiddenposts'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {

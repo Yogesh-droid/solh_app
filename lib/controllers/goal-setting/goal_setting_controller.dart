@@ -4,6 +4,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/model/goal-setting/featured_goal_model.dart';
 import 'package:solh/services/network/network.dart';
 import '../../model/goal-setting/goal_cat_model.dart';
 import '../../model/goal-setting/goal_sub_cat_model.dart' as subCat;
@@ -18,6 +19,7 @@ class GoalSettingController extends GetxController {
   var selectedSubCat = subCat.Categories().obs;
   var pesonalGoalModel = PersonalGoalModel().obs;
   var sampleGoalModel = SampleGoalsModel().obs;
+  var featuredGoals = FeaturedGoalModel().obs;
   var noOfTasks = 1.obs;
   var task = [].obs;
   var isExpanded = ''.obs;
@@ -35,6 +37,7 @@ class GoalSettingController extends GetxController {
   var isSavingGoal = false.obs;
   var isUpdateGoal = false.obs;
   var isDeletingGoal = false.obs;
+  var isFeaturedGoalsLoading = false.obs;
 
   Future<void> getPersonalGoals() async {
     Map<String, dynamic> map;
@@ -58,6 +61,17 @@ class GoalSettingController extends GetxController {
       sampleGoalModel.value = SampleGoalsModel.fromJson(map);
     }
     isSampleGoalLoading.value = false;
+  }
+
+  Future<void> getFeaturedGoals() async {
+    isFeaturedGoalsLoading.value = true;
+    Map<String, dynamic> map;
+    map = await Network.makeGetRequestWithToken(
+        '${APIConstants.api}/api/featured/goals');
+    if (map['success']) {
+      featuredGoals.value = FeaturedGoalModel.fromJson(map);
+    }
+    isFeaturedGoalsLoading.value = false;
   }
 
   Future<void> getGoalsCat() async {
@@ -189,6 +203,7 @@ class GoalSettingController extends GetxController {
   void onInit() {
     getPersonalGoals();
     getGoalsCat();
+    getFeaturedGoals();
     task.value.add({TextEditingController(): '1'});
     super.onInit();
   }
