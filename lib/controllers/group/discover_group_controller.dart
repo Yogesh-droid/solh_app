@@ -9,7 +9,7 @@ class DiscoverGroupController extends GetxController {
   var joinedGroupModel = GetGroupResponseModel().obs;
   var discoveredGroupModel = GetGroupResponseModel().obs;
   List<String> groupsShownOnHome =
-      []; ////  groups shown on home screen discover + joined groups// used to find index of selected group
+      []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
   var groupDetail = GroupList().obs;
   var isLoading = false.obs;

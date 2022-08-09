@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
-  var selectedDay = ''.obs;
+  var selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
 
   /// It's String like Sunday, Monday, Tuesday etc.
   var selectedTimeSlot = ''.obs;
 
   /// It's String like 9:30-10:30, 10:00-11:00 etc.
   var timeSlotList = [].obs;
+  var bookedTimeSlots = [].obs;
 
   /// It's List of String like 9:30-10:30, 10:00-11:00 etc.
   var selectedDate = DateTime.now().obs;
@@ -25,6 +27,7 @@ class BookAppointmentController extends GetxController {
   TextEditingController mobileNotextEditingController = TextEditingController();
   TextEditingController catTextEditingController = TextEditingController();
   var isLoading = false.obs;
+  var loadingTimeSlots = false.obs;
 
   Future<String> bookAppointment(Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
@@ -37,9 +40,24 @@ class BookAppointmentController extends GetxController {
   }
 
   Future<void> getTimeSlot({String? providerId, String? date}) async {
+    String currentTimeSlot = DateFormat('HH:00').format(DateTime.now()) +
+        '-' +
+        DateFormat('HH:00').format(DateTime.now().add(Duration(hours: 1)));
+    print(currentTimeSlot);
+    loadingTimeSlots.value = true;
     var response = await Network.makeGetRequest(APIConstants.api +
-        '/api/provider-schedule?provider=6294874e1044fc665b57af3f&date=$date');
+        '/api/provider-schedule?provider=$providerId&date=$date');
     timeSlotList.value = response['slot'];
+    response['bookedSlots'] != null
+        ? bookedTimeSlots.value = response['bookedSlots']
+        : bookedTimeSlots.value = [];
+    if (selectedDate.value.day == DateTime.now().day) {
+      print('selectedDate.value == DateTime.now()');
+      timeSlotList.value = timeSlotList.value
+          .where((element) => element.toString().compareTo(currentTimeSlot) > 0)
+          .toList();
+    }
     timeSlotList.refresh();
+    loadingTimeSlots.value = false;
   }
 }

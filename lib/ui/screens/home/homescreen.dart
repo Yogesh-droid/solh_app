@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GetHelpCategory(
-                          title: 'Trending Posts',
+                          title: 'Featured Posts',
                         ),
                         InkWell(
                           onTap: () {
@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
                                       .reccomendation!.isNotEmpty
                               ? getPeopleYouMayKnowUI()
                               : Container()
-                          : Container();
+                          : getRecommnededShimmer();
                     }),
                     Obx(() {
                       return !connectionController.isRecommnedationLoading.value
@@ -498,7 +498,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getTrendingPostUI() {
-    BottomNavigatorController _controller = Get.find();
     return _journalPageController.trendingJournalsList.isNotEmpty
         ? Container(
             height: MediaQuery.of(context).size.height * 0.55,
@@ -1022,6 +1021,132 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ));
+  }
+
+  getRecommnededShimmer() {
+    return Container(
+      height: 270,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 190,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: SolhColors.greyS200,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.thumb_up_alt_outlined,
+                                color: SolhColors.green,
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '0',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: SolhColors.green,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 20,
+                            color: SolhColors.green,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                CupertinoIcons.chat_bubble,
+                                color: SolhColors.green,
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '0',
+                                style: TextStyle(
+                                  color: SolhColors.green,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
   }
 }
 

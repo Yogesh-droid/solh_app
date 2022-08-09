@@ -188,7 +188,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         ),
         // groupList.groupMembers != null
         //     ?
-        getPopUpMenuBtn(context)
+        !isDefaultAdmin && isJoined != null && isJoined!
+            ? getPopUpMenuBtn(context)
+            : Container()
         // : Container()
         // : Obx(() {
         //     return discoverGroupController.isLoading.value
@@ -330,7 +332,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   }
 
   // Padding(
-  getPostButton(BuildContext context) {
+  getPostButton(BuildContext context1) {
     return isJoined == null
         ? Container(
             height: 50,
@@ -352,7 +354,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           );
                   }),
                   onPressed: () async {
-                    Utility.showLoader(context);
+                    Utility.showLoader(context1);
                     String success = await createGroupController.joinGroup(
                         groupId: groupList.sId ?? '');
                     discoverGroupController.joinedGroupModel.value.groupList!
@@ -362,11 +364,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         .remove(groupList);
                     discoverGroupController.discoveredGroupModel.refresh();
                     discoverGroupController.joinedGroupModel.refresh();
-                    // await discoverGroupController.getJoinedGroups();
-                    // await discoverGroupController.getDiscoverGroups();
+                    discoverGroupController.groupsShownOnHome
+                        .add(groupList.sId!);
                     Navigator.of(context).pop();
+                    Navigator.of(context, rootNavigator: true).pop();
                     Utility.showToast(success);
-                    Navigator.of(context).pop();
+
+                    // Navigator.of(context).pop();
                   }),
             ),
           )
@@ -415,6 +419,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       //     return route.settings.name == 'JournalingScreen';
                       //   },
                       // );
+                      Future.delayed(Duration(milliseconds: 500), () {
+                        journalPageController.customeScrollController.jumpTo(
+                            80 *
+                                discoverGroupController.groupsShownOnHome
+                                    .indexOf(groupList.sId!)
+                                    .toDouble());
+                      });
                       _bottomNavigatorController.tabrouter!.setActiveIndex(1);
                       AutoRouter.of(context)
                           .popUntil(((route) => route.isFirst));
@@ -651,7 +662,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     );
   }
 
-  getExitButtonPopUp(BuildContext context) {
+  getExitButtonPopUp(BuildContext context1) {
     /* showDialog(
         context: context,
         builder: (context) {
@@ -709,8 +720,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           );
         }); */
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
+      context: context1,
+      builder: (BuildContext context2) {
         return AlertDialog(
           title: Text(
             'Do You want to Exit group ?',
@@ -727,7 +738,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 style: TextStyle(color: Colors.grey),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context2).pop();
               },
             ),
             MaterialButton(
@@ -746,12 +757,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     .add(groupList);
                 discoverGroupController.discoveredGroupModel.refresh();
                 discoverGroupController.joinedGroupModel.refresh();
-                // await discoverGroupController.getJoinedGroups();
-                // await discoverGroupController.getDiscoverGroups();
-                Navigator.of(context).pop();
+                discoverGroupController.getJoinedGroups();
+                discoverGroupController.getDiscoverGroups();
+                discoverGroupController.groupsShownOnHome.remove(groupList.sId);
+                Navigator.of(context, rootNavigator: true).pop();
                 Utility.showToast(success);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                Navigator.of(context2).pop();
+                Navigator.of(context1).pop();
               },
             ),
           ],

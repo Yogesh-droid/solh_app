@@ -78,9 +78,7 @@ class _JournalingState extends State<Journaling> {
   MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
   late ScrollController _journalsScrollController;
-  ScrollController _customScrollController = ScrollController();
   late RefreshController _refreshController;
-  bool _isDrawerOpen = false;
   bool _fetchingMore = false;
 
   void initState() {
@@ -157,12 +155,6 @@ class _JournalingState extends State<Journaling> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_journalPageController.selectedGroupId.value != '') {
-        _customScrollController
-            .jumpTo(80 * _journalPageController.selectedGroupIndex.toDouble());
-      }
-    });
     return Obx(() => AnimatedPositioned(
           duration: Duration(milliseconds: 300),
           left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
@@ -326,12 +318,11 @@ class _JournalingState extends State<Journaling> {
   }
 
   Widget groupRow() {
-    print('rendering group row');
     return Container(
       height: MediaQuery.of(context).size.height * 0.13,
       child: Obx(() {
         return CustomScrollView(
-          controller: _customScrollController,
+          controller: _journalPageController.customeScrollController,
           scrollDirection: Axis.horizontal,
           slivers: [
             SliverToBoxAdapter(

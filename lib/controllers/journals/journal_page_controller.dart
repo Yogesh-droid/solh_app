@@ -38,6 +38,7 @@ class JournalPageController extends GetxController {
   var isScrollingStarted = false.obs;
   var isImageUploading = false.obs;
   var isTrendingLoading = false.obs;
+  ScrollController customeScrollController = ScrollController();
 
   // List<String> blockedPostIds = <String>[
   //   '62ea3c2239f8ed321dcaa150',
