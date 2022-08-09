@@ -472,44 +472,69 @@ class _JournalTileState extends State<JournalTile> {
   }
 
   Widget getUserNameBottom() {
-    return Row(
-      children: [
-        Expanded(
-            child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 1,
-          color: Colors.black.withOpacity(0.1),
-          margin: EdgeInsets.only(right: 10),
-        )),
-        widget._journalModel!.group != null &&
-                journalPageController.selectedGroupId.value.length == 0
-            ? CircleAvatar(
-                radius: 10,
-                backgroundColor: Colors.grey,
-                backgroundImage: CachedNetworkImageProvider(
-                  widget._journalModel!.anonymousJournal!
-                      ? widget._journalModel!.postedBy!.anonymous!
-                              .profilePicture ??
-                          ''
-                      : widget._journalModel!.postedBy!.profilePicture ?? '',
+    return InkWell(
+      onTap: () {
+        widget._journalModel!.postedBy!.sId !=
+                    null && ////// this case is for user journal
+                widget._journalModel!.anonymousJournal != null &&
+                !widget._journalModel!.anonymousJournal!
+            ? {
+                // connectionController.getUserAnalytics(
+                //     widget._journalModel!.postedBy!.sId!),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ConnectProfileScreen(
+                            uid: widget._journalModel!.postedBy!.uid!,
+                            sId: widget._journalModel!.postedBy!.sId!)))
+              }
+            : {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text('You can not see this user'),
+                  duration: Duration(milliseconds: 700),
+                  backgroundColor: Colors.black.withOpacity(0.8),
+                )),
+              };
+      },
+      child: Row(
+        children: [
+          Expanded(
+              child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 1,
+            color: Colors.black.withOpacity(0.1),
+            margin: EdgeInsets.only(right: 10),
+          )),
+          widget._journalModel!.group != null &&
+                  journalPageController.selectedGroupId.value.length == 0
+              ? CircleAvatar(
+                  radius: 10,
+                  backgroundColor: Colors.grey,
+                  backgroundImage: CachedNetworkImageProvider(
+                    widget._journalModel!.anonymousJournal!
+                        ? widget._journalModel!.postedBy!.anonymous!
+                                .profilePicture ??
+                            ''
+                        : widget._journalModel!.postedBy!.profilePicture ?? '',
+                  ),
+                )
+              : Container(
+                  height: 30,
                 ),
-              )
-            : Container(
-                height: 30,
-              ),
-        widget._journalModel!.group != null &&
-                journalPageController.selectedGroupId.value.length == 0
-            ? Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: Text(
-                  widget._journalModel!.anonymousJournal == true
-                      ? widget._journalModel!.postedBy!.anonymous!.userName ??
-                          ''
-                      : widget._journalModel!.postedBy!.name ?? '',
-                ),
-              )
-            : Container(),
-      ],
+          widget._journalModel!.group != null &&
+                  journalPageController.selectedGroupId.value.length == 0
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Text(
+                    widget._journalModel!.anonymousJournal == true
+                        ? widget._journalModel!.postedBy!.anonymous!.userName ??
+                            ''
+                        : widget._journalModel!.postedBy!.name ?? '',
+                  ),
+                )
+              : Container(),
+        ],
+      ),
     );
   }
 
