@@ -368,25 +368,28 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
     );
     print(_xFile!.path.toString());
     if (_xFile != null) {
-      final croppedFile = await ImageCropper()
-          .cropImage(sourcePath: _xFile!.path, aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-        // CropAspectRatioPreset.ratio3x2,
-        // CropAspectRatioPreset.original,
-        // CropAspectRatioPreset.ratio4x3,
-        // CropAspectRatioPreset.ratio16x9
-      ], uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Edit',
-            toolbarColor: SolhColors.white,
-            toolbarWidgetColor: Colors.black,
-            activeControlsWidgetColor: SolhColors.green,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true),
-        IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        )
-      ]);
+      final croppedFile = await ImageCropper().cropImage(
+          sourcePath: _xFile!.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            // CropAspectRatioPreset.ratio3x2,
+            // CropAspectRatioPreset.original,
+            // CropAspectRatioPreset.ratio4x3,
+            // CropAspectRatioPreset.ratio16x9
+          ],
+          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Edit',
+                toolbarColor: SolhColors.white,
+                toolbarWidgetColor: Colors.black,
+                activeControlsWidgetColor: SolhColors.green,
+                initAspectRatio: CropAspectRatioPreset.square,
+                lockAspectRatio: true),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            )
+          ]);
       _croppedFile = File(croppedFile!.path);
     }
     // Navigator.of(context).pop();

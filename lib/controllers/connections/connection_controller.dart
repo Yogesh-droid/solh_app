@@ -71,6 +71,7 @@ class ConnectionController extends GetxController {
         groupInvites.value.add(element);
       });
     }
+    getPeopleYouMayKnow();
   }
 
   Future<void> acceptConnection(String connection_id, String response) async {
@@ -195,7 +196,6 @@ class ConnectionController extends GetxController {
   void onInit() {
     getMyConnection();
     getAllConnection();
-    getPeopleYouMayKnow();
     super.onInit();
   }
 }

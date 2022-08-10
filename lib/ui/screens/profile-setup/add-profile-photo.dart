@@ -40,21 +40,24 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
     );
     print(_xFile!.path.toString());
     if (_xFile != null) {
-      final croppedFile = await ImageCropper()
-          .cropImage(sourcePath: _xFile!.path, aspectRatioPresets: [
-        CropAspectRatioPreset.square,
-      ], uiSettings: [
-        AndroidUiSettings(
-            toolbarTitle: 'Edit',
-            toolbarColor: SolhColors.white,
-            toolbarWidgetColor: Colors.black,
-            activeControlsWidgetColor: SolhColors.green,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true),
-        IOSUiSettings(
-          minimumAspectRatio: 1.0,
-        )
-      ]);
+      final croppedFile = await ImageCropper().cropImage(
+          sourcePath: _xFile!.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+          ],
+          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Edit',
+                toolbarColor: SolhColors.white,
+                toolbarWidgetColor: Colors.black,
+                activeControlsWidgetColor: SolhColors.green,
+                initAspectRatio: CropAspectRatioPreset.square,
+                lockAspectRatio: true),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            )
+          ]);
       _croppedFile = File(croppedFile!.path);
     }
     // Navigator.of(context).pop();

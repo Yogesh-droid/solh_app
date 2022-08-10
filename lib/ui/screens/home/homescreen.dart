@@ -61,7 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
   MoodMeterController moodMeterController = Get.find();
-  late DateTime _lastDateMoodMeterShown;
   late bool isMoodMeterShown;
   @override
   void initState() {
@@ -906,7 +905,11 @@ class _HomePageState extends State<HomePage> {
               );
             },
             itemCount: discoverGroupController
-                .discoveredGroupModel.value.groupList!.length));
+                        .discoveredGroupModel.value.groupList!.length >
+                    10
+                ? 10
+                : discoverGroupController
+                    .discoveredGroupModel.value.groupList!.length));
   }
 
   Widget getPeopleYouMayKnowUI() {
