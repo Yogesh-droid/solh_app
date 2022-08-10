@@ -19,7 +19,7 @@ import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
-import 'package:solh/ui/screens/video-call/video-call-counsellor.dart';
+import 'package:solh/ui/screens/video-call/video-call-user.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -127,11 +127,6 @@ import 'package:solh/ui/screens/video-call/video-call-counsellor.dart';
       path: "SetupSOS",
       name: "SetupSOSScreenRouter",
       page: SetupSOSScreen,
-    ),
-    AutoRoute(
-      path: "VideoCallCounsellor",
-      name: "VideoCallCounsellorRouter",
-      page: VideoCallCounsellor,
     ),
   ],
 )

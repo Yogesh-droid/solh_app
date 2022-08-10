@@ -33,7 +33,7 @@ import '../ui/screens/phone-auth/phone-auth.dart' as _i4;
 import '../ui/screens/profile-setup/profile-setup.dart' as _i3;
 import '../ui/screens/sos/setup-sos.dart' as _i8;
 import '../ui/screens/sos/sos.dart' as _i7;
-import '../ui/screens/video-call/video-call-counsellor.dart' as _i9;
+import '../ui/screens/video-call/video-call-user.dart' as _i9;
 
 class AppRouter extends _i11.RootStackRouter {
   AppRouter([_i23.GlobalKey<_i23.NavigatorState>? navigatorKey])
@@ -88,10 +88,6 @@ class AppRouter extends _i11.RootStackRouter {
     SetupSOSScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
           routeData: routeData, child: _i8.SetupSOSScreen());
-    },
-    VideoCallCounsellorRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i9.VideoCallCounsellor());
     },
     HomeScreenRouter.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(

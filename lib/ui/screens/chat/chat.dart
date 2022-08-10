@@ -13,6 +13,7 @@ import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
+import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -98,29 +99,48 @@ class ChatAppbar extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Row(
+              children: [
+                InkWell(
+                    onTap: (() {
+                      Navigator.of(context).pop();
+                    }),
+                    child: Icon(Icons.arrow_back_ios_new)),
+                SizedBox(
+                  width: 6,
+                ),
+                CircleAvatar(
+                  backgroundColor: Colors.grey.shade300,
+                  backgroundImage: CachedNetworkImageProvider(_imageUrl == ''
+                      ? 'https://180dc.org/wp-content/uploads/2016/08/default-profile.png'
+                      : _imageUrl),
+                ),
+                SizedBox(
+                  width: 6,
+                ),
+                Text(
+                  _name == '' ? '' : _name,
+                  style: GoogleFonts.signika(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
             InkWell(
-                onTap: (() {
-                  Navigator.of(context).pop();
-                }),
-                child: Icon(Icons.arrow_back_ios_new)),
-            SizedBox(
-              width: 6,
-            ),
-            CircleAvatar(
-              backgroundColor: Colors.grey.shade300,
-              backgroundImage: CachedNetworkImageProvider(_imageUrl == ''
-                  ? 'https://180dc.org/wp-content/uploads/2016/08/default-profile.png'
-                  : _imageUrl),
-            ),
-            SizedBox(
-              width: 6,
-            ),
-            Text(
-              _name == '' ? '' : _name,
-              style: GoogleFonts.signika(
-                fontWeight: FontWeight.w600,
-                fontSize: 16,
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: ((context) => VideoCallUser())));
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 24),
+                child: Icon(
+                  Icons.video_call_outlined,
+                  size: 34,
+                  color: SolhColors.green,
+                ),
               ),
             ),
           ],
