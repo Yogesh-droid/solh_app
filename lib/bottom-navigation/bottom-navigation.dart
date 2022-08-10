@@ -7,7 +7,6 @@ import 'package:new_version/new_version.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-
 import '../controllers/goal-setting/goal_setting_controller.dart';
 
 class MasterScreen extends StatefulWidget {
@@ -120,10 +119,10 @@ class _MasterScreenState extends State<MasterScreen> {
     );
     newVersion.showAlertIfNecessary(context: context);
 
-    // await newVersion.getVersionStatus().then((value) {
-    //   print(value!.appStoreLink.toString());
-    //   print(value.localVersion.toString());
-    //   print(value.storeVersion.toString());
-    // });
+    await newVersion.getVersionStatus().then((value) {
+      print(value!.appStoreLink.toString());
+      print(value.localVersion.toString());
+      print(value.storeVersion.toString());
+    });
   }
 }

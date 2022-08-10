@@ -101,57 +101,68 @@ class MoodAnalyticPage extends StatelessWidget {
   }
 
   Widget getMoodCountWidget(BuildContext context) {
-    return Container(
-      color: SolhColors.white,
-      margin: EdgeInsets.only(top: 20),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      children: [
+        Container(
+          color: SolhColors.white,
+          margin: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          child: Column(
             children: [
-              Text(
-                'Mood count',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF666666),
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Mood count',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Color(0xFF666666),
+                    ),
+                  ),
+                  Spacer(),
+                  getFrequencyButton(context),
+                ],
               ),
-              Spacer(),
-              getFrequencyButton(context),
+              SizedBox(
+                height: 10,
+              ),
+              Obx(() {
+                return moodMeterController
+                            .moodAnlyticsModel.value.moodAnalytic ==
+                        null
+                    ? Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: Shimmer.fromColors(
+                          baseColor: SolhColors.grey,
+                          highlightColor: SolhColors.greyS200,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: SolhColors.greyS200,
+                                shape: BoxShape.circle),
+                          ),
+                        ),
+                      )
+                    : moodMeterController.moodAnlyticsModel.value.moodAnalytic!
+                                    .length >
+                                0 &&
+                            moodMeterController
+                                    .selectedFrequencyMoodMap.value.length >
+                                0
+                        ? getMoodPieChartWidget(context)
+                        : noMoodContainer(context);
+              }),
+              Obx(() {
+                return moodMeterController.isFetchingMoodAnalytics.value
+                    ? getMoodListShimmer(context)
+                    : getMoodCountListWidget(context);
+              }),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          Obx(() {
-            return moodMeterController.isFetchingMoodAnalytics.value
-                ? Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    child: Shimmer.fromColors(
-                      baseColor: SolhColors.grey,
-                      highlightColor: SolhColors.greyS200,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: SolhColors.greyS200, shape: BoxShape.circle),
-                      ),
-                    ),
-                  )
-                : moodMeterController
-                                .moodAnlyticsModel.value.moodAnalytic!.length >
-                            0 &&
-                        moodMeterController
-                                .selectedFrequencyMoodMap.value.length >
-                            0
-                    ? getMoodPieChartWidget(context)
-                    : noMoodContainer(context);
-          }),
-          Obx(() {
-            return moodMeterController.isFetchingMoodAnalytics.value
-                ? Container()
-                : getMoodCountListWidget(context);
-          })
-        ],
-      ),
+        ),
+        getResultCard()
+      ],
     );
   }
 
@@ -254,8 +265,15 @@ class MoodAnalyticPage extends StatelessWidget {
                 centerText:
                     '${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score',
                 centerTextStyle: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   color: SolhColors.white,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 2,
+                      color: Colors.grey,
+                      offset: Offset(1, 1),
+                    ),
+                  ],
                 ),
                 legendOptions: LegendOptions(
                   showLegends: false,
@@ -319,6 +337,54 @@ class MoodAnalyticPage extends StatelessWidget {
     );
   }
 
+  Widget getMoodListShimmer(BuildContext context) {
+    return Wrap(
+      direction: Axis.horizontal,
+      children: [
+        for (var i = 0; i < 10; i++)
+          Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            margin: EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                Shimmer.fromColors(
+                  period: Duration(milliseconds: 800),
+                  baseColor: SolhColors.grey.withOpacity(0.4),
+                  highlightColor: SolhColors.grey,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: SolhColors.grey,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    height: 30,
+                    width: 40,
+                  ),
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Shimmer.fromColors(
+                    period: Duration(milliseconds: 800),
+                    baseColor: SolhColors.grey.withOpacity(0.4),
+                    highlightColor: SolhColors.grey,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: SolhColors.grey,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      height: 10,
+                      width: 30,
+                    )),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+
   Widget noMoodContainer(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.4,
@@ -351,5 +417,70 @@ class MoodAnalyticPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget getResultCard() {
+    return Obx(() {
+      return Container(
+        height: 100,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: moodMeterController.moodAnlyticsModel.value.avgFeeling != null
+              ? Color(int.parse((moodMeterController
+                  .moodAnlyticsModel.value.avgFeeling!.hexCode!
+                  .replaceAll('#', '0xFF'))))
+              : Colors.grey,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              moodMeterController.moodAnlyticsModel.value.avgMood != null
+                  ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
+                  : 'Loading ...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: SolhColors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 2,
+                    color: Colors.grey,
+                    offset: Offset(1, 1),
+                  ),
+                ],
+              ),
+            ),
+            VerticalDivider(
+              endIndent: 20,
+              indent: 20,
+              color: SolhColors.white,
+              thickness: 1,
+            ),
+            Text(
+              moodMeterController.moodAnlyticsModel.value.avgFeeling != null
+                  ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
+                  : 'Loading ...',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                color: SolhColors.white,
+                shadows: [
+                  Shadow(
+                    blurRadius: 2,
+                    color: Colors.grey,
+                    offset: Offset(1, 1),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

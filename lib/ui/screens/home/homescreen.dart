@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GetHelpCategory(
-                          title: 'Featured Posts',
+                          title: 'Trending Posts',
                         ),
                         InkWell(
                           onTap: () {

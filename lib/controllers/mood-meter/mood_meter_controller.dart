@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
@@ -79,6 +77,7 @@ class MoodMeterController extends GetxController {
       int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
       activeColorList.value.add(Color(color));
     });
+    moodAnlyticsModel.refresh();
     isFetchingMoodAnalytics.value = false;
   }
 

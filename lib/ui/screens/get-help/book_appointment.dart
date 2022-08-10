@@ -350,7 +350,7 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
         children: [
           Text('Today' == _controller.selectedDay.value
               ? 'Today'
-              : 'Upcoming ${_controller.selectedDay.value}'),
+              : '${_controller.selectedDay.value}'),
           Text(_controller.selectedTimeSlot.value)
         ],
       );
@@ -536,84 +536,94 @@ class _DayPickerState extends State<DayPicker> {
                     color: SolhColors.green,
                   ),
                 ))
-              : Wrap(
-                  children: _controller.timeSlotList.map((e) {
-                    return
-                        // DateTime.parse(
-                        //             DateFormat('yyyy-MM-dd').format(DateTime.now()) +
-                        //                 ' ' +
-                        //                 e.split('-')[1])
-                        //         .isBefore(DateTime.now())
-                        //     //      &&
-                        //     // _controller.selectedDay == 'Today'
-                        //     ? Container(
-                        //         child: Padding(
-                        //           padding: const EdgeInsets.symmetric(
-                        //               horizontal: 8, vertical: 8),
-                        //           child: Container(
-                        //             width: 110,
-                        //             decoration: BoxDecoration(
-                        //                 color: Colors.grey,
-                        //                 border: Border.all(color: SolhColors.green),
-                        //                 borderRadius: BorderRadius.circular(18)),
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(8.0),
-                        //               child: Center(
-                        //                   child: Text(
-                        //                 e,
-                        //                 style: GoogleFonts.montserrat(
-                        //                   color: SolhColors.green,
-                        //                 ),
-                        //               )),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       )
-                        //:
-                        InkWell(
-                      onTap: () {
-                        if (_controller.bookedTimeSlots
-                            .contains(e.toString())) {
-                          Utility.showToast('This time slot is not available');
-                          return;
-                        }
-                        _controller.selectedTimeSlot.value = e;
-                        print(e + "++" + _controller.selectedTimeSlot.value);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 8),
-                        child: Container(
-                          width: 110,
-                          decoration: BoxDecoration(
-                              color: _controller.bookedTimeSlots
-                                      .contains(e.toString())
-                                  ? SolhColors.grey102
-                                  : _controller.selectedTimeSlot.value == e
-                                      ? SolhColors.green
-                                      : SolhColors.white,
-                              border: Border.all(color: SolhColors.green),
-                              borderRadius: BorderRadius.circular(18)),
+              : _controller.timeSlotList.isEmpty
+                  ? Center(
+                      child: Text(
+                      'No Time Slots Available',
+                      style: TextStyle(
+                        color: SolhColors.grey196,
+                      ),
+                    ))
+                  : Wrap(
+                      children: _controller.timeSlotList.map((e) {
+                        return
+                            // DateTime.parse(
+                            //             DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                            //                 ' ' +
+                            //                 e.split('-')[1])
+                            //         .isBefore(DateTime.now())
+                            //     //      &&
+                            //     // _controller.selectedDay == 'Today'
+                            //     ? Container(
+                            //         child: Padding(
+                            //           padding: const EdgeInsets.symmetric(
+                            //               horizontal: 8, vertical: 8),
+                            //           child: Container(
+                            //             width: 110,
+                            //             decoration: BoxDecoration(
+                            //                 color: Colors.grey,
+                            //                 border: Border.all(color: SolhColors.green),
+                            //                 borderRadius: BorderRadius.circular(18)),
+                            //             child: Padding(
+                            //               padding: const EdgeInsets.all(8.0),
+                            //               child: Center(
+                            //                   child: Text(
+                            //                 e,
+                            //                 style: GoogleFonts.montserrat(
+                            //                   color: SolhColors.green,
+                            //                 ),
+                            //               )),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       )
+                            //:
+                            InkWell(
+                          onTap: () {
+                            if (_controller.bookedTimeSlots
+                                .contains(e.toString())) {
+                              Utility.showToast(
+                                  'This time slot is not available');
+                              return;
+                            }
+                            _controller.selectedTimeSlot.value = e;
+                            print(
+                                e + "++" + _controller.selectedTimeSlot.value);
+                          },
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: Text(
-                              e,
-                              style: GoogleFonts.montserrat(
-                                color:
-                                    _controller.selectedTimeSlot.value == e ||
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 8),
+                            child: Container(
+                              width: 110,
+                              decoration: BoxDecoration(
+                                  color: _controller.bookedTimeSlots
+                                          .contains(e.toString())
+                                      ? SolhColors.grey102
+                                      : _controller.selectedTimeSlot.value == e
+                                          ? SolhColors.green
+                                          : SolhColors.white,
+                                  border: Border.all(color: SolhColors.green),
+                                  borderRadius: BorderRadius.circular(18)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                    child: Text(
+                                  e,
+                                  style: GoogleFonts.montserrat(
+                                    color: _controller.selectedTimeSlot.value ==
+                                                e ||
                                             _controller.bookedTimeSlots
                                                 .contains(e.toString())
                                         ? SolhColors.white
                                         : SolhColors.green,
+                                  ),
+                                )),
                               ),
-                            )),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
-                );
         })
       ],
     );
@@ -651,6 +661,8 @@ class _DayPickerState extends State<DayPicker> {
   }
 
   void getTodaysSlots() {
+    _controller.selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
+    _controller.selectedDate.value = DateTime.now();
     _controller.getTimeSlot(
         date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
         providerId:
