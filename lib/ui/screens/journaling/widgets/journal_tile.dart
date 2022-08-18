@@ -139,7 +139,7 @@ class _JournalTileState extends State<JournalTile> {
                             ),
                           ),
                         ),
-                        getUserNameBottom()
+                        widget.isMyJournal ? Container() : getUserNameBottom()
                       ],
                     )
                   : Container(),
@@ -952,7 +952,8 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                         fit: BoxFit.fitWidth,
                         placeholder: (context, url) => getShimmer(context),
                         errorWidget: (context, url, error) => Center(
-                          child: Lottie.asset('assets/images/not-found.json'),
+                          child: Image.asset(
+                              'assets/images/no-image-available.png'),
                         ),
                       ),
                     )

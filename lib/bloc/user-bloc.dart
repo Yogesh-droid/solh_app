@@ -13,6 +13,8 @@ class UserBlocNetwork {
   String userMobileNo = '';
   String userEmail = '';
   List<String> hiddenPosts = [];
+  String anonUserName = '';
+  String anonUserPic = '';
 
   Stream<UserModel?> get userStateStream => _userController.stream;
 
@@ -51,16 +53,12 @@ class UserBlocNetwork {
       userMobileNo = userModel.mobile ?? '';
       userEmail = userModel.email ?? '';
       myData = userModel;
+      anonUserName = userModel.anonymous.userName ?? '';
+      anonUserPic = userModel.anonymous.profilePicture ?? '';
       _userController.sink.add(userModel);
     } else {
       _userController.sink.addError('user details not fetched');
     }
-    //     .then((user) {
-    //   _userController.sink.add(user);
-    //   print('user details fetched ${user.toString()}');
-    // }).onError((error, stackTrace) {
-    //   _userController.sink.addError(error.toString());
-    // });
     print('user details fetched');
   }
 

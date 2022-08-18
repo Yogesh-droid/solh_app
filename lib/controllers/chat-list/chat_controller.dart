@@ -10,7 +10,6 @@ class ChatListController extends GetxController {
 
   @override
   void onInit() {
-    // TODO: implement onInit
     chatListController();
     super.onInit();
   }

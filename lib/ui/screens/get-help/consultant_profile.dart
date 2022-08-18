@@ -81,11 +81,10 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
       decoration:
           BoxDecoration(shape: BoxShape.circle, color: SolhColors.green),
       child: CircleAvatar(
+        backgroundColor: Colors.white,
         backgroundImage: CachedNetworkImageProvider(_controller
                 .consultantModelController.value.provder!.profilePicture ??
             'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
-        // NetworkImage(
-        //     'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
       ),
     );
   }

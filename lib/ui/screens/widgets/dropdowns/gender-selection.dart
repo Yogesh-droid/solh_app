@@ -2,19 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class GenderSelectionDropdown extends StatefulWidget {
   GenderSelectionDropdown({
     Key? key,
     BoxDecoration? dropDownDecoration,
-    required String initialDropdownValue,
+    required String? initialDropdownValue,
     Function(String?)? newValue,
   })  : _newValue = newValue,
         _dropDownDecoration = dropDownDecoration,
         _initialDropdownValue = initialDropdownValue,
         super(key: key);
 
-  String _initialDropdownValue;
+  String? _initialDropdownValue;
   Function(String?)? _newValue;
   BoxDecoration? _dropDownDecoration;
 
@@ -24,7 +25,7 @@ class GenderSelectionDropdown extends StatefulWidget {
 }
 
 class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
-  String _dropdownValue = "Other";
+  String? _dropdownValue;
 
   @override
   void initState() {
@@ -45,6 +46,10 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
           iconSize: 18,
           iconEnabledColor: SolhColors.green,
           underline: SizedBox(),
+          hint: Text(
+            'Select Gender',
+            style: SolhTextStyles.ProfileMenuGreyText,
+          ),
           value: _dropdownValue,
           onChanged: (newValue) {
             setState(() {

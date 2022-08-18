@@ -524,6 +524,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ? Stack(
                   children: [
                     CachedNetworkImage(
+                      width: double.infinity,
                       imageUrl:
                           journalPageController.selectedDiary.value.mediaUrl ??
                               '',
@@ -607,7 +608,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           : _isImageAdded
               ? Stack(
                   children: [
-                    Image.file(_croppedFile!),
+                    Image.file(
+                      _croppedFile!,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                     Positioned(
                       right: 0,
                       top: 0,

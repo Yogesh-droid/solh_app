@@ -7,13 +7,14 @@ import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
+import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
+import '../../../controllers/profile/appointment_controller.dart';
 import '../../../model/user/user.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../../../widgets_constants/privacy_web.dart';
-import '../my-profile/my-profile-screen.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({
@@ -27,6 +28,7 @@ class SideDrawer extends StatefulWidget {
 class _SideDrawerState extends State<SideDrawer> {
   final MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
+  AppointmentController appointmentController = Get.find();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,10 +47,8 @@ class _SideDrawerState extends State<SideDrawer> {
                       child: InkWell(
                         onTap: () {
                           bottomNavigatorController.isDrawerOpen.value = false;
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return MyProfileScreen();
-                          }));
+                          bottomNavigatorController.tabrouter!
+                              .setActiveIndex(4);
                         },
                         child: Row(
                           children: [
@@ -140,6 +140,16 @@ class _SideDrawerState extends State<SideDrawer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => MoodAnalyticPage()));
+                },
+              ),
+              SideDrawerMenuTile(
+                title: "Appointments",
+                onPressed: () async {
+                  appointmentController.getUserAppointments();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AppointmentScreen()));
                 },
               ),
             ]),

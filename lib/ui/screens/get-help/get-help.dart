@@ -108,10 +108,10 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               ),
             ),
             Container(
-                margin:
-                    EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
+                margin: EdgeInsets.only(bottom: 1.5.h),
                 child: Obx(() {
                   return Wrap(
+                    runSpacing: 5,
                     children: getHelpController.issueList.value.map((issue) {
                       return IssuesTile(
                         title: issue.name ?? '',
@@ -273,6 +273,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 return getHelpController.solhVolunteerList.value.provider !=
                         null
                     ? ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 2.h),
                         separatorBuilder: (_, __) => SizedBox(width: 2.w),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
@@ -538,7 +539,7 @@ class GetHelpCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.5.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 2.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

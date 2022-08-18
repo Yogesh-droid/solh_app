@@ -24,9 +24,6 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _bottom = bottom,
         _menuButton = menuButton;
 
-
-
-
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
   final Widget? _title;
@@ -39,15 +36,12 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         title: _title,
-        centerTitle: false,
         bottom: _bottom,
-        leadingWidth: _isLandingScreen ? 0 : 30,
+        leadingWidth: _isLandingScreen ? 0 : 60,
         leading: !_isLandingScreen
-            ? IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Container(
-                  height: 10.h,
-                  width: 10.h,
+            ? InkWell(
+                onTap: (() => Navigator.pop(context)),
+                child: Container(
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,
                     color: SolhColors.black,
@@ -78,7 +72,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               : Container(),
           if (!_isVideoCallScreen) AssistanceButton(),
-          if(_menuButton != null) _menuButton!,
+          if (_menuButton != null) _menuButton!,
         ]);
   }
 

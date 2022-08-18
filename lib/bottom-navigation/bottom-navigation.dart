@@ -78,7 +78,7 @@ class _MasterScreenState extends State<MasterScreen> {
                 icon: tabsRouter.activeIndex == 1
                     ? SvgPicture.asset('assets/images/journaling.svg')
                     : SvgPicture.asset('assets/images/journalling outline.svg',
-                        color: Colors.grey.shade500),
+                        color: SolhColors.grey102),
                 label: "journaling"),
             BottomNavigationBarItem(
               icon: tabsRouter.activeIndex == 2

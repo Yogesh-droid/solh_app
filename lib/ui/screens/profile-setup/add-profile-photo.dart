@@ -29,11 +29,11 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
   XFile? _xFile;
   File? _croppedFile;
 
-  void _pickImage() async {
+  void _pickImage(ImageSource imageSource) async {
     final ImagePicker _picker = ImagePicker();
     print("picking image");
     _xFile = await _picker.pickImage(
-      source: ImageSource.gallery,
+      source: imageSource,
       // maxWidth: 640,
       // maxHeight: 640,
       // imageQuality: 50,
@@ -105,7 +105,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
               )
             else
               AddProfilePictureIllustration(
-                onPressed: _pickImage,
+                onPressed: () {
+                  showModalSheet();
+                },
               ),
             Expanded(child: Container()),
             if (_croppedFile == null)
@@ -116,7 +118,9 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
                     child: Text("Add Image"),
                     height: 6.h,
                     width: MediaQuery.of(context).size.width / 1.1,
-                    onPressed: _pickImage,
+                    onPressed: () {
+                      showModalSheet();
+                    },
                   ),
                   SizedBox(
                     height: 2.h,
@@ -156,6 +160,45 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
         ),
       ),
     );
+  }
+
+  showModalSheet() {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+            height: 20.h,
+            child: Column(
+              children: [
+                Text("Choose your type"),
+                SizedBox(
+                  height: 3.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      iconSize: 40,
+                      icon: Icon(Icons.photo),
+                      onPressed: () {
+                        _pickImage(ImageSource.gallery);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    IconButton(
+                      iconSize: 40,
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () {
+                        _pickImage(ImageSource.camera);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 }
 

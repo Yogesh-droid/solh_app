@@ -66,7 +66,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               Expanded(
                 child: Column(children: [
                   GenderSelectionDropdown(
-                    initialDropdownValue: "Other",
+                    initialDropdownValue: null,
                     dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
@@ -109,7 +109,6 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   child: Text("Next"),
                   onPressed: () async {
                     widget._onNext();
-
                     try {
                       Provider.of<ProviderUser>(context, listen: false)
                           .updateUserDetails();

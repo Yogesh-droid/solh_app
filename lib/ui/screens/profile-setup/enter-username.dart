@@ -6,7 +6,6 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/model/user/provider-user.dart';
 import 'package:provider/provider.dart';
-
 import '../../../controllers/profile/anon_controller.dart';
 import 'enter-full-name.dart';
 
@@ -46,11 +45,6 @@ class EnterUsernameScreen extends StatelessWidget {
               SizedBox(
                 height: 3.5.h,
               ),
-              // TextField(
-              //   controller: _userNameController,
-              //   decoration: InputDecoration(
-              //       hintText: "John Conor", border: OutlineInputBorder()),
-              // ),
               ProfielTextField(
                 hintText: "Username",
                 autovalidateMode: AutovalidateMode.onUserInteraction,

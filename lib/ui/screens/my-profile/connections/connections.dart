@@ -26,7 +26,7 @@ class Connections extends StatelessWidget {
   final RefreshController _refreshController = RefreshController();
   final RefreshController _allConnectionRefreshcontroller = RefreshController();
   final DiscoverGroupController groupController = Get.find();
-  final ChatListController chatListController = Get.put(ChatListController());
+  final ChatListController chatListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -16,6 +16,7 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/user/user-profile.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -24,6 +25,8 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:http/http.dart' as http;
+import '../../../../controllers/profile/anon_controller.dart';
+import '../../profile-setup/enter-full-name.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
@@ -45,6 +48,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   TextEditingController _dobTextEditingController = TextEditingController();
   TextEditingController _userNameController = TextEditingController();
   final AgeController _ageController = Get.find();
+  final AnonController _anonController = Get.find();
 
   bool _isLoading = false;
 
@@ -105,6 +109,33 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                         Container(
                           height: 2.5.h,
                         ),
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: SolhGreenBorderMiniButton(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.edit_outlined,
+                                        color: SolhColors.green),
+                                    Text(
+                                      "Anonymous",
+                                      style:
+                                          SolhTextStyles.GreenBorderButtonText,
+                                    ),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditAnonymousProfile()),
+                                  );
+                                },
+                              ),
+                            )),
                         Container(
                           child: Stack(
                             children: [
@@ -178,12 +209,64 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                             ],
                           ),
                         ),
-                        Container(
-                          child: Text(""),
+                        SizedBox(
+                          height: 1.5.h,
                         ),
-                        TextFieldB(
-                          label: "Username",
-                          textEditingController: _userNameController,
+                        // TextFieldB(
+                        //   label: "Username",
+                        //   textEditingController: _userNameController,
+                        // ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 18.0),
+                              child: Text(
+                                "Username",
+                                style: SolhTextStyles.JournalingHintText,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18.0,
+                              ),
+                              child: ProfielTextField(
+                                hintText: "Username",
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                textEditingController: _userNameController,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    _anonController.isNormalNameTaken.value =
+                                        false;
+                                  }
+                                  return value == ''
+                                      ? "Required*"
+                                      : value.length < 3
+                                          ? "Username must be at least 3 characters long"
+                                          : null;
+                                },
+                                onChanged: (val) {
+                                  _anonController.isNormalNameTaken.value =
+                                      false;
+                                  if (val!.length >= 3 &&
+                                      _userNameController.text !=
+                                          userSnapshot.requireData!.userName) {
+                                    _anonController
+                                        .checkIfNormalUserNameTaken(val);
+                                  }
+                                },
+                              ),
+                            ),
+                            Obx(() {
+                              return _anonController.isNormalNameTaken.value
+                                  ? Text(
+                                      "Username Already taken",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  : Container();
+                            }),
+                          ],
                         ),
                         TextFieldB(
                           label: "Your First Name",

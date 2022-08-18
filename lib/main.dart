@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +27,21 @@ Future<void> backgroundMessageHandler(RemoteMessage remoteMessage) async {
   print("backgroundMessageHandler");
   print(remoteMessage.data);
   print(remoteMessage.notification!.title);
+  LocalNotificationService.createanddisplaynotification(remoteMessage);
+  // AwesomeNotifications().createNotification(
+  //   content: NotificationContent(
+  //     id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+  //     channelKey: 'basic_channel',
+  //     title: '${remoteMessage.notification!.title}',
+  //     body: '${remoteMessage.notification!.body}',
+  //     wakeUpScreen: true,
+  //     icon: 'resource://drawable/ic_launcher_round',
+  //   ),
+  //   actionButtons: <NotificationActionButton>[
+  //     NotificationActionButton(key: 'yes', label: 'Yes'),
+  //     NotificationActionButton(key: 'no', label: 'No'),
+  //   ],
+  // );
 }
 
 void main() async {
@@ -35,6 +51,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
+  LocalNotificationService.initialize();
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
 
@@ -129,7 +146,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   void initState() {
-    LocalNotificationService.initialize(context);
+    //LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then(
       (message) {
         print("FirebaseMessaging.instance.getInitialMessage");
@@ -169,6 +186,19 @@ class _SolhAppState extends State<SolhApp> {
       (token) {
         print("FirebaseMessaging.instance.onTokenRefresh");
         print('FirebaseMessaging.instance.onTokenRefresh' + token.toString());
+      },
+    );
+
+    AwesomeNotifications().actionStream.listen(
+      (ReceivedAction receivedAction) {
+        if (receivedAction.buttonKeyPressed == 'accept') {
+          print('Accepted');
+        } else if (receivedAction.buttonKeyPressed == 'reject') {
+          print('Rejected');
+        }
+
+        //Here if the user clicks on the notification itself
+        //without any button
       },
     );
 

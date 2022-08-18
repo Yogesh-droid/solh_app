@@ -1,17 +1,11 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
-import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -103,11 +97,20 @@ class ChatAppbar extends StatelessWidget {
           children: [
             Row(
               children: [
+                // InkWell(
+                //     onTap: (() {
+                //       Navigator.of(context).pop();
+                //     }),
+                //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
-                    onTap: (() {
-                      Navigator.of(context).pop();
-                    }),
-                    child: Icon(Icons.arrow_back_ios_new)),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                  }),
+                  child: Container(
+                    width: 50,
+                    child: Icon(Icons.arrow_back_ios_new),
+                  ),
+                ),
                 SizedBox(
                   width: 6,
                 ),

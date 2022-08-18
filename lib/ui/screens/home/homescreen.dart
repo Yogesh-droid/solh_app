@@ -12,16 +12,19 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
+import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
+import '../../../controllers/chat-list/chat_controller.dart';
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -38,6 +41,7 @@ import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../mood-meter/mood_meter.dart';
+import '../profile-setup/enter-full-name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,8 +54,11 @@ class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
   JournalPageController _journalPageController =
       Get.put(JournalPageController());
+  final ChatListController chatListController = Get.put(ChatListController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   GetHelpController getHelpController = Get.put(GetHelpController());
+  AppointmentController appointmentController =
+      Get.put(AppointmentController());
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
@@ -380,55 +387,53 @@ class _HomePageState extends State<HomePage> {
                       height: 17.h,
                       margin: EdgeInsets.only(bottom: 2.h),
                       child: Obx(() => Container(
-                            child: getHelpController
-                                        .topConsultantList.value.doctors !=
-                                    null
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: 6,
-                                    itemBuilder: (_, index) {
-                                      print(getHelpController
+                          child: getHelpController
+                                      .topConsultantList.value.doctors !=
+                                  null
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 6,
+                                  itemBuilder: (_, index) {
+                                    print(getHelpController.topConsultantList
+                                        .value.doctors![index].profilePicture);
+                                    return TopConsultantsTile(
+                                      bio: getHelpController.topConsultantList
+                                              .value.doctors![index].bio ??
+                                          '',
+                                      name: getHelpController.topConsultantList
+                                              .value.doctors![index].name ??
+                                          '',
+                                      mobile: getHelpController
+                                              .topConsultantList
+                                              .value
+                                              .doctors![index]
+                                              .contactNumber ??
+                                          '',
+                                      imgUrl: getHelpController
                                           .topConsultantList
                                           .value
                                           .doctors![index]
-                                          .profilePicture);
-                                      return TopConsultantsTile(
-                                        bio: getHelpController.topConsultantList
-                                                .value.doctors![index].bio ??
-                                            '',
-                                        name: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .name ??
-                                            '',
-                                        mobile: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .contactNumber ??
-                                            '',
-                                        imgUrl: getHelpController
-                                            .topConsultantList
-                                            .value
-                                            .doctors![index]
-                                            .profilePicture,
-                                        sId: getHelpController.topConsultantList
-                                            .value.doctors![index].sId,
-                                      );
-                                    })
-                                : Container(
-                                    child: Center(
-                                    child: Text('No Doctors Found'),
-                                  )),
-                          )),
+                                          .profilePicture,
+                                      sId: getHelpController.topConsultantList
+                                          .value.doctors![index].sId,
+                                    );
+                                  })
+                              : Container())),
                     ),
                     GetHelpDivider(),
                     GetHelpCategory(
                       title: 'Solh Buddies to Talk',
                     ),
                     getSolhBuddiesUI(),
+                    GetHelpDivider(),
+                    GetHelpCategory(
+                      title: 'Recommended reads',
+                      onPressed: () {
+                        connectionController.getRecommendedBlogs();
+                      },
+                    ),
+                    getRecommendedReadsUI(),
                     SizedBox(
                       height: 100,
                     ),
@@ -472,8 +477,8 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
                 height: 40,
-                width: 40,
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                width: 30,
+                padding: EdgeInsets.symmetric(vertical: 8),
                 child: SvgPicture.asset(
                   "assets/icons/app-bar/app-bar-menu.svg",
                   width: 26,
@@ -520,7 +525,7 @@ class _HomePageState extends State<HomePage> {
                               _journalPageController.trendingJournalsList[1]))
                       : Container(),
                   Positioned(
-                      left: 20,
+                      left: 2.h,
                       top: 10,
                       child: getDraggable(
                           _journalPageController.trendingJournalsList[0]))
@@ -708,6 +713,7 @@ class _HomePageState extends State<HomePage> {
         return getHelpController.solhVolunteerList.value.provider != null &&
                 getHelpController.solhVolunteerList.value.provider!.length > 0
             ? ListView.separated(
+                padding: EdgeInsets.only(left: 2.h),
                 separatorBuilder: (_, __) => SizedBox(width: 2.w),
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
@@ -743,11 +749,7 @@ class _HomePageState extends State<HomePage> {
                       userType: getHelpController
                           .solhVolunteerList.value.provider![index].userType,
                     ))
-            : Container(
-                child: Center(
-                  child: Text('No Volunteers Found'),
-                ),
-              );
+            : solhBuddiesShimmer(context);
       }),
     );
   }
@@ -769,9 +771,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget getRecommendedGroupsUI() {
     return Container(
-        padding: EdgeInsets.only(left: 2.h, bottom: 2.h),
+        padding: EdgeInsets.only(bottom: 2.h),
         height: MediaQuery.of(context).size.height * 0.4,
         child: ListView.separated(
+            padding: EdgeInsets.only(left: 2.h),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
@@ -918,6 +921,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return ListView.separated(
+          padding: EdgeInsets.only(left: 2.h),
           separatorBuilder: (_, __) => SizedBox(width: 2.w),
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
@@ -1151,13 +1155,164 @@ class _HomePageState extends State<HomePage> {
           }),
     );
   }
+
+  solhBuddiesShimmer(BuildContext context) {
+    return Container(
+      height: 270,
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: 10,
+        scrollDirection: Axis.horizontal,
+        separatorBuilder: (context, index) {
+          return SizedBox(
+            width: 10,
+          );
+        },
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[300]!,
+            child: Container(
+              height: 150,
+              width: 180,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.grey[100]),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  getRecommendedReadsUI() {
+    return Obx(() {
+      return connectionController.isBlogLoading.value
+          ? solhBuddiesShimmer(context)
+          : Container(
+              height: 270,
+              margin: EdgeInsets.only(bottom: 2.h),
+              child: ListView.separated(
+                padding: EdgeInsets.only(left: 2.h),
+                separatorBuilder: (_, __) => SizedBox(width: 2.w),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: connectionController.bloglist.value.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BlogDetailsPage(
+                                  id: connectionController
+                                          .bloglist.value[index].id ??
+                                      0)));
+                    },
+                    child: Container(
+                      height: 150,
+                      width: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: SolhColors.white,
+                        border: Border.all(
+                          color: SolhColors.greyS200,
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: connectionController
+                                      .bloglist.value[index].image ??
+                                  '',
+                              height: 100,
+                              width: 180,
+                              fit: BoxFit.fitWidth,
+                              placeholder: (context, url) => Container(
+                                height: 150,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[100]),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  connectionController
+                                          .bloglist.value[index].name ??
+                                      '',
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      CupertinoIcons.eye,
+                                      color: SolhColors.green,
+                                      size: 12,
+                                    ),
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Text(
+                                      connectionController
+                                          .bloglist.value[index].views
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: SolhColors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  connectionController
+                                          .bloglist.value[index].description ??
+                                      '',
+                                  maxLines: 5,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: SolhColors.grey,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+    });
+  }
 }
 
 Widget getIssueUI(bookAppointmentController, getHelpController, context) {
   return Container(
-      margin: EdgeInsets.only(left: 1.5.w, right: 1.5.w, bottom: 1.5.h),
+      margin: EdgeInsets.only(bottom: 1.5.h),
       child: Obx(() {
         return Wrap(
+          runSpacing: 5,
           children: getHelpController.issueList.value.map<Widget>((issue) {
             return IssuesTile(
               title: issue.name ?? '',
