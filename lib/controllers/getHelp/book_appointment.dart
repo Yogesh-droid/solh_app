@@ -28,6 +28,7 @@ class BookAppointmentController extends GetxController {
   TextEditingController catTextEditingController = TextEditingController();
   var isLoading = false.obs;
   var loadingTimeSlots = false.obs;
+  dynamic isTimeSlotAdded = ''.obs;
 
   Future<String> bookAppointment(Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
@@ -37,6 +38,19 @@ class BookAppointmentController extends GetxController {
     print('---' + response.toString());
     isLoading.value = false;
     return response;
+  }
+
+  Future<void> isSlotAdded({required String providerId}) async {
+    isLoading.value = true;
+
+    var date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    var response = await Network.makeGetRequest(
+      APIConstants.api +
+          '/api/provider-schedule?provider=$providerId&date=$date',
+    );
+    print('---' + response.toString());
+    isLoading.value = false;
+    isTimeSlotAdded.value = response['slotsAdded'].toString();
   }
 
   Future<void> getTimeSlot({String? providerId, String? date}) async {

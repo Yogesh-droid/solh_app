@@ -25,7 +25,10 @@ class _BookAppointmentState extends State<BookAppointment> {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
+  ConsultantController _consultantController = Get.find();
+
   ConnectionController controller = Get.find();
+  var _controller = Get.put(BookAppointmentController());
   //var _bookingController = Get.put(BookAppointmentController());
   BookAppointmentController _bookingController = Get.find();
 
@@ -35,6 +38,10 @@ class _BookAppointmentState extends State<BookAppointment> {
         userBlocNetwork.userMobileNo;
     _bookingController.emailTextEditingController.text =
         userBlocNetwork.userEmail;
+
+    _controller.isSlotAdded(
+        providerId: _consultantController
+            .consultantModelController.value.provder!.sId!);
 
     super.initState();
   }
@@ -282,41 +289,52 @@ class BookAppointmentWidget extends StatelessWidget {
         ),
       ),
     ); */
-    return SolhGreenButton(
-      height: 48,
-      child: Text('Book Appointment'),
-      onPressed: () {
-        var value = validator(
-            mobile_no: _controller.mobileNotextEditingController.text,
-            email: _controller.emailTextEditingController.text,
-            selected_day: _controller.selectedDay.value,
-            time_slot: _controller.selectedTimeSlot.value);
+    return Obx(() {
+      return Container(
+        child: _controller.isTimeSlotAdded.value != ''
+            ? (_controller.isTimeSlotAdded.value == 'true'
+                ? SolhGreenButton(
+                    height: 48,
+                    child: Text('Book Appointment'),
+                    onPressed: () {
+                      var value = validator(
+                          mobile_no:
+                              _controller.mobileNotextEditingController.text,
+                          email: _controller.emailTextEditingController.text,
+                          selected_day: _controller.selectedDay.value,
+                          time_slot: _controller.selectedTimeSlot.value);
 
-        print(value.toString());
-        if (value is bool) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    child: BookAppointmentPopup());
-              });
-        } else {
-          final snackBar = SnackBar(
-            content: Text(value!.toString()),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
+                      print(value.toString());
+                      if (value is bool) {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  child: BookAppointmentPopup());
+                            });
+                      } else {
+                        final snackBar = SnackBar(
+                          content: Text(value!.toString()),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
 
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      },
-    );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    },
+                  )
+                : SolhGreenButton(
+                    child: Text('Get a call back'), onPressed: () {}))
+            : CircularProgressIndicator(),
+      );
+    });
   }
 }
 
@@ -349,10 +367,14 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Today' == _controller.selectedDay.value
-              ? 'Today'
-              : '${_controller.selectedDay.value}'),
-          Text(_controller.selectedTimeSlot.value)
+          Text(_controller.selectedDay.value != ''
+              ? ('Today' == _controller.selectedDay.value
+                  ? 'Today'
+                  : '${_controller.selectedDay.value}')
+              : 'Select'),
+          _controller.selectedDate.value != ''
+              ? Text(_controller.selectedTimeSlot.value)
+              : Icon(Icons.arrow_drop_down),
         ],
       );
     }));
@@ -423,6 +445,7 @@ class _DayPickerState extends State<DayPicker> {
   void initState() {
     getUpcomingMap();
     getTodaysSlots();
+
     super.initState();
   }
 
@@ -762,6 +785,7 @@ class BookAppointmentPopup extends StatelessWidget {
                 };
                 // Navigator.pop(context);
                 Utility.showLoader(context);
+                // await Future.delayed(Duration(seconds: 2), () {});
                 // await Future.delayed(Duration(seconds: 2), () {});
                 String response = await _controller.bookAppointment(body);
                 Get.find<AppointmentController>().getUserAppointments();
