@@ -65,140 +65,137 @@ class AppointmentScreen extends StatelessWidget {
           SizedBox(
             height: 1.h,
           ),
-          ListView.builder(
-              itemCount: scheduldAppointments!.length,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return scheduldAppointments[index].doctor != null
-                    ? Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2.w),
-                            color: SolhColors.white,
-                            border: Border.all(
-                              color: SolhColors.green,
-                              width: 0.5,
-                            ),
-                          ),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(2.w),
-                                  bottomLeft: Radius.circular(2.w),
-                                ),
-                                child: CachedNetworkImage(
-                                  imageUrl: scheduldAppointments[index]
-                                          .doctor!
-                                          .profilePicture ??
-                                      '',
-                                  imageBuilder: (context, imageProvider) =>
-                                      Container(
-                                    width: 20.w,
-                                    height: 20.w,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: imageProvider,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+          scheduldAppointments != null
+              ? ListView.builder(
+                  itemCount: scheduldAppointments.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return scheduldAppointments[index].doctor != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2.w),
+                                color: SolhColors.white,
+                                border: Border.all(
+                                  color: SolhColors.green,
+                                  width: 0.5,
                                 ),
                               ),
-                              SizedBox(width: 3.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
                                 children: [
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width / 3,
-                                    child: Text(
-                                      scheduldAppointments[index]
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2.w),
+                                      bottomLeft: Radius.circular(2.w),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: scheduldAppointments[index]
                                               .doctor!
-                                              .name ??
+                                              .profilePicture ??
                                           '',
-                                      style:
-                                          SolhTextStyles.JournalingUsernameText,
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        width: 20.w,
+                                        height: 20.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
                                   ),
-                                  // Container(
-                                  //   width:
-                                  //       MediaQuery.of(context).size.width / 3,
-                                  //   child: Text(
-                                  //     'Appointment with Dr. ${scheduldAppointments[index].doctor!.name ?? ''}',
-                                  //     style: SolhTextStyles
-                                  //         .JournalingDescriptionText,
-                                  //   ),
-                                  // ),
-                                ],
-                              ),
-                              Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      '${scheduldAppointments[index].scheduledOn ?? ''}',
-                                      style: SolhTextStyles
-                                          .JournalingDescriptionText,
-                                    ),
+                                  SizedBox(width: 3.w),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                3,
+                                        child: Text(
+                                          scheduldAppointments[index]
+                                                  .doctor!
+                                                  .name ??
+                                              '',
+                                          style: SolhTextStyles
+                                              .JournalingUsernameText,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SolhGreenMiniButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ChatScreen(
-                                                    name: scheduldAppointments[
-                                                                index]
-                                                            .doctor!
-                                                            .name ??
-                                                        '',
-                                                    imageUrl:
-                                                        scheduldAppointments[
-                                                                    index]
-                                                                .doctor!
-                                                                .profilePicture ??
-                                                            '',
-                                                    sId: scheduldAppointments[
-                                                                index]
-                                                            .doctor!
-                                                            .sId ??
-                                                        '',
-                                                  )));
-                                    },
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Session',
-                                          style: SolhTextStyles.GreenButtonText,
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          '${scheduldAppointments[index].scheduledOn ?? ''}',
+                                          style: SolhTextStyles
+                                              .JournalingDescriptionText,
                                         ),
-                                        SizedBox(width: 1.w),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: SolhColors.white,
+                                      ),
+                                      SolhGreenMiniButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (context) => ChatScreen(
+                                                            name: scheduldAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .name ??
+                                                                '',
+                                                            imageUrl: scheduldAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .profilePicture ??
+                                                                '',
+                                                            sId: scheduldAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .sId ??
+                                                                '',
+                                                          )));
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Session',
+                                              style: SolhTextStyles
+                                                  .GreenButtonText,
+                                            ),
+                                            SizedBox(width: 1.w),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: SolhColors.white,
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  )
+                                      )
+                                    ],
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Container();
-              }),
+                            ),
+                          )
+                        : Container();
+                  })
+              : Container(),
         ],
       ),
     );
@@ -222,117 +219,124 @@ class AppointmentScreen extends StatelessWidget {
           SizedBox(
             height: 1.h,
           ),
-          ListView.builder(
-            itemCount: completedAppointments!.length,
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return completedAppointments[index].doctor != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2.w),
-                          color: SolhColors.white,
-                          border: Border.all(
-                            color: SolhColors.greyS200,
-                            width: 0.5,
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(2.w),
-                                bottomLeft: Radius.circular(2.w),
+          completedAppointments != null
+              ? ListView.builder(
+                  itemCount: completedAppointments.length,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return completedAppointments[index].doctor != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(2.w),
+                                color: SolhColors.white,
+                                border: Border.all(
+                                  color: SolhColors.greyS200,
+                                  width: 0.5,
+                                ),
                               ),
-                              child: CachedNetworkImage(
-                                imageUrl: completedAppointments[index]
-                                        .doctor!
-                                        .profilePicture ??
-                                    '',
-                                //'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200',
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 20.w,
-                                  height: 20.w,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                      fit: BoxFit.fill,
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(2.w),
+                                      bottomLeft: Radius.circular(2.w),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: completedAppointments[index]
+                                              .doctor!
+                                              .profilePicture ??
+                                          '',
+                                      //'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200',
+                                      imageBuilder: (context, imageProvider) =>
+                                          Container(
+                                        width: 20.w,
+                                        height: 20.w,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: imageProvider,
+                                            fit: BoxFit.fill,
+                                          ),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
                                     ),
                                   ),
-                                ),
-                                placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                              ),
-                            ),
-                            SizedBox(width: 3.w),
-                            Text(
-                              completedAppointments[index].doctor!.name ?? '',
-                              style: SolhTextStyles.JournalingUsernameText,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    '${completedAppointments[index].scheduledOn ?? ''}',
-                                    style: SolhTextStyles
-                                        .JournalingDescriptionText,
+                                  SizedBox(width: 3.w),
+                                  Text(
+                                    completedAppointments[index].doctor!.name ??
+                                        '',
+                                    style:
+                                        SolhTextStyles.JournalingUsernameText,
                                   ),
-                                ),
-                                SolhGreenMiniButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ChatScreen(
-                                                  name: completedAppointments[
-                                                              index]
-                                                          .doctor!
-                                                          .name ??
-                                                      '',
-                                                  imageUrl:
-                                                      completedAppointments[
-                                                                  index]
-                                                              .doctor!
-                                                              .profilePicture ??
-                                                          '',
-                                                  sId: completedAppointments[
-                                                              index]
-                                                          .doctor!
-                                                          .sId ??
-                                                      '',
-                                                )));
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Session',
-                                        style: SolhTextStyles.GreenButtonText,
+                                      Container(
+                                        alignment: Alignment.centerRight,
+                                        child: Text(
+                                          '${completedAppointments[index].scheduledOn ?? ''}',
+                                          style: SolhTextStyles
+                                              .JournalingDescriptionText,
+                                        ),
                                       ),
-                                      SizedBox(width: 1.w),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: SolhColors.white,
-                                      ),
+                                      SolhGreenMiniButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (context) => ChatScreen(
+                                                            name: completedAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .name ??
+                                                                '',
+                                                            imageUrl: completedAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .profilePicture ??
+                                                                '',
+                                                            sId: completedAppointments[
+                                                                        index]
+                                                                    .doctor!
+                                                                    .sId ??
+                                                                '',
+                                                          )));
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Session',
+                                              style: SolhTextStyles
+                                                  .GreenButtonText,
+                                            ),
+                                            SizedBox(width: 1.w),
+                                            Icon(
+                                              Icons.arrow_forward_ios,
+                                              color: SolhColors.white,
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : Container();
-            },
-          ),
+                          )
+                        : Container();
+                  },
+                )
+              : Container(),
         ],
       ),
     );

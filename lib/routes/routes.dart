@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
+import 'package:solh/ui/screens/doctor/appointment_page.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
@@ -19,7 +21,6 @@ import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
-import 'package:solh/ui/screens/video-call/video-call-user.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -60,6 +61,16 @@ import 'package:solh/ui/screens/video-call/video-call-user.dart';
             path: "GetHelpScreen",
             name: "GetHelpScreenRouter",
             page: GetHelpScreen,
+          ),
+          AutoRoute(
+            path: "AppointmentsScreen",
+            name: "AppointmentsScreenRouter",
+            page: AppointmentScreen,
+          ),
+          AutoRoute(
+            path: "DoctorsAppointmentsScreen",
+            name: "DoctorsAppointmentsScreenRouter",
+            page: DoctorsAppointmentPage,
           ),
           AutoRoute(
             path: "MyGoalsScreen",

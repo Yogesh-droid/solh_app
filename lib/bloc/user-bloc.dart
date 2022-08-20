@@ -9,6 +9,7 @@ class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
   UserModel myData = UserModel();
   String _sessionCookie = "";
+  String _usertype = "";
   String id = '';
   String userMobileNo = '';
   String userEmail = '';
@@ -22,8 +23,16 @@ class UserBlocNetwork {
     _sessionCookie = sessionCookie;
   }
 
+  set updateUserType(String userType) {
+    _usertype = userType;
+  }
+
   String get getSessionCookie {
     return _sessionCookie;
+  }
+
+  String get getUserType {
+    return _usertype;
   }
 
   Future<UserModel?> _fetchUserDetails(String uid) async {

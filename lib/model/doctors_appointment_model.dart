@@ -1,12 +1,12 @@
-class UserAppointmentModel {
+class DoctorsAppointmentModel {
   bool? success;
   List<ScheduldAppointments>? scheduldAppointments;
   List<CompletedAppointments>? completedAppointments;
 
-  UserAppointmentModel(
+  DoctorsAppointmentModel(
       {this.success, this.scheduldAppointments, this.completedAppointments});
 
-  UserAppointmentModel.fromJson(Map<String, dynamic> json) {
+  DoctorsAppointmentModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     if (json['scheduldAppointments'] != null) {
       scheduldAppointments = <ScheduldAppointments>[];
@@ -14,7 +14,7 @@ class UserAppointmentModel {
         scheduldAppointments!.add(new ScheduldAppointments.fromJson(v));
       });
     }
-    if (json['completedAppointments'] != null) {
+    if (json['complete0dAppointments'] != null) {
       completedAppointments = <CompletedAppointments>[];
       json['completedAppointments'].forEach((v) {
         completedAppointments!.add(new CompletedAppointments.fromJson(v));
@@ -30,7 +30,7 @@ class UserAppointmentModel {
           this.scheduldAppointments!.map((v) => v.toJson()).toList();
     }
     if (this.completedAppointments != null) {
-      data['completedAppointments'] =
+      data['complete0dAppointments'] =
           this.completedAppointments!.map((v) => v.toJson()).toList();
     }
     return data;
@@ -38,27 +38,28 @@ class UserAppointmentModel {
 }
 
 class ScheduldAppointments {
-  Doctor? doctor;
-  Patient? patient;
+  Provider? provider;
+  Provider? patient;
   String? scheduledOn;
   String? scheduleTime;
 
   ScheduldAppointments(
-      {this.doctor, this.patient, this.scheduledOn, this.scheduleTime});
+      {this.provider, this.patient, this.scheduledOn, this.scheduleTime});
 
   ScheduldAppointments.fromJson(Map<String, dynamic> json) {
-    doctor =
-        json['doctor'] != null ? new Doctor.fromJson(json['doctor']) : null;
+    provider = json['provider'] != null
+        ? new Provider.fromJson(json['provider'])
+        : null;
     patient =
-        json['patient'] != null ? new Patient.fromJson(json['patient']) : null;
+        json['patient'] != null ? new Provider.fromJson(json['patient']) : null;
     scheduledOn = json['scheduledOn'];
     scheduleTime = json['scheduleTime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.doctor != null) {
-      data['doctor'] = this.doctor!.toJson();
+    if (this.provider != null) {
+      data['provider'] = this.provider!.toJson();
     }
     if (this.patient != null) {
       data['patient'] = this.patient!.toJson();
@@ -70,27 +71,28 @@ class ScheduldAppointments {
 }
 
 class CompletedAppointments {
-  Doctor? doctor;
-  Patient? patient;
+  Provider? provider;
+  Provider? patient;
   String? scheduledOn;
   String? scheduleTime;
 
   CompletedAppointments(
-      {this.doctor, this.patient, this.scheduledOn, this.scheduleTime});
+      {this.provider, this.patient, this.scheduledOn, this.scheduleTime});
 
   CompletedAppointments.fromJson(Map<String, dynamic> json) {
-    doctor =
-        json['doctor'] != null ? new Doctor.fromJson(json['doctor']) : null;
+    provider = json['provider'] != null
+        ? new Provider.fromJson(json['provider'])
+        : null;
     patient =
-        json['patient'] != null ? new Patient.fromJson(json['patient']) : null;
+        json['patient'] != null ? new Provider.fromJson(json['patient']) : null;
     scheduledOn = json['scheduledOn'];
     scheduleTime = json['scheduleTime'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.doctor != null) {
-      data['doctor'] = this.doctor!.toJson();
+    if (this.provider != null) {
+      data['provider'] = this.provider!.toJson();
     }
     if (this.patient != null) {
       data['patient'] = this.patient!.toJson();
@@ -101,37 +103,15 @@ class CompletedAppointments {
   }
 }
 
-class Doctor {
-  String? sId;
-  String? name;
-  String? profilePicture;
-
-  Doctor({this.sId, this.name, this.profilePicture});
-
-  Doctor.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    profilePicture = json['profilePicture'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['profilePicture'] = this.profilePicture;
-    return data;
-  }
-}
-
-class Patient {
+class Provider {
   String? sId;
   String? profilePicture;
   String? name;
   String? id;
 
-  Patient({this.sId, this.profilePicture, this.name, this.id});
+  Provider({this.sId, this.profilePicture, this.name, this.id});
 
-  Patient.fromJson(Map<String, dynamic> json) {
+  Provider.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     profilePicture = json['profilePicture'];
     name = json['name'];

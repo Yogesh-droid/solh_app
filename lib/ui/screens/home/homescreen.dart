@@ -57,8 +57,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ChatListController chatListController = Get.put(ChatListController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   GetHelpController getHelpController = Get.put(GetHelpController());
-  AppointmentController appointmentController =
-      Get.put(AppointmentController());
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());

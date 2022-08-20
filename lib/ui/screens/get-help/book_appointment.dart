@@ -8,6 +8,7 @@ import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -751,6 +752,7 @@ class BookAppointmentPopup extends StatelessWidget {
                       _controller.selectedTimeSlot,
                       1,
                       _controller.selectedDate.value),
+                  'seekerEmail': _controller.emailTextEditingController.text,
                   'from': _controller.selectedTimeSlot.split('-')[0],
                   'to': _controller.selectedTimeSlot.split('-')[1],
                   "type": "app",
@@ -762,6 +764,7 @@ class BookAppointmentPopup extends StatelessWidget {
                 Utility.showLoader(context);
                 // await Future.delayed(Duration(seconds: 2), () {});
                 String response = await _controller.bookAppointment(body);
+                Get.find<AppointmentController>().getUserAppointments();
                 Navigator.pop(context);
                 Navigator.pop(context);
 

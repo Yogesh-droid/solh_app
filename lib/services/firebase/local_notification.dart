@@ -1,8 +1,11 @@
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../../widgets_constants/constants/colors.dart';
+// import 'package:solh/widgets_constants/constants/colors.dart';
 
 /* class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -40,6 +43,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
   }
 
   static void createanddisplaynotification(RemoteMessage message) async {
+    print("createanddisplaynotification");
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
       const NotificationDetails notificationDetails = NotificationDetails(
@@ -49,6 +53,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
           importance: Importance.max,
           priority: Priority.high,
           icon: "ic_launcher_round",
+          // channelShowBadge: true,
+          // category: "	CATEGORY_CALL",
+          // fullScreenIntent: true,
+          // timeoutAfter: 20,
         ),
       );
 
@@ -96,6 +104,7 @@ class LocalNotificationService {
             enableLights: true,
             playSound: true,
             enableVibration: true,
+            locked: true,
           )
         ],
         // Channel groups are only visual and are not required
@@ -124,15 +133,16 @@ class LocalNotificationService {
             locked: true,
             autoDismissible: false,
             category: NotificationCategory.Call,
+
             fullScreenIntent: true,
-            showWhen: false,
+            // showWhen: true,
           ),
           actionButtons: <NotificationActionButton>[
             NotificationActionButton(key: 'accept', label: 'Accept'),
             NotificationActionButton(key: 'reject', label: 'Reject'),
           ],
         );
-        Future.delayed(Duration(seconds: 10), () {
+        Future.delayed(Duration(seconds: 20), () {
           AwesomeNotifications()
               .dismissNotificationsByChannelKey('basic_channel_call');
         });

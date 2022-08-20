@@ -1,4 +1,4 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,8 +6,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
+import 'controllers/profile/appointment_controller.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,24 +26,13 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
 Future<void> backgroundMessageHandler(RemoteMessage remoteMessage) async {
+  await Firebase.initializeApp();
   print("backgroundMessageHandler");
   print(remoteMessage.data);
   print(remoteMessage.notification!.title);
-  LocalNotificationService.createanddisplaynotification(remoteMessage);
-  // AwesomeNotifications().createNotification(
-  //   content: NotificationContent(
-  //     id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-  //     channelKey: 'basic_channel',
-  //     title: '${remoteMessage.notification!.title}',
-  //     body: '${remoteMessage.notification!.body}',
-  //     wakeUpScreen: true,
-  //     icon: 'resource://drawable/ic_launcher_round',
-  //   ),
-  //   actionButtons: <NotificationActionButton>[
-  //     NotificationActionButton(key: 'yes', label: 'Yes'),
-  //     NotificationActionButton(key: 'no', label: 'No'),
-  //   ],
-  // );
+  if (remoteMessage.data['action'] == 'call') {
+    LocalNotificationService.createanddisplaynotification(remoteMessage);
+  }
 }
 
 void main() async {
@@ -54,6 +45,8 @@ void main() async {
   LocalNotificationService.initialize();
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
+  AppointmentController appointmentController =
+      Get.put(AppointmentController());
 
   final moodMeterController = Get.put(MoodMeterController());
   final AnonController anonController = Get.put(AnonController());
@@ -148,12 +141,31 @@ class _SolhAppState extends State<SolhApp> {
   void initState() {
     //LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
+      (message) async {
+        await Firebase.initializeApp();
         print("FirebaseMessaging.instance.getInitialMessage");
         if (message != null) {
           print("New Notification");
 
-          /// we can handle routing here
+          /// we can handle routing here when app is open from background or terminated state
+
+          showAboutDialog(
+              context: context,
+              applicationName: "Solh",
+              applicationVersion: "1.0.0",
+              applicationIcon: Image.asset("assets/images/logo.png"),
+              children: <Widget>[
+                Text(message.notification!.title ?? ''),
+                Text(message.notification!.body ?? ''),
+              ]);
+
+          // if (message.data['action'] == 'call') {
+          //   globalNavigatorKey.currentState!.push(
+          //     MaterialPageRoute(
+          //       builder: (context) => Connections(),
+          //     ),
+          //   );
+          // }
         }
       },
     );
@@ -179,6 +191,13 @@ class _SolhAppState extends State<SolhApp> {
           print(message.notification!.title);
           print(message.notification!.body);
           print("message.data22 ${message.data['_id']}");
+          if (message.data['action'] == 'call') {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(
+                builder: (context) => Connections(),
+              ),
+            );
+          }
         }
       },
     );
@@ -189,18 +208,23 @@ class _SolhAppState extends State<SolhApp> {
       },
     );
 
-    AwesomeNotifications().actionStream.listen(
-      (ReceivedAction receivedAction) {
-        if (receivedAction.buttonKeyPressed == 'accept') {
-          print('Accepted');
-        } else if (receivedAction.buttonKeyPressed == 'reject') {
-          print('Rejected');
-        }
+    // AwesomeNotifications().actionStream.listen(
+    //   (ReceivedAction receivedAction) {
+    //     if (receivedAction.buttonKeyPressed == 'accept') {
+    //       print('Accepted');
+    //       globalNavigatorKey.currentState!.push(
+    //         MaterialPageRoute(
+    //           builder: (context) => Connections(),
+    //         ),
+    //       );
+    //     } else if (receivedAction.buttonKeyPressed == 'reject') {
+    //       print('Rejected');
+    //     }
 
-        //Here if the user clicks on the notification itself
-        //without any button
-      },
-    );
+    //     //Here if the user clicks on the notification itself
+    //     //without any button
+    //   },
+    // );
 
     super.initState();
   }

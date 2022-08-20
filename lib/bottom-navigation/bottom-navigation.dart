@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:new_version/new_version.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../controllers/goal-setting/goal_setting_controller.dart';
+import 'dart:math' as math;
 
 class MasterScreen extends StatefulWidget {
   MasterScreen({this.index});
@@ -34,7 +36,9 @@ class _MasterScreenState extends State<MasterScreen> {
       routes: [
         HomeScreenRouter(),
         JournalingScreenRouter(),
-        GetHelpScreenRouter(),
+        userBlocNetwork.getUserType == 'SolhProvider'
+            ? DoctorsAppointmentsScreenRouter()
+            : GetHelpScreenRouter(),
         MyGoalsScreenRouter(),
         MyProfileScreenRouter(),
       ],
@@ -80,15 +84,27 @@ class _MasterScreenState extends State<MasterScreen> {
                     : SvgPicture.asset('assets/images/journalling outline.svg',
                         color: SolhColors.grey102),
                 label: "journaling"),
-            BottomNavigationBarItem(
-              icon: tabsRouter.activeIndex == 2
-                  ? SvgPicture.asset("assets/images/get help tab.svg")
-                  : SvgPicture.asset(
-                      "assets/images/get help. outline.svg",
-                      color: Colors.grey.shade600,
-                    ),
-              label: "Get Help",
-            ),
+            userBlocNetwork.getUserType == 'SolhProvider'
+                ? BottomNavigationBarItem(
+                    icon: tabsRouter.activeIndex == 2
+                        ? Icon(
+                            CupertinoIcons.calendar_badge_plus,
+                            color: SolhColors.green,
+                          )
+                        : Icon(
+                            CupertinoIcons.calendar_badge_plus,
+                            color: SolhColors.grey102,
+                          ),
+                    label: "My Schedule")
+                : BottomNavigationBarItem(
+                    icon: tabsRouter.activeIndex == 2
+                        ? SvgPicture.asset("assets/images/get help tab.svg")
+                        : SvgPicture.asset(
+                            "assets/images/get help. outline.svg",
+                            color: Colors.grey.shade600,
+                          ),
+                    label: "Get Help",
+                  ),
             BottomNavigationBarItem(
                 icon: tabsRouter.activeIndex == 3
                     ? SvgPicture.asset(
