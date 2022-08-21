@@ -239,6 +239,8 @@ class BookAppointmentWidget extends StatelessWidget {
   //var _controller = Get.put(BookAppointmentController());
   BookAppointmentController _controller = Get.find();
 
+  ConsultantController _consultantController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     /* return InkWell(
@@ -331,7 +333,113 @@ class BookAppointmentWidget extends StatelessWidget {
                     },
                   )
                 : SolhGreenButton(
-                    child: Text('Get a call back'), onPressed: () {}))
+                    child: Text('Get a call back'),
+                    onPressed: () async {
+                      var value = validator(
+                          mobile_no:
+                              _controller.mobileNotextEditingController.text,
+                          email: _controller.emailTextEditingController.text,
+                          selected_day: _controller.selectedDay.value,
+                          time_slot: _controller.selectedTimeSlot.value);
+
+                      if (value is bool) {
+                        Map<String, dynamic> body = {
+                          'provider': _consultantController
+                                      .consultantModelController
+                                      .value
+                                      .provder!
+                                      .type ==
+                                  'provider'
+                              ? _consultantController
+                                  .consultantModelController.value.provder!.sId
+                              : '',
+                          'doctor': _consultantController
+                                      .consultantModelController
+                                      .value
+                                      .provder!
+                                      .type ==
+                                  'doctor'
+                              ? _consultantController
+                                  .consultantModelController.value.provder!.sId
+                              : '',
+                          'start': getdateTime(
+                              _controller.selectedDay,
+                              _controller.selectedTimeSlot,
+                              0,
+                              _controller.selectedDate.value),
+                          'end': getdateTime(
+                              _controller.selectedDay,
+                              _controller.selectedTimeSlot,
+                              1,
+                              _controller.selectedDate.value),
+                          'seekerEmail':
+                              _controller.emailTextEditingController.text,
+                          'from': _controller.selectedTimeSlot.split('-')[0],
+                          'to': _controller.selectedTimeSlot.split('-')[1],
+                          "type": "app",
+                          "duration": "30",
+                          "label":
+                              _controller.catTextEditingController.value.text,
+                          "concern": _controller.query ?? ''
+                        };
+                        var val = await _controller.bookAppointment(body);
+
+                        if (val == 'Successfully created appointment.') {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                    content: Container(
+                                  height: 150,
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.done,
+                                        color: SolhColors.green,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          child: Column(children: [
+                                            Text('Thanks!',
+                                                style: GoogleFonts.signika(
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Text(
+                                              "We have received your appointment booking for Date, at time. We will get back to you soon with the appointment's confirmation details.",
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ]),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'Ok',
+                                          style: GoogleFonts.signika(
+                                              fontWeight: FontWeight.bold,
+                                              color: SolhColors.green),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ));
+                              });
+                        }
+                      } else {
+                        final snackBar = SnackBar(
+                          content: Text(value!.toString()),
+                          action: SnackBarAction(
+                            label: 'Undo',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+                    }))
             : CircularProgressIndicator(),
       );
     });
@@ -444,7 +552,11 @@ class _DayPickerState extends State<DayPicker> {
   @override
   void initState() {
     getUpcomingMap();
-    getTodaysSlots();
+
+    Future.delayed(Duration(microseconds: 10), () {
+      getTodaysSlots();
+      print('it ran');
+    });
 
     super.initState();
   }
@@ -497,24 +609,22 @@ class _DayPickerState extends State<DayPicker> {
               itemBuilder: ((context, index) {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: InkWell(
-                    onTap: () async {
-                      //_controller.selectedDay.value = days[index];
-                      _controller.selectedDay.value =
-                          DateFormat('EEEE').format(days[index]);
-                      _controller.selectedDate.value = days[index];
-                      await _controller.getTimeSlot(
-                          date: DateFormat('yyyy-MM-dd').format(days[index]),
-                          providerId: _consultantController
-                              .consultantModelController.value.provder!.sId);
+                  child: Obx(() {
+                    return InkWell(
+                      onTap: () async {
+                        //_controller.selectedDay.value = days[index];
+                        _controller.selectedDay.value =
+                            DateFormat('EEEE').format(days[index]);
+                        _controller.selectedDate.value = days[index];
+                        await _controller.getTimeSlot(
+                            date: DateFormat('yyyy-MM-dd').format(days[index]),
+                            providerId: _consultantController
+                                .consultantModelController.value.provder!.sId);
 
-                      print('+++++' + _controller.selectedDay.value);
-                      print('----' + DateFormat('EEEE').format(days[index]));
-                    },
-                    child: Obx(() {
-                      print('+++++' + _controller.selectedDay.value);
-                      print('----' + DateFormat('EEEE').format(days[index]));
-                      return Container(
+                        print('+++++' + _controller.selectedDay.value);
+                        print('----' + DateFormat('EEEE').format(days[index]));
+                      },
+                      child: Container(
                         decoration: BoxDecoration(
                             color: _controller.selectedDay.value ==
                                     DateFormat('EEEE').format(days[index])
@@ -542,9 +652,9 @@ class _DayPickerState extends State<DayPicker> {
                             ),
                           ),
                         ),
-                      );
-                    }),
-                  ),
+                      ),
+                    );
+                  }),
                 );
               })),
         ),
@@ -661,8 +771,10 @@ class _DayPickerState extends State<DayPicker> {
     }
     updatedList.forEach((element) {
       if (DateTime.now() == element) {}
+      days.add(element);
       if (DateFormat('EEEE').format(element) != 'Sunday') {
-        days.add(element);
+        // days.add(element);
+
       }
     });
 
@@ -875,6 +987,12 @@ validator(
   }
   if (email.isEmpty) {
     return 'Email is required';
+  }
+
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email)) {
+    return 'Enter a valid email';
   }
 
   if (selected_day == '') {
