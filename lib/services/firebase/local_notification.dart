@@ -2,7 +2,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../widgets_constants/constants/colors.dart';
 // import 'package:solh/widgets_constants/constants/colors.dart';
@@ -80,7 +79,6 @@ class LocalNotificationService {
         'resource://drawable/ic_launcher_round',
         [
           NotificationChannel(
-            channelGroupKey: 'basic_channel_group',
             channelKey: 'basic_channel',
             channelName: 'Basic notifications',
             channelDescription: 'Notification channel for basic tests',
@@ -93,13 +91,12 @@ class LocalNotificationService {
             enableVibration: true,
           ),
           NotificationChannel(
-            channelGroupKey: 'basic_channel_group',
             channelKey: 'basic_channel_call',
-            channelName: 'Basic notifications',
+            channelName: 'Basic notifications call',
             channelDescription: 'Notification channel for basic call',
             defaultColor: SolhColors.green,
             ledColor: Colors.white,
-            importance: NotificationImportance.High,
+            importance: NotificationImportance.Max,
             channelShowBadge: true,
             enableLights: true,
             playSound: true,
@@ -116,44 +113,76 @@ class LocalNotificationService {
         debug: true);
   }
 
-  static void createanddisplaynotification(RemoteMessage message) async {
-    print("createanddisplaynotification");
-    print(message.data);
-    switch (message.data['action']) {
-      case 'call':
-        AwesomeNotifications().createNotification(
-          content: NotificationContent(
-            id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-            channelKey: 'basic_channel_call',
-            title: '${message.notification!.title}',
-            body: '${message.notification!.body}',
-            wakeUpScreen: true,
-            icon: 'resource://drawable/ic_launcher_round',
-            displayOnForeground: true,
-            locked: true,
-            autoDismissible: false,
-            category: NotificationCategory.Call,
+  static void createCallNotification(Map<String, dynamic> content,
+      RemoteMessage message, List<NotificationActionButton>? actionButton) {
+    print("call");
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: content['id'],
+        channelKey: content['channelKey'],
+        autoDismissible: content['autoDismissible'],
+        body: '${message.notification!.body}',
+        wakeUpScreen: true,
+        icon: 'resource://drawable/ic_launcher_round',
+        displayOnForeground: true,
+        locked: true,
+        category: NotificationCategory.Call,
+        fullScreenIntent: true,
+        // showWhen: true,
+      ),
+      actionButtons: actionButton,
+    );
+    Future.delayed(Duration(seconds: 20), () {
+      AwesomeNotifications()
+          .dismissNotificationsByChannelKey('basic_channel_call');
+    });
+  }
 
-            fullScreenIntent: true,
-            // showWhen: true,
-          ),
-          actionButtons: <NotificationActionButton>[
-            NotificationActionButton(key: 'accept', label: 'Accept'),
-            NotificationActionButton(key: 'reject', label: 'Reject'),
-          ],
-        );
-        Future.delayed(Duration(seconds: 20), () {
-          AwesomeNotifications()
-              .dismissNotificationsByChannelKey('basic_channel_call');
-        });
-        break;
-      default:
-        AwesomeNotifications().createNotification(
-            content: NotificationContent(
-                id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-                channelKey: 'basic_channel',
-                title: '${message.notification!.title}',
-                body: '${message.notification!.body}'));
-    }
+  static void createanddisplaynotification(
+      Map<String, dynamic> content,
+      RemoteMessage message,
+      List<NotificationActionButton>? actionButton) async {
+    // print("createanddisplaynotification");
+    // print(message.data);
+    // switch (message.data['action']) {
+    //   case 'call':
+    //     print("call");
+    //     AwesomeNotifications().createNotification(
+    //       content: NotificationContent(
+    //         id: 0,
+    //         channelKey: 'basic_channel_call',
+    //         title: '${message.notification!.title}',
+    //         body: '${message.notification!.body}',
+    //         wakeUpScreen: true,
+    //         icon: 'resource://drawable/ic_launcher_round',
+    //         displayOnForeground: true,
+    //         locked: true,
+    //         autoDismissible: false,
+    //         category: NotificationCategory.Call,
+
+    //         fullScreenIntent: true,
+    //         // showWhen: true,
+    //       ),
+    //       actionButtons: <NotificationActionButton>[
+    //         NotificationActionButton(key: 'accept', label: 'Accept'),
+    //         NotificationActionButton(key: 'reject', label: 'Reject'),
+    //       ],
+    //     );
+    //     Future.delayed(Duration(seconds: 20), () {
+    //       AwesomeNotifications()
+    //           .dismissNotificationsByChannelKey('basic_channel_call');
+    //     });
+    //     break;
+    //   default:
+    print("default");
+    AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: content['id'],
+            channelKey: content['channelKey'],
+            autoDismissible: content['autoDismissible'],
+            title: '${message.notification!.title}',
+            body: '${message.notification!.body}'),
+        actionButtons: actionButton);
+    // }
   }
 }

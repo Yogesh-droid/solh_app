@@ -1,4 +1,7 @@
 // import 'package:awesome_notifications/awesome_notifications.dart';
+import 'dart:convert';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,6 +9,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
@@ -25,14 +29,26 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
-Future<void> backgroundMessageHandler(RemoteMessage remoteMessage) async {
+Future<void> backgroundMessageHandler(RemoteMessage remoteMessage,
+    [bool? isInApp]) async {
   await Firebase.initializeApp();
   print("backgroundMessageHandler");
   print(remoteMessage.data);
   print(remoteMessage.notification!.title);
-  if (remoteMessage.data['action'] == 'call') {
-    LocalNotificationService.createanddisplaynotification(remoteMessage);
-  }
+  List<NotificationActionButton> list =
+      jsonDecode(remoteMessage.data['actionButtons'])
+          .map<NotificationActionButton>(
+            (actionButton) => NotificationActionButton(
+                key: actionButton['key'], label: actionButton['label']),
+          )
+          .toList();
+  LocalNotificationService.createCallNotification(
+      jsonDecode(remoteMessage.data['content']), remoteMessage, list);
+  // if (remoteMessage.data['action'] == 'call') {
+  //   LocalNotificationService.createCallNotification(remoteMessage);
+  // } else {
+  //   LocalNotificationService.createanddisplaynotification(remoteMessage);
+  // }
 }
 
 void main() async {
@@ -142,44 +158,69 @@ class _SolhAppState extends State<SolhApp> {
     //LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then(
       (message) async {
-        await Firebase.initializeApp();
-        print("FirebaseMessaging.instance.getInitialMessage");
+        Utility.showToast(jsonDecode(message!.data['content'])['id']);
+
         if (message != null) {
           print("New Notification");
 
+          List<NotificationActionButton> list =
+              jsonDecode(message.data['actionButtons'])
+                  .map<NotificationActionButton>(
+                    (actionButton) => NotificationActionButton(
+                        key: actionButton['key'], label: actionButton['label']),
+                  )
+                  .toList();
+
+          // LocalNotificationService.createCallNotification(
+          //     jsonDecode(message.data['content']), message, list);
+
+          //if (jsonDecode(message.data['content'])['id'] == 0) {
+          Future.delayed(Duration(seconds: 2), () {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(
+                builder: (context) => Connections(),
+              ),
+            );
+          });
+          // }
+
           /// we can handle routing here when app is open from background or terminated state
 
-          showAboutDialog(
-              context: context,
-              applicationName: "Solh",
-              applicationVersion: "1.0.0",
-              applicationIcon: Image.asset("assets/images/logo.png"),
-              children: <Widget>[
-                Text(message.notification!.title ?? ''),
-                Text(message.notification!.body ?? ''),
-              ]);
-
-          // if (message.data['action'] == 'call') {
-          //   globalNavigatorKey.currentState!.push(
-          //     MaterialPageRoute(
-          //       builder: (context) => Connections(),
-          //     ),
-          //   );
-          // }
+          //Utility.showToast(message.data['body']);
         }
       },
     );
 
+    //getInitialSetUp();
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
       print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data}');
+      print('Message data: ${message.data['actionButtons']}');
+      print('Message data: ${message.data['content']}');
 
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
       }
-      LocalNotificationService.createanddisplaynotification(message);
+
+      List<NotificationActionButton> list =
+          jsonDecode(message.data['actionButtons'])
+              .map<NotificationActionButton>(
+                (actionButton) => NotificationActionButton(
+                    key: actionButton['key'], label: actionButton['label']),
+              )
+              .toList();
+
+      LocalNotificationService.createCallNotification(
+          jsonDecode(message.data['content']), message, list);
+
+      // LocalNotificationService.createanddisplaynotification(
+      //     jsonDecode(message.data['content']), message, list);
+      // if (message.data['action'] == 'call') {
+      //   LocalNotificationService.createCallNotification(message);
+      // } else {
+      //   LocalNotificationService.createanddisplaynotification(message);
+      // }
+      // Utility.showToast(message.data['body']);
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
     });
@@ -191,6 +232,7 @@ class _SolhAppState extends State<SolhApp> {
           print(message.notification!.title);
           print(message.notification!.body);
           print("message.data22 ${message.data['_id']}");
+          print('Hello App is open from background!');
           if (message.data['action'] == 'call') {
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(
@@ -199,6 +241,7 @@ class _SolhAppState extends State<SolhApp> {
             );
           }
         }
+        Utility.showToast(message.data['body']);
       },
     );
     FirebaseMessaging.instance.onTokenRefresh.listen(
@@ -208,23 +251,24 @@ class _SolhAppState extends State<SolhApp> {
       },
     );
 
-    // AwesomeNotifications().actionStream.listen(
-    //   (ReceivedAction receivedAction) {
-    //     if (receivedAction.buttonKeyPressed == 'accept') {
-    //       print('Accepted');
-    //       globalNavigatorKey.currentState!.push(
-    //         MaterialPageRoute(
-    //           builder: (context) => Connections(),
-    //         ),
-    //       );
-    //     } else if (receivedAction.buttonKeyPressed == 'reject') {
-    //       print('Rejected');
-    //     }
+    AwesomeNotifications().actionStream.listen(
+      (ReceivedAction receivedAction) {
+        if (receivedAction.buttonKeyPressed == 'accept') {
+          print('Accepted');
+          globalNavigatorKey.currentState!.push(
+            MaterialPageRoute(
+              builder: (context) => Connections(),
+            ),
+          );
+        } else if (receivedAction.buttonKeyPressed == 'reject') {
+          print('Rejected');
+        }
+        Utility.showToast(receivedAction.buttonKeyPressed);
 
-    //     //Here if the user clicks on the notification itself
-    //     //without any button
-    //   },
-    // );
+        //Here if the user clicks on the notification itself
+        //without any button
+      },
+    );
 
     super.initState();
   }

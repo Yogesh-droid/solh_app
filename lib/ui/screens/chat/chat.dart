@@ -134,8 +134,12 @@ class ChatAppbar extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: ((context) => VideoCallUser())));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: ((context) => VideoCallUser(
+                          channel: 'abc',
+                          token:
+                              '0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj',
+                        ))));
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 24),

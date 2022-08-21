@@ -51,6 +51,8 @@ dependencies:
   flutter_webrtc: ^0.9.2
   awesome_notifications: ^0.6.21
   flutter_html: ^3.0.0-alpha.5
+  agora_rtc_engine: ^5.3.0
+  permission_handler: ^10.0.0
 
   #alt_sms_autofill: ^1.0.0
 
