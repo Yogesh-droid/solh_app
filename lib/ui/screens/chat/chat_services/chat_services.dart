@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
@@ -27,5 +28,16 @@ class ChatServices {
     if (map['success'] == true) {
       return true;
     }
+  }
+
+  Future initiateVideo(Map<String, dynamic> body) async {
+    Map<String, dynamic> response = await Network.makePostRequestWithToken(
+            url: APIConstants.api + '/api/agora/rtc/', body: body)
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+
+    return response;
   }
 }

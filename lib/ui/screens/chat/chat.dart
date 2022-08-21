@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
+import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
@@ -52,7 +53,10 @@ class _ChatScreenState extends State<ChatScreen> {
           width: double.maxFinite,
           child: Column(
             children: [
-              ChatAppbar(imageUrl: widget._imageUrl, name: widget._name),
+              ChatAppbar(
+                  imageUrl: widget._imageUrl,
+                  name: widget._name,
+                  sId: widget._sId),
               Expanded(
                 child: MessageList(
                   sId: widget._sId,
@@ -72,13 +76,17 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatAppbar extends StatelessWidget {
-  const ChatAppbar({Key? key, required String imageUrl, required name})
+  ChatAppbar({Key? key, required String imageUrl, required name, required sId})
       : _imageUrl = imageUrl,
         _name = name,
+        _sId = sId,
         super(key: key);
 
   final String _imageUrl;
   final String _name;
+  final String _sId;
+
+  ChatController _controller = Get.put(ChatController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -133,13 +141,30 @@ class ChatAppbar extends StatelessWidget {
               ],
             ),
             InkWell(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: ((context) => VideoCallUser(
-                          channel: 'abc',
-                          token:
-                              '0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj',
-                        ))));
+              onTap: () async {
+                Map<String, dynamic> body = {
+                  "uid": '0',
+                  "tokentype": "uid",
+                  "expiry": "",
+                  "role": "publisher",
+                  "sender": userBlocNetwork.id.toString(),
+                  "senderType": "seeker",
+                  "receiver": _sId,
+                  "receiverType": "seeker",
+                  "channel":
+                      (userBlocNetwork.id.toString() + '_' + _sId.toString()),
+                  "appointmentId": "",
+                  "callType": "cc",
+                  "callStatus": "initiated"
+                };
+                var value = await _controller.initiateVideoController(body);
+                if (value['success'] == true) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => VideoCallUser(
+                            channel: value['channelName'],
+                            token: value['rtcToken'],
+                          ))));
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 24),
