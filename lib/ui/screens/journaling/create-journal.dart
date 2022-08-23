@@ -1390,49 +1390,49 @@ class _JournalTextFieldState extends State<JournalTextField> {
                     if (journalPageController
                             .descriptionController.text[cursorPos - 1] ==
                         '@') {
-                      await showMenu(
-                          context: context,
-                          constraints: BoxConstraints.expand(
-                              height: _connectionController.myConnectionModel
-                                          .value.myConnections!.length >
-                                      4
-                                  ? 200
-                                  : _connectionController.myConnectionModel
-                                          .value.myConnections!.length *
-                                      50,
-                              width: 150),
-                          position: RelativeRect.fromLTRB(0, 320, 0, 0),
-                          items: _connectionController
-                              .myConnectionModel.value.myConnections!
-                              .map((e) => PopupMenuItem(
-                                  onTap: () {
-                                    if (cursorPos == 1 ||
-                                        cursorPos ==
-                                            journalPageController
-                                                .descriptionController
-                                                .text
-                                                .length) {
-                                      journalPageController
-                                          .descriptionController
-                                          .text = journalPageController
-                                              .descriptionController.text +
-                                          e.userName.toString() +
-                                          ' ';
-                                    } else {
-                                      journalPageController
-                                          .descriptionController
-                                          .text = journalPageController
-                                              .descriptionController.text
-                                              .substring(0, cursorPos + 1) +
-                                          e.userName.toString() +
-                                          ' ' +
-                                          journalPageController
-                                              .descriptionController.text
-                                              .substring(cursorPos + 1);
-                                    }
-                                  },
-                                  child: Text(e.userName!)))
-                              .toList());
+                      // await showMenu(
+                      //     context: context,
+                      //     constraints: BoxConstraints.expand(
+                      //         height: _connectionController.myConnectionModel
+                      //                     .value.myConnections!.length >
+                      //                 4
+                      //             ? 200
+                      //             : _connectionController.myConnectionModel
+                      //                     .value.myConnections!.length *
+                      //                 50,
+                      //         width: 150),
+                      //     position: RelativeRect.fromLTRB(0, 320, 0, 0),
+                      //     items: _connectionController
+                      //         .myConnectionModel.value.myConnections!
+                      //         .map((e) => PopupMenuItem(
+                      //             onTap: () {
+                      //               if (cursorPos == 1 ||
+                      //                   cursorPos ==
+                      //                       journalPageController
+                      //                           .descriptionController
+                      //                           .text
+                      //                           .length) {
+                      //                 journalPageController
+                      //                     .descriptionController
+                      //                     .text = journalPageController
+                      //                         .descriptionController.text +
+                      //                     e.userName.toString() +
+                      //                     ' ';
+                      //               } else {
+                      //                 journalPageController
+                      //                     .descriptionController
+                      //                     .text = journalPageController
+                      //                         .descriptionController.text
+                      //                         .substring(0, cursorPos + 1) +
+                      //                     e.userName.toString() +
+                      //                     ' ' +
+                      //                     journalPageController
+                      //                         .descriptionController.text
+                      //                         .substring(cursorPos + 1);
+                      //               }
+                      //             },
+                      //             child: Text(e.userName!)))
+                      //         .toList());
                     }
                   },
                   controller: journalPageController.descriptionController,

@@ -38,6 +38,7 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('posts ran');
     return Scaffold(
       appBar: SolhAppBar(
         isLandingScreen: false,
