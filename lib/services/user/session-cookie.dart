@@ -11,6 +11,8 @@ class SessionCookie {
         body: {"idToken": idToken, "deviceId": fcmToken ?? ''});
     print("*" * 30 + "\n" + "Response: $response");
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];
+    userBlocNetwork.updateUserType =
+        response["userType"] != null ? response["userType"] : "";
     response["hiddenPosts"] != null
         ? response["hiddenPosts"].forEach((post) {
             print("*" * 30 + "\n" + "Hidden Post: $post");

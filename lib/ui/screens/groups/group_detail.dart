@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
@@ -20,6 +21,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bottom-navigation/bottom_navigator_controller.dart';
+import '../connect/connect-screen.dart';
 import '../journaling/create-journal.dart';
 import '../my-goals/my-goals-screen.dart';
 
@@ -37,7 +39,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   late bool? isJoined;
   late bool isDefaultAdmin = false;
   JournalPageController journalPageController = Get.find();
-
+  ConnectionController connectionController = Get.find();
   CreateGroupController createGroupController = Get.find();
 
   DiscoverGroupController discoverGroupController = Get.find();
@@ -466,38 +468,48 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: groupList.groupMembers!.length,
             itemBuilder: (context, index) {
-              return Row(
-                children: [
-                  CircleAvatar(
-                    // backgroundImage: AssetImage(
-                    //   'assets/images/group_placeholder.png',
-                    // ),
-                    backgroundImage: CachedNetworkImageProvider(
-                        groupList.groupMembers![index].profilePicture ?? ''),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Text(groupList.groupMembers![index].name ?? '',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w600)),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Text(groupList.groupMembers![index].bio ?? '',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14, color: SolhColors.grey)),
-                      ),
-                    ],
-                  ),
-                ],
+              return InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ConnectProfileScreen(
+                              uid: groupList.groupMembers![index].uid!,
+                              sId: groupList.groupMembers![index].sId!)));
+                },
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      // backgroundImage: AssetImage(
+                      //   'assets/images/group_placeholder.png',
+                      // ),
+                      backgroundImage: CachedNetworkImageProvider(
+                          groupList.groupMembers![index].profilePicture ?? ''),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(groupList.groupMembers![index].name ?? '',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(groupList.groupMembers![index].bio ?? '',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 14, color: SolhColors.grey)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -513,72 +525,83 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       children: groupList.defaultAdmin!.map((defaultAdmin) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    // backgroundImage: AssetImage(
-                    //   'assets/images/group_placeholder.png',
-                    // ),
-                    backgroundImage: CachedNetworkImageProvider(
-                      defaultAdmin.profilePicture ?? '',
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ConnectProfileScreen(
+                          uid: defaultAdmin.uid!, sId: defaultAdmin.sId!)));
+            },
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      // backgroundImage: AssetImage(
+                      //   'assets/images/group_placeholder.png',
+                      // ),
+                      backgroundImage: CachedNetworkImageProvider(
+                        defaultAdmin.profilePicture ?? '',
+                      ),
+                      backgroundColor: Colors.transparent,
                     ),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Container(
-                            child: Text(defaultAdmin.name ?? '',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600)),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 2,
-                            height: 14,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            'Admin',
-                            style: GoogleFonts.signika(color: SolhColors.green),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/admin.svg',
-                          )
-                        ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Text(defaultAdmin.bio ?? '',
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontSize: 14, color: SolhColors.grey)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              child: Text(defaultAdmin.name ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: 2,
+                              height: 14,
+                              color: Colors.grey,
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              'Admin',
+                              style:
+                                  GoogleFonts.signika(color: SolhColors.green),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/admin.svg',
+                            )
+                          ],
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(defaultAdmin.bio ?? '',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 14, color: SolhColors.grey)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
           ),
         );
       }).toList(),

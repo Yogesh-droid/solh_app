@@ -115,6 +115,10 @@ class WhatsOnYourMindSection extends StatelessWidget {
                                 // CropAspectRatioPreset.ratio4x3,
                                 // CropAspectRatioPreset.ratio16x9
                               ],
+                              compressQuality:
+                                  File(_xFile!.path).lengthSync() > 600000
+                                      ? 20
+                                      : 100,
                               uiSettings: [
                                 AndroidUiSettings(
                                     toolbarTitle: 'Edit',

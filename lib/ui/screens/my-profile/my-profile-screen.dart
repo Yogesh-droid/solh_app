@@ -11,6 +11,7 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
@@ -19,6 +20,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
+import '../../../controllers/chat-list/chat_controller.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -81,10 +84,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           onPressed: () {
                             FirebaseAuth.instance.signOut().then((value) {
                               userBlocNetwork.updateSessionCookie = "";
+                              Get.delete<ChatListController>();
                               Get.delete<GoalSettingController>();
                               Get.delete<ConnectionController>();
                               Get.delete<DiscoverGroupController>();
                               Get.delete<CreateGroupController>();
+                              Get.delete<FeelingsController>();
                               AutoRouter.of(context).pushAndPopUntil(
                                   IntroCarouselScreenRouter(),
                                   predicate: (route) => false);
@@ -162,8 +167,8 @@ class ProfileMenu extends StatelessWidget {
           ProfileMenuTile(
             title: "Posts",
             onPressed: () {
-              AutoRouter.of(context).push(PostScreenRouter(
-                  sId: FirebaseAuth.instance.currentUser!.uid));
+              AutoRouter.of(context)
+                  .push(PostScreenRouter(sId: userBlocNetwork.id));
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),

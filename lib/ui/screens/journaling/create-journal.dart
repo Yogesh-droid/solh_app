@@ -524,6 +524,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               ? Stack(
                   children: [
                     CachedNetworkImage(
+                      width: double.infinity,
                       imageUrl:
                           journalPageController.selectedDiary.value.mediaUrl ??
                               '',
@@ -607,7 +608,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           : _isImageAdded
               ? Stack(
                   children: [
-                    Image.file(_croppedFile!),
+                    Image.file(
+                      _croppedFile!,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                     Positioned(
                       right: 0,
                       top: 0,
@@ -857,26 +862,31 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   .cropImage(
                                       sourcePath: _xFile!.path,
                                       aspectRatioPresets: [
-                                    CropAspectRatioPreset.square,
-                                    // CropAspectRatioPreset.ratio3x2,
-                                    // CropAspectRatioPreset.original,
-                                    // CropAspectRatioPreset.ratio4x3,
-                                    // CropAspectRatioPreset.ratio16x9
-                                  ],
+                                        CropAspectRatioPreset.square,
+                                        // CropAspectRatioPreset.ratio3x2,
+                                        // CropAspectRatioPreset.original,
+                                        // CropAspectRatioPreset.ratio4x3,
+                                        // CropAspectRatioPreset.ratio16x9
+                                      ],
+                                      compressQuality:
+                                          File(_xFile!.path).lengthSync() >
+                                                  600000
+                                              ? 20
+                                              : 100,
                                       uiSettings: [
-                                    AndroidUiSettings(
-                                        toolbarTitle: 'Edit',
-                                        toolbarColor: SolhColors.white,
-                                        toolbarWidgetColor: Colors.black,
-                                        activeControlsWidgetColor:
-                                            SolhColors.green,
-                                        initAspectRatio:
-                                            CropAspectRatioPreset.square,
-                                        lockAspectRatio: true),
-                                    IOSUiSettings(
-                                      minimumAspectRatio: 1.0,
-                                    )
-                                  ]);
+                                        AndroidUiSettings(
+                                            toolbarTitle: 'Edit',
+                                            toolbarColor: SolhColors.white,
+                                            toolbarWidgetColor: Colors.black,
+                                            activeControlsWidgetColor:
+                                                SolhColors.green,
+                                            initAspectRatio:
+                                                CropAspectRatioPreset.square,
+                                            lockAspectRatio: true),
+                                        IOSUiSettings(
+                                          minimumAspectRatio: 1.0,
+                                        )
+                                      ]);
 
                               _croppedFile = File(croppedFile!.path);
 

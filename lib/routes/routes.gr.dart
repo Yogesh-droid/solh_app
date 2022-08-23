@@ -7,61 +7,65 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
+//
+// ignore_for_file: type=lint
 
-import 'package:auto_route/auto_route.dart' as _i11;
-import 'package:flutter/material.dart' as _i23;
+import 'dart:io' as _i25;
+
+import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:flutter/material.dart' as _i24;
 
 import '../bottom-navigation/bottom-navigation.dart' as _i1;
-import '../model/journal.dart' as _i24;
-import '../model/journals/journals_response_model.dart';
-import '../ui/screens/comment/comment-screen.dart' as _i17;
-import '../ui/screens/connect/connect-screen.dart' as _i16;
-import '../ui/screens/get-help/get-help.dart' as _i12;
+import '../model/journals/journals_response_model.dart' as _i26;
+import '../ui/screens/comment/comment-screen.dart' as _i18;
+import '../ui/screens/connect/connect-screen.dart' as _i17;
+import '../ui/screens/doctor/appointment_page.dart' as _i13;
+import '../ui/screens/get-help/get-help.dart' as _i11;
 import '../ui/screens/get-help/view-all/consultants.dart' as _i6;
-import '../ui/screens/home/homescreen.dart' as _i10;
+import '../ui/screens/home/homescreen.dart' as _i9;
 import '../ui/screens/intro/intro-crousel.dart' as _i2;
-import '../ui/screens/journaling/create-journal.dart' as _i15;
-import '../ui/screens/journaling/journaling.dart' as _i14;
-import '../ui/screens/my-goals/my-goals-screen.dart' as _i13;
-import '../ui/screens/my-profile/my-profile-screen.dart' as _i18;
-import '../ui/screens/my-profile/posts/post.dart' as _i19;
-import '../ui/screens/my-profile/profile/edit-profile.dart' as _i22;
-import '../ui/screens/my-profile/settings/account-privacy.dart' as _i21;
-import '../ui/screens/my-profile/settings/settings.dart' as _i20;
+import '../ui/screens/journaling/create-journal.dart' as _i16;
+import '../ui/screens/journaling/journaling.dart' as _i15;
+import '../ui/screens/my-goals/my-goals-screen.dart' as _i14;
+import '../ui/screens/my-profile/appointments/appointment_screen.dart' as _i12;
+import '../ui/screens/my-profile/my-profile-screen.dart' as _i19;
+import '../ui/screens/my-profile/posts/post.dart' as _i20;
+import '../ui/screens/my-profile/profile/edit-profile.dart' as _i23;
+import '../ui/screens/my-profile/settings/account-privacy.dart' as _i22;
+import '../ui/screens/my-profile/settings/settings.dart' as _i21;
 import '../ui/screens/phone-auth/otp-screen.dart' as _i5;
 import '../ui/screens/phone-auth/phone-auth.dart' as _i4;
 import '../ui/screens/profile-setup/profile-setup.dart' as _i3;
 import '../ui/screens/sos/setup-sos.dart' as _i8;
 import '../ui/screens/sos/sos.dart' as _i7;
-import '../ui/screens/video-call/video-call-user.dart' as _i9;
 
-class AppRouter extends _i11.RootStackRouter {
-  AppRouter([_i23.GlobalKey<_i23.NavigatorState>? navigatorKey])
+class AppRouter extends _i10.RootStackRouter {
+  AppRouter([_i24.GlobalKey<_i24.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
-  final Map<String, _i11.PageFactory> pagesMap = {
+  final Map<String, _i10.PageFactory> pagesMap = {
     MasterScreenRouter.name: (routeData) {
       final args = routeData.argsAs<MasterScreenRouterArgs>(
           orElse: () => const MasterScreenRouterArgs());
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: _i1.MasterScreen(index: args.index));
     },
     IntroCarouselScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.IntroCrousel());
     },
     CreateProfileScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i3.CreateProfileScreen());
     },
     PhoneAuthScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.PhoneAuthScreen());
     },
     OTPScreenRouter.name: (routeData) {
       final args = routeData.argsAs<OTPScreenRouterArgs>();
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i5.OTPScreen(
               key: args.key,
@@ -69,155 +73,187 @@ class AppRouter extends _i11.RootStackRouter {
               verificationId: args.verificationId));
     },
     ConsultantsScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<ConsultantsScreenRouterArgs>(
-          orElse: () => ConsultantsScreenRouterArgs(slug: ''));
-      return _i11.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<ConsultantsScreenRouterArgs>();
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i6.ConsultantsScreen(
-            key: args.key,
-            page: args.page,
-            count: args.count,
-            slug: args.slug,
-            type: args.type,
-          ));
+              key: args.key,
+              page: args.page,
+              count: args.count,
+              slug: args.slug,
+              type: args.type));
     },
     SOSScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.SOSDialog());
+      final args = routeData.argsAs<SOSScreenRouterArgs>(
+          orElse: () => const SOSScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i7.SOSDialog(key: args.key));
     },
     SetupSOSScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i8.SetupSOSScreen());
+      final args = routeData.argsAs<SetupSOSScreenRouterArgs>(
+          orElse: () => const SetupSOSScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i8.SetupSOSScreen(key: args.key));
     },
     HomeScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.HomeScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i9.HomeScreen());
     },
     JournalingScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.EmptyRouterPage());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i10.EmptyRouterPage());
     },
     GetHelpScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i12.GetHelpScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i11.GetHelpScreen());
+    },
+    AppointmentsScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<AppointmentsScreenRouterArgs>(
+          orElse: () => const AppointmentsScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i12.AppointmentScreen(key: args.key));
+    },
+    DoctorsAppointmentsScreenRouter.name: (routeData) {
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i13.DoctorsAppointmentPage());
     },
     MyGoalsScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i13.MyGoalsScreen());
+      final args = routeData.argsAs<MyGoalsScreenRouterArgs>(
+          orElse: () => const MyGoalsScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i14.MyGoalsScreen(key: args.key));
     },
     MyProfileScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.EmptyRouterPage());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i10.EmptyRouterPage());
     },
     JournalingScreen.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i14.JournalingScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i15.JournalingScreen());
     },
     CreatePostScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i15.CreatePostScreen());
+      final args = routeData.argsAs<CreatePostScreenRouterArgs>(
+          orElse: () => const CreatePostScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i16.CreatePostScreen(
+              key: args.key,
+              croppedFile: args.croppedFile,
+              map: args.map,
+              isPostedFromDiaryDetails: args.isPostedFromDiaryDetails));
+    },
+    ConnectScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<ConnectScreenRouterArgs>();
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i17.ConnectProfileScreen(
+              key: args.key,
+              username: args.username,
+              uid: args.uid,
+              sId: args.sId));
     },
     CommentScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CommentScreenRouterArgs>();
-      return _i11.MaterialPageX<dynamic>(
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i17.CommentScreen(
-            key: args.key,
-            journalModel: args.journalModel,
-            index: args.index,
-          ));
+          child: _i18.CommentScreen(
+              key: args.key,
+              journalModel: args.journalModel,
+              index: args.index));
     },
     MyProfileScreen.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i18.MyProfileScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i19.MyProfileScreen());
     },
     PostScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<PostScreenRouterArgs>();
-      return _i11.MaterialPageX<dynamic>(
+      final args = routeData.argsAs<PostScreenRouterArgs>(
+          orElse: () => const PostScreenRouterArgs());
+      return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i19.PostScreen(
-            sId: args.sId,
-          ));
+          child: _i20.PostScreen(key: args.key, sId: args.sId));
     },
     SettingsScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i20.SettingsScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i21.SettingsScreen());
     },
     AccountPrivacyScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i21.AccountPrivacyScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i22.AccountPrivacyScreen());
     },
     EditMyProfileScreenRouter.name: (routeData) {
-      return _i11.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i22.EditMyProfileScreen());
+      return _i10.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i23.EditMyProfileScreen());
     }
   };
 
   @override
-  List<_i11.RouteConfig> get routes => [
-        _i11.RouteConfig(MasterScreenRouter.name,
+  List<_i10.RouteConfig> get routes => [
+        _i10.RouteConfig(MasterScreenRouter.name,
             path: 'MasterScreen',
             children: [
-              _i11.RouteConfig(HomeScreenRouter.name,
+              _i10.RouteConfig(HomeScreenRouter.name,
                   path: 'HomeScreen', parent: MasterScreenRouter.name),
-              _i11.RouteConfig(JournalingScreenRouter.name,
+              _i10.RouteConfig(JournalingScreenRouter.name,
                   path: 'JournalingScreen',
                   parent: MasterScreenRouter.name,
                   children: [
-                    _i11.RouteConfig(JournalingScreen.name,
+                    _i10.RouteConfig(JournalingScreen.name,
                         path: '', parent: JournalingScreenRouter.name),
-                    _i11.RouteConfig(CreatePostScreenRouter.name,
+                    _i10.RouteConfig(CreatePostScreenRouter.name,
                         path: 'CreatePostScreen',
                         parent: JournalingScreenRouter.name),
-                    _i11.RouteConfig(ConnectScreenRouter.name,
+                    _i10.RouteConfig(ConnectScreenRouter.name,
                         path: 'ConnectScreen',
                         parent: JournalingScreenRouter.name),
-                    _i11.RouteConfig(CommentScreenRouter.name,
+                    _i10.RouteConfig(CommentScreenRouter.name,
                         path: 'CommentScreen',
                         parent: JournalingScreenRouter.name)
                   ]),
-              _i11.RouteConfig(GetHelpScreenRouter.name,
+              _i10.RouteConfig(GetHelpScreenRouter.name,
                   path: 'GetHelpScreen', parent: MasterScreenRouter.name),
-              _i11.RouteConfig(MyGoalsScreenRouter.name,
+              _i10.RouteConfig(AppointmentsScreenRouter.name,
+                  path: 'AppointmentsScreen', parent: MasterScreenRouter.name),
+              _i10.RouteConfig(DoctorsAppointmentsScreenRouter.name,
+                  path: 'DoctorsAppointmentsScreen',
+                  parent: MasterScreenRouter.name),
+              _i10.RouteConfig(MyGoalsScreenRouter.name,
                   path: 'MyGoalsScreen', parent: MasterScreenRouter.name),
-              _i11.RouteConfig(MyProfileScreenRouter.name,
+              _i10.RouteConfig(MyProfileScreenRouter.name,
                   path: 'MyProfileScreen',
                   parent: MasterScreenRouter.name,
                   children: [
-                    _i11.RouteConfig(MyProfileScreen.name,
+                    _i10.RouteConfig(MyProfileScreen.name,
                         path: '', parent: MyProfileScreenRouter.name),
-                    _i11.RouteConfig(PostScreenRouter.name,
+                    _i10.RouteConfig(PostScreenRouter.name,
                         path: 'PostScreen', parent: MyProfileScreenRouter.name),
-                    _i11.RouteConfig(SettingsScreenRouter.name,
+                    _i10.RouteConfig(SettingsScreenRouter.name,
                         path: 'SettingsScreen',
                         parent: MyProfileScreenRouter.name),
-                    _i11.RouteConfig(AccountPrivacyScreenRouter.name,
+                    _i10.RouteConfig(AccountPrivacyScreenRouter.name,
                         path: 'AccountPrivacyScreen',
                         parent: MyProfileScreenRouter.name),
-                    _i11.RouteConfig(EditMyProfileScreenRouter.name,
+                    _i10.RouteConfig(EditMyProfileScreenRouter.name,
                         path: 'EditMyProfileScreen',
                         parent: MyProfileScreenRouter.name)
                   ])
             ]),
-        _i11.RouteConfig(IntroCarouselScreenRouter.name,
+        _i10.RouteConfig(IntroCarouselScreenRouter.name,
             path: 'IntroCarouselScreen'),
-        _i11.RouteConfig(CreateProfileScreenRouter.name,
+        _i10.RouteConfig(CreateProfileScreenRouter.name,
             path: 'CreateProfileScreen'),
-        _i11.RouteConfig(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen'),
-        _i11.RouteConfig(OTPScreenRouter.name, path: 'OTPScreen'),
-        _i11.RouteConfig(ConsultantsScreenRouter.name,
+        _i10.RouteConfig(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen'),
+        _i10.RouteConfig(OTPScreenRouter.name, path: 'OTPScreen'),
+        _i10.RouteConfig(ConsultantsScreenRouter.name,
             path: 'ConsultantsScreen'),
-        _i11.RouteConfig(SOSScreenRouter.name, path: 'SOSScreen'),
-        _i11.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS'),
-        _i11.RouteConfig(VideoCallCounsellorRouter.name,
-            path: 'VideoCallCounsellor')
+        _i10.RouteConfig(SOSScreenRouter.name, path: 'SOSScreen'),
+        _i10.RouteConfig(SetupSOSScreenRouter.name, path: 'SetupSOS')
       ];
 }
 
 /// generated route for
 /// [_i1.MasterScreen]
-class MasterScreenRouter extends _i11.PageRouteInfo<MasterScreenRouterArgs> {
-  MasterScreenRouter({int? index, List<_i11.PageRouteInfo>? children})
+class MasterScreenRouter extends _i10.PageRouteInfo<MasterScreenRouterArgs> {
+  MasterScreenRouter({int? index, List<_i10.PageRouteInfo>? children})
       : super(MasterScreenRouter.name,
             path: 'MasterScreen',
             args: MasterScreenRouterArgs(index: index),
@@ -239,7 +275,7 @@ class MasterScreenRouterArgs {
 
 /// generated route for
 /// [_i2.IntroCrousel]
-class IntroCarouselScreenRouter extends _i11.PageRouteInfo<void> {
+class IntroCarouselScreenRouter extends _i10.PageRouteInfo<void> {
   const IntroCarouselScreenRouter()
       : super(IntroCarouselScreenRouter.name, path: 'IntroCarouselScreen');
 
@@ -248,7 +284,7 @@ class IntroCarouselScreenRouter extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.CreateProfileScreen]
-class CreateProfileScreenRouter extends _i11.PageRouteInfo<void> {
+class CreateProfileScreenRouter extends _i10.PageRouteInfo<void> {
   const CreateProfileScreenRouter()
       : super(CreateProfileScreenRouter.name, path: 'CreateProfileScreen');
 
@@ -257,7 +293,7 @@ class CreateProfileScreenRouter extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.PhoneAuthScreen]
-class PhoneAuthScreenRouter extends _i11.PageRouteInfo<void> {
+class PhoneAuthScreenRouter extends _i10.PageRouteInfo<void> {
   const PhoneAuthScreenRouter()
       : super(PhoneAuthScreenRouter.name, path: 'PhoneAuthScreen');
 
@@ -266,9 +302,9 @@ class PhoneAuthScreenRouter extends _i11.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i5.OTPScreen]
-class OTPScreenRouter extends _i11.PageRouteInfo<OTPScreenRouterArgs> {
+class OTPScreenRouter extends _i10.PageRouteInfo<OTPScreenRouterArgs> {
   OTPScreenRouter(
-      {_i23.Key? key, required String phoneNo, required String verificationId})
+      {_i24.Key? key, required String phoneNo, required String verificationId})
       : super(OTPScreenRouter.name,
             path: 'OTPScreen',
             args: OTPScreenRouterArgs(
@@ -281,7 +317,7 @@ class OTPScreenRouterArgs {
   const OTPScreenRouterArgs(
       {this.key, required this.phoneNo, required this.verificationId});
 
-  final _i23.Key? key;
+  final _i24.Key? key;
 
   final String phoneNo;
 
@@ -296,9 +332,9 @@ class OTPScreenRouterArgs {
 /// generated route for
 /// [_i6.ConsultantsScreen]
 class ConsultantsScreenRouter
-    extends _i11.PageRouteInfo<ConsultantsScreenRouterArgs> {
+    extends _i10.PageRouteInfo<ConsultantsScreenRouterArgs> {
   ConsultantsScreenRouter(
-      {_i23.Key? key,
+      {_i24.Key? key,
       int? page,
       int? count,
       required String slug,
@@ -313,60 +349,79 @@ class ConsultantsScreenRouter
 
 class ConsultantsScreenRouterArgs {
   const ConsultantsScreenRouterArgs(
-      {required this.slug, this.key, this.page, this.count, this.type});
+      {this.key, this.page, this.count, required this.slug, this.type});
 
-  final _i23.Key? key;
+  final _i24.Key? key;
 
   final int? page;
 
   final int? count;
+
   final String slug;
+
   final String? type;
 
   @override
   String toString() {
-    return 'ConsultantsScreenRouterArgs{key: $key, page: $page, count: $count}';
+    return 'ConsultantsScreenRouterArgs{key: $key, page: $page, count: $count, slug: $slug, type: $type}';
   }
 }
 
 /// generated route for
 /// [_i7.SOSDialog]
-class SOSScreenRouter extends _i11.PageRouteInfo<void> {
-  const SOSScreenRouter() : super(SOSScreenRouter.name, path: 'SOSScreen');
+class SOSScreenRouter extends _i10.PageRouteInfo<SOSScreenRouterArgs> {
+  SOSScreenRouter({_i24.Key? key})
+      : super(SOSScreenRouter.name,
+            path: 'SOSScreen', args: SOSScreenRouterArgs(key: key));
 
   static const String name = 'SOSScreenRouter';
 }
 
+class SOSScreenRouterArgs {
+  const SOSScreenRouterArgs({this.key});
+
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'SOSScreenRouterArgs{key: $key}';
+  }
+}
+
 /// generated route for
 /// [_i8.SetupSOSScreen]
-class SetupSOSScreenRouter extends _i11.PageRouteInfo<void> {
-  const SetupSOSScreenRouter()
-      : super(SetupSOSScreenRouter.name, path: 'SetupSOS');
+class SetupSOSScreenRouter
+    extends _i10.PageRouteInfo<SetupSOSScreenRouterArgs> {
+  SetupSOSScreenRouter({_i24.Key? key})
+      : super(SetupSOSScreenRouter.name,
+            path: 'SetupSOS', args: SetupSOSScreenRouterArgs(key: key));
 
   static const String name = 'SetupSOSScreenRouter';
 }
 
-/// generated route for
-/// [_i9.VideoCallCounsellor]
-class VideoCallCounsellorRouter extends _i11.PageRouteInfo<void> {
-  const VideoCallCounsellorRouter()
-      : super(VideoCallCounsellorRouter.name, path: 'VideoCallCounsellor');
+class SetupSOSScreenRouterArgs {
+  const SetupSOSScreenRouterArgs({this.key});
 
-  static const String name = 'VideoCallCounsellorRouter';
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'SetupSOSScreenRouterArgs{key: $key}';
+  }
 }
 
 /// generated route for
-/// [_i10.HomeScreen]
-class HomeScreenRouter extends _i11.PageRouteInfo<void> {
+/// [_i9.HomeScreen]
+class HomeScreenRouter extends _i10.PageRouteInfo<void> {
   const HomeScreenRouter() : super(HomeScreenRouter.name, path: 'HomeScreen');
 
   static const String name = 'HomeScreenRouter';
 }
 
 /// generated route for
-/// [_i11.EmptyRouterPage]
-class JournalingScreenRouter extends _i11.PageRouteInfo<void> {
-  const JournalingScreenRouter({List<_i11.PageRouteInfo>? children})
+/// [_i10.EmptyRouterPage]
+class JournalingScreenRouter extends _i10.PageRouteInfo<void> {
+  const JournalingScreenRouter({List<_i10.PageRouteInfo>? children})
       : super(JournalingScreenRouter.name,
             path: 'JournalingScreen', initialChildren: children);
 
@@ -374,8 +429,8 @@ class JournalingScreenRouter extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.GetHelpScreen]
-class GetHelpScreenRouter extends _i11.PageRouteInfo<void> {
+/// [_i11.GetHelpScreen]
+class GetHelpScreenRouter extends _i10.PageRouteInfo<void> {
   const GetHelpScreenRouter()
       : super(GetHelpScreenRouter.name, path: 'GetHelpScreen');
 
@@ -383,18 +438,63 @@ class GetHelpScreenRouter extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.MyGoalsScreen]
-class MyGoalsScreenRouter extends _i11.PageRouteInfo<void> {
-  const MyGoalsScreenRouter()
-      : super(MyGoalsScreenRouter.name, path: 'MyGoalsScreen');
+/// [_i12.AppointmentScreen]
+class AppointmentsScreenRouter
+    extends _i10.PageRouteInfo<AppointmentsScreenRouterArgs> {
+  AppointmentsScreenRouter({_i24.Key? key})
+      : super(AppointmentsScreenRouter.name,
+            path: 'AppointmentsScreen',
+            args: AppointmentsScreenRouterArgs(key: key));
+
+  static const String name = 'AppointmentsScreenRouter';
+}
+
+class AppointmentsScreenRouterArgs {
+  const AppointmentsScreenRouterArgs({this.key});
+
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'AppointmentsScreenRouterArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i13.DoctorsAppointmentPage]
+class DoctorsAppointmentsScreenRouter extends _i10.PageRouteInfo<void> {
+  const DoctorsAppointmentsScreenRouter()
+      : super(DoctorsAppointmentsScreenRouter.name,
+            path: 'DoctorsAppointmentsScreen');
+
+  static const String name = 'DoctorsAppointmentsScreenRouter';
+}
+
+/// generated route for
+/// [_i14.MyGoalsScreen]
+class MyGoalsScreenRouter extends _i10.PageRouteInfo<MyGoalsScreenRouterArgs> {
+  MyGoalsScreenRouter({_i24.Key? key})
+      : super(MyGoalsScreenRouter.name,
+            path: 'MyGoalsScreen', args: MyGoalsScreenRouterArgs(key: key));
 
   static const String name = 'MyGoalsScreenRouter';
 }
 
+class MyGoalsScreenRouterArgs {
+  const MyGoalsScreenRouterArgs({this.key});
+
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'MyGoalsScreenRouterArgs{key: $key}';
+  }
+}
+
 /// generated route for
-/// [_i11.EmptyRouterPage]
-class MyProfileScreenRouter extends _i11.PageRouteInfo<void> {
-  const MyProfileScreenRouter({List<_i11.PageRouteInfo>? children})
+/// [_i10.EmptyRouterPage]
+class MyProfileScreenRouter extends _i10.PageRouteInfo<void> {
+  const MyProfileScreenRouter({List<_i10.PageRouteInfo>? children})
       : super(MyProfileScreenRouter.name,
             path: 'MyProfileScreen', initialChildren: children);
 
@@ -402,53 +502,90 @@ class MyProfileScreenRouter extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.JournalingScreen]
-class JournalingScreen extends _i11.PageRouteInfo<void> {
+/// [_i15.JournalingScreen]
+class JournalingScreen extends _i10.PageRouteInfo<void> {
   const JournalingScreen() : super(JournalingScreen.name, path: '');
 
   static const String name = 'JournalingScreen';
 }
 
 /// generated route for
-/// [_i15.CreatePostScreen]
-class CreatePostScreenRouter extends _i11.PageRouteInfo<void> {
-  const CreatePostScreenRouter()
-      : super(CreatePostScreenRouter.name, path: 'CreatePostScreen');
+/// [_i16.CreatePostScreen]
+class CreatePostScreenRouter
+    extends _i10.PageRouteInfo<CreatePostScreenRouterArgs> {
+  CreatePostScreenRouter(
+      {_i24.Key? key,
+      _i25.File? croppedFile,
+      Map<String, dynamic>? map,
+      bool? isPostedFromDiaryDetails})
+      : super(CreatePostScreenRouter.name,
+            path: 'CreatePostScreen',
+            args: CreatePostScreenRouterArgs(
+                key: key,
+                croppedFile: croppedFile,
+                map: map,
+                isPostedFromDiaryDetails: isPostedFromDiaryDetails));
 
   static const String name = 'CreatePostScreenRouter';
 }
 
+class CreatePostScreenRouterArgs {
+  const CreatePostScreenRouterArgs(
+      {this.key, this.croppedFile, this.map, this.isPostedFromDiaryDetails});
+
+  final _i24.Key? key;
+
+  final _i25.File? croppedFile;
+
+  final Map<String, dynamic>? map;
+
+  final bool? isPostedFromDiaryDetails;
+
+  @override
+  String toString() {
+    return 'CreatePostScreenRouterArgs{key: $key, croppedFile: $croppedFile, map: $map, isPostedFromDiaryDetails: $isPostedFromDiaryDetails}';
+  }
+}
+
 /// generated route for
-/// [_i16.ConnectProfileScreen]
-class ConnectScreenRouter extends _i11.PageRouteInfo<ConnectScreenRouterArgs> {
-  ConnectScreenRouter({_i23.Key? key, required String uid, required String sId})
+/// [_i17.ConnectProfileScreen]
+class ConnectScreenRouter extends _i10.PageRouteInfo<ConnectScreenRouterArgs> {
+  ConnectScreenRouter(
+      {_i24.Key? key,
+      String? username,
+      required String uid,
+      required String sId})
       : super(ConnectScreenRouter.name,
             path: 'ConnectScreen',
-            args: ConnectScreenRouterArgs(key: key, uid: uid, sId: sId));
+            args: ConnectScreenRouterArgs(
+                key: key, username: username, uid: uid, sId: sId));
 
   static const String name = 'ConnectScreenRouter';
 }
 
 class ConnectScreenRouterArgs {
   const ConnectScreenRouterArgs(
-      {this.key, required this.uid, required this.sId});
+      {this.key, this.username, required this.uid, required this.sId});
 
-  final _i23.Key? key;
+  final _i24.Key? key;
+
+  final String? username;
 
   final String uid;
+
   final String sId;
 
   @override
   String toString() {
-    return 'ConnectScreenRouterArgs{key: $key, uid: $uid}';
+    return 'ConnectScreenRouterArgs{key: $key, username: $username, uid: $uid, sId: $sId}';
   }
 }
 
 /// generated route for
-/// [_i17.CommentScreen]
-class CommentScreenRouter extends _i11.PageRouteInfo<CommentScreenRouterArgs> {
+/// [_i18.CommentScreen]
+class CommentScreenRouter extends _i10.PageRouteInfo<CommentScreenRouterArgs> {
   CommentScreenRouter(
-      {_i23.Key? key, required Journals? journalModel, required int index})
+      {_i24.Key? key, required _i26.Journals? journalModel, required int index})
       : super(CommentScreenRouter.name,
             path: 'CommentScreen',
             args: CommentScreenRouterArgs(
@@ -458,49 +595,46 @@ class CommentScreenRouter extends _i11.PageRouteInfo<CommentScreenRouterArgs> {
 }
 
 class CommentScreenRouterArgs {
-  const CommentScreenRouterArgs({
-    this.key,
-    required this.journalModel,
-    required this.index,
-  });
+  const CommentScreenRouterArgs(
+      {this.key, required this.journalModel, required this.index});
 
-  final _i23.Key? key;
+  final _i24.Key? key;
 
-  final Journals? journalModel;
+  final _i26.Journals? journalModel;
+
   final int index;
 
   @override
   String toString() {
-    return 'CommentScreenRouterArgs{key: $key, journalModel: $journalModel}';
+    return 'CommentScreenRouterArgs{key: $key, journalModel: $journalModel, index: $index}';
   }
 }
 
 /// generated route for
-/// [_i18.MyProfileScreen]
-class MyProfileScreen extends _i11.PageRouteInfo<void> {
+/// [_i19.MyProfileScreen]
+class MyProfileScreen extends _i10.PageRouteInfo<void> {
   const MyProfileScreen() : super(MyProfileScreen.name, path: '');
 
   static const String name = 'MyProfileScreen';
 }
 
 /// generated route for
-/// [_i19.PostScreen]
-class PostScreenRouter extends _i11.PageRouteInfo<void> {
-  PostScreenRouter({required String? sId})
+/// [_i20.PostScreen]
+class PostScreenRouter extends _i10.PageRouteInfo<PostScreenRouterArgs> {
+  PostScreenRouter({_i24.Key? key, String? sId})
       : super(PostScreenRouter.name,
-            path: 'PostScreen', args: PostScreenRouterArgs(sId: sId));
+            path: 'PostScreen', args: PostScreenRouterArgs(key: key, sId: sId));
 
   static const String name = 'PostScreenRouter';
 }
 
 class PostScreenRouterArgs {
-  const PostScreenRouterArgs({
-    this.key,
-    required this.sId,
-  });
+  const PostScreenRouterArgs({this.key, this.sId});
 
-  final _i23.Key? key;
+  final _i24.Key? key;
+
   final String? sId;
+
   @override
   String toString() {
     return 'PostScreenRouterArgs{key: $key, sId: $sId}';
@@ -508,8 +642,8 @@ class PostScreenRouterArgs {
 }
 
 /// generated route for
-/// [_i20.SettingsScreen]
-class SettingsScreenRouter extends _i11.PageRouteInfo<void> {
+/// [_i21.SettingsScreen]
+class SettingsScreenRouter extends _i10.PageRouteInfo<void> {
   const SettingsScreenRouter()
       : super(SettingsScreenRouter.name, path: 'SettingsScreen');
 
@@ -517,8 +651,8 @@ class SettingsScreenRouter extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i21.AccountPrivacyScreen]
-class AccountPrivacyScreenRouter extends _i11.PageRouteInfo<void> {
+/// [_i22.AccountPrivacyScreen]
+class AccountPrivacyScreenRouter extends _i10.PageRouteInfo<void> {
   const AccountPrivacyScreenRouter()
       : super(AccountPrivacyScreenRouter.name, path: 'AccountPrivacyScreen');
 
@@ -526,8 +660,8 @@ class AccountPrivacyScreenRouter extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i22.EditMyProfileScreen]
-class EditMyProfileScreenRouter extends _i11.PageRouteInfo<void> {
+/// [_i23.EditMyProfileScreen]
+class EditMyProfileScreenRouter extends _i10.PageRouteInfo<void> {
   const EditMyProfileScreenRouter()
       : super(EditMyProfileScreenRouter.name, path: 'EditMyProfileScreen');
 

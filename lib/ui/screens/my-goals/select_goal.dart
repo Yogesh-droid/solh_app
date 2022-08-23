@@ -16,11 +16,7 @@ class SelectGoal extends StatelessWidget {
         ),
         isLandingScreen: false,
       ),
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: IWantToWorkOn(),
-      )),
+      body: SingleChildScrollView(child: IWantToWorkOn()),
     );
   }
 }

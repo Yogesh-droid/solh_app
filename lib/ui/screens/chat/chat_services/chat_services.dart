@@ -28,4 +28,15 @@ class ChatServices {
       return true;
     }
   }
+
+  Future initiateVideo(Map<String, dynamic> body) async {
+    Map<String, dynamic> response = await Network.makePostRequestWithToken(
+            url: APIConstants.api + '/api/agora/rtc/', body: body)
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+
+    return response;
+  }
 }

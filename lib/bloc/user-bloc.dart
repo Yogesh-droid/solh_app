@@ -9,10 +9,13 @@ class UserBlocNetwork {
   final _userController = PublishSubject<UserModel?>();
   UserModel myData = UserModel();
   String _sessionCookie = "";
+  String _usertype = "";
   String id = '';
   String userMobileNo = '';
   String userEmail = '';
   List<String> hiddenPosts = [];
+  String anonUserName = '';
+  String anonUserPic = '';
 
   Stream<UserModel?> get userStateStream => _userController.stream;
 
@@ -20,8 +23,16 @@ class UserBlocNetwork {
     _sessionCookie = sessionCookie;
   }
 
+  set updateUserType(String userType) {
+    _usertype = userType;
+  }
+
   String get getSessionCookie {
     return _sessionCookie;
+  }
+
+  String get getUserType {
+    return _usertype;
   }
 
   Future<UserModel?> _fetchUserDetails(String uid) async {
@@ -51,16 +62,15 @@ class UserBlocNetwork {
       userMobileNo = userModel.mobile ?? '';
       userEmail = userModel.email ?? '';
       myData = userModel;
+      anonUserName =
+          userModel.anonymous != null ? userModel.anonymous.userName ?? '' : '';
+      anonUserPic = userModel.anonymous != null
+          ? userModel.anonymous.profilePicture ?? ''
+          : '';
       _userController.sink.add(userModel);
     } else {
       _userController.sink.addError('user details not fetched');
     }
-    //     .then((user) {
-    //   _userController.sink.add(user);
-    //   print('user details fetched ${user.toString()}');
-    // }).onError((error, stackTrace) {
-    //   _userController.sink.addError(error.toString());
-    // });
     print('user details fetched');
   }
 

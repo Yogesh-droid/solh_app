@@ -540,7 +540,6 @@ class GoalName extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: SolhColors.green.withOpacity(0.3),
@@ -557,10 +556,9 @@ class GoalName extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
                 width: 70.w,
                 child: Text(e1.task ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
                     style: SolhTextStyles.ProfileMenuGreyText),
               ),
               Container(
@@ -718,7 +716,7 @@ class IWantToWorkOn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => _goalSettingController.loadingCat.value
-        ? CircularProgressIndicator()
+        ? Center(child: CircularProgressIndicator())
         : _goalSettingController.goalsCatModel.value.categories != null
             ? Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),

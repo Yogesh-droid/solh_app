@@ -215,19 +215,23 @@ class SampleGoals extends StatelessWidget {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  _goalSettingController
-                                                          .sampleGoalModel
-                                                          .value
-                                                          .goalList![0]
-                                                          .sampleGoal![index]
-                                                          .name ??
-                                                      '',
-                                                  style: GoogleFonts.signika(
-                                                      color: Color(0xff666666),
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w400),
+                                                Container(
+                                                  width: 200,
+                                                  child: Text(
+                                                    _goalSettingController
+                                                            .sampleGoalModel
+                                                            .value
+                                                            .goalList![0]
+                                                            .sampleGoal![index]
+                                                            .name ??
+                                                        '',
+                                                    style: GoogleFonts.signika(
+                                                        color:
+                                                            Color(0xff666666),
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
                                                 ),
                                                 SizedBox(
                                                   height: 5,

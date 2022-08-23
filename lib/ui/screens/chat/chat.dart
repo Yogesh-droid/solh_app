@@ -1,17 +1,12 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
+import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
-import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -58,7 +53,10 @@ class _ChatScreenState extends State<ChatScreen> {
           width: double.maxFinite,
           child: Column(
             children: [
-              ChatAppbar(imageUrl: widget._imageUrl, name: widget._name),
+              ChatAppbar(
+                  imageUrl: widget._imageUrl,
+                  name: widget._name,
+                  sId: widget._sId),
               Expanded(
                 child: MessageList(
                   sId: widget._sId,
@@ -78,13 +76,17 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class ChatAppbar extends StatelessWidget {
-  const ChatAppbar({Key? key, required String imageUrl, required name})
+  ChatAppbar({Key? key, required String imageUrl, required name, required sId})
       : _imageUrl = imageUrl,
         _name = name,
+        _sId = sId,
         super(key: key);
 
   final String _imageUrl;
   final String _name;
+  final String _sId;
+
+  ChatController _controller = Get.put(ChatController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,11 +105,20 @@ class ChatAppbar extends StatelessWidget {
           children: [
             Row(
               children: [
+                // InkWell(
+                //     onTap: (() {
+                //       Navigator.of(context).pop();
+                //     }),
+                //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
-                    onTap: (() {
-                      Navigator.of(context).pop();
-                    }),
-                    child: Icon(Icons.arrow_back_ios_new)),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                  }),
+                  child: Container(
+                    width: 50,
+                    child: Icon(Icons.arrow_back_ios_new),
+                  ),
+                ),
                 SizedBox(
                   width: 6,
                 ),
@@ -130,9 +141,30 @@ class ChatAppbar extends StatelessWidget {
               ],
             ),
             InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: ((context) => VideoCallUser())));
+              onTap: () async {
+                Map<String, dynamic> body = {
+                  "uid": '0',
+                  "tokentype": "uid",
+                  "expiry": "",
+                  "role": "publisher",
+                  "sender": userBlocNetwork.id.toString(),
+                  "senderType": "seeker",
+                  "receiver": _sId,
+                  "receiverType": "seeker",
+                  "channel":
+                      (userBlocNetwork.id.toString() + '_' + _sId.toString()),
+                  "appointmentId": "",
+                  "callType": "cc",
+                  "callStatus": "initiated"
+                };
+                var value = await _controller.initiateVideoController(body);
+                if (value['success'] == true) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: ((context) => VideoCallUser(
+                            channel: value['channelName'],
+                            token: value['rtcToken'],
+                          ))));
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 24),

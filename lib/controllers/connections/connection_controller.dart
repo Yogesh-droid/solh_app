@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/model/blog/blog_details.dart';
+import 'package:solh/model/blog/blog_list_model.dart';
 import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/model/people_you_may_know_model.dart';
@@ -8,6 +12,7 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/model/user/user_analitics_model.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectionController extends GetxController {
   var myConnectionModel = MyConnectionModel().obs;
@@ -23,6 +28,10 @@ class ConnectionController extends GetxController {
   var isCancelingConnection = false.obs;
   var isLoading = false.obs;
   var isRecommnedationLoading = false.obs;
+  var isBlogLoading = false.obs;
+  var bloglist = <BlogListModel>[].obs;
+  var blogDetails = BlogDetails().obs;
+  var isBlogDetailsLoading = false.obs;
 
   /// for canceling connection
   var canceledConnectionId = ''.obs;
@@ -33,6 +42,37 @@ class ConnectionController extends GetxController {
   /// for adding connection
   var userModel = UserModel().obs;
   DiscoverGroupController discoverGroupController = Get.find();
+
+  getBlogDetails(int id) {
+    isBlogDetailsLoading.value = true;
+    http
+        .get(Uri.parse('https://solhapp.com/blog/api/post/${id}'))
+        .then((response) {
+      isBlogDetailsLoading.value = false;
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        blogDetails.value = BlogDetails.fromJson(data);
+      }
+    });
+  }
+
+  /////  For recommended posts
+  Future<void> getRecommendedBlogs() async {
+    isBlogLoading.value = true;
+
+    var response = await http.get(
+      Uri.parse("https://solhapp.com/blog/api/posts"),
+    );
+    print(response.body);
+
+    bloglist.value = (json.decode(response.body) as List)
+        .map((i) => BlogListModel.fromJson(i))
+        .toList();
+
+    print('Blog list.length = ' + bloglist.value.length.toString());
+
+    isBlogLoading.value = false;
+  }
 
   Future<void> getMyConnection() async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
@@ -71,6 +111,7 @@ class ConnectionController extends GetxController {
         groupInvites.value.add(element);
       });
     }
+    getPeopleYouMayKnow();
   }
 
   Future<void> acceptConnection(String connection_id, String response) async {
@@ -195,7 +236,7 @@ class ConnectionController extends GetxController {
   void onInit() {
     getMyConnection();
     getAllConnection();
-    getPeopleYouMayKnow();
+    getRecommendedBlogs();
     super.onInit();
   }
 }

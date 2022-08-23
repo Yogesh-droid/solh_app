@@ -48,6 +48,13 @@ class ChatController extends GetxController {
     }
   }
 
+  Future initiateVideoController(body) async {
+    isLoading(true);
+    var response = await services.initiateVideo(body);
+    isLoading(false);
+    return response;
+  }
+
   sendMessageController(message, sId, autherType, ct) {
     SocketService.sendMessage(message, sId, autherType, ct);
 
