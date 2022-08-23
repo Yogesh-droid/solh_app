@@ -136,6 +136,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                       const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
                   child: InkWell(
                     onTap: () {
+                      debugPrint('onTap Ran ${widget.isPickFromDiary}');
                       if (widget.isPickFromDiary != null) {
                         journalPageController.descriptionController.text =
                             myDiaryController
@@ -149,6 +150,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                                 '');
                         feelingsController.selectedFeelingsId.refresh();
                       } else {
+                        debugPrint('my diary ran');
                         Navigator.push(
                             context,
                             MaterialPageRoute(

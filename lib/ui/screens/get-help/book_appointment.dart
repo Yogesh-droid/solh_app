@@ -444,14 +444,25 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(_controller.selectedDay.value != ''
-              ? ('Today' == _controller.selectedDay.value
-                  ? 'Today'
-                  : '${_controller.selectedDay.value}')
-              : 'Select'),
-          _controller.selectedDate.value != ''
-              ? Text(_controller.selectedTimeSlot.value)
-              : Icon(Icons.arrow_drop_down),
+          Text(
+              _controller.selectedDay.value != ''
+                  ? ('Today' == _controller.selectedDay.value
+                      ? 'Today'
+                      : '${_controller.selectedDay.value}')
+                  : 'Select',
+              style: GoogleFonts.signika(color: SolhColors.green)),
+          Row(
+            children: [
+              Text(_controller.selectedTimeSlot.value,
+                  style: GoogleFonts.signika(
+                    color: SolhColors.green,
+                  )),
+              Icon(
+                Icons.arrow_drop_down,
+                color: SolhColors.green,
+              )
+            ],
+          )
         ],
       );
     }));

@@ -427,9 +427,6 @@ class _HomePageState extends State<HomePage> {
                     GetHelpDivider(),
                     GetHelpCategory(
                       title: 'Recommended reads',
-                      onPressed: () {
-                        connectionController.getRecommendedBlogs();
-                      },
                     ),
                     getRecommendedReadsUI(),
                     SizedBox(

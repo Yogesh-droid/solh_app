@@ -58,35 +58,35 @@ class Connections extends StatelessWidget {
   Widget getSearchField(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.all(14.0),
+      padding: const EdgeInsets.all(0),
       child: Row(
         children: [
-          Expanded(
-            child: SolhSearchField(
-                hintText: 'Search',
-                icon: 'assets/icons/app-bar/search.svg',
-                onTap: () {}),
-          ),
-          IconButton(
-            onPressed: () async {
-              // await showMenu(
-              //     context: context,
-              //     position: RelativeRect.fromLTRB(
-              //         200, size.height * 0.2, size.width * 0.1, 400),
-              //     items: [
-              //       PopupMenuItem(
-              //         child: Text('Create Group'),
-              //         value: '1',
-              //       ),
-              //       PopupMenuItem(
-              //         child: Text('Settings'),
-              //         value: '2',
-              //       ),
-              //     ]);
-            },
-            icon: Icon(Icons.more_vert),
-            color: SolhColors.green,
-          ),
+          // Expanded(
+          //   child: SolhSearchField(
+          //       hintText: 'Search',
+          //       icon: 'assets/icons/app-bar/search.svg',
+          //       onTap: () {}),
+          // ),
+          // IconButton(
+          //   onPressed: () async {
+          //     // await showMenu(
+          //     //     context: context,
+          //     //     position: RelativeRect.fromLTRB(
+          //     //         200, size.height * 0.2, size.width * 0.1, 400),
+          //     //     items: [
+          //     //       PopupMenuItem(
+          //     //         child: Text('Create Group'),
+          //     //         value: '1',
+          //     //       ),
+          //     //       PopupMenuItem(
+          //     //         child: Text('Settings'),
+          //     //         value: '2',
+          //     //       ),
+          //     //     ]);
+          //   },
+          //   icon: Icon(Icons.more_vert),
+          //   color: SolhColors.green,
+          // ),
         ],
       ),
     );

@@ -162,8 +162,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => Connections()))
                       },
-                      icon: SvgPicture.asset(
-                          "assets/icons/journaling/switch-profile.svg"),
+                      icon: SvgPicture.asset("assets/images/connections.svg"),
                       color: SolhColors.green,
                     ),
                   ],

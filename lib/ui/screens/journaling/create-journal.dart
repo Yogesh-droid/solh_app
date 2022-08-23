@@ -1155,10 +1155,10 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                           child: Text("My Diary"),
                           value: "My_Diary",
                         ),
-                        DropdownMenuItem(
-                          child: Text("Connections"),
-                          value: "Connections",
-                        ),
+                        // DropdownMenuItem(
+                        //   child: Text("Connections"),
+                        //   value: "Connections",
+                        // ),
                       ]),
                 )
               : Container()
