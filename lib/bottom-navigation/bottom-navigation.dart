@@ -36,9 +36,10 @@ class _MasterScreenState extends State<MasterScreen> {
       routes: [
         HomeScreenRouter(),
         JournalingScreenRouter(),
-        userBlocNetwork.getUserType == 'SolhProvider'
-            ? DoctorsAppointmentsScreenRouter()
-            : GetHelpScreenRouter(),
+        if (userBlocNetwork.getUserType == 'SolhProvider')
+          DoctorsAppointmentsScreenRouter()
+        else
+          GetHelpScreenRouter(),
         MyGoalsScreenRouter(),
         MyProfileScreenRouter(),
       ],

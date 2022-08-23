@@ -385,47 +385,16 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    content: Container(
-                                  height: 150,
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.done,
-                                        color: SolhColors.green,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          child: Column(children: [
-                                            Text('Thanks!',
-                                                style: GoogleFonts.signika(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text(
-                                              "We have received your appointment booking for Date, at time. We will get back to you soon with the appointment's confirmation details.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text(
-                                          'Ok',
-                                          style: GoogleFonts.signika(
-                                              fontWeight: FontWeight.bold,
-                                              color: SolhColors.green),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ));
-                              });
+                          final snackBar = SnackBar(
+                            content: Text('Appointment request sent.'),
+                            action: SnackBarAction(
+                              label: 'Undo',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       } else {
                         final snackBar = SnackBar(

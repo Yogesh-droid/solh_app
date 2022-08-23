@@ -105,7 +105,7 @@ class AppRouter extends _i10.RootStackRouter {
     },
     GetHelpScreenRouter.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.GetHelpScreen());
+          routeData: routeData, child: const _i11.GetHelpMaster());
     },
     AppointmentsScreenRouter.name: (routeData) {
       final args = routeData.argsAs<AppointmentsScreenRouterArgs>(
@@ -114,8 +114,11 @@ class AppRouter extends _i10.RootStackRouter {
           routeData: routeData, child: _i12.AppointmentScreen(key: args.key));
     },
     DoctorsAppointmentsScreenRouter.name: (routeData) {
+      final args = routeData.argsAs<DoctorsAppointmentsScreenRouterArgs>(
+          orElse: () => const DoctorsAppointmentsScreenRouterArgs());
       return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i13.DoctorsAppointmentPage());
+          routeData: routeData,
+          child: _i13.DoctorsAppointmentPage(key: args.key));
     },
     MyGoalsScreenRouter.name: (routeData) {
       final args = routeData.argsAs<MyGoalsScreenRouterArgs>(
@@ -210,7 +213,7 @@ class AppRouter extends _i10.RootStackRouter {
                         parent: JournalingScreenRouter.name)
                   ]),
               _i10.RouteConfig(GetHelpScreenRouter.name,
-                  path: 'GetHelpScreen', parent: MasterScreenRouter.name),
+                  path: 'GetHelpMaster', parent: MasterScreenRouter.name),
               _i10.RouteConfig(AppointmentsScreenRouter.name,
                   path: 'AppointmentsScreen', parent: MasterScreenRouter.name),
               _i10.RouteConfig(DoctorsAppointmentsScreenRouter.name,
@@ -429,10 +432,10 @@ class JournalingScreenRouter extends _i10.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.GetHelpScreen]
+/// [_i11.GetHelpMaster]
 class GetHelpScreenRouter extends _i10.PageRouteInfo<void> {
   const GetHelpScreenRouter()
-      : super(GetHelpScreenRouter.name, path: 'GetHelpScreen');
+      : super(GetHelpScreenRouter.name, path: 'GetHelpMaster');
 
   static const String name = 'GetHelpScreenRouter';
 }
@@ -462,12 +465,25 @@ class AppointmentsScreenRouterArgs {
 
 /// generated route for
 /// [_i13.DoctorsAppointmentPage]
-class DoctorsAppointmentsScreenRouter extends _i10.PageRouteInfo<void> {
-  const DoctorsAppointmentsScreenRouter()
+class DoctorsAppointmentsScreenRouter
+    extends _i10.PageRouteInfo<DoctorsAppointmentsScreenRouterArgs> {
+  DoctorsAppointmentsScreenRouter({_i24.Key? key})
       : super(DoctorsAppointmentsScreenRouter.name,
-            path: 'DoctorsAppointmentsScreen');
+            path: 'DoctorsAppointmentsScreen',
+            args: DoctorsAppointmentsScreenRouterArgs(key: key));
 
   static const String name = 'DoctorsAppointmentsScreenRouter';
+}
+
+class DoctorsAppointmentsScreenRouterArgs {
+  const DoctorsAppointmentsScreenRouterArgs({this.key});
+
+  final _i24.Key? key;
+
+  @override
+  String toString() {
+    return 'DoctorsAppointmentsScreenRouterArgs{key: $key}';
+  }
 }
 
 /// generated route for

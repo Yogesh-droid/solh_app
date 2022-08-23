@@ -58,9 +58,9 @@ import 'package:solh/ui/screens/sos/sos.dart';
                 )
               ]),
           AutoRoute(
-            path: "GetHelpScreen",
+            path: "GetHelpMaster",
             name: "GetHelpScreenRouter",
-            page: GetHelpScreen,
+            page: GetHelpMaster,
           ),
           AutoRoute(
             path: "AppointmentsScreen",
