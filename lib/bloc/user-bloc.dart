@@ -62,8 +62,11 @@ class UserBlocNetwork {
       userMobileNo = userModel.mobile ?? '';
       userEmail = userModel.email ?? '';
       myData = userModel;
-      anonUserName = userModel.anonymous.userName ?? '';
-      anonUserPic = userModel.anonymous.profilePicture ?? '';
+      anonUserName =
+          userModel.anonymous != null ? userModel.anonymous.userName ?? '' : '';
+      anonUserPic = userModel.anonymous != null
+          ? userModel.anonymous.profilePicture ?? ''
+          : '';
       _userController.sink.add(userModel);
     } else {
       _userController.sink.addError('user details not fetched');

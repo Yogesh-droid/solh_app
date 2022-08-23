@@ -176,9 +176,9 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class VideoCallUser extends StatefulWidget {
   var appId = "4db2d5eea0c3466cb8dc7ba7f488dbef";
-  var token =
-      "0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj";
-  var channel = "abc";
+  var token;
+  // "0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj";
+  var channel;
 
   VideoCallUser({required this.token, required this.channel});
 
@@ -191,6 +191,14 @@ class _CallState extends State<VideoCallUser> {
   bool _localUserJoined = false;
   late RtcEngine _engine;
   bool muted = false;
+  bool _isVideoEnabled = true;
+
+  @override
+  void dispose() {
+    _engine.leaveChannel();
+    _engine.destroy();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -269,7 +277,11 @@ class _CallState extends State<VideoCallUser> {
               children: <Widget>[
                 RawMaterialButton(
                   onPressed: () {
-                    _engine.muteLocalAudioStream(muted);
+                    setState(() {
+                      muted = !muted;
+                      _engine.muteLocalAudioStream(muted);
+                    });
+                    // _engine.muteLocalAudioStream(muted);
                   },
                   child: Icon(
                     muted ? Icons.mic_off : Icons.mic,
@@ -282,7 +294,28 @@ class _CallState extends State<VideoCallUser> {
                   padding: const EdgeInsets.all(12.0),
                 ),
                 RawMaterialButton(
-                  onPressed: () => _engine.leaveChannel(),
+                  onPressed: () {
+                    setState(() {
+                      _isVideoEnabled = !_isVideoEnabled;
+                      _engine.muteLocalVideoStream(_isVideoEnabled);
+                    });
+                    // _engine.muteLocalAudioStream(muted);
+                  },
+                  child: Icon(
+                    _isVideoEnabled ? Icons.videocam : Icons.videocam_off,
+                    color: _isVideoEnabled ? Colors.white : Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: _isVideoEnabled ? Colors.blueAccent : Colors.white,
+                  padding: const EdgeInsets.all(12.0),
+                ),
+                RawMaterialButton(
+                  onPressed: () {
+                    _engine.leaveChannel();
+                    Navigator.pop(context);
+                  },
                   child: Icon(
                     Icons.call_end,
                     color: Colors.white,

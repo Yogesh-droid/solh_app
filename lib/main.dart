@@ -1,6 +1,5 @@
 // import 'package:awesome_notifications/awesome_notifications.dart';
 import 'dart:convert';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,7 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'controllers/profile/appointment_controller.dart';
@@ -152,15 +152,35 @@ class SolhApp extends StatefulWidget {
 
 class _SolhAppState extends State<SolhApp> {
   final _appRouter = AppRouter(globalNavigatorKey);
+  String channelName = '';
+  String channelToken = '';
 
   @override
   void initState() {
     //LocalNotificationService.initialize(context);
     FirebaseMessaging.instance.getInitialMessage().then(
       (message) async {
-        Utility.showToast(jsonDecode(message!.data['content'])['id']);
-
         if (message != null) {
+          if (message.data['action'] != null) {
+            Utility.showToast(message.data['action']);
+            Future.delayed(Duration(seconds: 2), () {
+              globalNavigatorKey.currentState!.push(
+                MaterialPageRoute(
+                  builder: (context) => VideoCallUser(
+                    channel: message.data['channelName'],
+                    token: message.data['rtcToken'],
+                  ),
+                ),
+              );
+            });
+          } else {
+            Utility.showToast('action is null');
+          }
+        } else {
+          //Utility.showToast("Message is null");
+        }
+
+        /*   if (message != null) {
           print("New Notification");
 
           List<NotificationActionButton> list =
@@ -171,9 +191,6 @@ class _SolhAppState extends State<SolhApp> {
                   )
                   .toList();
 
-          // LocalNotificationService.createCallNotification(
-          //     jsonDecode(message.data['content']), message, list);
-
           //if (jsonDecode(message.data['content'])['id'] == 0) {
           Future.delayed(Duration(seconds: 2), () {
             globalNavigatorKey.currentState!.push(
@@ -183,15 +200,9 @@ class _SolhAppState extends State<SolhApp> {
             );
           });
           // }
-
-          /// we can handle routing here when app is open from background or terminated state
-
-          //Utility.showToast(message.data['body']);
-        }
+        } */
       },
     );
-
-    //getInitialSetUp();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -201,7 +212,7 @@ class _SolhAppState extends State<SolhApp> {
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
       }
-
+      Utility.showToast(message.data['action']);
       List<NotificationActionButton> list =
           jsonDecode(message.data['actionButtons'])
               .map<NotificationActionButton>(
@@ -212,36 +223,27 @@ class _SolhAppState extends State<SolhApp> {
 
       LocalNotificationService.createCallNotification(
           jsonDecode(message.data['content']), message, list);
-
-      // LocalNotificationService.createanddisplaynotification(
-      //     jsonDecode(message.data['content']), message, list);
-      // if (message.data['action'] == 'call') {
-      //   LocalNotificationService.createCallNotification(message);
-      // } else {
-      //   LocalNotificationService.createanddisplaynotification(message);
-      // }
-      // Utility.showToast(message.data['body']);
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
+      channelName = message.data['channelName'];
+      channelToken = message.data['rtcToken'];
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {
         print("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
-          print(message.notification!.title);
-          print(message.notification!.body);
-          print("message.data22 ${message.data['_id']}");
-          print('Hello App is open from background!');
-          if (message.data['action'] == 'call') {
-            globalNavigatorKey.currentState!.push(
-              MaterialPageRoute(
-                builder: (context) => Connections(),
-              ),
-            );
-          }
+          List<NotificationActionButton> list =
+              jsonDecode(message.data['actionButtons'])
+                  .map<NotificationActionButton>(
+                    (actionButton) => NotificationActionButton(
+                        key: actionButton['key'], label: actionButton['label']),
+                  )
+                  .toList();
+          //Utility.showToast('When app is in foreground');
+          // Utility.showToast(message.data['action']);
+
+          LocalNotificationService.createCallNotification(
+              jsonDecode(message.data['content']), message, list);
         }
-        Utility.showToast(message.data['body']);
       },
     );
     FirebaseMessaging.instance.onTokenRefresh.listen(
@@ -257,7 +259,8 @@ class _SolhAppState extends State<SolhApp> {
           print('Accepted');
           globalNavigatorKey.currentState!.push(
             MaterialPageRoute(
-              builder: (context) => Connections(),
+              builder: (context) =>
+                  VideoCallUser(channel: channelName, token: channelToken),
             ),
           );
         } else if (receivedAction.buttonKeyPressed == 'reject') {

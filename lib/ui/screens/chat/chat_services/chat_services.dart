@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';

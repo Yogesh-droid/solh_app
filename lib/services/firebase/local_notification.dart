@@ -88,7 +88,6 @@ class LocalNotificationService {
             channelShowBadge: true,
             enableLights: true,
             playSound: true,
-            enableVibration: true,
           ),
           NotificationChannel(
             channelKey: 'basic_channel_call',
@@ -118,7 +117,7 @@ class LocalNotificationService {
     print("call");
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: content['id'],
+        id: 0,
         channelKey: content['channelKey'],
         autoDismissible: content['autoDismissible'],
         body: '${message.notification!.body}',
@@ -142,38 +141,38 @@ class LocalNotificationService {
       Map<String, dynamic> content,
       RemoteMessage message,
       List<NotificationActionButton>? actionButton) async {
-    // print("createanddisplaynotification");
-    // print(message.data);
-    // switch (message.data['action']) {
-    //   case 'call':
-    //     print("call");
-    //     AwesomeNotifications().createNotification(
-    //       content: NotificationContent(
-    //         id: 0,
-    //         channelKey: 'basic_channel_call',
-    //         title: '${message.notification!.title}',
-    //         body: '${message.notification!.body}',
-    //         wakeUpScreen: true,
-    //         icon: 'resource://drawable/ic_launcher_round',
-    //         displayOnForeground: true,
-    //         locked: true,
-    //         autoDismissible: false,
-    //         category: NotificationCategory.Call,
+    /*  print("createanddisplaynotification");
+    print(message.data);
+    switch (message.data['action']) {
+      case 'call':
+        print("call");
+        AwesomeNotifications().createNotification(
+          content: NotificationContent(
+            id: 0,
+            channelKey: 'basic_channel_call',
+            title: '${message.notification!.title}',
+            body: '${message.notification!.body}',
+            wakeUpScreen: true,
+            icon: 'resource://drawable/ic_launcher_round',
+            displayOnForeground: true,
+            locked: true,
+            autoDismissible: false,
+            category: NotificationCategory.Call,
 
-    //         fullScreenIntent: true,
-    //         // showWhen: true,
-    //       ),
-    //       actionButtons: <NotificationActionButton>[
-    //         NotificationActionButton(key: 'accept', label: 'Accept'),
-    //         NotificationActionButton(key: 'reject', label: 'Reject'),
-    //       ],
-    //     );
-    //     Future.delayed(Duration(seconds: 20), () {
-    //       AwesomeNotifications()
-    //           .dismissNotificationsByChannelKey('basic_channel_call');
-    //     });
-    //     break;
-    //   default:
+            fullScreenIntent: true,
+            // showWhen: true,
+          ),
+          actionButtons: <NotificationActionButton>[
+            NotificationActionButton(key: 'accept', label: 'Accept'),
+            NotificationActionButton(key: 'reject', label: 'Reject'),
+          ],
+        );
+        Future.delayed(Duration(seconds: 20), () {
+          AwesomeNotifications()
+              .dismissNotificationsByChannelKey('basic_channel_call');
+        });
+        break;
+      default: */
     print("default");
     AwesomeNotifications().createNotification(
         content: NotificationContent(
@@ -183,6 +182,11 @@ class LocalNotificationService {
             title: '${message.notification!.title}',
             body: '${message.notification!.body}'),
         actionButtons: actionButton);
+
+    Future.delayed(Duration(seconds: 20), () {
+      AwesomeNotifications()
+          .dismissNotificationsByChannelKey('basic_channel_call');
+    });
     // }
   }
 }
