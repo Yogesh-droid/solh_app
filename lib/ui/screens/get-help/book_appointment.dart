@@ -894,7 +894,9 @@ class BookAppointmentPopup extends StatelessWidget {
                               .popUntil(((route) => route.isFirst));
                         }
                       });
-                      return appointmentConfirmationPopup(response);
+                      return appointmentConfirmationPopup(
+                        response,
+                      );
                     });
               },
               child: Container(
@@ -918,23 +920,29 @@ class BookAppointmentPopup extends StatelessWidget {
     );
   }
 
-  Widget appointmentConfirmationPopup(data) {
+  Widget appointmentConfirmationPopup(
+    data,
+  ) {
     return AlertDialog(
       content: data == 'Successfully created appointment.'
           ? Container(
-              child: Row(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ),
+                  Text('Appointment Booked'),
                   SizedBox(
-                    width: 8,
+                    height: 20,
                   ),
                   Expanded(
-                    child: Text('Successfully created appointment.',
-                        textAlign: TextAlign.center),
-                  )
+                    child: Text(
+                      'Your appointment has been booked please pay attention to the app notifications, we will notify you 30 min before the scheduled appointment',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.signika(color: Color(0xffA6A6A6)),
+                    ),
+                  ),
+                  Text(
+                      '${_controller.selectedDay},${_controller.selectedTimeSlot}')
                 ],
               ),
             )

@@ -754,218 +754,227 @@ class SolhVolunteers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Color(0xFFEFEFEF),
-          width: 1,
-        ),
-      ),
-      height: 289,
-      width: 164,
-      child: Stack(children: [
-        Container(
-          height: 52,
-          width: 164,
-          decoration: BoxDecoration(
-            color: SolhColors.green,
-            borderRadius: BorderRadius.circular(8),
+    return InkWell(
+      onTap: (() {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: ((context) => ConnectProfileScreen(
+                  uid: uid!,
+                  sId: sId!,
+                ))));
+      }),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Color(0xFFEFEFEF),
+            width: 1,
           ),
         ),
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 8,
-          child: Column(
-            children: [
-              Container(
-                height: 70,
-                width: 70,
-                padding: EdgeInsets.all(1),
-                decoration:
-                    BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                child: Container(
-                  child: FittedBox(
-                    fit: BoxFit.fill,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
+        height: 289,
+        width: 164,
+        child: Stack(children: [
+          Container(
+            height: 52,
+            width: 164,
+            decoration: BoxDecoration(
+              color: SolhColors.green,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 8,
+            child: Column(
+              children: [
+                Container(
+                  height: 70,
+                  width: 70,
+                  padding: EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                      color: Colors.white, shape: BoxShape.circle),
+                  child: Container(
+                    child: FittedBox(
+                      fit: BoxFit.fill,
                       child: CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        radius: 35,
-                        backgroundImage: CachedNetworkImageProvider(
-                          imgUrl ?? "",
+                        backgroundColor: Colors.white,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          radius: 35,
+                          backgroundImage: CachedNetworkImageProvider(
+                            imgUrl ?? "",
+                          ),
+                          // child: CachedNetworkImage(
+                          //   imageUrl: imgUrl ?? '',
+                          //   fit: BoxFit.fill,
+                          //   placeholder: (context, url) => Shimmer.fromColors(
+                          //       child: CircleAvatar(
+                          //         backgroundColor: Colors.grey,
+                          //       ),
+                          //       baseColor: Colors.grey[300]!,
+                          //       highlightColor: Colors.grey[300]!),
+                          //   errorWidget: (context, url, error) =>
+                          //       Icon(Icons.person, size: 35, color: Colors.grey),
+                          // ),
                         ),
-                        // child: CachedNetworkImage(
-                        //   imageUrl: imgUrl ?? '',
-                        //   fit: BoxFit.fill,
-                        //   placeholder: (context, url) => Shimmer.fromColors(
-                        //       child: CircleAvatar(
-                        //         backgroundColor: Colors.grey,
-                        //       ),
-                        //       baseColor: Colors.grey[300]!,
-                        //       highlightColor: Colors.grey[300]!),
-                        //   errorWidget: (context, url, error) =>
-                        //       Icon(Icons.person, size: 35, color: Colors.grey),
-                        // ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Text(name ?? ''),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Text(
-                  //   'Solh Expert',
-                  //   style: GoogleFonts.signika(
-                  //     fontSize: 12,
-                  //     color: Color(0xFF5F9B8C),
-                  //   ),
-                  // ),
-                  // Image(image: AssetImage('assets/images/verifiedTick.png')),
-                  Text(
-                    userType ?? '',
-                    style: GoogleFonts.signika(
-                      fontSize: 12,
-                      color: Color(0xFF5F9B8C),
-                    ),
-                  ),
-                  userType != null
-                      ? Image(
-                          image: AssetImage('assets/images/verifiedTick.png'))
-                      : Container(),
-                ],
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Container(
-                height: 45,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text(
-                    bio ?? '',
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.signika(
-                      fontSize: 12,
-                      color: Color(0xff666666),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Text(name ?? ''),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.comment,
-                          color: Color(0xFF5F9B8C),
-                          size: 12,
-                        ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          comments ?? '',
-                          style: GoogleFonts.signika(
-                            fontSize: 12,
-                            color: Color(0xFF5F9B8C),
-                          ),
-                        ),
-                      ],
+                    // Text(
+                    //   'Solh Expert',
+                    //   style: GoogleFonts.signika(
+                    //     fontSize: 12,
+                    //     color: Color(0xFF5F9B8C),
+                    //   ),
+                    // ),
+                    // Image(image: AssetImage('assets/images/verifiedTick.png')),
+                    Text(
+                      userType ?? '',
+                      style: GoogleFonts.signika(
+                        fontSize: 12,
+                        color: Color(0xFF5F9B8C),
+                      ),
                     ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.thumb_up,
-                          size: 12,
-                          color: Color(0xff5F9B8C),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          likes ?? '',
-                          style: GoogleFonts.signika(
-                              fontSize: 12, color: Color(0xff5F9B8C)),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.group,
-                          size: 12,
-                          color: Color(0xff5F9B8C),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          connections ?? '',
-                          style: GoogleFonts.signika(
-                              fontSize: 12, color: Color(0xff5F9B8C)),
-                        ),
-                      ],
-                    ),
+                    userType != null
+                        ? Image(
+                            image: AssetImage('assets/images/verifiedTick.png'))
+                        : Container(),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 33,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ConnectProfileScreen(
-                            sId: sId!,
-                            uid: uid!,
-                          )));
-                },
-                child: Container(
-                  height: 32,
-                  width: 148,
-                  decoration: BoxDecoration(
-                      color: SolhColors.green,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          'assets/images/connect.svg',
-                          height: 14,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          'Connect',
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                SizedBox(
+                  height: 4,
+                ),
+                Container(
+                  height: 45,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Text(
+                      bio ?? '',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.signika(
+                        fontSize: 12,
+                        color: Color(0xff666666),
+                      ),
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-        )
-      ]),
+                SizedBox(
+                  height: 13,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.comment,
+                            color: Color(0xFF5F9B8C),
+                            size: 12,
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            comments ?? '',
+                            style: GoogleFonts.signika(
+                              fontSize: 12,
+                              color: Color(0xFF5F9B8C),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.thumb_up,
+                            size: 12,
+                            color: Color(0xff5F9B8C),
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            likes ?? '',
+                            style: GoogleFonts.signika(
+                                fontSize: 12, color: Color(0xff5F9B8C)),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.group,
+                            size: 12,
+                            color: Color(0xff5F9B8C),
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            connections ?? '',
+                            style: GoogleFonts.signika(
+                                fontSize: 12, color: Color(0xff5F9B8C)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 33,
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ConnectProfileScreen(
+                              sId: sId!,
+                              uid: uid!,
+                            )));
+                  },
+                  child: Container(
+                    height: 32,
+                    width: 148,
+                    decoration: BoxDecoration(
+                        color: SolhColors.green,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            'assets/images/connect.svg',
+                            height: 14,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'Connect',
+                            style: GoogleFonts.signika(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ]),
+      ),
     );
 
     // return Container(
