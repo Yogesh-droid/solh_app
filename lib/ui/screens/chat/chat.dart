@@ -339,7 +339,7 @@ class MessageTile extends StatelessWidget {
                   maxWidth: MediaQuery.of(context).size.width * 0.7,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     // Text(
                     //   _authorId,
@@ -362,20 +362,20 @@ class MessageTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: SolhColors.green),
                     ),
+                    Text(
+                      _dateTime == null
+                          ? ''
+                          : DateTime.tryParse(_dateTime) != null
+                              ? DateFormat('dd MMM kk:mm')
+                                  .format(DateTime.parse(_dateTime).toLocal())
+                              : '',
+                      style: GoogleFonts.signika(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: SolhColors.grey),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            Text(
-              _dateTime == null
-                  ? ''
-                  : DateTime.tryParse(_dateTime) != null
-                      ? DateFormat('dd MMM kk:mm')
-                          .format(DateTime.parse(_dateTime).toLocal())
-                      : '',
-              style: GoogleFonts.signika(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
               ),
             ),
           ],
