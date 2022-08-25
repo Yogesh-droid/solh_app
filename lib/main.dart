@@ -103,13 +103,91 @@ void main() async {
 
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      print(result.action!.actionId);
-      if (result.action!.actionId == "id1") {
-        Future.delayed(Duration(seconds: 2), () {
-          globalNavigatorKey.currentState!.push(
-            MaterialPageRoute(builder: (context) => Connections()),
-          );
-        });
+      /*  showDialog(
+          context: globalNavigatorKey.currentContext!,
+          builder: (context) {
+            return AlertDialog(
+              actionsPadding: EdgeInsets.all(8.0),
+              content: Text(
+                'Incoming video call',
+                style: SolhTextStyles.LandingTitleText,
+              ),
+              actions: [
+                SolhPinkBorderMiniButton(
+                  child: Text(
+                    'Reject',
+                    style: SolhTextStyles.PinkBorderButtonText,
+                  ),
+                ),
+                SolhGreenMiniButton(
+                  child: Text(
+                    'Accept',
+                    style: SolhTextStyles.GreenButtonText,
+                  ),
+                )
+              ],
+            );
+          }); */
+      print('running open notification handler');
+      print(result.notification.additionalData.toString());
+      print(result.notification.body);
+      print(result.notification.rawPayload);
+      if (result.action != null) {
+        print(result.action!.actionId);
+        if (result.action!.actionId == "accept") {
+          Future.delayed(Duration(milliseconds: 500), () {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(
+                  builder: (context) => VideoCallUser(
+                        channel:
+                            result.notification.additionalData!["channelName"],
+                        token: result.notification.additionalData!["rtcToken"],
+                      )),
+            );
+          });
+        } else {
+          showDialog(
+              context: globalNavigatorKey.currentContext!,
+              builder: (context) {
+                return AlertDialog(
+                  actionsPadding: EdgeInsets.all(8.0),
+                  content: Text(
+                    'Incoming video call',
+                    style: SolhTextStyles.LandingTitleText,
+                  ),
+                  actions: [
+                    SolhPinkBorderMiniButton(
+                      child: Text(
+                        'Reject',
+                        style: SolhTextStyles.PinkBorderButtonText,
+                      ),
+                      onPressed: () {
+                        globalNavigatorKey.currentState!.pop();
+                      },
+                    ),
+                    SolhGreenMiniButton(
+                      child: Text(
+                        'Accept',
+                        style: SolhTextStyles.GreenButtonText,
+                      ),
+                      onPressed: () {
+                        Future.delayed(Duration(milliseconds: 500), () {
+                          globalNavigatorKey.currentState!.push(
+                            MaterialPageRoute(
+                                builder: (context) => VideoCallUser(
+                                      channel: result.notification
+                                          .additionalData!["channelName"],
+                                      token: result.notification
+                                          .additionalData!["rtcToken"],
+                                    )),
+                          );
+                        });
+                      },
+                    )
+                  ],
+                );
+              });
+        }
       } else {
         showDialog(
             context: globalNavigatorKey.currentContext!,
@@ -132,6 +210,19 @@ void main() async {
                       'Accept',
                       style: SolhTextStyles.GreenButtonText,
                     ),
+                    onPressed: () {
+                      Future.delayed(Duration(milliseconds: 500), () {
+                        globalNavigatorKey.currentState!.push(
+                          MaterialPageRoute(
+                              builder: (context) => VideoCallUser(
+                                    channel: result.notification
+                                        .additionalData!["channelName"],
+                                    token: result.notification
+                                        .additionalData!["rtcToken"],
+                                  )),
+                        );
+                      });
+                    },
                   )
                 ],
               );
