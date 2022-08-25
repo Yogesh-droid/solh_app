@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -88,9 +89,14 @@ class _OTPScreenState extends State<OTPScreen> {
                       print("user idToken: $idToken");
                       String? fcmToken =
                           await FirebaseMessaging.instance.getToken();
+                      String oneSignalId = '';
+                      await OneSignal.shared.getDeviceState().then((value) {
+                        print(value!.userId);
+                        oneSignalId = value.userId ?? '';
+                      });
                       bool isSessionCookieCreated =
                           await SessionCookie.createSessionCookie(
-                              idToken, fcmToken);
+                              idToken, fcmToken, oneSignalId);
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =

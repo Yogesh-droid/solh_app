@@ -1,16 +1,20 @@
 // import 'package:awesome_notifications/awesome_notifications.dart';
 import 'dart:convert';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'controllers/profile/appointment_controller.dart';
@@ -29,12 +33,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
-Future<void> backgroundMessageHandler(RemoteMessage remoteMessage,
+/* Future<void> backgroundMessageHandler(RemoteMessage remoteMessage,
     [bool? isInApp]) async {
   await Firebase.initializeApp();
-  print("backgroundMessageHandler");
-  print(remoteMessage.data);
-  print(remoteMessage.notification!.title);
   List<NotificationActionButton> list =
       jsonDecode(remoteMessage.data['actionButtons'])
           .map<NotificationActionButton>(
@@ -43,22 +44,25 @@ Future<void> backgroundMessageHandler(RemoteMessage remoteMessage,
           )
           .toList();
   LocalNotificationService.createCallNotification(
-      jsonDecode(remoteMessage.data['content']), remoteMessage, list);
-  // if (remoteMessage.data['action'] == 'call') {
-  //   LocalNotificationService.createCallNotification(remoteMessage);
-  // } else {
-  //   LocalNotificationService.createanddisplaynotification(remoteMessage);
-  // }
-}
+      jsonDecode(remoteMessage.data['content']), remoteMessage, list, {
+    "token": "${remoteMessage.data['rtcToken']}",
+    "channelName": "${remoteMessage.data['channelName']}"
+  });
+} */
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  //LocalNotificationService.initialize();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
-  LocalNotificationService.initialize();
+  //FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
+  OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+  });
+
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
   AppointmentController appointmentController =
@@ -77,15 +81,64 @@ void main() async {
     print('FirebaseMessaging.instance.getToken' + token.toString());
     fcmToken = token;
   });
-
   if (FirebaseAuth.instance.currentUser != null) {
     String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+    String oneSignalId = '';
+    await OneSignal.shared.getDeviceState().then((value) {
+      print(value!.userId);
+      oneSignalId = value.userId ?? '';
+    });
     print("*" * 30 + "\n" + "Id Token: $idToken");
-    bool isNewUser = await SessionCookie.createSessionCookie(idToken, fcmToken);
+    bool isNewUser =
+        await SessionCookie.createSessionCookie(idToken, fcmToken, oneSignalId);
     Map<String, dynamic> _initialAppData = await initApp();
     runApp(SolhApp(
       isProfileCreated: _initialAppData["isProfileCreated"] && !isNewUser,
     ));
+
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+        (OSNotificationReceivedEvent event) {
+      event.complete(event.notification);
+    });
+
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print(result.action!.actionId);
+      if (result.action!.actionId == "id1") {
+        Future.delayed(Duration(seconds: 2), () {
+          globalNavigatorKey.currentState!.push(
+            MaterialPageRoute(builder: (context) => Connections()),
+          );
+        });
+      } else {
+        showDialog(
+            context: globalNavigatorKey.currentContext!,
+            builder: (context) {
+              return AlertDialog(
+                actionsPadding: EdgeInsets.all(8.0),
+                content: Text(
+                  'Incoming video call',
+                  style: SolhTextStyles.LandingTitleText,
+                ),
+                actions: [
+                  SolhPinkBorderMiniButton(
+                    child: Text(
+                      'Reject',
+                      style: SolhTextStyles.PinkBorderButtonText,
+                    ),
+                  ),
+                  SolhGreenMiniButton(
+                    child: Text(
+                      'Accept',
+                      style: SolhTextStyles.GreenButtonText,
+                    ),
+                  )
+                ],
+              );
+            });
+      }
+    });
+    print(OneSignal.shared.getDeviceState());
   } else
     runApp(SolhApp(
       isProfileCreated: false,
@@ -158,7 +211,7 @@ class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
     //LocalNotificationService.initialize(context);
-    FirebaseMessaging.instance.getInitialMessage().then(
+    /*  FirebaseMessaging.instance.getInitialMessage().then(
       (message) async {
         if (message != null) {
           if (message.data['action'] != null) {
@@ -202,7 +255,8 @@ class _SolhAppState extends State<SolhApp> {
           // }
         } */
       },
-    );
+    ); */
+    setupInteractedMessage();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Got a message whilst in the foreground!');
@@ -212,7 +266,8 @@ class _SolhAppState extends State<SolhApp> {
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
       }
-      Utility.showToast(message.data['action']);
+      // Utility.showToast(message.data['action']);
+      //LocalNotificationService.createCallNotification(message);
       List<NotificationActionButton> list =
           jsonDecode(message.data['actionButtons'])
               .map<NotificationActionButton>(
@@ -220,9 +275,11 @@ class _SolhAppState extends State<SolhApp> {
                     key: actionButton['key'], label: actionButton['label']),
               )
               .toList();
-
       LocalNotificationService.createCallNotification(
-          jsonDecode(message.data['content']), message, list);
+          jsonDecode(message.data['content']), message, list, {
+        "token": "${message.data['rtcToken']}",
+        "channelName": "${message.data['channelName']}"
+      });
       channelName = message.data['channelName'];
       channelToken = message.data['rtcToken'];
     });
@@ -231,18 +288,16 @@ class _SolhAppState extends State<SolhApp> {
       (message) {
         print("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
-          List<NotificationActionButton> list =
-              jsonDecode(message.data['actionButtons'])
-                  .map<NotificationActionButton>(
-                    (actionButton) => NotificationActionButton(
-                        key: actionButton['key'], label: actionButton['label']),
-                  )
-                  .toList();
-          //Utility.showToast('When app is in foreground');
-          // Utility.showToast(message.data['action']);
-
-          LocalNotificationService.createCallNotification(
-              jsonDecode(message.data['content']), message, list);
+          if (message.notification!.android!.channelId ==
+              'basic_channel_call') {
+            print('Calling ');
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VideoCallUser(
+                        token: message.data['rtcToken'],
+                        channel: message.data['channelName'])));
+          }
         }
       },
     );
@@ -253,8 +308,9 @@ class _SolhAppState extends State<SolhApp> {
       },
     );
 
-    AwesomeNotifications().actionStream.listen(
+    /*   AwesomeNotifications().actionStream.listen(
       (ReceivedAction receivedAction) {
+        Utility.showToast(receivedAction.buttonKeyPressed);
         if (receivedAction.buttonKeyPressed == 'accept') {
           print('Accepted');
           globalNavigatorKey.currentState!.push(
@@ -266,12 +322,11 @@ class _SolhAppState extends State<SolhApp> {
         } else if (receivedAction.buttonKeyPressed == 'reject') {
           print('Rejected');
         }
-        Utility.showToast(receivedAction.buttonKeyPressed);
 
         //Here if the user clicks on the notification itself
         //without any button
       },
-    );
+    ); */
 
     super.initState();
   }
@@ -312,5 +367,34 @@ class _SolhAppState extends State<SolhApp> {
         ),
       );
     });
+  }
+
+  Future<void> setupInteractedMessage() async {
+    // Get any messages which caused the application to open from
+    // a terminated state.
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+
+    // If the message also contains a data property with a "type" of "chat",
+    // navigate to a chat screen
+    if (initialMessage != null) {
+      _handleMessage(initialMessage);
+    }
+
+    // Also handle any interaction when the app is in the background via a
+    // Stream listener
+    FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
+  }
+
+  void _handleMessage(RemoteMessage message) {
+    Utility.showToast(message.data.toString());
+    if (message.data['action'] == 'call') {
+      globalNavigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) =>
+              VideoCallUser(channel: channelName, token: channelToken),
+        ),
+      );
+    }
   }
 }

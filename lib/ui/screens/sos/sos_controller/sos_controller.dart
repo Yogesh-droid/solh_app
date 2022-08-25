@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/services/network/network.dart';
 
 import 'package:http/http.dart' as http;
 

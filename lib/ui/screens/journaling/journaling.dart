@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/journals/journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
@@ -88,7 +87,7 @@ class _JournalingState extends State<Journaling> {
 
     /////   Loop for fetching groups shown on home screen discover + joined groups ////
 
-    journalsBloc.getJournalsSnapshot();
+    // journalsBloc.getJournalsSnapshot();
     //openMoodMeter();
     _journalsScrollController.addListener(() async {
       if (_journalsScrollController.position.pixels ==
