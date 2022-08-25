@@ -191,7 +191,7 @@ class _CallState extends State<VideoCallUser> {
   bool _localUserJoined = false;
   late RtcEngine _engine;
   bool muted = false;
-  bool _isVideoEnabled = true;
+  bool _isVideoDisabled = false;
 
   @override
   void dispose() {
@@ -298,19 +298,19 @@ class _CallState extends State<VideoCallUser> {
                 RawMaterialButton(
                   onPressed: () {
                     setState(() {
-                      _isVideoEnabled = !_isVideoEnabled;
-                      _engine.muteLocalVideoStream(_isVideoEnabled);
+                      _isVideoDisabled = !_isVideoDisabled;
+                      _engine.muteLocalVideoStream(_isVideoDisabled);
                     });
-                    // _engine.muteLocalAudioStream(muted);
                   },
                   child: Icon(
-                    _isVideoEnabled ? Icons.videocam : Icons.videocam_off,
-                    color: _isVideoEnabled ? Colors.white : Colors.blueAccent,
+                    _isVideoDisabled ? Icons.videocam_off : Icons.videocam,
+                    color: _isVideoDisabled ? Colors.white : Colors.blueAccent,
                     size: 20.0,
                   ),
                   shape: CircleBorder(),
                   elevation: 2.0,
-                  fillColor: _isVideoEnabled ? Colors.blueAccent : Colors.white,
+                  fillColor:
+                      _isVideoDisabled ? Colors.blueAccent : Colors.white,
                   padding: const EdgeInsets.all(12.0),
                 ),
                 RawMaterialButton(

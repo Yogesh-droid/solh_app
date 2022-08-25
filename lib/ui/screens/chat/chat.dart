@@ -161,8 +161,8 @@ class ChatAppbar extends StatelessWidget {
                 if (value['success'] == true) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: ((context) => VideoCallUser(
-                            channel: value['channelName'],
-                            token: value['rtcToken'],
+                            channel: value['data']['channelName'],
+                            token: value['data']['rtcToken'],
                           ))));
                 }
               },
