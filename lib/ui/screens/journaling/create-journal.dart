@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -328,7 +329,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       //journalsBloc.getJournalsSnapshot();
     }
 
-    Navigator.pop(context);
+    AutoRouter.of(context).popUntil(((route) => route.isFirst));
   }
 
   Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
