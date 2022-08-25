@@ -213,6 +213,8 @@ class _CallState extends State<VideoCallUser> {
   }
 
   Future<void> initAgora() async {
+    print(widget.channel);
+    print(widget.token);
     // retrieve permissions
     await [Permission.microphone, Permission.camera].request();
 

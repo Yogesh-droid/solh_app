@@ -31,7 +31,7 @@ class ChatServices {
 
   Future initiateVideo(Map<String, dynamic> body) async {
     Map<String, dynamic> response = await Network.makePostRequestWithToken(
-            url: APIConstants.api + '/api/agora/rtc/', body: body)
+            url: APIConstants.api + '/api/agora/sendNotification', body: body)
         .onError((error, stackTrace) {
       print(error);
       return {};

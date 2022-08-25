@@ -332,14 +332,16 @@ class MessageTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.shade200,
+                color: _authorId == _sId
+                    ? Colors.grey.shade200
+                    : Color(0x80CCE9E2),
               ),
               child: Container(
                 constraints: BoxConstraints(
                   maxWidth: MediaQuery.of(context).size.width * 0.7,
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     // Text(
                     //   _authorId,
@@ -347,7 +349,7 @@ class MessageTile extends StatelessWidget {
                     // ),
                     ReadMoreText(
                       _message,
-                      style: GoogleFonts.signika(color: Colors.black),
+                      style: GoogleFonts.signika(color: Color(0xff666666)),
                       trimLines: 8,
                       colorClickableText: Colors.pink,
                       trimCollapsedText: 'Show more',
@@ -362,20 +364,20 @@ class MessageTile extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: SolhColors.green),
                     ),
+                    Text(
+                      _dateTime == null
+                          ? ''
+                          : DateTime.tryParse(_dateTime) != null
+                              ? DateFormat('dd MMM kk:mm')
+                                  .format(DateTime.parse(_dateTime).toLocal())
+                              : '',
+                      style: GoogleFonts.signika(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          color: SolhColors.grey),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            Text(
-              _dateTime == null
-                  ? ''
-                  : DateTime.tryParse(_dateTime) != null
-                      ? DateFormat('dd MMM kk:mm')
-                          .format(DateTime.parse(_dateTime).toLocal())
-                      : '',
-              style: GoogleFonts.signika(
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
               ),
             ),
           ],
