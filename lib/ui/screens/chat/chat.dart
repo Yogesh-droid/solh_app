@@ -332,7 +332,9 @@ class MessageTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.shade200,
+                color: _authorId == _sId
+                    ? Colors.grey.shade200
+                    : Color(0x80CCE9E2),
               ),
               child: Container(
                 constraints: BoxConstraints(
@@ -347,7 +349,7 @@ class MessageTile extends StatelessWidget {
                     // ),
                     ReadMoreText(
                       _message,
-                      style: GoogleFonts.signika(color: Colors.black),
+                      style: GoogleFonts.signika(color: Color(0xff666666)),
                       trimLines: 8,
                       colorClickableText: Colors.pink,
                       trimCollapsedText: 'Show more',
