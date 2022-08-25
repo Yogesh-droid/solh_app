@@ -62,7 +62,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => MyDiaryListPage(
-                                  isPickFromDiary: true,
+                                  isPickFromDiary: null,
                                 )));
                   },
                   icon: SvgPicture.asset(

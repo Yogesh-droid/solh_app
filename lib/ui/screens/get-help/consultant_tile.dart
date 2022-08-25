@@ -151,7 +151,7 @@ class ConsultantsTile extends StatelessWidget {
               color: SolhColors.green,
               size: 10,
             ),
-            Text('72',
+            Text('0',
                 style: TextStyle(
                   color: SolhColors.green,
                   fontSize: 12,
@@ -166,7 +166,7 @@ class ConsultantsTile extends StatelessWidget {
               color: SolhColors.green,
               size: 10,
             ),
-            Text('4.5',
+            Text('0',
                 style: TextStyle(
                   color: SolhColors.green,
                   fontSize: 12,
@@ -181,7 +181,7 @@ class ConsultantsTile extends StatelessWidget {
               color: SolhColors.green,
               size: 10,
             ),
-            Text('07',
+            Text('0',
                 style: TextStyle(
                   color: SolhColors.green,
                   fontSize: 12,
@@ -202,11 +202,25 @@ class ConsultantsTile extends StatelessWidget {
             onPressed: () {
               launchUrl(Uri.parse("tel://${8284848028}"));
             },
-            child: Text('Call',
-                style: TextStyle(
-                  color: SolhColors.green,
-                  fontSize: 14,
-                )),
+            // child: Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            //   decoration: BoxDecoration(
+            //       border: Border.all(color: SolhColors.green),
+            //       borderRadius: BorderRadius.circular(18)),
+            //   child: Row(
+            //     children: [
+            //       Text('Call',
+            //           style: TextStyle(
+            //             color: SolhColors.green,
+            //             fontSize: 14,
+            //           )),
+            //       Icon(
+            //         Icons.call,
+            //         color: SolhColors.green,
+            //       )
+            //     ],
+            //   ),
+            // ),
           ),
           SolhGreenButton(
             height: 6.h,

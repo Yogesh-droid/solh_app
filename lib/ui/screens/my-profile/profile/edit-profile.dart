@@ -219,45 +219,45 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 18.0),
-                              child: Text(
-                                "Username",
-                                style: SolhTextStyles.JournalingHintText,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 18.0,
-                              ),
-                              child: ProfielTextField(
-                                hintText: "Username",
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textEditingController: _userNameController,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    _anonController.isNormalNameTaken.value =
-                                        false;
-                                  }
-                                  return value == ''
-                                      ? "Required*"
-                                      : value.length < 3
-                                          ? "Username must be at least 3 characters long"
-                                          : null;
-                                },
-                                onChanged: (val) {
-                                  _anonController.isNormalNameTaken.value =
-                                      false;
-                                  if (val!.length >= 3 &&
-                                      _userNameController.text !=
-                                          userSnapshot.requireData!.userName) {
-                                    _anonController
-                                        .checkIfNormalUserNameTaken(val);
-                                  }
-                                },
-                              ),
-                            ),
+                            // Padding(
+                            //   padding: const EdgeInsets.only(left: 18.0),
+                            //   child: Text(
+                            //     "Username",
+                            //     style: SolhTextStyles.JournalingHintText,
+                            //   ),
+                            // ),
+                            // Padding(
+                            //   padding: const EdgeInsets.symmetric(
+                            //     horizontal: 18.0,
+                            //   ),
+                            //   child: ProfielTextField(
+                            //     hintText: "Username",
+                            //     autovalidateMode:
+                            //         AutovalidateMode.onUserInteraction,
+                            //     textEditingController: _userNameController,
+                            //     validator: (value) {
+                            //       if (value!.isEmpty) {
+                            //         _anonController.isNormalNameTaken.value =
+                            //             false;
+                            //       }
+                            //       return value == ''
+                            //           ? "Required*"
+                            //           : value.length < 3
+                            //               ? "Username must be at least 3 characters long"
+                            //               : null;
+                            //     },
+                            //     onChanged: (val) {
+                            //       _anonController.isNormalNameTaken.value =
+                            //           false;
+                            //       if (val!.length >= 3 &&
+                            //           _userNameController.text !=
+                            //               userSnapshot.requireData!.userName) {
+                            //         _anonController
+                            //             .checkIfNormalUserNameTaken(val);
+                            //       }
+                            //     },
+                            //   ),
+                            // ),
                             Obx(() {
                               return _anonController.isNormalNameTaken.value
                                   ? Text(

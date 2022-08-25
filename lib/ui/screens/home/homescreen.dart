@@ -426,9 +426,6 @@ class _HomePageState extends State<HomePage> {
                     GetHelpDivider(),
                     GetHelpCategory(
                       title: 'Recommended reads',
-                      onPressed: () {
-                        connectionController.getRecommendedBlogs();
-                      },
                     ),
                     getRecommendedReadsUI(),
                     SizedBox(
@@ -928,9 +925,7 @@ class _HomePageState extends State<HomePage> {
             name: connectionController.peopleYouMayKnow.value.reccomendation!
                 .elementAt(index)
                 .name,
-            mobile: connectionController.peopleYouMayKnow.value.reccomendation!
-                .elementAt(index)
-                .mobile,
+            mobile: '',
             imgUrl: connectionController.peopleYouMayKnow.value.reccomendation!
                 .elementAt(index)
                 .profilePicture,
@@ -940,25 +935,21 @@ class _HomePageState extends State<HomePage> {
             uid: connectionController.peopleYouMayKnow.value.reccomendation!
                 .elementAt(index)
                 .uid,
-            comments: '',
+            comments: connectionController
+                .peopleYouMayKnow.value.reccomendation!
+                .elementAt(index)
+                .commentCount
+                .toString(),
             connections: connectionController
                 .peopleYouMayKnow.value.reccomendation!
                 .elementAt(index)
-                .connections
+                .connectionsCount
                 .toString(),
             likes: connectionController.peopleYouMayKnow.value.reccomendation!
                 .elementAt(index)
-                .likes
+                .likesCount
                 .toString(),
-            userType: connectionController
-                        .peopleYouMayKnow.value.reccomendation!
-                        .elementAt(index)
-                        .userType !=
-                    'Seeker'
-                ? connectionController.peopleYouMayKnow.value.reccomendation!
-                    .elementAt(index)
-                    .userType
-                : null,
+            userType: null,
           ),
         );
       }),

@@ -236,6 +236,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                             width: 90.w,
                                             height: 6.3.h,
                                             child: Text("Connect/Join")),
+
                                         SizedBox(height: 3.h),
                                       ],
                                     ),
@@ -538,6 +539,19 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     );
   }
 }
+
+// class AllPosts extends StatelessWidget {
+//   const AllPosts({Key? key, required sId})
+//       : _sId = sId,
+//         super(key: key);
+//   final String _sId;
+//   @override
+//   Widget build(BuildContext context) {
+//     return PostScreen(
+//       sId: _sId,
+//     );
+//   }
+// }
 
 class TabView extends StatefulWidget {
   const TabView({

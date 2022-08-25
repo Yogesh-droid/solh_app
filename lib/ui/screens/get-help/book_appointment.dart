@@ -385,47 +385,16 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    content: Container(
-                                  height: 150,
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.done,
-                                        color: SolhColors.green,
-                                      ),
-                                      Expanded(
-                                        child: Container(
-                                          child: Column(children: [
-                                            Text('Thanks!',
-                                                style: GoogleFonts.signika(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                            Text(
-                                              "We have received your appointment booking for Date, at time. We will get back to you soon with the appointment's confirmation details.",
-                                              textAlign: TextAlign.center,
-                                            )
-                                          ]),
-                                        ),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text(
-                                          'Ok',
-                                          style: GoogleFonts.signika(
-                                              fontWeight: FontWeight.bold,
-                                              color: SolhColors.green),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ));
-                              });
+                          final snackBar = SnackBar(
+                            content: Text('Appointment request sent.'),
+                            action: SnackBarAction(
+                              label: 'Undo',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       } else {
                         final snackBar = SnackBar(
@@ -475,14 +444,25 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(_controller.selectedDay.value != ''
-              ? ('Today' == _controller.selectedDay.value
-                  ? 'Today'
-                  : '${_controller.selectedDay.value}')
-              : 'Select'),
-          _controller.selectedDate.value != ''
-              ? Text(_controller.selectedTimeSlot.value)
-              : Icon(Icons.arrow_drop_down),
+          Text(
+              _controller.selectedDay.value != ''
+                  ? ('Today' == _controller.selectedDay.value
+                      ? 'Today'
+                      : '${_controller.selectedDay.value}')
+                  : 'Select',
+              style: GoogleFonts.signika(color: SolhColors.green)),
+          Row(
+            children: [
+              Text(_controller.selectedTimeSlot.value,
+                  style: GoogleFonts.signika(
+                    color: SolhColors.green,
+                  )),
+              Icon(
+                Icons.arrow_drop_down,
+                color: SolhColors.green,
+              )
+            ],
+          )
         ],
       );
     }));
@@ -914,7 +894,9 @@ class BookAppointmentPopup extends StatelessWidget {
                               .popUntil(((route) => route.isFirst));
                         }
                       });
-                      return appointmentConfirmationPopup(response);
+                      return appointmentConfirmationPopup(
+                        response,
+                      );
                     });
               },
               child: Container(
@@ -938,23 +920,29 @@ class BookAppointmentPopup extends StatelessWidget {
     );
   }
 
-  Widget appointmentConfirmationPopup(data) {
+  Widget appointmentConfirmationPopup(
+    data,
+  ) {
     return AlertDialog(
       content: data == 'Successfully created appointment.'
           ? Container(
-              child: Row(
+              height: 200,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.check,
-                    color: Colors.green,
-                  ),
+                  Text('Appointment Booked'),
                   SizedBox(
-                    width: 8,
+                    height: 20,
                   ),
                   Expanded(
-                    child: Text('Successfully created appointment.',
-                        textAlign: TextAlign.center),
-                  )
+                    child: Text(
+                      'Your appointment has been booked please pay attention to the app notifications, we will notify you 30 min before the scheduled appointment',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.signika(color: Color(0xffA6A6A6)),
+                    ),
+                  ),
+                  Text(
+                      '${_controller.selectedDay},${_controller.selectedTimeSlot}')
                 ],
               ),
             )
