@@ -259,6 +259,12 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) => ConsultantsTile(
                                   doctorModel: DoctorModel(
+                                      specialization: searchMarketController
+                                              .issueModel
+                                              .value
+                                              .doctors![index]
+                                              .specialization ??
+                                          '',
                                       organisation: searchMarketController
                                               .issueModel
                                               .value
@@ -274,9 +280,8 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                                               .doctors![index]
                                               .contactNumber ??
                                           '',
-                                      email: searchMarketController.issueModel
-                                              .value.doctors![index].email ??
-                                          '',
+                                      email:
+                                          searchMarketController.issueModel.value.doctors![index].email ?? '',
                                       clinic: '',
                                       id: searchMarketController.issueModel.value.doctors![index].sId ?? '',
                                       locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
@@ -305,6 +310,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) => ConsultantsTile(
                                   doctorModel: DoctorModel(
+                                      specialization: '',
                                       organisation: '',
                                       name: searchMarketController.issueModel
                                               .value.provider![index].name ??

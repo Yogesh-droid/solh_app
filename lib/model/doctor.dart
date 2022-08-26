@@ -10,6 +10,7 @@ class DoctorModel {
   String bio;
   String abbrevations;
   String profilePicture;
+  String specialization;
   String id;
 
   DoctorModel(
@@ -24,6 +25,7 @@ class DoctorModel {
       required this.bio,
       required this.abbrevations,
       required this.profilePicture,
+      required this.specialization,
       required this.id});
 
   factory DoctorModel.fromJson(Map<String, dynamic> doctorJson) {
@@ -39,6 +41,7 @@ class DoctorModel {
         bio: doctorJson["bio"],
         abbrevations: doctorJson["Abbrevations"],
         profilePicture: doctorJson["profilePicture"],
-        id: doctorJson["_id"]);
+        id: doctorJson["_id"],
+        specialization: doctorJson['specialization']);
   }
 }

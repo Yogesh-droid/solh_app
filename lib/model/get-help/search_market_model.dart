@@ -50,6 +50,7 @@ class Doctors {
   String? email;
   String? sId;
   String? profilePicture;
+  String? specialization;
 
   Doctors(
       {this.offlineSession,
@@ -63,6 +64,7 @@ class Doctors {
       this.contactNumber,
       this.email,
       this.sId,
+      this.specialization,
       this.profilePicture});
 
   Doctors.fromJson(Map<String, dynamic> json) {
@@ -78,6 +80,7 @@ class Doctors {
     email = json['email'];
     sId = json['_id'];
     profilePicture = json['profilePicture'];
+    specialization = json['specialization'];
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +97,7 @@ class Doctors {
     data['email'] = this.email;
     data['_id'] = this.sId;
     data['profilePicture'] = this.profilePicture;
+    data['specialization'] = this.specialization;
     return data;
   }
 }
