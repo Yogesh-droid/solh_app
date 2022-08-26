@@ -720,8 +720,10 @@ class IWantToWorkOn extends StatelessWidget {
         : _goalSettingController.goalsCatModel.value.categories != null
             ? Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-                child: GridView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: _goalSettingController
                         .goalsCatModel.value.categories!.length,
@@ -731,11 +733,11 @@ class IWantToWorkOn extends StatelessWidget {
                     //     childAspectRatio: 3 / 1.2,
                     //     crossAxisSpacing: 20,
                     //     mainAxisSpacing: 20),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 2.5.w,
-                        crossAxisSpacing: 2.5.w,
-                        crossAxisCount: 2,
-                        childAspectRatio: 2),
+                    // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    //     mainAxisSpacing: 2.5.w,
+                    //     crossAxisSpacing: 2.5.w,
+                    //     crossAxisCount: 2,
+                    //     childAspectRatio: 2),
                     itemBuilder: (context, index) {
                       return InkWell(
                         onTap: (() {
@@ -751,6 +753,7 @@ class IWantToWorkOn extends StatelessWidget {
                               builder: (context) => AddSelectGoal()));
                         }),
                         child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
                               border: Border.all(color: Color(0xffA6A6A6)),
                               borderRadius: BorderRadius.circular(

@@ -130,64 +130,40 @@ class SearchScreen extends StatelessWidget {
                                     delegate: SliverChildBuilderDelegate(
                                       (context, index) => ConsultantsTile(
                                         doctorModel: DoctorModel(
-                                          organisation: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .organisation ??
-                                              '',
-                                          name: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .name ??
-                                              '',
-                                          mobile: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .contactNumber ??
-                                              '',
-                                          email: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .email ??
-                                              '',
-                                          clinic: '',
-                                          locality: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .addressLineOne ??
-                                              '',
-                                          pincode: '',
-                                          city: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .addressLineFour ??
-                                              '',
-                                          bio: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .bio ??
-                                              '',
-                                          abbrevations: '',
-                                          profilePicture: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .profilePicture ??
-                                              '',
-                                          id: searchMarketController
-                                                  .searchMarketModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .sId ??
-                                              '',
-                                        ),
+                                            organisation: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .organisation ??
+                                                '',
+                                            name: searchMarketController.searchMarketModel.value.doctors![index].name ??
+                                                '',
+                                            mobile: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .contactNumber ??
+                                                '',
+                                            email: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .email ??
+                                                '',
+                                            clinic: '',
+                                            locality: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .addressLineOne ??
+                                                '',
+                                            pincode: '',
+                                            city: searchMarketController.searchMarketModel.value.doctors![index].addressLineFour ?? '',
+                                            bio: searchMarketController.searchMarketModel.value.doctors![index].bio ?? '',
+                                            abbrevations: '',
+                                            profilePicture: searchMarketController.searchMarketModel.value.doctors![index].profilePicture ?? '',
+                                            id: searchMarketController.searchMarketModel.value.doctors![index].sId ?? '',
+                                            specialization: searchMarketController.searchMarketModel.value.doctors![index].specialization ?? ''),
                                         onTap: () {},
                                       ),
                                       childCount: searchMarketController
@@ -201,6 +177,7 @@ class SearchScreen extends StatelessWidget {
                                     delegate: SliverChildBuilderDelegate(
                                       (context, index) => ConsultantsTile(
                                         doctorModel: DoctorModel(
+                                          specialization: '',
                                           organisation: '',
                                           name: searchMarketController
                                                   .searchMarketModel

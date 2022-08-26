@@ -97,7 +97,9 @@ class ConsultantsTile extends StatelessWidget {
                   Container(
                     width: 50.w,
                     child: Text(
-                      "${_doctorModel.bio}",
+                      _doctorModel.specialization != ''
+                          ? "${_doctorModel.specialization}"
+                          : "${_doctorModel.bio}",
                       style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF666666),

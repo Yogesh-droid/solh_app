@@ -288,59 +288,59 @@ class _GoalFormState extends State<GoalForm> {
   Widget getSubcatDropDown() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Select Subcategory",
-              style: SolhTextStyles.JournalingHintText,
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          DropdownButtonFormField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(
-                  color: SolhColors.grey,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: BorderSide(
-                  color: SolhColors.grey,
-                ),
-              ),
-              filled: true,
-              fillColor: SolhColors.white,
-            ),
-            validator: (value) {
-              if (value == null) {
-                return "Please select a subcategory";
-              }
-              return null;
-            },
-            onChanged: (value) {
-              Categories cat = value as Categories;
-              _goalSettingController.selectedSubCat.value = cat;
-            },
-            // value: _goalSettingController.selectedSubCat.value.name,
-            items: _goalSettingController.SubCatModel.value.categories!
-                .map((value) {
-              return DropdownMenuItem(
-                value: value,
-                child: Text(value.name ?? ''),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
+      // child: Column(
+      //   children: [
+      //     Align(
+      //       alignment: Alignment.centerLeft,
+      //       child: Text(
+      //         "Select Subcategory",
+      //         style: SolhTextStyles.JournalingHintText,
+      //       ),
+      //     ),
+      //     SizedBox(
+      //       height: 8,
+      //     ),
+      //     DropdownButtonFormField(
+      //       decoration: InputDecoration(
+      //         border: OutlineInputBorder(
+      //           borderRadius: BorderRadius.circular(4),
+      //         ),
+      //         enabledBorder: OutlineInputBorder(
+      //           borderRadius: BorderRadius.circular(4),
+      //           borderSide: BorderSide(
+      //             color: SolhColors.grey,
+      //           ),
+      //         ),
+      //         focusedBorder: OutlineInputBorder(
+      //           borderRadius: BorderRadius.circular(4),
+      //           borderSide: BorderSide(
+      //             color: SolhColors.grey,
+      //           ),
+      //         ),
+      //         filled: true,
+      //         fillColor: SolhColors.white,
+      //       ),
+      //       validator: (value) {
+      //         if (value == null) {
+      //           return "Please select a subcategory";
+      //         }
+      //         return null;
+      //       },
+      //       onChanged: (value) {
+      //         Categories cat = value as Categories;
+      //         _goalSettingController.selectedSubCat.value = cat;
+      //       },
+      //       // value: _goalSettingController.selectedSubCat.value.name,
+      //       items: _goalSettingController.SubCatModel.value.categories!
+      //           .map((value) {
+      //         return DropdownMenuItem(
+      //           value: value,
+      //           child: Text(value.name ?? ''),
+      //         );
+      //       }).toList(),
+      //     ),
+      //   ],
+      // ),
     );
   }
 
