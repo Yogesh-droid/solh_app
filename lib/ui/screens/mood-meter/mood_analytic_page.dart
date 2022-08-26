@@ -425,7 +425,7 @@ class MoodAnalyticPage extends StatelessWidget {
         height: 100,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: moodMeterController.moodAnlyticsModel.value.avgFeeling != null
+          color: moodMeterController.moodAnlyticsModel.value.avgMood != null
               ? Color(int.parse((moodMeterController
                   .moodAnlyticsModel.value.avgFeeling!.hexCode!
                   .replaceAll('#', '0xFF'))))
@@ -462,7 +462,7 @@ class MoodAnalyticPage extends StatelessWidget {
               thickness: 1,
             ),
             Text(
-              moodMeterController.moodAnlyticsModel.value.avgFeeling != null
+              moodMeterController.moodAnlyticsModel.value.avgMood != null
                   ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
                   : 'Loading ...',
               textAlign: TextAlign.center,

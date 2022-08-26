@@ -103,11 +103,11 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                       style: TextStyle(color: SolhColors.green),
                     ),
                   ),
-                  DropdownMenuItem(
-                    value: "Thoughts",
-                    child: Text("Affirmations",
-                        style: TextStyle(color: SolhColors.green)),
-                  ),
+                  // DropdownMenuItem(
+                  //   value: "Thoughts",
+                  //   child: Text("Affirmations",
+                  //       style: TextStyle(color: SolhColors.green)),
+                  // ),
                 ],
                 onChanged: (value) {
                   myDiaryController.selectedElement.value = value.toString();
