@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -35,8 +37,6 @@ class _ChatScreenState extends State<ChatScreen> {
   var _controller = Get.put(ChatController());
   @override
   void initState() {
-    // TODO: implement initState
-
     _service.connectAndListen();
     _controller.getChatController(widget._sId);
     super.initState();

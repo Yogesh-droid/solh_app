@@ -447,15 +447,5 @@ class _SolhAppState extends State<SolhApp> {
     FirebaseMessaging.onMessageOpenedApp.listen(_handleMessage);
   }
 
-  void _handleMessage(RemoteMessage message) {
-    Utility.showToast(message.data.toString());
-    if (message.data['action'] == 'call') {
-      globalNavigatorKey.currentState!.push(
-        MaterialPageRoute(
-          builder: (context) =>
-              VideoCallUser(channel: channelName, token: channelToken),
-        ),
-      );
-    }
-  }
+  void _handleMessage(RemoteMessage message) {}
 }

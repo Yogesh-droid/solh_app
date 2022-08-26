@@ -166,15 +166,13 @@ class OptionModalSheet extends StatelessWidget {
     );
   }
 } */
+import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
-import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class VideoCallUser extends StatefulWidget {
@@ -195,24 +193,36 @@ class _CallState extends State<VideoCallUser> {
   late RtcEngine _engine;
   bool muted = false;
   bool _isVideoDisabled = false;
+  late Timer timer;
 
   @override
   void dispose() {
     _engine.leaveChannel();
     _engine.destroy();
+    timer.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
+    timer = Timer(Duration(seconds: 15), () {
+      if (_remoteUid == null) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            'Person not available',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.red,
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+        ));
+      }
+    });
     initAgora();
-  }
-
-  Future<void> _dispose() async {
-    // destroy sdk
-    await _engine.leaveChannel();
-    await _engine.destroy();
   }
 
   Future<void> initAgora() async {
@@ -227,6 +237,7 @@ class _CallState extends State<VideoCallUser> {
     _engine.setEventHandler(
       RtcEngineEventHandler(
         joinChannelSuccess: (String channel, int uid, int elapsed) {
+          print(" time $elapsed");
           print("local user $uid joined");
           setState(() {
             _localUserJoined = true;
@@ -240,13 +251,19 @@ class _CallState extends State<VideoCallUser> {
         },
         userOffline: (int uid, UserOfflineReason reason) {
           print("remote user $uid left channel");
-          //Utility.showToast("Call Ended  ${reason.name}");
-          Fluttertoast.showToast(
-              msg: "     Call ended     ",
-              backgroundColor: SolhColors.pink,
-              gravity: ToastGravity.SNACKBAR,
-              textColor: SolhColors.white);
           Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              reason.name == 'Quit' ? '  Call Ended  ' : '  User offline  ',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+          ));
+
           // setState(() {
           //   _remoteUid = null;
           // });

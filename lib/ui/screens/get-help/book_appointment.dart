@@ -433,8 +433,15 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
   }
 
   @override
+  void initState() {
+    _controller.selectedDay.value = '';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(onTap: () {
+      _controller.selectedDay.value = DateFormat('EEEE').format(DateTime.now());
       showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
@@ -588,14 +595,14 @@ class _DayPickerState extends State<DayPicker> {
               itemCount: days.length,
               itemBuilder: ((context, index) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Obx(() {
-                    return InkWell(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: InkWell(
                       onTap: () async {
                         //_controller.selectedDay.value = days[index];
                         _controller.selectedDay.value =
                             DateFormat('EEEE').format(days[index]);
                         _controller.selectedDate.value = days[index];
+                        setState(() {});
                         await _controller.getTimeSlot(
                             date: DateFormat('yyyy-MM-dd').format(days[index]),
                             providerId: _consultantController
@@ -604,38 +611,38 @@ class _DayPickerState extends State<DayPicker> {
                         print('+++++' + _controller.selectedDay.value);
                         print('----' + DateFormat('EEEE').format(days[index]));
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: _controller.selectedDay.value ==
-                                    DateFormat('EEEE').format(days[index])
-                                ? SolhColors.green
-                                : Colors.white,
-                            border: Border.all(color: SolhColors.green),
-                            borderRadius: BorderRadius.circular(18)),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            // child: Text(
-                            //   getUpcomingMap().keys.elementAt(index),
-                            // ),
-                            child: Text(
-                              DateFormat('EEEE').format(days[index]) ==
-                                      DateFormat('EEEE').format(DateTime.now())
-                                  ? 'Today'
-                                  : DateFormat('EEEE').format(days[index]),
-                              style: GoogleFonts.montserrat(
+                      child: Obx(() => Container(
+                            decoration: BoxDecoration(
                                 color: _controller.selectedDay.value ==
                                         DateFormat('EEEE').format(days[index])
-                                    ? SolhColors.white
-                                    : SolhColors.green,
+                                    ? SolhColors.green
+                                    : Colors.white,
+                                border: Border.all(color: SolhColors.green),
+                                borderRadius: BorderRadius.circular(18)),
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                // child: Text(
+                                //   getUpcomingMap().keys.elementAt(index),
+                                // ),
+                                child: Text(
+                                  DateFormat('EEEE').format(days[index]) ==
+                                          DateFormat('EEEE')
+                                              .format(DateTime.now())
+                                      ? 'Today'
+                                      : DateFormat('EEEE').format(days[index]),
+                                  style: GoogleFonts.montserrat(
+                                    color: _controller.selectedDay.value ==
+                                            DateFormat('EEEE')
+                                                .format(days[index])
+                                        ? SolhColors.white
+                                        : SolhColors.green,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                );
+                          )),
+                    ));
               })),
         ),
         SizedBox(
