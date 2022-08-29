@@ -340,12 +340,12 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                         GetHelpDivider(),
                         GetHelpCategory(
                           title: "Solh Volunteer",
-                          onPressed: () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => ConsultantsScreen(
-                                        slug: '',
-                                        type: 'topconsultant',
-                                      ))),
+                          // onPressed: () =>
+                          //     Navigator.of(context).push(MaterialPageRoute(
+                          //         builder: (_) => ConsultantsScreen(
+                          //               slug: '',
+                          //               type: 'topconsultant',
+                          //             ))),
                         ),
                         Container(
                           height: 38.h,

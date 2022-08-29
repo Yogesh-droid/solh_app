@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/ui/screens/profile-setup/enter-full-name.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/privacy_web.dart';
@@ -85,6 +86,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                     if (isTnCChecked) {
                       if (radioGroupValue == 'SolhProvider' &&
                           _userEmailEditingController.text.isEmpty) {
+                        userBlocNetwork.updateUserType = 'SolhProvider';
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Please enter your email"),
                           backgroundColor: Colors.red,

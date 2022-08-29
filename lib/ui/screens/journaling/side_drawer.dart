@@ -142,16 +142,18 @@ class _SideDrawerState extends State<SideDrawer> {
                           builder: (context) => MoodAnalyticPage()));
                 },
               ),
-              SideDrawerMenuTile(
-                title: "Appointments",
-                onPressed: () async {
-                  appointmentController.getUserAppointments();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AppointmentScreen()));
-                },
-              ),
+              userBlocNetwork.getUserType == 'SolhProvider'
+                  ? Container()
+                  : SideDrawerMenuTile(
+                      title: "Appointments",
+                      onPressed: () async {
+                        appointmentController.getUserAppointments();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AppointmentScreen()));
+                      },
+                    ),
             ]),
             Expanded(
               child: Container(),

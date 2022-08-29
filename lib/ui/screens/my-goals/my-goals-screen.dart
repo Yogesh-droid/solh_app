@@ -545,7 +545,7 @@ class GoalName extends StatelessWidget {
           color: SolhColors.green.withOpacity(0.3),
         ),
         child: InkWell(
-          onTap: _goalSettingController.isUpdateGoal.value
+          onTap: _goalSettingController.isUpdateGoal.value || e1.isComplete!
               ? () {}
               : () {
                   showAlertDialog(context, e.sId!, e1.sId!);

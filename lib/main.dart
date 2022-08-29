@@ -1,6 +1,4 @@
-// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'dart:convert';
-// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,8 +8,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -58,10 +54,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   //FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
-  OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
-  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-    print("Accepted permission: $accepted");
-  });
+  initAgora();
 
   //checkVersion();
   final AgeController ageController = Get.put(AgeController());
@@ -89,6 +82,7 @@ void main() async {
       oneSignalId = value.userId ?? '';
     });
     print("*" * 30 + "\n" + "Id Token: $idToken");
+    print("*" * 30 + "\n" + "One Token: $oneSignalId");
     bool isNewUser =
         await SessionCookie.createSessionCookie(idToken, fcmToken, oneSignalId);
     Map<String, dynamic> _initialAppData = await initApp();
@@ -204,6 +198,15 @@ void main() async {
           ),
         ))),
   )); */
+}
+
+Future<void> initAgora() async {
+  await OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
+  await OneSignal.shared
+      .promptUserForPushNotificationPermission()
+      .then((accepted) {
+    print("Accepted permission: $accepted");
+  });
 }
 
 void showVideocallDialog(OSNotificationOpenedResult result) {
