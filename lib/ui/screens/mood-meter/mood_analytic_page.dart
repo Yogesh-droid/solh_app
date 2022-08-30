@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -21,7 +23,7 @@ class MoodAnalyticPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            getMoodRightNowWidget(),
+            getMoodRightNowWidget(context),
             getMoodCountWidget(context),
           ],
         ),
@@ -39,63 +41,74 @@ class MoodAnalyticPage extends StatelessWidget {
     );
   }
 
-  Widget getMoodRightNowWidget() {
+  Widget getMoodRightNowWidget(context) {
     return Container(
       color: SolhColors.white,
       margin: EdgeInsets.only(top: 20),
       height: 50,
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Row(
-        children: [
-          Text(
-            'Your mood right now',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFF666666),
+      child: InkWell(
+        onTap: () async {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => MoodMeter()));
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset('assets/icons/app-bar/mood-meter.svg'),
+            SizedBox(
+              width: 15,
             ),
-          ),
-          Spacer(),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: SolhColors.grey,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Center(
-              child: Text(
-                '${moodMeterController.selectedMood.value}',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: SolhColors.white,
-                ),
+            Text(
+              'Tap to add current mood',
+              style: TextStyle(
+                fontSize: 18,
+                color: Color(0xFF666666),
               ),
             ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              color: SolhColors.white,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: SolhColors.green,
-                width: 1,
-              ),
-            ),
-            child: Center(
-              child: InkWell(
-                onTap: (() async {}),
-                child: Icon(
-                  Icons.add,
-                  color: SolhColors.green,
-                ),
-              ),
-            ),
-          ),
-        ],
+            Spacer(),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 10),
+            //   decoration: BoxDecoration(
+            //     color: SolhColors.grey,
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: Center(
+            //     child: Text(
+            //       '${moodMeterController.selectedMood.value}',
+            //       style: TextStyle(
+            //         fontSize: 16,
+            //         color: SolhColors.white,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(
+            //   width: 10,
+            // ),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 10),
+            //   decoration: BoxDecoration(
+            //     color: SolhColors.white,
+            //     shape: BoxShape.circle,
+            //     border: Border.all(
+            //       color: SolhColors.green,
+            //       width: 1,
+            //     ),
+            //   ),
+            //   child: Center(
+            //     child: InkWell(
+            //       onTap: (() async {}),
+            //       child: Icon(
+            //         Icons.add,
+            //         color: SolhColors.green,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ),
       ),
     );
   }
