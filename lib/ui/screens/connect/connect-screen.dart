@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -140,6 +141,16 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                                     "",
                                                 style: TextStyle(fontSize: 21)),
                                             //Icon(Icons.people, color: SolhColors.grey)
+                                          ],
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            GetBadge(
+                                                userType: connectionController
+                                                    .userModel.value.userType),
                                           ],
                                         ),
                                         // Text(
@@ -285,6 +296,14 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                 userProfileSnapshot.requireData.firstName ?? "",
                                 style: TextStyle(fontSize: 21)),
                             //Icon(Icons.people, color: SolhColors.grey)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GetBadge(
+                                userType:
+                                    userProfileSnapshot.requireData.userType),
                           ],
                         ),
                         // Text(

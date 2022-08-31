@@ -21,6 +21,7 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -1110,8 +1111,12 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                         ],
                       ),
                       SizedBox(
-                        height: 5.h,
-                      )
+                        height: 1.h,
+                      ),
+                      GetBadge(userType: widget._userModel!.userType),
+                      SizedBox(
+                        height: 4.h,
+                      ),
                     ],
                   ),
                   // Text(

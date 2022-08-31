@@ -4,12 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -318,17 +320,7 @@ class BookAppointmentWidget extends StatelessWidget {
                                   child: BookAppointmentPopup());
                             });
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString()),
-                          action: SnackBarAction(
-                            label: 'Undo',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     },
                   )
@@ -385,28 +377,15 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          final snackBar = SnackBar(
-                            content: Text('Appointment request sent.'),
-                            action: SnackBarAction(
-                              label: 'Undo',
-                              onPressed: () {
-                                // Some code to undo the change.
-                              },
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          Utility.showToast('Appointment request sent');
+                          Future.delayed(Duration(microseconds: 10), () {
+                            debugPrint('it ran');
+                            Navigator.of(context).pop();
+                            Navigator.pop(context);
+                          });
                         }
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString()),
-                          action: SnackBarAction(
-                            label: 'Undo',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     }))
             : CircularProgressIndicator(),
@@ -745,7 +724,25 @@ class _DayPickerState extends State<DayPicker> {
                         );
                       }).toList(),
                     );
-        })
+        }),
+        Expanded(
+          child: SizedBox(),
+        ),
+        Obx(() {
+          return SizedBox(
+              width: 80.w,
+              child: _controller.loadingTimeSlots.value
+                  ? Container()
+                  : SolhGreenButton(
+                      child: Text("Continue"),
+                      onPressed: () {
+                        _controller.showBookingDetail.value = true;
+                      },
+                    ));
+        }),
+        SizedBox(
+          height: 24,
+        )
       ],
     );
   }
@@ -888,18 +885,22 @@ class BookAppointmentPopup extends StatelessWidget {
                 // await Future.delayed(Duration(seconds: 2), () {});
                 String response = await _controller.bookAppointment(body);
                 Get.find<AppointmentController>().getUserAppointments();
+
                 Navigator.pop(context);
                 Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.pop(context);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => AppointmentScreen()),
+                    (route) => true);
 
                 showDialog(
                     context: context,
                     builder: (context) {
                       Future.delayed(Duration(seconds: 1), () {
                         Navigator.pop(context);
-                        if (response == 'Successfully created appointment.') {
-                          AutoRouter.of(context)
-                              .popUntil(((route) => route.isFirst));
-                        }
+                        if (response == 'Successfully created appointment.') {}
                       });
                       return appointmentConfirmationPopup(
                         response,

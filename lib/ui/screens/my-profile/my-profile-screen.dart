@@ -14,6 +14,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -322,6 +323,12 @@ class ProfileContainer extends StatelessWidget {
               _userModel!.name ?? "",
               style:
                   SolhTextStyles.SOSGreenHeading.copyWith(color: Colors.black),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GetBadge(userType: _userModel!.userType),
+              ],
             ),
             // Text(
             //   _userModel!.userType == 'Normal'
