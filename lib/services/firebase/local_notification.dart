@@ -1,118 +1,112 @@
-// import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import '../../ui/screens/video-call/video-call-user.dart';
+import '../../widgets_constants/buttons/custom_buttons.dart';
+import '../../widgets_constants/constants/textstyles.dart';
+
+class LocalNotification {
+  static Future<void> initOneSignal() async {
+    await OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
+    await OneSignal.shared
+        .promptUserForPushNotificationPermission()
+        .then((accepted) {
+      print("Accepted permission: $accepted");
+    });
+  }
+
+  void initializeOneSignalHandlers(
+      GlobalKey<NavigatorState> globalNavigatorKey) {
+    OneSignal.shared.setNotificationWillShowInForegroundHandler(
+        (OSNotificationReceivedEvent event) {
+      event.complete(event.notification);
+    });
+
+    OneSignal.shared
+        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+      print('running open notification handler');
+      print(result.notification.additionalData.toString());
+      print(result.notification.body);
+      print(result.notification.rawPayload);
+      print(result.action!.actionId);
+      if (result.action!.actionId == "accept") {
+        Future.delayed(Duration(milliseconds: 500), () {
+          globalNavigatorKey.currentState!.push(
+            MaterialPageRoute(
+                builder: (context) => VideoCallUser(
+                      channel:
+                          result.notification.additionalData!["channelName"],
+                      token: result.notification.additionalData!["rtcToken"],
+                    )),
+          );
+        });
+      } else {
+        if (result.notification.additionalData!['route'] == 'notification') {
+          print('Take me to notification screen');
+        } else {
+          showVideocallDialog(result, globalNavigatorKey);
+        }
+      }
+    });
+    print(OneSignal.shared.getDeviceState());
+  }
+
+  showVideocallDialog(OSNotificationOpenedResult result,
+      GlobalKey<NavigatorState> globalNavigatorKey) {
+    showDialog(
+        context: globalNavigatorKey.currentContext!,
+        builder: (context) {
+          return AlertDialog(
+            actionsPadding: EdgeInsets.all(8.0),
+            content: Text(
+              'Incoming video call',
+              style: SolhTextStyles.LandingTitleText,
+            ),
+            actions: [
+              SolhPinkBorderMiniButton(
+                child: Text(
+                  'Reject',
+                  style: SolhTextStyles.PinkBorderButtonText,
+                ),
+                onPressed: () {
+                  globalNavigatorKey.currentState!.pop();
+                },
+              ),
+              SolhGreenMiniButton(
+                child: Text(
+                  'Accept',
+                  style: SolhTextStyles.GreenButtonText,
+                ),
+                onPressed: () {
+                  //Navigator.of(globalNavigatorKey.currentState, rootNavigator: true).pop();
+
+                  Future.delayed(Duration(milliseconds: 500), () {
+                    globalNavigatorKey.currentState!.pop();
+                    globalNavigatorKey.currentState!.push(
+                      MaterialPageRoute(
+                          builder: (context) => VideoCallUser(
+                                channel: result.notification
+                                    .additionalData!["channelName"],
+                                token: result
+                                    .notification.additionalData!["rtcToken"],
+                              )),
+                    );
+                  });
+                },
+              )
+            ],
+          );
+        });
+  }
+}
+
+/* // import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../widgets_constants/constants/colors.dart';
-// import 'package:solh/widgets_constants/constants/colors.dart';
-
-/* class LocalNotificationService {
-  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  static void initialize(BuildContext context) {
-    // initializationSettings  for Android
-    const InitializationSettings initializationSettings =
-        InitializationSettings(
-      android: AndroidInitializationSettings("ic_launcher_round"),
-      iOS: IOSInitializationSettings(
-        requestSoundPermission: true,
-        requestBadgePermission: true,
-        requestAlertPermission: true,
-      ),
-    );
-
-    _notificationsPlugin.initialize(
-      initializationSettings,
-      onSelectNotification: (String? id) async {
-        print("onSelectNotification");
-        if (id!.isNotEmpty) {
-          print("Router Value1234 $id");
-
-          /// handle routing here
-
-        }
-      },
-    );
-  }
-
-  static Future<void> createCallNotification(RemoteMessage message) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'basic_channel_call',
-      'your channel name',
-      channelDescription: 'your channel description',
-      importance: Importance.max,
-      priority: Priority.max,
-      ticker: 'ticker',
-      channelAction: AndroidNotificationChannelAction.createIfNotExists,
-      fullScreenIntent: true,
-      enableVibration: true,
-    );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await _notificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
-        payload: message.data['rtcToken']);
-    /*  print("call");
-    try {
-      final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-      const NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-          "basic_channel_call",
-          "basic channel call",
-          importance: Importance.max,
-          priority: Priority.max,
-          icon: "ic_launcher_round",
-          channelShowBadge: true,
-          category: "	CATEGORY_CALL",
-          fullScreenIntent: true,
-          timeoutAfter: 20,
-        ),
-      );
-
-      await _notificationsPlugin.show(
-        id,
-        message.notification!.title,
-        message.notification!.body,
-        notificationDetails,
-        payload: message.data['_id'],
-      );
-    } on Exception catch (e) {
-      print(e);
-    } */
-  }
-
-  /*  static void createanddisplaynotification(RemoteMessage message) async {
-    print("createanddisplaynotification");
-    try {
-      final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-      const NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-          "high_importance_channel",
-          "High Importance Notifications",
-          importance: Importance.max,
-          priority: Priority.high,
-          icon: "ic_launcher_round",
-          channelShowBadge: true,
-          category: "	CATEGORY_CALL",
-          fullScreenIntent: true,
-          timeoutAfter: 20,
-        ),
-      );
-
-      await _notificationsPlugin.show(
-        id,
-        message.notification!.title,
-        message.notification!.body,
-        notificationDetails,
-        payload: message.data['_id'],
-      );
-    } on Exception catch (e) {
-      print(e);
-    }
-  } */
-} */
 
 class LocalNotificationService {
   static void initialize() {
@@ -224,3 +218,4 @@ class LocalNotificationService {
     // }
   }
 }
+ */

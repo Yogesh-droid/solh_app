@@ -46,6 +46,14 @@
           }
         },
         {
+          "client_id": "729100578162-vmfudmhsg6uv45gfppej2mi547ca8f96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.solh.app",
+            "certificate_hash": "d0dde5ad0d941a0dfc29e15f026bb1e110dac09e"
+          }
+        },
+        {
           "client_id": "729100578162-gubt1oi4bdllcfe89nqtphel6cmr9h90.apps.googleusercontent.com",
           "client_type": 3
         }

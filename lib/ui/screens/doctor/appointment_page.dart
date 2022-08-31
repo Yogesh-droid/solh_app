@@ -261,12 +261,12 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                   child: Container(height: 50, width: 50, child: MyLoader()))
               : ListView.builder(
                   itemCount: appointmentController.doctorAppointmentModel.value
-                      .scheduldAppointments!.length,
+                      .completedAppointments!.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return appointmentController.doctorAppointmentModel.value
-                                .scheduldAppointments![index].patient !=
+                                .completedAppointments![index].patient !=
                             null
                         ? Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
@@ -289,7 +289,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                     imageUrl: appointmentController
                                             .doctorAppointmentModel
                                             .value
-                                            .scheduldAppointments![index]
+                                            .completedAppointments![index]
                                             .patient!
                                             .profilePicture ??
                                         '',
@@ -321,7 +321,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                         appointmentController
                                                 .doctorAppointmentModel
                                                 .value
-                                                .scheduldAppointments![index]
+                                                .completedAppointments![index]
                                                 .patient!
                                                 .name ??
                                             '',
@@ -354,7 +354,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                       name: appointmentController
                                                               .doctorAppointmentModel
                                                               .value
-                                                              .scheduldAppointments![
+                                                              .completedAppointments![
                                                                   index]
                                                               .patient!
                                                               .name ??
@@ -362,7 +362,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                       imageUrl: appointmentController
                                                               .doctorAppointmentModel
                                                               .value
-                                                              .scheduldAppointments![
+                                                              .completedAppointments![
                                                                   index]
                                                               .patient!
                                                               .profilePicture ??
@@ -370,7 +370,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                       sId: appointmentController
                                                               .doctorAppointmentModel
                                                               .value
-                                                              .scheduldAppointments![
+                                                              .completedAppointments![
                                                                   index]
                                                               .patient!
                                                               .sId ??
