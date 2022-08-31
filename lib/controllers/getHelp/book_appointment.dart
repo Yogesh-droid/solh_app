@@ -30,6 +30,8 @@ class BookAppointmentController extends GetxController {
   var loadingTimeSlots = false.obs;
   dynamic isTimeSlotAdded = ''.obs;
 
+  var showBookingDetail = false.obs;
+
   Future<String> bookAppointment(Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
     isLoading.value = true;
