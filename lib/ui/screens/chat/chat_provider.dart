@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +15,8 @@ import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen(
+class ChatProviderScreen extends StatefulWidget {
+  const ChatProviderScreen(
       {Key? key,
       required String imageUrl,
       required String name,
@@ -29,10 +31,10 @@ class ChatScreen extends StatefulWidget {
   final String _sId;
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatProviderScreen> createState() => _ChatProviderScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatProviderScreenState extends State<ChatProviderScreen> {
   SocketService _service = SocketService();
   var _controller = Get.put(ChatController());
   @override
@@ -186,11 +188,11 @@ class ChatAppbar extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 24),
-                child: Icon(
-                  Icons.video_call_outlined,
-                  size: 34,
-                  color: SolhColors.green,
-                ),
+                // child: Icon(
+                //   Icons.video_call_outlined,
+                //   size: 34,
+                //   color: SolhColors.green,
+                // ),
               ),
             ),
           ],
@@ -244,24 +246,49 @@ class MessageBox extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                if (_controller.messageEditingController.text.trim() == '') {
-                  return;
-                } else {
-                  _controller.sendMessageController(
-                    _controller.messageEditingController.text,
-                    _sId,
-                    'users',
-                    'connection',
-                  );
-                }
-                chatListController.chatListController();
-              },
-              child: Icon(
-                Icons.send,
-                color: SolhColors.green,
-              ),
+            Row(
+              children: [
+                InkWell(
+                    onTap: () async {
+                      print('pressed');
+                      FilePickerResult? result =
+                          await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['jpg', 'pdf', 'doc', 'jpge', 'png'],
+                      );
+
+                      if (result != null) {
+                        print(result.paths.first);
+                      }
+                    },
+                    child: Container(
+                        height: 25,
+                        width: 25,
+                        child: SvgPicture.asset('assets/images/add_file.svg'))),
+                SizedBox(
+                  width: 20,
+                ),
+                InkWell(
+                  onTap: () {
+                    if (_controller.messageEditingController.text.trim() ==
+                        '') {
+                      return;
+                    } else {
+                      _controller.sendMessageController(
+                        _controller.messageEditingController.text,
+                        _sId,
+                        'users',
+                        'connection',
+                      );
+                    }
+                    chatListController.chatListController();
+                  },
+                  child: Icon(
+                    Icons.send,
+                    color: SolhColors.green,
+                  ),
+                ),
+              ],
             )
           ],
         ),

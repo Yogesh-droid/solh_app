@@ -48,6 +48,22 @@ class SocketService {
     });
   }
 
+  static void typing(sId) {
+    socket.emit('typing', {
+      'socketId': socket.id,
+      'authorId': userBlocNetwork.id,
+      'connection': sId
+    });
+  }
+
+  static void notTyping(sId) {
+    socket.emit('notTyping', {
+      'socketId': socket.id,
+      'authorId': userBlocNetwork.id,
+      'connection': sId
+    });
+  }
+
   void connectAndListen() {
     _socketResponse = StreamController<Conversation>();
     _userResponse = StreamController<List<String>>();

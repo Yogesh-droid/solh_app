@@ -14,6 +14,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -428,7 +429,13 @@ class ProfileContainer extends StatelessWidget {
                         })
                       ],
                     ),
-                    Text("Likes"),
+                    InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => ChatProviderScreen(
+                                  imageUrl: '', name: '', sId: ''))));
+                        },
+                        child: Text("Likes")),
                   ],
                 ),
                 // Divider(),

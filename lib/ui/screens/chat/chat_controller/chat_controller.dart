@@ -9,6 +9,8 @@ import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 class ChatController extends GetxController {
   var isLoading = false.obs;
 
+  var istyping = false.obs;
+
   var convo = <Conversation>[].obs;
 
   TextEditingController messageEditingController = TextEditingController();
@@ -29,6 +31,10 @@ class ChatController extends GetxController {
           sId: data['']));
 
       chatListController.chatListController();
+    });
+
+    SocketService.socket.on("isTyping", (data) {
+      istyping(false);
     });
     super.onInit();
   }

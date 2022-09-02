@@ -5,6 +5,7 @@ import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/model/user/user_appointments_model.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -31,17 +32,24 @@ class AppointmentScreen extends StatelessWidget {
             ? Center(
                 child: MyLoader(),
               )
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 3.h,
-                  ),
-                  getScheduledAppointments(appointmentController
-                      .userAppointmentModel.value.scheduldAppointments),
-                  GetHelpDivider(),
-                  getCompletedAppointments(appointmentController
-                      .userAppointmentModel.value.completedAppointments),
-                ],
+            : InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ChatProviderScreen(imageUrl: '', name: '', sId: '')));
+                },
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 3.h,
+                    ),
+                    getScheduledAppointments(appointmentController
+                        .userAppointmentModel.value.scheduldAppointments),
+                    GetHelpDivider(),
+                    getCompletedAppointments(appointmentController
+                        .userAppointmentModel.value.completedAppointments),
+                  ],
+                ),
               );
       })),
     );
