@@ -231,7 +231,9 @@ class _HomePageState extends State<HomePage> {
                                       null &&
                                   connectionController.peopleYouMayKnow.value
                                       .reccomendation!.isNotEmpty
-                              ? GetHelpCategory(title: 'Solh Mates')
+                              ? GetHelpCategory(
+                                  title: 'Solh Mates',
+                                )
                               : Container()
                           : Container();
                     }),

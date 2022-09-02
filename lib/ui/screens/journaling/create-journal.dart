@@ -782,10 +782,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   // CropAspectRatioPreset.ratio4x3,
                                   // CropAspectRatioPreset.ratio16x9,
                                 ],
-                                compressQuality:
-                                    File(_xFile!.path).lengthSync() > 600000
-                                        ? 20
-                                        : 100,
+                                compressQuality: compression(
+                                    File(_xFile!.path).lengthSync()),
+                                // File(_xFile!.path).lengthSync() > 600000
+                                //     ? 20
+                                //     : 100,
                                 uiSettings: [
                                   AndroidUiSettings(
                                       toolbarTitle: 'Edit',
@@ -869,11 +870,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                         // CropAspectRatioPreset.ratio4x3,
                                         // CropAspectRatioPreset.ratio16x9
                                       ],
-                                      compressQuality:
-                                          File(_xFile!.path).lengthSync() >
-                                                  600000
-                                              ? 20
-                                              : 100,
+                                      compressQuality: compression(
+                                          File(_xFile!.path).lengthSync()),
+                                      // File(_xFile!.path).lengthSync() >
+                                      //         600000
+                                      //     ? 20
+                                      //     : 100,
                                       uiSettings: [
                                         AndroidUiSettings(
                                             toolbarTitle: 'Edit',
@@ -1748,5 +1750,20 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
         ],
       ),
     );
+  }
+}
+
+int compression(int filesize) {
+  if (filesize > 600000 && filesize < 1048576) {
+    return 20;
+  }
+  if (filesize > 1048576 && filesize < 2097152) {
+    return 50;
+  }
+
+  if (filesize > 2097152) {
+    return 65;
+  } else {
+    return 100;
   }
 }
