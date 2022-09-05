@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
+import 'package:solh/ui/screens/journaling/journaling.dart';
+import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../ui/screens/video-call/video-call-user.dart';
 import '../../widgets_constants/buttons/custom_buttons.dart';
 import '../../widgets_constants/constants/textstyles.dart';
@@ -41,11 +43,33 @@ class LocalNotification {
           );
         });
       } else {
-        if (result.notification.additionalData!['route'] == 'notification') {
-          print('Take me to notification screen');
-        } else {
-          showVideocallDialog(result, globalNavigatorKey);
+        switch (result.notification.additionalData!['route']) {
+          case 'mood':
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
+            );
+            break;
+
+          case 'connection':
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(builder: (context) => Connections()),
+            );
+            break;
+
+          case "journal":
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(builder: (context) => Journaling()),
+            );
+            break;
+
+          default:
         }
+
+        // if (result.notification.additionalData!['route'] == 'mood') {
+        //   print('Take me to notification screen');
+        // } else {
+        //   showVideocallDialog(result, globalNavigatorKey);
+        // }
       }
     });
     print(OneSignal.shared.getDeviceState());

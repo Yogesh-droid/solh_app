@@ -40,7 +40,6 @@ import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../mood-meter/mood_meter.dart';
-import '../profile-setup/enter-full-name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
