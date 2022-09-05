@@ -460,47 +460,47 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SizedBox(width: 5.w),
-            Expanded(child: Obx(() {
-              return TextFormField(
-                enabled: feelingsController.isSearching.value,
-                focusNode: _searchFeelingFocusNode,
-                controller: _searchController,
-                decoration: InputDecoration(
-                    hintText:
-                        feelingsController.isSearching.value ? "Search" : "",
-                    border: feelingsController.isSearching.value
-                        ? UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: SolhColors.green, width: 1),
-                          )
-                        : InputBorder.none,
-                    suffixIcon: feelingsController.isSearching.value
-                        ? IconButton(
-                            onPressed: () {
-                              _searchController.clear();
-                              _searchFeelingFocusNode.unfocus();
-                              feelingsController.isSearching.value = false;
-                            },
-                            icon: Icon(Icons.clear),
-                          )
-                        : Container()),
-                keyboardType: TextInputType.text,
-              );
-            })),
-            Obx(() {
-              return feelingsController.isSearching.value
-                  ? Container()
-                  : IconButton(
-                      onPressed: () {
-                        feelingsController.isSearching.value = true;
-                        _searchFeelingFocusNode.requestFocus();
-                      },
-                      icon: Icon(
-                        Icons.search,
-                        color: SolhColors.green,
-                        size: 18,
-                      ));
-            }),
+            // Expanded(child: Obx(() {
+            //   return TextFormField(
+            //     enabled: feelingsController.isSearching.value,
+            //     focusNode: _searchFeelingFocusNode,
+            //     controller: _searchController,
+            //     decoration: InputDecoration(
+            //         hintText:
+            //             feelingsController.isSearching.value ? "Search" : "",
+            //         border: feelingsController.isSearching.value
+            //             ? UnderlineInputBorder(
+            //                 borderSide:
+            //                     BorderSide(color: SolhColors.green, width: 1),
+            //               )
+            //             : InputBorder.none,
+            //         suffixIcon: feelingsController.isSearching.value
+            //             ? IconButton(
+            //                 onPressed: () {
+            //                   _searchController.clear();
+            //                   _searchFeelingFocusNode.unfocus();
+            //                   feelingsController.isSearching.value = false;
+            //                 },
+            //                 icon: Icon(Icons.clear),
+            //               )
+            //             : Container()),
+            //     keyboardType: TextInputType.text,
+            //   );
+            // })),
+            // Obx(() {
+            //   return feelingsController.isSearching.value
+            //       ? Container()
+            //       : IconButton(
+            //           onPressed: () {
+            //             feelingsController.isSearching.value = true;
+            //             _searchFeelingFocusNode.requestFocus();
+            //           },
+            //           icon: Icon(
+            //             Icons.search,
+            //             color: SolhColors.green,
+            //             size: 18,
+            //           ));
+            // }),
             IconButton(
               onPressed: () {
                 feelingsController.isCreatingCustomFeeling.value = true;
