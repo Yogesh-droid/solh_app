@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -49,7 +50,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
       },
       child: Scaffold(
         appBar: ProfileSetupAppBar(
-          title: "Gender & Age",
+          title: "Gender and Age",
           onBackButton: widget._onBack,
         ),
         body: Padding(
@@ -57,7 +58,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
           child: Column(
             children: [
               Text(
-                "Please select your gender & age group",
+                "Please select your gender and age",
                 style: SolhTextStyles.ProfileSetupSubHeading,
               ),
               SizedBox(
@@ -122,6 +123,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               SizedBox(
                 height: 3.h,
               ),
+
               // SkipButton(),
               SizedBox(
                 height: 6.h,
@@ -178,12 +180,26 @@ class DOBPicker extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 4.w),
         decoration: _boxDecoration,
         alignment: Alignment.centerLeft,
-        child: Obx(() => Text(
-              ageController.selectedAge.value,
-              style: TextStyle(
-                fontSize: 2.5.h,
-                fontWeight: FontWeight.w500,
-              ),
+        child: Obx(() => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ageController.selectedAge.value ==
+                        DateFormat('dd MMMM yyyy').format(DateTime.now())
+                    ? Text('Select DOB',
+                        style: SolhTextStyles.ProfileMenuGreyText)
+                    : Text(
+                        ageController.selectedAge.value,
+                        style: TextStyle(
+                          fontSize: 2.5.h,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                Icon(
+                  CupertinoIcons.chevron_down,
+                  color: SolhColors.green,
+                  size: 18,
+                )
+              ],
             )),
         // child: DateTimePicker(
         //   initialValue: _initialDateOfBirth.toString(),

@@ -62,6 +62,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       if (element.id == userBlocNetwork.id) {
         isDefaultAdmin = true;
       }
+      if (userBlocNetwork.id == '62e125176a858283a925d15c') {
+        isDefaultAdmin = true;
+      }
     });
 
     if (widget.isJoined == null) {
@@ -190,7 +193,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         ),
         // groupList.groupMembers != null
         //     ?
-        !isDefaultAdmin && isJoined != null && isJoined!
+        isDefaultAdmin || isJoined != null && isJoined!
             ? getPopUpMenuBtn(context)
             : Container()
         // : Container()

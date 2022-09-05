@@ -137,17 +137,25 @@ class _MasterScreenState extends State<MasterScreen> {
   }
 
   Future<void> checkVersion(BuildContext context) async {
-    final newVersion = NewVersion(
-      iOSId: 'com.solh.solhApp',
-      androidId: 'com.solh.app',
-    );
-    newVersion.showAlertIfNecessary(context: context);
-
-    await newVersion.getVersionStatus().then((value) {
-      print(value!.appStoreLink.toString());
-      print(value.localVersion.toString());
-      print(value.storeVersion.toString());
-    });
+    print("&" * 30 + " Running checkVersion");
+    try {
+      final newVersion = NewVersion(
+        iOSId: 'com.solh.solhApp',
+        androidId: 'com.solh.app',
+      );
+      var value = await newVersion.getVersionStatus();
+      if (value != null) {
+        print("&" * 30 + " ${value.toString()}");
+        print("&" * 30 + " ${value.appStoreLink.toString()}");
+        print("&" * 30 + " ${value.localVersion.toString()}");
+        print("&" * 30 + " ${value.storeVersion.toString()}");
+      } else {
+        print("value is null");
+      }
+      newVersion.showAlertIfNecessary(context: context);
+    } on Exception catch (e) {
+      print("&" * 30 + " ${e.toString()}");
+    }
   }
 
   Future<bool> _onWillPop() async {

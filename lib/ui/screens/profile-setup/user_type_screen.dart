@@ -52,21 +52,23 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
               SizedBox(
                 height: 2.5.h,
               ),
-              getRadioBtn(context, title: "here to seek help", type: "Seeker"),
+              getRadioBtn(context, title: "Here to seek help", type: "Seeker"),
               SizedBox(
                 height: 2.5.h,
               ),
               getRadioBtn(context,
-                  title: "here to seak help & volunteer",
+                  title: "Here to volunteer & seek help ",
                   type: "SolhVolunteer"),
               SizedBox(
                 height: 2.5.h,
               ),
               getRadioBtn(context,
-                  title: "medical professional", type: "SolhProvider"),
+                  title: "Mental health professional", type: "SolhProvider"),
               SizedBox(
                 height: 2.5.h,
               ),
+              getRadioBtn(context,
+                  title: "Here to explore Solh", type: "Undefined"),
               radioGroupValue == 'SolhVolunteer'
                   ? getVolunteerNote()
                   : radioGroupValue == 'SolhProvider'
@@ -84,6 +86,10 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   child: Text("Next"),
                   onPressed: () {
                     if (isTnCChecked) {
+                      if (radioGroupValue == 'Undefined') {
+                        userBlocNetwork.updateUserType = 'Seeker';
+                        print(' userType ${userBlocNetwork.getUserType}');
+                      }
                       if (radioGroupValue == 'SolhProvider' &&
                           _userEmailEditingController.text.isEmpty) {
                         userBlocNetwork.updateUserType = 'SolhProvider';
@@ -91,6 +97,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                           content: Text("Please enter your email"),
                           backgroundColor: Colors.red,
                         ));
+                        print(' userType ${userBlocNetwork.getUserType}');
                         return;
                       }
                       Provider.of<ProviderUser>(context, listen: false)
