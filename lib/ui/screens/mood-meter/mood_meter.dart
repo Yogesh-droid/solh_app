@@ -58,7 +58,7 @@ class MoodMeter extends StatelessWidget {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Padding(
-                                  padding: const EdgeInsets.all(3.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Icon(
                                     Icons.close,
                                     color: Colors.grey,

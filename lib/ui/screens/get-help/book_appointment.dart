@@ -320,7 +320,20 @@ class BookAppointmentWidget extends StatelessWidget {
                                   child: BookAppointmentPopup());
                             });
                       } else {
-                        Utility.showToast(value);
+                        final snackBar = SnackBar(
+                          content: Text(value!.toString(),
+                              style: TextStyle(color: SolhColors.pink224)),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
                       }
                     },
                   )
@@ -377,15 +390,36 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          Utility.showToast('Appointment request sent');
-                          Future.delayed(Duration(microseconds: 10), () {
-                            debugPrint('it ran');
-                            Navigator.of(context).pop();
-                            Navigator.pop(context);
-                          });
+
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          final snackBar = SnackBar(
+                            content: Text(
+                              'Appointment request sent.',
+                            ),
+                            action: SnackBarAction(
+                              label: '',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       } else {
-                        Utility.showToast(value);
+                        final snackBar = SnackBar(
+                          content: Text(value!.toString(),
+                              style: TextStyle(color: SolhColors.pink224)),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
                       }
                     }))
             : CircularProgressIndicator(),
@@ -800,13 +834,16 @@ class BookAppointmentPopup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Booking appointment'),
+      title: Text('Confirm Appointment'),
       content: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.17,
+        height: MediaQuery.of(context).size.height * 0.14,
         child: Column(
           children: [
-            Text('You are about to book an appointment with :'),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
+            ),
+            Text('You are booking an appointment with'),
             SizedBox(
               height: 7,
             ),
@@ -819,8 +856,8 @@ class BookAppointmentPopup extends StatelessWidget {
               height: 7,
             ),
             Text(
-              _controller.selectedDay.value +
-                  " ," +
+              '${_controller.selectedDay.value}, ${DateFormat('dd-MMM-yy').format(_controller.selectedDate.value)}' +
+                  ' at' ' ' +
                   _controller.selectedTimeSlot.value,
               style: GoogleFonts.montserrat(
                 color: SolhColors.green,
