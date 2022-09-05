@@ -63,7 +63,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AuthAppBar(
-        primaryTitle: 'SignUp/LogIn',
+        primaryTitle: 'Signup/Login',
         secondaryTitle: 'Please enter your phone number',
       ),
       body: SingleChildScrollView(
@@ -129,8 +129,15 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                     print("Phone no: " +
                                         _countryCode! +
                                         _phoneController.text);
-                                    _signInWithPhone(
-                                        "${_countryCode.toString()}${_phoneController.text}");
+                                    if (_phoneController.text.trim() == '') {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Enter a valid phone No.')));
+                                    } else {
+                                      _signInWithPhone(
+                                          "${_countryCode.toString()}${_phoneController.text}");
+                                    }
                                   },
                                   child: Text(
                                     "Continue",

@@ -25,18 +25,21 @@ class InviteMembersUI extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(
               left: 18.0, right: 18.0, top: 18.0, bottom: 60.0),
-          child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: connectionController
-                  .myConnectionModel.value.myConnections!.length,
-              itemBuilder: (context, index) {
-                return getMemberTile(
-                    context,
-                    index,
-                    connectionController
-                        .myConnectionModel.value.myConnections![index]);
-              }),
+          child:
+              connectionController.myConnectionModel.value.myConnections != null
+                  ? ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: connectionController
+                          .myConnectionModel.value.myConnections!.length,
+                      itemBuilder: (context, index) {
+                        return getMemberTile(
+                            context,
+                            index,
+                            connectionController
+                                .myConnectionModel.value.myConnections![index]);
+                      })
+                  : Container(),
         ),
       ),
       floatingActionButton: getSendButton(context),
