@@ -4,10 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ConsultantProfile extends StatefulWidget {
@@ -22,11 +24,19 @@ class ConsultantProfile extends StatefulWidget {
 
 class _ConsultantProfileState extends State<ConsultantProfile> {
   ConsultantController _controller = Get.put(ConsultantController());
+  final _bookingController = Get.put(BookAppointmentController());
 
   @override
   void initState() {
     _controller.getConsultantDataController(widget.id);
     super.initState();
+  }
+
+  void dispose() {
+    _bookingController.selectedDay.value = '';
+    _bookingController.selectedTimeSlot.value = '';
+    _bookingController.showBookingDetail.value = false;
+    super.dispose();
   }
 
   @override
@@ -66,7 +76,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                   SizedBox(
                     height: 41,
                   ),
-                  BookAppointmentWidget()
+                  BookAppointmentButton()
                 ],
               ),
       );
@@ -272,8 +282,8 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
   }
 }
 
-class BookAppointmentWidget extends StatelessWidget {
-  BookAppointmentWidget({Key? key}) : super(key: key);
+class BookAppointmentButton extends StatelessWidget {
+  BookAppointmentButton({Key? key}) : super(key: key);
 
   BookAppointmentController _controller = Get.find();
   var _consultantController = Get.put(ConsultantController());
@@ -282,14 +292,26 @@ class BookAppointmentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        _controller.doctorName = _consultantController
-                .consultantModelController.value.provder!.name ??
-            "";
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => BookAppointment(),
-          ),
-        );
+        // _controller.doctorName = _consultantController
+        //         .consultantModelController.value.provder!.name ??
+        //     "";
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => BookAppointment(),
+        //   ),
+        // );
+
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            constraints: BoxConstraints(maxHeight: 70.h),
+            builder: (BuildContext context) {
+              return Obx(() {
+                return _controller.showBookingDetail.value
+                    ? ModalSheetContent()
+                    : DayPicker();
+              });
+            });
       },
       child: Container(
         height: 48,
@@ -307,5 +329,254 @@ class BookAppointmentWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ModalSheetContent extends StatefulWidget {
+  const ModalSheetContent({Key? key}) : super(key: key);
+
+  @override
+  State<ModalSheetContent> createState() => _ModalSheetContentState();
+}
+
+class _ModalSheetContentState extends State<ModalSheetContent> {
+  BookAppointmentController _bookingController =
+      Get.put(BookAppointmentController());
+  ConsultantController _consultantController = Get.find();
+
+  void initState() {
+    _bookingController.mobileNotextEditingController.text =
+        userBlocNetwork.userMobileNo;
+    _bookingController.emailTextEditingController.text =
+        userBlocNetwork.userEmail;
+
+    _bookingController.isSlotAdded(
+        providerId: _consultantController
+            .consultantModelController.value.provder!.sId!);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bookingController.selectedDay.value = '';
+    _bookingController.selectedTimeSlot.value = '';
+    _bookingController.showBookingDetail.value = false;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return _bookingController.showBookingDetail.value
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                child: ListView(
+                  children: [
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Mobile No.',
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff666666),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffA6A6A6),
+                              ),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: TextField(
+                                controller: _bookingController
+                                    .mobileNotextEditingController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Email-Id.',
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff666666),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Color(0xffA6A6A6),
+                              ),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              child: TextField(
+                                controller: _bookingController
+                                    .emailTextEditingController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Preffered date & time.',
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff666666),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _bookingController.showBookingDetail.value = false;
+                          },
+                          child: Container(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xffA6A6A6),
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Container(
+                                height: 48,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                        _bookingController.selectedDay.value !=
+                                                ''
+                                            ? ('Today' ==
+                                                    _bookingController
+                                                        .selectedDay.value
+                                                ? 'Today'
+                                                : '${_bookingController.selectedDay.value}')
+                                            : 'Select',
+                                        style: GoogleFonts.signika(
+                                            color: SolhColors.green)),
+                                    Row(
+                                      children: [
+                                        Text(
+                                            _bookingController
+                                                .selectedTimeSlot.value,
+                                            style: GoogleFonts.signika(
+                                              color: SolhColors.green,
+                                            )),
+                                        Icon(
+                                          Icons.arrow_drop_down,
+                                          color: SolhColors.green,
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'How Can we help ? (optional)',
+                          style: GoogleFonts.signika(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff666666),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          height: MediaQuery.of(context).size.height * 0.17,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color(0xffA6A6A6),
+                            ),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: TextField(
+                            controller:
+                                _bookingController.catTextEditingController,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    BookAppointmentWidget(),
+                    SizedBox(
+                      height: 280,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : DayPicker();
+    });
   }
 }

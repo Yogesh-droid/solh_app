@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
@@ -83,6 +85,10 @@ class _SideDrawerState extends State<SideDrawer> {
                                           TextStyle(color: Color(0xFF666666)),
                                     ),
                                     SizedBox(width: 1.5.w),
+                                    GetBadge(
+                                        userType:
+                                            userSnapshot.requireData!.userType)
+
                                     // Text(
                                     //   userSnapshot.requireData!.userType ==
                                     //           'Normal'
@@ -208,5 +214,54 @@ class _SideDrawerState extends State<SideDrawer> {
         ),
       ),
     );
+  }
+}
+
+class GetBadge extends StatelessWidget {
+  const GetBadge({Key? key, required userType})
+      : _userType = userType,
+        super(key: key);
+  final _userType;
+
+  @override
+  Widget build(BuildContext context) {
+    return getBadge(_userType);
+  }
+}
+
+Widget getBadge(String usertype) {
+  switch (usertype) {
+    case "SolhVolunteer":
+      return Row(
+        children: [
+          Text(
+            'Solh Volunteer',
+            style: GoogleFonts.signika(
+              color: SolhColors.green,
+              fontWeight: FontWeight.w400,
+              fontSize: 10,
+            ),
+          ),
+          SvgPicture.asset('assets/images/verifiedTick.svg')
+        ],
+      );
+
+    case "SolhProvider":
+      return Row(
+        children: [
+          Text(
+            'Solh Provider',
+            style: GoogleFonts.signika(
+              color: SolhColors.green,
+              fontWeight: FontWeight.w400,
+              fontSize: 10,
+            ),
+          ),
+          SvgPicture.asset('assets/images/verifiedTick.svg')
+        ],
+      );
+
+    default:
+      return Container();
   }
 }

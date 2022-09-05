@@ -48,12 +48,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyBwI02bU60dkDODYLTd5TThwNM_0VnVFnc',
-    appId: '1:729100578162:web:ae0bca42aca7e4a216c1eb',
+    appId: '1:729100578162:web:5f531c6f2ef71a9516c1eb',
     messagingSenderId: '729100578162',
     projectId: 'solh-flutter',
     authDomain: 'solh-flutter.firebaseapp.com',
     storageBucket: 'solh-flutter.appspot.com',
-    measurementId: 'G-579BVF9KM5',
+    measurementId: 'G-33DTS23X7F',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
