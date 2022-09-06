@@ -1,4 +1,5 @@
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -29,6 +30,16 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  await FirebaseAnalytics.instance.logBeginCheckout(
+      value: 10.0,
+      currency: 'USD',
+      items: [
+        AnalyticsEventItem(itemName: 'Socks', itemId: 'xjw73ndnw', price: 10.0),
+      ],
+      coupon: '10PERCENTOFF');
+
   initControllers();
   //String? fcmToken;
 

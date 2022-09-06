@@ -1102,7 +1102,7 @@ class _PostForCommentState extends State<PostForComment> {
           ),
         ),
         Text(
-          widget._journalModel!.comments!.toString(),
+          widget._journalModel!.comments.toString(),
           style: TextStyle(color: Colors.grey),
         ),
       ],
