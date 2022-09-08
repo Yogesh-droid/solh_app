@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 import 'coming_soon_badge.dart';
 
@@ -79,6 +77,9 @@ getIcon(title) {
     return SvgPicture.asset('assets/images/wheelOfEmotions.svg');
   }
   if (title == "Appointments") {
+    return SvgPicture.asset('assets/images/appointment.svg');
+  }
+  if (title == "Psychological Tests") {
     return SvgPicture.asset('assets/images/appointment.svg');
   } else {
     return Container();
