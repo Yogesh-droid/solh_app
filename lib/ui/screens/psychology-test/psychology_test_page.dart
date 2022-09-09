@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
+import 'package:solh/ui/screens/psychology-test/test_question_page.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -100,56 +101,66 @@ class _PsychologyTestPageState extends State<PsychologyTestPage> {
   getQuestionContainer({required TestList test}) {
     return Padding(
       padding: const EdgeInsets.only(right: 18.0, top: 18),
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: SolhColors.grey102, width: 0.5),
-            borderRadius: BorderRadius.circular(10)),
-        child: Row(children: [
-          Container(
-            height: 100,
-            width: 100,
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)),
-              child: CachedNetworkImage(
-                imageUrl: test.testPicture ?? '',
-                fit: BoxFit.fill,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return TestQuestionsPage(
+              id: test.sId,
+              testTitle: test.testTitle,
+            );
+          }));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: SolhColors.grey102, width: 0.5),
+              borderRadius: BorderRadius.circular(10)),
+          child: Row(children: [
+            Container(
+              height: 100,
+              width: 100,
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+                child: CachedNetworkImage(
+                  imageUrl: test.testPicture ?? '',
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 220,
-                child: Text(
-                  test.testTitle ?? '',
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 220,
+                  child: Text(
+                    test.testTitle ?? '',
+                    style: SolhTextStyles.GreenBorderButtonText,
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+                Container(
+                  width: 220,
+                  child: Text(
+                    test.testDescription ?? '',
+                    style: SolhTextStyles.JournalingHintText,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text(
+                  test.testQuestionNumber.toString() +
+                      ' Ques (${test.testDuration} min)',
                   style: SolhTextStyles.GreenBorderButtonText,
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-              Container(
-                width: 220,
-                child: Text(
-                  test.testDescription ?? '',
-                  style: SolhTextStyles.JournalingHintText,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                test.testQuestionNumber.toString() +
-                    ' Ques (${test.testDuration} min)',
-                style: SolhTextStyles.GreenBorderButtonText,
-              )
-            ],
-          )
-        ]),
+                )
+              ],
+            )
+          ]),
+        ),
       ),
     );
   }
