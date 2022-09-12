@@ -13,11 +13,9 @@ class SocketService {
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
-      // APIConstants.api,
-      'https://api.solhapp.com',
+      APIConstants.api,
       io.OptionBuilder()
-          .setTransports(['websocket', 'polling']) // for Flutter or Dart VM
-
+          .setTransports(['websocket', 'polling'])
           .setQuery({'userName': _userName})
           .enableAutoConnect()
           .build());
@@ -35,8 +33,17 @@ class SocketService {
   }
 
   static void sendMessage(
-      String message, String sId, String autherType, String ct) {
-    print('SocketId  ' + socket.id.toString());
+    String message,
+    String sId,
+    String autherType,
+    String ct,
+    String mediaUrl,
+    String appointmentId,
+    String mediaType,
+    String fileName,
+    String conversationType,
+  ) {
+    print('message emmited  ' + socket.id.toString());
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
@@ -44,7 +51,14 @@ class SocketService {
       'authorType': autherType,
       'body': message,
       'connection': sId,
-      'ct': ct,
+      'chatType': ct,
+      'media': {
+        'mediaUrl': mediaUrl,
+        'mediaType': mediaType,
+      },
+      'appointmentId': null,
+      'fileName': fileName,
+      'conversationType': conversationType,
     });
   }
 

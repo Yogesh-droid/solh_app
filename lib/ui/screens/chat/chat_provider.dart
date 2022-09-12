@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -7,9 +8,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
+// import 'package:open_file/open_file.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/services/utility.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/user-bloc.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
@@ -39,10 +45,12 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
   var _controller = Get.put(ChatController());
   @override
   void initState() {
+    userBlocNetwork.getMyProfileSnapshot();
     _service.connectAndListen();
     _controller.getChatController(widget._sId);
     super.initState();
     SocketService.setUserName(userBlocNetwork.myData.userName!);
+    print('author ${userBlocNetwork.myData.userName!}');
     super.initState();
   }
 
@@ -208,10 +216,13 @@ class MessageBox extends StatelessWidget {
         super(key: key);
 
   final String _sId;
+  String mediaUrl = '';
+  String? fileExtension = '';
 
   ChatController _controller = Get.put(ChatController());
   SocketService service = SocketService();
   ChatListController chatListController = Get.find();
+  AppointmentController appointmentController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -248,23 +259,57 @@ class MessageBox extends StatelessWidget {
             ),
             Row(
               children: [
-                InkWell(
-                    onTap: () async {
-                      print('pressed');
-                      FilePickerResult? result =
-                          await FilePicker.platform.pickFiles(
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'pdf', 'doc', 'jpge', 'png'],
-                      );
+                Obx(() {
+                  return _controller.isFileUploading.value
+                      ? Container(
+                          height: 25,
+                          width: 25,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ))
+                      : InkWell(
+                          onTap: () async {
+                            print('pressed');
+                            FilePickerResult? result =
+                                await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: [
+                                'jpg',
+                                'pdf',
+                                'doc',
+                                'jpge',
+                                'png'
+                              ],
+                            );
 
-                      if (result != null) {
-                        print(result.paths.first);
-                      }
-                    },
-                    child: Container(
-                        height: 25,
-                        width: 25,
-                        child: SvgPicture.asset('assets/images/add_file.svg'))),
+                            if (result != null) {
+                              fileExtension = result.files.first.extension;
+                              print('fileExtension $fileExtension');
+                              print(result.paths.first);
+                              mediaUrl = await _controller
+                                  .uploadChatFile(File(result.paths.first!));
+                              debugPrint('mediaUrl $mediaUrl');
+                              if (mediaUrl != 'File upload failed') {
+                                _controller.sendMessageController(
+                                    message: _controller
+                                        .messageEditingController.text,
+                                    sId: _sId,
+                                    autherType: 'users',
+                                    ct: 'sc',
+                                    mediaType: fileExtension,
+                                    fileName: result.files.first.name,
+                                    mediaUrl: mediaUrl,
+                                    appointmentId: '',
+                                    conversationType: 'media');
+                              }
+                            }
+                          },
+                          child: Container(
+                              height: 25,
+                              width: 25,
+                              child: SvgPicture.asset(
+                                  'assets/images/add_file.svg')));
+                }),
                 SizedBox(
                   width: 20,
                 ),
@@ -275,11 +320,15 @@ class MessageBox extends StatelessWidget {
                       return;
                     } else {
                       _controller.sendMessageController(
-                        _controller.messageEditingController.text,
-                        _sId,
-                        'users',
-                        'connection',
-                      );
+                          message: _controller.messageEditingController.text,
+                          sId: _sId,
+                          autherType: 'users',
+                          ct: 'sc',
+                          mediaType: fileExtension,
+                          mediaUrl: mediaUrl,
+                          appointmentId: '',
+                          fileName: '',
+                          conversationType: 'text');
                     }
                     chatListController.chatListController();
                   },
@@ -334,14 +383,40 @@ class _MessageListState extends State<MessageList> {
                       final reversedIndex =
                           _controller.convo.length - 1 - index;
 
-                      return MessageTile(
-                        message: _controller.convo.value[reversedIndex].body,
-                        dateTime:
-                            _controller.convo.value[reversedIndex].dateTime,
-                        authorId:
-                            _controller.convo.value[reversedIndex].authorId,
-                        sId: widget._sId,
-                      );
+                      if (_controller
+                              .convo.value[reversedIndex].conversationType ==
+                          'media') {
+                        print(
+                            'mediaUrl ${_controller.convo.value[reversedIndex].media!.mediaUrl}');
+                      }
+
+                      return _controller.convo.value[reversedIndex]
+                                  .conversationType ==
+                              'media'
+                          ? Filetile(
+                              message:
+                                  _controller.convo.value[reversedIndex].body,
+                              authorId: _controller
+                                  .convo.value[reversedIndex].authorId,
+                              sId: widget._sId,
+                              fileName: _controller
+                                  .convo.value[reversedIndex].fileName,
+                              mediaUrl: _controller
+                                  .convo.value[reversedIndex].media!.mediaUrl,
+                              fileType: _controller
+                                  .convo.value[reversedIndex].media!.mediaType,
+                              dateTime: _controller
+                                  .convo.value[reversedIndex].dateTime,
+                            )
+                          : MessageTile(
+                              message:
+                                  _controller.convo.value[reversedIndex].body,
+                              dateTime: _controller
+                                  .convo.value[reversedIndex].dateTime,
+                              authorId: _controller
+                                  .convo.value[reversedIndex].authorId,
+                              sId: widget._sId,
+                            );
                     }),
               ),
             );
@@ -435,4 +510,156 @@ class MessageTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class Filetile extends StatelessWidget {
+  Filetile({
+    Key? key,
+    required message,
+    required authorId,
+    required sId,
+    required fileName,
+    required mediaUrl,
+    required fileType,
+    String? dateTime,
+  })  : _message = message,
+        _authorId = authorId,
+        _sId = sId,
+        _mediaUrl = mediaUrl,
+        _fileName = fileName,
+        _fileType = fileType,
+        _dateTime = dateTime ?? '',
+        super(key: key);
+
+  final String _message;
+  final String _mediaUrl;
+  final String _authorId;
+  final String _sId;
+  final String _dateTime;
+  final String _fileName;
+  final String _fileType;
+
+  ChatController _controller = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    print('FileTile $_authorId $_mediaUrl');
+    return Builder(builder: (context) {
+      return InkWell(
+        onTap: () {
+          if (_controller.downloadedAndLocalfile.containsKey(_mediaUrl)) {
+            print(_controller.downloadedAndLocalfile[_mediaUrl]);
+            OpenFilex.open(
+              _controller.downloadedAndLocalfile[_mediaUrl],
+            ).then((value) {
+              print(value.message);
+            });
+          } else {
+            print('pressed this');
+            _controller.getLocalPathFromDownloadedFile(
+              extension: _fileType,
+              fileName: _fileName,
+              url: _mediaUrl,
+            );
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: Row(
+              mainAxisAlignment: _authorId == _sId
+                  ? MainAxisAlignment.start
+                  : MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: _authorId == _sId
+                        ? Colors.grey.shade200
+                        : Color(0x80CCE9E2),
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // Text(
+                        //   _authorId,
+                        //   style: GoogleFonts.signika(color: Colors.lightGreen),
+                        // ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: Color.fromARGB(128, 196, 250, 209)),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Obx(() {
+                                return _controller.isFileDownloading.value &&
+                                        _controller.currentLoadingurl ==
+                                            _mediaUrl
+                                    ? Container(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 1.5,
+                                        ),
+                                      )
+                                    : (_controller.downloadedAndLocalfile
+                                            .containsKey(_mediaUrl)
+                                        ? Icon(
+                                            Icons.done,
+                                            color: SolhColors.green,
+                                          )
+                                        : Icon(
+                                            Icons.download_sharp,
+                                            color: SolhColors.green,
+                                          ));
+                              }),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Flexible(
+                                child: Text(
+                                  getFileName(_fileName),
+                                  style: GoogleFonts.signika(
+                                      color: Color(0xff666666)),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Text(
+                          _dateTime == null
+                              ? ''
+                              : DateTime.tryParse(_dateTime) != null
+                                  ? DateFormat('dd MMM kk:mm').format(
+                                      DateTime.parse(_dateTime).toLocal())
+                                  : '',
+                          style: GoogleFonts.signika(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: SolhColors.grey),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+}
+
+String getFileName(String url) {
+  List urlString = url.split('/');
+  return urlString.last;
 }

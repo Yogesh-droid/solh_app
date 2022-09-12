@@ -23,7 +23,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-import '../../../controllers/chat-list/chat_controller.dart';
+import '../../../controllers/chat-list/chat_list_controller.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);

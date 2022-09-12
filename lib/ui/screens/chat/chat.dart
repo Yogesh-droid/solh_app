@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import '../../../bloc/user-bloc.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
@@ -248,10 +248,15 @@ class MessageBox extends StatelessWidget {
                   return;
                 } else {
                   _controller.sendMessageController(
-                    _controller.messageEditingController.text,
-                    _sId,
-                    'users',
-                    'connection',
+                    message: _controller.messageEditingController.text,
+                    sId: _sId,
+                    autherType: 'users',
+                    ct: 'sc',
+                    mediaType: '',
+                    mediaUrl: '',
+                    fileName: '',
+                    appointmentId: '',
+                    conversationType: 'text',
                   );
                 }
                 chatListController.chatListController();

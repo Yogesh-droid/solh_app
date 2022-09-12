@@ -54,6 +54,7 @@ dependencies:
   permission_handler: ^10.0.0
   onesignal_flutter: ^3.4.1
   file_picker: ^5.0.1
+  open_filex: ^4.1.0
 
   #alt_sms_autofill: ^1.0.0
 

@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/routes/routes.gr.dart';

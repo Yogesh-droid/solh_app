@@ -1,15 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
+import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
+
+import '../../../../services/network/network.dart';
 
 class ChatController extends GetxController {
   var isLoading = false.obs;
 
   var istyping = false.obs;
+
+  var isFileDownloading = false.obs;
+
+  var isFileUploading = false.obs;
+
+  String currentLoadingurl = '';
+
+  Map downloadedAndLocalfile = {}.obs;
 
   var convo = <Conversation>[].obs;
 
@@ -18,17 +33,14 @@ class ChatController extends GetxController {
 
   ChatServices services = ChatServices();
 
+  String? filePath;
+
   @override
   void onInit() {
+    getLocalPath();
     SocketService.socket.on('message:received', (data) {
-      print('message:received $data');
-      convo.add(Conversation(
-          author: data['author'],
-          authorId: data['authorId'],
-          authorType: data['authorType'],
-          body: data['body'],
-          dateTime: DateTime.now().toString(),
-          sId: data['']));
+      debugPrint('message:received $data');
+      convo.add(Conversation.fromJson(data));
 
       chatListController.chatListController();
     });
@@ -61,8 +73,76 @@ class ChatController extends GetxController {
     return response;
   }
 
-  sendMessageController(message, sId, autherType, ct) {
-    SocketService.sendMessage(message, sId, autherType, ct);
+  Future<String> uploadChatFile(File file) async {
+    isFileUploading(true);
+    Map<String, dynamic> response = await Network.uploadFileToServer(
+        "${APIConstants.api}/api/fileupload/chat", "chat", file);
+    isFileUploading(false);
+
+    if (response["success"]) {
+      downloadedAndLocalfile[response['imageUrl']] = file.path;
+      File(file.path).exists().then((value) {
+        print(file.path);
+        if (value) {
+          print('it exists');
+        } else {
+          print('not exits');
+        }
+      });
+      return response['imageUrl'];
+    } else {
+      return 'File upload failed';
+    }
+  }
+
+  Future getLocalPathFromDownloadedFile(
+      {required String url,
+      required String fileName,
+      required String extension}) async {
+    try {
+      isFileDownloading(true);
+      Uri _uri = Uri.parse(url);
+
+      currentLoadingurl = url;
+
+      var response = await http.get(_uri);
+      isFileDownloading(false);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var decodedResponse = response.bodyBytes;
+
+        File file = new File('$filePath/$fileName');
+        await file.writeAsBytes(decodedResponse);
+        downloadedAndLocalfile[url] = '$filePath/$fileName';
+        File(file.path).exists().then((value) {
+          print(file.path);
+          if (value) {
+            print('it exists');
+          } else {
+            print('not exits');
+          }
+        });
+      } else {
+        throw "server-error";
+      }
+    } on SocketException {
+      throw "no-internet";
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  sendMessageController(
+      {required message,
+      required conversationType,
+      required sId,
+      required autherType,
+      required ct,
+      required mediaUrl,
+      required appointmentId,
+      required mediaType,
+      required fileName}) {
+    SocketService.sendMessage(message, sId, autherType, ct, mediaUrl,
+        appointmentId, mediaType, fileName, conversationType);
 
     messageEditingController.text = '';
     convo.add(Conversation(
@@ -70,7 +150,19 @@ class ChatController extends GetxController {
         authorId: userBlocNetwork.id,
         authorType: autherType,
         body: message,
+        conversationType: conversationType,
         dateTime: DateTime.now().toString(),
-        sId: ''));
+        sId: '',
+        fileName: fileName,
+        media: Media(
+          mediaType: mediaType,
+          mediaUrl: mediaUrl,
+        )));
+  }
+
+  Future<void> getLocalPath() async {
+    final directory = await getApplicationDocumentsDirectory();
+    print('directory $directory');
+    filePath = directory.path;
   }
 }

@@ -23,7 +23,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
-import '../../../controllers/chat-list/chat_controller.dart';
+import '../../../controllers/chat-list/chat_list_controller.dart';
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
