@@ -332,8 +332,6 @@ class BookAppointmentWidget extends StatelessWidget {
                         );
 
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-
                       }
                     },
                   )
@@ -390,7 +388,6 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Navigator.pop(context);
@@ -419,10 +416,14 @@ class BookAppointmentWidget extends StatelessWidget {
                           ),
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
                       }
                     }))
-            : CircularProgressIndicator(),
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                ],
+              ),
       );
     });
   }

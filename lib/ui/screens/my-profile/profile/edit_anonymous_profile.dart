@@ -25,12 +25,20 @@ class EditAnonymousProfile extends StatefulWidget {
 }
 
 class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
-  final AnonController _anonController = Get.find();
+  final AnonController _anonController = Get.put(AnonController());
   XFile? _xFile;
   File? _croppedFile;
-  String? imgUrl;
-  String? imgType;
+  String? imgUrl = '';
+  String? imgType = '';
   TextEditingController _userNameController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

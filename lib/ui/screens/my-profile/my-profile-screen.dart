@@ -16,6 +16,7 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -38,6 +39,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
     getMyProfile();
+
     super.initState();
   }
 
@@ -429,29 +431,29 @@ class ProfileContainer extends StatelessWidget {
                         })
                       ],
                     ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: ((context) => ChatProviderScreen(
-                                  imageUrl: '', name: '', sId: ''))));
-                        },
-                        child: Text("Likes")),
+                    InkWell(child: Text("Likes")),
                   ],
                 ),
                 // Divider(),
-                Column(
-                  children: [
-                    Obx(() {
-                      return Text(
-                        _connectionController
-                            .userAnalyticsModel.value.connectionCount
-                            .toString(),
-                        style: SolhTextStyles.GreenBorderButtonText.copyWith(
-                            fontSize: 18),
-                      );
-                    }),
-                    Text("Connections"),
-                  ],
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => Connections()));
+                  },
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        return Text(
+                          _connectionController
+                              .userAnalyticsModel.value.connectionCount
+                              .toString(),
+                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                              fontSize: 18),
+                        );
+                      }),
+                      Text("Connections"),
+                    ],
+                  ),
                 ),
                 // Divider(),
                 // Column(

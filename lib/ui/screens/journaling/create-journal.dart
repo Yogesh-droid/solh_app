@@ -1557,6 +1557,13 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
             child: Column(
               children: [
+                Container(
+                  height: 5,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
