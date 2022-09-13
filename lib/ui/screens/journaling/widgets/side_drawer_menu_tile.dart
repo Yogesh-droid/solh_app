@@ -80,7 +80,7 @@ getIcon(title) {
     return SvgPicture.asset('assets/images/appointment.svg');
   }
   if (title == "Psychological Tests") {
-    return SvgPicture.asset('assets/images/appointment.svg');
+    return SvgPicture.asset('assets/images/psycotests.svg');
   } else {
     return Container();
   }

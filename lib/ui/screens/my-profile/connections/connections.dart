@@ -207,7 +207,8 @@ class Connections extends StatelessWidget {
                                     children: [
                                       Text(
                                           chatListController.chatList
-                                              .value[index].user!.name!,
+                                                  .value[index].user!.name ??
+                                              '',
                                           style: GoogleFonts.signika(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16)),

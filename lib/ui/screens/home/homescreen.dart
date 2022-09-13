@@ -14,6 +14,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
@@ -232,6 +233,12 @@ class _HomePageState extends State<HomePage> {
                                       .reccomendation!.isNotEmpty
                               ? GetHelpCategory(
                                   title: 'Solh Mates',
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ViewAllVolunteers();
+                                    }));
+                                  },
                                 )
                               : Container()
                           : Container();

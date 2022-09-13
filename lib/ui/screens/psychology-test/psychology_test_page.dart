@@ -46,7 +46,16 @@ class _PsychologyTestPageState extends State<PsychologyTestPage> {
 
   AppBar getAppBar() {
     return AppBar(
-      leadingWidth: 0,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(
+          Icons.arrow_back_ios_new_rounded,
+          color: SolhColors.black,
+          size: 24,
+        ),
+      ),
       title: Text(
         "Psychological Tests",
         style: SolhTextStyles.AppBarText,
@@ -103,6 +112,10 @@ class _PsychologyTestPageState extends State<PsychologyTestPage> {
       padding: const EdgeInsets.only(right: 18.0, top: 18),
       child: InkWell(
         onTap: () {
+          psychologyTestController.selectedQuestion.clear();
+          psychologyTestController.score.clear();
+          psychologyTestController.submitAnswerModelList.clear();
+          psychologyTestController.getQuestion(test.sId ?? '');
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TestQuestionsPage(
               id: test.sId,

@@ -164,7 +164,6 @@ class _SideDrawerState extends State<SideDrawer> {
               SideDrawerMenuTile(
                 title: "Psychological Tests",
                 onPressed: () async {
-                  appointmentController.getUserAppointments();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
