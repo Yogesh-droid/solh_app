@@ -97,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
           DateTime.now().day) {
         return;
       } else {
-        //await moodMeterController.getMoodList();
         if (moodMeterController.moodList.length > 0) {
           showGeneralDialog(
               context: context,
@@ -145,6 +144,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getAnnouncement();
   }
 
   @override
@@ -469,9 +469,10 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
-                _bottomNavigatorController.isDrawerOpen.value = true;
-                print("opened");
+                // print("side bar tapped");
+                // _bottomNavigatorController.isDrawerOpen.value = true;
+                // print("opened");
+                getAnnouncement();
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
@@ -498,6 +499,82 @@ class _HomePageState extends State<HomePage> {
       ),
       isLandingScreen: true,
     );
+  }
+
+  Future<void> openAnnouncement(Map<String, dynamic> value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt('lastDateShownAnnouncement') != null) {
+      if (DateTime.fromMillisecondsSinceEpoch(
+                  prefs.getInt('lastDateShownAnnouncement')!)
+              .day ==
+          DateTime.now().day) {
+        return;
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Container(
+                  height: 595,
+                  width: 375,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )),
+                        Expanded(child: announcementMedia(value))
+                      ]),
+                ),
+              );
+            });
+        prefs.setInt(
+            'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Container(
+                height: 595,
+                width: 375,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )),
+                      Expanded(child: announcementMedia(value))
+                    ]),
+              ),
+            );
+          });
+      prefs.setInt(
+          'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+    }
+  }
+
+  Future<void> getAnnouncement() async {
+    await _journalPageController
+        .getAnnouncement()
+        .then((value) => openAnnouncement(value));
+  }
+
+  announcementMedia(Map<String, dynamic> value) {
+    return CachedNetworkImage(imageUrl: value['media']);
   }
 
   Widget getTrendingPostUI() {

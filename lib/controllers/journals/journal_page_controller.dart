@@ -175,11 +175,22 @@ class JournalPageController extends GetxController {
     }
   }
 
+  Future<Map<String, dynamic>> getAnnouncement() async {
+    Map<String, dynamic> map = {};
+    await Network.makeGetRequest("${APIConstants.api}/api/popup-announcement")
+        .then((value) {
+      map = {
+        //"mediaType": value['announcementList']['mediaType'],
+        "media": value['announcementList'][0]['announcementMedia']
+      };
+    });
+    return map;
+  }
+
   @override
   void onInit() {
     getAllJournals(1);
     getTrendingJournals();
-    getAnnouncement();
     super.onInit();
   }
 
@@ -187,11 +198,5 @@ class JournalPageController extends GetxController {
     Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/hide-post?journalId=$journalId",
         body: {});
-  }
-
-  Future<void> getAnnouncement() async {
-    Network.makeGetRequest("${APIConstants.api}/api/header-announcement").then(
-        (value) => announcementData.value =
-            value['announcementList'][0]['announcementMedia']);
   }
 }
