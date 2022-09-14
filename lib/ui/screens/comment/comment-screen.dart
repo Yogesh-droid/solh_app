@@ -29,7 +29,6 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../connect/connect-screen.dart';
 import '../journaling/widgets/comment_menu_btn.dart';
-import '../journaling/widgets/journal_tile.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 
 class CommentScreen extends StatefulWidget {

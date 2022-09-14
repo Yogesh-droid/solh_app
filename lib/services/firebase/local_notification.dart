@@ -87,12 +87,6 @@ class LocalNotification {
 
           default:
         }
-
-        // if (result.notification.additionalData!['route'] == 'mood') {
-        //   print('Take me to notification screen');
-        // } else {
-        //   showVideocallDialog(result, globalNavigatorKey);
-        // }
       }
     });
     print(OneSignal.shared.getDeviceState());

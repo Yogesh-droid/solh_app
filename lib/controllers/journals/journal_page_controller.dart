@@ -38,17 +38,8 @@ class JournalPageController extends GetxController {
   var isScrollingStarted = false.obs;
   var isImageUploading = false.obs;
   var isTrendingLoading = false.obs;
+  var announcementData = ''.obs;
   ScrollController customeScrollController = ScrollController();
-
-  // List<String> blockedPostIds = <String>[
-  //   '62ea3c2239f8ed321dcaa150',
-  //   '62ea3bcc3864eb19a0d53566',
-  //   '6284e556ec62bc0b8d774b2f',
-  //   '62e8b8cc179cb98b9dec7cc2',
-  //   '62e8b87e179cb98b9dec7c9e',
-  //   '62ebaf7d836fb83f011c621a',
-  //   '62ebaf12836fb83f011c6201'
-  // ];
 
   Future<void> getAllJournals(int pageNo, {String? groupId}) async {
     print('started gettting all journals $pageNo');
@@ -68,14 +59,6 @@ class JournalPageController extends GetxController {
 
         journalsResponseModel.value = JournalsResponseModel.fromJson(map);
         journalsList.value.addAll(journalsResponseModel.value.journals ?? []);
-
-        // blockedPostIds.forEach((element) {
-        //   print('blocked post id: $element');
-        //   print('blocked ')
-        //   journalsList.value.removeWhere((element) => element.id == element);
-        // });
-        // journalsList.refresh();
-
         endPageLimit = journalsResponseModel.value.totalPages!;
         this.pageNo = pageNo;
         videoPlayerController.value.forEach((element) {
@@ -196,6 +179,7 @@ class JournalPageController extends GetxController {
   void onInit() {
     getAllJournals(1);
     getTrendingJournals();
+    getAnnouncement();
     super.onInit();
   }
 
@@ -203,5 +187,11 @@ class JournalPageController extends GetxController {
     Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/hide-post?journalId=$journalId",
         body: {});
+  }
+
+  Future<void> getAnnouncement() async {
+    Network.makeGetRequest("${APIConstants.api}/api/header-announcement").then(
+        (value) => announcementData.value =
+            value['announcementList'][0]['announcementMedia']);
   }
 }
