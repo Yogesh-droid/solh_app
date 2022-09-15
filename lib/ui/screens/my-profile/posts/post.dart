@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/my-journal-bloc.dart';
 import 'package:solh/services/journal/delete-journal.dart';
+import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../controllers/journals/journal_page_controller.dart';
 import '../../../../model/journals/journals_response_model.dart';
+import '../../../../widgets_constants/constants/colors.dart';
 
 class PostScreen extends StatefulWidget {
   PostScreen({Key? key, this.sId}) : super(key: key);
@@ -72,13 +77,75 @@ class _PostScreenState extends State<PostScreen> {
                     itemCount: journalsSnapshot.requireData.length,
                     itemBuilder: (_, index) {
                       print(journalsSnapshot.data![index]);
-                      return JournalTile(
-                        journalModel: journalsSnapshot.data![index],
-                        index: index,
-                        deletePost: () async {
-                          await deletePost(index, _journalPageController);
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CommentScreen(
+                                  journalModel: journalsSnapshot.data![index],
+                                  index: index)));
                         },
-                        isMyJournal: true,
+                        child: Column(
+                          children: [
+                            JournalTile(
+                              journalModel: journalsSnapshot.data![index],
+                              index: index,
+                              deletePost: () async {
+                                await deletePost(index, _journalPageController);
+                              },
+                              isMyJournal: true,
+                            ),
+                            Container(
+                              height: 24,
+                              color: Colors.white,
+                              width: 100.w,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.favorite,
+                                        color: SolhColors.green,
+                                        size: 18,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        journalsSnapshot.data![index]!.likes
+                                            .toString(),
+                                        style: SolhTextStyles
+                                            .GreenBorderButtonText,
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      SvgPicture.asset(
+                                        "assets/icons/journaling/post-comment.svg",
+                                        width: 17,
+                                        height: 17,
+                                        color: SolhColors.green,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        journalsSnapshot.data![index]!.comments
+                                            .toString(),
+                                        style: SolhTextStyles
+                                            .GreenBorderButtonText,
+                                      )
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            GetHelpDivider()
+                          ],
+                        ),
                       );
                     }),
               );

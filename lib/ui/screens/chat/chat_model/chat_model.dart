@@ -23,22 +23,27 @@ class MessageModel {
 class ChatLog {
   String? sId;
   List<String>? users;
+  String? appointmentId;
   List<Conversation>? conversation;
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? chatType;
 
   ChatLog(
       {this.sId,
       this.users,
+      this.appointmentId,
       this.conversation,
       this.createdAt,
       this.updatedAt,
-      this.iV});
+      this.iV,
+      this.chatType});
 
   ChatLog.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     users = json['users'].cast<String>();
+    appointmentId = json['appointmentId'];
     if (json['conversation'] != null) {
       conversation = <Conversation>[];
       json['conversation'].forEach((v) {
@@ -48,55 +53,91 @@ class ChatLog {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    chatType = json['chatType'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['users'] = this.users;
+    data['appointmentId'] = this.appointmentId;
     if (this.conversation != null) {
       data['conversation'] = this.conversation!.map((v) => v.toJson()).toList();
     }
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['chatType'] = this.chatType;
     return data;
   }
 }
 
 class Conversation {
-  String? body;
-  String? dateTime;
-  String? sId;
+  Media? media;
   String? author;
   String? authorType;
   String? authorId;
+  String? body;
+  String? dateTime;
+  String? conversationType;
+  String? fileName;
+  String? sId;
 
   Conversation(
-      {this.body,
-      this.dateTime,
-      this.sId,
+      {this.media,
       this.author,
       this.authorType,
-      this.authorId});
+      this.authorId,
+      this.body,
+      this.dateTime,
+      this.conversationType,
+      this.fileName,
+      this.sId});
 
   Conversation.fromJson(Map<String, dynamic> json) {
-    body = json['body'];
+    media = json['media'] != null ? new Media.fromJson(json['media']) : null;
+    author = json['author'] ?? '';
+    authorType = json['authorType'] ?? '';
+    authorId = json['authorId'] ?? '';
+    body = json['body'] ?? '';
     dateTime = json['dateTime'];
-    sId = json['_id'];
-    author = json['author'];
-    authorType = json['authorType'];
-    authorId = json['authorId'];
+    conversationType = json['conversationType'] ?? '';
+    fileName = json['fileName'] ?? '';
+    sId = json['_id'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['body'] = this.body;
-    data['dateTime'] = this.dateTime;
-    data['_id'] = this.sId;
+    if (this.media != null) {
+      data['media'] = this.media!.toJson();
+    }
     data['author'] = this.author;
     data['authorType'] = this.authorType;
     data['authorId'] = this.authorId;
+    data['body'] = this.body;
+    data['dateTime'] = this.dateTime;
+    data['conversationType'] = this.conversationType;
+    data['fileName'] = this.fileName;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class Media {
+  String? mediaUrl;
+  String? mediaType;
+
+  Media({this.mediaUrl, this.mediaType});
+
+  Media.fromJson(Map<String, dynamic> json) {
+    mediaUrl = json['mediaUrl'];
+    mediaType = json['mediaType'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['mediaUrl'] = this.mediaUrl;
+    data['mediaType'] = this.mediaType;
     return data;
   }
 }

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import '../../../bloc/user-bloc.dart';
-import 'package:solh/controllers/chat-list/chat_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
@@ -38,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     _controller.getChatController(widget._sId);
     super.initState();
-    SocketService.setUserName(widget._name);
+    SocketService.setUserName(userBlocNetwork.myData.userName!);
     super.initState();
   }
 
@@ -60,11 +60,29 @@ class _ChatScreenState extends State<ChatScreen> {
                   sId: widget._sId,
                 ),
               ),
+              Obx(() {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _controller.istyping.value == true
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: Text(
+                              'Typing....',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          )
+                        : Container()
+                  ],
+                );
+              }),
               Align(
-                  alignment: Alignment.bottomCenter,
-                  child: MessageBox(
-                    sId: widget._sId,
-                  ))
+                alignment: Alignment.bottomCenter,
+                child: MessageBox(
+                  sId: widget._sId,
+                ),
+              ),
             ],
           ),
         ),
@@ -210,6 +228,13 @@ class MessageBox extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
+                onChanged: ((value) {
+                  SocketService.typing(_sId);
+
+                  Future.delayed(Duration(seconds: 1), (() {
+                    SocketService.notTyping(_sId);
+                  }));
+                }),
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -223,10 +248,15 @@ class MessageBox extends StatelessWidget {
                   return;
                 } else {
                   _controller.sendMessageController(
-                    _controller.messageEditingController.text,
-                    _sId,
-                    'users',
-                    'connection',
+                    message: _controller.messageEditingController.text,
+                    sId: _sId,
+                    autherType: 'users',
+                    ct: 'sc',
+                    mediaType: '',
+                    mediaUrl: '',
+                    fileName: '',
+                    appointmentId: '',
+                    conversationType: 'text',
                   );
                 }
                 chatListController.chatListController();
@@ -258,8 +288,6 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
   ChatController _controller = Get.put(ChatController());
-
-  ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {

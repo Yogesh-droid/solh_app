@@ -965,7 +965,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   }
 
   List getTexts() {
-    String desc = widget.journalModel.description!.replaceAll('\n', ' ');
+    String desc = widget.journalModel.description!;
     List<String> textList = desc.split(' ');
     if (textList.length > 30) {
       showMoreBtn = true;

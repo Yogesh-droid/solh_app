@@ -37,6 +37,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   final ConnectionController connectionController = Get.find();
   JournalCommentController journalCommentController = Get.find();
   final TextEditingController reasonController = TextEditingController();
+  List recivedConnectionRequest = [];
   @override
   void initState() {
     print('UID: ${widget._uid}');
@@ -46,6 +47,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     if (widget._sId.isNotEmpty) {
       checkIfUserIsMyConnection(widget._sId);
     }
+    getRecivedConnections();
     super.initState();
   }
 
@@ -56,6 +58,12 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     } else {
       print('username is null and anlytics is not');
     }
+  }
+
+  getRecivedConnections() {
+    connectionController.receivedConnections.forEach((element) {
+      recivedConnectionRequest.add(element.sId);
+    });
   }
 
   @override
@@ -236,18 +244,32 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                           ],
                                         ),
                                         SizedBox(height: 3.h),
-                                        SolhGreenButton(
-                                            onPressed: () async {
-                                              await connectionController
-                                                  .addConnection(
-                                                      connectionController
-                                                          .userModel
-                                                          .value
-                                                          .sId!);
-                                            },
-                                            width: 90.w,
-                                            height: 6.3.h,
-                                            child: Text("Connect/Join")),
+                                        recivedConnectionRequest
+                                                .contains(widget._sId)
+                                            ? SolhGreenButton(
+                                                onPressed: () async {
+                                                  await connectionController
+                                                      .addConnection(
+                                                          connectionController
+                                                              .userModel
+                                                              .value
+                                                              .sId!);
+                                                },
+                                                width: 90.w,
+                                                height: 6.3.h,
+                                                child: Text("Accept"))
+                                            : SolhGreenButton(
+                                                onPressed: () async {
+                                                  await connectionController
+                                                      .addConnection(
+                                                          connectionController
+                                                              .userModel
+                                                              .value
+                                                              .sId!);
+                                                },
+                                                width: 90.w,
+                                                height: 6.3.h,
+                                                child: Text("Connect/Join")),
 
                                         SizedBox(height: 3.h),
                                       ],
@@ -393,32 +415,32 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                         ),
                         SizedBox(height: 3.h),
                         SolhGreenButton(
-                            onPressed: () async {
-                              widget.isMyConnection
-                                  ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ChatScreen(
-                                                name: userProfileSnapshot
-                                                        .requireData
-                                                        .firstName ??
-                                                    '',
-                                                imageUrl: userProfileSnapshot
-                                                        .requireData
-                                                        .profilePicture ??
-                                                    '',
-                                                sId: userProfileSnapshot
-                                                        .requireData.sId ??
-                                                    '',
-                                              )))
-                                  : await connectionController
-                                      .addConnection(widget._sId);
-                            },
-                            width: 90.w,
-                            height: 6.3.h,
-                            child: widget.isMyConnection
-                                ? Text('Message')
-                                : Text("Connect/Join")),
+                          onPressed: () async {
+                            widget.isMyConnection
+                                ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                              name: userProfileSnapshot
+                                                      .requireData.firstName ??
+                                                  '',
+                                              imageUrl: userProfileSnapshot
+                                                      .requireData
+                                                      .profilePicture ??
+                                                  '',
+                                              sId: userProfileSnapshot
+                                                      .requireData.sId ??
+                                                  '',
+                                            )))
+                                : await connectionController
+                                    .addConnection(widget._sId);
+                          },
+                          width: 90.w,
+                          height: 6.3.h,
+                          child: widget.isMyConnection
+                              ? Text('Message')
+                              : (Text("Connect/Join")),
+                        ),
                         SizedBox(height: 3.h),
                         widget.isMyConnection
                             ? SolhGreenButton(

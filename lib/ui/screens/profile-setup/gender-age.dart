@@ -123,6 +123,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
               SizedBox(
                 height: 3.h,
               ),
+
               // SkipButton(),
               SizedBox(
                 height: 6.h,
