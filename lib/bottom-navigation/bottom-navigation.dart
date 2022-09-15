@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:new_version/new_version.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../controllers/goal-setting/goal_setting_controller.dart';
-import '../widgets_constants/buttons/custom_buttons.dart';
 import '../widgets_constants/constants/textstyles.dart';
 
 class MasterScreen extends StatefulWidget {
@@ -30,7 +28,6 @@ class _MasterScreenState extends State<MasterScreen> {
   @override
   void initState() {
     print("MasterScreen initState");
-    checkVersion(context);
     super.initState();
   }
 
@@ -136,49 +133,6 @@ class _MasterScreenState extends State<MasterScreen> {
       ),
     );
   }
-
-  Future<void> checkVersion(BuildContext context) async {
-    print("&" * 30 + " Running checkVersion");
-    try {
-      final newVersion = NewVersion(
-        iOSId: 'com.solh.solhApp',
-        androidId: 'com.solh.app',
-      );
-      var value = await newVersion.getVersionStatus();
-      if (value != null) {
-        print("&" * 30 + " ${value.toString()}");
-        print("&" * 30 + " ${value.appStoreLink.toString()}");
-        print("&" * 30 + " ${value.localVersion.toString()}");
-        print("&" * 30 + " ${value.storeVersion.toString()}");
-      } else {
-        print("value is null");
-      }
-      newVersion.showAlertIfNecessary(context: context);
-    } on Exception catch (e) {
-      print("&" * 30 + " ${e.toString()}");
-    }
-  }
-
-  // actions: [
-  //               SolhPinkBorderMiniButton(
-  //                 child: Text(
-  //                   'No',
-  //                   style: SolhTextStyles.PinkBorderButtonText,
-  //                 ),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop(false);
-  //                 },
-  //               ),
-  //               SolhGreenMiniButton(
-  //                 child: Text(
-  //                   'Yes',
-  //                   style: SolhTextStyles.GreenButtonText,
-  //                 ),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop(true);
-  //                 },
-  //               )
-  //             ],
 
   Future<bool> _onWillPop() async {
     if (bottomNavigatorController.tabrouter!.activeIndex != 0) {
