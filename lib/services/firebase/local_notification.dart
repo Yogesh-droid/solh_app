@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
+import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import '../../ui/screens/comment/comment-screen.dart';
 import '../../ui/screens/video-call/video-call-user.dart';
 import '../../widgets_constants/buttons/custom_buttons.dart';
 import '../../widgets_constants/constants/textstyles.dart';
@@ -41,10 +47,45 @@ class LocalNotification {
           );
         });
       } else {
-        if (result.notification.additionalData!['route'] == 'notification') {
-          print('Take me to notification screen');
-        } else {
-          showVideocallDialog(result, globalNavigatorKey);
+        switch (result.notification.additionalData!['route']) {
+          case 'mood':
+            Future.delayed(Duration(seconds: 2), () {
+              globalNavigatorKey.currentState!.push(
+                MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
+              );
+            });
+            break;
+
+          case 'call':
+            Future.delayed(Duration(seconds: 1), () {
+              showVideocallDialog(result, globalNavigatorKey);
+            });
+            break;
+
+          case 'connection':
+            Future.delayed(Duration(seconds: 2), () {
+              globalNavigatorKey.currentState!.push(
+                MaterialPageRoute(builder: (context) => Connections()),
+              );
+            });
+            break;
+
+          case "journal":
+            Future.delayed(Duration(seconds: 2), () {
+              print(jsonEncode(result.notification.additionalData!['journal'])
+                      .toString() +
+                  "  *" * 30);
+              globalNavigatorKey.currentState!.push(
+                MaterialPageRoute(
+                    builder: (context) => CommentScreen(
+                        journalModel: Journals.fromJson(jsonDecode(jsonEncode(
+                            result.notification.additionalData!['journal']))),
+                        index: 0)),
+              );
+            });
+            break;
+
+          default:
         }
       }
     });

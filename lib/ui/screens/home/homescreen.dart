@@ -14,6 +14,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
@@ -40,7 +41,6 @@ import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../mood-meter/mood_meter.dart';
-import '../profile-setup/enter-full-name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -97,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
           DateTime.now().day) {
         return;
       } else {
-        //await moodMeterController.getMoodList();
         if (moodMeterController.moodList.length > 0) {
           showGeneralDialog(
               context: context,
@@ -145,6 +144,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getAnnouncement();
   }
 
   @override
@@ -233,6 +233,12 @@ class _HomePageState extends State<HomePage> {
                                       .reccomendation!.isNotEmpty
                               ? GetHelpCategory(
                                   title: 'Solh Mates',
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return ViewAllVolunteers();
+                                    }));
+                                  },
                                 )
                               : Container()
                           : Container();
@@ -463,9 +469,10 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
-                _bottomNavigatorController.isDrawerOpen.value = true;
-                print("opened");
+                // print("side bar tapped");
+                // _bottomNavigatorController.isDrawerOpen.value = true;
+                // print("opened");
+                getAnnouncement();
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
@@ -492,6 +499,82 @@ class _HomePageState extends State<HomePage> {
       ),
       isLandingScreen: true,
     );
+  }
+
+  Future<void> openAnnouncement(Map<String, dynamic> value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt('lastDateShownAnnouncement') != null) {
+      if (DateTime.fromMillisecondsSinceEpoch(
+                  prefs.getInt('lastDateShownAnnouncement')!)
+              .day ==
+          DateTime.now().day) {
+        return;
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Container(
+                  height: 595,
+                  width: 375,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )),
+                        Expanded(child: announcementMedia(value))
+                      ]),
+                ),
+              );
+            });
+        prefs.setInt(
+            'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Container(
+                height: 595,
+                width: 375,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )),
+                      Expanded(child: announcementMedia(value))
+                    ]),
+              ),
+            );
+          });
+      prefs.setInt(
+          'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+    }
+  }
+
+  Future<void> getAnnouncement() async {
+    await _journalPageController
+        .getAnnouncement()
+        .then((value) => openAnnouncement(value));
+  }
+
+  announcementMedia(Map<String, dynamic> value) {
+    return CachedNetworkImage(imageUrl: value['media']);
   }
 
   Widget getTrendingPostUI() {

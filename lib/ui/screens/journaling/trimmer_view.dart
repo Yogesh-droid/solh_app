@@ -189,6 +189,7 @@ class _TrimmerViewState extends State<TrimmerView> {
           isVideo: true);
       journalPageController.isImageUploading.value = false;
     } on Exception catch (e) {
+      print(e.toString());
       Utility.showToast('Something went wrong');
       Navigator.pop(context);
     }
