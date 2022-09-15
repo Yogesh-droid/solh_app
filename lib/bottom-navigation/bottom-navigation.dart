@@ -1,15 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:new_version/new_version.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../controllers/goal-setting/goal_setting_controller.dart';
+import '../widgets_constants/constants/textstyles.dart';
 
 class MasterScreen extends StatefulWidget {
   MasterScreen({this.index});
@@ -29,7 +28,6 @@ class _MasterScreenState extends State<MasterScreen> {
   @override
   void initState() {
     print("MasterScreen initState");
-    checkVersion(context);
     super.initState();
   }
 
@@ -136,54 +134,62 @@ class _MasterScreenState extends State<MasterScreen> {
     );
   }
 
-  Future<void> checkVersion(BuildContext context) async {
-    print("&" * 30 + " Running checkVersion");
-    try {
-      final newVersion = NewVersion(
-        iOSId: 'com.solh.solhApp',
-        androidId: 'com.solh.app',
-      );
-      var value = await newVersion.getVersionStatus();
-      if (value != null) {
-        print("&" * 30 + " ${value.toString()}");
-        print("&" * 30 + " ${value.appStoreLink.toString()}");
-        print("&" * 30 + " ${value.localVersion.toString()}");
-        print("&" * 30 + " ${value.storeVersion.toString()}");
-      } else {
-        print("value is null");
-      }
-      newVersion.showAlertIfNecessary(context: context);
-    } on Exception catch (e) {
-      print("&" * 30 + " ${e.toString()}");
-    }
-  }
-
   Future<bool> _onWillPop() async {
     if (bottomNavigatorController.tabrouter!.activeIndex != 0) {
       bottomNavigatorController.tabrouter!.setActiveIndex(0);
       return Future.value(false);
     } else {
-      print(bottomNavigatorController.tabrouter!.activeIndex);
-      DateTime now = DateTime.now();
-      if (backPressedTime == null ||
-          now.difference(backPressedTime) > Duration(seconds: 2)) {
-        backPressedTime = now;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            'Press back button again to exit',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          elevation: 5,
-          duration: Duration(seconds: 2),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-        ));
-        return Future.value(false);
-      } else {
-        return Future.value(true);
-      }
+      return await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              actionsPadding: EdgeInsets.all(8.0),
+              content: Text(
+                'Do you really want to exit app ?',
+                style: SolhTextStyles.JournalingDescriptionText,
+              ),
+              actions: [
+                TextButton(
+                    child: Text(
+                      'No',
+                      style: SolhTextStyles.GreenButtonText,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    }),
+                TextButton(
+                    child: Text(
+                      'Yes',
+                      style: SolhTextStyles.GreenButtonText,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    }),
+              ],
+            );
+          });
+
+      // print(bottomNavigatorController.tabrouter!.activeIndex);
+      // DateTime now = DateTime.now();
+      // if (backPressedTime == null ||
+      //     now.difference(backPressedTime) > Duration(seconds: 2)) {
+      //   backPressedTime = now;
+      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //       'Press back button again to exit',
+      //       style: TextStyle(color: Colors.white),
+      //     ),
+      //     backgroundColor: Colors.red,
+      //     elevation: 5,
+      //     duration: Duration(seconds: 2),
+      //     shape: RoundedRectangleBorder(
+      //         borderRadius: BorderRadius.only(
+      //             topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+      //   ));
+      //   return Future.value(false);
+      // } else {
+      //   return Future.value(true);
+      // }
     }
   }
 }

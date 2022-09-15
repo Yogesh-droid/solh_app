@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -14,6 +15,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
@@ -22,6 +24,7 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:upgrader/upgrader.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/chat-list/chat_list_controller.dart';
 import '../../../controllers/connections/connection_controller.dart';
@@ -40,7 +43,6 @@ import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../mood-meter/mood_meter.dart';
-import '../profile-setup/enter-full-name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -97,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen> {
           DateTime.now().day) {
         return;
       } else {
-        //await moodMeterController.getMoodList();
         if (moodMeterController.moodList.length > 0) {
           showGeneralDialog(
               context: context,
@@ -145,6 +146,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    getAnnouncement();
   }
 
   @override
@@ -174,33 +176,124 @@ class _HomePageState extends State<HomePage> {
             children: [
               Scaffold(
                 appBar: getAppBar(),
-                body: SingleChildScrollView(
-                  child: Column(children: [
-                    GetHelpDivider(),
-                    WhatsOnYourMindSection(),
-                    GetHelpDivider(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GetHelpCategory(
-                          title: 'Trending Posts',
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _bottomNavigatorController.tabrouter!
-                                .setActiveIndex(1);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                body: UpgradeAlert(
+                  upgrader: Upgrader(
+                      showIgnore: false,
+                      onLater: () {
+                        SystemNavigator.pop();
+                        return true;
+                      }),
+                  child: SingleChildScrollView(
+                    child: Column(children: [
+                      GetHelpDivider(),
+                      WhatsOnYourMindSection(),
+                      GetHelpDivider(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GetHelpCategory(
+                            title: 'Trending Posts',
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _bottomNavigatorController.tabrouter!
+                                  .setActiveIndex(1);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Journaling',
+                                      style: GoogleFonts.signika(
+                                        color: SolhColors.green,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward,
+                                      color: SolhColors.green,
+                                      size: 14,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      Obx(() {
+                        return _journalPageController.isTrendingLoading.value
+                            ? getTrendingPostShimmer()
+                            : getTrendingPostUI();
+                      }),
+                      GetHelpDivider(),
+                      Obx(() {
+                        return !connectionController
+                                .isRecommnedationLoading.value
+                            ? connectionController.peopleYouMayKnow.value
+                                            .reccomendation !=
+                                        null &&
+                                    connectionController.peopleYouMayKnow.value
+                                        .reccomendation!.isNotEmpty
+                                ? GetHelpCategory(
+                                    title: 'Solh Mates',
+                                    onPressed: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return ViewAllVolunteers();
+                                      }));
+                                    },
+                                  )
+                                : Container()
+                            : Container();
+                      }),
+                      Obx(() {
+                        return !connectionController
+                                .isRecommnedationLoading.value
+                            ? connectionController.peopleYouMayKnow.value
+                                            .reccomendation !=
+                                        null &&
+                                    connectionController.peopleYouMayKnow.value
+                                        .reccomendation!.isNotEmpty
+                                ? getPeopleYouMayKnowUI()
+                                : Container()
+                            : getRecommnededShimmer();
+                      }),
+                      Obx(() {
+                        return !connectionController
+                                .isRecommnedationLoading.value
+                            ? connectionController.peopleYouMayKnow.value
+                                            .reccomendation !=
+                                        null &&
+                                    connectionController.peopleYouMayKnow.value
+                                        .reccomendation!.isNotEmpty
+                                ? GetHelpDivider()
+                                : Container()
+                            : Container();
+                      }),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GetHelpCategory(
+                            title: 'Goals',
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _bottomNavigatorController.tabrouter!
+                                  .setActiveIndex(3);
+                            },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                               child: Row(
                                 children: [
                                   Text(
-                                    'Journaling',
+                                    'Goal Setting',
                                     style: GoogleFonts.signika(
                                       color: SolhColors.green,
                                       fontWeight: FontWeight.w400,
@@ -215,225 +308,157 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                    Obx(() {
-                      return _journalPageController.isTrendingLoading.value
-                          ? getTrendingPostShimmer()
-                          : getTrendingPostUI();
-                    }),
-                    GetHelpDivider(),
-                    Obx(() {
-                      return !connectionController.isRecommnedationLoading.value
-                          ? connectionController.peopleYouMayKnow.value
-                                          .reccomendation !=
-                                      null &&
-                                  connectionController.peopleYouMayKnow.value
-                                      .reccomendation!.isNotEmpty
-                              ? GetHelpCategory(
-                                  title: 'Solh Mates',
-                                )
-                              : Container()
-                          : Container();
-                    }),
-                    Obx(() {
-                      return !connectionController.isRecommnedationLoading.value
-                          ? connectionController.peopleYouMayKnow.value
-                                          .reccomendation !=
-                                      null &&
-                                  connectionController.peopleYouMayKnow.value
-                                      .reccomendation!.isNotEmpty
-                              ? getPeopleYouMayKnowUI()
-                              : Container()
-                          : getRecommnededShimmer();
-                    }),
-                    Obx(() {
-                      return !connectionController.isRecommnedationLoading.value
-                          ? connectionController.peopleYouMayKnow.value
-                                          .reccomendation !=
-                                      null &&
-                                  connectionController.peopleYouMayKnow.value
-                                      .reccomendation!.isNotEmpty
-                              ? GetHelpDivider()
-                              : Container()
-                          : Container();
-                    }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GetHelpCategory(
-                          title: 'Goals',
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _bottomNavigatorController.tabrouter!
-                                .setActiveIndex(3);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Goal Setting',
-                                  style: GoogleFonts.signika(
-                                    color: SolhColors.green,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: SolhColors.green,
-                                  size: 14,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    getGoalSettingUI(goalSettingController),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SolhGreenButton(
-                        child: Text('Add Goals +'),
-                        height: 50,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SelectGoal()));
-                        },
+                        ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    GetHelpDivider(),
-                    Obx(() => discoverGroupController
-                                    .discoveredGroupModel.value.groupList !=
-                                null &&
-                            discoverGroupController.discoveredGroupModel.value
-                                    .groupList!.length >
-                                0
-                        ? GetHelpCategory(
-                            title: 'Groups For You',
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => ManageGroupPage()));
-                            })
-                        : Container()),
-                    Obx(() {
-                      return discoverGroupController
+                      getGoalSettingUI(goalSettingController),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: SolhGreenButton(
+                          child: Text('Add Goals +'),
+                          height: 50,
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectGoal()));
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GetHelpDivider(),
+                      Obx(() => discoverGroupController
                                       .discoveredGroupModel.value.groupList !=
                                   null &&
                               discoverGroupController.discoveredGroupModel.value
                                       .groupList!.length >
                                   0
-                          ? getRecommendedGroupsUI()
-                          : Container();
-                    }),
-                    GetHelpDivider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GetHelpCategory(
-                          title: 'Search by issues',
-                        ),
-                        InkWell(
-                          onTap: () {
-                            _bottomNavigatorController.tabrouter!
-                                .setActiveIndex(2);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Get Help',
-                                  style: GoogleFonts.signika(
-                                    color: SolhColors.green,
-                                    fontWeight: FontWeight.w400,
+                          ? GetHelpCategory(
+                              title: 'Groups For You',
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ManageGroupPage()));
+                              })
+                          : Container()),
+                      Obx(() {
+                        return discoverGroupController
+                                        .discoveredGroupModel.value.groupList !=
+                                    null &&
+                                discoverGroupController.discoveredGroupModel
+                                        .value.groupList!.length >
+                                    0
+                            ? getRecommendedGroupsUI()
+                            : Container();
+                      }),
+                      GetHelpDivider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GetHelpCategory(
+                            title: 'Search by issues',
+                          ),
+                          InkWell(
+                            onTap: () {
+                              _bottomNavigatorController.tabrouter!
+                                  .setActiveIndex(2);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Get Help',
+                                    style: GoogleFonts.signika(
+                                      color: SolhColors.green,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward,
-                                  color: SolhColors.green,
-                                  size: 14,
-                                )
-                              ],
+                                  Icon(
+                                    Icons.arrow_forward,
+                                    color: SolhColors.green,
+                                    size: 14,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    getIssueUI(
-                        bookAppointmentController, getHelpController, context),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    GetHelpDivider(),
-                    GetHelpCategory(
-                      title: "Top Consultants",
-                      onPressed: () =>
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => ConsultantsScreen(
-                                    slug: '',
-                                    type: 'topconsultant',
-                                  ))),
-                    ),
-                    Container(
-                      height: 17.h,
-                      margin: EdgeInsets.only(bottom: 2.h),
-                      child: Obx(() => Container(
-                          child: getHelpController
-                                      .topConsultantList.value.doctors !=
-                                  null
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 6,
-                                  itemBuilder: (_, index) {
-                                    print(getHelpController.topConsultantList
-                                        .value.doctors![index].profilePicture);
-                                    return TopConsultantsTile(
-                                      bio: getHelpController.topConsultantList
-                                              .value.doctors![index].bio ??
-                                          '',
-                                      name: getHelpController.topConsultantList
-                                              .value.doctors![index].name ??
-                                          '',
-                                      mobile: getHelpController
-                                              .topConsultantList
-                                              .value
-                                              .doctors![index]
-                                              .contactNumber ??
-                                          '',
-                                      imgUrl: getHelpController
+                        ],
+                      ),
+                      getIssueUI(bookAppointmentController, getHelpController,
+                          context),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GetHelpDivider(),
+                      GetHelpCategory(
+                        title: "Top Consultants",
+                        onPressed: () =>
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => ConsultantsScreen(
+                                      slug: '',
+                                      type: 'topconsultant',
+                                    ))),
+                      ),
+                      Container(
+                        height: 17.h,
+                        margin: EdgeInsets.only(bottom: 2.h),
+                        child: Obx(() => Container(
+                            child: getHelpController
+                                        .topConsultantList.value.doctors !=
+                                    null
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 6,
+                                    itemBuilder: (_, index) {
+                                      print(getHelpController
                                           .topConsultantList
                                           .value
                                           .doctors![index]
-                                          .profilePicture,
-                                      sId: getHelpController.topConsultantList
-                                          .value.doctors![index].sId,
-                                    );
-                                  })
-                              : Container())),
-                    ),
-                    GetHelpDivider(),
-                    GetHelpCategory(
-                      title: 'Solh Buddies to Talk',
-                    ),
-                    getSolhBuddiesUI(),
-                    GetHelpDivider(),
-                    GetHelpCategory(
-                      title: 'Recommended reads',
-                    ),
-                    getRecommendedReadsUI(),
-                    SizedBox(
-                      height: 100,
-                    ),
-                  ]),
+                                          .profilePicture);
+                                      return TopConsultantsTile(
+                                        bio: getHelpController.topConsultantList
+                                                .value.doctors![index].bio ??
+                                            '',
+                                        name: getHelpController
+                                                .topConsultantList
+                                                .value
+                                                .doctors![index]
+                                                .name ??
+                                            '',
+                                        mobile: getHelpController
+                                                .topConsultantList
+                                                .value
+                                                .doctors![index]
+                                                .contactNumber ??
+                                            '',
+                                        imgUrl: getHelpController
+                                            .topConsultantList
+                                            .value
+                                            .doctors![index]
+                                            .profilePicture,
+                                        sId: getHelpController.topConsultantList
+                                            .value.doctors![index].sId,
+                                      );
+                                    })
+                                : Container())),
+                      ),
+                      GetHelpDivider(),
+                      GetHelpCategory(
+                        title: 'Solh Buddies to Talk',
+                      ),
+                      getSolhBuddiesUI(),
+                      GetHelpDivider(),
+                      GetHelpCategory(
+                        title: 'Recommended reads',
+                      ),
+                      getRecommendedReadsUI(),
+                      SizedBox(
+                        height: 100,
+                      ),
+                    ]),
+                  ),
                 ),
               ),
               if (_bottomNavigatorController.isDrawerOpen.value)
@@ -492,6 +517,82 @@ class _HomePageState extends State<HomePage> {
       ),
       isLandingScreen: true,
     );
+  }
+
+  Future<void> openAnnouncement(Map<String, dynamic> value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt('lastDateShownAnnouncement') != null) {
+      if (DateTime.fromMillisecondsSinceEpoch(
+                  prefs.getInt('lastDateShownAnnouncement')!)
+              .day ==
+          DateTime.now().day) {
+        return;
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return Dialog(
+                child: Container(
+                  height: 595,
+                  width: 375,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )),
+                        Expanded(child: announcementMedia(value))
+                      ]),
+                ),
+              );
+            });
+        prefs.setInt(
+            'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Container(
+                height: 595,
+                width: 375,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          )),
+                      Expanded(child: announcementMedia(value))
+                    ]),
+              ),
+            );
+          });
+      prefs.setInt(
+          'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+    }
+  }
+
+  Future<void> getAnnouncement() async {
+    await _journalPageController
+        .getAnnouncement()
+        .then((value) => openAnnouncement(value));
+  }
+
+  announcementMedia(Map<String, dynamic> value) {
+    return CachedNetworkImage(imageUrl: value['media']);
   }
 
   Widget getTrendingPostUI() {

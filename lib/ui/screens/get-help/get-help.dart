@@ -417,6 +417,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                     ),
                                   );
                           })),
+                        ),
+                        SizedBox(
+                          height: 50,
                         )
                       ],
                     ),
@@ -770,12 +773,12 @@ class SolhVolunteers extends StatelessWidget {
             width: 1,
           ),
         ),
-        height: 289,
+        // height: 289,
         width: 164,
         child: Stack(children: [
           Container(
             height: 52,
-            width: 164,
+            // width: 164,
             decoration: BoxDecoration(
               color: SolhColors.green,
               borderRadius: BorderRadius.circular(8),
@@ -788,7 +791,7 @@ class SolhVolunteers extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 70,
+                  // height: 70,
                   width: 70,
                   padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(

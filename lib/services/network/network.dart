@@ -316,10 +316,13 @@ class Network {
       print(body);
       print("token: ${userBlocNetwork.getSessionCookie}");
       http.Response apiResponse = await http.post(_uri,
-          headers: {
-            "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
-          },
-          body: body);
+          headers: isEncoded != null
+              ? {
+                  "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
+                  "Content-Type": "application/json"
+                }
+              : {"Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"},
+          body: isEncoded != null ? jsonEncode(body) : body);
 
       print(apiResponse.statusCode);
       print(jsonEncode(body));

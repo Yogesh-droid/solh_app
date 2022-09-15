@@ -1,8 +1,10 @@
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
@@ -29,6 +31,16 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  await FirebaseAnalytics.instance.logBeginCheckout(
+      value: 10.0,
+      currency: 'USD',
+      items: [
+        AnalyticsEventItem(itemName: 'abc', itemId: 'xjw73ndnw', price: 10.0),
+      ],
+      coupon: '10PERCENTOFF');
+
   initControllers();
   //String? fcmToken;
 
@@ -76,6 +88,8 @@ void initControllers() {
       Get.put(SearchMarketController());
   BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
+  PsychologyTestController psychologyTestController =
+      Get.put(PsychologyTestController());
 }
 
 /// app ////
