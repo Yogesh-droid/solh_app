@@ -11,6 +11,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../model/user/user.dart';
 import '../../../services/user/user-profile.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
+import '../../../widgets_constants/zoom_image.dart';
 import '../chat/chat.dart';
 import '../my-profile/posts/post.dart';
 import '../my-profile/profile/edit-profile.dart';
@@ -301,13 +302,27 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                         CircleAvatar(
                           radius: 6.5.h,
                           backgroundColor: Color(0xFFD9D9D9),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 6.h,
-                            backgroundImage: CachedNetworkImageProvider(
-                                userProfileSnapshot
-                                        .requireData.profilePicture ??
-                                    ""),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return ZoomImage(
+                                    image: userProfileSnapshot
+                                            .requireData.profilePicture ??
+                                        "");
+                              }));
+                            },
+                            child: Hero(
+                              tag: 'profile',
+                              child: CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 6.h,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    userProfileSnapshot
+                                            .requireData.profilePicture ??
+                                        ""),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(height: 2.h),

@@ -10,6 +10,7 @@ import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
+import 'package:solh/ui/screens/psychology-test/psychology_test_page.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/profile/appointment_controller.dart';
@@ -160,6 +161,15 @@ class _SideDrawerState extends State<SideDrawer> {
                                 builder: (context) => AppointmentScreen()));
                       },
                     ),
+              SideDrawerMenuTile(
+                title: "Psychological Tests",
+                onPressed: () async {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PsychologyTestPage()));
+                },
+              ),
             ]),
             Expanded(
               child: Container(),

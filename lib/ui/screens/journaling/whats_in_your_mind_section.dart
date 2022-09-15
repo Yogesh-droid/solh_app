@@ -156,11 +156,11 @@ class WhatsOnYourMindSection extends StatelessWidget {
                       iconSize: 24,
                       splashRadius: 20,
                       padding: EdgeInsets.zero,
-                      onPressed: () => {
+                      onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Connections()))
+                                builder: (context) => Connections()));
                       },
                       icon: SvgPicture.asset("assets/images/connections.svg"),
                       color: SolhColors.green,
