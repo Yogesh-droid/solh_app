@@ -469,10 +469,10 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                // print("side bar tapped");
-                // _bottomNavigatorController.isDrawerOpen.value = true;
-                // print("opened");
-                getAnnouncement();
+                print("side bar tapped");
+                _bottomNavigatorController.isDrawerOpen.value = true;
+                print("opened");
+                // getAnnouncement();
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),

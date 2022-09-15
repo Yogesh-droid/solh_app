@@ -154,14 +154,13 @@ class AppointmentScreen extends StatelessWidget {
                                         ),
                                         Text(
                                             scheduldAppointments[index]
-                                                        .scheduledOn! +
-                                                    ', ' +
-                                                    getDayFromDate(
-                                                            scheduldAppointments[
-                                                                    index]
-                                                                .scheduledOn!)
-                                                        .toString() ??
-                                                '',
+                                                    .scheduledOn! +
+                                                ', ' +
+                                                getDayFromDate(
+                                                        scheduldAppointments[
+                                                                index]
+                                                            .scheduledOn!)
+                                                    .toString(),
                                             style: GoogleFonts.signika(
                                                 color: Color(0xffA6A6A6))),
                                         Text(
