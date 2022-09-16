@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
@@ -18,14 +19,18 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
       PreferredSize? bottom,
-      Widget? menuButton})
+      Widget? menuButton,
+      Callback? callback})
       : _title = title,
         _isLandingScreen = isLandingScreen,
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
         _isDiaryBtnShown = isDiaryBtnShown,
         _bottom = bottom,
-        _menuButton = menuButton;
+        _menuButton = menuButton,
+        _onbackPressed = callback;
+
+  Callback? _onbackPressed;
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
@@ -44,7 +49,9 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         leadingWidth: _isLandingScreen ? 0 : 60,
         leading: !_isLandingScreen
             ? InkWell(
-                onTap: (() => Navigator.pop(context)),
+                onTap: _onbackPressed != null
+                    ? _onbackPressed
+                    : (() => Navigator.pop(context)),
                 child: Container(
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,

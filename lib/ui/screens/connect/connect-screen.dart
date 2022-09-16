@@ -38,6 +38,8 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   JournalCommentController journalCommentController = Get.find();
   final TextEditingController reasonController = TextEditingController();
   List recivedConnectionRequest = [];
+  OverlayEntry? overlayEntry;
+  late OverlayState _overlayState;
   @override
   void initState() {
     print('UID: ${widget._uid}');
@@ -48,6 +50,40 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
       checkIfUserIsMyConnection(widget._sId);
     }
     getRecivedConnections();
+    _overlayState = Overlay.of(context)!;
+    overlayEntry = OverlayEntry(builder: (context) {
+      final size = MediaQuery.of(context).size;
+      print(size.width);
+      return Positioned(
+        width: 56,
+        height: 56,
+        top: size.height - 72,
+        left: size.width - 72,
+        child: Material(
+          color: Colors.transparent,
+          child: GestureDetector(
+            onTap: () {
+              Overlay.of(context)!.deactivate();
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: SolhColors.green,
+              ),
+              child: Icon(Icons.video_camera_front_rounded),
+            ),
+          ),
+        ),
+      );
+    });
+    Future.delayed(Duration(milliseconds: 300), () {
+      if (overlayEntry == null || overlayEntry?.mounted == false) {
+        print('Overlay is null');
+        return;
+      } else {
+        overlayEntry?.remove();
+      }
+    });
     super.initState();
   }
 
@@ -71,9 +107,29 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     return Scaffold(
         appBar: SolhAppBar(
           isLandingScreen: false,
-          title: Text(
-            "Connect",
-            style: SolhTextStyles.AppBarText,
+          title: Row(
+            children: [
+              Text(
+                "Connect",
+                style: SolhTextStyles.AppBarText,
+              ),
+              // IconButton(
+              //     onPressed: () {
+              //       createOverlay();
+              //     },
+              //     icon: Icon(
+              //       Icons.add,
+              //       color: Colors.black,
+              //     )),
+              // IconButton(
+              //     onPressed: () {
+              //       overlayEntry?.remove();
+              //     },
+              //     icon: Icon(
+              //       Icons.remove,
+              //       color: Colors.black,
+              //     ))
+            ],
           ),
           menuButton: getpopUpMenu(),
         ),
@@ -594,6 +650,11 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
       ),
     );
   }
+
+  // void createOverlay() {
+  //   //Overlay.of(globalNavigatorKey.currentState!.context)!.insert(overlayEntry!);
+  //   _overlayState.insert(overlayEntry!);
+  // }
 }
 
 // class AllPosts extends StatelessWidget {

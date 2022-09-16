@@ -14,6 +14,7 @@ import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
@@ -26,7 +27,6 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../bloc/user-bloc.dart';
-import '../../../controllers/chat-list/chat_list_controller.dart';
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
   JournalPageController _journalPageController =
       Get.put(JournalPageController());
-  final ChatListController chatListController = Get.put(ChatListController());
+
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   GetHelpController getHelpController = Get.put(GetHelpController());
   final DiscoverGroupController discoverGroupController =
@@ -68,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(JournalCommentController());
   MoodMeterController moodMeterController = Get.find();
   late bool isMoodMeterShown;
+
   @override
   void initState() {
     super.initState();
@@ -235,12 +236,12 @@ class _HomePageState extends State<HomePage> {
                       GetHelpDivider(),
                       Obx(() {
                         return !connectionController
-                                .isRecommnedationLoading.value
-                            ? connectionController.peopleYouMayKnow.value
+                                .isRecommnedationLoadingHome.value
+                            ? connectionController.peopleYouMayKnowHome.value
                                             .reccomendation !=
                                         null &&
-                                    connectionController.peopleYouMayKnow.value
-                                        .reccomendation!.isNotEmpty
+                                    connectionController.peopleYouMayKnowHome
+                                        .value.reccomendation!.isNotEmpty
                                 ? GetHelpCategory(
                                     title: 'Solh Mates',
                                     onPressed: () {
@@ -255,24 +256,24 @@ class _HomePageState extends State<HomePage> {
                       }),
                       Obx(() {
                         return !connectionController
-                                .isRecommnedationLoading.value
-                            ? connectionController.peopleYouMayKnow.value
+                                .isRecommnedationLoadingHome.value
+                            ? connectionController.peopleYouMayKnowHome.value
                                             .reccomendation !=
                                         null &&
-                                    connectionController.peopleYouMayKnow.value
-                                        .reccomendation!.isNotEmpty
+                                    connectionController.peopleYouMayKnowHome
+                                        .value.reccomendation!.isNotEmpty
                                 ? getPeopleYouMayKnowUI()
                                 : Container()
                             : getRecommnededShimmer();
                       }),
                       Obx(() {
                         return !connectionController
-                                .isRecommnedationLoading.value
-                            ? connectionController.peopleYouMayKnow.value
+                                .isRecommnedationLoadingHome.value
+                            ? connectionController.peopleYouMayKnowHome.value
                                             .reccomendation !=
                                         null &&
-                                    connectionController.peopleYouMayKnow.value
-                                        .reccomendation!.isNotEmpty
+                                    connectionController.peopleYouMayKnowHome
+                                        .value.reccomendation!.isNotEmpty
                                 ? GetHelpDivider()
                                 : Container()
                             : Container();
@@ -1020,35 +1021,38 @@ class _HomePageState extends State<HomePage> {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: connectionController
-              .peopleYouMayKnow.value.reccomendation!.length,
+              .peopleYouMayKnowHome.value.reccomendation!.length,
           itemBuilder: (context, index) => SolhVolunteers(
-            bio: connectionController.peopleYouMayKnow.value.reccomendation!
+            bio: connectionController.peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .bio,
-            name: connectionController.peopleYouMayKnow.value.reccomendation!
+            name: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .name,
             mobile: '',
-            imgUrl: connectionController.peopleYouMayKnow.value.reccomendation!
+            imgUrl: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .profilePicture,
-            sId: connectionController.peopleYouMayKnow.value.reccomendation!
+            sId: connectionController.peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .sId,
-            uid: connectionController.peopleYouMayKnow.value.reccomendation!
+            uid: connectionController.peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .uid,
             comments: connectionController
-                .peopleYouMayKnow.value.reccomendation!
+                .peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .commentCount
                 .toString(),
             connections: connectionController
-                .peopleYouMayKnow.value.reccomendation!
+                .peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .connectionsCount
                 .toString(),
-            likes: connectionController.peopleYouMayKnow.value.reccomendation!
+            likes: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
                 .elementAt(index)
                 .likesCount
                 .toString(),
