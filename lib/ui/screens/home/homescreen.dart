@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                 appBar: getAppBar(),
                 body: UpgradeAlert(
                   upgrader: Upgrader(
-                      showIgnore: false,
+                      showIgnore: true,
                       onLater: () {
                         SystemNavigator.pop();
                         return true;

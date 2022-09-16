@@ -414,12 +414,8 @@ class _JournalTileState extends State<JournalTile> {
                                             left: 3.w,
                                           ),
                                           child: CachedNetworkImage(
-                                            imageUrl: widget
-                                                    ._journalModel!
-                                                    .postedBy!
-                                                    .anonymous!
-                                                    .profilePicture ??
-                                                '',
+                                            imageUrl:
+                                                'https://solh.s3.amazonaws.com/groupMedia/1653644939579',
                                             fit: BoxFit.fitWidth,
                                             width: 12,
                                             height: 12,

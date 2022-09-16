@@ -191,7 +191,8 @@ class AppointmentScreen extends StatelessWidget {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder:
-                                                        (context) => ChatScreen(
+                                                        (context) =>
+                                                            ChatProviderScreen(
                                                               name: scheduldAppointments[
                                                                           index]
                                                                       .doctor!
@@ -353,7 +354,7 @@ class AppointmentScreen extends StatelessWidget {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ChatScreen(
+                                                            ChatProviderScreen(
                                                               name: completedAppointments[
                                                                           index]
                                                                       .doctor!
@@ -376,13 +377,13 @@ class AppointmentScreen extends StatelessWidget {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    'Session',
+                                                    '',
                                                     style: SolhTextStyles
                                                         .GreenButtonText,
                                                   ),
                                                   SizedBox(width: 1.w),
                                                   Icon(
-                                                    Icons.arrow_forward_ios,
+                                                    Icons.chat,
                                                     color: SolhColors.white,
                                                   ),
                                                 ],
