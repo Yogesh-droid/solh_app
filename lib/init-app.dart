@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
@@ -22,9 +24,19 @@ Future<bool> isNewUser() async {
     print(value!.userId);
     oneSignalId = value.userId ?? '';
   });
+  String deviceType = '';
+  if (Platform.isAndroid) {
+    deviceType = 'Android';
+  } else {
+    deviceType = 'IOS';
+  }
   print("*" * 30 + "\n" + "Id Token: $idToken");
   print("*" * 30 + "\n" + "One Token: $oneSignalId");
 
   return await SessionCookie.createSessionCookie(
-      idToken, fcmToken, oneSignalId);
+    idToken,
+    fcmToken,
+    oneSignalId,
+    deviceType,
+  );
 }

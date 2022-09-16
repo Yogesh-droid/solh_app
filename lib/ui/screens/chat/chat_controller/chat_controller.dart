@@ -32,6 +32,7 @@ class ChatController extends GetxController {
 
   var seenStatus = ''.obs;
 
+  var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();
 
@@ -45,7 +46,10 @@ class ChatController extends GetxController {
 
     SocketService.socket.on('message:received', (data) {
       debugPrint('message:received $data');
-      convo.add(Conversation.fromJson(data));
+
+      if (currentSid == data['authorId']) {
+        convo.add(Conversation.fromJson(data));
+      }
 
       chatListController.chatListController();
     });
@@ -63,7 +67,9 @@ class ChatController extends GetxController {
     });
 
     SocketService.socket.on("isTyping", (data) {
-      istyping(data);
+      if (currentSid == data['authorId']) {
+        istyping(data['isTyping']);
+      }
     });
 
     super.onInit();

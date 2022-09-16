@@ -454,6 +454,7 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
 
   @override
   Widget build(BuildContext context) {
+    print(_controller.selectedDay.value);
     return InkWell(onTap: () {
       _controller.selectedDay.value = DateFormat('EEEE').format(DateTime.now());
       showModalBottomSheet(

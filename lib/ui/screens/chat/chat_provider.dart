@@ -49,7 +49,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
     _service.connectAndListen();
     _controller.getChatController(widget._sId);
     super.initState();
-    SocketService.setUserName(userBlocNetwork.myData.userName!);
+    SocketService.setUserName(userBlocNetwork.myData.name!);
     print('author ${userBlocNetwork.myData.userName!}');
     super.initState();
   }
@@ -214,6 +214,7 @@ class ChatAppbar extends StatelessWidget {
                       builder: ((context) => VideoCallUser(
                             channel: value['data']['channelName'],
                             token: value['data']['rtcToken'],
+                            sId: _sId,
                           ))));
                 }
               },
@@ -266,13 +267,13 @@ class MessageBox extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
-                onChanged: ((value) {
-                  SocketService.typing(_sId, 'sc', 'users');
+                // onChanged: ((value) {
+                //   SocketService.typing(_sId, 'sc', 'users');
 
-                  Future.delayed(Duration(seconds: 1), (() {
-                    SocketService.notTyping(_sId, 'sc', 'users');
-                  }));
-                }),
+                //   Future.delayed(Duration(seconds: 1), (() {
+                //     SocketService.notTyping(_sId, 'sc', 'users');
+                //   }));
+                // }),
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,

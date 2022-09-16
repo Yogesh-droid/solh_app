@@ -38,9 +38,9 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     _controller.getChatController(widget._sId);
-    super.initState();
+    _controller.currentSid = widget._sId;
 
-    SocketService.setUserName(userBlocNetwork.myData.userName!);
+    SocketService.setUserName(widget._name);
 
     super.initState();
   }
@@ -204,6 +204,7 @@ class ChatAppbar extends StatelessWidget {
                       builder: ((context) => VideoCallUser(
                             channel: value['data']['channelName'],
                             token: value['data']['rtcToken'],
+                            sId: _sId,
                           ))));
                 }
               },
