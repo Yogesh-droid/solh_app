@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import '../../ui/screens/chat/chat.dart';
 import '../../ui/screens/comment/comment-screen.dart';
 import '../../ui/screens/video-call/video-call-user.dart';
 import '../../widgets_constants/buttons/custom_buttons.dart';
@@ -39,9 +39,16 @@ class LocalNotification {
           globalNavigatorKey.currentState!.push(
             MaterialPageRoute(
                 builder: (context) => VideoCallUser(
-                      channel:
-                          result.notification.additionalData!["channelName"],
-                      token: result.notification.additionalData!["rtcToken"],
+                      sId: result.notification.additionalData!['data']
+                                  ["senderId"] !=
+                              null
+                          ? result.notification.additionalData!['data']
+                              ["senderId"]
+                          : null,
+                      channel: result.notification.additionalData!['data']
+                          ["channelName"],
+                      token: result.notification.additionalData!['data']
+                          ["rtcToken"],
                     )),
           );
         });
@@ -83,6 +90,18 @@ class LocalNotification {
               );
             });
             break;
+          case "chat":
+            Future.delayed(Duration(seconds: 2), () {
+              globalNavigatorKey.currentState!.push(
+                MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                          name: '',
+                          imageUrl: '',
+                          sId: '',
+                        )),
+              );
+            });
+            break;
 
           default:
         }
@@ -118,17 +137,21 @@ class LocalNotification {
                   style: SolhTextStyles.GreenButtonText,
                 ),
                 onPressed: () {
-                  //Navigator.of(globalNavigatorKey.currentState, rootNavigator: true).pop();
-
                   Future.delayed(Duration(milliseconds: 500), () {
                     globalNavigatorKey.currentState!.pop();
                     globalNavigatorKey.currentState!.push(
                       MaterialPageRoute(
                           builder: (context) => VideoCallUser(
+                                sId: result.notification.additionalData!['data']
+                                            ["senderId"] !=
+                                        null
+                                    ? result.notification
+                                        .additionalData!['data']["senderId"]
+                                    : null,
                                 channel: result.notification
-                                    .additionalData!["channelName"],
-                                token: result
-                                    .notification.additionalData!["rtcToken"],
+                                    .additionalData!['data']["channelName"],
+                                token: result.notification
+                                    .additionalData!['data']["rtcToken"],
                               )),
                     );
                   });

@@ -165,14 +165,6 @@ class Connections extends StatelessWidget {
                                               .value[index].user!.sId ??
                                           '',
                                     )));
-                        // ConnectProfileScreen(
-                        //     uid: connectionController.myConnectionModel
-                        //             .value.myConnections![index].uId ??
-                        //         '',
-                        //     sId: connectionController.myConnectionModel
-                        //             .value.myConnections![index].sId ??
-                        //         '')
-                        // ));
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
