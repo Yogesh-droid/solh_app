@@ -106,17 +106,26 @@ class _JournalTileState extends State<JournalTile> {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: widget._journalModel!.postedBy!
-                                          .isProvider! &&
-                                      widget._journalModel!.anonymousJournal ==
-                                          false &&
+                              color: widget._journalModel!.postedBy != null &&
+                                      !widget
+                                          ._journalModel!.anonymousJournal! &&
+                                      widget._journalModel!.postedBy!
+                                              .userType ==
+                                          "SolhProvider" &&
                                       widget._journalModel!.group == null
-                                  ? Color(0x305F9B8C)
-                                  : widget._journalModel!.group != null &&
-                                          journalPageController
-                                              .selectedGroupId.value.isEmpty
-                                      ? Color(0xffF8EDFF)
-                                      : Color.fromRGBO(0, 0, 0, 0),
+                                  ? Color(0xFFDBF1FE)
+                                  : widget._journalModel!.postedBy != null &&
+                                          !widget._journalModel!
+                                              .anonymousJournal! &&
+                                          widget._journalModel!.postedBy!
+                                                  .userType ==
+                                              "SolhVolunteer"
+                                      ? Color(0xFFD7E6E2)
+                                      : widget._journalModel!.group != null &&
+                                              journalPageController
+                                                  .selectedGroupId.value.isEmpty
+                                          ? Color(0xffF8EDFF)
+                                          : Color.fromRGBO(0, 0, 0, 0),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -133,12 +142,34 @@ class _JournalTileState extends State<JournalTile> {
                                     ? Container(
                                         height: 10,
                                       )
-                                    : Divider(),
+                                    : Divider(
+                                        color: widget._journalModel!.group !=
+                                                    null ||
+                                                widget._journalModel!
+                                                    .anonymousJournal! ||
+                                                widget._journalModel!.postedBy!
+                                                        .userType! ==
+                                                    'Seeker'
+                                            ? Colors.grey[300]
+                                            : Colors.transparent,
+                                        height: widget._journalModel!.group !=
+                                                    null ||
+                                                widget._journalModel!
+                                                    .anonymousJournal! ||
+                                                widget._journalModel!.postedBy!
+                                                        .userType! ==
+                                                    'Seeker'
+                                            ? 0.0
+                                            : 2,
+                                      ),
                               ],
                             ),
                           ),
                         ),
-                        widget.isMyJournal ? Container() : getUserNameBottom()
+                        widget.isMyJournal ||
+                                widget._journalModel!.group == null
+                            ? Container()
+                            : getUserNameBottom()
                       ],
                     )
                   : Container(),
@@ -342,6 +373,7 @@ class _JournalTileState extends State<JournalTile> {
                                     ),
                                   ),
                                   SizedBox(width: 1.5.w),
+
                                   // if (widget._journalModel!.postedBy != null &&
                                   //     widget._journalModel!.postedBy!
                                   //             .userType ==
@@ -375,35 +407,60 @@ class _JournalTileState extends State<JournalTile> {
                                           color: Color(0xFFA6A6A6),
                                         )
                                       : Container(),
-                                  widget._journalModel!.postedBy!.isProvider! &&
-                                          widget._journalModel!
-                                                  .anonymousJournal ==
-                                              false &&
-                                          widget._journalModel!.group == null
-                                      ? Row(
-                                          children: [
-                                            Container(
-                                              height: 12,
-                                              width: 1,
-                                              color: SolhColors.grey,
-                                            ),
-                                            SizedBox(
-                                              width: 6,
-                                            ),
-                                            Text(
-                                              'Volunteer',
-                                              style: GoogleFonts.signika(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: SolhColors.green),
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            SolhExpertBadge()
-                                          ],
+                                  // widget._journalModel!.postedBy!.isProvider! &&
+                                  //         widget._journalModel!
+                                  //                 .anonymousJournal ==
+                                  //             false &&
+                                  //         widget._journalModel!.group == null
+                                  //     ? Row(
+                                  //         children: [
+                                  //           Container(
+                                  //             height: 12,
+                                  //             width: 1,
+                                  //             color: SolhColors.grey,
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 6,
+                                  //           ),
+                                  //           Text(
+                                  //             'Volunteer',
+                                  //             style: GoogleFonts.signika(
+                                  //                 fontSize: 12,
+                                  //                 fontWeight: FontWeight.w400,
+                                  //                 color: SolhColors.green),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 4,
+                                  //           ),
+                                  //           SolhExpertBadge()
+                                  //         ],
+                                  //       )
+                                  //     : Container(),
+                                  widget._journalModel!.postedBy != null &&
+                                          !widget._journalModel!
+                                              .anonymousJournal! &&
+                                          widget._journalModel!.postedBy!
+                                                  .userType ==
+                                              "SolhProvider"
+                                      ? SolhExpertBadge(
+                                          usertype: 'Counsellor',
                                         )
-                                      : Container(),
+                                      : widget._journalModel!.postedBy != null &&
+                                              !widget._journalModel!
+                                                  .anonymousJournal! &&
+                                              widget._journalModel!.postedBy!
+                                                      .userType ==
+                                                  "SolhVolunteer"
+                                          ? SolhExpertBadge(
+                                              usertype: 'Volunteer',
+                                            )
+                                          : widget._journalModel!.postedBy !=
+                                                      null &&
+                                                  widget._journalModel!
+                                                          .postedBy!.userType ==
+                                                      "Seeker"
+                                              ? Container()
+                                              : Container(),
                                   widget._journalModel!.anonymousJournal !=
                                               null &&
                                           widget._journalModel!

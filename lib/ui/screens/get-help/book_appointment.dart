@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -247,6 +246,8 @@ class BookAppointmentWidget extends StatelessWidget {
 
   ConsultantController _consultantController = Get.find();
 
+  AppointmentController _appointmentController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     /* return InkWell(
@@ -381,6 +382,7 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
+                          await _appointmentController.getUserAppointments();
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => AppointmentScreen()),
@@ -774,12 +776,12 @@ class _DayPickerState extends State<DayPicker> {
       updatedList.add(DateTime.now().add(Duration(days: i)));
     }
     updatedList.forEach((element) {
-      if (DateTime.now() == element) {}
+      // if (DateTime.now() == element) {}
       days.add(element);
-      if (DateFormat('EEEE').format(element) != 'Sunday') {
-        // days.add(element);
+      // if (DateFormat('EEEE').format(element) != 'Sunday') {
+      //   // days.add(element);
 
-      }
+      // }
     });
 
     // for (int i = 0; i < 7; i++) {

@@ -30,9 +30,10 @@ class LocalNotification {
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       print('running open notification handler');
-      print(result.notification.additionalData.toString());
-      print(result.notification.body);
-      print(result.notification.rawPayload);
+      /*  print(result.notification.additionalData.toString());
+      print(result.notification.additionalData!['route']);
+      // print(result.notification.body);
+      // print(result.notification.rawPayload);
       print(result.action!.actionId);
       if (result.action!.actionId == "accept") {
         Future.delayed(Duration(milliseconds: 500), () {
@@ -52,60 +53,84 @@ class LocalNotification {
                     )),
           );
         });
-      } else {
-        switch (result.notification.additionalData!['route']) {
-          case 'mood':
-            Future.delayed(Duration(seconds: 2), () {
-              globalNavigatorKey.currentState!.push(
-                MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
-              );
-            });
-            break;
+      } else { */
+      print('route is ${result.notification.additionalData!['route']}');
+      switch (result.notification.additionalData!['route']) {
+        case 'mood':
+          Future.delayed(Duration(seconds: 2), () {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
+            );
+          });
+          break;
 
-          case 'call':
+        case 'call':
+          if (result.action != null) {
+            if (result.action!.actionId == "accept") {
+              Future.delayed(Duration(milliseconds: 500), () {
+                globalNavigatorKey.currentState!.push(
+                  MaterialPageRoute(
+                      builder: (context) => VideoCallUser(
+                            sId: result.notification.additionalData!['data']
+                                        ["senderId"] !=
+                                    null
+                                ? result.notification.additionalData!['data']
+                                    ["senderId"]
+                                : null,
+                            channel: result.notification.additionalData!['data']
+                                ["channelName"],
+                            token: result.notification.additionalData!['data']
+                                ["rtcToken"],
+                          )),
+                );
+              });
+            }
+          } else {
+            print(result.notification.additionalData!['route']);
             Future.delayed(Duration(seconds: 1), () {
               showVideocallDialog(result, globalNavigatorKey);
             });
-            break;
+          }
+          break;
 
-          case 'connection':
-            Future.delayed(Duration(seconds: 2), () {
-              globalNavigatorKey.currentState!.push(
-                MaterialPageRoute(builder: (context) => Connections()),
-              );
-            });
-            break;
+        case 'connection':
+          Future.delayed(Duration(seconds: 2), () {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(builder: (context) => Connections()),
+            );
+          });
+          break;
 
-          case "journal":
-            Future.delayed(Duration(seconds: 2), () {
-              print(jsonEncode(result.notification.additionalData!['journal'])
-                      .toString() +
-                  "  *" * 30);
-              globalNavigatorKey.currentState!.push(
-                MaterialPageRoute(
-                    builder: (context) => CommentScreen(
-                        journalModel: Journals.fromJson(jsonDecode(jsonEncode(
-                            result.notification.additionalData!['journal']))),
-                        index: 0)),
-              );
-            });
-            break;
-          case "chat":
-            Future.delayed(Duration(seconds: 2), () {
-              globalNavigatorKey.currentState!.push(
-                MaterialPageRoute(
-                    builder: (context) => ChatScreen(
-                          name: '',
-                          imageUrl: '',
-                          sId: '',
-                        )),
-              );
-            });
-            break;
+        case "journal":
+          Future.delayed(Duration(seconds: 2), () {
+            print(jsonEncode(result.notification.additionalData!['journal'])
+                    .toString() +
+                "  *" * 30);
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(
+                  builder: (context) => CommentScreen(
+                      journalModel: Journals.fromJson(jsonDecode(jsonEncode(
+                          result.notification.additionalData!['journal']))),
+                      index: 0)),
+            );
+          });
+          break;
+        case "chat":
+          Future.delayed(Duration(seconds: 2), () {
+            globalNavigatorKey.currentState!.push(
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                        name: '',
+                        imageUrl: '',
+                        sId: '',
+                      )),
+            );
+          });
+          break;
 
-          default:
-        }
+        default:
       }
+      // }
     });
     print(OneSignal.shared.getDeviceState());
   }

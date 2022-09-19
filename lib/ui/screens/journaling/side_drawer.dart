@@ -245,11 +245,11 @@ Widget getBadge(String usertype) {
       return Row(
         children: [
           Text(
-            'Solh Volunteer',
+            'Volunteer',
             style: GoogleFonts.signika(
               color: SolhColors.green,
               fontWeight: FontWeight.w400,
-              fontSize: 10,
+              fontSize: 12,
             ),
           ),
           SvgPicture.asset('assets/images/verifiedTick.svg')
@@ -260,11 +260,11 @@ Widget getBadge(String usertype) {
       return Row(
         children: [
           Text(
-            'Solh Provider',
+            'Counsellor',
             style: GoogleFonts.signika(
               color: SolhColors.green,
               fontWeight: FontWeight.w400,
-              fontSize: 10,
+              fontSize: 12,
             ),
           ),
           SvgPicture.asset('assets/images/verifiedTick.svg')
