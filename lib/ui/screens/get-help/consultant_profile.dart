@@ -381,6 +381,13 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
+                          'Enter details below',
+                          style: GoogleFonts.signika(fontSize: 18),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
                           'Mobile No.',
                           style: GoogleFonts.signika(
                             fontSize: 14,

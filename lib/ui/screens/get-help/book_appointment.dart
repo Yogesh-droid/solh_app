@@ -76,6 +76,10 @@ class _BookAppointmentState extends State<BookAppointment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
+                    'Enter details below',
+                    style: GoogleFonts.signika(fontSize: 16),
+                  ),
+                  Text(
                     'Mobile No.',
                     style: GoogleFonts.signika(
                       fontSize: 14,
@@ -320,18 +324,7 @@ class BookAppointmentWidget extends StatelessWidget {
                                   child: BookAppointmentPopup());
                             });
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString(),
-                              style: TextStyle(color: SolhColors.pink224)),
-                          action: SnackBarAction(
-                            label: '',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     },
                   )
@@ -388,9 +381,10 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => AppointmentScreen()),
+                              (route) => true);
                           final snackBar = SnackBar(
                             content: Text(
                               'Appointment request sent.',
@@ -405,17 +399,7 @@ class BookAppointmentWidget extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString(),
-                              style: TextStyle(color: SolhColors.pink224)),
-                          action: SnackBarAction(
-                            label: '',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     }))
             : Row(
