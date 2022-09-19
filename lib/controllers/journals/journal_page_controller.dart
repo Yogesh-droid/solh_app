@@ -187,6 +187,14 @@ class JournalPageController extends GetxController {
     return map;
   }
 
+  Future<void> getHeaderAnnounce() async {
+    await Network.makeGetRequest("${APIConstants.api}/api/header-announcement")
+        .then((value) {
+      announcementData.value =
+          value['announcementList'][0]['announcementMedia'];
+    });
+  }
+
   @override
   void onInit() {
     getAllJournals(1);

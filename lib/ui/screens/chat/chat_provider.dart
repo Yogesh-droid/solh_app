@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
-// import 'package:open_file/open_file.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
-import 'package:solh/services/utility.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';

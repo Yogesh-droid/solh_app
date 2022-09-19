@@ -1,7 +1,7 @@
 name: solh
 description: Solh App by OMLogic
 
-version: 1.0.4+50
+version: 1.0.6+51
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

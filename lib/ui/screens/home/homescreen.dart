@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                 appBar: getAppBar(),
                 body: UpgradeAlert(
                   upgrader: Upgrader(
-                      showIgnore: true,
+                      showIgnore: false,
                       onLater: () {
                         SystemNavigator.pop();
                         return true;
@@ -590,6 +590,7 @@ class _HomePageState extends State<HomePage> {
     await _journalPageController
         .getAnnouncement()
         .then((value) => openAnnouncement(value));
+    await _journalPageController.getHeaderAnnounce();
   }
 
   announcementMedia(Map<String, dynamic> value) {
