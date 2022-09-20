@@ -120,9 +120,12 @@ class LocalNotification {
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                        name: '',
-                        imageUrl: '',
-                        sId: '',
+                        name: jsonDecode(result
+                            .notification.additionalData!['data'])['author'],
+                        imageUrl: jsonDecode(result.notification
+                            .additionalData!['data'])['profilePicture'],
+                        sId: jsonDecode(
+                            result.notification.additionalData!['data'])['_id'],
                       )),
             );
           });
