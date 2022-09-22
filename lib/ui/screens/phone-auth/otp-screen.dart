@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,7 +9,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import '../../../bloc/journals/user-journal-bloc.dart';
+import '../../../bloc/user-bloc.dart';
 import '../../../routes/routes.gr.dart';
 import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
@@ -90,13 +91,19 @@ class _OTPScreenState extends State<OTPScreen> {
                       String? fcmToken =
                           await FirebaseMessaging.instance.getToken();
                       String oneSignalId = '';
+                      String deviceType = '';
                       await OneSignal.shared.getDeviceState().then((value) {
                         print(value!.userId);
                         oneSignalId = value.userId ?? '';
                       });
+                      if (Platform.isAndroid) {
+                        deviceType = 'Android';
+                      } else {
+                        deviceType = 'IOS';
+                      }
                       bool isSessionCookieCreated =
                           await SessionCookie.createSessionCookie(
-                              idToken, fcmToken, oneSignalId);
+                              idToken, fcmToken, oneSignalId, deviceType);
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =

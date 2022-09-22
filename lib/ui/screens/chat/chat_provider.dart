@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
-// import 'package:open_file/open_file.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
-import 'package:solh/services/utility.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
@@ -49,9 +44,17 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
     _service.connectAndListen();
     _controller.getChatController(widget._sId);
     super.initState();
-    SocketService.setUserName(userBlocNetwork.myData.userName!);
+    SocketService.setUserName(userBlocNetwork.myData.name!);
     print('author ${userBlocNetwork.myData.userName!}');
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    SocketService.dispose();
+    _controller.scrollOffset.value = 0.0;
+    super.dispose();
   }
 
   @override
@@ -61,40 +64,55 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: double.maxFinite,
-          child: Column(
+          child: Stack(
             children: [
-              ChatAppbar(
-                  imageUrl: widget._imageUrl,
-                  name: widget._name,
-                  sId: widget._sId),
-              Expanded(
-                child: MessageList(
-                  sId: widget._sId,
-                ),
+              Column(
+                children: [
+                  ChatAppbar(
+                      imageUrl: widget._imageUrl,
+                      name: widget._name,
+                      sId: widget._sId),
+                  Expanded(
+                    child: MessageList(
+                      sId: widget._sId,
+                    ),
+                  ),
+                  Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _controller.istyping.value == true
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                child: Text(
+                                  'Typing....',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              )
+                            : Container()
+                      ],
+                    );
+                  }),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: MessageBox(
+                      sId: widget._sId,
+                    ),
+                  ),
+                ],
               ),
-              Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    _controller.istyping.value == true
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Text(
-                              'Typing....',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          )
-                        : Container()
-                  ],
-                );
-              }),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: MessageBox(
-                  sId: widget._sId,
-                ),
-              ),
+
+              // Obx(() {
+              //   return _controller.scrollOffset > 0
+              //       ? Future.delayed(Duration())
+              //       : Container();
+              // })
+              // Obx(() {
+              //   return _controller.scrollController.value != 0
+              //       ? Icon(Icons.keyboard_arrow_down)
+              //       : Container();
+              // })
             ],
           ),
         ),
@@ -191,6 +209,7 @@ class ChatAppbar extends StatelessWidget {
                       builder: ((context) => VideoCallUser(
                             channel: value['data']['channelName'],
                             token: value['data']['rtcToken'],
+                            sId: _sId,
                           ))));
                 }
               },
@@ -243,13 +262,13 @@ class MessageBox extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
-                onChanged: ((value) {
-                  SocketService.typing(_sId);
+                // onChanged: ((value) {
+                //   SocketService.typing(_sId, 'sc', 'users');
 
-                  Future.delayed(Duration(seconds: 1), (() {
-                    SocketService.notTyping(_sId);
-                  }));
-                }),
+                //   Future.delayed(Duration(seconds: 1), (() {
+                //     SocketService.notTyping(_sId, 'sc', 'users');
+                //   }));
+                // }),
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
@@ -361,6 +380,7 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
   ChatController _controller = Get.put(ChatController());
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -376,6 +396,7 @@ class _MessageListState extends State<MessageList> {
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
+                    controller: scrollController,
                     shrinkWrap: true,
                     reverse: true,
                     itemCount: _controller.convo.length,
@@ -389,7 +410,8 @@ class _MessageListState extends State<MessageList> {
                         print(
                             'mediaUrl ${_controller.convo.value[reversedIndex].media!.mediaUrl}');
                       }
-
+                      _controller.scrollOffset.value = scrollController.offset;
+                      print('scrollController ${_controller.scrollOffset}');
                       return _controller.convo.value[reversedIndex]
                                   .conversationType ==
                               'media'

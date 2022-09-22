@@ -8,7 +8,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
-import 'package:solh/model/goal-setting/goal_sub_cat_model.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -108,15 +107,15 @@ class _GoalFormState extends State<GoalForm> {
                     ));
                     return;
                   }
-                  if (_goalSettingController.selectedSubCat.value.name ==
-                      null) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Please select sub category'),
-                      backgroundColor: Colors.red,
-                      duration: Duration(seconds: 1),
-                    ));
-                    return;
-                  }
+                  // if (_goalSettingController.selectedSubCat.value.name ==
+                  //     null) {
+                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  //     content: Text('Please select sub category'),
+                  //     backgroundColor: Colors.red,
+                  //     duration: Duration(seconds: 1),
+                  //   ));
+                  //   return;
+                  // }
                   if (_goalSettingController
                       .task.value.first.keys.first.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(

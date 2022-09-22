@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -175,7 +177,7 @@ class AppointmentScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceAround,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
                                         // Container(
                                         //   alignment: Alignment.centerRight,
@@ -185,13 +187,27 @@ class AppointmentScreen extends StatelessWidget {
                                         //         .JournalingDescriptionText,
                                         //   ),
                                         // ),
+
+                                        // Column(
+                                        //   crossAxisAlignment:
+                                        //       CrossAxisAlignment.center,
+                                        //   children: [
+                                        //     Text('Starting in',
+                                        //         style: GoogleFonts.signika(
+                                        //           color: Colors.grey,
+                                        //           fontSize: 10,
+                                        //         )),
+                                        //     Countdown(),
+                                        //   ],
+                                        // ),
                                         SolhGreenMiniButton(
                                           onPressed: () {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder:
-                                                        (context) => ChatScreen(
+                                                        (context) =>
+                                                            ChatProviderScreen(
                                                               name: scheduldAppointments[
                                                                           index]
                                                                       .doctor!
@@ -353,7 +369,7 @@ class AppointmentScreen extends StatelessWidget {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            ChatScreen(
+                                                            ChatProviderScreen(
                                                               name: completedAppointments[
                                                                           index]
                                                                       .doctor!
@@ -376,13 +392,13 @@ class AppointmentScreen extends StatelessWidget {
                                                     MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    'Session',
+                                                    '',
                                                     style: SolhTextStyles
                                                         .GreenButtonText,
                                                   ),
                                                   SizedBox(width: 1.w),
                                                   Icon(
-                                                    Icons.arrow_forward_ios,
+                                                    Icons.chat,
                                                     color: SolhColors.white,
                                                   ),
                                                 ],
@@ -404,6 +420,41 @@ class AppointmentScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class Countdown extends StatefulWidget {
+  const Countdown({Key? key}) : super(key: key);
+
+  @override
+  State<Countdown> createState() => _CountdownState();
+}
+
+class _CountdownState extends State<Countdown> {
+  int second = 300;
+
+  timeManager() {
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      second--;
+      if (second == 0) {
+        timer.cancel();
+      }
+
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    timeManager();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('${(second / 60).floor()}:${60 - (60 - (second % 60))}',
+        style: GoogleFonts.signika(color: SolhColors.pink224, fontSize: 16));
   }
 }
 

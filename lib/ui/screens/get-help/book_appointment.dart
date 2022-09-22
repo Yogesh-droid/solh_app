@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -75,6 +74,10 @@ class _BookAppointmentState extends State<BookAppointment> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    'Enter details below',
+                    style: GoogleFonts.signika(fontSize: 16),
+                  ),
                   Text(
                     'Mobile No.',
                     style: GoogleFonts.signika(
@@ -243,6 +246,8 @@ class BookAppointmentWidget extends StatelessWidget {
 
   ConsultantController _consultantController = Get.find();
 
+  AppointmentController _appointmentController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     /* return InkWell(
@@ -320,18 +325,7 @@ class BookAppointmentWidget extends StatelessWidget {
                                   child: BookAppointmentPopup());
                             });
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString(),
-                              style: TextStyle(color: SolhColors.pink224)),
-                          action: SnackBarAction(
-                            label: '',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     },
                   )
@@ -388,9 +382,11 @@ class BookAppointmentWidget extends StatelessWidget {
                         var val = await _controller.bookAppointment(body);
 
                         if (val == 'Successfully created appointment.') {
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Navigator.pop(context);
+                          await _appointmentController.getUserAppointments();
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => AppointmentScreen()),
+                              (route) => true);
                           final snackBar = SnackBar(
                             content: Text(
                               'Appointment request sent.',
@@ -405,17 +401,7 @@ class BookAppointmentWidget extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       } else {
-                        final snackBar = SnackBar(
-                          content: Text(value!.toString(),
-                              style: TextStyle(color: SolhColors.pink224)),
-                          action: SnackBarAction(
-                            label: '',
-                            onPressed: () {
-                              // Some code to undo the change.
-                            },
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        Utility.showToast(value);
                       }
                     }))
             : Row(
@@ -454,6 +440,7 @@ class _GetDateAndTimeState extends State<GetDateAndTime> {
 
   @override
   Widget build(BuildContext context) {
+    print(_controller.selectedDay.value);
     return InkWell(onTap: () {
       _controller.selectedDay.value = DateFormat('EEEE').format(DateTime.now());
       showModalBottomSheet(
@@ -789,12 +776,12 @@ class _DayPickerState extends State<DayPicker> {
       updatedList.add(DateTime.now().add(Duration(days: i)));
     }
     updatedList.forEach((element) {
-      if (DateTime.now() == element) {}
+      // if (DateTime.now() == element) {}
       days.add(element);
-      if (DateFormat('EEEE').format(element) != 'Sunday') {
-        // days.add(element);
+      // if (DateFormat('EEEE').format(element) != 'Sunday') {
+      //   // days.add(element);
 
-      }
+      // }
     });
 
     // for (int i = 0; i < 7; i++) {

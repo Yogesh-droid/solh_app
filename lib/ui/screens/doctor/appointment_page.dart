@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -197,7 +198,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      ChatScreen(
+                                                      ChatProviderScreen(
                                                         name: appointmentController
                                                                 .doctorAppointmentModel
                                                                 .value
@@ -350,7 +351,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    ChatScreen(
+                                                    ChatProviderScreen(
                                                       name: appointmentController
                                                               .doctorAppointmentModel
                                                               .value
@@ -382,7 +383,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            'view',
+                                            'session',
                                             style: SolhTextStyles
                                                 .GreenBorderButtonText,
                                           ),

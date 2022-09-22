@@ -3,8 +3,8 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class SessionCookie {
-  static Future<bool> createSessionCookie(
-      String idToken, String? fcmToken, String? onesignalId) async {
+  static Future<bool> createSessionCookie(String idToken, String? fcmToken,
+      String? onesignalId, String? deviceType) async {
     print("*" * 30 + "\n" + "Id Token: $idToken");
     print("*" * 30 + "\n" + "onesignal Token: $onesignalId");
     var response = await Network.makeHttpPostRequest(
@@ -12,7 +12,8 @@ class SessionCookie {
         body: {
           "idToken": idToken,
           "deviceId": fcmToken ?? '',
-          "onesignal_device_id": onesignalId
+          "onesignal_device_id": onesignalId,
+          "deviceType": deviceType,
         });
     print("*" * 30 + "\n" + "Response: $response");
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];

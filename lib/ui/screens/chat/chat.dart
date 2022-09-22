@@ -36,10 +36,21 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     _service.connectAndListen();
+    SocketService.setCurrentSId(widget._sId);
     _controller.getChatController(widget._sId);
+    _controller.currentSid = widget._sId;
+
+    SocketService.setUserName(widget._name);
+
     super.initState();
-    SocketService.setUserName(userBlocNetwork.myData.userName!);
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    SocketService.userLeft();
+    SocketService.dispose();
+    super.dispose();
   }
 
   @override
@@ -128,6 +139,7 @@ class ChatAppbar extends StatelessWidget {
                 //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
                   onTap: (() {
+                    SocketService.userLeft();
                     Navigator.of(context).pop();
                   }),
                   child: Container(
@@ -147,12 +159,25 @@ class ChatAppbar extends StatelessWidget {
                 SizedBox(
                   width: 6,
                 ),
-                Text(
-                  _name == '' ? '' : _name,
-                  style: GoogleFonts.signika(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _name == '' ? '' : _name,
+                      style: GoogleFonts.signika(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Obx(() {
+                      print('seen status ran' +
+                          _controller.seenStatus.value.toString());
+                      return Text(
+                        _controller.seenStatus.value,
+                        style: GoogleFonts.signika(color: SolhColors.green),
+                      );
+                    })
+                  ],
                 ),
               ],
             ),
@@ -179,6 +204,7 @@ class ChatAppbar extends StatelessWidget {
                       builder: ((context) => VideoCallUser(
                             channel: value['data']['channelName'],
                             token: value['data']['rtcToken'],
+                            sId: _sId,
                           ))));
                 }
               },
@@ -229,10 +255,10 @@ class MessageBox extends StatelessWidget {
             Expanded(
               child: TextField(
                 onChanged: ((value) {
-                  SocketService.typing(_sId);
+                  SocketService.typing(_sId, 'cc', 'users');
 
-                  Future.delayed(Duration(seconds: 1), (() {
-                    SocketService.notTyping(_sId);
+                  Future.delayed(Duration(seconds: 2), (() {
+                    SocketService.notTyping(_sId, 'cc', 'users');
                   }));
                 }),
                 controller: _controller.messageEditingController,
@@ -251,7 +277,7 @@ class MessageBox extends StatelessWidget {
                     message: _controller.messageEditingController.text,
                     sId: _sId,
                     autherType: 'users',
-                    ct: 'sc',
+                    ct: 'cc',
                     mediaType: '',
                     mediaUrl: '',
                     fileName: '',

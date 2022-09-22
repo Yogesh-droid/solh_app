@@ -10,6 +10,7 @@ import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../services/network/network.dart';
 
@@ -23,11 +24,15 @@ class ChatController extends GetxController {
   var isFileUploading = false.obs;
 
   String currentLoadingurl = '';
+  var scrollOffset = 0.0.obs;
 
   Map downloadedAndLocalfile = {}.obs;
 
   var convo = <Conversation>[].obs;
 
+  var seenStatus = ''.obs;
+
+  var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();
 
@@ -38,16 +43,35 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     getLocalPath();
+
     SocketService.socket.on('message:received', (data) {
       debugPrint('message:received $data');
-      convo.add(Conversation.fromJson(data));
+
+      if (currentSid == data['authorId']) {
+        convo.add(Conversation.fromJson(data));
+      }
 
       chatListController.chatListController();
     });
+    SocketService.socket.on("seenStatus", (data) {
+      if (data == null) {
+        seenStatus.value = '';
+        return;
+      }
+      // print('seenStatus ${timeago.format(DateTime.parse(data))}');
+      if (data == 'Online') {
+        seenStatus.value = data;
+      } else {
+        seenStatus.value = 'last seen ' + timeago.format(DateTime.parse(data));
+      }
+    });
 
     SocketService.socket.on("isTyping", (data) {
-      istyping(false);
+      if (currentSid == data['authorId']) {
+        istyping(data['isTyping']);
+      }
     });
+
     super.onInit();
   }
 

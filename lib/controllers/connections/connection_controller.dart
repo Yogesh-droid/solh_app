@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
@@ -18,6 +17,7 @@ class ConnectionController extends GetxController {
   var myConnectionModel = MyConnectionModel().obs;
   var allConnectionModel = GetConnectionResponse().obs;
   var peopleYouMayKnow = PeopleYouMayKnowModel().obs;
+  var peopleYouMayKnowHome = PeopleYouMayKnowModel().obs;
   var receivedConnections = <Connections>[].obs;
   var sentConnections = <Connections>[].obs;
   var userAnalyticsModel = UserAnalyticModel().obs;
@@ -28,6 +28,7 @@ class ConnectionController extends GetxController {
   var isCancelingConnection = false.obs;
   var isLoading = false.obs;
   var isRecommnedationLoading = false.obs;
+  var isRecommnedationLoadingHome = false.obs;
   var isBlogLoading = false.obs;
   var bloglist = <BlogListModel>[].obs;
   var blogDetails = BlogDetails().obs;
@@ -111,7 +112,8 @@ class ConnectionController extends GetxController {
         groupInvites.value.add(element);
       });
     }
-    getPeopleYouMayKnow();
+    getPeopleYouMayKnow('all');
+    getPeopleYouMayKnowHome('');
   }
 
   Future<void> acceptConnection(String connection_id, String response) async {
@@ -216,10 +218,10 @@ class ConnectionController extends GetxController {
     }
   }
 
-  Future<void> getPeopleYouMayKnow() async {
+  Future<void> getPeopleYouMayKnow(String limit) async {
     isRecommnedationLoading.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/connection-recommendation')
+            APIConstants.api + '/api/connection-recommendation?limit=$limit')
         .onError((error, stackTrace) {
       print(error);
       return {};
@@ -230,6 +232,22 @@ class ConnectionController extends GetxController {
           peopleYouMayKnow.value.reccomendation!.length.toString());
     }
     isRecommnedationLoading.value = false;
+  }
+
+  Future<void> getPeopleYouMayKnowHome(String limit) async {
+    isRecommnedationLoadingHome.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+            APIConstants.api + '/api/connection-recommendation?limit=$limit')
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    if (map.isNotEmpty) {
+      peopleYouMayKnowHome.value = PeopleYouMayKnowModel.fromJson(map);
+      print("peopleYouMayKnow" +
+          peopleYouMayKnowHome.value.reccomendation!.length.toString());
+    }
+    isRecommnedationLoadingHome.value = false;
   }
 
   @override

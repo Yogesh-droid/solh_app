@@ -433,67 +433,81 @@ class MoodAnalyticPage extends StatelessWidget {
   }
 
   Widget getResultCard() {
-    return Obx(() {
-      return Container(
-        height: 100,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: moodMeterController.moodAnlyticsModel.value.avgMood != null
-              ? Color(int.parse((moodMeterController
-                  .moodAnlyticsModel.value.avgFeeling!.hexCode!
-                  .replaceAll('#', '0xFF'))))
-              : Colors.grey,
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              moodMeterController.moodAnlyticsModel.value.avgMood != null
-                  ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
-                  : 'Loading ...',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: SolhColors.white,
-                shadows: [
-                  Shadow(
-                    blurRadius: 2,
-                    color: Colors.grey,
-                    offset: Offset(1, 1),
+    return moodMeterController.moodAnlyticsModel.value.moodAnalytic != null &&
+            moodMeterController.moodAnlyticsModel.value.moodAnalytic!.isEmpty
+        ? Container()
+        : Obx(() {
+            return Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color:
+                    moodMeterController.moodAnlyticsModel.value.avgMood != null
+                        ? Color(int.parse((moodMeterController
+                            .moodAnlyticsModel.value.avgFeeling!.hexCode!
+                            .replaceAll('#', '0xFF'))))
+                        : Colors.grey,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    moodMeterController
+                            .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                        ? ''
+                        : (moodMeterController
+                                    .moodAnlyticsModel.value.avgMood !=
+                                null
+                            ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
+                            : 'Loading ...'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: SolhColors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2,
+                          color: Colors.grey,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                    ),
+                  ),
+                  VerticalDivider(
+                    endIndent: 20,
+                    indent: 20,
+                    color: SolhColors.white,
+                    thickness: 1,
+                  ),
+                  Text(
+                    moodMeterController
+                            .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                        ? ''
+                        : (moodMeterController
+                                    .moodAnlyticsModel.value.avgMood !=
+                                null
+                            ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
+                            : 'Loading ...'),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: SolhColors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 2,
+                          color: Colors.grey,
+                          offset: Offset(1, 1),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            VerticalDivider(
-              endIndent: 20,
-              indent: 20,
-              color: SolhColors.white,
-              thickness: 1,
-            ),
-            Text(
-              moodMeterController.moodAnlyticsModel.value.avgMood != null
-                  ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
-                  : 'Loading ...',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 18,
-                color: SolhColors.white,
-                shadows: [
-                  Shadow(
-                    blurRadius: 2,
-                    color: Colors.grey,
-                    offset: Offset(1, 1),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    });
+            );
+          });
   }
 }

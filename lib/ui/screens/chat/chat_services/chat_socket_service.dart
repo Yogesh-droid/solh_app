@@ -21,6 +21,8 @@ class SocketService {
           .build());
   static String _userName = '';
 
+  static String currentSId = '';
+
   static String? get userId => socket.id;
 
   static Stream<Conversation> get getResponse =>
@@ -30,6 +32,10 @@ class SocketService {
 
   static void setUserName(String name) {
     _userName = name;
+  }
+
+  static void setCurrentSId(String sId) {
+    currentSId = sId;
   }
 
   static void sendMessage(
@@ -62,19 +68,31 @@ class SocketService {
     });
   }
 
-  static void typing(sId) {
-    socket.emit('typing', {
+  static void userLeft() {
+    socket.emit('userLeft', {
       'socketId': socket.id,
       'authorId': userBlocNetwork.id,
-      'connection': sId
+      'connection': currentSId,
     });
   }
 
-  static void notTyping(sId) {
+  static void typing(sId, chatType, userType) {
+    socket.emit('typing', {
+      'socketId': socket.id,
+      'authorId': userBlocNetwork.id,
+      'connection': currentSId,
+      'chatType': chatType,
+      'authorType': userType
+    });
+  }
+
+  static void notTyping(sId, chatType, userType) {
     socket.emit('notTyping', {
       'socketId': socket.id,
       'authorId': userBlocNetwork.id,
-      'connection': sId
+      'connection': currentSId,
+      'chatType': chatType,
+      'authorType': userType
     });
   }
 
@@ -88,11 +106,19 @@ class SocketService {
       print('Connected to server');
       print('connected');
       print(socket.id);
+
       socket.emit('uconnect', {
         'socketId': socket.id,
         'userId': userBlocNetwork.id,
+        'connection': currentSId,
+      });
+      socket.emit('sendOnlineStatus', {
+        'socketId': socket.id,
+        'userId': userBlocNetwork.id,
+        'connection': currentSId,
       });
     });
+
     socket.onConnectError(
       (data) {
         print('err to server');
@@ -104,6 +130,7 @@ class SocketService {
     socket.emit('uconnect', {
       'socketId': socket.id,
       'userId': userBlocNetwork.id,
+      'connection': currentSId,
     });
     print(socket.id);
 
@@ -137,11 +164,11 @@ class SocketService {
   }
 
   static void dispose() {
-    socket.dispose();
-    socket.destroy();
-    socket.close();
+    // socket.dispose();
+    // socket.destroy();
+    // socket.close();
     socket.disconnect();
-    _socketResponse.close();
-    _userResponse.close();
+    // _socketResponse.close();
+    // _userResponse.close();
   }
 }
