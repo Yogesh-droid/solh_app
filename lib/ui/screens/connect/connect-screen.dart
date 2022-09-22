@@ -107,29 +107,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     return Scaffold(
         appBar: SolhAppBar(
           isLandingScreen: false,
-          title: Row(
-            children: [
-              Text(
-                "Connect",
-                style: SolhTextStyles.AppBarText,
-              ),
-              // IconButton(
-              //     onPressed: () {
-              //       createOverlay();
-              //     },
-              //     icon: Icon(
-              //       Icons.add,
-              //       color: Colors.black,
-              //     )),
-              // IconButton(
-              //     onPressed: () {
-              //       overlayEntry?.remove();
-              //     },
-              //     icon: Icon(
-              //       Icons.remove,
-              //       color: Colors.black,
-              //     ))
-            ],
+          title: Text(
+            "Connect",
+            style: SolhTextStyles.AppBarText,
           ),
           menuButton: getpopUpMenu(),
         ),

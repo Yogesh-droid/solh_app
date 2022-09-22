@@ -5,6 +5,7 @@ import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/ui/screens/get-help/consultant_tile.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/solh_search.dart';
 
 class SearchScreen extends StatelessWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -252,7 +253,14 @@ class SearchScreen extends StatelessWidget {
   }
 
   Widget getSearchField(BuildContext context) {
-    return Container(
+    return SolhSearch(
+      textController: searchController,
+      onCloseBtnTap: onClosetapped,
+      onSubmitted: onTextSubmitted,
+      onTextChaged: onTextChanged,
+    );
+
+    /* return Container(
       height: MediaQuery.of(context).size.height * 0.06,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(50),
@@ -319,7 +327,7 @@ class SearchScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ); */
   }
 
   Widget getSuggestionList(List value) {
@@ -351,5 +359,22 @@ class SearchScreen extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  onClosetapped() {
+    searchController.clear();
+  }
+
+  onTextSubmitted(String value) async {
+    await searchMarketController.getSearchResults(value);
+  }
+
+  onTextChanged(String value) async {
+    if (value.length > 0) {
+      await searchMarketController.getSuggestions(value);
+    } else if (value.length == 0) {
+      searchMarketController.suggestionList.value = [];
+      searchMarketController.suggestionList.refresh();
+    }
   }
 }

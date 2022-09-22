@@ -58,8 +58,8 @@ class _MasterScreenState extends State<MasterScreen> {
             unselectedItemColor: SolhColors.black666,
             currentIndex: tabsRouter.activeIndex,
             unselectedLabelStyle: TextStyle(height: 1.5),
-            selectedFontSize: 11,
-            unselectedFontSize: 11,
+            selectedFontSize: 13,
+            unselectedFontSize: 13,
             // onTap: (index) async {
             //   if (index == 2 || index == 3) {
             //     bool isLogin = await authBlocNetwork.checkLogin(context);
