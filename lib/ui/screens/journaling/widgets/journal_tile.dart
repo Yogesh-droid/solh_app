@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -800,10 +801,15 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                 //     trimExpandedText: ' Less',
                 //   )
 
-                Wrap(children: [
-                  descriptionTexts.length == 1
-                      ? Text(descriptionTexts[0])
-                      : Wrap(
+                descriptionTexts.length == 1
+                    ? ReadMoreText(
+                        descriptionTexts[0],
+                        trimLines: 5,
+                        style: GoogleFonts.signika(
+                            color: Color(0xff666666), fontSize: 14),
+                      )
+                    : Wrap(children: [
+                        Wrap(
                           crossAxisAlignment: WrapCrossAlignment.end,
                           children: widget.journalModel.description!.length == 0
                               ? []
@@ -821,19 +827,21 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                       return getDescriptionText(item);
                                     }).toList(),
                         ),
-                  showMoreBtn
-                      ? InkWell(
-                          child: Text(
-                            !isExpanded ? '...show more' : '...show less',
-                          ),
-                          onTap: () {
-                            setState(() {
-                              isExpanded = !isExpanded;
-                            });
-                          },
-                        )
-                      : Container()
-                ])
+                        showMoreBtn
+                            ? InkWell(
+                                child: Text(
+                                  !isExpanded ? '...show more' : '...show less',
+                                  style: GoogleFonts.signika(
+                                      color: SolhColors.green),
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    isExpanded = !isExpanded;
+                                  });
+                                },
+                              )
+                            : Container()
+                      ])
               ],
             ),
           ),
@@ -968,11 +976,19 @@ class _PostContentWidgetState extends State<PostContentWidget> {
     String desc = widget.journalModel.description!;
     List<String> textList = desc.split(' ');
     var regx = RegExp(r'@');
-    if (textList.length > 30) {
-      showMoreBtn = true;
-    }
+    // if (textList.length > 30) {
+    //   showMoreBtn = true;
+    // }
 
-    if (regx.hasMatch(desc)) {}
+    if (regx.hasMatch(desc)) {
+      if (textList.length > 30) {
+        showMoreBtn = true;
+      }
+      descriptionTexts = textList;
+    } else {
+      descriptionTexts = [desc];
+      textList = [desc];
+    }
     descriptionTexts = textList;
     print('textList: $descriptionTexts');
 
