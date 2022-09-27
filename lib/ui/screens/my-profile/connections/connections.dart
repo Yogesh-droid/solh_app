@@ -19,13 +19,30 @@ import '../../../../model/group/get_group_response_model.dart';
 import '../../connect/connect-screen.dart';
 import '../../groups/group_detail.dart';
 
-class Connections extends StatelessWidget {
+class Connections extends StatefulWidget {
   Connections({Key? key}) : super(key: key);
+
+  @override
+  State<Connections> createState() => _ConnectionsState();
+}
+
+class _ConnectionsState extends State<Connections> {
   final ConnectionController connectionController = Get.find();
+
   final RefreshController _refreshController = RefreshController();
+
   final RefreshController _allConnectionRefreshcontroller = RefreshController();
+
   final DiscoverGroupController groupController = Get.find();
+
   final ChatListController chatListController = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    chatListController.chatListController();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

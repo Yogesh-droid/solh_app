@@ -801,22 +801,26 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                 //   )
 
                 Wrap(children: [
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    children: widget.journalModel.description!.length == 0
-                        ? []
-                        : showMoreBtn
-                            ? isExpanded
-                                ? descriptionTexts.map((item) {
-                                    return getDescriptionText(item);
-                                  }).toList()
-                                : descriptionTexts.sublist(0, 30).map((item) {
-                                    return getDescriptionText(item);
-                                  }).toList()
-                            : descriptionTexts.map((item) {
-                                return getDescriptionText(item);
-                              }).toList(),
-                  ),
+                  descriptionTexts.length == 1
+                      ? Text(descriptionTexts[0])
+                      : Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.end,
+                          children: widget.journalModel.description!.length == 0
+                              ? []
+                              : showMoreBtn
+                                  ? isExpanded
+                                      ? descriptionTexts.map((item) {
+                                          return getDescriptionText(item);
+                                        }).toList()
+                                      : descriptionTexts
+                                          .sublist(0, 30)
+                                          .map((item) {
+                                          return getDescriptionText(item);
+                                        }).toList()
+                                  : descriptionTexts.map((item) {
+                                      return getDescriptionText(item);
+                                    }).toList(),
+                        ),
                   showMoreBtn
                       ? InkWell(
                           child: Text(
@@ -963,9 +967,12 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   List getTexts() {
     String desc = widget.journalModel.description!;
     List<String> textList = desc.split(' ');
+    var regx = RegExp(r'@');
     if (textList.length > 30) {
       showMoreBtn = true;
     }
+
+    if (regx.hasMatch(desc)) {}
     descriptionTexts = textList;
     print('textList: $descriptionTexts');
 

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/ui/my_diary/notifications_screen.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../../constants/api.dart';
@@ -160,7 +161,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Connections()));
+                                builder: (context) => NotificationScreen()));
                       },
                       icon: SvgPicture.asset("assets/images/connections.svg"),
                       color: SolhColors.green,
