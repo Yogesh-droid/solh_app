@@ -273,7 +273,11 @@ class _JournalingState extends State<Journaling> {
 
   SolhAppBar getAppBar() {
     return SolhAppBar(
+<<<<<<< HEAD
       height: MediaQuery.of(context).size.height / 6.5,
+=======
+      height: MediaQuery.of(context).size.height / 8,
+>>>>>>> 8b2ad1485ee533f0776fd2236414148ea7962c12
       title: Row(
         children: [
           Container(
@@ -301,6 +305,7 @@ class _JournalingState extends State<Journaling> {
               ),
             ),
           ),
+<<<<<<< HEAD
           // SizedBox(
           //   width: 2,
           // ),
@@ -308,6 +313,15 @@ class _JournalingState extends State<Journaling> {
           //   "Journaling",
           //   style: SolhTextStyles.AppBarText,
           // ),
+=======
+          SizedBox(
+            width: 2,
+          ),
+          Text(
+            "Journaling",
+            style: SolhTextStyles.AppBarText,
+          ),
+>>>>>>> 8b2ad1485ee533f0776fd2236414148ea7962c12
         ],
       ),
       bottom: PreferredSize(
