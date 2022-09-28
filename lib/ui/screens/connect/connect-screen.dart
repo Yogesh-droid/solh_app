@@ -28,6 +28,7 @@ class ConnectProfileScreen extends StatefulWidget {
   final String _uid;
   final String _sId;
   bool isMyConnection = false;
+  bool alReadySentRequest = false;
 
   @override
   State<ConnectProfileScreen> createState() => _ConnectProfileScreenState();
@@ -48,6 +49,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     getUser();
     if (widget._sId.isNotEmpty) {
       checkIfUserIsMyConnection(widget._sId);
+      checkIfAlreadyInSendConnection(widget._sId);
     }
     getRecivedConnections();
     _overlayState = Overlay.of(context)!;
@@ -495,7 +497,9 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                           height: 6.3.h,
                           child: widget.isMyConnection
                               ? Text('Message')
-                              : (Text("Connect/Join")),
+                              : (widget.alReadySentRequest
+                                  ? Text('Pending')
+                                  : Text("Connect/Join")),
                         ),
                         SizedBox(height: 3.h),
                         widget.isMyConnection
@@ -538,6 +542,14 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
             }
           })
         : null;
+  }
+
+  void checkIfAlreadyInSendConnection(String sId) {
+    connectionController.sentConnections.value.forEach((element) {
+      if (sId == element.sId) {
+        widget.alReadySentRequest = true;
+      }
+    });
   }
 
   Future<void> getUserAnalyticsFromApi({required String sid}) async {
