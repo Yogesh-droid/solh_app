@@ -1028,13 +1028,13 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
           title: Text('Delete Feeling'),
           content: Text('Are you sure you want to delete this feeling?'),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child: Text('Delete'),
               onPressed: () {
                 feelingsController.deleteCustomFeeling(

@@ -9,6 +9,7 @@ import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import '../../../widgets_constants/group_card.dart';
 import 'group_detail.dart';
 
 class ManageGroupPage extends StatefulWidget {
@@ -116,8 +117,24 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context,
-                          isJoined: true);
+                      // return getGroupCard(groupList[index], context,
+                      //     isJoined: true);
+                      return GroupCard(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return GroupDetailsPage(
+                              group: groupList[index],
+                              isJoined: true,
+                            );
+                          }));
+                        },
+                        groupMediaUrl: groupList[index].groupMediaUrl,
+                        groupName: groupList[index].groupName,
+                        id: groupList[index].sId,
+                        journalCount: groupList[index].journalCount,
+                        membersCount: groupList[index].groupMembers!.length,
+                      );
                     },
                   )
                 : Center(
@@ -135,8 +152,24 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(groupList[index], context,
-                          isJoined: true);
+                      // return getGroupCard(groupList[index], context,
+                      //     isJoined: true);
+                      return GroupCard(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return GroupDetailsPage(
+                              group: groupList[index],
+                              isJoined: true,
+                            );
+                          }));
+                        },
+                        groupMediaUrl: groupList[index].groupMediaUrl,
+                        groupName: groupList[index].groupName,
+                        id: groupList[index].sId,
+                        journalCount: groupList[index].journalCount,
+                        membersCount: groupList[index].groupMembers!.length,
+                      );
                     },
                   )
                 : Center(
@@ -154,9 +187,21 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                 ? ListView.builder(
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
-                      return getGroupCard(
-                        groupList[index],
-                        context,
+                      return GroupCard(
+                        onTap: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return GroupDetailsPage(
+                              group: groupList[index],
+                              isJoined: false,
+                            );
+                          }));
+                        },
+                        groupMediaUrl: groupList[index].groupMediaUrl,
+                        groupName: groupList[index].groupName,
+                        id: groupList[index].sId,
+                        journalCount: groupList[index].journalCount,
+                        membersCount: groupList[index].groupMembers!.length,
                       );
                     },
                   )
@@ -166,175 +211,5 @@ class _ManageGroupPageState extends State<ManageGroupPage>
         : Center(
             child: Text('No groups created yet'),
           );
-  }
-
-  Widget getGroupCard(GroupList group, BuildContext context, {bool? isJoined}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Stack(children: [
-        InkWell(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return GroupDetailsPage(
-                group: group,
-                isJoined: isJoined,
-              );
-            }));
-          },
-          child: Hero(
-            tag: group.id ?? '',
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Container(
-                  width: double.infinity,
-                  color: SolhColors.green,
-                  child: Container(
-                    height: 300,
-                    child: group.groupMediaUrl != null
-                        ? CachedNetworkImage(
-                            imageUrl: group.groupMediaUrl ?? '',
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/images/group_placeholder.png',
-                            fit: BoxFit.cover,
-                          ),
-                  )),
-            ),
-          ),
-        ),
-        // Positioned(
-        //     top: 10,
-        //     right: 10,
-        //     child: Row(children: [
-        //       Container(
-        //         decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           color: SolhColors.black.withOpacity(0.2),
-        //         ),
-        //         child: Transform(
-        //             alignment: Alignment.center,
-        //             transform: Matrix4.rotationY(math.pi),
-        //             child: Padding(
-        //               padding: const EdgeInsets.all(8.0),
-        //               child:
-        //                   Icon(Icons.reply, color: SolhColors.white, size: 20),
-        //             )),
-        //       ),
-        //       SizedBox(width: 10),
-        //       Container(
-        //         decoration: BoxDecoration(
-        //           shape: BoxShape.circle,
-        //           color: SolhColors.black.withOpacity(0.2),
-        //         ),
-        //         child: Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Icon(Icons.share, color: SolhColors.white, size: 20),
-        //         ),
-        //       )
-        //     ])),
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.center,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.0),
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: Offset(0, 0),
-                )
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    group.groupName ?? '',
-                    style: TextStyle(
-                      color: SolhColors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          //Image.asset('assets/icons/group/lock.png'),
-                          group.groupType == 'Private'
-                              ? Image.asset('assets/icons/group/lock.png')
-                              : SvgPicture.asset('assets/icons/group/earth.svg',
-                                  color: SolhColors.white, height: 10),
-                          SizedBox(width: 5),
-                          Text(
-                            group.groupType ?? '',
-                            style: TextStyle(
-                              color: SolhColors.white,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('|', style: TextStyle(color: SolhColors.white)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset('assets/icons/group/persons.png'),
-                          SizedBox(width: 5),
-                          Text(
-                              (group.groupMembers!.length).toString() +
-                                  ' members',
-                              style: TextStyle(
-                                color: SolhColors.white,
-                                fontSize: 12,
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('|', style: TextStyle(color: SolhColors.white)),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        children: [
-                          Image.asset(
-                            'assets/icons/group/edit.png',
-                          ),
-                          SizedBox(width: 5),
-                          Text(group.journalCount!.toString() + ' posts',
-                              style: TextStyle(
-                                color: SolhColors.white,
-                                fontSize: 12,
-                              )),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-        )
-      ]),
-    );
   }
 }

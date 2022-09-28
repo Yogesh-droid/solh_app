@@ -38,6 +38,7 @@ class GoalSettingController extends GetxController {
   var isUpdateGoal = false.obs;
   var isDeletingGoal = false.obs;
   var isFeaturedGoalsLoading = false.obs;
+  var completedGoalsToday = {}.obs;
 
   Future<void> getPersonalGoals() async {
     Map<String, dynamic> map;

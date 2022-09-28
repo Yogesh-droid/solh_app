@@ -107,6 +107,8 @@ class _JournalTileState extends State<JournalTile> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: widget._journalModel!.postedBy != null &&
+                                      widget._journalModel!.anonymousJournal !=
+                                          null &&
                                       !widget
                                           ._journalModel!.anonymousJournal! &&
                                       widget._journalModel!.postedBy!
@@ -114,7 +116,12 @@ class _JournalTileState extends State<JournalTile> {
                                           "SolhProvider" &&
                                       widget._journalModel!.group == null
                                   ? Color(0xFFDBF1FE)
-                                  : widget._journalModel!.postedBy != null &&
+                                  : widget
+                                                  ._journalModel!.postedBy !=
+                                              null &&
+                                          widget._journalModel!
+                                                  .anonymousJournal !=
+                                              null &&
                                           !widget._journalModel!
                                               .anonymousJournal! &&
                                           widget._journalModel!.postedBy!
@@ -146,7 +153,10 @@ class _JournalTileState extends State<JournalTile> {
                                         color: widget._journalModel!.group !=
                                                     null ||
                                                 widget._journalModel!
-                                                    .anonymousJournal! ||
+                                                            .anonymousJournal !=
+                                                        null &&
+                                                    widget._journalModel!
+                                                        .anonymousJournal! ||
                                                 widget._journalModel!.postedBy!
                                                         .userType! ==
                                                     'Seeker'
@@ -155,7 +165,10 @@ class _JournalTileState extends State<JournalTile> {
                                         height: widget._journalModel!.group !=
                                                     null ||
                                                 widget._journalModel!
-                                                    .anonymousJournal! ||
+                                                            .anonymousJournal !=
+                                                        null &&
+                                                    widget._journalModel!
+                                                        .anonymousJournal! ||
                                                 widget._journalModel!.postedBy!
                                                         .userType! ==
                                                     'Seeker'
@@ -437,15 +450,22 @@ class _JournalTileState extends State<JournalTile> {
                                   //       )
                                   //     : Container(),
                                   widget._journalModel!.postedBy != null &&
-                                          !widget._journalModel!
-                                              .anonymousJournal! &&
+                                          widget._journalModel!.anonymousJournal !=
+                                              null &&
+                                          !widget
+                                              ._journalModel!.anonymousJournal! &&
                                           widget._journalModel!.postedBy!
                                                   .userType ==
                                               "SolhProvider"
                                       ? SolhExpertBadge(
                                           usertype: 'Counsellor',
                                         )
-                                      : widget._journalModel!.postedBy != null &&
+                                      : widget._journalModel!
+                                                      .postedBy !=
+                                                  null &&
+                                              widget._journalModel!
+                                                      .anonymousJournal !=
+                                                  null &&
                                               !widget._journalModel!
                                                   .anonymousJournal! &&
                                               widget._journalModel!.postedBy!

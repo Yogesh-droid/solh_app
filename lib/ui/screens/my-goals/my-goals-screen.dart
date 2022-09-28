@@ -12,7 +12,6 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'details.dart';
 import 'select_goal.dart';
 
 class MyGoalsScreen extends StatelessWidget {
@@ -471,10 +470,6 @@ class GoalName extends StatelessWidget {
                     ),
                     Spacer(),
                     Obx(() {
-                      print(
-                          'isExpanded ${_goalSettingController.isExpandedPanelExpanded.value}');
-                      print(
-                          'expandedIndex ${_goalSettingController.expandedIndex.value}');
                       return
                           // _goalSettingController.isExpandedPanelExpanded.value ==
                           //             true &&
