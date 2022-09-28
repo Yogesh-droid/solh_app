@@ -161,7 +161,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => NotificationScreen()));
+                                builder: (context) => Connections()));
                       },
                       icon: SvgPicture.asset("assets/images/connections.svg"),
                       color: SolhColors.green,
