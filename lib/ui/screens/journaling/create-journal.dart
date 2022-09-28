@@ -58,7 +58,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   TextEditingController _searchController = TextEditingController();
   TagsController tagsController = Get.put(TagsController());
   FocusNode _customFeelingFocusNode = FocusNode();
-  FocusNode _searchFeelingFocusNode = FocusNode();
   XFile? _xFile;
   File? _croppedFile;
   bool? isVideoPicked;
@@ -768,7 +767,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             source: ImageSource.gallery,
                             // maxWidth: 640,
                             // maxHeight: 640,
-                            // imageQuality: 100,
+                            imageQuality: 100,
                           );
                           if (_xFile != null) {
                             print("image picked");
@@ -804,6 +803,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 ]);
 
                             _croppedFile = File(croppedFile!.path);
+                            print(
+                                'THis is after cropping ${_croppedFile!.lengthSync().toString()}');
 
                             setState(() {
                               print(
@@ -856,8 +857,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           onPressed: () async {
                             _xFile = await _picker.pickImage(
                               source: ImageSource.camera,
-                              maxWidth: 640,
-                              maxHeight: 640,
+                              // maxWidth: 640,
+                              // maxHeight: 640,
                               imageQuality: 100,
                             );
                             if (_xFile != null) {
@@ -893,6 +894,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       ]);
 
                               _croppedFile = File(croppedFile!.path);
+                              print(
+                                  'THis is after cropping ${_croppedFile!.lengthSync().toString()}');
 
                               setState(() {
                                 if (_croppedFile != null) _isImageAdded = true;
@@ -1766,16 +1769,14 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
 }
 
 int compression(int filesize) {
-  if (filesize > 600000 && filesize < 1048576) {
-    return 20;
-  }
-  if (filesize > 1048576 && filesize < 2097152) {
-    return 50;
+  print('This is original size ${filesize.toString()}');
+  if (filesize >= 2000000 && filesize <= 4485760) {
+    return 60;
   }
 
-  if (filesize > 2097152) {
-    return 65;
+  if (filesize > 4485760) {
+    return 40;
   } else {
-    return 100;
+    return 75;
   }
 }

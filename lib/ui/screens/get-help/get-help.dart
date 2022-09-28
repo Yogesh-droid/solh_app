@@ -463,13 +463,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               ),
             ),
           ),
-          SizedBox(
-            width: 2.h,
-          ),
-          Text(
-            "Get help",
-            style: SolhTextStyles.AppBarText,
-          ),
+          // SizedBox(
+          //   width: 2.h,
+          // ),
+          // Text(
+          //   "Get help",
+          //   style: SolhTextStyles.AppBarText,
+          // ),
         ],
       ),
       isLandingScreen: true,

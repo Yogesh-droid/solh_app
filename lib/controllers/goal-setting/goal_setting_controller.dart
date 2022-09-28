@@ -38,7 +38,7 @@ class GoalSettingController extends GetxController {
   var isUpdateGoal = false.obs;
   var isDeletingGoal = false.obs;
   var isFeaturedGoalsLoading = false.obs;
-  var completedGoalsToday = {}.obs;
+  var completedGoalsToday = [].obs;
 
   Future<void> getPersonalGoals() async {
     Map<String, dynamic> map;
@@ -49,6 +49,13 @@ class GoalSettingController extends GetxController {
       pesonalGoalModel.value = PersonalGoalModel.fromJson(map);
       noOfGoals.value = pesonalGoalModel.value.milestone!;
       noOfGoalsCompleted.value = pesonalGoalModel.value.milestoneReached!;
+
+      pesonalGoalModel.value.goalList!.forEach((element) {
+        if (element.activity!
+            .every((element1) => element1.isComplete ?? true)) {
+          completedGoalsToday.value.add(element.sId);
+        }
+      });
     }
     isPersonalGoalLoading.value = false;
   }
@@ -190,6 +197,8 @@ class GoalSettingController extends GetxController {
           pesonalGoalModel.value.milestoneReached! + 1;
           pesonalGoalModel.refresh();
           noOfGoalsCompleted.value = noOfGoalsCompleted.value + 1;
+          completedGoalsToday.value.add(element.sId);
+          completedGoalsToday.refresh();
         }
       }
     });

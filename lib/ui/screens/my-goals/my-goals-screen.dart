@@ -459,12 +459,29 @@ class GoalName extends StatelessWidget {
                         SizedBox(
                           height: 8,
                         ),
-                        Text(
-                            'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
-                            style: goalFontStyle(
-                              14.0,
-                              Color(0xffA6A6A6),
-                              FontWeight.w300,
+                        Obx(() => Row(
+                              children: [
+                                Text(
+                                    _goalSettingController.completedGoalsToday
+                                            .contains(e.sId)
+                                        ? 'Done for the day'
+                                        : 'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
+                                    style: goalFontStyle(
+                                      14.0,
+                                      Color(0xffA6A6A6),
+                                      FontWeight.w300,
+                                    )),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                _goalSettingController.completedGoalsToday
+                                        .contains(e.sId)
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: SolhColors.green,
+                                      )
+                                    : Container()
+                              ],
                             )),
                       ],
                     ),

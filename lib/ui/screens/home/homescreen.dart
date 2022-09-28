@@ -14,7 +14,6 @@ import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
@@ -515,13 +514,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          SizedBox(
-            width: 2.h,
-          ),
-          Text(
-            "Home",
-            style: SolhTextStyles.AppBarText,
-          ),
+          // SizedBox(
+          //   width: 2.h,
+          // ),
+          // Text(
+          //   "Home",
+          //   style: SolhTextStyles.AppBarText,
+          // ),
         ],
       ),
       isLandingScreen: true,
@@ -595,14 +594,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getAnnouncement() async {
-    await _journalPageController
-        .getAnnouncement()
-        .then((value) => openAnnouncement(value));
     await _journalPageController.getHeaderAnnounce();
   }
 
   announcementMedia(Map<String, dynamic> value) {
-    return CachedNetworkImage(imageUrl: value['media']);
+    return CachedNetworkImage(
+      imageUrl: value['media'],
+      fit: BoxFit.fill,
+    );
   }
 
   Widget getTrendingPostUI() {

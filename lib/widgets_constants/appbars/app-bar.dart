@@ -44,7 +44,28 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-        title: _title,
+        title: Row(
+          children: [
+            _title!,
+            _isLandingScreen
+                ? Obx(() {
+                    return Container(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      // decoration: BoxDecoration(
+                      //     border: Border.all(color: Colors.black)),
+                      height: 45,
+                      width: 160,
+                      child: _journalPageController.announcementData.value != ''
+                          ? CachedNetworkImage(
+                              imageUrl:
+                                  _journalPageController.announcementData.value,
+                            )
+                          : Container(),
+                    );
+                  })
+                : Container(),
+          ],
+        ),
         bottom: _bottom,
         leadingWidth: _isLandingScreen ? 0 : 60,
         leading: !_isLandingScreen
@@ -64,20 +85,6 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0.5,
         backgroundColor: SolhColors.white,
         actions: [
-          _isLandingScreen
-              ? Obx(() {
-                  return Container(
-                    height: 48,
-                    width: 160,
-                    child: _journalPageController.announcementData.value != ''
-                        ? CachedNetworkImage(
-                            imageUrl:
-                                _journalPageController.announcementData.value,
-                          )
-                        : Container(),
-                  );
-                })
-              : Container(),
           _isDiaryBtnShown != null
               ? IconButton(
                   onPressed: () {
@@ -94,7 +101,17 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : Container(),
+          IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.notifications_active,
+                color: SolhColors.green,
+              )),
+
+          /// SOS Button
           if (!_isVideoCallScreen) AssistanceButton(),
+
+          ////
           if (_menuButton != null) _menuButton!,
         ]);
   }

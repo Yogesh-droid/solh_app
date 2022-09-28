@@ -54,12 +54,13 @@ class _MasterScreenState extends State<MasterScreen> {
             type: BottomNavigationBarType.fixed,
             selectedItemColor: SolhColors.green,
             showUnselectedLabels: true,
-            iconSize: 20,
+            // iconSize: 20,
             unselectedItemColor: SolhColors.black666,
             currentIndex: tabsRouter.activeIndex,
             unselectedLabelStyle: TextStyle(height: 1.5),
             selectedFontSize: 13,
             unselectedFontSize: 13,
+            // backgroundColor: SolhColors.green,
             // onTap: (index) async {
             //   if (index == 2 || index == 3) {
             //     bool isLogin = await authBlocNetwork.checkLogin(context);
@@ -84,6 +85,10 @@ class _MasterScreenState extends State<MasterScreen> {
                   label: "Home"),
               BottomNavigationBarItem(
                   icon: tabsRouter.activeIndex == 1
+                      // ? SvgPicture.asset(
+                      //     'assets/images/home_selected.svg',
+                      //     fit: BoxFit.fitHeight,
+                      //   )
                       ? SvgPicture.asset('assets/images/journaling.svg')
                       : SvgPicture.asset(
                           'assets/images/journalling outline.svg',
