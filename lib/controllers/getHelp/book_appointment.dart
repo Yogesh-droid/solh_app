@@ -5,7 +5,7 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
-  var selectedDay = ''.obs;
+  var selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
 
   /// It's String like Sunday, Monday, Tuesday etc.
   var selectedTimeSlot = ''.obs;

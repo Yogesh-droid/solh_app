@@ -737,28 +737,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 .anonymousJournal ==
                                             false &&
                                         widget._journalModel!.group == null
-                                    ? Row(
-                                        children: [
-                                          Container(
-                                            height: 12,
-                                            width: 1,
-                                            color: SolhColors.grey,
-                                          ),
-                                          SizedBox(
-                                            width: 6,
-                                          ),
-                                          Text(
-                                            'Volunteer',
-                                            style: GoogleFonts.signika(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: SolhColors.green),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          SolhExpertBadge()
-                                        ],
+                                    ? SolhExpertBadge(
+                                        usertype: 'Volunteer',
                                       )
                                     : Container(),
                                 widget._journalModel!.anonymousJournal !=

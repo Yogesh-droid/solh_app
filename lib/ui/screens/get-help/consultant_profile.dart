@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -33,7 +34,8 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
   }
 
   void dispose() {
-    _bookingController.selectedDay.value = '';
+    _bookingController.selectedDay.value =
+        DateFormat('EEEE').format(DateTime.now());
     _bookingController.selectedTimeSlot.value = '';
     _bookingController.showBookingDetail.value = false;
     super.dispose();
@@ -287,6 +289,7 @@ class BookAppointmentButton extends StatelessWidget {
 
   BookAppointmentController _controller = Get.find();
   var _consultantController = Get.put(ConsultantController());
+  var isExpandedHeight = false;
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +307,7 @@ class BookAppointmentButton extends StatelessWidget {
         showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            constraints: BoxConstraints(maxHeight: 70.h),
+            constraints: BoxConstraints(maxHeight: 80.h),
             builder: (BuildContext context) {
               return Obx(() {
                 return _controller.showBookingDetail.value
@@ -375,17 +378,17 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
                 child: ListView(
                   children: [
                     SizedBox(
-                      height: 24,
+                      height: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Enter details below',
-                          style: GoogleFonts.signika(fontSize: 18),
+                          style: GoogleFonts.signika(fontSize: 16),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 14,
                         ),
                         Text(
                           'Mobile No.',

@@ -411,13 +411,21 @@ class _HomePageState extends State<HomePage> {
                                 ? ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: 6,
+                                    itemCount: getHelpController
+                                                .topConsultantList
+                                                .value
+                                                .doctors!
+                                                .length >
+                                            5
+                                        ? 5
+                                        : getHelpController.topConsultantList
+                                            .value.doctors!.length,
                                     itemBuilder: (_, index) {
-                                      print(getHelpController
-                                          .topConsultantList
-                                          .value
-                                          .doctors![index]
-                                          .profilePicture);
+                                      // print(getHelpController
+                                      //     .topConsultantList
+                                      //     .value
+                                      //     .doctors![index]
+                                      //     .profilePicture);
                                       return TopConsultantsTile(
                                         bio: getHelpController.topConsultantList
                                                 .value.doctors![index].bio ??

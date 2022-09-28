@@ -9,7 +9,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import '../../../bloc/journals/user-journal-bloc.dart';
+import '../../../bloc/user-bloc.dart';
 import '../../../routes/routes.gr.dart';
 import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
