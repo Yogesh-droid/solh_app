@@ -45,7 +45,7 @@ class TestResultPage extends StatelessWidget {
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       elevation: 5,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -54,9 +54,12 @@ class TestResultPage extends StatelessWidget {
                                       .result!.testResult ??
                                   '',
                               style: SolhTextStyles.GreenBorderButtonText,
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           Container(
+                            constraints: BoxConstraints(
+                                minHeight: 206, minWidth: double.maxFinite),
                             padding: EdgeInsets.all(8),
                             child: ReadMoreText(
                               psychologyTestController.testResultModel.value
@@ -65,6 +68,7 @@ class TestResultPage extends StatelessWidget {
                               style: SolhTextStyles.JournalingDescriptionText,
                               trimMode: TrimMode.Line,
                               trimLines: 15,
+                              textAlign: TextAlign.center,
                               lessStyle: SolhTextStyles
                                   .JournalingDescriptionReadMoreText,
                               moreStyle: SolhTextStyles
