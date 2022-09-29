@@ -14,79 +14,80 @@ class NotificationScreen extends StatelessWidget {
 
   var notificaltionColtroller = Get.put(NotificationController());
 
-  List<Map> dummyJson = [
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'connectionPost',
-      'causedBy': 'Priyanka',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'connectionRequest',
-      'causedBy': 'Priyanka',
-      'time': 'Yesterday'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'connectionAccept',
-      'causedBy': 'Priyanka',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'causedByMediaUrl': 'https://picsum.photos/200',
-      'type': 'GroupCreation',
-      'groupName': 'Stress busters',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'causedByMediaUrl': 'https://picsum.photos/200',
-      'groupName': 'Stress busters',
-      'type': 'GroupPost',
-      'causedBy': 'Priyanka',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'solhWish',
-      'wish': 'Happy Diwali(title) (Body) lorem ipsum this Diwali',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'congrats',
-      'body':
-          'Congratulations ! one of your post in  solh’s trending section. click to view',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'sessionReminder',
-      'body':
-          'Congratulations ! one of your post in  solh’s trending section. click to view',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'sessionReminder',
-      'body':
-          'Session Reminder, Your Sesseion is scheduled for Tommorow with DR. Priyanka Tripathi',
-      'time': '2 hours ago'
-    },
-    {
-      'mediaUrl': 'https://picsum.photos/200',
-      'type': 'sessionReminder2',
-      'body':
-          'Session Reminder, Your Sesseion is about to start in 15 mins with DR. Priyanka Tripathi',
-      'time': '2 hours ago'
-    },
-  ];
+  // List<Map> dummyJson = [
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'connectionPost',
+  //     'causedBy': 'Priyanka',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'connectionRequest',
+  //     'causedBy': 'Priyanka',
+  //     'time': 'Yesterday'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'connectionAccept',
+  //     'causedBy': 'Priyanka',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'causedByMediaUrl': 'https://picsum.photos/200',
+  //     'type': 'GroupCreation',
+  //     'groupName': 'Stress busters',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'causedByMediaUrl': 'https://picsum.photos/200',
+  //     'groupName': 'Stress busters',
+  //     'type': 'GroupPost',
+  //     'causedBy': 'Priyanka',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'solhWish',
+  //     'wish': 'Happy Diwali(title) (Body) lorem ipsum this Diwali',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'congrats',
+  //     'body':
+  //         'Congratulations ! one of your post in  solh’s trending section. click to view',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'sessionReminder',
+  //     'body':
+  //         'Congratulations ! one of your post in  solh’s trending section. click to view',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'sessionReminder',
+  //     'body':
+  //         'Session Reminder, Your Sesseion is scheduled for Tommorow with DR. Priyanka Tripathi',
+  //     'time': '2 hours ago'
+  //   },
+  //   {
+  //     'mediaUrl': 'https://picsum.photos/200',
+  //     'type': 'sessionReminder2',
+  //     'body':
+  //         'Session Reminder, Your Sesseion is about to start in 15 mins with DR. Priyanka Tripathi',
+  //     'time': '2 hours ago'
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color(0xfff6f6f8),
         appBar: SolhAppBar(
           isLandingScreen: false,
           isNotificationPage: true,
@@ -114,13 +115,26 @@ class NotificationScreen extends StatelessWidget {
                         )
                       ],
                     )
-                  : ListView.builder(
+                  : ListView.separated(
+                      padding: EdgeInsets.only(top: 8),
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const SizedBox(
+                        height: 8,
+                      ),
                       itemCount:
                           notificaltionColtroller.notificationModel.length,
                       itemBuilder: ((context, index) {
                         return Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Color(
+                                    0xffefefef,
+                                  ),
+                                  width: 1),
+                              borderRadius: BorderRadius.circular(8)),
                           padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                              EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -129,7 +143,6 @@ class NotificationScreen extends StatelessWidget {
                               SizedBox(
                                 height: 18,
                               ),
-                              GetHelpDivider(),
                             ],
                           ),
                         );
@@ -140,45 +153,48 @@ class NotificationScreen extends StatelessWidget {
 
   Widget getNotificationTile(NotificationList item) {
     if (item.routeData == 'journal') {
-      return Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage('https://picsum.photos/200'),
-            radius: 30,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Wrap(
-                  children: [
-                    Text(item.content ?? ''),
-                    // Text(' shared '),
-                    // Text('new Post')
-                  ],
-                ),
-                Text(
-                  timeago.format(DateTime.parse(item.createdAt!)),
-                  style: GoogleFonts.signika(
-                    color: Color(0xff666666),
-                    fontSize: 12,
-                  ),
-                )
-              ],
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(item.senderId!.profilePicture!),
+              radius: 30,
             ),
-          )
-        ],
+            SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Wrap(
+                    children: [
+                      Text(item.content ?? ''),
+                      // Text(' shared '),
+                      // Text('new Post')
+                    ],
+                  ),
+                  Text(
+                    timeago.format(DateTime.parse(item.createdAt!)),
+                    style: GoogleFonts.signika(
+                      color: Color(0xff666666),
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       );
     }
     if (item.routeData == 'annoucement') {
       return Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage('https://picsum.photos/200'),
+            backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),
           SizedBox(
@@ -211,7 +227,7 @@ class NotificationScreen extends StatelessWidget {
       return Row(
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage('https://picsum.photos/200'),
+            backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),
           SizedBox(

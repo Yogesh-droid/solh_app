@@ -14,11 +14,11 @@ class SolhExpertBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
-          height: 12,
-          width: 1,
-          color: SolhColors.grey,
-        ),
+        // Container(
+        //   height: 12,
+        //   width: 1,
+        //   color: SolhColors.grey,
+        // ),
         SizedBox(
           width: 6,
         ),

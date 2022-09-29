@@ -25,7 +25,7 @@ class GlobalSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Color(0xfff6f6f8),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),

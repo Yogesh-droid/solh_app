@@ -29,7 +29,7 @@ class NotificationList {
   String? sId;
   List<String>? userIds;
   String? routeContent;
-  String? senderId;
+  SenderId? senderId;
   String? status;
   String? content;
   String? routeData;
@@ -53,7 +53,9 @@ class NotificationList {
     sId = json['_id'];
     userIds = json['user_ids'].cast<String>();
     routeContent = json['routeContent'];
-    senderId = json['senderId'];
+    senderId = json['senderId'] != null
+        ? new SenderId.fromJson(json['senderId'])
+        : null;
     status = json['status'];
     content = json['content'];
     routeData = json['routeData'];
@@ -67,13 +69,43 @@ class NotificationList {
     data['_id'] = this.sId;
     data['user_ids'] = this.userIds;
     data['routeContent'] = this.routeContent;
-    data['senderId'] = this.senderId;
+    if (this.senderId != null) {
+      data['senderId'] = this.senderId!.toJson();
+    }
     data['status'] = this.status;
     data['content'] = this.content;
     data['routeData'] = this.routeData;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class SenderId {
+  String? sId;
+  String? profilePicture;
+  String? userName;
+  String? name;
+  String? id;
+
+  SenderId({this.sId, this.profilePicture, this.userName, this.name, this.id});
+
+  SenderId.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    profilePicture = json['profilePicture'];
+    userName = json['userName'];
+    name = json['name'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['profilePicture'] = this.profilePicture;
+    data['userName'] = this.userName;
+    data['name'] = this.name;
+    data['id'] = this.id;
     return data;
   }
 }

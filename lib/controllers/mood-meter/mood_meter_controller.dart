@@ -66,7 +66,12 @@ class MoodMeterController extends GetxController {
 
   Future<void> saveReason(String reason) async {
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
-        url: '${APIConstants.api}/api/feeling-log', body: {'feelings': reason});
+        url: '${APIConstants.api}/api/feeling-log',
+        body: {
+          'feelings':
+              moodMeterModel.value.moodList![selectedValue.value.toInt()].sId,
+          "description": reason
+        });
   }
 
   Future<void> getMoodAnalytics(int days) async {
