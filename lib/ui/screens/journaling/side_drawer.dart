@@ -121,16 +121,6 @@ class _SideDrawerState extends State<SideDrawer> {
             ),
             Column(children: [
               SideDrawerMenuTile(
-                title: "Global Search",
-                onPressed: () {
-                  bottomNavigatorController.isDrawerOpen.value = false;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => GlobalSearchPage()));
-                },
-              ),
-              SideDrawerMenuTile(
                 title: "My Diary",
                 onPressed: () {
                   bottomNavigatorController.isDrawerOpen.value = false;

@@ -10,6 +10,7 @@ import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../../ui/my_diary/my_diary_list_page.dart';
+import '../../ui/screens/global-search/global_search_page.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
@@ -104,7 +105,18 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
               onPressed: () {},
               icon: Icon(
-                Icons.notifications_active,
+                Icons.notifications_none,
+                color: SolhColors.green,
+              )),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => GlobalSearchPage()));
+              },
+              icon: Icon(
+                Icons.search,
                 color: SolhColors.green,
               )),
 

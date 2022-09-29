@@ -19,7 +19,6 @@ import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
@@ -273,11 +272,7 @@ class _JournalingState extends State<Journaling> {
 
   SolhAppBar getAppBar() {
     return SolhAppBar(
-<<<<<<< HEAD
       height: MediaQuery.of(context).size.height / 6.5,
-=======
-      height: MediaQuery.of(context).size.height / 8,
->>>>>>> 8b2ad1485ee533f0776fd2236414148ea7962c12
       title: Row(
         children: [
           Container(
@@ -305,7 +300,6 @@ class _JournalingState extends State<Journaling> {
               ),
             ),
           ),
-<<<<<<< HEAD
           // SizedBox(
           //   width: 2,
           // ),
@@ -313,15 +307,6 @@ class _JournalingState extends State<Journaling> {
           //   "Journaling",
           //   style: SolhTextStyles.AppBarText,
           // ),
-=======
-          SizedBox(
-            width: 2,
-          ),
-          Text(
-            "Journaling",
-            style: SolhTextStyles.AppBarText,
-          ),
->>>>>>> 8b2ad1485ee533f0776fd2236414148ea7962c12
         ],
       ),
       bottom: PreferredSize(
