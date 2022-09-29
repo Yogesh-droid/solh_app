@@ -106,7 +106,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : Container(),
-          _isNotificationPage != true
+          _isLandingScreen
               ? IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -117,17 +117,19 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                     color: SolhColors.green,
                   ))
               : Container(),
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => GlobalSearchPage()));
-              },
-              icon: Icon(
-                Icons.search,
-                color: SolhColors.green,
-              )),
+          _isLandingScreen
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GlobalSearchPage()));
+                  },
+                  icon: Icon(
+                    Icons.search,
+                    color: SolhColors.green,
+                  ))
+              : Container(),
 
           /// SOS Button
           if (!_isVideoCallScreen) AssistanceButton(),

@@ -140,9 +140,6 @@ class NotificationScreen extends StatelessWidget {
                             children: [
                               getNotificationTile(notificaltionColtroller
                                   .notificationModel[index]),
-                              SizedBox(
-                                height: 18,
-                              ),
                             ],
                           ),
                         );
@@ -158,6 +155,7 @@ class NotificationScreen extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
+              backgroundColor: SolhColors.greyS200,
               backgroundImage: NetworkImage(item.senderId!.profilePicture!),
               radius: 30,
             ),
