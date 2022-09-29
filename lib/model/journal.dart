@@ -44,7 +44,10 @@ class JournalModel {
   }
 }
 
-enum JournalType { Publicaly, My_Diary }
+enum JournalType {
+  Publicaly,
+  My_Diary,
+}
 
 extension ParseToString on JournalType {
   String toShortString() {
