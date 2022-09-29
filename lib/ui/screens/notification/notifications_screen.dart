@@ -104,15 +104,27 @@ class NotificationScreen extends StatelessWidget {
           return notificaltionColtroller.isNotificationListLoading.value
               ? Center(child: CircularProgressIndicator())
               : (notificaltionColtroller.notificationModel.length == 0
-                  ? Column(
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.notifications),
-                        Text(
-                          'No notifications',
-                          style: GoogleFonts.signika(
-                            fontSize: 20,
-                          ),
-                        )
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.notifications,
+                              size: 40,
+                              color: Colors.grey.shade300,
+                            ),
+                            Text(
+                              'No notifications',
+                              style: GoogleFonts.signika(
+                                fontSize: 25,
+                                color: Colors.grey.shade300,
+                              ),
+                            )
+                          ],
+                        ),
                       ],
                     )
                   : ListView.separated(
