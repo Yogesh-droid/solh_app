@@ -296,12 +296,18 @@ class SignInButton extends StatelessWidget {
   }
 }
 
-class ProfileContainer extends StatelessWidget {
+class ProfileContainer extends StatefulWidget {
   ProfileContainer({Key? key, required UserModel? userModel})
       : _userModel = userModel,
         super(key: key);
 
   final UserModel? _userModel;
+
+  @override
+  State<ProfileContainer> createState() => _ProfileContainerState();
+}
+
+class _ProfileContainerState extends State<ProfileContainer> {
   final ConnectionController _connectionController = Get.find();
 
   @override
@@ -317,23 +323,31 @@ class ProfileContainer extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 49,
-                backgroundImage: CachedNetworkImageProvider(
-                    _userModel!.profilePicture ?? ''),
+                child: ClipRRect(
+                  clipBehavior: Clip.hardEdge,
+                  borderRadius: BorderRadius.circular(51),
+                  child: CachedNetworkImage(
+                      imageUrl: widget._userModel!.profilePicture ?? '',
+                      placeholder: (context, _) => MyLoader()),
+                ),
+                // backgroundImage: CachedNetworkImageProvider(
+                //     widget._userModel!.profilePicture ?? '',),
               ),
             ),
             SizedBox(height: 1.5.h),
             Text(
-              _userModel!.name ?? "",
+              widget._userModel!.name ?? "",
               style:
                   SolhTextStyles.SOSGreenHeading.copyWith(color: Colors.black),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GetBadge(userType: _userModel!.userType),
+                GetBadge(userType: widget._userModel!.userType),
               ],
             ),
             // Text(
+
             //   _userModel!.userType == 'Normal'
             //       ? ''
             //       : _userModel!.userType ?? "",
@@ -343,7 +357,7 @@ class ProfileContainer extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 14.w),
               child: Text(
-                _userModel!.bio ?? "",
+                widget._userModel!.bio ?? "",
                 textAlign: TextAlign.center,
               ),
             ),

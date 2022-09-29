@@ -42,9 +42,14 @@ class ScheduldAppointments {
   Patient? patient;
   String? scheduledOn;
   String? scheduleTime;
+  String? apptFor;
 
   ScheduldAppointments(
-      {this.doctor, this.patient, this.scheduledOn, this.scheduleTime});
+      {this.doctor,
+      this.patient,
+      this.scheduledOn,
+      this.scheduleTime,
+      this.apptFor});
 
   ScheduldAppointments.fromJson(Map<String, dynamic> json) {
     doctor =
@@ -53,6 +58,7 @@ class ScheduldAppointments {
         json['patient'] != null ? new Patient.fromJson(json['patient']) : null;
     scheduledOn = json['scheduledOn'];
     scheduleTime = json['scheduleTime'];
+    apptFor = json['apptFor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +71,7 @@ class ScheduldAppointments {
     }
     data['scheduledOn'] = this.scheduledOn;
     data['scheduleTime'] = this.scheduleTime;
+    data['apptFor'] = this.apptFor;
     return data;
   }
 }

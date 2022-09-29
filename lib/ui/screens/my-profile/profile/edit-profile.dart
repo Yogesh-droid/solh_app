@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -17,6 +19,7 @@ import 'package:solh/services/network/network.dart';
 import 'package:solh/services/user/user-profile.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit_profile_controller.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -49,6 +52,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   TextEditingController _userNameController = TextEditingController();
   final AgeController _ageController = Get.find();
   final AnonController _anonController = Get.find();
+  final EditProfileController editProfileController =
+      Get.put(EditProfileController());
 
   bool _isLoading = false;
 
@@ -163,8 +168,12 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                         },
                                         child: CircleAvatar(
                                           radius: 14.w,
-                                          backgroundImage:
-                                              CachedNetworkImageProvider(
+                                          backgroundImage: editProfileController
+                                                  .isProfilePictureUploading
+                                                  .value
+                                              ? CachedNetworkImageProvider(
+                                                  'https://banner2.cleanpng.com/20180628/xvr/kisspng-apple-id-computer-icons-macos-axle-load-5b354557d17970.908537281530217815858.jpg')
+                                              : CachedNetworkImageProvider(
                                                   userSnapshot
                                                       .data!.profilePicture!),
                                         ),
@@ -449,7 +458,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       // maxHeight: 640,
       // imageQuality: 50,
     );
-    print(_xFile!.path.toString());
+
     if (_xFile != null) {
       final croppedFile = await ImageCropper().cropImage(
           sourcePath: _xFile!.path,
@@ -480,10 +489,12 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   }
 
   Future<void> uploadImage() async {
+    editProfileController.isProfilePictureUploading(true);
     var response = await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/user-profile-picture",
         "profile",
         _croppedFile!);
+    editProfileController.isProfilePictureUploading(false);
     if (response["success"]) {
       Utility.showToast('Profile picture updated');
       userBlocNetwork.getMyProfileSnapshot();

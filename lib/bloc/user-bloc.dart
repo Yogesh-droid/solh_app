@@ -16,6 +16,7 @@ class UserBlocNetwork {
   List<String> hiddenPosts = [];
   String anonUserName = '';
   String anonUserPic = '';
+  static bool isFetchingProfile = false;
 
   Stream<UserModel?> get userStateStream => _userController.stream;
 
@@ -37,9 +38,11 @@ class UserBlocNetwork {
 
   Future<UserModel?> _fetchUserDetails(String uid) async {
     try {
+      isFetchingProfile = true;
       Map<String, dynamic> apiResponse =
           await Network.makeHttpGetRequestWithToken(
               "${APIConstants.api}/api/get-my-profile-details");
+      isFetchingProfile = false;
       print(
           "api response of profile details: " + apiResponse["user"].toString());
       return UserModel.fromJson(apiResponse["user"]);
