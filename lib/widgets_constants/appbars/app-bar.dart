@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../../ui/my_diary/my_diary_list_page.dart';
@@ -19,6 +20,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       double? height,
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
+      bool? isNotificationPage,
       PreferredSize? bottom,
       Widget? menuButton,
       Callback? callback})
@@ -29,7 +31,8 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _isDiaryBtnShown = isDiaryBtnShown,
         _bottom = bottom,
         _menuButton = menuButton,
-        _onbackPressed = callback;
+        _onbackPressed = callback,
+        _isNotificationPage = isNotificationPage;
 
   Callback? _onbackPressed;
 
@@ -37,6 +40,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool _isLandingScreen;
   final Widget? _title;
   final double? _height;
+  final bool? _isNotificationPage;
   final bool? _isDiaryBtnShown;
   final PreferredSize? _bottom;
   final Widget? _menuButton;
@@ -102,12 +106,17 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 )
               : Container(),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications_none,
-                color: SolhColors.green,
-              )),
+          _isNotificationPage != true
+              ? IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: ((context) => NotificationScreen())));
+                  },
+                  icon: Icon(
+                    Icons.notifications_none,
+                    color: SolhColors.green,
+                  ))
+              : Container(),
           IconButton(
               onPressed: () {
                 Navigator.push(
