@@ -36,7 +36,7 @@ class _PostScreenState extends State<PostScreen> {
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        // getMyJournals();
+        getNextPageJournals(widget.sId);
       }
     });
   }
@@ -157,6 +157,10 @@ class _PostScreenState extends State<PostScreen> {
 
   Future<void> getMyJournals(String? sId) async {
     await myJournalsBloc.getJournalsSnapshot(sId);
+  }
+
+  void getNextPageJournals(String? sId) async {
+    await myJournalsBloc.getNextPageJournalsSnapshot(sId);
   }
 }
 
