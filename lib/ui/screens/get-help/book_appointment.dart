@@ -566,210 +566,222 @@ class _DayPickerState extends State<DayPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11.5),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Select time Slot',
-                style: GoogleFonts.signika(fontSize: 16),
-              ),
-              InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child:
-                    SvgPicture.asset('assets/images/canclewithbackgroung.svg'),
-              )
-            ],
+    return Container(
+      height: 60.h,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 11.5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Select time Slot',
+                  style: GoogleFonts.signika(fontSize: 16),
+                ),
+                InkWell(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: SvgPicture.asset(
+                      'assets/images/canclewithbackgroung.svg'),
+                )
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Container(
-          height: 36,
-          child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: days.length,
-              itemBuilder: ((context, index) {
-                return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: InkWell(
-                      onTap: () async {
-                        //_controller.selectedDay.value = days[index];
-                        _controller.selectedDay.value =
-                            DateFormat('EEEE').format(days[index]);
-                        _controller.selectedDate.value = days[index];
-                        setState(() {});
-                        await _controller.getTimeSlot(
-                            date: DateFormat('yyyy-MM-dd').format(days[index]),
-                            providerId: _consultantController
-                                .consultantModelController.value.provder!.sId);
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            height: 36,
+            child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: days.length,
+                itemBuilder: ((context, index) {
+                  return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: InkWell(
+                        onTap: () async {
+                          //_controller.selectedDay.value = days[index];
+                          _controller.selectedDay.value =
+                              DateFormat('EEEE').format(days[index]);
+                          _controller.selectedDate.value = days[index];
+                          setState(() {});
+                          await _controller.getTimeSlot(
+                              date:
+                                  DateFormat('yyyy-MM-dd').format(days[index]),
+                              providerId: _consultantController
+                                  .consultantModelController
+                                  .value
+                                  .provder!
+                                  .sId);
 
-                        print('+++++' + _controller.selectedDay.value);
-                        print('----' + DateFormat('EEEE').format(days[index]));
-                      },
-                      child: Obx(() => Container(
-                            decoration: BoxDecoration(
-                                color: _controller.selectedDay.value ==
-                                        DateFormat('EEEE').format(days[index])
-                                    ? SolhColors.green
-                                    : Colors.white,
-                                border: Border.all(color: SolhColors.green),
-                                borderRadius: BorderRadius.circular(18)),
-                            child: Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                // child: Text(
-                                //   getUpcomingMap().keys.elementAt(index),
-                                // ),
-                                child: Text(
-                                  DateFormat('EEEE').format(days[index]) ==
-                                          DateFormat('EEEE')
-                                              .format(DateTime.now())
-                                      ? 'Today'
-                                      : DateFormat('EEEE').format(days[index]),
-                                  style: GoogleFonts.montserrat(
-                                    color: _controller.selectedDay.value ==
+                          print('+++++' + _controller.selectedDay.value);
+                          print(
+                              '----' + DateFormat('EEEE').format(days[index]));
+                        },
+                        child: Obx(() => Container(
+                              decoration: BoxDecoration(
+                                  color: _controller.selectedDay.value ==
+                                          DateFormat('EEEE').format(days[index])
+                                      ? SolhColors.green
+                                      : Colors.white,
+                                  border: Border.all(color: SolhColors.green),
+                                  borderRadius: BorderRadius.circular(18)),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  // child: Text(
+                                  //   getUpcomingMap().keys.elementAt(index),
+                                  // ),
+                                  child: Text(
+                                    DateFormat('EEEE').format(days[index]) ==
                                             DateFormat('EEEE')
-                                                .format(days[index])
-                                        ? SolhColors.white
-                                        : SolhColors.green,
+                                                .format(DateTime.now())
+                                        ? 'Today'
+                                        : DateFormat('EEEE')
+                                            .format(days[index]),
+                                    style: GoogleFonts.montserrat(
+                                      color: _controller.selectedDay.value ==
+                                              DateFormat('EEEE')
+                                                  .format(days[index])
+                                          ? SolhColors.white
+                                          : SolhColors.green,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )),
-                    ));
-              })),
-        ),
-        SizedBox(
-          height: 40,
-        ),
-        Obx(() {
-          return _controller.loadingTimeSlots.value
-              ? Center(
-                  child: Text(
-                  'Loading Time Slots...',
-                  style: TextStyle(
-                    color: SolhColors.green,
-                  ),
-                ))
-              : _controller.timeSlotList.isEmpty
-                  ? Center(
-                      child: Text(
-                      'No Time Slots Available',
-                      style: TextStyle(
-                        color: SolhColors.grey196,
-                      ),
-                    ))
-                  : Wrap(
-                      children: _controller.timeSlotList.map((e) {
-                        return
-                            // DateTime.parse(
-                            //             DateFormat('yyyy-MM-dd').format(DateTime.now()) +
-                            //                 ' ' +
-                            //                 e.split('-')[1])
-                            //         .isBefore(DateTime.now())
-                            //     //      &&
-                            //     // _controller.selectedDay == 'Today'
-                            //     ? Container(
-                            //         child: Padding(
-                            //           padding: const EdgeInsets.symmetric(
-                            //               horizontal: 8, vertical: 8),
-                            //           child: Container(
-                            //             width: 110,
-                            //             decoration: BoxDecoration(
-                            //                 color: Colors.grey,
-                            //                 border: Border.all(color: SolhColors.green),
-                            //                 borderRadius: BorderRadius.circular(18)),
-                            //             child: Padding(
-                            //               padding: const EdgeInsets.all(8.0),
-                            //               child: Center(
-                            //                   child: Text(
-                            //                 e,
-                            //                 style: GoogleFonts.montserrat(
-                            //                   color: SolhColors.green,
-                            //                 ),
-                            //               )),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       )
-                            //:
-                            InkWell(
-                          onTap: () {
-                            if (_controller.bookedTimeSlots
-                                .contains(e.toString())) {
-                              Utility.showToast(
-                                  'This time slot is not available');
-                              return;
-                            }
-                            _controller.selectedTimeSlot.value = e;
-                            print(
-                                e + "++" + _controller.selectedTimeSlot.value);
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 8),
-                            child: Container(
-                              width: 110,
-                              decoration: BoxDecoration(
-                                  color: _controller.bookedTimeSlots
-                                          .contains(e.toString())
-                                      ? SolhColors.grey102
-                                      : _controller.selectedTimeSlot.value == e
-                                          ? SolhColors.green
-                                          : SolhColors.white,
-                                  border: Border.all(color: SolhColors.green),
-                                  borderRadius: BorderRadius.circular(18)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                    child: Text(
-                                  e,
-                                  style: GoogleFonts.montserrat(
-                                    color: _controller.selectedTimeSlot.value ==
-                                                e ||
-                                            _controller.bookedTimeSlots
-                                                .contains(e.toString())
-                                        ? SolhColors.white
-                                        : SolhColors.green,
-                                  ),
-                                )),
+                            )),
+                      ));
+                })),
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          Obx(() {
+            return _controller.loadingTimeSlots.value
+                ? Center(
+                    child: Text(
+                    'Loading Time Slots...',
+                    style: TextStyle(
+                      color: SolhColors.green,
+                    ),
+                  ))
+                : _controller.timeSlotList.isEmpty
+                    ? Center(
+                        child: Text(
+                        'No Time Slots Available',
+                        style: TextStyle(
+                          color: SolhColors.grey196,
+                        ),
+                      ))
+                    : Wrap(
+                        children: _controller.timeSlotList.map((e) {
+                          return
+                              // DateTime.parse(
+                              //             DateFormat('yyyy-MM-dd').format(DateTime.now()) +
+                              //                 ' ' +
+                              //                 e.split('-')[1])
+                              //         .isBefore(DateTime.now())
+                              //     //      &&
+                              //     // _controller.selectedDay == 'Today'
+                              //     ? Container(
+                              //         child: Padding(
+                              //           padding: const EdgeInsets.symmetric(
+                              //               horizontal: 8, vertical: 8),
+                              //           child: Container(
+                              //             width: 110,
+                              //             decoration: BoxDecoration(
+                              //                 color: Colors.grey,
+                              //                 border: Border.all(color: SolhColors.green),
+                              //                 borderRadius: BorderRadius.circular(18)),
+                              //             child: Padding(
+                              //               padding: const EdgeInsets.all(8.0),
+                              //               child: Center(
+                              //                   child: Text(
+                              //                 e,
+                              //                 style: GoogleFonts.montserrat(
+                              //                   color: SolhColors.green,
+                              //                 ),
+                              //               )),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       )
+                              //:
+                              InkWell(
+                            onTap: () {
+                              if (_controller.bookedTimeSlots
+                                  .contains(e.toString())) {
+                                Utility.showToast(
+                                    'This time slot is not available');
+                                return;
+                              }
+                              _controller.selectedTimeSlot.value = e;
+                              print(e +
+                                  "++" +
+                                  _controller.selectedTimeSlot.value);
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 8),
+                              child: Container(
+                                width: 110,
+                                decoration: BoxDecoration(
+                                    color: _controller.bookedTimeSlots
+                                            .contains(e.toString())
+                                        ? SolhColors.grey102
+                                        : _controller.selectedTimeSlot.value ==
+                                                e
+                                            ? SolhColors.green
+                                            : SolhColors.white,
+                                    border: Border.all(color: SolhColors.green),
+                                    borderRadius: BorderRadius.circular(18)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: Text(
+                                    e,
+                                    style: GoogleFonts.montserrat(
+                                      color:
+                                          _controller.selectedTimeSlot.value ==
+                                                      e ||
+                                                  _controller.bookedTimeSlots
+                                                      .contains(e.toString())
+                                              ? SolhColors.white
+                                              : SolhColors.green,
+                                    ),
+                                  )),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                    );
-        }),
-        Expanded(
-          child: SizedBox(),
-        ),
-        Obx(() {
-          return SizedBox(
-              width: 80.w,
-              child: _controller.loadingTimeSlots.value
-                  ? Container()
-                  : SolhGreenButton(
-                      child: Text("Continue"),
-                      onPressed: () {
-                        if (_controller.selectedTimeSlot.isEmpty) {
-                          Utility.showToast('Please select time slot');
-                          return;
-                        }
-                        _controller.showBookingDetail.value = true;
-                      },
-                    ));
-        }),
-        SizedBox(
-          height: 24,
-        )
-      ],
+                          );
+                        }).toList(),
+                      );
+          }),
+          Expanded(
+            child: SizedBox(),
+          ),
+          Obx(() {
+            return SizedBox(
+                width: 80.w,
+                child: _controller.loadingTimeSlots.value
+                    ? Container()
+                    : SolhGreenButton(
+                        child: Text("Continue"),
+                        onPressed: () {
+                          if (_controller.selectedTimeSlot.isEmpty) {
+                            Utility.showToast('Please select time slot');
+                            return;
+                          }
+                          _controller.showBookingDetail.value = true;
+                        },
+                      ));
+          }),
+          SizedBox(
+            height: 24,
+          )
+        ],
+      ),
     );
   }
 

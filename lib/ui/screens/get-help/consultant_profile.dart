@@ -307,7 +307,7 @@ class BookAppointmentButton extends StatelessWidget {
         showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            constraints: BoxConstraints(maxHeight: 80.h),
+            //constraints: BoxConstraints(maxHeight: 80.h),
             builder: (BuildContext context) {
               return Obx(() {
                 return _controller.showBookingDetail.value
@@ -373,20 +373,22 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
     return Obx(() {
       return _bookingController.showBookingDetail.value
           ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              // padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Enter details below',
-                      style: GoogleFonts.signika(fontSize: 16),
-                    ),
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: 80.h,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Enter details below',
+                        style: GoogleFonts.signika(fontSize: 16),
+                      ),
+                      Column(children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -584,12 +586,9 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
                           height: 24,
                         ),
                         BookAppointmentWidget(),
-                        SizedBox(
-                          height: 200,
-                        )
-                      ],
-                    )
-                  ],
+                      ])
+                    ],
+                  ),
                 ),
               ),
             )
