@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
-import 'package:solh/ui/screens/notification/interface/notification_interface.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';

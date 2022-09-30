@@ -758,6 +758,10 @@ class _DayPickerState extends State<DayPicker> {
                   : SolhGreenButton(
                       child: Text("Continue"),
                       onPressed: () {
+                        if (_controller.selectedTimeSlot.isEmpty) {
+                          Utility.showToast('Please select time slot');
+                          return;
+                        }
                         _controller.showBookingDetail.value = true;
                       },
                     ));
