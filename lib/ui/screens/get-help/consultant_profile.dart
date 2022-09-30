@@ -307,7 +307,7 @@ class BookAppointmentButton extends StatelessWidget {
         showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            constraints: BoxConstraints(maxHeight: 80.h),
+            //constraints: BoxConstraints(maxHeight: 80.h),
             builder: (BuildContext context) {
               return Obx(() {
                 return _controller.showBookingDetail.value
@@ -373,216 +373,222 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
     return Obx(() {
       return _bookingController.showBookingDetail.value
           ? Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              // padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: MediaQuery.of(context).viewInsets,
               child: Container(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Enter details below',
-                          style: GoogleFonts.signika(fontSize: 16),
-                        ),
-                        SizedBox(
-                          height: 14,
-                        ),
-                        Text(
-                          'Mobile No.',
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Container(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffA6A6A6),
-                              ),
-                              borderRadius: BorderRadius.circular(4),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                height: 80.h,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Enter details below',
+                        style: GoogleFonts.signika(fontSize: 16),
+                      ),
+                      Column(children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 14,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
+                            Text(
+                              'Mobile No.',
+                              style: GoogleFonts.signika(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff666666),
                               ),
-                              child: TextField(
-                                controller: _bookingController
-                                    .mobileNotextEditingController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Container(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffA6A6A6),
+                                  ),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                  child: TextField(
+                                    controller: _bookingController
+                                        .mobileNotextEditingController,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Email-Id.',
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),
-                          ),
+                            )
+                          ],
                         ),
                         SizedBox(
-                          height: 4,
+                          height: 24,
                         ),
-                        Container(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Color(0xffA6A6A6),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email-Id.',
+                              style: GoogleFonts.signika(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff666666),
                               ),
-                              borderRadius: BorderRadius.circular(4),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              child: TextField(
-                                controller: _bookingController
-                                    .emailTextEditingController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Container(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Color(0xffA6A6A6),
+                                  ),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                  child: TextField(
+                                    controller: _bookingController
+                                        .emailTextEditingController,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Preffered date & time.',
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),
-                          ),
+                            )
+                          ],
                         ),
                         SizedBox(
-                          height: 4,
+                          height: 24,
                         ),
-                        InkWell(
-                          onTap: () {
-                            _bookingController.showBookingDetail.value = false;
-                          },
-                          child: Container(
-                            child: Container(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Preffered date & time.',
+                              style: GoogleFonts.signika(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff666666),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _bookingController.showBookingDetail.value =
+                                    false;
+                              },
+                              child: Container(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xffA6A6A6),
+                                    ),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Container(
+                                    height: 48,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            _bookingController
+                                                        .selectedDay.value !=
+                                                    ''
+                                                ? ('Today' ==
+                                                        _bookingController
+                                                            .selectedDay.value
+                                                    ? 'Today'
+                                                    : '${_bookingController.selectedDay.value}')
+                                                : 'Select',
+                                            style: GoogleFonts.signika(
+                                                color: SolhColors.green)),
+                                        Row(
+                                          children: [
+                                            Text(
+                                                _bookingController
+                                                    .selectedTimeSlot.value,
+                                                style: GoogleFonts.signika(
+                                                  color: SolhColors.green,
+                                                )),
+                                            Icon(
+                                              Icons.arrow_drop_down,
+                                              color: SolhColors.green,
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'How Can we help ? (optional)',
+                              style: GoogleFonts.signika(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff666666),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
                               ),
+                              height: MediaQuery.of(context).size.height * 0.17,
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Color(0xffA6A6A6),
                                 ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
-                              child: Container(
-                                height: 48,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                        _bookingController.selectedDay.value !=
-                                                ''
-                                            ? ('Today' ==
-                                                    _bookingController
-                                                        .selectedDay.value
-                                                ? 'Today'
-                                                : '${_bookingController.selectedDay.value}')
-                                            : 'Select',
-                                        style: GoogleFonts.signika(
-                                            color: SolhColors.green)),
-                                    Row(
-                                      children: [
-                                        Text(
-                                            _bookingController
-                                                .selectedTimeSlot.value,
-                                            style: GoogleFonts.signika(
-                                              color: SolhColors.green,
-                                            )),
-                                        Icon(
-                                          Icons.arrow_drop_down,
-                                          color: SolhColors.green,
-                                        )
-                                      ],
-                                    )
-                                  ],
+                              child: TextField(
+                                controller:
+                                    _bookingController.catTextEditingController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
                                 ),
                               ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'How Can we help ? (optional)',
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff666666),
-                          ),
+                            )
+                          ],
                         ),
                         SizedBox(
-                          height: 4,
+                          height: 24,
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                          ),
-                          height: MediaQuery.of(context).size.height * 0.17,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Color(0xffA6A6A6),
-                            ),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: TextField(
-                            controller:
-                                _bookingController.catTextEditingController,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    BookAppointmentWidget(),
-                    SizedBox(
-                      height: 280,
-                    ),
-                  ],
+                        BookAppointmentWidget(),
+                      ])
+                    ],
+                  ),
                 ),
               ),
             )

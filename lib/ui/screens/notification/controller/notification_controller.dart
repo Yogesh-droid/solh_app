@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/ui/screens/notification/interface/notification_interface.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/ui/screens/notification/services/notification_services.dart';
 
