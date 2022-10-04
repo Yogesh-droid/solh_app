@@ -63,12 +63,12 @@ class _PsychologyTestPageState extends State<PsychologyTestPage> {
       backgroundColor: Colors.white,
       elevation: isAtTop ? 0 : 5,
       actions: [
-        MaterialButton(
-            onPressed: () {},
-            child: Text(
-              'Skip',
-              style: SolhTextStyles.GreenBorderButtonText,
-            ))
+        // MaterialButton(
+        //     onPressed: () {},
+        //     child: Text(
+        //       'Skip',
+        //       style: SolhTextStyles.GreenBorderButtonText,
+        //     ))
       ],
     );
   }

@@ -58,8 +58,6 @@ class TestResultPage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            constraints: BoxConstraints(
-                                minHeight: 206, minWidth: double.maxFinite),
                             padding: EdgeInsets.all(8),
                             child: ReadMoreText(
                               psychologyTestController.testResultModel.value

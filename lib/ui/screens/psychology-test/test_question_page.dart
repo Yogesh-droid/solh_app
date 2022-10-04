@@ -43,7 +43,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
           : Column(
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height - 150,
+                  height: MediaQuery.of(context).size.height * 0.7,
                   child: PageView(
                     physics: NeverScrollableScrollPhysics(),
                     controller: controller,

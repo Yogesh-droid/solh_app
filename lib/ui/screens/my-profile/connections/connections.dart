@@ -39,7 +39,6 @@ class _ConnectionsState extends State<Connections> {
 
   @override
   void initState() {
-    // TODO: implement initState
     chatListController.chatListController();
   }
 

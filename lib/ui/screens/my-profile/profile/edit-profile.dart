@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -29,7 +27,6 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:http/http.dart' as http;
 import '../../../../controllers/profile/anon_controller.dart';
-import '../../profile-setup/enter-full-name.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
@@ -56,13 +53,6 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       Get.put(EditProfileController());
 
   bool _isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-    //userBlocNetwork.getMyProfileSnapshot();
-  }
-
   String? _gender = "Other";
   String? _dob = "";
 
@@ -423,6 +413,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                 print(response.reasonPhrase);
                               }
 
+                              await userBlocNetwork.getMyProfileSnapshot();
                               setState(() {
                                 _isLoading = false;
                               });
