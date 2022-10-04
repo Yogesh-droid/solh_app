@@ -208,25 +208,27 @@ class NotificationScreen extends StatelessWidget {
           SizedBox(
             width: 12,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Wrap(
-                children: [
-                  Text(item.content ?? ''),
-                  // Text(' sent you '),
-                  // Text('connection request')
-                ],
-              ),
-              Text(
-                timeago.format(DateTime.parse(item.createdAt!)),
-                style: GoogleFonts.signika(
-                  color: Color(0xff666666),
-                  fontSize: 12,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Wrap(
+                  children: [
+                    Text(item.content ?? ''),
+                    // Text(' sent you '),
+                    // Text('connection request')
+                  ],
                 ),
-              )
-            ],
+                Text(
+                  timeago.format(DateTime.parse(item.createdAt!)),
+                  style: GoogleFonts.signika(
+                    color: Color(0xff666666),
+                    fontSize: 12,
+                  ),
+                )
+              ],
+            ),
           )
         ],
       );
@@ -241,25 +243,27 @@ class NotificationScreen extends StatelessWidget {
           SizedBox(
             width: 12,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Wrap(
-                children: [
-                  Text(item.content ?? ''),
-                  // Text(' by '),
-                  // Text(item['causedBy'])
-                ],
-              ),
-              Text(
-                timeago.format(DateTime.parse(item.createdAt!)),
-                style: GoogleFonts.signika(
-                  color: Color(0xff666666),
-                  fontSize: 12,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Wrap(
+                  children: [
+                    Text(item.content ?? ''),
+                    // Text(' by '),
+                    // Text(item['causedBy'])
+                  ],
                 ),
-              )
-            ],
+                Text(
+                  timeago.format(DateTime.parse(item.createdAt!)),
+                  style: GoogleFonts.signika(
+                    color: Color(0xff666666),
+                    fontSize: 12,
+                  ),
+                )
+              ],
+            ),
           )
         ],
       );
