@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
@@ -59,6 +60,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   GetHelpController getHelpController = Get.find();
   SearchMarketController searchMarketController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
+  ConnectionController connectionController = Get.find();
   BottomNavigatorController _bottomNavigatorController = Get.find();
 
   @override
@@ -755,6 +757,8 @@ class SolhVolunteers extends StatelessWidget {
   final String? uid;
   final String? userType;
 
+  ConnectionController connectionController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -937,11 +941,12 @@ class SolhVolunteers extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ConnectProfileScreen(
-                              sId: sId!,
-                              uid: uid!,
-                            )));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => ConnectProfileScreen(
+                    //           sId: sId!,
+                    //           uid: uid!,
+                    //         )));
+                    connectionController.addConnection(uid!);
                   },
                   child: Container(
                     height: 32,
