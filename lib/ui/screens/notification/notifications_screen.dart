@@ -202,6 +202,7 @@ class NotificationScreen extends StatelessWidget {
       return Row(
         children: [
           CircleAvatar(
+            backgroundColor: SolhColors.greyS200,
             backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),
@@ -237,6 +238,7 @@ class NotificationScreen extends StatelessWidget {
       return Row(
         children: [
           CircleAvatar(
+            backgroundColor: SolhColors.greyS200,
             backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),
