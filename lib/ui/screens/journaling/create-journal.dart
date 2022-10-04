@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,8 +30,12 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
+import '../../../controllers/profile/anon_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
+import '../../../widgets_constants/buttons/custom_buttons.dart';
+import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/anonymous/pick_user_name_screen.dart';
+import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
 
 // Map selectedItems = {};
@@ -103,46 +109,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         body: Stack(
           children: [
             SingleChildScrollView(
-              /*  child: StreamBuilder<UserModel?>(
-                  stream: userBlocNetwork.userStateStream,
-                  builder: (context, userSnapshot) {
-                    if (userSnapshot.hasData)
-                      return Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 2.h),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            UsernameHeader(
-                              userModel: userSnapshot.requireData,
-                              onTypeChanged: (value) {
-                                print("Changed to $value");
-                                _journalType = value;
-                              },
-                            ),
-                            SizedBox(height: 2.h),
-                            JournalTextField(),
-                            SizedBox(height: 1.h),
-                            getFeelingTitle(),
-                            SizedBox(
-                              height: 1.h,
-                            ),
-                            FeelingsContainer(
-                              userSnapshot.requireData,
-                              onFeelingsChanged: (feelings) {
-                                print("feelings changed to: $feelings");
-                              },
-                            ),
-                            SizedBox(height: 2.h),
-                            getMediaContainer(),
-                            SizedBox(height: 10.h),
-                            //getCustomFeelingTextBox(),
-                          ],
-                        ),
-                      );
-                    return Center(child: MyLoader());
-                  }), */
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                 child: Column(
@@ -242,10 +208,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
     if (_croppedFile != null ||
         journalPageController.selectedDiary.value.mediaType != null) {
-      // Map<String, dynamic> response =
-      //     journalPageController.selectedDiary.value.mediaType != null
-      //         ? {}
-      //         : await _uploadImage();
       List<String> feelings = [];
       feelingsController.selectedFeelingsId.value.forEach((element) {
         feelings.add(element);
@@ -1054,7 +1016,7 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
 }
 
 class UsernameHeader extends StatefulWidget {
-  const UsernameHeader(
+  UsernameHeader(
       {Key? key,
       required Function(String) onTypeChanged,
       required UserModel? userModel})
@@ -1062,7 +1024,7 @@ class UsernameHeader extends StatefulWidget {
         _userModel = userModel,
         super(key: key);
   final Function(String) _onTypeChanged;
-  final UserModel? _userModel;
+  UserModel? _userModel;
 
   @override
   _UsernameHeaderState createState() => _UsernameHeaderState();
@@ -1071,6 +1033,7 @@ class UsernameHeader extends StatefulWidget {
 class _UsernameHeaderState extends State<UsernameHeader> {
   JournalPageController journalPageController = Get.find();
   String _dropdownValue = "Publicaly";
+  AnonController _anonController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -1166,10 +1129,10 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                           child: Text("My Diary"),
                           value: "My_Diary",
                         ),
-                        // DropdownMenuItem(
-                        //   child: Text("Connections"),
-                        //   value: "Connections",
-                        // ),
+                        DropdownMenuItem(
+                          child: Text("Connections"),
+                          value: "Connections",
+                        ),
                       ]),
                 )
               : Container()
@@ -1185,8 +1148,9 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             journalPageController.isAnonymousSelected.value =
                 !journalPageController.isAnonymousSelected.value;
           } else {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => PickUsernameScreen()));
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => PickUsernameScreen()));\
+            openCreateAnonymousBottomSheet();
           }
         },
         child: Container(
@@ -1204,22 +1168,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   Widget getNormalStack(UserModel? userModel) {
     return Stack(
       children: [
-        //  AnimatedPositioned(
-        //     //// this is anonymous profile and normal profile is selected
-
-        //     left: journalPageController
-        //         .anonymousProfilePositionL.value,
-        //     top: journalPageController
-        //         .anonymousProfilePositionT.value,
-        //     duration: Duration(milliseconds: 500),
-        //     child: CircleAvatar(
-        //         backgroundColor: Colors.grey,
-        //         radius: journalPageController
-        //             .anonymousProfileRadius.value,
-        //         backgroundImage: CachedNetworkImageProvider(
-        //           userModel.anonymous!.profilePicture ??
-        //               "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-        //         )))
         getCircleImg(
           radius: journalPageController.anonymousProfileRadius.value,
           imgUrl: userModel!.anonymous != null
@@ -1229,18 +1177,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           top: journalPageController.anonymousProfilePositionT.value,
           left: journalPageController.anonymousProfilePositionL.value,
         ),
-        // AnimatedPositioned(
-        //   left: journalPageController.nomalProfilePositionL.value,
-        //   top: journalPageController.nomalProfilePositionT.value,
-        //   duration: Duration(milliseconds: 500),
-        //   child: CircleAvatar(
-        //       radius:
-        //           journalPageController.nomalProfileRadius.value,
-        //       backgroundImage: CachedNetworkImageProvider(
-        //         userModel.profilePicture ??
-        //             "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-        //       )),
-        // ),
         getCircleImg(
           radius: journalPageController.nomalProfileRadius.value,
           imgUrl: userModel.profilePicture ??
@@ -1278,14 +1214,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   Widget getAnonymousStack(UserModel? userModel) {
     return Stack(
       children: [
-        // AnimatedPositioned(
-        //     ////// this is normal profile and anonymous profile is selected
-        //     left: journalPageController
-        //         .anonymousProfilePositionL.value,
-        //     top: journalPageController
-        //         .anonymousProfilePositionT.value,
-        //     duration: Duration(milliseconds: 500),
-        //     child: ),
         getCircleImg(
           radius: journalPageController.anonymousProfileRadius.value,
           imgUrl: userModel!.profilePicture,
@@ -1293,22 +1221,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           left: journalPageController.anonymousProfilePositionL.value,
         ),
         userModel.anonymous != null
-            ?
-            // AnimatedPositioned(
-            //     left: journalPageController
-            //         .nomalProfilePositionL.value,
-            //     top: journalPageController
-            //         .nomalProfilePositionT.value,
-            //     duration: Duration(milliseconds: 500),
-            //     child: CircleAvatar(
-            //         backgroundColor: Colors.grey,
-            //         radius: journalPageController
-            //             .nomalProfileRadius.value,
-            //         backgroundImage: CachedNetworkImageProvider(
-            //           userModel.anonymous!.profilePicture ??
-            //               "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-            //         )))
-            getCircleImg(
+            ? getCircleImg(
                 radius: journalPageController.nomalProfileRadius.value,
                 imgUrl: userModel.anonymous!.profilePicture ??
                     "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
@@ -1355,6 +1268,20 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           )),
     );
   }
+
+  void openCreateAnonymousBottomSheet() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => AnonymousBottomSheet(onTap: () async {
+              await _anonController.createAnonProfile();
+              await userBlocNetwork.getMyProfileSnapshot();
+              Navigator.pop(context);
+              setState(() {
+                widget._userModel = userBlocNetwork.myData;
+              });
+            }));
+  }
 }
 
 class JournalTextField extends StatefulWidget {
@@ -1366,7 +1293,6 @@ class JournalTextField extends StatefulWidget {
 
 class _JournalTextFieldState extends State<JournalTextField> {
   JournalPageController journalPageController = Get.find();
-  ConnectionController _connectionController = Get.find();
   TagsController _tagsController = Get.put(TagsController());
 
   @override
@@ -1765,6 +1691,208 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
         ],
       ),
     );
+  }
+}
+
+class AnonymousBottomSheet extends StatefulWidget {
+  const AnonymousBottomSheet({Key? key, required Callback onTap})
+      : _onTap = onTap,
+        super(key: key);
+  final Callback _onTap;
+
+  @override
+  State<AnonymousBottomSheet> createState() => _AnonymousBottomSheetState();
+}
+
+class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
+  final AnonController _anonController = Get.find();
+
+  XFile? _xFile;
+
+  File? _croppedFile;
+
+  final TextEditingController _userNameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 600,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Container(
+              height: 5,
+              width: 20,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: SolhColors.grey),
+            ),
+          ),
+          Divider(
+            color: SolhColors.grey,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Anonymous Profile',
+            style: SolhTextStyles.JournalingUsernameText,
+          ),
+          Text(
+            'Post or leave a comment, join group, book \n appointment, etc anonymously.',
+            style: SolhTextStyles.JournalingHintText,
+            textAlign: TextAlign.center,
+          ),
+          getUserName(),
+          SizedBox(
+            height: 30,
+          ),
+          getDoneButton()
+        ],
+      ),
+    );
+  }
+
+  getUserName() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          if (_croppedFile != null)
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 6.5.w,
+                  child: CircleAvatar(
+                    radius: 6.w,
+                    backgroundImage: FileImage(_croppedFile!),
+                  ),
+                ),
+                Positioned(
+                    top: -2.h,
+                    right: -3.w,
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _croppedFile = null;
+                          });
+                        },
+                        icon: Icon(Icons.close)))
+              ],
+            )
+          else
+            Container(
+              height: 50,
+              width: 70,
+              child: AddProfilePictureIllustration(
+                onPressed: _pickImage,
+              ),
+            ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            children: [
+              Container(
+                width: 300,
+                child: ProfielTextField(
+                  hintText: "Anonymous Username",
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  textEditingController: _userNameController,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      _anonController.isNameTaken.value = false;
+                    }
+                    return value == ''
+                        ? "Required*"
+                        : value.length < 3
+                            ? "Username must be at least 3 characters long"
+                            : null;
+                  },
+                  onChanged: (val) async {
+                    print(_userNameController.text);
+                    _anonController.isNameTaken.value = false;
+                    if (val!.length >= 3) {
+                      _anonController.checkIfUserNameTaken(val);
+                      _anonController.userName.value = val;
+                    }
+                  },
+                ),
+              ),
+              Obx(() {
+                return _anonController.isNameTaken.value
+                    ? Text(
+                        "Username Already taken",
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : Container();
+              })
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+    print("picking image");
+    _xFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      // maxWidth: 640,
+      // maxHeight: 640,
+      // imageQuality: 50,
+    );
+    print(_xFile!.path.toString());
+    if (_xFile != null) {
+      final croppedFile = await ImageCropper().cropImage(
+          sourcePath: _xFile!.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+          ],
+          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Edit',
+                toolbarColor: SolhColors.white,
+                toolbarWidgetColor: Colors.black,
+                activeControlsWidgetColor: SolhColors.green,
+                initAspectRatio: CropAspectRatioPreset.square,
+                lockAspectRatio: true),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            )
+          ]);
+
+      _croppedFile = File(croppedFile!.path);
+      var response = await Network.uploadFileToServer(
+          "${APIConstants.api}/api/fileupload/anonymous",
+          "file",
+          _croppedFile!);
+
+      if (response["success"]) {
+        print("image uplaoded successfully");
+        _anonController.avtarImageUrl.value = response["imageUrl"];
+        _anonController.avtarType.value = response["mimetype"];
+      }
+      // Navigator.of(context).pop();
+      setState(() {});
+    }
+  }
+
+  getDoneButton() {
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SolhGreenButton(
+            height: 6.h,
+            child: Text("Next"),
+            onPressed: _anonController.isNameTaken.value
+                ? () {
+                    Utility.showToast('Username Already taken');
+                  }
+                : widget._onTap));
   }
 }
 

@@ -25,7 +25,7 @@ class GlobalSearchPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Color(0xfff6f6f8),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -57,8 +57,7 @@ class GlobalSearchPage extends StatelessWidget {
   Widget getSearchResult(BuildContext context) {
     return Obx(() => globalSearchController.isSearching.value
         ? getSearchShimmer()
-        : Container(
-            height: MediaQuery.of(context).size.height - 190,
+        : Expanded(
             child: ListView(shrinkWrap: false, children: [
               globalSearchController.globalSearchModel.value.connection != null
                   ? getPeopleView(context,
@@ -253,6 +252,9 @@ class GlobalSearchPage extends StatelessWidget {
                                   )));
                     },
                   ),
+                  Divider(
+                    color: SolhColors.grey,
+                  ),
                   Column(
                       children: List.generate(
                           postCount.length >= 2 ? 2 : postCount.length,
@@ -283,37 +285,35 @@ class GlobalSearchPage extends StatelessWidget {
   }
 
   Widget getPostTile(BuildContext context, PostCount postCount) {
-    return Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: PostTile(
-          onTapped: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => CommentScreen(
-                      journalModel: Journals(
-                          postedBy: PostedBy(
-                            name: postCount.userId!.name ?? '',
-                            sId: postCount.userId!.sId,
-                            uid: postCount.userId!.uid,
-                            profilePicture: postCount.userId!.profilePicture,
-                            isProvider: postCount.userId!.isProvider,
-                          ),
-                          id: postCount.sId,
-                          mediaUrl: postCount.mediaUrl,
-                          description: postCount.description,
-                          comments: postCount.comments,
-                          group: postCount.groupPostedIn != null
-                              ? Group(
-                                  sId: postCount.groupPostedIn!.sId,
-                                  groupImage:
-                                      postCount.groupPostedIn!.groupMediaUrl,
-                                  groupName: postCount.groupPostedIn!.groupName)
-                              : null,
-                          anonymousJournal: false),
-                      index: 0)),
-            );
-          },
-          postCount: postCount,
-        ));
+    return PostTile(
+      onTapped: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => CommentScreen(
+                  journalModel: Journals(
+                      postedBy: PostedBy(
+                        name: postCount.userId!.name ?? '',
+                        sId: postCount.userId!.sId,
+                        uid: postCount.userId!.uid,
+                        profilePicture: postCount.userId!.profilePicture,
+                        isProvider: postCount.userId!.isProvider,
+                      ),
+                      id: postCount.sId,
+                      mediaUrl: postCount.mediaUrl,
+                      description: postCount.description,
+                      comments: postCount.comments,
+                      group: postCount.groupPostedIn != null
+                          ? Group(
+                              sId: postCount.groupPostedIn!.sId,
+                              groupImage:
+                                  postCount.groupPostedIn!.groupMediaUrl,
+                              groupName: postCount.groupPostedIn!.groupName)
+                          : null,
+                      anonymousJournal: false),
+                  index: 0)),
+        );
+      },
+      postCount: postCount,
+    );
   }
 }

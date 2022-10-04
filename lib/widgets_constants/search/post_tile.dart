@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sizer/sizer.dart';
+import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/model/search/global_search_model.dart';
 import '../constants/colors.dart';
@@ -22,61 +25,72 @@ class PostTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: CachedNetworkImageProvider(
-                    _postCount!.postIn == 'Group'
-                        ? _postCount!.groupPostedIn!.groupMediaUrl ?? ''
-                        : _postCount!.userId!.profilePicture ?? ''),
-                radius: 30,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                      '${_postCount!.postIn == 'Group' ? _postCount!.groupPostedIn!.groupName ?? '' : _postCount!.userId!.name ?? ''}',
-                      style: SolhTextStyles.JournalingUsernameText),
-                  Row(
-                    children: [
-                      Text(
-                        _postCount!.postIn == 'Group'
-                            ? _postCount!.userId!.name ?? ''
-                            : '',
-                        style: SolhTextStyles.JournalingDescriptionText,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Icon(
-                        Icons.circle,
-                        color: SolhColors.grey,
-                        size: 8,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '${timeago.format(DateTime.parse(_postCount!.createdAt ?? ''))}',
-                        style: SolhTextStyles.JournalingDescriptionText,
-                      )
-                    ],
-                  ),
-                ],
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: CachedNetworkImageProvider(
+                      _postCount!.postIn == 'Group'
+                          ? _postCount!.groupPostedIn!.groupMediaUrl ?? ''
+                          : _postCount!.userId!.profilePicture ?? ''),
+                  radius: 30,
+                  child: _postCount!.postIn == 'Group'
+                      ? Align(
+                          alignment: Alignment.bottomRight,
+                          child: CircleAvatar(
+                            radius: 12,
+                            backgroundImage: CachedNetworkImageProvider(
+                                _postCount!.userId!.profilePicture ?? ''),
+                          ),
+                        )
+                      : Container(),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        '${_postCount!.postIn == 'Group' ? _postCount!.groupPostedIn!.groupName ?? '' : _postCount!.userId!.name ?? ''}',
+                        style: SolhTextStyles.JournalingUsernameText),
+                    Row(
+                      children: [
+                        Text(
+                          _postCount!.postIn == 'Group'
+                              ? _postCount!.userId!.name ?? ''
+                              : '',
+                          style: SolhTextStyles.JournalingDescriptionText,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.circle,
+                          color: SolhColors.grey,
+                          size: 8,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '${timeago.format(DateTime.parse(_postCount!.createdAt ?? ''))}',
+                          style: SolhTextStyles.JournalingDescriptionText,
+                        )
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
-          SizedBox(
-            height: 10,
-          ),
+
           Divider(
-            color: SolhColors.grey,
+            color: SolhColors.greyS200,
           ),
           SizedBox(
-            height: 10,
+            height: 5,
           ),
           // _postCount!.feelings != null && _postCount!.feelings!.isNotEmpty
           //     ? Text(
@@ -87,15 +101,16 @@ class PostTile extends StatelessWidget {
           // SizedBox(
           //   height: 5,
           // ),
-          ReadMoreText(
-            _postCount!.description ?? '',
-            style: SolhTextStyles.JournalingDescriptionText,
-            trimLines: 3,
-            trimMode: TrimMode.Line,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+            child: ReadMoreText(
+              _postCount!.description ?? '',
+              style: SolhTextStyles.JournalingDescriptionText,
+              trimLines: 3,
+              trimMode: TrimMode.Line,
+            ),
           ),
-          Divider(
-            color: SolhColors.grey,
-          ),
+
           _postCount!.mediaUrl != null
               ? _postCount!.mediaType == 'video/mp4'
                   ? Container()
@@ -108,10 +123,81 @@ class PostTile extends StatelessWidget {
                             Image.asset('assets/images/no-image-available.png'),
                       ),
                     )
-              : Container()
+              : Container(),
+          Divider(
+            color: SolhColors.grey,
+          ),
+          getInteractionButton(_postCount!),
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpDivider()
         ],
       ),
     );
+  }
+
+  getInteractionButton(PostCount journal) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.thumb_up_alt_outlined,
+                color: SolhColors.green,
+              ),
+              SizedBox(
+                width: 2.w,
+              ),
+              Text(
+                journal.likes.toString(),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: SolhColors.green,
+                ),
+              ),
+            ],
+          ),
+          Container(
+            width: 1,
+            height: 20,
+            color: SolhColors.green,
+          ),
+          Row(
+            children: [
+              Icon(
+                CupertinoIcons.chat_bubble,
+                color: SolhColors.green,
+              ),
+              SizedBox(
+                width: 2.w,
+              ),
+              Text(
+                journal.comments.toString(),
+                style: TextStyle(
+                  color: SolhColors.green,
+                  fontSize: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+    // return Container(
+    //     height: 50,
+    //     decoration: BoxDecoration(
+    //       border: Border.fromBorderSide(
+    //         BorderSide(
+    //           color: SolhColors.greyS200,
+    //           width: 1,
+    //         ),
+    //       ),
+    //     ),
+    //     child: );
   }
 
   Widget getShimmer(BuildContext context) {

@@ -48,6 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     // TODO: implement dispose
+    _controller.isVideoConnecting.value = false;
     SocketService.userLeft();
     SocketService.dispose();
     super.dispose();
@@ -181,42 +182,53 @@ class ChatAppbar extends StatelessWidget {
                 ),
               ],
             ),
-            InkWell(
-              onTap: () async {
-                Map<String, dynamic> body = {
-                  "uid": '0',
-                  "tokentype": "uid",
-                  "expiry": "",
-                  "role": "publisher",
-                  "sender": userBlocNetwork.id.toString(),
-                  "senderType": "seeker",
-                  "receiver": _sId,
-                  "receiverType": "seeker",
-                  "channel":
-                      (userBlocNetwork.id.toString() + '_' + _sId.toString()),
-                  "appointmentId": "",
-                  "callType": "cc",
-                  "callStatus": "initiated"
-                };
-                var value = await _controller.initiateVideoController(body);
-                if (value['success'] == true) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => VideoCallUser(
-                            channel: value['data']['channelName'],
-                            token: value['data']['rtcToken'],
-                            sId: _sId,
-                          ))));
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 24),
-                child: Icon(
-                  Icons.video_call_outlined,
-                  size: 34,
-                  color: SolhColors.green,
-                ),
-              ),
-            ),
+            Obx(() => _controller.isVideoConnecting.value
+                ? Padding(
+                    padding: const EdgeInsets.only(right: 24),
+                    child: Icon(
+                      Icons.video_call,
+                      size: 34,
+                      color: Colors.grey,
+                    ),
+                  )
+                : InkWell(
+                    onTap: () async {
+                      Map<String, dynamic> body = {
+                        "uid": '0',
+                        "tokentype": "uid",
+                        "expiry": "",
+                        "role": "publisher",
+                        "sender": userBlocNetwork.id.toString(),
+                        "senderType": "seeker",
+                        "receiver": _sId,
+                        "receiverType": "seeker",
+                        "channel": (userBlocNetwork.id.toString() +
+                            '_' +
+                            _sId.toString()),
+                        "appointmentId": "",
+                        "callType": "cc",
+                        "callStatus": "initiated"
+                      };
+                      var value =
+                          await _controller.initiateVideoController(body);
+                      if (value['success'] == true) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => VideoCallUser(
+                                  channel: value['data']['channelName'],
+                                  token: value['data']['rtcToken'],
+                                  sId: _sId,
+                                ))));
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 24),
+                      child: Icon(
+                        Icons.video_call_outlined,
+                        size: 34,
+                        color: SolhColors.green,
+                      ),
+                    ),
+                  )),
           ],
         ),
       ),

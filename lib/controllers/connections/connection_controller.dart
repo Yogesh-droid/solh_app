@@ -149,7 +149,6 @@ class ConnectionController extends GetxController {
       print(error);
       return {};
     });
-    await getMyConnection();
     await getAllConnection();
   }
 

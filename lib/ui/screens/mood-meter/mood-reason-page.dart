@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/controllers/my_diary/my_diary_controller.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -12,6 +16,9 @@ class MoodReasonPage extends StatefulWidget {
 
 class _MoodReasonPageState extends State<MoodReasonPage> {
   FocusNode _focusNode = FocusNode();
+  TextEditingController _reasonController = TextEditingController();
+  MoodMeterController meterController = Get.find();
+  MyDiaryController myDiaryController = Get.find();
   @override
   void initState() {
     // TODO: implement initState
@@ -55,6 +62,7 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
           ),
           TextFormField(
             focusNode: _focusNode,
+            controller: _reasonController,
             decoration: InputDecoration(
               labelText: "Tell us something ...",
               labelStyle: TextStyle(color: Colors.grey),
@@ -76,7 +84,15 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
           SolhGreenButton(
               height: 50,
               child: Text("Done"),
-              onPressed: () {
+              onPressed: () async {
+                try {
+                  meterController.saveReason(_reasonController.text);
+                  myDiaryController.getMyJournals(1);
+                  Utility.showToast('Successfully Saved to Diary');
+                  _focusNode.unfocus();
+                } on Exception catch (e) {
+                  // TODO
+                }
                 Navigator.pop(context);
               }),
         ]),

@@ -30,6 +30,8 @@ class ChatController extends GetxController {
 
   var convo = <Conversation>[].obs;
 
+  var isVideoConnecting = false.obs;
+
   var seenStatus = ''.obs;
 
   var currentSid;
@@ -92,7 +94,10 @@ class ChatController extends GetxController {
 
   Future initiateVideoController(body) async {
     isLoading(true);
+    isVideoConnecting(true);
+
     var response = await services.initiateVideo(body);
+    isVideoConnecting(false);
     isLoading(false);
     return response;
   }

@@ -43,7 +43,15 @@ class PeopleTile extends StatelessWidget {
                       style: SolhTextStyles.JournalingUsernameText,
                       overflow: TextOverflow.ellipsis),
                   SizedBox(
-                    width: 10,
+                    width: 6,
+                  ),
+                  Container(
+                    height: 12,
+                    width: 1,
+                    color: SolhColors.grey,
+                  ),
+                  SizedBox(
+                    width: 6,
                   ),
                   Row(
                     children: [
