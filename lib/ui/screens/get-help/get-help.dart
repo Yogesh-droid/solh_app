@@ -301,7 +301,11 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                 ? ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: 6,
+                                    itemCount: getHelpController
+                                        .topConsultantList
+                                        .value
+                                        .doctors!
+                                        .length,
                                     itemBuilder: (_, index) {
                                       print(getHelpController
                                           .topConsultantList

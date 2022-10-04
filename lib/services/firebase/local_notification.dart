@@ -24,6 +24,8 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
+      print('Message is receved while app is in foregroud');
+      print(event.notification.additionalData);
       event.complete(event.notification);
     });
 
