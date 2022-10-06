@@ -950,7 +950,7 @@ class SolhVolunteers extends StatelessWidget {
                     //           sId: sId!,
                     //           uid: uid!,
                     //         )));
-                    connectionController.addConnection(uid!);
+                    connectionController.addConnection(sId!);
                   },
                   child: Container(
                     height: 32,

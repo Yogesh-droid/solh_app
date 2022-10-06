@@ -222,17 +222,25 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class ProfileSetupAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const ProfileSetupAppBar(
-      {Key? key, required String title, VoidCallback? onBackButton
-      // required String subHeading
-      })
-      : _title = title,
+  const ProfileSetupAppBar({
+    Key? key,
+    required String title,
+    VoidCallback? onBackButton,
+    VoidCallback? onSkip,
+    bool? enableSkip,
+    // required String subHeading
+  })  : _title = title,
+        _enableSkip = enableSkip,
+        _onSkip = onSkip,
         _onBackButton = onBackButton,
+
         // _subHeading = subHeading,
         super(key: key);
 
   final String _title;
+  final bool? _enableSkip;
   final VoidCallback? _onBackButton;
+  final VoidCallback? _onSkip;
   // final String _subHeading;
 
   @override
@@ -242,6 +250,20 @@ class ProfileSetupAppBar extends StatelessWidget
         icon: Icon(CupertinoIcons.back),
         onPressed: _onBackButton,
       ),
+      actions: [
+        _enableSkip != null && _enableSkip!
+            ? Padding(
+                padding: EdgeInsets.only(right: 10.w, top: 1.h),
+                child: InkWell(
+                  onTap: () => _onSkip,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(color: SolhColors.green),
+                  ),
+                ),
+              )
+            : Container()
+      ],
       foregroundColor: Colors.black,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       elevation: 0,
