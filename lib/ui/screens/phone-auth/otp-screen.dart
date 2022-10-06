@@ -101,6 +101,7 @@ class _OTPScreenState extends State<OTPScreen> {
                       } else {
                         deviceType = 'IOS';
                       }
+
                       bool isSessionCookieCreated =
                           await SessionCookie.createSessionCookie(
                               idToken, fcmToken, oneSignalId, deviceType);
