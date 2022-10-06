@@ -193,7 +193,6 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                               MaterialPageRoute(builder: (context) {
                             return GroupDetailsPage(
                               group: groupList[index],
-                              isJoined: false,
                             );
                           }));
                         },

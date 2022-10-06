@@ -94,7 +94,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                           print(countryCode.dialCode);
                           print(countryCode.name);
                           _countryCode = countryCode.dialCode;
-                          country = countryCode.name;
+                          country = countryCode.code;
                           SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           await sharedPreferences.setString(
