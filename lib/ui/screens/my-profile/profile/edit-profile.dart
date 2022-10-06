@@ -2,12 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:country_code_picker/country_code.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
@@ -38,6 +41,7 @@ class EditMyProfileScreen extends StatefulWidget {
 class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   XFile? _xFile;
   File? _croppedFile;
+  String? country;
   TextEditingController _firstNameTextEditingController =
       TextEditingController();
   TextEditingController _lastNameTextEditingController =
@@ -55,6 +59,12 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   bool _isLoading = false;
   String? _gender = "Other";
   String? _dob = "";
+
+  @override
+  void initState() {
+    getSharedPtreferences();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -333,30 +343,91 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                     color: SolhColors.green,
                                   )),
                             ),
+                            SizedBox(
+                              height: 2.25.h,
+                            ),
                           ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Show Counselors from',
+                                style: SolhTextStyles.JournalingUsernameText,
+                              ),
+                              Text(
+                                'Choose the default country from which you want to \nget consultation.',
+                                style: SolhTextStyles.JournalingPostMenuText,
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              CountryCodePicker(
+                                favorite: ['IN', 'US', 'AU'],
+                                comparator: (a, b) =>
+                                    b.name!.compareTo(a.name!),
+                                builder: (CountryCode? countryCode) {
+                                  return Container(
+                                    height:
+                                        MediaQuery.of(context).size.height / 15,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: SolhColors.black166),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(4))),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            MediaQuery.of(context).size.height /
+                                                60),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${country}',
+                                          style: TextStyle(
+                                              color: SolhColors.green),
+                                        ),
+                                        Icon(
+                                          Icons.arrow_drop_down,
+                                          color: SolhColors.green,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                                // showDropDownButton: true,
+                                // showFlagDialog: true,
+                                showFlagMain: false,
+                                dialogSize: Size(double.infinity, 600),
+
+                                onChanged: (value) async {
+                                  SharedPreferences sharedPreferences =
+                                      await SharedPreferences.getInstance();
+                                  await sharedPreferences.setString(
+                                      'userCountry', value.code ?? '');
+                                  country = value.name;
+                                },
+                                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                                // initialSelection: 'IN',
+                                // optional. Shows only country name and flag when popup is closed.
+                                showOnlyCountryWhenClosed: false,
+
+                                showCountryOnly: true,
+                                // optional. aligns the flag and the Text left
+                                alignLeft: true,
+                              ),
+                              SizedBox(
+                                height: 2.25.h,
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: 1.h,
                         ),
-                        // TextFieldB(
-                        //   label: "DOB",
-                        //   textEditingController: _dobTextEditingController,
-                        // ),
-                        // Row(
-                        //   children: [
-                        //     Obx(() {
-                        //       return Checkbox(
-                        //           value: _ageController.isProvider.value,
-                        //           onChanged: (val) {
-                        //             _ageController.isProvider.value = val!;
-                        //           });
-                        //     }),
-                        //     Text(
-                        //       "I am provider",
-                        //       style: TextStyle(color: Color(0xFFA6A6A6)),
-                        //     ),
-                        //   ],
-                        // ),
                         Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 4.w, vertical: 4.h),
@@ -490,6 +561,11 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       Utility.showToast('Profile picture updated');
       userBlocNetwork.getMyProfileSnapshot();
     }
+  }
+
+  Future<void> getSharedPtreferences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    country = sharedPreferences.getString('userCountry');
   }
 }
 

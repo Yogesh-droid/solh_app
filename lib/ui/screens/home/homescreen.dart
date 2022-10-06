@@ -594,7 +594,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getAnnouncement() async {
-    await _journalPageController.getHeaderAnnounce();
+    _journalPageController.getHeaderAnnounce();
+    Map<String, dynamic> map = await _journalPageController.getAnnouncement();
+    openAnnouncement(map);
   }
 
   announcementMedia(Map<String, dynamic> value) {

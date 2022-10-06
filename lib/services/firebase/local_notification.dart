@@ -24,9 +24,12 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
-      print('Message is receved while app is in foregroud');
-      print(event.notification.additionalData);
-      event.complete(event.notification);
+      // print('Message is receved while app is in foregroud');
+      // print(event.notification.additionalData);
+      // event.complete(event.notification);
+      if (event.notification.additionalData!['route'] == 'call') {
+        showVideocallDialog(event.notification, globalNavigatorKey);
+      }
     });
 
     OneSignal.shared
@@ -90,7 +93,7 @@ class LocalNotification {
           } else {
             print(result.notification.additionalData!['route']);
             Future.delayed(Duration(seconds: 1), () {
-              showVideocallDialog(result, globalNavigatorKey);
+              showVideocallDialog(result.notification, globalNavigatorKey);
             });
           }
           break;
@@ -140,54 +143,70 @@ class LocalNotification {
     print(OneSignal.shared.getDeviceState());
   }
 
-  showVideocallDialog(OSNotificationOpenedResult result,
-      GlobalKey<NavigatorState> globalNavigatorKey) {
+  showVideocallDialog(
+      OSNotification result, GlobalKey<NavigatorState> globalNavigatorKey) {
     showDialog(
+        barrierDismissible: false,
         context: globalNavigatorKey.currentContext!,
         builder: (context) {
           return AlertDialog(
+            insetPadding: EdgeInsets.all(0),
             actionsPadding: EdgeInsets.all(8.0),
-            content: Text(
-              'Incoming video call',
-              style: SolhTextStyles.LandingTitleText,
-            ),
-            actions: [
-              SolhPinkBorderMiniButton(
-                child: Text(
-                  'Reject',
-                  style: SolhTextStyles.PinkBorderButtonText,
-                ),
-                onPressed: () {
-                  globalNavigatorKey.currentState!.pop();
-                },
+            content: Container(
+              height: 180,
+              child: Column(
+                children: [
+                  Text(
+                    result.rawPayload!['alert'],
+                    style: SolhTextStyles.LandingTitleText,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SolhPinkBorderMiniButton(
+                        child: Text(
+                          'Reject',
+                          style: SolhTextStyles.PinkBorderButtonText,
+                        ),
+                        onPressed: () {
+                          globalNavigatorKey.currentState!.pop();
+                        },
+                      ),
+                      SolhGreenMiniButton(
+                        child: Text(
+                          'Accept',
+                          style: SolhTextStyles.GreenButtonText,
+                        ),
+                        onPressed: () {
+                          Future.delayed(Duration(milliseconds: 500), () {
+                            globalNavigatorKey.currentState!.pop();
+                            globalNavigatorKey.currentState!.push(
+                              MaterialPageRoute(
+                                  builder: (context) => VideoCallUser(
+                                        sId: result.additionalData!['data']
+                                                    ["senderId"] !=
+                                                null
+                                            ? result.additionalData!['data']
+                                                ["senderId"]
+                                            : null,
+                                        channel: result.additionalData!['data']
+                                            ["channelName"],
+                                        token: result.additionalData!['data']
+                                            ["rtcToken"],
+                                      )),
+                            );
+                          });
+                        },
+                      )
+                    ],
+                  )
+                ],
               ),
-              SolhGreenMiniButton(
-                child: Text(
-                  'Accept',
-                  style: SolhTextStyles.GreenButtonText,
-                ),
-                onPressed: () {
-                  Future.delayed(Duration(milliseconds: 500), () {
-                    globalNavigatorKey.currentState!.pop();
-                    globalNavigatorKey.currentState!.push(
-                      MaterialPageRoute(
-                          builder: (context) => VideoCallUser(
-                                sId: result.notification.additionalData!['data']
-                                            ["senderId"] !=
-                                        null
-                                    ? result.notification
-                                        .additionalData!['data']["senderId"]
-                                    : null,
-                                channel: result.notification
-                                    .additionalData!['data']["channelName"],
-                                token: result.notification
-                                    .additionalData!['data']["rtcToken"],
-                              )),
-                    );
-                  });
-                },
-              )
-            ],
+            ),
           );
         });
   }
