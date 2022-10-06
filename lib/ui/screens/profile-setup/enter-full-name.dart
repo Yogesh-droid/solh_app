@@ -115,7 +115,8 @@ class EnterNamePage extends StatelessWidget {
                   hintText: "Firstname",
                   // autovalidateMode: AutovalidateMode.onUserInteraction,
                   textEditingController: _firstnameEditingController,
-                  validator: (value) => value == '' ? "Required*" : null,
+                  validator: (value) =>
+                      value.toString().trim() == '' ? "Required*" : null,
                 ),
               ),
               SizedBox(

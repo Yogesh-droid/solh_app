@@ -116,208 +116,203 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
           menuButton: getpopUpMenu(),
         ),
         body: widget._username != null
-            ? GetBuilder<ConnectionController>(
-                init: connectionController,
-                builder: (connectionController) {
-                  return connectionController.isLoading.value
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : connectionController.userModel.value.lastName == null
-                          ? Center(
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.2,
-                                    ),
-                                    Icon(
-                                      Icons.error,
-                                      color: Colors.grey,
-                                      size: 100,
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "User not found",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 20),
-                                    )
-                                  ],
-                                ),
+            ? Obx(() {
+                return connectionController.isLoading.value
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : connectionController.userModel.value.lastName == null
+                        ? Center(
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.2,
+                                  ),
+                                  Icon(
+                                    Icons.error,
+                                    color: Colors.grey,
+                                    size: 100,
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "User not found",
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 20),
+                                  )
+                                ],
                               ),
-                            )
-                          : NestedScrollView(
-                              headerSliverBuilder:
-                                  (context, innerBoxIsScrolled) => [
-                                SliverList(
-                                  delegate: SliverChildListDelegate([
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(height: 2.5.h),
-                                        CircleAvatar(
-                                          radius: 6.5.h,
-                                          backgroundColor: Color(0xFFD9D9D9),
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white,
-                                            radius: 6.h,
-                                            backgroundImage:
-                                                CachedNetworkImageProvider(
-                                                    connectionController
+                            ),
+                          )
+                        : NestedScrollView(
+                            headerSliverBuilder:
+                                (context, innerBoxIsScrolled) => [
+                              SliverList(
+                                delegate: SliverChildListDelegate([
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(height: 2.5.h),
+                                      CircleAvatar(
+                                        radius: 6.5.h,
+                                        backgroundColor: Color(0xFFD9D9D9),
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 6.h,
+                                          backgroundImage:
+                                              CachedNetworkImageProvider(
+                                                  connectionController
+                                                          .userModel
+                                                          .value
+                                                          .profilePicture ??
+                                                      ""),
+                                        ),
+                                      ),
+                                      SizedBox(height: 2.h),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                              connectionController.userModel
+                                                      .value.firstName ??
+                                                  "",
+                                              style: TextStyle(fontSize: 21)),
+                                          //Icon(Icons.people, color: SolhColors.grey)
+                                        ],
+                                      ),
+
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          GetBadge(
+                                              userType: connectionController
+                                                  .userModel.value.userType),
+                                        ],
+                                      ),
+                                      // Text(
+                                      //   userProfileSnapshot.requireData.userType ?? "",
+                                      //   style: SolhTextStyles.GreenBorderButtonText,
+                                      // ),
+                                      SizedBox(height: 1.5.h),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 18),
+                                        child: Text(
+                                            connectionController
+                                                    .userModel.value.bio ??
+                                                "",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontSize: 16)),
+                                      ),
+                                      SizedBox(height: 3.h),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.thumb_up,
+                                                    size: 18,
+                                                    color: SolhColors.green,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 2.w,
+                                                  ),
+                                                  Obx(() => Text(
+                                                        (connectionController
+                                                                    .userModel
+                                                                    .value
+                                                                    .journalLikeCount ??
+                                                                0)
+                                                            .toString(),
+                                                        style: SolhTextStyles
+                                                                .GreenBorderButtonText
+                                                            .copyWith(
+                                                                fontSize: 18),
+                                                      )),
+                                                ],
+                                              ),
+                                              Text("Likes"),
+                                            ],
+                                          ),
+                                          // Divider(),
+                                          Column(
+                                            children: [
+                                              Obx(() => Text(
+                                                    (connectionController
+                                                                .userModel
+                                                                .value
+                                                                .connectionCount ??
+                                                            0)
+                                                        .toString(),
+                                                    style: SolhTextStyles
+                                                            .GreenBorderButtonText
+                                                        .copyWith(fontSize: 18),
+                                                  )),
+                                              Text("Connections"),
+                                            ],
+                                          ),
+                                          // Divider(),
+                                          // Column(
+                                          //   children: [
+                                          //     Text(
+                                          //       '17',
+                                          //       style:
+                                          //           SolhTextStyles.GreenBorderButtonText
+                                          //               .copyWith(fontSize: 18),
+                                          //     ),
+                                          //     Text("Reviews"),
+                                          //   ],
+                                          // )
+                                        ],
+                                      ),
+                                      SizedBox(height: 3.h),
+                                      recivedConnectionRequest
+                                              .contains(widget._sId)
+                                          ? SolhGreenButton(
+                                              onPressed: () async {
+                                                await connectionController
+                                                    .addConnection(
+                                                        connectionController
                                                             .userModel
                                                             .value
-                                                            .profilePicture ??
-                                                        ""),
-                                          ),
-                                        ),
-                                        SizedBox(height: 2.h),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                                connectionController.userModel
-                                                        .value.firstName ??
-                                                    "",
-                                                style: TextStyle(fontSize: 21)),
-                                            //Icon(Icons.people, color: SolhColors.grey)
-                                          ],
-                                        ),
+                                                            .sId!);
+                                              },
+                                              width: 90.w,
+                                              height: 6.3.h,
+                                              child: Text("Accept"))
+                                          : SolhGreenButton(
+                                              onPressed: () async {
+                                                await connectionController
+                                                    .addConnection(
+                                                        connectionController
+                                                            .userModel
+                                                            .value
+                                                            .sId!);
+                                              },
+                                              width: 90.w,
+                                              height: 6.3.h,
+                                              child: Text("Connect/Join")),
 
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            GetBadge(
-                                                userType: connectionController
-                                                    .userModel.value.userType),
-                                          ],
-                                        ),
-                                        // Text(
-                                        //   userProfileSnapshot.requireData.userType ?? "",
-                                        //   style: SolhTextStyles.GreenBorderButtonText,
-                                        // ),
-                                        SizedBox(height: 1.5.h),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 18),
-                                          child: Text(
-                                              connectionController
-                                                      .userModel.value.bio ??
-                                                  "",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(fontSize: 16)),
-                                        ),
-                                        SizedBox(height: 3.h),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Icon(
-                                                      Icons.thumb_up,
-                                                      size: 18,
-                                                      color: SolhColors.green,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 2.w,
-                                                    ),
-                                                    Obx(() => Text(
-                                                          (connectionController
-                                                                      .userModel
-                                                                      .value
-                                                                      .journalLikeCount ??
-                                                                  0)
-                                                              .toString(),
-                                                          style: SolhTextStyles
-                                                                  .GreenBorderButtonText
-                                                              .copyWith(
-                                                                  fontSize: 18),
-                                                        )),
-                                                  ],
-                                                ),
-                                                Text("Likes"),
-                                              ],
-                                            ),
-                                            // Divider(),
-                                            Column(
-                                              children: [
-                                                Obx(() => Text(
-                                                      (connectionController
-                                                                  .userModel
-                                                                  .value
-                                                                  .connectionCount ??
-                                                              0)
-                                                          .toString(),
-                                                      style: SolhTextStyles
-                                                              .GreenBorderButtonText
-                                                          .copyWith(
-                                                              fontSize: 18),
-                                                    )),
-                                                Text("Connections"),
-                                              ],
-                                            ),
-                                            // Divider(),
-                                            // Column(
-                                            //   children: [
-                                            //     Text(
-                                            //       '17',
-                                            //       style:
-                                            //           SolhTextStyles.GreenBorderButtonText
-                                            //               .copyWith(fontSize: 18),
-                                            //     ),
-                                            //     Text("Reviews"),
-                                            //   ],
-                                            // )
-                                          ],
-                                        ),
-                                        SizedBox(height: 3.h),
-                                        recivedConnectionRequest
-                                                .contains(widget._sId)
-                                            ? SolhGreenButton(
-                                                onPressed: () async {
-                                                  await connectionController
-                                                      .addConnection(
-                                                          connectionController
-                                                              .userModel
-                                                              .value
-                                                              .sId!);
-                                                },
-                                                width: 90.w,
-                                                height: 6.3.h,
-                                                child: Text("Accept"))
-                                            : SolhGreenButton(
-                                                onPressed: () async {
-                                                  await connectionController
-                                                      .addConnection(
-                                                          connectionController
-                                                              .userModel
-                                                              .value
-                                                              .sId!);
-                                                },
-                                                width: 90.w,
-                                                height: 6.3.h,
-                                                child: Text("Connect/Join")),
-
-                                        SizedBox(height: 3.h),
-                                      ],
-                                    ),
-                                  ]),
-                                )
-                              ],
-                              body: TabView(sId: widget._sId),
-                            );
-                })
+                                      SizedBox(height: 3.h),
+                                    ],
+                                  ),
+                                ]),
+                              )
+                            ],
+                            body: TabView(sId: widget._sId),
+                          );
+              })
             : getUserAnalytics());
   }
 
@@ -470,16 +465,21 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                                       .requireData.sId ??
                                                   '',
                                             )))
-                                : await connectionController
-                                    .addConnection(widget._sId);
+                                : (widget.alReadySentRequest
+                                    ? connectionController
+                                        .deleteConnectionRequest(widget._sId)
+                                    : await connectionController
+                                        .addConnection(widget._sId));
                           },
                           width: 90.w,
                           height: 6.3.h,
-                          child: widget.isMyConnection
-                              ? Text('Message')
-                              : (widget.alReadySentRequest
-                                  ? Text('Pending')
-                                  : Text("Connect/Join")),
+                          child: Builder(builder: (context) {
+                            return widget.isMyConnection
+                                ? Text('Message')
+                                : (widget.alReadySentRequest
+                                    ? Text('Cancel')
+                                    : Text("Connect/Join"));
+                          }),
                         ),
                         SizedBox(height: 3.h),
                         widget.isMyConnection

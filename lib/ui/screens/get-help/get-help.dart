@@ -377,6 +377,11 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                       bio: getHelpController.solhVolunteerList
                                               .value.provider![index].bio ??
                                           '',
+                                      isInSendRequest:
+                                          checkIfAlreadyInSendConnection(
+                                        getHelpController.solhVolunteerList
+                                            .value.provider![index].sId!,
+                                      ),
                                       name: getHelpController.solhVolunteerList
                                               .value.provider![index].name ??
                                           '',
@@ -435,6 +440,17 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             ),
           ));
     });
+  }
+
+  bool checkIfAlreadyInSendConnection(String sId) {
+    var isInConnection = false;
+    connectionController.sentConnections.value.forEach((element) {
+      if (sId == element.sId) {
+        isInConnection = true;
+      }
+    });
+    print('++++' + sId + isInConnection.toString());
+    return isInConnection;
   }
 
   SolhAppBar getAppBar() {
@@ -743,6 +759,7 @@ class SolhVolunteers extends StatelessWidget {
       required this.name,
       required this.bio,
       this.imgUrl,
+      this.isInSendRequest,
       this.sId,
       this.comments,
       this.connections,
@@ -757,12 +774,13 @@ class SolhVolunteers extends StatelessWidget {
   final String? sId;
   final String? likes;
   final String? connections;
+  final bool? isInSendRequest;
   final String? comments;
   final String? uid;
   final String? userType;
 
   ConnectionController connectionController = Get.find();
-
+  //optimization needed in cancle and connect
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -940,48 +958,105 @@ class SolhVolunteers extends StatelessWidget {
                     ],
                   ),
                 ),
+                Obx(() {
+                  return SizedBox(
+                    height: getConnectionIdBySId(sId!) != '' ? 17 : 33,
+                  );
+                }),
+                Obx(() {
+                  return getConnectionIdBySId(sId!) != ''
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Request Sent',
+                                style: GoogleFonts.signika(
+                                  fontSize: 12,
+                                  color: Color(0xffA6A6A6),
+                                )),
+                            Icon(
+                              Icons.done,
+                              color: Color(0xffA6A6A6),
+                              size: 15,
+                            )
+                          ],
+                        )
+                      : Container();
+                }),
                 SizedBox(
-                  height: 33,
+                  height: 5,
                 ),
-                InkWell(
-                  onTap: () {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => ConnectProfileScreen(
-                    //           sId: sId!,
-                    //           uid: uid!,
-                    //         )));
-                    connectionController.addConnection(uid!);
-                  },
-                  child: Container(
-                    height: 32,
-                    width: 148,
-                    decoration: BoxDecoration(
-                        color: SolhColors.green,
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/images/connect.svg',
-                            height: 14,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            'Connect',
-                            style: GoogleFonts.signika(
-                              fontSize: 14,
-                              color: Colors.white,
+                Obx(() {
+                  return InkWell(
+                    onTap: () {
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (context) => ConnectProfileScreen(
+                      //           sId: sId!,
+                      //           uid: uid!,
+                      //         )));
+                      // getConnectionIdBySId(sId!);
+                      getConnectionIdBySId(sId!) != ''
+                          ? connectionController.deleteConnectionRequest(
+                              getConnectionIdBySId(sId!))
+                          : connectionController.addConnection(sId!);
+                    },
+                    child: Container(
+                      height: 32,
+                      width: 148,
+                      decoration: BoxDecoration(
+                          color: getConnectionIdBySId(sId!) != ''
+                              ? Colors.white
+                              : SolhColors.green,
+                          border: Border.all(color: SolhColors.green),
+                          borderRadius: BorderRadius.circular(16)),
+                      child: connectionController
+                                  .isSendingConnectionRequest.value &&
+                              connectionController.currentSendingRequest == sId
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 15,
+                                  width: 15,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 1,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  getConnectionIdBySId(sId!) != ''
+                                      ? Container()
+                                      : SvgPicture.asset(
+                                          'assets/images/connect.svg',
+                                          height: 14,
+                                          color: Colors.white,
+                                        ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  getConnectionIdBySId(sId!) != ''
+                                      ? Text('Cancel',
+                                          style: GoogleFonts.signika(
+                                            fontSize: 14,
+                                            color: SolhColors.green,
+                                          ))
+                                      : Text(
+                                          'Connect',
+                                          style: GoogleFonts.signika(
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
                     ),
-                  ),
-                )
+                  );
+                })
               ],
             ),
           )
@@ -1187,5 +1262,16 @@ class SolhVolunteers extends StatelessWidget {
     //     ],
     //   ),
     // );
+  }
+
+  String getConnectionIdBySId(String sId) {
+    String connectionId = '';
+    connectionController.allConnectionModel.value.connections!
+        .forEach((element) {
+      if (element.sId == sId && element.flag == 'sent') {
+        connectionId = element.connectionId!;
+      }
+    });
+    return connectionId;
   }
 }

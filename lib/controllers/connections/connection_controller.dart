@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/blog/blog_details.dart';
@@ -33,6 +34,8 @@ class ConnectionController extends GetxController {
   var bloglist = <BlogListModel>[].obs;
   var blogDetails = BlogDetails().obs;
   var isBlogDetailsLoading = false.obs;
+  var isSendingConnectionRequest = false.obs;
+  var currentSendingRequest = '';
 
   /// for canceling connection
   var canceledConnectionId = ''.obs;
@@ -145,6 +148,7 @@ class ConnectionController extends GetxController {
         url: APIConstants.api + '/api/sender-res-connection',
         body: {
           'connection_id': connectionId,
+          'sender_id': userBlocNetwork.id,
         }).onError((error, stackTrace) {
       print(error);
       return {};
@@ -153,6 +157,8 @@ class ConnectionController extends GetxController {
   }
 
   Future<void> addConnection(String uid) async {
+    isSendingConnectionRequest(true);
+    currentSendingRequest = uid;
     await Network.makePostRequestWithToken(
         url: APIConstants.api + '/api/connection',
         body: {'receiver_id': uid}).onError((error, stackTrace) {
@@ -160,6 +166,7 @@ class ConnectionController extends GetxController {
 
       return {};
     }).then((value) => Utility.showToast(value['message']));
+    isSendingConnectionRequest(false);
     getMyConnection();
     getAllConnection();
   }
