@@ -1,6 +1,7 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -17,6 +18,7 @@ class PhoneAuthScreen extends StatefulWidget {
 
 class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? _countryCode = '+91';
+  String? country = 'India';
   late FocusNode _focusNode;
   late TextEditingController _phoneController;
   OtpVerificationController _otpVerificationController = Get.put(
@@ -25,7 +27,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
   bool _hintShown = false;
 
-  void _signInWithPhone(String phoneNo) {
+  void _signInWithPhone(String phoneNo, String country) {
     print(phoneNo);
     _otpVerificationController.isLoading.value = true;
     setState(() {});
@@ -35,11 +37,17 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
             }));
   }
 
+  Future<void> saveCountryToPrefs() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('userCountry', country ?? '');
+  }
+
   @override
   void initState() {
     super.initState();
     _phoneController = TextEditingController();
     _focusNode = FocusNode();
+    saveCountryToPrefs();
     // _focusNode.addListener(() async {
     //   if (_focusNode.hasFocus && !_hintShown) {
     //     _hintShown = true;
@@ -82,9 +90,15 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SolhCountryCodePicker(
-                            onCountryChange: (CountryCode countryCode) {
+                            onCountryChange: (CountryCode countryCode) async {
                           print(countryCode.dialCode);
+                          print(countryCode.name);
                           _countryCode = countryCode.dialCode;
+                          country = countryCode.name;
+                          SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                          await sharedPreferences.setString(
+                              'userCountry', country ?? '');
                         }),
                         Container(
                           alignment: Alignment.center,
@@ -97,7 +111,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             controller: _phoneController,
                             keyboardType: TextInputType.phone,
                             onSubmitted: (value) {
-                              _signInWithPhone('$_countryCode$value');
+                              _signInWithPhone(
+                                  '$_countryCode$value', country ?? '');
                             },
                             decoration: InputDecoration(
                                 hintText: " Phone No.",
@@ -126,6 +141,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                 width: 80.w,
                                 child: TextButton(
                                   onPressed: () async {
+                                    print(country);
                                     print("Phone no: " +
                                         _countryCode! +
                                         _phoneController.text);
@@ -136,7 +152,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                                   'Enter a valid phone No.')));
                                     } else {
                                       _signInWithPhone(
-                                          "${_countryCode.toString()}${_phoneController.text}");
+                                          "${_countryCode.toString()}${_phoneController.text}",
+                                          country ?? '');
                                     }
                                   },
                                   child: Text(
