@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -8,6 +9,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/model/user/provider-user.dart';
 import 'package:provider/provider.dart';
 import '../../../controllers/profile/anon_controller.dart';
+import '../../../routes/routes.gr.dart';
 import 'enter-full-name.dart';
 
 class EnterUsernameScreen extends StatelessWidget {
@@ -20,6 +22,7 @@ class EnterUsernameScreen extends StatelessWidget {
   final TextEditingController _userNameController = TextEditingController();
   //final AnonController _anonController = Get.put(AnonController());
   final AnonController _anonController = Get.find();
+  final PageController _pageController = PageController();
 
   final VoidCallback _onNext;
   final VoidCallback _onBack;
@@ -34,7 +37,15 @@ class EnterUsernameScreen extends StatelessWidget {
       child: Scaffold(
         appBar: ProfileSetupAppBar(
           enableSkip: true,
-          onSkip: _onNext,
+          onBackButton: () => _pageController.previousPage(
+              duration: Duration(milliseconds: 500), curve: Curves.ease),
+          onSkip: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        AddProfilePhotoPage(onNext: _onNext, onBack: _onBack)));
+          },
           title: "Your Username",
         ),
         body: Padding(
@@ -98,6 +109,7 @@ class EnterUsernameScreen extends StatelessWidget {
                     } else {
                       Provider.of<ProviderUser>(context, listen: false)
                           .setUserName = _userNameController.text;
+                      print('_onNextCalled');
                       _onNext();
                     }
                   }

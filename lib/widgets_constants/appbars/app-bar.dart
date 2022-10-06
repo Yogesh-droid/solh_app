@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -254,14 +255,9 @@ class ProfileSetupAppBar extends StatelessWidget
         _enableSkip != null && _enableSkip!
             ? Padding(
                 padding: EdgeInsets.only(right: 10.w, top: 1.h),
-                child: InkWell(
-                  onTap: () => _onSkip,
-                  child: Text(
-                    'Skip',
-                    style: TextStyle(color: SolhColors.green),
-                  ),
-                ),
-              )
+                child: SkipButton(
+                  onPressed: () => _onSkip,
+                ))
             : Container()
       ],
       foregroundColor: Colors.black,
