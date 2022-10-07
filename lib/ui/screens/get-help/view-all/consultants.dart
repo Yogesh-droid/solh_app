@@ -6,8 +6,11 @@ import 'package:solh/bloc/doctors-bloc.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../controllers/connections/connection_controller.dart';
+import '../../../../controllers/getHelp/get_help_controller.dart';
 import '../consultant_tile.dart';
 
 class ConsultantsScreen extends StatefulWidget {
@@ -29,6 +32,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   bool _fetchingMore = false;
   SearchMarketController searchMarketController = Get.find();
   ConnectionController connectionController = Get.find();
+  GetHelpController getHelpController = Get.find();
 
   void initState() {
     super.initState();
@@ -63,83 +67,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
 
   @override
   Widget build(BuildContext context) {
-/*     return StreamBuilder<List<DoctorModel?>>(
-        stream: doctorsBlocNetwork.doctorsStateStream,
-        builder: (context, doctorsSnapshot) {
-          if (doctorsSnapshot.hasData)
-            return Scaffold(
-                backgroundColor: Color(0xFFF6F6F8),
-                appBar: SolhAppBar(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Consultants",
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      Text(
-                        "${widget._count} Consultants",
-                        style:
-                            TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
-                      )
-                    ],
-                  ),
-                  isLandingScreen: false,
-                ),
-                body: Column(
-                  children: [
-                    Expanded(
-                      child: Obx(() => ListView.separated(
-                          separatorBuilder: ((context, index) => SizedBox(
-                                height: 10,
-                              )),
-                          controller: _doctorsScrollController,
-                          itemCount: searchMarketController
-                              .issueModel.value.doctors!.length,
-                          padding: EdgeInsets.symmetric(vertical: 1.h),
-                          itemBuilder: (_, index) => ConsultantsTile(
-                                doctorModel: DoctorModel(
-                                    organisation: searchMarketController
-                                            .issueModel
-                                            .value
-                                            .doctors![index]
-                                            .organisation ??
-                                        '',
-                                    name: searchMarketController.issueModel.value.doctors![index].name ??
-                                        '',
-                                    mobile: searchMarketController
-                                            .issueModel
-                                            .value
-                                            .doctors![index]
-                                            .contactNumber ??
-                                        '',
-                                    email: searchMarketController.issueModel
-                                            .value.doctors![index].email ??
-                                        '',
-                                    clinic: '',
-                                    locality: searchMarketController
-                                            .issueModel
-                                            .value
-                                            .doctors![index]
-                                            .addressLineOne ??
-                                        '',
-                                    pincode: '',
-                                    city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
-                                    bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
-                                    abbrevations: ''),
-                              ))),
-                    ),
-                    if (_fetchingMore)
-                      Center(
-                        child: MyLoader(),
-                      )
-                  ],
-                ));
-          return Scaffold(
-            body: Center(child: MyLoader()),
-          );
-        }); */
-
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F8),
         appBar: SolhAppBar(
@@ -162,77 +89,16 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
           ),
           isLandingScreen: false,
         ),
-        // body: CustomScrollView(
-        // slivers: [
-        //     Obx(() => ListView.separated(
-        //         separatorBuilder: ((context, index) => SizedBox(
-        //               height: 10,
-        //             )),
-        //         controller: _doctorsScrollController,
-        //         shrinkWrap: true,
-        //         itemCount:
-        //             searchMarketController.issueModel.value.doctors!.length,
-        //         padding: EdgeInsets.symmetric(vertical: 1.h),
-        //         itemBuilder: (_, index) => ConsultantsTile(
-        //               doctorModel: DoctorModel(
-        //                   organisation: searchMarketController.issueModel.value
-        //                           .doctors![index].organisation ??
-        //                       '',
-        //                   name:
-        //                       searchMarketController.issueModel.value.doctors![index].name ??
-        //                           '',
-        //                   mobile: searchMarketController.issueModel.value
-        //                           .doctors![index].contactNumber ??
-        //                       '',
-        //                   email: searchMarketController
-        //                           .issueModel.value.doctors![index].email ??
-        //                       '',
-        //                   clinic: '',
-        //                   locality: searchMarketController.issueModel.value
-        //                           .doctors![index].addressLineOne ??
-        //                       '',
-        //                   pincode: '',
-        //                   city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
-        //                   bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
-        //                   abbrevations: ''),
-        //             ))),
-        //     Obx(() => ListView.separated(
-        //         shrinkWrap: true,
-        //         separatorBuilder: ((context, index) => SizedBox(
-        //               height: 10,
-        //             )),
-        //         itemCount:
-        //             searchMarketController.issueModel.value.provider!.length,
-        //         padding: EdgeInsets.symmetric(vertical: 1.h),
-        //         itemBuilder: (_, index) => ConsultantsTile(
-        //               doctorModel: DoctorModel(
-        //                   organisation: '',
-        //                   name: searchMarketController
-        //                           .issueModel.value.provider![index].name ??
-        //                       '',
-        //                   mobile: searchMarketController.issueModel.value
-        //                           .provider![index].contactNumber ??
-        //                       '',
-        //                   email: searchMarketController
-        //                           .issueModel.value.provider![index].email ??
-        //                       '',
-        //                   clinic: '',
-        //                   locality: searchMarketController.issueModel.value
-        //                           .provider![index].addressLineOne ??
-        //                       '',
-        //                   pincode: '',
-        //                   city: searchMarketController.issueModel.value
-        //                           .provider![index].addressLineFour ??
-        //                       '',
-        //                   bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
-        //                   abbrevations: ''),
-        //             ))),
-        //     if (_fetchingMore)
-        //       Center(
-        //         child: MyLoader(),
-        //       )
-        //   ],
-        // )
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.filter_alt_outlined,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            openBottomSheet(context);
+          },
+          backgroundColor: SolhColors.pink224,
+        ),
         body: Obx(() => searchMarketController.isSearchingDoctors.value
             ? getShimmer(context)
             : searchMarketController.issueModel.value.doctors != null ||
@@ -426,5 +292,75 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
         },
       ),
     );
+  }
+
+  void openBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: ((context) =>
+            Obx(() => getHelpController.isCountryLoading.value
+                ? LinearProgressIndicator()
+                : Container(
+                    padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Filter counsellors',
+                            style: SolhTextStyles.JournalingUsernameText,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Country',
+                            style: SolhTextStyles.JournalingUsernameText,
+                          ),
+                        ),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: getHelpController.counsellorsCountryModel
+                                .value.providerCountry!.length,
+                            itemBuilder: (context, index) => ListTile(
+                                  title: Text(
+                                    getHelpController
+                                            .counsellorsCountryModel
+                                            .value
+                                            .providerCountry![index]
+                                            .name ??
+                                        '',
+                                    style: SolhTextStyles.JournalingHintText,
+                                  ),
+                                  onTap: () {
+                                    widget.type == 'specialization'
+                                        ? searchMarketController
+                                            .getSpecializationList(widget.slug,
+                                                c: getHelpController
+                                                    .counsellorsCountryModel
+                                                    .value
+                                                    .providerCountry![index]
+                                                    .code)
+                                        : widget.type == 'topconsultant'
+                                            ? searchMarketController
+                                                .getTopConsultants()
+                                            : searchMarketController
+                                                .getIssueList(widget.slug,
+                                                    c: getHelpController
+                                                        .counsellorsCountryModel
+                                                        .value
+                                                        .providerCountry![index]
+                                                        .code);
+                                    Navigator.pop(context);
+                                  },
+                                ))
+                      ],
+                    ),
+                  ))));
   }
 }

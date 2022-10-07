@@ -56,7 +56,7 @@ class GlobalSearchPage extends StatelessWidget {
 
   Widget getSearchResult(BuildContext context) {
     return Obx(() => globalSearchController.isSearching.value
-        ? getSearchShimmer()
+        ? LinearProgressIndicator()
         : Expanded(
             child: ListView(shrinkWrap: false, children: [
               globalSearchController.globalSearchModel.value.connection != null

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
@@ -7,77 +8,133 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/goal-setting/personal_goal_model.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import '../../../bottom-navigation/bottom_navigator_controller.dart';
 import 'select_goal.dart';
 
-class MyGoalsScreen extends StatelessWidget {
+class MyGoalsScreen extends StatefulWidget {
   MyGoalsScreen({Key? key}) : super(key: key);
-  GoalSettingController goalSettingController = Get.find();
+
+  @override
+  State<MyGoalsScreen> createState() => _MyGoalsScreenState();
+}
+
+class _MyGoalsScreenState extends State<MyGoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SolhAppBar(
-        title: Text(
-          "Goals",
-          style: SolhTextStyles.AppBarText,
-        ),
-        isLandingScreen: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 0,
-            ),
-            getTodayGoal(context),
-            Obx(() {
-              return goalSettingController.pesonalGoalModel.value.goalList !=
-                          null &&
-                      goalSettingController
-                              .pesonalGoalModel.value.goalList!.length >
-                          0
-                  ? GetHelpDivider()
-                  : Container();
-            }),
-            Obx(() {
-              return !goalSettingController.isPersonalGoalLoading.value
-                  ? GoalName()
-                  : personalGoallistShimmer();
-            }),
-            SizedBox(
-              height: 10,
-            ),
-
-            Obx(() {
-              return goalSettingController
-                              .pesonalGoalModel.value.goalList !=
-                          null &&
-                      goalSettingController
-                              .pesonalGoalModel.value.goalList!.length >
-                          0 &&
-                      goalSettingController.isExpanded.value.toString() !=
-                          goalSettingController
-                              .pesonalGoalModel.value.goalList!.last.sId
-                              .toString()
-                  ? GetHelpDivider()
-                  : Container();
-            }),
-
-            // MileStone(),
-            SizedBox(
-              height: 10,
-            ),
-            GetHelpCategory(title: "I want to work on"),
-            IWantToWorkOn()
-          ],
-        ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(children: [
+          SideDrawer(),
+          MyGoalPage(),
+        ]),
       ),
     );
+  }
+}
+
+class MyGoalPage extends StatefulWidget {
+  const MyGoalPage({Key? key}) : super(key: key);
+
+  @override
+  State<MyGoalPage> createState() => _MyGoalPageState();
+}
+
+class _MyGoalPageState extends State<MyGoalPage> {
+  BottomNavigatorController _bottomNavigatorController = Get.find();
+  GoalSettingController goalSettingController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return AnimatedPositioned(
+          duration: Duration(milliseconds: 300),
+          left: _bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.35),
+                    offset: const Offset(
+                      14.0,
+                      14.0,
+                    ),
+                    blurRadius: 20.0,
+                    spreadRadius: 4.0,
+                  )
+                ],
+                color: Colors.white),
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                Scaffold(
+                  appBar: getAppBar(),
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 0,
+                        ),
+                        getTodayGoal(context),
+                        Obx(() {
+                          return goalSettingController
+                                          .pesonalGoalModel.value.goalList !=
+                                      null &&
+                                  goalSettingController.pesonalGoalModel.value
+                                          .goalList!.length >
+                                      0
+                              ? GetHelpDivider()
+                              : Container();
+                        }),
+                        Obx(() {
+                          return !goalSettingController
+                                  .isPersonalGoalLoading.value
+                              ? GoalName()
+                              : personalGoallistShimmer();
+                        }),
+                        SizedBox(
+                          height: 10,
+                        ),
+
+                        Obx(() {
+                          return goalSettingController
+                                          .pesonalGoalModel.value.goalList !=
+                                      null &&
+                                  goalSettingController.pesonalGoalModel.value
+                                          .goalList!.length >
+                                      0 &&
+                                  goalSettingController.isExpanded.value
+                                          .toString() !=
+                                      goalSettingController.pesonalGoalModel
+                                          .value.goalList!.last.sId
+                                          .toString()
+                              ? GetHelpDivider()
+                              : Container();
+                        }),
+
+                        // MileStone(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GetHelpCategory(title: "I want to work on"),
+                        IWantToWorkOn()
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ));
+    });
   }
 
   Widget getTodayGoal(BuildContext context) {
@@ -197,92 +254,50 @@ class MyGoalsScreen extends StatelessWidget {
     );
   }
 
-  // getFeaturedGoals(FeaturedGoalModel value) {
-  //   return ListView.builder(
-  //       physics: NeverScrollableScrollPhysics(),
-  //       shrinkWrap: true,
-  //       itemCount: value.goal![0].sampleGoal!.length,
-  //       itemBuilder: (context, index) {
-  //         return Column(
-  //           children: [
-  //             InkWell(
-  //               onTap: () => Navigator.of(context).push(MaterialPageRoute(
-  //                   builder: (context) => Details(
-  //                         sampleGoal: value.goal![0].sampleGoal![index],
-  //                         goalId: _goalSettingController
-  //                             .sampleGoalModel.value.goalList![0].sId!,
-  //                       ))),
-  //               child: Container(
-  //                 height: 100,
-  //                 width: double.maxFinite,
-  //                 decoration: BoxDecoration(
-  //                   border: Border.all(
-  //                     color: Color(0xffA6A6A6),
-  //                   ),
-  //                   borderRadius: BorderRadius.circular(12),
-  //                 ),
-  //                 child: Row(
-  //                   children: [
-  //                     ClipRRect(
-  //                       borderRadius: BorderRadius.only(
-  //                           bottomLeft: Radius.circular(12),
-  //                           topLeft: Radius.circular(12)),
-  //                       child: CachedNetworkImage(
-  //                         imageUrl: _goalSettingController.sampleGoalModel.value
-  //                                 .goalList![0].sampleGoal![index].image ??
-  //                             '',
-  //                         errorWidget: (context, url, error) => Image.asset(
-  //                             'assets/images/no-image-available.png'),
-  //                         fit: BoxFit.cover,
-  //                         width: 100,
-  //                         height: 100,
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       width: 20,
-  //                     ),
-  //                     Column(
-  //                         crossAxisAlignment: CrossAxisAlignment.start,
-  //                         mainAxisAlignment: MainAxisAlignment.center,
-  //                         children: [
-  //                           Text(
-  //                             _goalSettingController.sampleGoalModel.value
-  //                                     .goalList![0].sampleGoal![index].name ??
-  //                                 '',
-  //                             style: GoogleFonts.signika(
-  //                                 color: Color(0xff666666),
-  //                                 fontSize: 16,
-  //                                 fontWeight: FontWeight.w400),
-  //                           ),
-  //                           SizedBox(
-  //                             height: 5,
-  //                           ),
-  //                           Container(
-  //                             width: 200,
-  //                             child: Text(
-  //                               '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![0].task ?? ''}' +
-  //                                   ', ' +
-  //                                   '${_goalSettingController.sampleGoalModel.value.goalList![0].sampleGoal![index].activity![1].task ?? ''}',
-  //                               maxLines: 2,
-  //                               overflow: TextOverflow.ellipsis,
-  //                               style: GoogleFonts.signika(
-  //                                   color: Color(0xffA6A6A6),
-  //                                   fontSize: 13,
-  //                                   fontWeight: FontWeight.w400),
-  //                             ),
-  //                           )
-  //                         ]),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 10,
-  //             ),
-  //           ],
-  //         );
-  //       });
-  // }
+  SolhAppBar getAppBar() {
+    return SolhAppBar(
+      title: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            child: InkWell(
+              onTap: () {
+                print("side bar tapped");
+
+                _bottomNavigatorController.isDrawerOpen.value == true
+                    ? _bottomNavigatorController.isDrawerOpen.value = false
+                    : _bottomNavigatorController.isDrawerOpen.value = true;
+                // setState(() {
+                //   _isDrawerOpen = !_isDrawerOpen;
+                // });
+                print("opened");
+              },
+              child: Container(
+                decoration: BoxDecoration(shape: BoxShape.circle),
+                height: 40,
+                width: 30,
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: SvgPicture.asset(
+                  "assets/icons/app-bar/app-bar-menu.svg",
+                  width: 26,
+                  height: 24,
+                  color: SolhColors.green,
+                ),
+              ),
+            ),
+          ),
+          // SizedBox(
+          //   width: 2.h,
+          // ),
+          // Text(
+          //   "Get help",
+          //   style: SolhTextStyles.AppBarText,
+          // ),
+        ],
+      ),
+      isLandingScreen: true,
+    );
+  }
 }
 
 goalFontStyle(

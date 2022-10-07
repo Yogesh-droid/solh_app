@@ -706,7 +706,8 @@ class _JournalTileState extends State<JournalTile> {
           ),
           widget._journalModel!.postedBy != null
               ? widget._journalModel!.anonymousJournal != null &&
-                      widget._journalModel!.anonymousJournal == true
+                      widget._journalModel!.anonymousJournal == true &&
+                      widget._journalModel!.group == null
                   ? SizedBox()
                   : widget._journalModel!.postedBy!.uid !=
                           FirebaseAuth.instance.currentUser!.uid
@@ -826,7 +827,8 @@ class _PostContentWidgetState extends State<PostContentWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.journalModel.feelings != null
+                widget.journalModel.feelings != null &&
+                        widget.journalModel.feelings!.isNotEmpty
                     ? Text(
                         "#Feeling " +
                             feelingList

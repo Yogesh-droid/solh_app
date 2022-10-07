@@ -18,7 +18,7 @@ class PhoneAuthScreen extends StatefulWidget {
 
 class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? _countryCode = '+91';
-  String? country = 'India';
+  String? country = 'IN';
   late FocusNode _focusNode;
   late TextEditingController _phoneController;
   OtpVerificationController _otpVerificationController = Get.put(
@@ -93,6 +93,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             onCountryChange: (CountryCode countryCode) async {
                           print(countryCode.dialCode);
                           print(countryCode.name);
+                          print(countryCode.code);
                           _countryCode = countryCode.dialCode;
                           country = countryCode.code;
                           SharedPreferences sharedPreferences =
