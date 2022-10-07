@@ -994,6 +994,8 @@ class SolhVolunteers extends StatelessWidget {
                       //           uid: uid!,
                       //         )));
                       // getConnectionIdBySId(sId!);
+                      print('Connection ID' +
+                          getConnectionIdBySId(sId!).toString());
                       getConnectionIdBySId(sId!) != ''
                           ? connectionController.deleteConnectionRequest(
                               getConnectionIdBySId(sId!))

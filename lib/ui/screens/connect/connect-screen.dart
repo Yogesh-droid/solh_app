@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
@@ -28,7 +29,6 @@ class ConnectProfileScreen extends StatefulWidget {
   final String _uid;
   final String _sId;
   bool isMyConnection = false;
-  bool alReadySentRequest = false;
 
   @override
   State<ConnectProfileScreen> createState() => _ConnectProfileScreenState();
@@ -49,7 +49,6 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     getUser();
     if (widget._sId.isNotEmpty) {
       checkIfUserIsMyConnection(widget._sId);
-      checkIfAlreadyInSendConnection(widget._sId);
     }
     getRecivedConnections();
     _overlayState = Overlay.of(context)!;
@@ -447,46 +446,70 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                           ],
                         ),
                         SizedBox(height: 3.h),
-                        SolhGreenButton(
-                          onPressed: () async {
-                            widget.isMyConnection
-                                ? Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatScreen(
-                                              name: userProfileSnapshot
-                                                      .requireData.firstName ??
-                                                  '',
-                                              imageUrl: userProfileSnapshot
-                                                      .requireData
-                                                      .profilePicture ??
-                                                  '',
-                                              sId: userProfileSnapshot
-                                                      .requireData.sId ??
-                                                  '',
-                                            )))
-                                : (widget.alReadySentRequest
-                                    ? connectionController
-                                        .deleteConnectionRequest(widget._sId)
-                                    : await connectionController
-                                        .addConnection(widget._sId));
-                          },
-                          width: 90.w,
-                          height: 6.3.h,
-                          child: Builder(builder: (context) {
-                            return widget.isMyConnection
-                                ? Text('Message')
-                                : (widget.alReadySentRequest
-                                    ? Text('Cancel')
-                                    : Text("Connect/Join"));
-                          }),
-                        ),
+                        (getConnectionIdBySId(widget._sId) != ''
+                            ? Container(
+                                width: 90.w,
+                                height: 6.3.h,
+                                child: SolhGreenBorderButton(
+                                  onPressed: () async {
+                                    await connectionController
+                                        .deleteConnectionRequest(
+                                            getConnectionIdBySId(widget._sId));
+                                    setState(() {});
+                                  },
+                                  child: Text('Cancel',
+                                      style: GoogleFonts.signika(
+                                        color: SolhColors.green,
+                                      )),
+                                ),
+                              )
+                            : SolhGreenButton(
+                                onPressed: () async {
+                                  setState(() {});
+
+                                  widget.isMyConnection
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatScreen(
+                                                    name: userProfileSnapshot
+                                                            .requireData
+                                                            .firstName ??
+                                                        '',
+                                                    imageUrl: userProfileSnapshot
+                                                            .requireData
+                                                            .profilePicture ??
+                                                        '',
+                                                    sId: userProfileSnapshot
+                                                            .requireData.sId ??
+                                                        '',
+                                                  )))
+                                      : (checkIfAlreadyInSendConnection(
+                                              widget._sId)
+                                          ? await connectionController
+                                              .deleteConnectionRequest(
+                                                  getConnectionIdBySId(
+                                                      widget._sId))
+                                          : await connectionController
+                                              .addConnection(widget._sId));
+                                  setState(() {});
+                                },
+                                width: 90.w,
+                                height: 6.3.h,
+                                child: Builder(builder: (context) {
+                                  return widget.isMyConnection
+                                      ? Text('Message')
+                                      : Text("Connect/Join");
+                                }),
+                              )),
                         SizedBox(height: 3.h),
-                        widget.isMyConnection
+                        widget.isMyConnection &&
+                                widget._sId != '62e125176a858283a925d15c'
                             ? SolhGreenButton(
                                 onPressed: () async {
                                   await connectionController
-                                      .deleteConnection(widget._sId);
+                                      .deleteConnectionRequest(
+                                          getConnectionIdBySId(widget._sId));
                                   checkIfUserIsMyConnection(widget._sId);
                                   setState(() {});
                                 },
@@ -513,6 +536,17 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
         });
   }
 
+  String getConnectionIdBySId(String sId) {
+    String connectionId = '';
+    connectionController.allConnectionModel.value.connections!
+        .forEach((element) {
+      if (element.sId == sId && element.flag == 'sent') {
+        connectionId = element.connectionId!;
+      }
+    });
+    return connectionId;
+  }
+
   void checkIfUserIsMyConnection(String sId) {
     connectionController.myConnectionModel.value.myConnections != null
         ? connectionController.myConnectionModel.value.myConnections!
@@ -524,12 +558,14 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
         : null;
   }
 
-  void checkIfAlreadyInSendConnection(String sId) {
+  bool checkIfAlreadyInSendConnection(String sId) {
+    bool alReadySentRequest = false;
     connectionController.sentConnections.value.forEach((element) {
       if (sId == element.sId) {
-        widget.alReadySentRequest = true;
+        alReadySentRequest = true;
       }
     });
+    return alReadySentRequest;
   }
 
   Future<void> getUserAnalyticsFromApi({required String sid}) async {

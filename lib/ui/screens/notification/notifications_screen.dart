@@ -21,7 +21,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    notificaltionColtroller.getNoificationController(userBlocNetwork.id);
+    WidgetsBinding.instance.addPostFrameCallback((_) =>
+        notificaltionColtroller.getNoificationController(userBlocNetwork.id));
+
     super.initState();
   }
 
@@ -476,7 +478,7 @@ class AnimatedRefreshContainer extends StatelessWidget {
     return TweenAnimationBuilder(
         child: RefreshContainer(),
         tween: Tween<double>(begin: 0, end: 20),
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 300),
         builder: (BuildContext context, double _val, Widget? child) {
           return Container(
             padding: EdgeInsets.only(top: _val),

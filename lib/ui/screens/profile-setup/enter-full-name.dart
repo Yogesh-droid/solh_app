@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/model/user/provider-user.dart';
 import 'package:solh/ui/screens/profile-setup/add-profile-photo.dart';
+import 'package:solh/ui/screens/profile-setup/email.dart';
 import 'package:solh/ui/screens/profile-setup/enter-description.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -41,6 +42,12 @@ class _EnterFullNameScreenState extends State<EnterFullNameScreen> {
                     duration: Duration(milliseconds: 500), curve: Curves.ease),
               ),
               EnterDescriptionPage(
+                onBack: () => _pageController.previousPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+                onNext: () => _pageController.nextPage(
+                    duration: Duration(milliseconds: 500), curve: Curves.ease),
+              ),
+              EmailScreen(
                 onBack: () => _pageController.previousPage(
                     duration: Duration(milliseconds: 500), curve: Curves.ease),
                 onNext: () => _pageController.nextPage(
