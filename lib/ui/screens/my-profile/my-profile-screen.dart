@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
@@ -14,9 +15,14 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+
+import 'package:solh/services/network/network.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
+
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
+import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -85,7 +91,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           ),
                           onPressed: () {
                             FirebaseAuth.instance.signOut().then((value) {
+                              clearOneSignalID();
                               userBlocNetwork.updateSessionCookie = "";
+                              Get.delete<NotificationController>();
                               Get.delete<ChatListController>();
                               Get.delete<GoalSettingController>();
                               Get.delete<ConnectionController>();
@@ -573,4 +581,12 @@ class ProfileDetailsButton extends StatelessWidget {
       ),
     );
   }
+}
+
+void clearOneSignalID() {
+  Network.makePutRequestWithToken(
+      url: "${APIConstants.api}/api/edit-user-details",
+      body: {
+        'onesignal_device_id': '',
+      });
 }

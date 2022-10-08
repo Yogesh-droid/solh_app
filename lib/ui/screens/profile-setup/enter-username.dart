@@ -37,15 +37,8 @@ class EnterUsernameScreen extends StatelessWidget {
       child: Scaffold(
         appBar: ProfileSetupAppBar(
           enableSkip: true,
-          onBackButton: () => _pageController.previousPage(
-              duration: Duration(milliseconds: 500), curve: Curves.ease),
-          onSkip: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        AddProfilePhotoPage(onNext: _onNext, onBack: _onBack)));
-          },
+          onBackButton: _onBack,
+          onSkip: _onNext,
           title: "Your Username",
         ),
         body: Padding(

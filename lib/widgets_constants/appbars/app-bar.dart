@@ -256,7 +256,7 @@ class ProfileSetupAppBar extends StatelessWidget
             ? Padding(
                 padding: EdgeInsets.only(right: 10.w, top: 1.h),
                 child: SkipButton(
-                  onPressed: () => _onSkip,
+                  onPressed: _onSkip,
                 ))
             : Container()
       ],
