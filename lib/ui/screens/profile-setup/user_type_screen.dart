@@ -90,13 +90,23 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                         userBlocNetwork.updateUserType = 'Seeker';
                         print(' userType ${userBlocNetwork.getUserType}');
                       }
+                      if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(_userEmailEditingController.text) &&
+                          radioGroupValue == 'SolhProvider') {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Enter a valid Email"),
+                          backgroundColor: Colors.red,
+                        ));
+                        return;
+                      }
                       if (radioGroupValue == 'SolhProvider' &&
-                          _userEmailEditingController.text.isEmpty) {
+                          _userEmailEditingController.text.trim().isEmpty) {
                         userBlocNetwork.updateUserType = 'SolhProvider';
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text("Please enter your email"),
                           backgroundColor: Colors.red,
                         ));
+
                         print(' userType ${userBlocNetwork.getUserType}');
                         return;
                       }
