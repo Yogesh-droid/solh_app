@@ -20,10 +20,8 @@ import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
-
 import 'consultant_profile.dart';
 
 class GetHelpMaster extends StatefulWidget {
