@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:solh/model/get-help/counsellors_country_model..dart';
 import 'package:solh/model/get-help/solh_volunteer_model.dart';
 import '../../constants/api.dart';
 import '../../model/get-help/get_issue_response_model.dart';
@@ -13,6 +14,8 @@ class GetHelpController extends GetxController {
   var solhVolunteerList = SolhVolunteerModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
   var isAllIssueShown = false.obs;
+  var counsellorsCountryModel = CounsellorsCountryModel().obs;
+  var isCountryLoading = false.obs;
 
   void getIssueList() async {
     try {
@@ -88,5 +91,20 @@ class GetHelpController extends GetxController {
     getSpecializationList();
     getTopConsultant();
     getSolhVolunteerList();
+    getCountryList();
+  }
+
+  Future<void> getCountryList() async {
+    isCountryLoading.value = true;
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequest(
+          "${APIConstants.api}/api/provider-country");
+
+      print('Cousellors Country Model $map');
+      counsellorsCountryModel.value = CounsellorsCountryModel.fromJson(map);
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+    isCountryLoading.value = false;
   }
 }

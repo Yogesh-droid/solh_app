@@ -15,8 +15,10 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
+
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
+
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
@@ -42,7 +44,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   void initState() {
     getMyProfile();
-
     super.initState();
   }
 
@@ -105,30 +106,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                             });
                           }),
                     ),
-                    /* Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SolhGreenButton(
-                          height: 50,
-                          backgroundColor: Colors.red,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          child: Text(
-                            "Delete Account",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut().then((value) async {
-                              Get.delete<GoalSettingController>();
-                              Get.delete<ConnectionController>();
-                              Utility.showLoader(context);
-                              await userBlocNetwork.deleteAccount();
-                              Utility.hideLoader(context);
-                              AutoRouter.of(context).pushAndPopUntil(
-                                  IntroCarouselScreenRouter(),
-                                  predicate: (route) => false);
-                            });
-                          }),
-                    ) */
                   ],
                 );
               }

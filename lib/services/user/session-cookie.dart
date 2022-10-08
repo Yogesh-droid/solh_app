@@ -8,8 +8,10 @@ class SessionCookie {
       String? onesignalId, String? deviceType) async {
     print("*" * 30 + "\n" + "Id Token: $idToken");
     print("*" * 30 + "\n" + "onesignal Token: $onesignalId");
+
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? coutry = sharedPreferences.getString('userCountry');
+    print('*' * 30 + 'Country $coutry' + '*' * 30);
     var response = await Network.makeHttpPostRequest(
         url: "${APIConstants.api}/api/create-session-cookie",
         body: {
