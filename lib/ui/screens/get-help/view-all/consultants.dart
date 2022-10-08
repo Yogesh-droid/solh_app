@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/bloc/doctors-bloc.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
@@ -33,9 +34,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   SearchMarketController searchMarketController = Get.find();
   ConnectionController connectionController = Get.find();
   GetHelpController getHelpController = Get.find();
+  String? defaultCountry;
 
   void initState() {
     super.initState();
+    getCountry();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
     widget.type == 'specialization'
@@ -328,16 +331,38 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                             itemCount: getHelpController.counsellorsCountryModel
                                 .value.providerCountry!.length,
                             itemBuilder: (context, index) => ListTile(
-                                  title: Text(
-                                    getHelpController
+                                  title: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        getHelpController
+                                                .counsellorsCountryModel
+                                                .value
+                                                .providerCountry![index]
+                                                .name ??
+                                            '',
+                                        style:
+                                            SolhTextStyles.JournalingHintText,
+                                      ),
+                                      getHelpController
+                                                  .counsellorsCountryModel
+                                                  .value
+                                                  .providerCountry![index]
+                                                  .code !=
+                                              defaultCountry
+                                          ? Container()
+                                          : Icon(Icons.check),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    defaultCountry = getHelpController
                                             .counsellorsCountryModel
                                             .value
                                             .providerCountry![index]
-                                            .name ??
-                                        '',
-                                    style: SolhTextStyles.JournalingHintText,
-                                  ),
-                                  onTap: () {
+                                            .code ??
+                                        '';
+                                    // setState(() {});
                                     widget.type == 'specialization'
                                         ? searchMarketController
                                             .getSpecializationList(widget.slug,
@@ -362,5 +387,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                       ],
                     ),
                   ))));
+  }
+
+  Future<void> getCountry() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    defaultCountry = sharedPreferences.getString('userCountry');
+    print('@' * 30 + 'default country is $defaultCountry' + ' &' * 30);
   }
 }

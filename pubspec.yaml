@@ -55,6 +55,7 @@ dependencies:
   firebase_analytics: ^9.3.3
   upgrader: ^4.6.1
   flutter_countdown_timer: ^4.1.0
+  firebase_dynamic_links: ^4.3.10
 
 
   #alt_sms_autofill: ^1.0.0
