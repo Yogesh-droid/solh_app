@@ -107,33 +107,54 @@ class _JournalTileState extends State<JournalTile> {
                           padding: const EdgeInsets.only(bottom: 8.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: widget._journalModel!.postedBy != null &&
+                              gradient: widget._journalModel!.postedBy != null &&
                                       widget._journalModel!.anonymousJournal !=
                                           null &&
                                       !widget
                                           ._journalModel!.anonymousJournal! &&
-                                      widget._journalModel!.postedBy!
-                                              .userType ==
-                                          "SolhProvider" &&
-                                      widget._journalModel!.group == null
-                                  ? Color(0xFFDBF1FE)
-                                  : widget
-                                                  ._journalModel!.postedBy !=
-                                              null &&
-                                          widget._journalModel!
-                                                  .anonymousJournal !=
+                                      widget._journalModel!.group == null &&
+                                      widget._journalModel!.official!
+                                  ? LinearGradient(colors: [
+                                      Color(0xFFE1555A).withOpacity(0.25),
+                                      Color(0xFF5F9B8C).withOpacity(0.25),
+                                    ])
+                                  : widget._journalModel!.postedBy != null &&
+                                          widget._journalModel!.anonymousJournal !=
                                               null &&
                                           !widget._journalModel!
                                               .anonymousJournal! &&
-                                          widget._journalModel!.postedBy!
-                                                  .userType ==
-                                              "SolhVolunteer"
-                                      ? Color(0xFFD7E6E2)
-                                      : widget._journalModel!.group != null &&
-                                              journalPageController
-                                                  .selectedGroupId.value.isEmpty
-                                          ? Color(0xffF8EDFF)
-                                          : Color.fromRGBO(0, 0, 0, 0),
+                                          widget._journalModel!.postedBy!.userType ==
+                                              "SolhProvider" &&
+                                          widget._journalModel!.group == null
+                                      ? LinearGradient(colors: [
+                                          Color(0xFFDBF1FE),
+                                          Color(0xFFDBF1FE)
+                                        ])
+                                      : widget._journalModel!.postedBy != null &&
+                                              widget._journalModel!.anonymousJournal !=
+                                                  null &&
+                                              !widget._journalModel!
+                                                  .anonymousJournal! &&
+                                              widget._journalModel!.postedBy!
+                                                      .userType ==
+                                                  "SolhVolunteer"
+                                          ? LinearGradient(colors: [
+                                              Color(0xFFD7E6E2),
+                                              Color(0xFFD7E6E2)
+                                            ])
+                                          : widget._journalModel!.group != null &&
+                                                  journalPageController
+                                                      .selectedGroupId
+                                                      .value
+                                                      .isEmpty
+                                              ? LinearGradient(colors: [
+                                                  Color(0xffF8EDFF),
+                                                  Color(0xffF8EDFF)
+                                                ])
+                                              : LinearGradient(colors: [
+                                                  Color.fromRGBO(0, 0, 0, 0),
+                                                  Color.fromRGBO(0, 0, 0, 0),
+                                                ]),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -273,27 +294,6 @@ class _JournalTileState extends State<JournalTile> {
                   child: Padding(
                     padding: const EdgeInsets.all(1.0),
                     child: CircleAvatar(
-                      /* backgroundImage: widget._journalModel!.anonymousJournal ==
-                                  null &&
-                              widget._journalModel!.postedBy!.anonymous == null
-                          ? widget._journalModel!.group != null
-                              ? CachedNetworkImageProvider(
-                                  widget._journalModel!.group!.groupImage ?? '')
-                              : CachedNetworkImageProvider(widget._journalModel!
-                                      .postedBy!.anonymous!.profilePicture ??
-                                  '')
-                          : widget._journalModel!.group != null &&
-                                  journalPageController
-                                          .selectedGroupId.value.length ==
-                                      0
-                              ? widget._journalModel!.group!.groupImage != null
-                                  ? CachedNetworkImageProvider(
-                                      widget._journalModel!.group!.groupImage!)
-                                  : AssetImage(
-                                          'assets/images/group_placeholder.png')
-                                      as ImageProvider
-                              : CachedNetworkImageProvider(
-                                  widget._journalModel!.postedBy!.profilePicture!), */
                       backgroundImage: widget._journalModel!.anonymousJournal !=
                                   null &&
                               widget._journalModel!.postedBy!.anonymous !=
@@ -302,8 +302,11 @@ class _JournalTileState extends State<JournalTile> {
                           ? widget._journalModel!.group != null &&
                                   journalPageController.selectedGroupId.value.length ==
                                       0
-                              ? CachedNetworkImageProvider(
-                                  widget._journalModel!.group!.groupImage!)
+                              ? widget._journalModel!.group!.groupImage != null
+                                  ? CachedNetworkImageProvider(
+                                      widget._journalModel!.group!.groupImage!)
+                                  : AssetImage('assets/images/group_placeholder.png')
+                                      as ImageProvider
                               : CachedNetworkImageProvider(widget._journalModel!
                                       .postedBy!.anonymous!.profilePicture ??
                                   '')
@@ -315,10 +318,8 @@ class _JournalTileState extends State<JournalTile> {
                               : widget._journalModel!.postedBy != null
                                   ? widget._journalModel!.postedBy!.anonymous !=
                                               null &&
-                                          widget
-                                              ._journalModel!.anonymousJournal!
-                                      ? CachedNetworkImageProvider(
-                                          widget._journalModel!.postedBy!.profilePicture!)
+                                          widget._journalModel!.anonymousJournal!
+                                      ? CachedNetworkImageProvider(widget._journalModel!.postedBy!.profilePicture!)
                                       : CachedNetworkImageProvider(widget._journalModel!.postedBy!.profilePicture!)
                                   : CachedNetworkImageProvider(widget._journalModel!.postedBy!.profilePicture ?? ''),
                       backgroundColor: SolhColors.white,
@@ -421,35 +422,6 @@ class _JournalTileState extends State<JournalTile> {
                                           color: Color(0xFFA6A6A6),
                                         )
                                       : Container(),
-                                  // widget._journalModel!.postedBy!.isProvider! &&
-                                  //         widget._journalModel!
-                                  //                 .anonymousJournal ==
-                                  //             false &&
-                                  //         widget._journalModel!.group == null
-                                  //     ? Row(
-                                  //         children: [
-                                  //           Container(
-                                  //             height: 12,
-                                  //             width: 1,
-                                  //             color: SolhColors.grey,
-                                  //           ),
-                                  //           SizedBox(
-                                  //             width: 6,
-                                  //           ),
-                                  //           Text(
-                                  //             'Volunteer',
-                                  //             style: GoogleFonts.signika(
-                                  //                 fontSize: 12,
-                                  //                 fontWeight: FontWeight.w400,
-                                  //                 color: SolhColors.green),
-                                  //           ),
-                                  //           SizedBox(
-                                  //             width: 4,
-                                  //           ),
-                                  //           SolhExpertBadge()
-                                  //         ],
-                                  //       )
-                                  //     : Container(),
                                   widget._journalModel!.postedBy != null &&
                                           widget._journalModel!.anonymousJournal !=
                                               null &&
@@ -457,13 +429,11 @@ class _JournalTileState extends State<JournalTile> {
                                               ._journalModel!.anonymousJournal! &&
                                           widget._journalModel!.postedBy!
                                                   .userType ==
-                                              "SolhProvider"
+                                              "Official"
                                       ? SolhExpertBadge(
-                                          usertype: 'Counsellor',
+                                          usertype: 'Official',
                                         )
-                                      : widget._journalModel!
-                                                      .postedBy !=
-                                                  null &&
+                                      : widget._journalModel!.postedBy != null &&
                                               widget._journalModel!
                                                       .anonymousJournal !=
                                                   null &&
@@ -471,17 +441,33 @@ class _JournalTileState extends State<JournalTile> {
                                                   .anonymousJournal! &&
                                               widget._journalModel!.postedBy!
                                                       .userType ==
-                                                  "SolhVolunteer"
+                                                  "SolhProvider"
                                           ? SolhExpertBadge(
-                                              usertype: 'Volunteer',
+                                              usertype: 'Counsellor',
                                             )
                                           : widget._journalModel!.postedBy !=
                                                       null &&
                                                   widget._journalModel!
+                                                          .anonymousJournal !=
+                                                      null &&
+                                                  !widget._journalModel!
+                                                      .anonymousJournal! &&
+                                                  widget._journalModel!
                                                           .postedBy!.userType ==
-                                                      "Seeker"
-                                              ? Container()
-                                              : Container(),
+                                                      "SolhVolunteer"
+                                              ? SolhExpertBadge(
+                                                  usertype: 'Volunteer',
+                                                )
+                                              : widget._journalModel!
+                                                              .postedBy !=
+                                                          null &&
+                                                      widget
+                                                              ._journalModel!
+                                                              .postedBy!
+                                                              .userType ==
+                                                          "Seeker"
+                                                  ? Container()
+                                                  : Container(),
                                   widget._journalModel!.anonymousJournal !=
                                               null &&
                                           widget._journalModel!

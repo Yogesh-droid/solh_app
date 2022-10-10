@@ -10,7 +10,7 @@ class SessionCookie {
     print("*" * 30 + "\n" + "onesignal Token: $onesignalId");
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? coutry = sharedPreferences.getString('userCountry');
+    String? coutry = await sharedPreferences.getString('userCountry');
     print('*' * 30 + 'Country $coutry' + '*' * 30);
     var response = await Network.makeHttpPostRequest(
         url: "${APIConstants.api}/api/create-session-cookie",
@@ -19,7 +19,7 @@ class SessionCookie {
           "deviceId": fcmToken ?? '',
           "onesignal_device_id": onesignalId,
           "deviceType": deviceType,
-          "userCountry": coutry
+          "user_country": coutry
         });
     print("*" * 30 + "\n" + "Response: $response");
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];
