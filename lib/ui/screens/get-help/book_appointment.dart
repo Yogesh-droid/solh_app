@@ -588,7 +588,7 @@ class _DayPickerState extends State<DayPicker> {
             ),
           ),
           SizedBox(
-            height: 50,
+            height: 1.h,
           ),
           Container(
             height: 36,
@@ -655,7 +655,7 @@ class _DayPickerState extends State<DayPicker> {
                 })),
           ),
           SizedBox(
-            height: 40,
+            height: 2.h,
           ),
           Obx(() {
             return _controller.loadingTimeSlots.value

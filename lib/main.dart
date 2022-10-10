@@ -7,7 +7,6 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'package:solh/services/utility.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';

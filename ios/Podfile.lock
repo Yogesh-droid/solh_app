@@ -80,6 +80,9 @@ PODS:
     - FirebaseAnalytics (~> 9.4.0)
   - Firebase/CoreOnly (9.4.0):
     - FirebaseCore (= 9.4.0)
+  - Firebase/DynamicLinks (9.4.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 9.4.0)
   - Firebase/Messaging (9.4.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 9.4.0)
@@ -93,6 +96,10 @@ PODS:
     - Flutter
   - firebase_core (1.21.1):
     - Firebase/CoreOnly (= 9.4.0)
+    - Flutter
+  - firebase_dynamic_links (4.3.10):
+    - Firebase/DynamicLinks (= 9.4.0)
+    - firebase_core
     - Flutter
   - firebase_messaging (11.4.2):
     - Firebase/Messaging (= 9.4.0)
@@ -133,6 +140,8 @@ PODS:
     - nanopb (< 2.30910.0, >= 2.30908.0)
   - FirebaseCoreInternal (9.6.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
+  - FirebaseDynamicLinks (9.4.0):
+    - FirebaseCore (~> 9.0)
   - FirebaseInstallations (9.6.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
@@ -270,6 +279,7 @@ DEPENDENCIES:
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
@@ -302,6 +312,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreInternal
+    - FirebaseDynamicLinks
     - FirebaseInstallations
     - FirebaseMessaging
     - FMDB
@@ -333,6 +344,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  firebase_dynamic_links:
+    :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
@@ -382,12 +395,14 @@ SPEC CHECKSUMS:
   firebase_analytics: 63825a37b8ebabd44189b2c04f44ecd864554ebc
   firebase_auth: 74cfbf7be1e3e7fdaac9e7f117cefd89155251a9
   firebase_core: 8e500850dd138c269d197c8dfca3ae886fa3b6f2
+  firebase_dynamic_links: 3ae3d013032902cc969a381cd271a7cb77983296
   firebase_messaging: 980f39b3212306505dba1756132c049ce39ef3c4
   FirebaseAnalytics: a1a24e72b7ba7f47045a4633f1abb545c07bd29c
   FirebaseAuth: ae5d4402e1516497357d909162b091b3ca2a2e9c
   FirebaseCore: 9a2b10270a854731c4d4d8a97d0aa8380ec3458d
   FirebaseCoreDiagnostics: 99a495094b10a57eeb3ae8efa1665700ad0bdaa6
   FirebaseCoreInternal: bca76517fe1ed381e989f5e7d8abb0da8d85bed3
+  FirebaseDynamicLinks: 311bb05788180e31a502bd0d413215413a4b3357
   FirebaseInstallations: 0a115432c4e223c5ab20b0dbbe4cbefa793a0e8e
   FirebaseMessaging: 4e220eddd356181469ba2ec5f7d5fafbc2312841
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a

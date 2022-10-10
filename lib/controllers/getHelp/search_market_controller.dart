@@ -10,7 +10,7 @@ class SearchMarketController extends GetxController {
   var searchMarketModel = SearchMarketModel().obs;
   var issueModel = SearchMarketModel().obs;
   var isSearchingDoctors = false.obs;
-  String? country;
+  String country = "IN";
 
   Future<void> getSearchResults(String searchText) async {
     isLoading.value = true;
@@ -80,7 +80,8 @@ class SearchMarketController extends GetxController {
   }
 
   Future<void> getCountry() async {
+    print("*" * 30 + " getting country" + "%" * 30);
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    country = sharedPreferences.getString('userCountry');
+    country = sharedPreferences.getString('userCountry') ?? "IN";
   }
 }

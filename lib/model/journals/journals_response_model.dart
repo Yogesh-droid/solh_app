@@ -55,6 +55,7 @@ class JournalsResponseModel {
 
 class Journals {
   String? id;
+  bool? official;
   String? description;
   int? likes;
   int? comments;
@@ -78,6 +79,7 @@ class Journals {
       this.comments,
       this.isLiked,
       this.likedBy,
+      this.official,
       this.feelings,
       this.createdAt,
       this.updatedAt,
@@ -94,6 +96,7 @@ class Journals {
     likes = json['likes'];
     comments = json['comments'];
     isLiked = json['isLiked'];
+    official = json['official'];
     likedBy = json['likedBy'] != null ? json['likedBy'].cast<String>() : null;
     // feelings = json['feelings'] != null
     //     ? new Feelings.fromJson(json['feelings'])
@@ -123,6 +126,7 @@ class Journals {
     data['comments'] = this.comments;
     data['isLiked'] = this.isLiked;
     data['likedBy'] = this.likedBy;
+    data['official'] = this.official;
     //data['feelings'] = this.feelings;
     data['feelings'] = this.feelings != null
         ? this.feelings!.map((v) => v.toJson()).toList()
