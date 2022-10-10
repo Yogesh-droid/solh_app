@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
@@ -27,7 +28,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
 
   bool _hintShown = false;
 
-  void _signInWithPhone(String phoneNo, String country) {
+  Future<void> _signInWithPhone(String phoneNo, String country) async {
     print(phoneNo);
     _otpVerificationController.isLoading.value = true;
     setState(() {});
@@ -35,6 +36,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
         onCodeSent: (String verificationId) => setState(() {
               _otpVerificationController.isLoading.value = false;
             }));
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('userCountry', country);
+    Get.find<SearchMarketController>().country = country;
   }
 
   Future<void> saveCountryToPrefs() async {
@@ -96,10 +100,6 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                           print(countryCode.code);
                           _countryCode = countryCode.dialCode;
                           country = countryCode.code;
-                          SharedPreferences sharedPreferences =
-                              await SharedPreferences.getInstance();
-                          await sharedPreferences.setString(
-                              'userCountry', country ?? '');
                         }),
                         Container(
                           alignment: Alignment.center,
