@@ -579,14 +579,16 @@ class _ConnectionsState extends State<Connections> {
                               //     ),
                               //   ],
                               // ),
-                              getUserTitle(
-                                  context: context,
-                                  name: connectionController
-                                          .sentConnections.value[index].name ??
-                                      '',
-                                  bio: connectionController
-                                      .sentConnections.value[index].bio),
-                              Spacer(),
+                              Expanded(
+                                child: getUserTitle(
+                                    context: context,
+                                    name: connectionController.sentConnections
+                                            .value[index].name ??
+                                        '',
+                                    bio: connectionController
+                                        .sentConnections.value[index].bio),
+                              ),
+
                               inviteButton(
                                 callback: () async {
                                   connectionController
@@ -599,6 +601,7 @@ class _ConnectionsState extends State<Connections> {
                                 id: connectionController
                                     .sentConnections.value[index].connectionId!,
                               ),
+
                               PopupMenuButton(
                                 itemBuilder: (context) {
                                   return [

@@ -508,14 +508,13 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                             ? SolhGreenButton(
                                 onPressed: () async {
                                   await connectionController
-                                      .deleteConnectionRequest(
-                                          getConnectionIdBySId(widget._sId));
-                                  checkIfUserIsMyConnection(widget._sId);
+                                      .deleteConnection(widget._sId);
                                   setState(() {});
                                 },
                                 width: 90.w,
                                 height: 6.3.h,
-                                child: widget.isMyConnection
+                                child: widget.isMyConnection &&
+                                        checkIfUserIsMyConnection(widget._sId)
                                     ? Text('Unfriend')
                                     : Text("Connect/Join"))
                             : Container(),
@@ -547,15 +546,19 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
     return connectionId;
   }
 
-  void checkIfUserIsMyConnection(String sId) {
+  bool checkIfUserIsMyConnection(String sId) {
+    bool isInMyConnection = false;
     connectionController.myConnectionModel.value.myConnections != null
         ? connectionController.myConnectionModel.value.myConnections!
             .forEach((element) {
             if (element.sId == sId) {
               widget.isMyConnection = true;
+              isInMyConnection = true;
             }
           })
         : null;
+
+    return isInMyConnection;
   }
 
   bool checkIfAlreadyInSendConnection(String sId) {

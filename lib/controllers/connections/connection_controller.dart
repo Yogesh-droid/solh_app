@@ -172,12 +172,15 @@ class ConnectionController extends GetxController {
   }
 
   Future<void> deleteConnection(String uid) async {
-    await Network.makeHttpDeleteRequestWithToken(
+    Map response = await Network.makeHttpDeleteRequestWithToken(
         url: APIConstants.api + '/api/connection?userId=${uid}',
         body: {}).onError((error, stackTrace) {
       print(error);
       return {};
     });
+    if (response['message'] == 'Successfully removed from connections.') {
+      Utility.showToast('Successfully removed from connections.');
+    }
     getMyConnection();
     getAllConnection();
   }
