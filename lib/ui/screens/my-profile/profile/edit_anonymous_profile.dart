@@ -239,7 +239,9 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
               minimumAspectRatio: 1.0,
             )
           ]);
-      _croppedFile = File(croppedFile!.path);
+      if (croppedFile != null) {
+        _croppedFile = File(croppedFile.path);
+      }
     }
     // Navigator.of(context).pop();
     setState(() {});

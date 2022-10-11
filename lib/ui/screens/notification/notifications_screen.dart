@@ -128,7 +128,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: SolhColors.greyS200,
+              backgroundColor: SolhColors.white,
               backgroundImage: NetworkImage(item.senderId!.profilePicture!),
               radius: 30,
             ),
@@ -165,7 +165,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return Row(
         children: [
           CircleAvatar(
-            backgroundColor: SolhColors.greyS200,
+            backgroundColor: SolhColors.white,
             backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),
@@ -201,7 +201,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return Row(
         children: [
           CircleAvatar(
-            backgroundColor: SolhColors.greyS200,
+            backgroundColor: SolhColors.white,
             backgroundImage: NetworkImage(item.senderId!.profilePicture!),
             radius: 30,
           ),

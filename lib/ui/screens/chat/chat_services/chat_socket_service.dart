@@ -77,13 +77,13 @@ class SocketService {
   }
 
   static void typing(sId, chatType, userType) {
-    socket.emit('typing', {
-      'socketId': socket.id,
-      'authorId': userBlocNetwork.id,
-      'connection': currentSId,
-      'chatType': chatType,
-      'authorType': userType
-    });
+    // socket.emit('typing', {
+    //   'socketId': socket.id,
+    //   'authorId': userBlocNetwork.id,
+    //   'connection': currentSId,
+    //   'chatType': chatType,
+    //   'authorType': userType
+    // });
   }
 
   static void notTyping(sId, chatType, userType) {
