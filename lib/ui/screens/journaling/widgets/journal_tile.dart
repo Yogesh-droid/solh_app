@@ -697,66 +697,77 @@ class _JournalTileState extends State<JournalTile> {
                   ? SizedBox()
                   : widget._journalModel!.postedBy!.uid !=
                           FirebaseAuth.instance.currentUser!.uid
-                      ? InkWell(
-                          onTap: () async {
-                            widget._journalModel!.group != null &&
-                                    journalPageController
-                                            .selectedGroupId.value.length ==
-                                        0
-                                ? {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return GroupDetailsPage(
-                                        ///// this case is for group journal
-                                        group: GroupList(
-                                          sId: widget._journalModel!.group!.sId,
-                                          groupName: widget
-                                              ._journalModel!.group!.groupName,
-                                          groupMediaUrl: widget
-                                              ._journalModel!.group!.groupImage,
-                                        ),
+                      ? journalPageController
+                                  .selectedGroupId.value.isNotEmpty &&
+                              widget._journalModel!.anonymousJournal != null &&
+                              widget._journalModel!.anonymousJournal == true
+                          ? Container()
+                          : InkWell(
+                              onTap: () async {
+                                widget._journalModel!.group != null &&
+                                        journalPageController
+                                                .selectedGroupId.value.length ==
+                                            0
+                                    ? {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return GroupDetailsPage(
+                                            ///// this case is for group journal
+                                            group: GroupList(
+                                              sId: widget
+                                                  ._journalModel!.group!.sId,
+                                              groupName: widget._journalModel!
+                                                  .group!.groupName,
+                                              groupMediaUrl: widget
+                                                  ._journalModel!
+                                                  .group!
+                                                  .groupImage,
+                                            ),
+                                          );
+                                        }))
+                                      }
+                                    : await connectionController.addConnection(
+                                        widget._journalModel!.postedBy!.sId!,
                                       );
-                                    }))
-                                  }
-                                : await connectionController.addConnection(
-                                    widget._journalModel!.postedBy!.sId!,
-                                  );
-                          },
-                          child: Container(
-                            width: MediaQuery.of(context).size.width / 3.5,
-                            height: MediaQuery.of(context).size.height / 20,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/icons/journaling/post-connect.svg",
-                                  width: 17,
-                                  height: 17,
-                                  color: SolhColors.green,
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width / 3.5,
+                                height: MediaQuery.of(context).size.height / 20,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      "assets/icons/journaling/post-connect.svg",
+                                      width: 17,
+                                      height: 17,
+                                      color: SolhColors.green,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        left:
+                                            MediaQuery.of(context).size.width /
+                                                40,
+                                      ),
+                                      child: Text(
+                                        widget._journalModel!.group != null &&
+                                                journalPageController
+                                                        .selectedGroupId
+                                                        .value
+                                                        .length ==
+                                                    0
+                                            ? isGroupJoined
+                                                ? 'Go To Group'
+                                                : 'join'
+                                            : "Connect",
+                                        style: SolhTextStyles
+                                            .GreenBorderButtonText,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left:
-                                        MediaQuery.of(context).size.width / 40,
-                                  ),
-                                  child: Text(
-                                    widget._journalModel!.group != null &&
-                                            journalPageController
-                                                    .selectedGroupId
-                                                    .value
-                                                    .length ==
-                                                0
-                                        ? isGroupJoined
-                                            ? 'Go To Group'
-                                            : 'join'
-                                        : "Connect",
-                                    style: SolhTextStyles.GreenBorderButtonText,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
+                              ),
+                            )
                       : SizedBox(
                           width: 100,
                         )
@@ -766,6 +777,8 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 }
+
+//////  journalPageController.selectedGroupId.value.isEmpty
 
 class PostContentWidget extends StatefulWidget {
   PostContentWidget(
@@ -816,11 +829,10 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                 widget.journalModel.feelings != null &&
                         widget.journalModel.feelings!.isNotEmpty
                     ? Text(
-                        "#Feeling " +
-                            feelingList
-                                .toString()
-                                .replaceAll("[", "")
-                                .replaceAll("]", ""),
+                        feelingList
+                            .toString()
+                            .replaceAll("[", "")
+                            .replaceAll("]", ""),
                         style: SolhTextStyles.PinkBorderButtonText)
                     : Container(),
                 // widget._journalModel!.description != null

@@ -62,7 +62,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
 
   @override
   void initState() {
-    country = 'India';
+    getUserCountry();
     super.initState();
   }
 
@@ -410,13 +410,10 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                       await SharedPreferences.getInstance();
                                   await sharedPreferences.setString(
                                       'userCountry', value.code ?? '');
-                                  String? c = await sharedPreferences
-                                      .getString('userCountry');
-                                  print(c);
                                   country = value.name;
                                 },
                                 // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                                initialSelection: 'IN',
+                                initialSelection: "IN",
                                 // optional. Shows only country name and flag when popup is closed.
                                 showOnlyCountryWhenClosed: false,
 
@@ -576,6 +573,11 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   Future<void> getSharedPtreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // country = sharedPreferences.getString('userCountry');
+  }
+
+  Future<void> getUserCountry() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    country = sharedPreferences.getString('userCountry');
   }
 }
 
