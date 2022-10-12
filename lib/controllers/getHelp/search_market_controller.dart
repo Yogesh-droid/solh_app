@@ -48,10 +48,16 @@ class SearchMarketController extends GetxController {
     isSearchingDoctors.value = false;
   }
 
-  Future<void> getTopConsultants({String? country}) async {
+  Future<void> getTopConsultants({String? c}) async {
     isSearchingDoctors.value = true;
-    Map<String, dynamic> map =
-        await Network.makeGetRequest(APIConstants.api + '/api/top-consultants');
+    String url;
+    if (c != null && c.isNotEmpty) {
+      url = APIConstants.api + '/api/top-consultants?country=$c';
+    } else {
+      http: //13.126.1.127/api/top-consultants?country=AU
+      url = APIConstants.api + '/api/top-consultants?country=$country';
+    }
+    Map<String, dynamic> map = await Network.makeGetRequest(url);
 
     issueModel.value = SearchMarketModel.fromJson(map);
     isSearchingDoctors.value = false;
