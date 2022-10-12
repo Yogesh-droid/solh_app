@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/provider-user.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/profile-setup/profile-created.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -109,15 +110,22 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   height: 6.h,
                   child: Text("Next"),
                   onPressed: () async {
-                    widget._onNext();
+                    if (_dropdownValue == "N/A") {
+                      Utility.showToast('Please select gender');
+                    } else {
+                      widget._onNext();
+                    }
+
                     try {
                       Provider.of<ProviderUser>(context, listen: false)
                           .updateUserDetails();
                     } catch (e) {
                       print(e);
                     } finally {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileCreated()));
+                      if (_dropdownValue != "N/A") {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileCreated()));
+                      }
                     }
                   }),
               SizedBox(

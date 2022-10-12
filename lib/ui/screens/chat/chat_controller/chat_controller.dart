@@ -187,6 +187,7 @@ class ChatController extends GetxController {
           mediaType: mediaType,
           mediaUrl: mediaUrl,
         )));
+    chatListController.chatListController();
   }
 
   Future<void> getLocalPath() async {

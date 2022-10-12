@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:http/http.dart' as http;
 
 class ProviderUser {
   String? _firstname;
@@ -62,27 +68,70 @@ class ProviderUser {
   }
 
   Future<bool> updateUserDetails() async {
-    print("$_userName");
-    print(_firstname);
-    print(_bio);
-    print(_lastname);
+    try {
+      debugPrint({
+        "first_name": _firstname,
+        "last_name": _lastname,
+        "bio": _bio,
+        "gender": _gender,
+        "userName": _userName,
+        "dob": _dob,
+        "userType": _userType,
+        "email": _email
+      }.toString());
+      Uri _uri = Uri.parse("${APIConstants.api}/api/edit-user-details");
 
-    var resposne = await Network.makeHttpPutRequestWithToken(
-        url: "${APIConstants.api}/api/edit-user-details",
-        body: {
-          "first_name": _firstname,
-          "last_name": _lastname,
-          "bio": _bio,
-          "gender": _gender,
-          "userName": _userName,
-          "dob": _dob,
-          "userType": _userType,
-          "email": _email
-        }).onError((error, stackTrace) {
-      print(error);
-      return {};
-    });
-    print(resposne.toString());
-    return false;
+      print("token: ${userBlocNetwork.getSessionCookie}");
+      http.Response apiResponse = await http.put(_uri, headers: {
+        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
+      }, body: {
+        "first_name": _firstname ?? '',
+        "last_name": _lastname ?? '',
+        "bio": _bio ?? '',
+        "gender": _gender ?? '',
+        "userName": _userName ?? '',
+        "dob": _dob ?? '',
+        "userType": _userType ?? '',
+        "email": _email ?? ''
+      });
+
+      if (apiResponse.statusCode == 201) {
+        return jsonDecode(apiResponse.body)["body"];
+      } else if (apiResponse.statusCode == 200) {
+        print(jsonDecode(apiResponse.body));
+        return jsonDecode(apiResponse.body)["body"];
+      } else {
+        print("Status Code: " + apiResponse.statusCode.toString());
+        throw "server-error";
+      }
+    } on SocketException {
+      // internetConnectivityBloc.noInternet();
+      throw "no-internet";
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+    // print("$_userName");
+    // print(_firstname);
+    // print(_bio);
+    // print(_lastname);
+
+    // var resposne = await Network.makeHttpPutRequestWithToken(
+    //     url: "${APIConstants.api}/api/edit-user-details",
+    //     body: {
+    //       "first_name": _firstname,
+    //       "last_name": _lastname,
+    //       "bio": _bio,
+    //       "gender": _gender,
+    //       "userName": _userName,
+    //       "dob": _dob,
+    //       "userType": _userType,
+    //       "email": _email
+    //     }).onError((error, stackTrace) {
+    //   print(error);
+    //   return {};
+    // });
+    // print(resposne.toString());
+    // return false;
   }
 }

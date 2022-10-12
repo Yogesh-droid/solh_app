@@ -9,9 +9,7 @@ class APIConstants {
 
   //static const api = "https://api.solhapp.com";
 
+  static const api = "http://13.126.1.127";
 
-  static const api = "http://13.127.44.23";
-
-  // static const api = "https://api.solhapp.com";
-
+  //static const api = "https://api.solhapp.com";
 }
