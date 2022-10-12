@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,10 @@ class _OTPScreenState extends State<OTPScreen> {
                       await OneSignal.shared.getDeviceState().then((value) {
                         print(value!.userId);
                         oneSignalId = value.userId ?? '';
+
+                        FirebaseAnalytics.instance.logLogin(
+                            loginMethod: 'PhoneAuth',
+                            callOptions: AnalyticsCallOptions(global: true));
                       });
                       if (Platform.isAndroid) {
                         deviceType = 'Android';

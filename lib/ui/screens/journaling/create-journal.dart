@@ -1074,7 +1074,11 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                                     fontSize: 14),
                           ),
                           journalPageController.isAnonymousSelected == false
-                              ? Text(widget._userModel!.isSolhExpert! ? '' : '')
+                              ? widget._userModel!.isSolhExpert != null
+                                  ? Text(widget._userModel!.isSolhExpert!
+                                      ? ''
+                                      : '')
+                                  : Container()
                               : Container()
                         ],
                       ),

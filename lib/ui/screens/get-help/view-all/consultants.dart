@@ -38,9 +38,10 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
 
   void initState() {
     super.initState();
-    getCountry();
+    getResultByCountry();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
+<<<<<<< HEAD
     widget.type == 'specialization'
         ? searchMarketController.getSpecializationList(widget.slug)
         : widget.type == 'topconsultant'
@@ -48,6 +49,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
             : searchMarketController.getIssueList(
                 widget.slug,
               );
+=======
+
+>>>>>>> bc63a7f72964973f175988604c116deab33f5d4d
     _doctorsScrollController.addListener(() async {
       if (_doctorsScrollController.position.pixels ==
               _doctorsScrollController.position.maxScrollExtent &&
@@ -392,9 +396,16 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                   ))));
   }
 
-  Future<void> getCountry() async {
+  Future<void> getResultByCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     defaultCountry = sharedPreferences.getString('userCountry');
     print('@' * 30 + 'default country is $defaultCountry' + ' &' * 30);
+    widget.type == 'specialization'
+        ? searchMarketController.getSpecializationList(widget.slug,
+            c: defaultCountry)
+        : widget.type == 'topconsultant'
+            ? searchMarketController.getTopConsultants()
+            : searchMarketController.getIssueList(widget.slug,
+                c: defaultCountry);
   }
 }

@@ -19,7 +19,7 @@ class SessionCookie {
           "deviceId": fcmToken ?? '',
           "onesignal_device_id": onesignalId,
           "deviceType": deviceType,
-          "user_country": coutry
+          "user_country": coutry ?? ''
         });
     print("*" * 30 + "\n" + "Response: $response");
     userBlocNetwork.updateSessionCookie = response["details"]["sessionCookie"];

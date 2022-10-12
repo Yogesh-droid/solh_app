@@ -15,10 +15,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.gr.dart';
-
 import 'package:solh/services/network/network.dart';
-import 'package:solh/ui/screens/chat/chat_provider.dart';
-
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
@@ -28,7 +25,6 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../controllers/chat-list/chat_list_controller.dart';
 
 class MyProfileScreen extends StatefulWidget {

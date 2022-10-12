@@ -1,5 +1,10 @@
 class APIConstants {
+<<<<<<< HEAD
   //static const api = "http://192.168.1.24:3000";
+=======
+
+  static const api = "http://192.168.1.65:3000";
+>>>>>>> bc63a7f72964973f175988604c116deab33f5d4d
 
   // static const api = "http://13.127.44.23";
 
@@ -8,4 +13,5 @@ class APIConstants {
   static const api = "https://staging.solhapp.com";
 
   //static const api = "https://api.solhapp.com";
+
 }
