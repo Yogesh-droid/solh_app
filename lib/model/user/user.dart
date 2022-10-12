@@ -180,6 +180,7 @@ class UserModel {
   int? commentCount;
   String? connectionCount;
   List<String>? hiddenposts;
+  String? postCount;
 
   UserModel(
       {this.sId,
@@ -214,10 +215,12 @@ class UserModel {
       this.journalLikeCount,
       this.commentCount,
       this.connectionCount,
+      this.postCount,
       this.hiddenposts});
 
   UserModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
+    postCount = json['postCount'];
     gender = json['gender'];
     status = json['status'];
     profilePicture = json['profilePicture'];
@@ -271,6 +274,7 @@ class UserModel {
     data['isSolhCounselor'] = this.isSolhCounselor;
     data['mobile'] = this.mobile;
     data['uid'] = this.uid;
+    data['postCount'] = this.postCount;
     data['first_name'] = this.firstName;
     data['userName'] = this.userName;
     data['dob'] = this.dob;

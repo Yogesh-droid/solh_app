@@ -402,6 +402,9 @@ class _ProfileContainerState extends State<ProfileContainer> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                SizedBox(
+                  width: 20,
+                ),
                 Column(
                   children: [
                     Row(
@@ -430,7 +433,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                     InkWell(child: Text("Likes")),
                   ],
                 ),
-                // Divider(),
+                Container(
+                  height: 25,
+                  width: 2,
+                  color: Colors.grey.shade400,
+                ),
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -438,18 +445,60 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   },
                   child: Column(
                     children: [
-                      Obx(() {
-                        return Text(
-                          _connectionController
-                              .userAnalyticsModel.value.connectionCount
-                              .toString(),
-                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
-                              fontSize: 18),
-                        );
-                      }),
+                      Row(
+                        children: [
+                          SizedBox(
+                              height: 14,
+                              width: 14,
+                              child: SvgPicture.asset(
+                                  'assets/images/connect.svg')),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Obx(() {
+                            return Text(
+                              _connectionController
+                                  .userAnalyticsModel.value.connectionCount
+                                  .toString(),
+                              style:
+                                  SolhTextStyles.GreenBorderButtonText.copyWith(
+                                      fontSize: 18),
+                            );
+                          }),
+                        ],
+                      ),
                       Text("Connections"),
                     ],
                   ),
+                ),
+                Container(
+                  height: 25,
+                  width: 2,
+                  color: Colors.grey.shade400,
+                ),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                            height: 14,
+                            width: 14,
+                            child: SvgPicture.asset('assets/images/post.svg')),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          widget._userModel!.posts.toString(),
+                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                              fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    Text("Posts"),
+                  ],
+                ),
+                SizedBox(
+                  width: 20,
                 ),
                 // Divider(),
                 // Column(
