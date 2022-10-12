@@ -91,7 +91,7 @@ class ProviderUser {
         "gender": _gender ?? '',
         "userName": _userName ?? '',
         "dob": _dob ?? '',
-        "userType": _userType ?? '',
+        "userType": _userType == 'Undefined' ? 'Seeker' : _userType ?? '',
         "email": _email ?? ''
       });
 
