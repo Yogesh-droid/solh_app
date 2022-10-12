@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -40,6 +39,7 @@ class _CallState extends State<VideoCallUser> {
   // OverlayEntry? overlayEntry;
   SocketService _service = SocketService();
   PageController pageController = PageController();
+  bool isBottomSheetOpened = false;
 
   @override
   void dispose() {
@@ -72,22 +72,12 @@ class _CallState extends State<VideoCallUser> {
     initAgora();
     _service.connectAndListen();
     SocketService.setCurrentSId(widget.sId!);
-    _controller.getChatController(widget.sId!);
+    if (_controller.convo.isEmpty) {
+      _controller.getChatController(widget.sId!);
+    }
     super.initState();
 
     SocketService.setUserName(userBlocNetwork.myData.userName!);
-
-    @override
-    void initState() {
-      _service.connectAndListen();
-      SocketService.setCurrentSId(widget.sId!);
-      _controller.getChatController(widget.sId!);
-      super.initState();
-
-      SocketService.setUserName(userBlocNetwork.myData.userName!);
-
-      super.initState();
-    }
   }
 
   Future<void> initAgora() async {
@@ -120,6 +110,10 @@ class _CallState extends State<VideoCallUser> {
           _engine.destroy();
 
           Navigator.pop(context);
+          if (isBottomSheetOpened) {
+            Navigator.pop(context);
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
               reason.name == 'Quit' ? '  Call Ended  ' : '  User offline  ',
@@ -131,10 +125,6 @@ class _CallState extends State<VideoCallUser> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ));
-
-          // setState(() {
-          //   _remoteUid = null;
-          // });
         },
       ),
     );
@@ -344,6 +334,7 @@ class _CallState extends State<VideoCallUser> {
                         isScrollControlled: true,
                         context: context,
                         builder: (context) => getChatPage(widget.sId));
+                    isBottomSheetOpened = true;
                   },
                   child: Icon(
                     Icons.chat_bubble_outline,
@@ -388,6 +379,7 @@ class _CallState extends State<VideoCallUser> {
                         color: SolhColors.greyS200, shape: BoxShape.circle),
                     child: IconButton(
                         onPressed: () {
+                          isBottomSheetOpened = false;
                           Navigator.pop(context);
                         },
                         icon: Icon(Icons.close)),
