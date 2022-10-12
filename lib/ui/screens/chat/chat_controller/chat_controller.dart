@@ -87,6 +87,7 @@ class ChatController extends GetxController {
 
     if (response.chatLog != null) {
       convo.value = response.chatLog!.conversation!;
+      print(convo.value);
     } else {
       convo.value = [];
     }

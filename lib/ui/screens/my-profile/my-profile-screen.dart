@@ -50,9 +50,12 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(251, 251, 251, 1),
       appBar: SolhAppBar(
-        title: Text(
-          "Profile",
-          style: SolhTextStyles.AppBarText,
+        // title: Text(
+        //   "Profile",
+        //   style: SolhTextStyles.AppBarText,
+        // ),
+        title: Container(
+          width: 10,
         ),
         isLandingScreen: true,
       ),
