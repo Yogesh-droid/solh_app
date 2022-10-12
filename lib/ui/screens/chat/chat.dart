@@ -37,7 +37,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
-    _controller.getChatController(widget._sId);
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => _controller.getChatController(widget._sId));
+
     _controller.currentSid = widget._sId;
 
     SocketService.setUserName(userBlocNetwork.myData.name!);
@@ -253,6 +255,7 @@ class MessageBox extends StatelessWidget {
       width: double.maxFinite,
       margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
+          color: SolhColors.white,
           border: Border.all(
             color: SolhColors.green,
           ),
@@ -268,7 +271,6 @@ class MessageBox extends StatelessWidget {
               child: TextField(
                 onChanged: ((value) {
                   SocketService.typing(_sId, 'cc', 'users');
-
                   Future.delayed(Duration(seconds: 2), (() {
                     SocketService.notTyping(_sId, 'cc', 'users');
                   }));
@@ -398,7 +400,7 @@ class MessageTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: _authorId == _sId
                     ? Colors.grey.shade200
-                    : Color(0x80CCE9E2),
+                    : Color(0xFFEFF9F6),
               ),
               child: Container(
                 constraints: BoxConstraints(

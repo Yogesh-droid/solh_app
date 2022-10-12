@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../ui/screens/chat/chat.dart';
@@ -24,6 +25,8 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
+      print(event.notification.additionalData);
+      print(event.notification.rawPayload.toString());
       // print('Message is receved while app is in foregroud');
       // print(event.notification.additionalData);
       // event.complete(event.notification);
@@ -35,6 +38,8 @@ class LocalNotification {
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       print('running open notification handler');
+      print(result.notification.rawPayload);
+      print(result.notification.additionalData);
       /*  print(result.notification.additionalData.toString());
       print(result.notification.additionalData!['route']);
       // print(result.notification.body);
@@ -89,10 +94,20 @@ class LocalNotification {
                           )),
                 );
               });
+            } else if (result.action!.actionId == "reject") {
+            } else {
+              print(result.notification.additionalData!['route']);
+
+              Future.delayed(Duration(seconds: 1), () {
+                print('Opening Dialog ........................');
+                showVideocallDialog(result.notification, globalNavigatorKey);
+              });
             }
           } else {
             print(result.notification.additionalData!['route']);
+
             Future.delayed(Duration(seconds: 1), () {
+              print('Opening Dialog ........................');
               showVideocallDialog(result.notification, globalNavigatorKey);
             });
           }
@@ -157,7 +172,7 @@ class LocalNotification {
               child: Column(
                 children: [
                   Text(
-                    result.rawPayload!['alert'],
+                    result.additionalData!['title'] ?? '',
                     style: SolhTextStyles.LandingTitleText,
                     textAlign: TextAlign.center,
                   ),

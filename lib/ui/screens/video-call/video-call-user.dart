@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
@@ -8,6 +9,7 @@ import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../bloc/user-bloc.dart';
@@ -68,6 +70,13 @@ class _CallState extends State<VideoCallUser> {
       }
     });
     initAgora();
+    _service.connectAndListen();
+    SocketService.setCurrentSId(widget.sId!);
+    _controller.getChatController(widget.sId!);
+    super.initState();
+
+    SocketService.setUserName(userBlocNetwork.myData.userName!);
+
     @override
     void initState() {
       _service.connectAndListen();
@@ -170,10 +179,13 @@ class _CallState extends State<VideoCallUser> {
                 });
           },
         ),
-        body: PageView(
-          controller: pageController,
-          children: [getVideocallPage(), getChatPage(widget.sId)],
-        ),
+        // body: PageView(
+        //   controller: pageController,
+        //   scrollDirection: Axis.vertical,
+        //   children: [getVideocallPage(), getChatPage(widget.sId)],
+        // ),
+
+        body: getVideocallPage(),
       ),
     );
   }
@@ -241,86 +253,108 @@ class _CallState extends State<VideoCallUser> {
         Align(
           alignment: Alignment.bottomCenter,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              RawMaterialButton(
-                onPressed: () {
-                  setState(() {
-                    muted = !muted;
-                    _engine.muteLocalAudioStream(muted);
-                  });
-                  // _engine.muteLocalAudioStream(muted);
-                },
-                child: Icon(
-                  muted ? Icons.mic_off : Icons.mic,
-                  color: muted ? Colors.white : Colors.blueAccent,
-                  size: 20.0,
+              Container(
+                width: 50,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      muted = !muted;
+                      _engine.muteLocalAudioStream(muted);
+                    });
+                    // _engine.muteLocalAudioStream(muted);
+                  },
+                  child: Icon(
+                    muted ? Icons.mic_off : Icons.mic,
+                    color: muted ? Colors.white : Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: muted ? Colors.blueAccent : Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                 ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: muted ? Colors.blueAccent : Colors.white,
-                padding: const EdgeInsets.all(12.0),
               ),
-              RawMaterialButton(
-                onPressed: () {
-                  setState(() {
-                    _isVideoDisabled = !_isVideoDisabled;
-                    _engine.muteLocalVideoStream(_isVideoDisabled);
-                  });
-                },
-                child: Icon(
-                  _isVideoDisabled ? Icons.videocam_off : Icons.videocam,
-                  color: _isVideoDisabled ? Colors.white : Colors.blueAccent,
-                  size: 20.0,
+              Container(
+                width: 50,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    setState(() {
+                      _isVideoDisabled = !_isVideoDisabled;
+                      _engine.muteLocalVideoStream(_isVideoDisabled);
+                    });
+                  },
+                  child: Icon(
+                    _isVideoDisabled ? Icons.videocam_off : Icons.videocam,
+                    color: _isVideoDisabled ? Colors.white : Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor:
+                      _isVideoDisabled ? Colors.blueAccent : Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                 ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: _isVideoDisabled ? Colors.blueAccent : Colors.white,
-                padding: const EdgeInsets.all(12.0),
               ),
-              RawMaterialButton(
-                onPressed: () {
-                  _engine.leaveChannel();
-                  _engine.destroy();
-                  Navigator.pop(context);
-                },
-                child: Icon(
-                  Icons.call_end,
-                  color: Colors.white,
-                  size: 35.0,
+              Container(
+                width: 50,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    _engine.leaveChannel();
+                    _engine.destroy();
+                    Navigator.pop(context);
+                  },
+                  child: Icon(
+                    Icons.call_end,
+                    color: Colors.white,
+                    size: 35.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.redAccent,
+                  padding: const EdgeInsets.all(8.0),
                 ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: Colors.redAccent,
-                padding: const EdgeInsets.all(15.0),
               ),
-              RawMaterialButton(
-                onPressed: () => _engine.switchCamera(),
-                child: Icon(
-                  Icons.switch_camera,
-                  color: Colors.blueAccent,
-                  size: 20.0,
+              Container(
+                width: 50,
+                child: RawMaterialButton(
+                  onPressed: () => _engine.switchCamera(),
+                  child: Icon(
+                    Icons.switch_camera,
+                    color: Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                 ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: Colors.white,
-                padding: const EdgeInsets.all(12.0),
               ),
-              RawMaterialButton(
-                onPressed: () {
-                  pageController.nextPage(
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.easeIn);
-                },
-                child: Icon(
-                  Icons.chat_bubble_outline,
-                  color: Colors.blueAccent,
-                  size: 20.0,
+              Container(
+                width: 50,
+                child: RawMaterialButton(
+                  onPressed: () {
+                    // pageController.nextPage(
+                    //     duration: Duration(milliseconds: 200),
+                    //     curve: Curves.easeIn);
+                    showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        enableDrag: true,
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (context) => getChatPage(widget.sId));
+                  },
+                  child: Icon(
+                    Icons.chat_bubble_outline,
+                    color: Colors.blueAccent,
+                    size: 20.0,
+                  ),
+                  shape: CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.white,
+                  padding: const EdgeInsets.all(8.0),
                 ),
-                shape: CircleBorder(),
-                elevation: 2.0,
-                fillColor: Colors.white,
-                padding: const EdgeInsets.all(12.0),
               ),
             ],
           ),
@@ -331,10 +365,37 @@ class _CallState extends State<VideoCallUser> {
 
   Widget getChatPage(String? sId) {
     return Container(
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom, top: 20),
       height: MediaQuery.of(context).size.height,
       width: double.maxFinite,
       child: Column(
         children: [
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Chat',
+                    style: SolhTextStyles.AppBarText,
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                        color: SolhColors.greyS200, shape: BoxShape.circle),
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(Icons.close)),
+                  )
+                ],
+              ),
+            ),
+          ),
           Expanded(
             child: MessageList(
               sId: sId ?? '',

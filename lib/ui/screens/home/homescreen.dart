@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseAnalytics.instance.logEvent(name: 'A_Product', parameters: null);
     userBlocNetwork.getMyProfileSnapshot();
     openMoodMeter();
   }
@@ -1456,7 +1458,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(
-                journal.postedBy!.profilePicture ?? ''),
+                !journal.anonymousJournal!
+                    ? journal.postedBy!.profilePicture ?? ''
+                    : journal.postedBy!.anonymous!.profilePicture ?? ''),
             backgroundColor: SolhColors.grey,
           ),
           SizedBox(
