@@ -8,7 +8,7 @@ class GenderSelectionDropdown extends StatefulWidget {
   GenderSelectionDropdown({
     Key? key,
     BoxDecoration? dropDownDecoration,
-    required String? initialDropdownValue,
+    String? initialDropdownValue,
     Function(String?)? newValue,
   })  : _newValue = newValue,
         _dropDownDecoration = dropDownDecoration,
@@ -50,7 +50,7 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
             'Select Gender',
             style: SolhTextStyles.ProfileMenuGreyText,
           ),
-          value: _dropdownValue,
+          value: _dropdownValue ?? null,
           onChanged: (newValue) {
             setState(() {
               _dropdownValue = newValue.toString();

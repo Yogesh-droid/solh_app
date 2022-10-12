@@ -89,13 +89,13 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                     _firstNameTextEditingController.text =
                         userSnapshot.requireData!.firstName!;
                     _lastNameTextEditingController.text =
-                        userSnapshot.requireData!.lastName!;
+                        userSnapshot.requireData!.lastName ?? "";
                     _bioTextEditingController.text =
                         userSnapshot.requireData!.bio ?? '';
                     _phoneTextEditingController.text =
                         userSnapshot.requireData!.mobile ?? '';
                     _genderTextEditingController.text =
-                        userSnapshot.requireData!.gender!;
+                        userSnapshot.requireData!.gender ?? '';
                     _dobTextEditingController.text =
                         'userSnapshot.requireData!.dob';
                     _ageController.selectedAge.value = userSnapshot
