@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:solh/model/user/provider-user.dart';
-import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/profile-setup/profile-created.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/buttons/skip-button.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-
-import '../../../widgets_constants/constants/colors.dart';
 
 class EmailScreen extends StatefulWidget {
   EmailScreen(
       {Key? key, required VoidCallback onNext, required VoidCallback onBack})
       : _onNext = onNext,
-        _onBack = onNext,
+        _onBack = onBack,
         super(key: key);
 
   final VoidCallback _onNext;
@@ -33,6 +27,7 @@ class _EmailScreenState extends State<EmailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ProfileSetupAppBar(
+        onBackButton: widget._onBack,
         title: "Email id",
       ),
       body: Padding(
@@ -58,6 +53,7 @@ class _EmailScreenState extends State<EmailScreen> {
                   controller: emailController,
                   decoration: InputDecoration(
                       hintText: "johnconor@email.com",
+                      hintStyle: SolhTextStyles.JournalingHintText,
                       border: OutlineInputBorder()),
                 ),
               ],

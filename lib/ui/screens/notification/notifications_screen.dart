@@ -41,83 +41,84 @@ class _NotificationScreenState extends State<NotificationScreen> {
             ),
           ),
         ),
-        body: Stack(
-          children: [
-            Obx(() {
-              //if notification is loading show circularProgressIndicator
-              //if loaded notification is empty show column else show notification tile
-              return notificaltionColtroller.isNotificationListLoading.value
-                  ? Center(child: CircularProgressIndicator())
-                  : (notificaltionColtroller.notificationModel.length == 0
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.notifications,
-                                  size: 40,
-                                  color: Colors.grey.shade300,
-                                ),
-                                Text(
-                                  'No notifications',
-                                  style: GoogleFonts.signika(
-                                    fontSize: 25,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Obx(() {
+                return notificaltionColtroller.shouldRefresh.value
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AnimatedRefreshContainer(),
+                        ],
+                      )
+                    : Container();
+              }),
+              Obx(() {
+                //if notification is loading show circularProgressIndicator
+                //if loaded notification is empty show column else show notification tile
+                return notificaltionColtroller.isNotificationListLoading.value
+                    ? Center(child: CircularProgressIndicator())
+                    : (notificaltionColtroller.notificationModel.length == 0
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.notifications,
+                                    size: 40,
                                     color: Colors.grey.shade300,
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      : ListView.separated(
-                          padding: EdgeInsets.only(top: 8),
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(
-                            height: 8,
-                          ),
-                          itemCount:
-                              notificaltionColtroller.notificationModel.length,
-                          itemBuilder: ((context, index) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Color(
-                                        0xffefefef,
-                                      ),
-                                      width: 1),
-                                  borderRadius: BorderRadius.circular(8)),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 8),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  getNotificationTile(notificaltionColtroller
-                                      .notificationModel[index]),
+                                  Text(
+                                    'No notifications',
+                                    style: GoogleFonts.signika(
+                                      fontSize: 25,
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  )
                                 ],
                               ),
-                            );
-                          }),
-                        ));
-            }),
-            Obx(() {
-              return notificaltionColtroller.shouldRefresh.value
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          child: AnimatedRefreshContainer(),
-                        ),
-                      ],
-                    )
-                  : Container();
-            }),
-          ],
+                            ],
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.only(top: 8),
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const SizedBox(
+                              height: 8,
+                            ),
+                            itemCount: notificaltionColtroller
+                                .notificationModel.length,
+                            itemBuilder: ((context, index) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Color(
+                                          0xffefefef,
+                                        ),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(8)),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 8),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    getNotificationTile(notificaltionColtroller
+                                        .notificationModel[index]),
+                                  ],
+                                ),
+                              );
+                            }),
+                          ));
+              }),
+            ],
+          ),
         ));
   }
 

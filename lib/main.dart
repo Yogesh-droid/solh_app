@@ -43,7 +43,6 @@ void main() async {
       ],
       coupon: '10PERCENTOFF');
 
-  initControllers();
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
 
@@ -100,6 +99,7 @@ class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
     initDynamicLinks();
+    initControllers();
     super.initState();
   }
 

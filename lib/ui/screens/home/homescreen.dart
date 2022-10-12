@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,7 +44,9 @@ import '../get-help/get-help.dart';
 import '../get-help/view-all/consultants.dart';
 import '../journaling/side_drawer.dart';
 import '../journaling/whats_in_your_mind_section.dart';
+import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -71,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseAnalytics.instance.logEvent(name: 'A_Product', parameters: null);
     userBlocNetwork.getMyProfileSnapshot();
     openMoodMeter();
   }
@@ -609,7 +615,8 @@ class _HomePageState extends State<HomePage> {
   Widget getTrendingPostUI() {
     return _journalPageController.trendingJournalsList.isNotEmpty
         ? Container(
-            height: MediaQuery.of(context).size.height * 0.55,
+            // height: MediaQuery.of(context).size.height * 0.55,
+            height: 340,
             child: Obx(() {
               return Stack(
                 children: [
@@ -651,7 +658,8 @@ class _HomePageState extends State<HomePage> {
                   CommentScreen(journalModel: journal, index: 0)));
         },
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          // height: MediaQuery.of(context).size.height * 0.5,
+          height: 300,
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
               color: Colors.white,
@@ -715,18 +723,25 @@ class _HomePageState extends State<HomePage> {
 
   getPostCard(Journals journal) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+      // height: MediaQuery.of(context).size.height * 0.4,
+      height: 240,
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey[200]!),
+          color: Colors.white),
       child: getPostContent(journal, 10),
     );
   }
 
   getPostCard2(Journals journal) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
+      // height: MediaQuery.of(context).size.height * 0.3,
+      height: 200,
+
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[200]!), color: Colors.white),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Colors.grey[200]!),
+          color: Colors.white),
       child: getPostContent(journal, 7),
     );
   }
@@ -757,42 +772,58 @@ class _HomePageState extends State<HomePage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        getUserTile(journal),
+        Divider(height: 1),
         journal.feelings!.length > 0
             ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
                   children: journal.feelings!
                       .map((e) => Text(
-                            '# ${e.feelingName}',
+                            '${e.feelingName}',
                             style: SolhTextStyles.JournalingHashtagText,
                           ))
                       .toList(),
                 ),
               )
             : Container(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            journal.description ?? '',
-            style: SolhTextStyles.LandingParaText,
-            maxLines: journal.mediaUrl == null ? maxLine : 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Expanded(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: ClipRRect(
-              child: CachedNetworkImage(
-                imageUrl: journal.mediaUrl ?? '',
-                fit: BoxFit.cover,
-                errorWidget: (context, url, error) => Container(),
-                placeholder: (context, url) => getImgShimmer(),
+        journal.description!.trim().isEmpty
+            ? SizedBox(
+                height: 0,
+              )
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  journal.description ?? '',
+                  style: SolhTextStyles.LandingParaText,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
+        Expanded(
+          child: Stack(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)),
+                child: CachedNetworkImage(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  imageUrl: journal.mediaUrl ?? '',
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Container(),
+                  placeholder: (context, url) => getImgShimmer(),
+                ),
+              ),
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: getInteractionButton(journal))
+            ],
           ),
         ),
-        getInteractionButton(journal),
       ],
     );
   }
@@ -1074,62 +1105,74 @@ class _HomePageState extends State<HomePage> {
   }
 
   getInteractionButton(Journals journal) {
-    return Container(
-        height: 50,
-        decoration: BoxDecoration(
-          border: Border.fromBorderSide(
-            BorderSide(
-              color: SolhColors.greyS200,
-              width: 1,
+    return ClipRRect(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.7),
+            borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)),
+            border: Border.fromBorderSide(
+              BorderSide(
+                color: SolhColors.greyS200,
+                width: 1,
+              ),
             ),
           ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.thumb_up_alt_outlined,
+                    color: SolhColors.green,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Text(
+                    journal.likes.toString(),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: SolhColors.green,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                width: 1,
+                height: 20,
+                color: SolhColors.green,
+              ),
+              Row(
+                children: [
+                  Icon(
+                    CupertinoIcons.chat_bubble,
+                    color: SolhColors.green,
+                  ),
+                  SizedBox(
+                    width: 2.w,
+                  ),
+                  Text(
+                    journal.comments.toString(),
+                    style: TextStyle(
+                      color: SolhColors.green,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.thumb_up_alt_outlined,
-                  color: SolhColors.green,
-                ),
-                SizedBox(
-                  width: 2.w,
-                ),
-                Text(
-                  journal.likes.toString(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: SolhColors.green,
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: 1,
-              height: 20,
-              color: SolhColors.green,
-            ),
-            Row(
-              children: [
-                Icon(
-                  CupertinoIcons.chat_bubble,
-                  color: SolhColors.green,
-                ),
-                SizedBox(
-                  width: 2.w,
-                ),
-                Text(
-                  journal.comments.toString(),
-                  style: TextStyle(
-                    color: SolhColors.green,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ));
+      ),
+    );
   }
 
   getRecommnededShimmer() {
@@ -1406,6 +1449,71 @@ class _HomePageState extends State<HomePage> {
               ),
             );
     });
+  }
+
+  getUserTile(Journals journal) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+                !journal.anonymousJournal!
+                    ? journal.postedBy!.profilePicture ?? ''
+                    : journal.postedBy!.anonymous!.profilePicture ?? ''),
+            backgroundColor: SolhColors.grey,
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                !journal.anonymousJournal!
+                    ? journal.postedBy!.name ?? ''
+                    : 'Anonymous',
+                style: SolhTextStyles.JournalingUsernameText,
+              ),
+              Row(
+                children: [
+                  Text(
+                    timeago.format(DateTime.parse(journal.createdAt ?? '')),
+                    style: SolhTextStyles.JournalingTimeStampText,
+                  ),
+                  VerticalDivider(
+                    color: SolhColors.grey,
+                  ),
+                  journal.postedBy != null &&
+                          !journal.anonymousJournal! &&
+                          journal.postedBy!.userType == "Official"
+                      ? SolhExpertBadge(
+                          usertype: 'Official',
+                        )
+                      : journal.postedBy != null &&
+                              !journal.anonymousJournal! &&
+                              journal.postedBy!.userType == "SolhProvider"
+                          ? SolhExpertBadge(
+                              usertype: 'Counsellor',
+                            )
+                          : journal.postedBy != null &&
+                                  !journal.anonymousJournal! &&
+                                  journal.postedBy!.userType == "SolhVolunteer"
+                              ? SolhExpertBadge(
+                                  usertype: 'Volunteer',
+                                )
+                              : journal.postedBy != null &&
+                                      !journal.anonymousJournal! &&
+                                      journal.postedBy!.userType == "Seeker"
+                                  ? Container()
+                                  : Container(),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
 
