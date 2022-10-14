@@ -100,6 +100,7 @@ class _SolhAppState extends State<SolhApp> {
   void initState() {
     initDynamicLinks();
     initControllers();
+
     super.initState();
   }
 

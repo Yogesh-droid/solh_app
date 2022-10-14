@@ -69,13 +69,17 @@ class _CallState extends State<VideoCallUser> {
       }
     });
     initAgora();
+    initChatService();
+    super.initState();
+  }
+
+  Future<void> initChatService() async {
+    await userBlocNetwork.getMyProfileSnapshot();
     _service.connectAndListen();
     SocketService.setCurrentSId(widget.sId!);
     if (_controller.convo.isEmpty) {
       _controller.getChatController(widget.sId!);
     }
-    super.initState();
-
     SocketService.setUserName(userBlocNetwork.myData.userName ?? '');
   }
 

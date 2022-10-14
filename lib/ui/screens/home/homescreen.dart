@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -77,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     FirebaseAnalytics.instance.logEvent(name: 'A_Product', parameters: null);
-    userBlocNetwork.getMyProfileSnapshot();
+
     openMoodMeter();
   }
 

@@ -5,6 +5,7 @@ import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import '../../bloc/user-bloc.dart';
 import '../../ui/screens/chat/chat.dart';
 import '../../ui/screens/comment/comment-screen.dart';
 import '../../ui/screens/video-call/video-call-user.dart';
@@ -27,16 +28,14 @@ class LocalNotification {
         (OSNotificationReceivedEvent event) {
       print(event.notification.additionalData);
       print(event.notification.rawPayload.toString());
-      // print('Message is receved while app is in foregroud');
-      // print(event.notification.additionalData);
-      // event.complete(event.notification);
+
       if (event.notification.additionalData!['route'] == 'call') {
         showVideocallDialog(event.notification, globalNavigatorKey);
       }
     });
 
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+    OneSignal.shared.setNotificationOpenedHandler(
+        (OSNotificationOpenedResult result) async {
       print('running open notification handler');
       print(result.notification.rawPayload);
       print(result.notification.additionalData);
@@ -196,7 +195,7 @@ class LocalNotification {
                           'Accept',
                           style: SolhTextStyles.GreenButtonText,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           Future.delayed(Duration(milliseconds: 500), () {
                             globalNavigatorKey.currentState!.pop();
                             globalNavigatorKey.currentState!.push(

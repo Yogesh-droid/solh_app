@@ -46,8 +46,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    userBlocNetwork.getMyProfileSnapshot();
-
     return Scaffold(
       backgroundColor: Color.fromRGBO(251, 251, 251, 1),
       appBar: SolhAppBar(
@@ -124,6 +122,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   }
 
   getMyProfile() async {
+    await userBlocNetwork.getMyProfileSnapshot();
     connectionController.getUserAnalytics(userBlocNetwork.id);
   }
 }
@@ -419,10 +418,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         ),
                         Obx(() {
                           return Text(
-                            //_userModel!.likes.toString(),
-                            _connectionController
-                                .userAnalyticsModel.value.journalLikeCount
-                                .toString(),
+                            '${_connectionController.userAnalyticsModel.value.journalLikeCount ?? 0}',
                             style:
                                 SolhTextStyles.GreenBorderButtonText.copyWith(
                                     fontSize: 18),
@@ -457,9 +453,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                           ),
                           Obx(() {
                             return Text(
-                              _connectionController
-                                  .userAnalyticsModel.value.connectionCount
-                                  .toString(),
+                              '${_connectionController.userAnalyticsModel.value.connectionCount ?? 0}',
                               style:
                                   SolhTextStyles.GreenBorderButtonText.copyWith(
                                       fontSize: 18),
