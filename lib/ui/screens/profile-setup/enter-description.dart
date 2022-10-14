@@ -36,7 +36,7 @@ class EnterDescriptionPage extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                "Tell others little bit about yourself",
+                "Tell others a little about yourself",
                 style: SolhTextStyles.ProfileSetupSubHeading,
               ),
               SizedBox(

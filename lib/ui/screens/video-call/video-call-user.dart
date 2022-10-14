@@ -10,7 +10,6 @@ import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-
 import '../../../bloc/user-bloc.dart';
 import '../chat/chat_services/chat_socket_service.dart';
 
@@ -77,7 +76,7 @@ class _CallState extends State<VideoCallUser> {
     }
     super.initState();
 
-    SocketService.setUserName(userBlocNetwork.myData.userName!);
+    SocketService.setUserName(userBlocNetwork.myData.userName ?? '');
   }
 
   Future<void> initAgora() async {

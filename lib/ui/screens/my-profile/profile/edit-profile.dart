@@ -14,6 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/network/network.dart';
@@ -30,6 +31,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:http/http.dart' as http;
 import '../../../../controllers/profile/anon_controller.dart';
+import '../../journaling/create-journal.dart';
 
 class EditMyProfileScreen extends StatefulWidget {
   const EditMyProfileScreen({Key? key}) : super(key: key);
@@ -354,13 +356,13 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Show Counselors from',
+                                'Select country',
                                 style: SolhTextStyles.JournalingUsernameText,
                               ),
-                              Text(
-                                'Choose the default country from which you want to \nget consultation.',
-                                style: SolhTextStyles.JournalingPostMenuText,
-                              ),
+                              // Text(
+                              //   'Choose the default country from which you want to \nget consultation.',
+                              //   style: SolhTextStyles.JournalingPostMenuText,
+                              // ),
                               SizedBox(
                                 height: 1.h,
                               ),
@@ -492,6 +494,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               }
 
                               await userBlocNetwork.getMyProfileSnapshot();
+                              Get.find<GetHelpController>().getTopConsultant();
                               setState(() {
                                 _isLoading = false;
                               });
@@ -538,7 +541,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             // CropAspectRatioPreset.ratio4x3,
             // CropAspectRatioPreset.ratio16x9
           ],
-          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          // compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          compressQuality: compression(File(_xFile!.path).lengthSync()),
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: 'Edit',

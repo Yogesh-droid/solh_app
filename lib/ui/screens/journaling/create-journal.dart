@@ -1856,7 +1856,8 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
           aspectRatioPresets: [
             CropAspectRatioPreset.square,
           ],
-          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          //compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          compressQuality: compression(File(_xFile!.path).lengthSync()),
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: 'Edit',
@@ -1902,13 +1903,12 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
 
 int compression(int filesize) {
   print('This is original size ${filesize.toString()}');
-  if (filesize >= 2000000 && filesize <= 4485760) {
-    return 60;
-  }
 
   if (filesize > 4485760) {
-    return 40;
+    return 20;
+  } else if (filesize >= 1000000 && filesize <= 4485760) {
+    return 30;
   } else {
-    return 75;
+    return 40;
   }
 }

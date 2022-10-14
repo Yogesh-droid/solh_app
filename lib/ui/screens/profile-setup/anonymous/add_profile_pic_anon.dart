@@ -14,6 +14,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
+import '../../journaling/create-journal.dart';
 
 class AddProfilePicAnon extends StatefulWidget {
   const AddProfilePicAnon({
@@ -45,7 +46,8 @@ class _AddProfilePhotoPageState extends State<AddProfilePicAnon> {
           aspectRatioPresets: [
             CropAspectRatioPreset.square,
           ],
-          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          // compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          compressQuality: compression(File(_xFile!.path).lengthSync()),
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: 'Edit',

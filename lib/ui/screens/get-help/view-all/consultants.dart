@@ -41,13 +41,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
     getResultByCountry();
     _doctorsScrollController = ScrollController();
     _refreshController = RefreshController();
-    widget.type == 'specialization'
-        ? searchMarketController.getSpecializationList(widget.slug)
-        : widget.type == 'topconsultant'
-            ? searchMarketController.getTopConsultants(c: defaultCountry)
-            : searchMarketController.getIssueList(
-                widget.slug,
-              );
     _doctorsScrollController.addListener(() async {
       if (_doctorsScrollController.position.pixels ==
               _doctorsScrollController.position.maxScrollExtent &&
@@ -400,7 +393,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
         ? searchMarketController.getSpecializationList(widget.slug,
             c: defaultCountry)
         : widget.type == 'topconsultant'
-            ? searchMarketController.getTopConsultants()
+            ? searchMarketController.getTopConsultants(c: defaultCountry)
             : searchMarketController.getIssueList(widget.slug,
                 c: defaultCountry);
   }

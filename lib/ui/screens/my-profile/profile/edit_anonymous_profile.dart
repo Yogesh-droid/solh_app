@@ -15,6 +15,7 @@ import '../../../../services/utility.dart';
 import '../../../../widgets_constants/appbars/app-bar.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
+import '../../journaling/create-journal.dart';
 import '../../profile-setup/enter-full-name.dart';
 
 class EditAnonymousProfile extends StatefulWidget {
@@ -226,7 +227,8 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
           aspectRatioPresets: [
             CropAspectRatioPreset.square,
           ],
-          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          // compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          compressQuality: compression(File(_xFile!.path).lengthSync()),
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: 'Edit',

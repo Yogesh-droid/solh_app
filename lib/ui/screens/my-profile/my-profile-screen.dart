@@ -18,6 +18,7 @@ import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -475,26 +476,36 @@ class _ProfileContainerState extends State<ProfileContainer> {
                   width: 2,
                   color: Colors.grey.shade400,
                 ),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                            height: 14,
-                            width: 14,
-                            child: SvgPicture.asset('assets/images/post.svg')),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          widget._userModel!.posts.toString(),
-                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
-                              fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    Text("Posts"),
-                  ],
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PostScreen(
+                              sId: widget._userModel!.sId!,
+                            )));
+                  },
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                              height: 14,
+                              width: 14,
+                              child:
+                                  SvgPicture.asset('assets/images/post.svg')),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            widget._userModel!.posts.toString(),
+                            style:
+                                SolhTextStyles.GreenBorderButtonText.copyWith(
+                                    fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      Text("Posts"),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   width: 20,

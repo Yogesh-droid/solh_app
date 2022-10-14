@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/model/get-help/counsellors_country_model..dart';
 import 'package:solh/model/get-help/solh_volunteer_model.dart';
 import '../../constants/api.dart';
@@ -62,9 +63,11 @@ class GetHelpController extends GetxController {
   }
 
   Future<void> getTopConsultant() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? country = sharedPreferences.getString('userCountry') ?? "IN";
     try {
       Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/top-consultants");
+          "${APIConstants.api}/api/top-consultants?country=$country");
 
       topConsultantList.value = SearchMarketModel.fromJson(map);
     } on Exception catch (e) {

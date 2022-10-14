@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/ui/screens/journaling/create-journal.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/group/create_group_controller.dart';
 import '../../../model/group/get_group_response_model.dart';
@@ -133,7 +134,8 @@ class _CreateGroupState extends State<CreateGroup> {
           aspectRatioPresets: [
             CropAspectRatioPreset.square,
           ],
-          compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          // compressQuality: File(_xFile!.path).lengthSync() > 600000 ? 20 : 100,
+          compressQuality: compression(File(_xFile!.path).lengthSync()),
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: 'Edit',

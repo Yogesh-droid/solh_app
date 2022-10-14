@@ -15,6 +15,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../constants/api.dart';
 import '../../../services/network/network.dart';
 import '../../../services/utility.dart';
+import '../journaling/create-journal.dart';
 import '../my-profile/profile/edit-profile.dart';
 
 bool isCustomGoal = false;
@@ -178,10 +179,12 @@ class _GoalFormState extends State<GoalForm> {
                                   // CropAspectRatioPreset.ratio4x3,
                                   // CropAspectRatioPreset.ratio16x9
                                 ],
-                                compressQuality:
-                                    File(_xFile!.path).lengthSync() > 600000
-                                        ? 20
-                                        : 100,
+                                // compressQuality:
+                                //     File(_xFile!.path).lengthSync() > 600000
+                                //         ? 20
+                                //         : 100,
+                                compressQuality: compression(
+                                    File(_xFile!.path).lengthSync()),
                                 uiSettings: [
                                   AndroidUiSettings(
                                       toolbarTitle: 'Edit',
@@ -230,11 +233,13 @@ class _GoalFormState extends State<GoalForm> {
                                         // CropAspectRatioPreset.ratio4x3,
                                         // CropAspectRatioPreset.ratio16x9
                                       ],
-                                      compressQuality:
-                                          File(_xFile!.path).lengthSync() >
-                                                  600000
-                                              ? 20
-                                              : 100,
+                                      // compressQuality:
+                                      //     File(_xFile!.path).lengthSync() >
+                                      //             600000
+                                      //         ? 20
+                                      //         : 100,
+                                      compressQuality: compression(
+                                          File(_xFile!.path).lengthSync()),
                                       uiSettings: [
                                         AndroidUiSettings(
                                             toolbarTitle: 'Edit',

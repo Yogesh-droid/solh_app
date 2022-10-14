@@ -116,7 +116,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              GetHelpCategory(title: 'Search by issues'),
+                              GetHelpCategory(title: 'Search for support'),
                               InkWell(
                                 onTap: () {
                                   getHelpController.isAllIssueShown.value
@@ -296,45 +296,57 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                             child: getHelpController
                                         .topConsultantList.value.doctors !=
                                     null
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: getHelpController
-                                        .topConsultantList
-                                        .value
-                                        .doctors!
-                                        .length,
-                                    itemBuilder: (_, index) {
-                                      print(getHelpController
-                                          .topConsultantList
-                                          .value
-                                          .doctors![index]
-                                          .profilePicture);
-                                      return TopConsultantsTile(
-                                        bio: getHelpController.topConsultantList
-                                                .value.doctors![index].bio ??
-                                            '',
-                                        name: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .name ??
-                                            '',
-                                        mobile: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .contactNumber ??
-                                            '',
-                                        imgUrl: getHelpController
+                                ? getHelpController.topConsultantList.value
+                                        .doctors!.isEmpty
+                                    ? Center(
+                                        child: Text(
+                                            'No Consultant available for your country'),
+                                      )
+                                    : ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: getHelpController
                                             .topConsultantList
                                             .value
-                                            .doctors![index]
-                                            .profilePicture,
-                                        sId: getHelpController.topConsultantList
-                                            .value.doctors![index].sId,
-                                      );
-                                    })
+                                            .doctors!
+                                            .length,
+                                        itemBuilder: (_, index) {
+                                          print(getHelpController
+                                              .topConsultantList
+                                              .value
+                                              .doctors![index]
+                                              .profilePicture);
+                                          return TopConsultantsTile(
+                                            bio: getHelpController
+                                                    .topConsultantList
+                                                    .value
+                                                    .doctors![index]
+                                                    .bio ??
+                                                '',
+                                            name: getHelpController
+                                                    .topConsultantList
+                                                    .value
+                                                    .doctors![index]
+                                                    .name ??
+                                                '',
+                                            mobile: getHelpController
+                                                    .topConsultantList
+                                                    .value
+                                                    .doctors![index]
+                                                    .contactNumber ??
+                                                '',
+                                            imgUrl: getHelpController
+                                                .topConsultantList
+                                                .value
+                                                .doctors![index]
+                                                .profilePicture,
+                                            sId: getHelpController
+                                                .topConsultantList
+                                                .value
+                                                .doctors![index]
+                                                .sId,
+                                          );
+                                        })
                                 : Container(
                                     child: Center(
                                     child: Text('No Doctors Found'),

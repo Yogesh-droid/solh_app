@@ -324,7 +324,7 @@ class TodaysGoal extends StatelessWidget {
                 style: goalFontStyle(24.0, Color(0xff666666), FontWeight.w400),
               ),
               Text(
-                'Here is the track of today\'s Goals',
+                "Track your today's goals",
                 style: goalFontStyle(14.0, Color(0xffA6A6A6), FontWeight.w300),
               )
             ],
