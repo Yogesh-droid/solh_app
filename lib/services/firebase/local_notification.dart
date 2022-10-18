@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
-import '../../bloc/user-bloc.dart';
 import '../../ui/screens/chat/chat.dart';
 import '../../ui/screens/comment/comment-screen.dart';
 import '../../ui/screens/video-call/video-call-user.dart';
@@ -26,6 +24,7 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
+      
       print(event.notification.additionalData);
       print(event.notification.rawPayload.toString());
 
@@ -39,30 +38,6 @@ class LocalNotification {
       print('running open notification handler');
       print(result.notification.rawPayload);
       print(result.notification.additionalData);
-      /*  print(result.notification.additionalData.toString());
-      print(result.notification.additionalData!['route']);
-      // print(result.notification.body);
-      // print(result.notification.rawPayload);
-      print(result.action!.actionId);
-      if (result.action!.actionId == "accept") {
-        Future.delayed(Duration(milliseconds: 500), () {
-          globalNavigatorKey.currentState!.push(
-            MaterialPageRoute(
-                builder: (context) => VideoCallUser(
-                      sId: result.notification.additionalData!['data']
-                                  ["senderId"] !=
-                              null
-                          ? result.notification.additionalData!['data']
-                              ["senderId"]
-                          : null,
-                      channel: result.notification.additionalData!['data']
-                          ["channelName"],
-                      token: result.notification.additionalData!['data']
-                          ["rtcToken"],
-                    )),
-          );
-        });
-      } else { */
       print('route is ${result.notification.additionalData!['route']}');
       switch (result.notification.additionalData!['route']) {
         case 'mood':

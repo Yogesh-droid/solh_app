@@ -120,6 +120,7 @@ class _OTPScreenState extends State<OTPScreen> {
                           "Is Profile Created:" +
                           isProfileCreated.toString() +
                           "^" * 30);
+
                       isProfileCreated
                           ? AutoRouter.of(context).pushAndPopUntil(
                               MasterScreenRouter(),

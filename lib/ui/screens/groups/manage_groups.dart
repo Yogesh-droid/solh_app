@@ -203,10 +203,10 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                     },
                   )
                 : Center(
-                    child: Text('No groups created yet'),
+                    child: Text('new suggestions are on the way'),
                   ))
         : Center(
-            child: Text('No groups created yet'),
+            child: Text('new suggestions are on the way'),
           );
   }
 }
