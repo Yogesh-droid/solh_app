@@ -1,0 +1,145 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:solh/controllers/video/video_tutorial_controller.dart';
+import 'package:solh/model/video_tutorial.dart';
+import 'package:solh/ui/screens/intro/video_tutorial_detail_page.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
+
+class VideoTutorialPage extends StatelessWidget {
+  VideoTutorialPage({Key? key}) : super(key: key);
+  final VideoTutorialController videoTutorialController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: SolhAppBar(
+            title: Text(
+              'Video Tutorials',
+              style: SolhTextStyles.AppBarText,
+            ),
+            isLandingScreen: false),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(children: [
+              Text(
+                'Discover previously unknown features by learning more about Solh Features',
+                style: SolhTextStyles.JournalingHintText,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Obx(() => videoTutorialController.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      children: videoTutorialController.videoList.value
+                          .map((e) => Hero(
+                                tag: e.name ?? '',
+                                child: VideoTile(
+                                  e: e,
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (conext) {
+                                      return VideoDetailPage(
+                                        videoTutorialModel: e,
+                                      );
+                                    }));
+                                  },
+                                ),
+                              ))
+                          .toList(),
+                    ))
+            ]),
+          ),
+        ));
+  }
+}
+
+class VideoTile extends StatelessWidget {
+  VideoTile({
+    required this.e,
+    required this.onTap,
+  });
+  final VideoTutorialModel e;
+  final Function() onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+      child: Card(
+        elevation: 0,
+        child: InkWell(
+          onTap: onTap,
+          child: Container(
+            height: 100,
+            decoration: BoxDecoration(
+              border: Border.all(color: SolhColors.greyS200),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topLeft: Radius.circular(10)),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topLeft: Radius.circular(10)),
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              "https://img.youtube.com/vi/5Eqb_-j3FDA/hqdefault.jpg",
+                          fit: BoxFit.fill,
+                        ),
+                      )),
+                  Positioned(
+                      child: Image.asset(
+                    'assets/images/play_icon.png',
+                    fit: BoxFit.fill,
+                  )),
+                ],
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    e.name ?? '',
+                    style: SolhTextStyles.GreenBorderButtonText,
+                  ),
+                  Container(
+                    width: 250,
+                    child: Text(
+                      e.description ?? '',
+                      style: SolhTextStyles.JournalingDescriptionText,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              )
+            ]),
+          ),
+        ),
+      ),
+    );
+  }
+}

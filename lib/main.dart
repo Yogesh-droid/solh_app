@@ -42,8 +42,8 @@ void main() async {
         AnalyticsEventItem(itemName: 'abc', itemId: 'xjw73ndnw', price: 10.0),
       ],
       coupon: '10PERCENTOFF');
-  await FirebaseAnalytics.instance.logLogin(
-      loginMethod: 'Phone', callOptions: AnalyticsCallOptions(global: true));
+  // await FirebaseAnalytics.instance.logLogin(
+  //     loginMethod: 'Phone', callOptions: AnalyticsCallOptions(global: true));
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
@@ -100,7 +100,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   void initState() {
-    initDynamicLinks();
+    //initDynamicLinks();
     initControllers();
 
     super.initState();
@@ -151,6 +151,7 @@ class _SolhAppState extends State<SolhApp> {
     print(data!.link.data.toString() + '   This is data');
     print(data.link.query.toString() + '   This is data');
     print(data.link.queryParameters.toString() + '   This is data');
+    print(data.utmParameters.toString() + '   This is data');
     final Uri? deepLink = data.link;
 
     if (deepLink != null) {
@@ -166,7 +167,7 @@ class _SolhAppState extends State<SolhApp> {
       print(deepLink.toString() + ' This is link');
       print(deepLink!.path + ' This is link');
       print(deepLink.data.toString() + ' This is link');
-      print(event.utmParameters.toString() + ' This is link');
+      print('${data.utmParameters}' + '   This is UTM');
 
       // Navigator.pushNamed(context, event.link.path);
     }).onError((error) {

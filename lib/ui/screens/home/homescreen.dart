@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +36,7 @@ import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
+import '../../../controllers/video/video_tutorial_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../get-help/get-help.dart';
@@ -58,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
   JournalPageController _journalPageController =
       Get.put(JournalPageController());
+  final VideoTutorialController videoTutorialController =
+      Get.put(VideoTutorialController());
 
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   GetHelpController getHelpController = Get.put(GetHelpController());
@@ -75,8 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseAnalytics.instance.logEvent(name: 'A_Product', parameters: null);
-
+    userBlocNetwork.getMyProfileSnapshot();
     openMoodMeter();
   }
 

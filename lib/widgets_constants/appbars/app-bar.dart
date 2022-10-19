@@ -16,7 +16,7 @@ import '../../ui/screens/global-search/global_search_page.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
-      {Widget? title,
+      {required Widget title,
       required bool isLandingScreen,
       double? height,
       bool isVideoCallScreen = false,
@@ -39,7 +39,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
-  final Widget? _title;
+  final Widget _title;
   final double? _height;
   final bool? _isNotificationPage;
   final bool? _isDiaryBtnShown;
@@ -52,7 +52,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
         title: Row(
           children: [
-            _title!,
+            _title,
             _isLandingScreen
                 ? Obx(() {
                     return Container(

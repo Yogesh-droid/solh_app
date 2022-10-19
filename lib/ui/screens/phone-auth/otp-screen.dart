@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,9 @@ class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _otpController = TextEditingController();
   OtpVerificationController otpVerificationController = Get.find();
   final scaffoldKey = GlobalKey();
+  String? utm_medium;
+  String? utm_source;
+  String? utm_name;
   @override
   void initState() {
     super.initState();
@@ -107,9 +111,14 @@ class _OTPScreenState extends State<OTPScreen> {
                         deviceType = 'IOS';
                       }
 
+                      initDynamic();
+
                       bool isSessionCookieCreated =
                           await SessionCookie.createSessionCookie(
-                              idToken, fcmToken, oneSignalId, deviceType);
+                              idToken, fcmToken, oneSignalId, deviceType,
+                              utm_medium: utm_medium,
+                              utm_compaign: utm_name,
+                              utm_source: utm_source);
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =
@@ -211,6 +220,42 @@ class _OTPScreenState extends State<OTPScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> initDynamic() async {
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    print(data.toString() + '   This is data');
+    print(data!.link.data.toString() + '   This is data');
+    print(data.link.query.toString() + '   This is data');
+    print(data.link.queryParameters.toString() + '   This is data');
+    print(data.utmParameters.toString() + '   This is data');
+    print('${data.utmParameters}' + '   This is UTM');
+    utm_name = data.utmParameters['utm_campaign'];
+    utm_source = data.utmParameters['utm_source'];
+    utm_medium = data.utmParameters['utm_medium'];
+
+    final Uri? deepLink = data.link;
+
+    if (deepLink != null) {
+      print(deepLink.path);
+      print(deepLink);
+      print(deepLink.data);
+      // Utility.showToast(data!.link.query);
+      // Navigator.pushNamed(context, deepLink.path);
+    }
+
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      // Utility.showToast(data!.link.query);
+      print(deepLink.toString() + ' This is link');
+      print(deepLink!.path + ' This is link');
+      print(deepLink.data.toString() + ' This is link');
+      print(event.utmParameters.toString() + ' This is link');
+
+      // Navigator.pushNamed(context, event.link.path);
+    }).onError((error) {
+      print(error.message);
+    });
   }
 }
 
