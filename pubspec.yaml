@@ -59,6 +59,7 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   firebase_dynamic_links: ^4.3.10
   youtube_player_iframe: ^3.1.0
+  facebook_app_events: ^0.17.1
 
 
   #alt_sms_autofill: ^1.0.0

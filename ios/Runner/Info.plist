@@ -29,8 +29,18 @@
 				<array>
 					<string>app-1-729100578162-ios-8bba3add7e1c3d4616c1eb</string>
 				</array>
+				<key>CFBundleURLSchemes</key>
+        <array>
+        <string>fb439850364885820</string>
+        </array>
 			</dict>
 		</array>
+		<key>FacebookAppID</key>
+        <string>439850364885820</string>
+        <key>FacebookClientToken</key>
+        <string>c3184384895a073bfb17465323e6fea9</string>
+<key>FacebookDisplayName</key>
+<string>SolhApp</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>
@@ -70,4 +80,3 @@
 	</dict>
 
 </plist>
-
