@@ -80,7 +80,7 @@ class _CallState extends State<VideoCallUser> {
     if (_controller.convo.isEmpty) {
       _controller.getChatController(widget.sId!);
     }
-    SocketService.setUserName(userBlocNetwork.myData.userName ?? '');
+    SocketService.setUserName(userBlocNetwork.myData.name!);
   }
 
   Future<void> initAgora() async {
