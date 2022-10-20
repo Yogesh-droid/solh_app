@@ -12,7 +12,7 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 class VideoDetailPage extends StatefulWidget {
   VideoDetailPage({Key? key, required this.videoTutorialModel})
       : super(key: key);
-  final VideoTutorialModel videoTutorialModel;
+  final TutorialList videoTutorialModel;
 
   @override
   State<VideoDetailPage> createState() => _VideoDetailPageState();
@@ -24,7 +24,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   final VideoTutorialController videoTutorialController = Get.find();
   List<String> allVideoPlaylist = [];
 
-  List<VideoTutorialModel> remainingVideos = [];
+  List<TutorialList> remainingVideos = [];
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       enableCaption: true,
     ))
       ..onInit = () {
-        controller.loadVideo(widget.videoTutorialModel.url ?? '');
+        controller.loadVideo(widget.videoTutorialModel.videoUrl ?? '');
         // controller.loadPlaylist(
         //   list: allVideoPlaylist,
         //   listType: ListType.,
@@ -75,7 +75,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Hero(
-          tag: widget.videoTutorialModel.name ?? '',
+          tag: widget.videoTutorialModel.title ?? '',
           child: Container(
               height: 200,
               width: double.infinity,
@@ -89,7 +89,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
             top: 8.0,
           ),
           child: Text(
-            widget.videoTutorialModel.name ?? '',
+            widget.videoTutorialModel.title ?? '',
             style: SolhTextStyles.GreenBorderButtonText,
           ),
         ),
@@ -124,9 +124,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
   void getRemainingVideos() {
-    List<VideoTutorialModel> list = videoTutorialController.videoList.value;
+    List<TutorialList> list = videoTutorialController.videoList.value;
     list.forEach((element) {
-      allVideoPlaylist.add(element.url ?? '');
+      allVideoPlaylist.add(element.videoUrl ?? '');
     });
     list.remove(widget.videoTutorialModel);
     remainingVideos.addAll(list);

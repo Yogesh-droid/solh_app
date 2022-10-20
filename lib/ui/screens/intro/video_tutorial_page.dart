@@ -42,7 +42,7 @@ class VideoTutorialPage extends StatelessWidget {
                       shrinkWrap: true,
                       children: videoTutorialController.videoList.value
                           .map((e) => Hero(
-                                tag: e.name ?? '',
+                                tag: e.sId ?? '',
                                 child: VideoTile(
                                   e: e,
                                   onTap: () {
@@ -68,7 +68,7 @@ class VideoTile extends StatelessWidget {
     required this.e,
     required this.onTap,
   });
-  final VideoTutorialModel e;
+  final TutorialList e;
   final Function() onTap;
 
   @override
@@ -122,7 +122,7 @@ class VideoTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    e.name ?? '',
+                    e.title ?? '',
                     style: SolhTextStyles.GreenBorderButtonText,
                   ),
                   Container(
