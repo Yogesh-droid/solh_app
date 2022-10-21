@@ -24,7 +24,6 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
-      
       print(event.notification.additionalData);
       print(event.notification.rawPayload.toString());
 
@@ -63,8 +62,8 @@ class LocalNotification {
                                 : null,
                             channel: result.notification.additionalData!['data']
                                 ["channelName"],
-                            token: result.notification.additionalData!['data']
-                                ["rtcToken"],
+                            token: result.notification.additionalData!['type'],
+                            type: result.notification.additionalData!['vod'],
                           )),
                 );
               });
@@ -134,6 +133,7 @@ class LocalNotification {
 
   showVideocallDialog(
       OSNotification result, GlobalKey<NavigatorState> globalNavigatorKey) {
+    debugPrint('result ${result.additionalData}');
     showDialog(
         barrierDismissible: false,
         context: globalNavigatorKey.currentContext!,
@@ -186,6 +186,7 @@ class LocalNotification {
                                             ["channelName"],
                                         token: result.additionalData!['data']
                                             ["rtcToken"],
+                                        type: result.additionalData!['type'],
                                       )),
                             );
                           });

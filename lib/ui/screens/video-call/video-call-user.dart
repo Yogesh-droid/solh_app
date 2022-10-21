@@ -7,6 +7,7 @@ import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -19,9 +20,13 @@ class VideoCallUser extends StatefulWidget {
   // "0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj";
   var channel;
   String? sId;
+  String? type;
 
   VideoCallUser(
-      {required this.token, required this.channel, required this.sId});
+      {required this.token,
+      required this.channel,
+      required this.sId,
+      this.type});
 
   @override
   State<VideoCallUser> createState() => _CallState();
@@ -49,7 +54,8 @@ class _CallState extends State<VideoCallUser> {
   @override
   void initState() {
     super.initState();
-
+    SocketService.currentSId = widget.sId ?? '';
+    _controller.currentSid = widget.sId ?? '';
     timer = Timer(Duration(seconds: 20), () {
       if (_remoteUid == null) {
         _engine.leaveChannel();
@@ -392,9 +398,11 @@ class _CallState extends State<VideoCallUser> {
             ),
           ),
           Expanded(
-            child: MessageList(
-              sId: sId ?? '',
-            ),
+            child: widget.type != null
+                ? MessageListProvider(sId: sId ?? '')
+                : MessageList(
+                    sId: sId ?? '',
+                  ),
           ),
           Obx(() {
             return Row(
@@ -415,9 +423,12 @@ class _CallState extends State<VideoCallUser> {
           }),
           Align(
             alignment: Alignment.bottomCenter,
-            child: MessageBox(
-              sId: sId ?? '',
-            ),
+            child: widget.type != null
+                ? MessageBoxProvider(sId: sId ?? '')
+                : MessageBox(
+                    sId: sId ?? '',
+                    chatType: widget.type,
+                  ),
           ),
         ],
       ),

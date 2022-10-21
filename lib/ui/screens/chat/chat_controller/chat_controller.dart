@@ -69,6 +69,7 @@ class ChatController extends GetxController {
     });
 
     SocketService.socket.on("isTyping", (data) {
+      print('Typing $data');
       if (currentSid == data['authorId']) {
         istyping(data['isTyping']);
       }
