@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/model/psychology-test/test_history_model.dart';
@@ -186,7 +187,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
     );
   }
 
-  getTestHistoryContainer({required TestList test}) {
+  getTestHistoryContainer({required TestHistoryList test}) {
     return Padding(
       padding: const EdgeInsets.only(right: 18.0, top: 18),
       child: InkWell(
@@ -209,7 +210,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                     topLeft: Radius.circular(10),
                     bottomRight: Radius.circular(10)),
                 child: CachedNetworkImage(
-                  imageUrl: test.testPicture ?? '',
+                  imageUrl: test.test!.testPicture ?? '',
                   fit: BoxFit.fill,
                 ),
               ),
@@ -223,7 +224,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                 Container(
                   width: 150,
                   child: Text(
-                    test.testTitle ?? '',
+                    test.test!.testTitle ?? '',
                     style: SolhTextStyles.GreenBorderButtonText,
                     maxLines: 1,
                     overflow: TextOverflow.fade,
@@ -232,7 +233,8 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                 Container(
                   width: 150,
                   child: Text(
-                    test.testDuration.toString(),
+                    DateFormat('dd MMM yyyy')
+                        .format(DateTime.parse(test.createdAt ?? '')),
                     style: SolhTextStyles.JournalingHintText,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

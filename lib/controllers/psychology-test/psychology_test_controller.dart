@@ -6,12 +6,11 @@ import 'package:solh/model/psychology-test/test_history_model.dart';
 import 'package:solh/model/psychology-test/test_question_model.dart';
 import 'package:solh/model/psychology-test/test_result_model.dart';
 import 'package:solh/services/network/network.dart';
-
 import '../../model/psychology-test/testHistory_result_model.dart';
 
 class PsychologyTestController extends GetxController {
   var testList = <TestList>[].obs;
-  var testHistorylist = <TestList>[].obs;
+  var testHistorylist = <TestHistoryList>[].obs;
   var questionList = <TestQuestionList>[].obs;
   var isLoadingList = false.obs;
   var isQuestionsLoading = false.obs;
@@ -47,7 +46,7 @@ class PsychologyTestController extends GetxController {
 
     TestHistoryModel testHistoryModel = TestHistoryModel.fromJson(map);
 
-    testHistoryModel.testList!.forEach((element) {
+    testHistoryModel.testHistoryList!.forEach((element) {
       testHistorylist.value.add(element);
     });
     isTestResultLoadingList.value = false;
@@ -60,7 +59,6 @@ class PsychologyTestController extends GetxController {
         "${APIConstants.api}/api/psychologicalTest?testId=$id");
     TestQuestionModel testQuestionModel = TestQuestionModel.fromJson(map);
     selectedTestname.value = testQuestionModel.testDetail!.testTitle ?? '';
-
     testQuestionModel.testDetail!.testQuestionList!.forEach((element) {
       questionList.value.add(element);
     });
