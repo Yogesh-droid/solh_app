@@ -186,7 +186,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
     );
   }
 
-  getTestHistoryContainer({required TestHistoryList test}) {
+  getTestHistoryContainer({required TestList test}) {
     return Padding(
       padding: const EdgeInsets.only(right: 18.0, top: 18),
       child: InkWell(

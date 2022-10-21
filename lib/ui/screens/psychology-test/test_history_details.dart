@@ -24,6 +24,9 @@ class TestHistoryDetails extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Align(
             alignment: Alignment.center,
             child: Text(
@@ -31,6 +34,9 @@ class TestHistoryDetails extends StatelessWidget {
               textAlign: TextAlign.center,
               style: SolhTextStyles.ProfileMenuGreyText,
             ),
+          ),
+          SizedBox(
+            height: 10,
           ),
           Container(
             height: 150,

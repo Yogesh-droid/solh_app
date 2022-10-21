@@ -11,7 +11,7 @@ import '../../model/psychology-test/testHistory_result_model.dart';
 
 class PsychologyTestController extends GetxController {
   var testList = <TestList>[].obs;
-  var testHistorylist = <TestHistoryList>[].obs;
+  var testHistorylist = <TestList>[].obs;
   var questionList = <TestQuestionList>[].obs;
   var isLoadingList = false.obs;
   var isQuestionsLoading = false.obs;
@@ -43,11 +43,11 @@ class PsychologyTestController extends GetxController {
   Future<void> getAttendedTestList() async {
     isTestResultLoadingList.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        "${APIConstants.api}/api/get-test-list");
+        "${APIConstants.api}/api/test-taken");
 
     TestHistoryModel testHistoryModel = TestHistoryModel.fromJson(map);
 
-    testHistoryModel.testHistoryList!.forEach((element) {
+    testHistoryModel.testList!.forEach((element) {
       testHistorylist.value.add(element);
     });
     isTestResultLoadingList.value = false;
