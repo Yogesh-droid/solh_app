@@ -24,9 +24,11 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   List<String> allVideoPlaylist = [];
 
   List<TutorialList> remainingVideos = [];
+  List<TutorialList> allVideos = [];
 
   @override
   void initState() {
+    getVideosPlaylist();
     getRemainingVideos();
     controller = YoutubePlayerController(
         params: const YoutubePlayerParams(
@@ -114,12 +116,14 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     );
   }
 
-  void getRemainingVideos() {
-    List<TutorialList> list = videoTutorialController.videoList.value;
-    list.forEach((element) {
+  void getVideosPlaylist() {
+    allVideos.addAll(videoTutorialController.videoList);
+    allVideos.forEach((element) {
       allVideoPlaylist.add(element.videoUrl ?? '');
     });
-    list.remove(widget.videoTutorialModel);
-    remainingVideos.addAll(list);
+    allVideos.remove(widget.videoTutorialModel);
+    remainingVideos.addAll(allVideos);
   }
+
+  void getRemainingVideos() {}
 }

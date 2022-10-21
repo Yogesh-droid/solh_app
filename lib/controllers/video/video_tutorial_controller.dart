@@ -6,6 +6,7 @@ import 'package:solh/services/network/network.dart';
 
 class VideoTutorialController extends GetxController {
   var videoList = <TutorialList>[].obs;
+
   var isLoading = false.obs;
   Future<void> getVideolist() async {
     isLoading.value = true;
@@ -13,6 +14,7 @@ class VideoTutorialController extends GetxController {
         "${APIConstants.api}/api/custom/get-tutorial-list");
     VideoTutorialModel videoTutorialModel = VideoTutorialModel.fromJson(map);
     videoList.value = videoTutorialModel.tutorialList ?? [];
+
     isLoading.value = false;
   }
 
