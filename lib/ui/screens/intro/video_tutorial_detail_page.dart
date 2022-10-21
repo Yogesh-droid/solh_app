@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/video/video_tutorial_controller.dart';
@@ -39,14 +38,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     ))
       ..onInit = () {
         controller.loadVideo(widget.videoTutorialModel.videoUrl ?? '');
-        // controller.loadPlaylist(
-        //   list: allVideoPlaylist,
-        //   listType: ListType.,
-        //   startSeconds: 136,
-        // );
-
-        // controller.loadVideo(
-        //     "https://www.youtube.com/watch?v=Cy_6-_XUW-c&ab_channel=AajTak");
       }
       ..onFullscreenChange = (isFullScreen) {
         print('${isFullScreen ? 'Entered' : 'Exited'} Fullscreen.');
