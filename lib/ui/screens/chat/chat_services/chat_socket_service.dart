@@ -49,7 +49,7 @@ class SocketService {
     String fileName,
     String conversationType,
   ) {
-    print('message emmited  ' + socket.id.toString());
+    print('message emmited' + ct);
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
