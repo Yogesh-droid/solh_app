@@ -41,15 +41,18 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
   var _chatListController = Get.put(ChatListController());
   @override
   void initState() {
-    SocketService.currentSId = widget._sId;
-    _controller.currentSid = widget._sId;
-    debugPrint('SID ${widget._sId}');
-    userBlocNetwork.getMyProfileSnapshot();
-    _service.connectAndListen();
-    _controller.getChatController(widget._sId);
-    super.initState();
-    SocketService.setUserName(userBlocNetwork.myData.name!);
-    print('author ${userBlocNetwork.myData.userName!}');
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      SocketService.currentSId = widget._sId;
+      _controller.currentSid = widget._sId;
+      debugPrint('SID ${widget._sId}');
+      userBlocNetwork.getMyProfileSnapshot();
+      _service.connectAndListen();
+      _controller.getChatController(widget._sId);
+      super.initState();
+      SocketService.setUserName(userBlocNetwork.myData.name!);
+      print('author ${userBlocNetwork.myData.userName!}');
+    });
+
     super.initState();
   }
 
@@ -265,6 +268,7 @@ class MessageBoxProvider extends StatelessWidget {
       width: double.maxFinite,
       margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
             color: SolhColors.green,
           ),
@@ -497,7 +501,7 @@ class MessageTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: _authorId == _sId
                     ? Colors.grey.shade200
-                    : Color(0x80CCE9E2),
+                    : Color(0xffCCE9E2),
               ),
               child: Container(
                 constraints: BoxConstraints(
@@ -615,7 +619,7 @@ class Filetile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: _authorId == _sId
                         ? Colors.grey.shade200
-                        : Color(0x80CCE9E2),
+                        : Color(0xffCCE9E2),
                   ),
                   child: Container(
                     constraints: BoxConstraints(

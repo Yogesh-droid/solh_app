@@ -390,7 +390,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                       isInSendRequest:
                                           checkIfAlreadyInSendConnection(
                                         getHelpController.solhVolunteerList
-                                            .value.provider![index].sId!,
+                                                .value.provider![index].sId ??
+                                            '',
                                       ),
                                       name: getHelpController.solhVolunteerList
                                               .value.provider![index].name ??
@@ -798,7 +799,7 @@ class SolhVolunteers extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: ((context) => ConnectProfileScreen(
                   uid: uid!,
-                  sId: sId!,
+                  sId: sId ?? '',
                 ))));
       }),
       child: Container(
@@ -970,11 +971,11 @@ class SolhVolunteers extends StatelessWidget {
                 ),
                 Obx(() {
                   return SizedBox(
-                    height: getConnectionIdBySId(sId!) != '' ? 17 : 33,
+                    height: getConnectionIdBySId(sId ?? '') != '' ? 17 : 33,
                   );
                 }),
                 Obx(() {
-                  return getConnectionIdBySId(sId!) != ''
+                  return getConnectionIdBySId(sId ?? '') != ''
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -1000,22 +1001,22 @@ class SolhVolunteers extends StatelessWidget {
                     onTap: () {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => ConnectProfileScreen(
-                      //           sId: sId!,
+                      //           sId: sId ?? '',
                       //           uid: uid!,
                       //         )));
-                      // getConnectionIdBySId(sId!);
+                      // getConnectionIdBySId(sId ?? '');
                       print('Connection ID' +
-                          getConnectionIdBySId(sId!).toString());
-                      getConnectionIdBySId(sId!) != ''
+                          getConnectionIdBySId(sId ?? '').toString());
+                      getConnectionIdBySId(sId ?? '') != ''
                           ? connectionController.deleteConnectionRequest(
-                              getConnectionIdBySId(sId!))
-                          : connectionController.addConnection(sId!);
+                              getConnectionIdBySId(sId ?? ''))
+                          : connectionController.addConnection(sId ?? '');
                     },
                     child: Container(
                       height: 32,
                       width: 148,
                       decoration: BoxDecoration(
-                          color: getConnectionIdBySId(sId!) != ''
+                          color: getConnectionIdBySId(sId ?? '') != ''
                               ? Colors.white
                               : SolhColors.green,
                           border: Border.all(color: SolhColors.green),
@@ -1040,7 +1041,7 @@ class SolhVolunteers extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  getConnectionIdBySId(sId!) != ''
+                                  getConnectionIdBySId(sId ?? '') != ''
                                       ? Container()
                                       : SvgPicture.asset(
                                           'assets/images/connect.svg',
@@ -1050,7 +1051,7 @@ class SolhVolunteers extends StatelessWidget {
                                   SizedBox(
                                     width: 4,
                                   ),
-                                  getConnectionIdBySId(sId!) != ''
+                                  getConnectionIdBySId(sId ?? '') != ''
                                       ? Text('Cancel',
                                           style: GoogleFonts.signika(
                                             fontSize: 14,

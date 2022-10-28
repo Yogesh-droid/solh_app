@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
@@ -40,6 +41,7 @@ class _CallState extends State<VideoCallUser> {
   bool _isVideoDisabled = false;
   late Timer timer;
   ChatController _controller = Get.put(ChatController());
+  ChatListController _chatListController = Get.put(ChatListController());
   // OverlayEntry? overlayEntry;
   SocketService _service = SocketService();
   PageController pageController = PageController();
@@ -53,29 +55,30 @@ class _CallState extends State<VideoCallUser> {
 
   @override
   void initState() {
-    super.initState();
-    SocketService.currentSId = widget.sId ?? '';
-    _controller.currentSid = widget.sId ?? '';
-    timer = Timer(Duration(seconds: 20), () {
-      if (_remoteUid == null) {
-        _engine.leaveChannel();
-        _engine.destroy();
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            'Person not available',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-        ));
-      }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      SocketService.currentSId = widget.sId ?? '';
+      _controller.currentSid = widget.sId ?? '';
+      timer = Timer(Duration(seconds: 20), () {
+        if (_remoteUid == null) {
+          _engine.leaveChannel();
+          _engine.destroy();
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              'Person not available',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+          ));
+        }
+      });
+      initAgora();
+      initChatService();
     });
-    initAgora();
-    initChatService();
     super.initState();
   }
 
