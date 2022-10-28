@@ -63,7 +63,8 @@ class LocalNotification {
                             channel: result.notification.additionalData!['data']
                                 ["channelName"],
                             token: result.notification.additionalData!['type'],
-                            type: result.notification.additionalData!['vod'],
+                            type:
+                                result.notification.additionalData!['callType'],
                           )),
                 );
               });
@@ -186,7 +187,8 @@ class LocalNotification {
                                             ["channelName"],
                                         token: result.additionalData!['data']
                                             ["rtcToken"],
-                                        type: result.additionalData!['type'],
+                                        type:
+                                            result.additionalData!['callType'],
                                       )),
                             );
                           });

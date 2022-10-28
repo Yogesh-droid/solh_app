@@ -311,7 +311,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                             .doctors!
                                             .length,
                                         itemBuilder: (_, index) {
-                                          print(getHelpController
+                                          debugPrint(getHelpController
                                               .topConsultantList
                                               .value
                                               .doctors![index]
@@ -460,7 +460,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
         isInConnection = true;
       }
     });
-    print('++++' + sId + isInConnection.toString());
+    debugPrint('++++' + sId + isInConnection.toString());
     return isInConnection;
   }
 
@@ -472,7 +472,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
+                debugPrint("side bar tapped");
 
                 _bottomNavigatorController.isDrawerOpen.value == true
                     ? _bottomNavigatorController.isDrawerOpen.value = false
@@ -480,7 +480,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 // setState(() {
                 //   _isDrawerOpen = !_isDrawerOpen;
                 // });
-                print("opened");
+                debugPrint("opened");
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
@@ -568,7 +568,7 @@ class TopConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
+    debugPrint(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -1005,7 +1005,7 @@ class SolhVolunteers extends StatelessWidget {
                       //           uid: uid!,
                       //         )));
                       // getConnectionIdBySId(sId ?? '');
-                      print('Connection ID' +
+                      debugPrint('Connection ID' +
                           getConnectionIdBySId(sId ?? '').toString());
                       getConnectionIdBySId(sId ?? '') != ''
                           ? connectionController.deleteConnectionRequest(

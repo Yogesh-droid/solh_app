@@ -55,6 +55,7 @@ class _CallState extends State<VideoCallUser> {
 
   @override
   void initState() {
+    print('callType ${widget.type}');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       SocketService.currentSId = widget.sId ?? '';
       _controller.currentSid = widget.sId ?? '';
@@ -401,7 +402,7 @@ class _CallState extends State<VideoCallUser> {
             ),
           ),
           Expanded(
-            child: widget.type != null
+            child: widget.type != null && widget.type == 'sc'
                 ? MessageListProvider(sId: sId ?? '')
                 : MessageList(
                     sId: sId ?? '',
@@ -426,7 +427,7 @@ class _CallState extends State<VideoCallUser> {
           }),
           Align(
             alignment: Alignment.bottomCenter,
-            child: widget.type != null
+            child: widget.type != null && widget.type == 'sc'
                 ? MessageBoxProvider(sId: sId ?? '')
                 : MessageBox(
                     sId: sId ?? '',
