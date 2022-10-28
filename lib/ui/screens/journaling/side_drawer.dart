@@ -88,8 +88,9 @@ class _SideDrawerState extends State<SideDrawer> {
                                     ),
                                     SizedBox(width: 1.5.w),
                                     GetBadge(
-                                        userType:
-                                            userSnapshot.requireData!.userType)
+                                        userType: userSnapshot
+                                                .requireData!.userType ??
+                                            '')
 
                                     // Text(
                                     //   userSnapshot.requireData!.userType ==

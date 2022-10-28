@@ -91,7 +91,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       print("map is not null + " + widget.map.toString());
       imgUploadResponse = widget.map!;
     }
-    //userBlocNetwork.getMyProfileSnapshot();
+    // userBlocNetwork.getMyProfileSnapshot();
   }
 
   @override
@@ -1085,7 +1085,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      GetBadge(userType: widget._userModel!.userType),
+                      GetBadge(userType: widget._userModel!.userType ?? ''),
                       SizedBox(
                         height: 4.h,
                       ),
