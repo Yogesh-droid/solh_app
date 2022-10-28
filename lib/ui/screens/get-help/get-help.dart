@@ -311,7 +311,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                             .doctors!
                                             .length,
                                         itemBuilder: (_, index) {
-                                          print(getHelpController
+                                          debugPrint(getHelpController
                                               .topConsultantList
                                               .value
                                               .doctors![index]
@@ -390,7 +390,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                       isInSendRequest:
                                           checkIfAlreadyInSendConnection(
                                         getHelpController.solhVolunteerList
-                                            .value.provider![index].sId!,
+                                                .value.provider![index].sId ??
+                                            '',
                                       ),
                                       name: getHelpController.solhVolunteerList
                                               .value.provider![index].name ??
@@ -459,7 +460,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
         isInConnection = true;
       }
     });
-    print('++++' + sId + isInConnection.toString());
+    debugPrint('++++' + sId + isInConnection.toString());
     return isInConnection;
   }
 
@@ -471,7 +472,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
+                debugPrint("side bar tapped");
 
                 _bottomNavigatorController.isDrawerOpen.value == true
                     ? _bottomNavigatorController.isDrawerOpen.value = false
@@ -479,7 +480,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 // setState(() {
                 //   _isDrawerOpen = !_isDrawerOpen;
                 // });
-                print("opened");
+                debugPrint("opened");
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),
@@ -567,7 +568,7 @@ class TopConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
+    debugPrint(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -798,7 +799,7 @@ class SolhVolunteers extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: ((context) => ConnectProfileScreen(
                   uid: uid!,
-                  sId: sId!,
+                  sId: sId ?? '',
                 ))));
       }),
       child: Container(
@@ -970,11 +971,11 @@ class SolhVolunteers extends StatelessWidget {
                 ),
                 Obx(() {
                   return SizedBox(
-                    height: getConnectionIdBySId(sId!) != '' ? 17 : 33,
+                    height: getConnectionIdBySId(sId ?? '') != '' ? 17 : 33,
                   );
                 }),
                 Obx(() {
-                  return getConnectionIdBySId(sId!) != ''
+                  return getConnectionIdBySId(sId ?? '') != ''
                       ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -1000,22 +1001,22 @@ class SolhVolunteers extends StatelessWidget {
                     onTap: () {
                       // Navigator.of(context).push(MaterialPageRoute(
                       //     builder: (context) => ConnectProfileScreen(
-                      //           sId: sId!,
+                      //           sId: sId ?? '',
                       //           uid: uid!,
                       //         )));
-                      // getConnectionIdBySId(sId!);
-                      print('Connection ID' +
-                          getConnectionIdBySId(sId!).toString());
-                      getConnectionIdBySId(sId!) != ''
+                      // getConnectionIdBySId(sId ?? '');
+                      debugPrint('Connection ID' +
+                          getConnectionIdBySId(sId ?? '').toString());
+                      getConnectionIdBySId(sId ?? '') != ''
                           ? connectionController.deleteConnectionRequest(
-                              getConnectionIdBySId(sId!))
-                          : connectionController.addConnection(sId!);
+                              getConnectionIdBySId(sId ?? ''))
+                          : connectionController.addConnection(sId ?? '');
                     },
                     child: Container(
                       height: 32,
                       width: 148,
                       decoration: BoxDecoration(
-                          color: getConnectionIdBySId(sId!) != ''
+                          color: getConnectionIdBySId(sId ?? '') != ''
                               ? Colors.white
                               : SolhColors.green,
                           border: Border.all(color: SolhColors.green),
@@ -1040,7 +1041,7 @@ class SolhVolunteers extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  getConnectionIdBySId(sId!) != ''
+                                  getConnectionIdBySId(sId ?? '') != ''
                                       ? Container()
                                       : SvgPicture.asset(
                                           'assets/images/connect.svg',
@@ -1050,7 +1051,7 @@ class SolhVolunteers extends StatelessWidget {
                                   SizedBox(
                                     width: 4,
                                   ),
-                                  getConnectionIdBySId(sId!) != ''
+                                  getConnectionIdBySId(sId ?? '') != ''
                                       ? Text('Cancel',
                                           style: GoogleFonts.signika(
                                             fontSize: 14,

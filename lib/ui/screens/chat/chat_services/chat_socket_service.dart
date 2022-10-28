@@ -49,7 +49,7 @@ class SocketService {
     String fileName,
     String conversationType,
   ) {
-    print('message emmited  ' + socket.id.toString());
+    print('message emmited' + ct);
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
@@ -77,13 +77,13 @@ class SocketService {
   }
 
   static void typing(sId, chatType, userType) {
-    // socket.emit('typing', {
-    //   'socketId': socket.id,
-    //   'authorId': userBlocNetwork.id,
-    //   'connection': currentSId,
-    //   'chatType': chatType,
-    //   'authorType': userType
-    // });
+    socket.emit('typing', {
+      'socketId': socket.id,
+      'authorId': userBlocNetwork.id,
+      'connection': currentSId,
+      'chatType': chatType,
+      'authorType': userType
+    });
   }
 
   static void notTyping(sId, chatType, userType) {

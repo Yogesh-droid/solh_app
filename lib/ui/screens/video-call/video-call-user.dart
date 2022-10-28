@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
+import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -19,9 +21,13 @@ class VideoCallUser extends StatefulWidget {
   // "0064db2d5eea0c3466cb8dc7ba7f488dbefIABV0AhZlwohqekpkdqXNpk8FlEVw5u5FwIFWzdr/3U1DMJBJDUh39v0IgAi1l/HOrwBYwQAAQDKeABjAgDKeABjAwDKeABjBADKeABj";
   var channel;
   String? sId;
+  String? type;
 
   VideoCallUser(
-      {required this.token, required this.channel, required this.sId});
+      {required this.token,
+      required this.channel,
+      required this.sId,
+      this.type});
 
   @override
   State<VideoCallUser> createState() => _CallState();
@@ -35,6 +41,7 @@ class _CallState extends State<VideoCallUser> {
   bool _isVideoDisabled = false;
   late Timer timer;
   ChatController _controller = Get.put(ChatController());
+  ChatListController _chatListController = Get.put(ChatListController());
   // OverlayEntry? overlayEntry;
   SocketService _service = SocketService();
   PageController pageController = PageController();
@@ -48,28 +55,31 @@ class _CallState extends State<VideoCallUser> {
 
   @override
   void initState() {
-    super.initState();
-
-    timer = Timer(Duration(seconds: 20), () {
-      if (_remoteUid == null) {
-        _engine.leaveChannel();
-        _engine.destroy();
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            'Person not available',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.red,
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-        ));
-      }
+    print('callType ${widget.type}');
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      SocketService.currentSId = widget.sId ?? '';
+      _controller.currentSid = widget.sId ?? '';
+      timer = Timer(Duration(seconds: 20), () {
+        if (_remoteUid == null) {
+          _engine.leaveChannel();
+          _engine.destroy();
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              'Person not available',
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.red,
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5), topRight: Radius.circular(5))),
+          ));
+        }
+      });
+      initAgora();
+      initChatService();
     });
-    initAgora();
-    initChatService();
     super.initState();
   }
 
@@ -80,7 +90,7 @@ class _CallState extends State<VideoCallUser> {
     if (_controller.convo.isEmpty) {
       _controller.getChatController(widget.sId!);
     }
-    SocketService.setUserName(userBlocNetwork.myData.userName ?? '');
+    SocketService.setUserName(userBlocNetwork.myData.name!);
   }
 
   Future<void> initAgora() async {
@@ -392,9 +402,11 @@ class _CallState extends State<VideoCallUser> {
             ),
           ),
           Expanded(
-            child: MessageList(
-              sId: sId ?? '',
-            ),
+            child: widget.type != null && widget.type == 'sc'
+                ? MessageListProvider(sId: sId ?? '')
+                : MessageList(
+                    sId: sId ?? '',
+                  ),
           ),
           Obx(() {
             return Row(
@@ -415,9 +427,12 @@ class _CallState extends State<VideoCallUser> {
           }),
           Align(
             alignment: Alignment.bottomCenter,
-            child: MessageBox(
-              sId: sId ?? '',
-            ),
+            child: widget.type != null && widget.type == 'sc'
+                ? MessageBoxProvider(sId: sId ?? '')
+                : MessageBox(
+                    sId: sId ?? '',
+                    chatType: widget.type,
+                  ),
           ),
         ],
       ),

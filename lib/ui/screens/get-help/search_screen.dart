@@ -510,7 +510,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             .providerCountry![index]
                                             .code ??
                                         '';
-                                    print(defaultCountry);
+                                    debugPrint(defaultCountry);
                                     searchMarketController.getSearchResults(
                                         searchController.text,
                                         c: defaultCountry);
@@ -652,6 +652,6 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> getResultByCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     defaultCountry = sharedPreferences.getString('userCountry');
-    print('@' * 30 + 'default country is $defaultCountry' + ' &' * 30);
+    debugPrint('@' * 30 + 'default country is $defaultCountry' + ' &' * 30);
   }
 }

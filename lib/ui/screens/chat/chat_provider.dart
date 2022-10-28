@@ -38,14 +38,21 @@ class ChatProviderScreen extends StatefulWidget {
 class _ChatProviderScreenState extends State<ChatProviderScreen> {
   SocketService _service = SocketService();
   var _controller = Get.put(ChatController());
+  var _chatListController = Get.put(ChatListController());
   @override
   void initState() {
-    userBlocNetwork.getMyProfileSnapshot();
-    _service.connectAndListen();
-    _controller.getChatController(widget._sId);
-    super.initState();
-    SocketService.setUserName(userBlocNetwork.myData.name!);
-    print('author ${userBlocNetwork.myData.userName!}');
+    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
+      SocketService.currentSId = widget._sId;
+      _controller.currentSid = widget._sId;
+      debugPrint('SID ${widget._sId}');
+      userBlocNetwork.getMyProfileSnapshot();
+      _service.connectAndListen();
+      _controller.getChatController(widget._sId);
+      super.initState();
+      SocketService.setUserName(userBlocNetwork.myData.name!);
+      print('author ${userBlocNetwork.myData.userName!}');
+    });
+
     super.initState();
   }
 
@@ -73,7 +80,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
                       name: widget._name,
                       sId: widget._sId),
                   Expanded(
-                    child: MessageList(
+                    child: MessageListProvider(
                       sId: widget._sId,
                     ),
                   ),
@@ -96,7 +103,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
                   }),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: MessageBox(
+                    child: MessageBoxProvider(
                       sId: widget._sId,
                     ),
                   ),
@@ -177,12 +184,24 @@ class ChatAppbar extends StatelessWidget {
                 SizedBox(
                   width: 6,
                 ),
-                Text(
-                  _name == '' ? '' : _name,
-                  style: GoogleFonts.signika(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      _name == '' ? '' : _name,
+                      style: GoogleFonts.signika(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Obx(() {
+                      print('seen status ran' +
+                          _controller.seenStatus.value.toString());
+                      return Text(
+                        _controller.seenStatus.value,
+                        style: GoogleFonts.signika(color: SolhColors.green),
+                      );
+                    })
+                  ],
                 ),
               ],
             ),
@@ -229,8 +248,8 @@ class ChatAppbar extends StatelessWidget {
   }
 }
 
-class MessageBox extends StatelessWidget {
-  MessageBox({Key? key, required String sId})
+class MessageBoxProvider extends StatelessWidget {
+  MessageBoxProvider({Key? key, required String sId})
       : _sId = sId,
         super(key: key);
 
@@ -249,6 +268,7 @@ class MessageBox extends StatelessWidget {
       width: double.maxFinite,
       margin: EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
+          color: Colors.white,
           border: Border.all(
             color: SolhColors.green,
           ),
@@ -365,8 +385,8 @@ class MessageBox extends StatelessWidget {
   }
 }
 
-class MessageList extends StatefulWidget {
-  MessageList({
+class MessageListProvider extends StatefulWidget {
+  MessageListProvider({
     Key? key,
     required String sId,
   })  : _sId = sId,
@@ -375,10 +395,10 @@ class MessageList extends StatefulWidget {
   final String _sId;
 
   @override
-  State<MessageList> createState() => _MessageListState();
+  State<MessageListProvider> createState() => _MessageListProviderState();
 }
 
-class _MessageListState extends State<MessageList> {
+class _MessageListProviderState extends State<MessageListProvider> {
   ChatController _controller = Get.put(ChatController());
   ScrollController scrollController = ScrollController();
 
@@ -481,7 +501,7 @@ class MessageTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: _authorId == _sId
                     ? Colors.grey.shade200
-                    : Color(0x80CCE9E2),
+                    : Color(0xffCCE9E2),
               ),
               child: Container(
                 constraints: BoxConstraints(
@@ -599,7 +619,7 @@ class Filetile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: _authorId == _sId
                         ? Colors.grey.shade200
-                        : Color(0x80CCE9E2),
+                        : Color(0xffCCE9E2),
                   ),
                   child: Container(
                     constraints: BoxConstraints(
