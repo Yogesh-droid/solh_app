@@ -29,6 +29,9 @@ class LocalNotification {
 
       if (event.notification.additionalData!['route'] == 'call') {
         showVideocallDialog(event.notification, globalNavigatorKey);
+      } else {
+        OneSignal.shared
+            .completeNotification(event.notification.notificationId, true);
       }
     });
 

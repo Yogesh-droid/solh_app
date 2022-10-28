@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'constants/colors.dart';
 
 class SolhSearch extends StatelessWidget {
   const SolhSearch(
       {Key? key,
       required TextEditingController textController,
+      this.focusNode,
       this.onCloseBtnTap,
       this.onSubmitted,
       this.onTextChaged})
       : _textController = textController,
         super(key: key);
   final TextEditingController _textController;
+  final FocusNode? focusNode;
   final Function()? onCloseBtnTap;
   final Function(String value)? onSubmitted;
   final Function(String value)? onTextChaged;
@@ -50,6 +53,7 @@ class SolhSearch extends StatelessWidget {
               padding: const EdgeInsets.only(left: 18.0),
               child: TextField(
                   controller: _textController,
+                  focusNode: focusNode,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Search',

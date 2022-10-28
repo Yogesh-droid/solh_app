@@ -81,6 +81,9 @@ getIcon(title) {
   }
   if (title == "Psychological Tests") {
     return SvgPicture.asset('assets/images/psycotests.svg');
+  }
+  if (title == "Tutorials") {
+    return SvgPicture.asset('assets/images/tutorial.svg');
   } else {
     return Container();
   }

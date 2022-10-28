@@ -102,8 +102,7 @@ class VideoTile extends StatelessWidget {
                             bottomLeft: Radius.circular(10),
                             topLeft: Radius.circular(10)),
                         child: CachedNetworkImage(
-                          imageUrl:
-                              "https://img.youtube.com/vi/5Eqb_-j3FDA/hqdefault.jpg",
+                          imageUrl: e.videoThumbnail ?? '',
                           fit: BoxFit.fill,
                         ),
                       )),
@@ -121,9 +120,14 @@ class VideoTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    e.title ?? '',
-                    style: SolhTextStyles.GreenBorderButtonText,
+                  Container(
+                    width: 250,
+                    child: Text(
+                      e.title ?? '',
+                      style: SolhTextStyles.GreenBorderButtonText,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
                   ),
                   Container(
                     width: 250,
