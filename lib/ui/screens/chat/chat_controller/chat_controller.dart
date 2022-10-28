@@ -60,7 +60,7 @@ class ChatController extends GetxController {
         seenStatus.value = '';
         return;
       }
-      // print('seenStatus ${timeago.format(DateTime.parse(data))}');
+      // debugPrint('seenStatus ${timeago.format(DateTime.parse(data))}');
       if (data == 'Online') {
         seenStatus.value = data;
       } else {
@@ -69,6 +69,7 @@ class ChatController extends GetxController {
     });
 
     SocketService.socket.on("isTyping", (data) {
+      debugPrint('Typing $data');
       if (currentSid == data['authorId']) {
         istyping(data['isTyping']);
       }
@@ -83,11 +84,11 @@ class ChatController extends GetxController {
     MessageModel response = await services.getChat(sId);
     isLoading(false);
 
-    print(response);
+    debugPrint(response.toString());
 
     if (response.chatLog != null) {
       convo.value = response.chatLog!.conversation!;
-      print(convo.value);
+      debugPrint(convo.value.toString());
     } else {
       convo.value = [];
     }
@@ -112,11 +113,11 @@ class ChatController extends GetxController {
     if (response["success"]) {
       downloadedAndLocalfile[response['imageUrl']] = file.path;
       File(file.path).exists().then((value) {
-        print(file.path);
+        debugPrint(file.path);
         if (value) {
-          print('it exists');
+          debugPrint('it exists');
         } else {
-          print('not exits');
+          debugPrint('not exits');
         }
       });
       return response['imageUrl'];
@@ -144,11 +145,11 @@ class ChatController extends GetxController {
         await file.writeAsBytes(decodedResponse);
         downloadedAndLocalfile[url] = '$filePath/$fileName';
         File(file.path).exists().then((value) {
-          print(file.path);
+          debugPrint(file.path);
           if (value) {
-            print('it exists');
+            debugPrint('it exists');
           } else {
-            print('not exits');
+            debugPrint('not exits');
           }
         });
       } else {
@@ -193,7 +194,7 @@ class ChatController extends GetxController {
 
   Future<void> getLocalPath() async {
     final directory = await getApplicationDocumentsDirectory();
-    print('directory $directory');
+    debugPrint('directory $directory');
     filePath = directory.path;
   }
 }

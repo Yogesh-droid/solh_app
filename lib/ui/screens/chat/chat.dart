@@ -95,6 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 alignment: Alignment.bottomCenter,
                 child: MessageBox(
                   sId: widget._sId,
+                  chatType: 'cc',
                 ),
               ),
             ],
@@ -239,11 +240,12 @@ class ChatAppbar extends StatelessWidget {
 }
 
 class MessageBox extends StatelessWidget {
-  MessageBox({Key? key, required String sId})
+  MessageBox({Key? key, required String sId, this.chatType})
       : _sId = sId,
         super(key: key);
 
   final String _sId;
+  final String? chatType;
 
   ChatController _controller = Get.put(ChatController());
   SocketService service = SocketService();
@@ -270,9 +272,11 @@ class MessageBox extends StatelessWidget {
             Expanded(
               child: TextField(
                 onChanged: ((value) {
-                  SocketService.typing(_sId, 'cc', 'users');
+                  SocketService.typing(
+                      _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
                   Future.delayed(Duration(seconds: 2), (() {
-                    SocketService.notTyping(_sId, 'cc', 'users');
+                    SocketService.notTyping(
+                        _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
                   }));
                 }),
                 controller: _controller.messageEditingController,
@@ -291,7 +295,7 @@ class MessageBox extends StatelessWidget {
                     message: _controller.messageEditingController.text,
                     sId: _sId,
                     autherType: 'users',
-                    ct: 'cc',
+                    ct: chatType == 'sc' ? 'sc' : 'cc',
                     mediaType: '',
                     mediaUrl: '',
                     fileName: '',
