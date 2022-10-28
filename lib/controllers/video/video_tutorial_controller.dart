@@ -6,6 +6,8 @@ import 'package:solh/services/network/network.dart';
 
 class VideoTutorialController extends GetxController {
   var videoList = <TutorialList>[].obs;
+  var remainingVideos = <TutorialList>[].obs;
+  var currentVideo = TutorialList().obs;
 
   var isLoading = false.obs;
   Future<void> getVideolist() async {
@@ -16,6 +18,14 @@ class VideoTutorialController extends GetxController {
     videoList.value = videoTutorialModel.tutorialList ?? [];
 
     isLoading.value = false;
+  }
+
+  void getRemainingVideos(
+      TutorialList tutorialList, TutorialList currentVideo) {
+    remainingVideos.remove(tutorialList);
+    remainingVideos.add(currentVideo);
+    this.currentVideo.value = tutorialList;
+    remainingVideos.refresh();
   }
 
   @override

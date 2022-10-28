@@ -10,7 +10,7 @@ import '../../model/psychology-test/testHistory_result_model.dart';
 
 class PsychologyTestController extends GetxController {
   var testList = <TestList>[].obs;
-  var testHistorylist = <Test>[].obs;
+  var testHistorylist = <Map<String, Test>>[].obs;
   var questionList = <TestQuestionList>[].obs;
   var isLoadingList = false.obs;
   var isQuestionsLoading = false.obs;
@@ -47,8 +47,10 @@ class PsychologyTestController extends GetxController {
     print("This is testTaken ${testHistoryModel.testList!.length}");
 
     testHistoryModel.testList!.forEach((element) {
-      print(element.test!.sId!);
-      testHistorylist.value.add(element.test ?? Test());
+      if (element.test != null) {
+        testHistorylist.value
+            .add({element.createdAt ?? "": element.test ?? Test()});
+      }
     });
 
     isTestResultLoadingList.value = false;

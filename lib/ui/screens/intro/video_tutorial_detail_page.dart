@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/video/video_tutorial_controller.dart';
 import 'package:solh/model/video_tutorial.dart';
 import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
@@ -19,17 +21,17 @@ class VideoDetailPage extends StatefulWidget {
 
 class _VideoDetailPageState extends State<VideoDetailPage> {
   late YoutubePlayerController controller;
-
+  // late TutorialList currentVideo;
   final VideoTutorialController videoTutorialController = Get.find();
   List<String> allVideoPlaylist = [];
 
-  List<TutorialList> remainingVideos = [];
+  //List<TutorialList> remainingVideos = [];
   List<TutorialList> allVideos = [];
 
   @override
   void initState() {
     getVideosPlaylist();
-    getRemainingVideos();
+    videoTutorialController.currentVideo.value = widget.videoTutorialModel;
     controller = YoutubePlayerController(
         params: const YoutubePlayerParams(
       showControls: true,
@@ -39,7 +41,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       enableCaption: true,
     ))
       ..onInit = () {
-        controller.loadVideo(widget.videoTutorialModel.videoUrl ?? '');
+        controller.loadVideo(
+            videoTutorialController.currentVideo.value.videoUrl ?? '');
       }
       ..onFullscreenChange = (isFullScreen) {
         print('${isFullScreen ? 'Entered' : 'Exited'} Fullscreen.');
@@ -81,19 +84,19 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
             right: 18.0,
             top: 8.0,
           ),
-          child: Text(
-            widget.videoTutorialModel.title ?? '',
-            style: SolhTextStyles.GreenBorderButtonText,
-          ),
+          child: Obx(() => Text(
+                videoTutorialController.currentVideo.value.title ?? '',
+                style: SolhTextStyles.GreenBorderButtonText,
+              )),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 18.0, right: 18.0, bottom: 8.0),
-          child: Text(
-            widget.videoTutorialModel.description ?? '',
-            style: SolhTextStyles.JournalingDescriptionText,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+          child: Obx(() => ReadMoreText(
+                videoTutorialController.currentVideo.value.description ?? '',
+                style: SolhTextStyles.JournalingDescriptionText,
+                trimLines: 2,
+                trimMode: TrimMode.Line,
+              )),
         ),
         Divider(
           color: SolhColors.grey,
@@ -101,15 +104,22 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-            child: ListView.builder(
+            child: Obx(() => ListView.builder(
                 shrinkWrap: true,
-                itemCount: remainingVideos.length,
+                itemCount: videoTutorialController.remainingVideos.length,
                 itemBuilder: (context, index) {
                   return VideoTile(
-                    e: remainingVideos[index],
-                    onTap: () {},
+                    e: videoTutorialController.remainingVideos[index],
+                    onTap: () {
+                      controller.loadVideo(videoTutorialController
+                              .remainingVideos[index].videoUrl ??
+                          '');
+                      videoTutorialController.getRemainingVideos(
+                          videoTutorialController.remainingVideos[index],
+                          videoTutorialController.currentVideo.value);
+                    },
                   );
-                }),
+                })),
           ),
         )
       ],
@@ -122,8 +132,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       allVideoPlaylist.add(element.videoUrl ?? '');
     });
     allVideos.remove(widget.videoTutorialModel);
-    remainingVideos.addAll(allVideos);
+    videoTutorialController.remainingVideos.clear();
+    videoTutorialController.remainingVideos.addAll(allVideos);
+    videoTutorialController.remainingVideos.refresh();
   }
-
-  void getRemainingVideos() {}
 }

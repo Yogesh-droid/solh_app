@@ -24,12 +24,14 @@ class LocalNotification {
       GlobalKey<NavigatorState> globalNavigatorKey) {
     OneSignal.shared.setNotificationWillShowInForegroundHandler(
         (OSNotificationReceivedEvent event) {
-      
       print(event.notification.additionalData);
       print(event.notification.rawPayload.toString());
 
       if (event.notification.additionalData!['route'] == 'call') {
         showVideocallDialog(event.notification, globalNavigatorKey);
+      } else {
+        OneSignal.shared
+            .completeNotification(event.notification.notificationId, true);
       }
     });
 

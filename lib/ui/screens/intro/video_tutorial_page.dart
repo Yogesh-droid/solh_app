@@ -6,7 +6,6 @@ import 'package:solh/controllers/video/video_tutorial_controller.dart';
 import 'package:solh/model/video_tutorial.dart';
 import 'package:solh/ui/screens/intro/video_tutorial_detail_page.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 

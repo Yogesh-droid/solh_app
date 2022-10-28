@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/model/psychology-test/testHistory_result_model.dart';
@@ -39,7 +40,8 @@ class TestHistoryDetails extends StatelessWidget {
             height: 10,
           ),
           Container(
-            height: 150,
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
                 color: SolhColors.green),
@@ -48,21 +50,81 @@ class TestHistoryDetails extends StatelessWidget {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Center(
-                      child: Text(
-                      psychologyTestController.testHistoryResult.isNotEmpty
-                          ? psychologyTestController
-                                  .testHistoryResult[0].result ??
-                              ''
-                          : 'No Result found',
-                      style: SolhTextStyles.GreenButtonText,
-                    ));
+                  : Column(
+                      children: [
+                        Text(
+                          // psychologyTestController
+                          //         .testResultModel.value.result!.testResult ??
+                          //     '',
+                          psychologyTestController
+                                  .testHistoryResult.value[0].result ??
+                              '',
+                          // style: SolhTextStyles.GreenBorderButtonText,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          child: ReadMoreText(
+                            psychologyTestController
+                                    .testHistoryResult.value[0].explaination ??
+                                '',
+                            style: SolhTextStyles.GreenButtonText,
+                            trimMode: TrimMode.Line,
+                            trimLines: 15,
+                            textAlign: TextAlign.center,
+                            lessStyle: SolhTextStyles
+                                .JournalingDescriptionReadMoreText,
+                            moreStyle: SolhTextStyles
+                                .JournalingDescriptionReadMoreText,
+                          ),
+                        ),
+                      ],
+                    );
+              // : Center(
+              //     child: Text(
+              //     psychologyTestController.testHistoryResult.isNotEmpty
+              //         ? psychologyTestController
+              //                 .testHistoryResult[0].result ??
+              //             ''
+              //         : 'No Result found',
+              //     style: SolhTextStyles.GreenButtonText,
+              //   ));
             }),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Other Psychological Tests',
+                style: SolhTextStyles.AppBarText,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                width: 300,
+                child: Text(
+                    'It will be a guide to your therapy and to your own self-evaluation.'),
+              ),
+            ),
           ),
           Obx(() => psychologyTestController.testHistoryMoreTest.isNotEmpty
               ? getOtherTestWidget(
                   psychologyTestController.testHistoryMoreTest.value)
-              : Container())
+              : Container()),
         ],
       )),
     );

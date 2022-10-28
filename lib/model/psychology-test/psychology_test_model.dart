@@ -35,6 +35,7 @@ class TestList {
   int? testQuestionNumber;
   int? testDuration;
   String? testPicture;
+  String? createdAt;
 
   TestList(
       {this.sId,
@@ -44,7 +45,8 @@ class TestList {
       this.testDuration,
       this.test,
       this.testData,
-      this.testPicture});
+      this.testPicture,
+      this.createdAt});
 
   TestList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -55,6 +57,7 @@ class TestList {
     test = json['test'] != null ? Test.fromJson(json['test']) : null;
     // testData = json['testData'] != null ? TestData.fromJson(json['testData']) : null;
     testPicture = json['testPicture'];
+    createdAt = json['createdAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -65,6 +68,7 @@ class TestList {
     data['testQuestionNumber'] = this.testQuestionNumber;
     data['testDuration'] = this.testDuration;
     data['testPicture'] = this.testPicture;
+    data['createdAt'] = this.createdAt;
     return data;
   }
 }

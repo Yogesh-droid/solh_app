@@ -17,11 +17,27 @@ import '../comment/comment-screen.dart';
 import '../connect/connect-screen.dart';
 import '../groups/group_detail.dart';
 
-class GlobalSearchPage extends StatelessWidget {
+class GlobalSearchPage extends StatefulWidget {
   GlobalSearchPage({Key? key}) : super(key: key);
+
+  @override
+  State<GlobalSearchPage> createState() => _GlobalSearchPageState();
+}
+
+class _GlobalSearchPageState extends State<GlobalSearchPage> {
   final TextEditingController searchController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+
   final GlobalSearchController globalSearchController =
       Get.put(GlobalSearchController());
+
+  @override
+  void initState() {
+    globalSearchController.globalSearchModel.value = GlobalSearchModel();
+    focusNode.requestFocus();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +61,7 @@ class GlobalSearchPage extends StatelessWidget {
   Widget getSearchField() {
     return SolhSearch(
       textController: searchController,
+      focusNode: focusNode,
       onCloseBtnTap: () {
         searchController.clear();
       },
@@ -58,20 +75,52 @@ class GlobalSearchPage extends StatelessWidget {
     return Obx(() => globalSearchController.isSearching.value
         ? LinearProgressIndicator()
         : Expanded(
-            child: ListView(shrinkWrap: false, children: [
-              globalSearchController.globalSearchModel.value.connection != null
-                  ? getPeopleView(context,
-                      globalSearchController.globalSearchModel.value.connection)
-                  : Container(),
-              globalSearchController.globalSearchModel.value.groupCount != null
-                  ? getGroupView(context,
-                      globalSearchController.globalSearchModel.value.groupCount)
-                  : Container(),
-              globalSearchController.globalSearchModel.value.postCount != null
-                  ? getPostView(context,
-                      globalSearchController.globalSearchModel.value.postCount)
-                  : Container()
-            ]),
+            child: globalSearchController.globalSearchModel.value.connection ==
+                        null &&
+                    globalSearchController.globalSearchModel.value.groupCount ==
+                        null &&
+                    globalSearchController.globalSearchModel.value.postCount ==
+                        null
+                ? Container(
+                    child: Center(
+                        child: Text(
+                            'Search for People, Postssomething or groups ...')),
+                  )
+                : globalSearchController
+                            .globalSearchModel.value.connection!.isEmpty &&
+                        globalSearchController
+                            .globalSearchModel.value.groupCount!.isEmpty &&
+                        globalSearchController
+                            .globalSearchModel.value.postCount!.isEmpty
+                    ? Container(
+                        child: Center(child: Text('No Result Found')),
+                      )
+                    : ListView(shrinkWrap: false, children: [
+                        globalSearchController
+                                    .globalSearchModel.value.connection !=
+                                null
+                            ? getPeopleView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.connection)
+                            : Container(),
+                        globalSearchController
+                                    .globalSearchModel.value.groupCount !=
+                                null
+                            ? getGroupView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.groupCount)
+                            : Container(),
+                        globalSearchController
+                                    .globalSearchModel.value.postCount !=
+                                null
+                            ? getPostView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.postCount)
+                            : Container()
+                      ]),
           ));
   }
 

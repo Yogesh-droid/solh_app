@@ -362,7 +362,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GetHelpCategory(
-                            title: 'Search by issues',
+                            title: 'Search for Support',
                           ),
                           InkWell(
                             onTap: () {
