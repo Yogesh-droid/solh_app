@@ -7,7 +7,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -97,14 +97,14 @@ class _OTPScreenState extends State<OTPScreen> {
                           await FirebaseMessaging.instance.getToken();
                       String oneSignalId = '';
                       String deviceType = '';
-                      // await OneSignal.shared.getDeviceState().then((value) {
-                      //   print(value!.userId);
-                      //   oneSignalId = value.userId ?? '';
+                      await OneSignal.shared.getDeviceState().then((value) {
+                        print(value!.userId);
+                        oneSignalId = value.userId ?? '';
 
-                      //   FirebaseAnalytics.instance.logLogin(
-                      //       loginMethod: 'PhoneAuth',
-                      //       callOptions: AnalyticsCallOptions(global: true));
-                      // });
+                        FirebaseAnalytics.instance.logLogin(
+                            loginMethod: 'PhoneAuth',
+                            callOptions: AnalyticsCallOptions(global: true));
+                      });
                       if (Platform.isAndroid) {
                         deviceType = 'Android';
                       } else {
