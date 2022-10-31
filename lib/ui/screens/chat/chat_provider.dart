@@ -41,17 +41,19 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
   var _chatListController = Get.put(ChatListController());
   @override
   void initState() {
-    WidgetsBinding.instance.addPersistentFrameCallback((timeStamp) {
-      SocketService.currentSId = widget._sId;
-      _controller.currentSid = widget._sId;
-      debugPrint('SID ${widget._sId}');
-      userBlocNetwork.getMyProfileSnapshot();
-      _service.connectAndListen();
-      _controller.getChatController(widget._sId);
-      super.initState();
-      SocketService.setUserName(userBlocNetwork.myData.name!);
-      print('author ${userBlocNetwork.myData.userName!}');
-    });
+    if (mounted) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        SocketService.currentSId = widget._sId;
+        _controller.currentSid = widget._sId;
+        debugPrint('SID ${widget._sId}');
+        userBlocNetwork.getMyProfileSnapshot();
+        _service.connectAndListen();
+        _controller.getChatController(widget._sId);
+        super.initState();
+        SocketService.setUserName(userBlocNetwork.myData.name!);
+        print('author ${userBlocNetwork.myData.userName!}');
+      });
+    }
 
     super.initState();
   }

@@ -748,9 +748,7 @@ class IWantToWorkOn extends StatelessWidget {
             ? Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
                 child: ListView.builder(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
+                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 60),
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: _goalSettingController
                         .goalsCatModel.value.categories!.length,
