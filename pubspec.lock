@@ -309,13 +309,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0+2"
-  facebook_app_events:
-    dependency: "direct main"
-    description:
-      name: facebook_app_events
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.17.1"
   fake_async:
     dependency: transitive
     description:
@@ -778,7 +771,7 @@ packages:
       name: onesignal_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.4.1"
+    version: "3.4.2"
   open_filex:
     dependency: "direct main"
     description:

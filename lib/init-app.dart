@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+// import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/bloc/user-bloc.dart';
 
 import 'services/user/session-cookie.dart';
@@ -20,10 +20,10 @@ Future<bool> isNewUser() async {
   print("*" * 30 + " FCM TOKEN $fcmToken " + "*" * 30);
   String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
   String oneSignalId = '';
-  await OneSignal.shared.getDeviceState().then((value) {
-    print(value!.userId);
-    oneSignalId = value.userId ?? '';
-  });
+  // await OneSignal.shared.getDeviceState().then((value) {
+  //   print(value!.userId);
+  //   oneSignalId = value.userId ?? '';
+  // });
   String deviceType = '';
   if (Platform.isAndroid) {
     deviceType = 'Android';

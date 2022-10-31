@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+// import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -12,199 +12,199 @@ import '../../widgets_constants/constants/textstyles.dart';
 
 class LocalNotification {
   static Future<void> initOneSignal() async {
-    await OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
-    await OneSignal.shared
-        .promptUserForPushNotificationPermission()
-        .then((accepted) {
-      print("Accepted permission: $accepted");
-    });
+    // await OneSignal.shared.setAppId("7669d7ba-67cf-4557-9b80-96b03e02d503");
+    // await OneSignal.shared
+    //     .promptUserForPushNotificationPermission()
+    //     .then((accepted) {
+    //   print("Accepted permission: $accepted");
+    // });
   }
 
   void initializeOneSignalHandlers(
       GlobalKey<NavigatorState> globalNavigatorKey) {
-    OneSignal.shared.setNotificationWillShowInForegroundHandler(
-        (OSNotificationReceivedEvent event) {
-      print(event.notification.additionalData);
-      print(event.notification.rawPayload.toString());
+    // OneSignal.shared.setNotificationWillShowInForegroundHandler(
+    //     (OSNotificationReceivedEvent event) {
+    //   print(event.notification.additionalData);
+    //   print(event.notification.rawPayload.toString());
 
-      if (event.notification.additionalData!['route'] == 'call') {
-        showVideocallDialog(event.notification, globalNavigatorKey);
-      } else {
-        OneSignal.shared
-            .completeNotification(event.notification.notificationId, true);
-      }
-    });
+    //   if (event.notification.additionalData!['route'] == 'call') {
+    //     showVideocallDialog(event.notification, globalNavigatorKey);
+    //   } else {
+    //     OneSignal.shared
+    //         .completeNotification(event.notification.notificationId, true);
+    //   }
+    // });
 
-    OneSignal.shared.setNotificationOpenedHandler(
-        (OSNotificationOpenedResult result) async {
-      print('running open notification handler');
-      print(result.notification.rawPayload);
-      print(result.notification.additionalData);
-      print('route is ${result.notification.additionalData!['route']}');
-      switch (result.notification.additionalData!['route']) {
-        case 'mood':
-          Future.delayed(Duration(seconds: 2), () {
-            globalNavigatorKey.currentState!.push(
-              MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
-            );
-          });
-          break;
+    // OneSignal.shared.setNotificationOpenedHandler(
+    //     (OSNotificationOpenedResult result) async {
+    //   print('running open notification handler');
+    //   print(result.notification.rawPayload);
+    //   print(result.notification.additionalData);
+    //   print('route is ${result.notification.additionalData!['route']}');
+    //   switch (result.notification.additionalData!['route']) {
+    //     case 'mood':
+    //       Future.delayed(Duration(seconds: 2), () {
+    //         globalNavigatorKey.currentState!.push(
+    //           MaterialPageRoute(builder: (context) => MoodAnalyticPage()),
+    //         );
+    //       });
+    //       break;
 
-        case 'call':
-          if (result.action != null) {
-            if (result.action!.actionId == "accept") {
-              Future.delayed(Duration(milliseconds: 500), () {
-                globalNavigatorKey.currentState!.push(
-                  MaterialPageRoute(
-                      builder: (context) => VideoCallUser(
-                            sId: result.notification.additionalData!['data']
-                                        ["senderId"] !=
-                                    null
-                                ? result.notification.additionalData!['data']
-                                    ["senderId"]
-                                : null,
-                            channel: result.notification.additionalData!['data']
-                                ["channelName"],
-                            token: result.notification.additionalData!['type'],
-                            type:
-                                result.notification.additionalData!['callType'],
-                          )),
-                );
-              });
-            } else if (result.action!.actionId == "reject") {
-            } else {
-              print(result.notification.additionalData!['route']);
+    //     case 'call':
+    //       if (result.action != null) {
+    //         if (result.action!.actionId == "accept") {
+    //           Future.delayed(Duration(milliseconds: 500), () {
+    //             globalNavigatorKey.currentState!.push(
+    //               MaterialPageRoute(
+    //                   builder: (context) => VideoCallUser(
+    //                         sId: result.notification.additionalData!['data']
+    //                                     ["senderId"] !=
+    //                                 null
+    //                             ? result.notification.additionalData!['data']
+    //                                 ["senderId"]
+    //                             : null,
+    //                         channel: result.notification.additionalData!['data']
+    //                             ["channelName"],
+    //                         token: result.notification.additionalData!['type'],
+    //                         type:
+    //                             result.notification.additionalData!['callType'],
+    //                       )),
+    //             );
+    //           });
+    //         } else if (result.action!.actionId == "reject") {
+    //         } else {
+    //           print(result.notification.additionalData!['route']);
 
-              Future.delayed(Duration(seconds: 1), () {
-                print('Opening Dialog ........................');
-                showVideocallDialog(result.notification, globalNavigatorKey);
-              });
-            }
-          } else {
-            print(result.notification.additionalData!['route']);
+    //           Future.delayed(Duration(seconds: 1), () {
+    //             print('Opening Dialog ........................');
+    //             showVideocallDialog(result.notification, globalNavigatorKey);
+    //           });
+    //         }
+    //       } else {
+    //         print(result.notification.additionalData!['route']);
 
-            Future.delayed(Duration(seconds: 1), () {
-              print('Opening Dialog ........................');
-              showVideocallDialog(result.notification, globalNavigatorKey);
-            });
-          }
-          break;
+    //         Future.delayed(Duration(seconds: 1), () {
+    //           print('Opening Dialog ........................');
+    //           showVideocallDialog(result.notification, globalNavigatorKey);
+    //         });
+    //       }
+    //       break;
 
-        case 'connection':
-          Future.delayed(Duration(seconds: 2), () {
-            globalNavigatorKey.currentState!.push(
-              MaterialPageRoute(builder: (context) => Connections()),
-            );
-          });
-          break;
+    //     case 'connection':
+    //       Future.delayed(Duration(seconds: 2), () {
+    //         globalNavigatorKey.currentState!.push(
+    //           MaterialPageRoute(builder: (context) => Connections()),
+    //         );
+    //       });
+    //       break;
 
-        case "journal":
-          Future.delayed(Duration(seconds: 2), () {
-            print(jsonEncode(result.notification.additionalData!['journal'])
-                    .toString() +
-                "  *" * 30);
-            globalNavigatorKey.currentState!.push(
-              MaterialPageRoute(
-                  builder: (context) => CommentScreen(
-                      journalModel: Journals.fromJson(jsonDecode(jsonEncode(
-                          result.notification.additionalData!['journal']))),
-                      index: 0)),
-            );
-          });
-          break;
-        case "chat":
-          Future.delayed(Duration(seconds: 2), () {
-            globalNavigatorKey.currentState!.push(
-              MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                        name: jsonDecode(result
-                            .notification.additionalData!['data'])['author'],
-                        imageUrl: jsonDecode(result.notification
-                            .additionalData!['data'])['profilePicture'],
-                        sId: jsonDecode(
-                            result.notification.additionalData!['data'])['_id'],
-                      )),
-            );
-          });
-          break;
+    //     case "journal":
+    //       Future.delayed(Duration(seconds: 2), () {
+    //         print(jsonEncode(result.notification.additionalData!['journal'])
+    //                 .toString() +
+    //             "  *" * 30);
+    //         globalNavigatorKey.currentState!.push(
+    //           MaterialPageRoute(
+    //               builder: (context) => CommentScreen(
+    //                   journalModel: Journals.fromJson(jsonDecode(jsonEncode(
+    //                       result.notification.additionalData!['journal']))),
+    //                   index: 0)),
+    //         );
+    //       });
+    //       break;
+    //     case "chat":
+    //       Future.delayed(Duration(seconds: 2), () {
+    //         globalNavigatorKey.currentState!.push(
+    //           MaterialPageRoute(
+    //               builder: (context) => ChatScreen(
+    //                     name: jsonDecode(result
+    //                         .notification.additionalData!['data'])['author'],
+    //                     imageUrl: jsonDecode(result.notification
+    //                         .additionalData!['data'])['profilePicture'],
+    //                     sId: jsonDecode(
+    //                         result.notification.additionalData!['data'])['_id'],
+    //                   )),
+    //         );
+    //       });
+    //       break;
 
-        default:
-      }
-      // }
-    });
-    print(OneSignal.shared.getDeviceState());
+    //     default:
+    //   }
+    //   // }
+    // });
+    // print(OneSignal.shared.getDeviceState());
   }
 
-  showVideocallDialog(
-      OSNotification result, GlobalKey<NavigatorState> globalNavigatorKey) {
-    debugPrint('result ${result.additionalData}');
-    showDialog(
-        barrierDismissible: false,
-        context: globalNavigatorKey.currentContext!,
-        builder: (context) {
-          return AlertDialog(
-            insetPadding: EdgeInsets.all(0),
-            actionsPadding: EdgeInsets.all(8.0),
-            content: Container(
-              height: 180,
-              child: Column(
-                children: [
-                  Text(
-                    result.additionalData!['title'] ?? '',
-                    style: SolhTextStyles.LandingTitleText,
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SolhPinkBorderMiniButton(
-                        child: Text(
-                          'Reject',
-                          style: SolhTextStyles.PinkBorderButtonText,
-                        ),
-                        onPressed: () {
-                          globalNavigatorKey.currentState!.pop();
-                        },
-                      ),
-                      SolhGreenMiniButton(
-                        child: Text(
-                          'Accept',
-                          style: SolhTextStyles.GreenButtonText,
-                        ),
-                        onPressed: () async {
-                          Future.delayed(Duration(milliseconds: 500), () {
-                            globalNavigatorKey.currentState!.pop();
-                            globalNavigatorKey.currentState!.push(
-                              MaterialPageRoute(
-                                  builder: (context) => VideoCallUser(
-                                        sId: result.additionalData!['data']
-                                                    ["senderId"] !=
-                                                null
-                                            ? result.additionalData!['data']
-                                                ["senderId"]
-                                            : null,
-                                        channel: result.additionalData!['data']
-                                            ["channelName"],
-                                        token: result.additionalData!['data']
-                                            ["rtcToken"],
-                                        type:
-                                            result.additionalData!['callType'],
-                                      )),
-                            );
-                          });
-                        },
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  // showVideocallDialog(
+  //     OSNotification result, GlobalKey<NavigatorState> globalNavigatorKey) {
+  //   debugPrint('result ${result.additionalData}');
+  //   showDialog(
+  //       barrierDismissible: false,
+  //       context: globalNavigatorKey.currentContext!,
+  //       builder: (context) {
+  //         return AlertDialog(
+  //           insetPadding: EdgeInsets.all(0),
+  //           actionsPadding: EdgeInsets.all(8.0),
+  //           content: Container(
+  //             height: 180,
+  //             child: Column(
+  //               children: [
+  //                 Text(
+  //                   result.additionalData!['title'] ?? '',
+  //                   style: SolhTextStyles.LandingTitleText,
+  //                   textAlign: TextAlign.center,
+  //                 ),
+  //                 SizedBox(
+  //                   height: 30,
+  //                 ),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+  //                   children: [
+  //                     SolhPinkBorderMiniButton(
+  //                       child: Text(
+  //                         'Reject',
+  //                         style: SolhTextStyles.PinkBorderButtonText,
+  //                       ),
+  //                       onPressed: () {
+  //                         globalNavigatorKey.currentState!.pop();
+  //                       },
+  //                     ),
+  //                     SolhGreenMiniButton(
+  //                       child: Text(
+  //                         'Accept',
+  //                         style: SolhTextStyles.GreenButtonText,
+  //                       ),
+  //                       onPressed: () async {
+  //                         Future.delayed(Duration(milliseconds: 500), () {
+  //                           globalNavigatorKey.currentState!.pop();
+  //                           globalNavigatorKey.currentState!.push(
+  //                             MaterialPageRoute(
+  //                                 builder: (context) => VideoCallUser(
+  //                                       sId: result.additionalData!['data']
+  //                                                   ["senderId"] !=
+  //                                               null
+  //                                           ? result.additionalData!['data']
+  //                                               ["senderId"]
+  //                                           : null,
+  //                                       channel: result.additionalData!['data']
+  //                                           ["channelName"],
+  //                                       token: result.additionalData!['data']
+  //                                           ["rtcToken"],
+  //                                       type:
+  //                                           result.additionalData!['callType'],
+  //                                     )),
+  //                           );
+  //                         });
+  //                       },
+  //                     )
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //         );
+  //       });
+  // }
 }
 
 /* // import 'package:awesome_notifications/awesome_notifications.dart';

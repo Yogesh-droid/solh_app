@@ -89,7 +89,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.4.4'
     implementation "androidx.browser:browser:1.2.0"
 
-    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+    // implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "androidx.browser:browser:1.4.0"
     }
