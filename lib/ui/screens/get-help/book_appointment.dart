@@ -330,7 +330,7 @@ class BookAppointmentWidget extends StatelessWidget {
                     },
                   )
                 : SolhGreenButton(
-                    child: Text('Get a call back'),
+                    child: Text('Send request'),
                     onPressed: () async {
                       var value = validator(
                           mobile_no:

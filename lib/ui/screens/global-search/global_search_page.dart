@@ -84,7 +84,9 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                 ? Container(
                     child: Center(
                         child: Text(
-                            'Search for People, Postssomething or groups ...')),
+                      'Search for People, Posts or groups ...',
+                      style: TextStyle(color: Colors.grey),
+                    )),
                   )
                 : globalSearchController
                             .globalSearchModel.value.connection!.isEmpty &&

@@ -73,9 +73,15 @@ class _EmailScreenState extends State<EmailScreen> {
             ),
             InkWell(
               onTap: widget._onNext,
-              child: Text(
-                'Skip',
-                style: SolhTextStyles.GreenBorderButtonText,
+              child: Container(
+                height: 30,
+                width: 90,
+                child: Center(
+                  child: Text(
+                    'Skip',
+                    style: SolhTextStyles.GreenBorderButtonText,
+                  ),
+                ),
               ),
             ),
             SizedBox(
