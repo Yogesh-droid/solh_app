@@ -74,7 +74,8 @@ class _EmailScreenState extends State<EmailScreen> {
             InkWell(
               onTap: widget._onNext,
               child: Container(
-                height: 30,
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                height: 40,
                 width: 90,
                 child: Center(
                   child: Text(
