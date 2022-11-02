@@ -7,6 +7,7 @@ import 'package:solh/ui/screens/notification/controller/notification_controller.
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationScreen extends StatefulWidget {
@@ -201,10 +202,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (item.routeData == 'connection') {
       return Row(
         children: [
-          CircleAvatar(
-            backgroundColor: SolhColors.white,
-            backgroundImage: NetworkImage(item.senderId!.profilePicture!),
-            radius: 30,
+          SimpleImageContainer(
+            imageUrl: item.senderId!.profilePicture!,
+            radius: 60,
           ),
           SizedBox(
             width: 12,
