@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
-class SolhGreenBorderMiniButton extends StatefulWidget {
+class SolhGreenBorderMiniButton extends StatelessWidget {
   SolhGreenBorderMiniButton({
     Key? key,
     this.child,
@@ -29,34 +29,27 @@ class SolhGreenBorderMiniButton extends StatefulWidget {
   final EdgeInsets? margin;
 
   @override
-  _SolhGreenBorderMiniButtonState createState() =>
-      _SolhGreenBorderMiniButtonState();
-}
-
-class _SolhGreenBorderMiniButtonState extends State<SolhGreenBorderMiniButton> {
-  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.onPressed,
+      onTap: onPressed,
       child: Container(
-        alignment: widget.alignment ?? Alignment.center,
-        margin: widget.margin,
-        padding: widget.padding ?? EdgeInsets.zero,
+        alignment: alignment ?? Alignment.center,
+        margin: margin,
+        padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: widget.backgroundColor ?? Colors.transparent,
-          border:
-              widget.border ?? Border.all(color: SolhColors.green, width: 1.0),
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(25),
+          color: backgroundColor ?? Colors.transparent,
+          border: border ?? Border.all(color: SolhColors.green, width: 1.0),
+          borderRadius: borderRadius ?? BorderRadius.circular(25),
         ),
-        height: widget.height ?? MediaQuery.of(context).size.height / 18,
-        width: widget.width ?? MediaQuery.of(context).size.width / 3,
-        child: widget.child,
+        height: height ?? MediaQuery.of(context).size.height / 18,
+        width: width ?? MediaQuery.of(context).size.width / 3,
+        child: child,
       ),
     );
   }
 }
 
-class SolhPinkBorderMiniButton extends StatefulWidget {
+class SolhPinkBorderMiniButton extends StatelessWidget {
   const SolhPinkBorderMiniButton({
     Key? key,
     this.child,
@@ -83,28 +76,21 @@ class SolhPinkBorderMiniButton extends StatefulWidget {
   final EdgeInsets? margin;
 
   @override
-  _SolhPinkBorderMiniButtonState createState() =>
-      _SolhPinkBorderMiniButtonState();
-}
-
-class _SolhPinkBorderMiniButtonState extends State<SolhPinkBorderMiniButton> {
-  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: widget.onPressed,
+      onTap: onPressed,
       child: Container(
-        alignment: widget.alignment ?? Alignment.center,
-        margin: widget.margin,
-        padding: widget.padding ?? EdgeInsets.zero,
+        alignment: alignment ?? Alignment.center,
+        margin: margin,
+        padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: widget.backgroundColor ?? Colors.transparent,
-          border: widget.border ??
-              Border.all(color: SolhColors.pink224, width: 1.0),
-          borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
+          color: backgroundColor ?? Colors.transparent,
+          border: border ?? Border.all(color: SolhColors.pink224, width: 1.0),
+          borderRadius: borderRadius ?? BorderRadius.circular(20),
         ),
-        height: widget.height ?? MediaQuery.of(context).size.height / 18,
-        width: widget.width ?? MediaQuery.of(context).size.width / 3,
-        child: widget.child,
+        height: height ?? MediaQuery.of(context).size.height / 18,
+        width: width ?? MediaQuery.of(context).size.width / 3,
+        child: child,
       ),
     );
   }

@@ -6,3 +6,4 @@ class APIConstants {
   // static const api = "https://staging.solhapp.com";
   static const api = "https://api.solhapp.com";
 }
+ 
