@@ -104,9 +104,32 @@ class _SolhAppState extends State<SolhApp> {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
         title: 'Solh Wellness',
+        
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
+          theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          fontFamily: GoogleFonts.signika().fontFamily,
+          // primaryColor: Color.fromRGBO(95, 155, 140, 1),
+          // primarySwatch: Colors.green,
+          // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+          textButtonTheme: TextButtonThemeData(
+              style: ButtonStyle(
+                  splashFactory: InkRipple.splashFactory,
+                  overlayColor:
+                      MaterialStateProperty.all<Color>(SolhColors.grey),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(SolhColors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40.0),
+                  )),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(SolhColors.green))),
+          inputDecorationTheme: InputDecorationTheme(),
+        ),
+      
       );
 
       /*  return GetMaterialApp.router(

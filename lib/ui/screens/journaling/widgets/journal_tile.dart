@@ -552,10 +552,12 @@ class _JournalTileState extends State<JournalTile> {
                 //         builder: (context) => ConnectProfileScreen(
                 //             uid: widget._journalModel!.postedBy!.uid!,
                 //             sId: widget._journalModel!.postedBy!.sId!)))
-                Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
-                  "uid": widget._journalModel!.postedBy!.uid!,
-                  "sId": widget._journalModel!.postedBy!.sId!
-                })
+                // Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
+                //   "uid": widget._journalModel!.postedBy!.uid!,
+                //   "sId": widget._journalModel!.postedBy!.sId!
+                // })
+                Navigator.pushNamed(context, AppRoutes.connectScreen,
+                    arguments: {})
               }
             : {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

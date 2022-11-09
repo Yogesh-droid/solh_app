@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
+import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/doctor/appointment_page.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
@@ -29,6 +30,7 @@ class AppRoutes {
   ////  user profile related  /////
   ///
   static const String userProfile = '/userProfile';
+  static const String connectScreen = '/connectScreen';
   static const String myProfile = '/myProfile';
   static const String editProfilePage = '/editProfilePage';
   static const String editAnonymousProfile = '/editAnonProfilePage';
@@ -89,6 +91,8 @@ class RouteGenerator {
             builder: ((context) => InviteMembersUI(args: args as Map)));
       case AppRoutes.createProfile:
         return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
+      case AppRoutes.commentScreen:
+        return MaterialPageRoute(builder: ((context) => ConnectScreen2()));
       default:
         return MaterialPageRoute(
             builder: ((context) => Scaffold(
