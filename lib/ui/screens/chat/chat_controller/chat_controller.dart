@@ -34,6 +34,8 @@ class ChatController extends GetxController {
 
   var seenStatus = ''.obs;
 
+  var isTypingEpochTime= 0.obs;
+
   var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/ui/screens/connect/connect_screen_services/connect_screen_services.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -16,6 +17,7 @@ import '../../../widgets_constants/zoom_image.dart';
 import '../chat/chat.dart';
 import '../my-profile/posts/post.dart';
 import '../my-profile/profile/edit-profile.dart';
+import 'connect_sceen_model/connect_screen_model.dart';
 
 class ConnectProfileScreen extends StatefulWidget {
   ConnectProfileScreen(
@@ -41,8 +43,10 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   List recivedConnectionRequest = [];
   OverlayEntry? overlayEntry;
   late OverlayState _overlayState;
+  ConnectScreenServices connectScreenServices= ConnectScreenServices();
   @override
   void initState() {
+    connectScreenServices.getProfileDetails(widget._sId);
     print('UID: ${widget._uid}');
     print('SID: ${widget._sId}');
     getUserAnalyticsFromApi(sid: widget._sId);
@@ -701,6 +705,26 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
 //   }
 // }
 
+
+class MessageButton extends StatelessWidget {
+  const MessageButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+
+class ConnectCancelUnfriendButton extends StatelessWidget {
+  const ConnectCancelUnfriendButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 class TabView extends StatefulWidget {
   const TabView({
     Key? key,
@@ -722,7 +746,7 @@ class _TabViewState extends State<TabView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: 6.h,
+            height: 6.h,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             GestureDetector(

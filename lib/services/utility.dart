@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../widgets_constants/constants/colors.dart';
 
@@ -34,7 +35,7 @@ class Utility {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: MyLoader(),
           );
         });
   }
