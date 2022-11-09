@@ -49,7 +49,7 @@ class AppRouter extends _i10.RootStackRouter {
       final args = routeData.argsAs<MasterScreenRouterArgs>(
           orElse: () => const MasterScreenRouterArgs());
       return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i1.MasterScreen(index: args.index));
+          routeData: routeData, child: _i1.MasterScreen());
     },
     IntroCarouselScreenRouter.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
@@ -68,21 +68,23 @@ class AppRouter extends _i10.RootStackRouter {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i5.OTPScreen(
-              key: args.key,
-              phoneNo: args.phoneNo,
-              verificationId: args.verificationId));
+            key: args.key,
+            args: {},
+            // phoneNo: args.phoneNo,
+            // verificationId: args.verificationId
+          ));
     },
-    ConsultantsScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<ConsultantsScreenRouterArgs>();
-      return _i10.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i6.ConsultantsScreen(
-              key: args.key,
-              page: args.page,
-              count: args.count,
-              slug: args.slug,
-              type: args.type));
-    },
+    // ConsultantsScreenRouter.name: (routeData) {
+    //   final args = routeData.argsAs<ConsultantsScreenRouterArgs>();
+    //   return _i10.MaterialPageX<dynamic>(
+    //       routeData: routeData,
+    //       child: _i6.ConsultantsScreen(
+    //           key: args.key,
+    //           page: args.page,
+    //           count: args.count,
+    //           slug: args.slug,
+    //           type: args.type));
+    // },
     SOSScreenRouter.name: (routeData) {
       final args = routeData.argsAs<SOSScreenRouterArgs>(
           orElse: () => const SOSScreenRouterArgs());
@@ -145,16 +147,16 @@ class AppRouter extends _i10.RootStackRouter {
               map: args.map,
               isPostedFromDiaryDetails: args.isPostedFromDiaryDetails));
     },
-    ConnectScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<ConnectScreenRouterArgs>();
-      return _i10.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i17.ConnectProfileScreen(
-              key: args.key,
-              username: args.username,
-              uid: args.uid,
-              sId: args.sId));
-    },
+    // ConnectScreenRouter.name: (routeData) {
+    //   final args = routeData.argsAs<ConnectScreenRouterArgs>();
+    //   return _i10.MaterialPageX<dynamic>(
+    //       routeData: routeData,
+    //       child: _i17.ConnectProfileScreen(
+    //           key: args.key,
+    //           username: args.username,
+    //           uid: args.uid,
+    //           sId: args.sId));
+    // },
     CommentScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CommentScreenRouterArgs>();
       return _i10.MaterialPageX<dynamic>(
@@ -168,13 +170,13 @@ class AppRouter extends _i10.RootStackRouter {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i19.MyProfileScreen());
     },
-    PostScreenRouter.name: (routeData) {
-      final args = routeData.argsAs<PostScreenRouterArgs>(
-          orElse: () => const PostScreenRouterArgs());
-      return _i10.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i20.PostScreen(key: args.key, sId: args.sId));
-    },
+    // PostScreenRouter.name: (routeData) {
+    //   final args = routeData.argsAs<PostScreenRouterArgs>(
+    //       orElse: () => const PostScreenRouterArgs());
+    //   return _i10.MaterialPageX<dynamic>(
+    //       routeData: routeData,
+    //       child: _i20.PostScreen(key: args.key, sId: args.sId));
+    // },
     SettingsScreenRouter.name: (routeData) {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i21.SettingsScreen());

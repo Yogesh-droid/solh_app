@@ -14,6 +14,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
@@ -398,14 +399,19 @@ class _HomePageState extends State<HomePage> {
                       ),
                       GetHelpDivider(),
                       GetHelpCategory(
-                        title: "Top Consultants",
-                        onPressed: () =>
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => ConsultantsScreen(
-                                      slug: '',
-                                      type: 'topconsultant',
-                                    ))),
-                      ),
+                          title: "Top Consultants",
+                          onPressed: () =>
+                              // Navigator.of(context).push(MaterialPageRoute(
+                              //     builder: (_) => ConsultantsScreen(
+                              //           slug: '',
+                              //           type: 'topconsultant',
+                              //         ))),
+                              Navigator.pushNamed(
+                                  context, AppRoutes.viewAllConsultant,
+                                  arguments: {
+                                    "slug": '',
+                                    "type": 'topconsultant'
+                                  })),
                       Container(
                         height: 17.h,
                         margin: EdgeInsets.only(bottom: 2.h),
@@ -1543,8 +1549,10 @@ Widget getIssueUI(bookAppointmentController, getHelpController, context) {
               title: issue.name ?? '',
               onPressed: () {
                 bookAppointmentController.query = issue.name;
-                AutoRouter.of(context).push(ConsultantsScreenRouter(
-                    slug: issue.slug ?? '', type: 'issue'));
+                // AutoRouter.of(context).push(ConsultantsScreenRouter(
+                //     slug: issue.slug ?? '', type: 'issue'));
+                Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                    arguments: {"slug": issue.slug ?? '', "type": 'issue'});
               },
             );
           }).toList(),

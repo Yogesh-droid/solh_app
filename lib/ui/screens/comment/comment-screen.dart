@@ -26,6 +26,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import '../../../routes/routes.dart';
 import '../connect/connect-screen.dart';
 import '../journaling/widgets/comment_menu_btn.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
@@ -560,12 +561,18 @@ class _CommentScreenState extends State<CommentScreen> {
                 ? {
                     // connectionController.getUserAnalytics(
                     //     widget._journalModel!.postedBy!.sId!),
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ConnectProfileScreen(
-                                uid: widget._journalModel!.postedBy!.uid!,
-                                sId: widget._journalModel!.postedBy!.sId!)))
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => ConnectProfileScreen(
+                    //             uid: widget._journalModel!.postedBy!.uid!,
+                    //             sId: widget._journalModel!.postedBy!.sId!)))
+
+                    Navigator.pushNamed(context, AppRoutes.userProfile,
+                        arguments: {
+                          "uid": widget._journalModel!.postedBy!.uid!,
+                          "sId": widget._journalModel!.postedBy!.sId!
+                        })
                   }
                 : {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1030,13 +1037,13 @@ class CommentBoxWidget extends StatelessWidget {
                                   ..onTap = () {
                                     connectionController.getUserAnalytics(
                                         commentModel.replyTo!.sId!);
-
-                                    AutoRouter.of(context).push(
-                                        ConnectScreenRouter(
-                                            uid:
-                                                commentModel.replyTo!.uid ?? '',
-                                            sId: commentModel.replyTo!.sId ??
-                                                ''));
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.userProfile,
+                                        arguments: {
+                                          "uid":
+                                              commentModel.replyTo!.uid ?? '',
+                                          "sId": commentModel.replyTo!.sId!
+                                        });
                                   },
                               )
                             : TextSpan(),

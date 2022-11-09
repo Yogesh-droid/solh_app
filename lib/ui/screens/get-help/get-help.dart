@@ -12,6 +12,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
@@ -159,10 +160,10 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                     onPressed: () {
                                       bookAppointmentController.query =
                                           issue.name;
-                                      AutoRouter.of(context).push(
-                                          ConsultantsScreenRouter(
-                                              slug: issue.slug ?? '',
-                                              type: 'issue'));
+                                      // AutoRouter.of(context).push(
+                                      //     ConsultantsScreenRouter(
+                                      //         slug: issue.slug ?? '',
+                                      //         type: 'issue'));
                                     },
                                   );
                                 }).toList(),
@@ -200,16 +201,27 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                               .value
                                               .specializationList![index]
                                               .name;
-                                      AutoRouter.of(context).push(
-                                          ConsultantsScreenRouter(
-                                              slug: getHelpController
-                                                      .getSpecializationModel
-                                                      .value
-                                                      .specializationList![
-                                                          index]
-                                                      .slug ??
-                                                  '',
-                                              type: 'specialization'));
+                                      // AutoRouter.of(context).push(
+                                      //     ConsultantsScreenRouter(
+                                      //         slug: getHelpController
+                                      //                 .getSpecializationModel
+                                      //                 .value
+                                      //                 .specializationList![
+                                      //                     index]
+                                      //                 .slug ??
+                                      //             '',
+                                      //         type: 'specialization'));
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.viewAllConsultant,
+                                          arguments: {
+                                            "slug": getHelpController
+                                                    .getSpecializationModel
+                                                    .value
+                                                    .specializationList![index]
+                                                    .slug ??
+                                                '',
+                                            "type": 'specialization'
+                                          });
                                     },
                                     child: Container(
                                       height: 1.h,
@@ -281,14 +293,19 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                             : Container(),
                         GetHelpDivider(),
                         GetHelpCategory(
-                          title: "Top Consultants",
-                          onPressed: () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) => ConsultantsScreen(
-                                        slug: '',
-                                        type: 'topconsultant',
-                                      ))),
-                        ),
+                            title: "Top Consultants",
+                            onPressed: () =>
+                                // Navigator.of(context).push(MaterialPageRoute(
+                                //     builder: (_) => ConsultantsScreen(
+                                //           slug: '',
+                                //           type: 'topconsultant',
+                                //         ))),
+                                Navigator.pushNamed(
+                                    context, AppRoutes.viewAllConsultant,
+                                    arguments: {
+                                      "slug": '',
+                                      "type": 'topconsultant'
+                                    })),
                         Container(
                           height: 17.h,
                           margin: EdgeInsets.only(bottom: 2.h),
@@ -796,11 +813,13 @@ class SolhVolunteers extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (() {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => ConnectProfileScreen(
-                  uid: uid!,
-                  sId: sId ?? '',
-                ))));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: ((context) => ConnectProfileScreen(
+        //           uid: uid!,
+        //           sId: sId ?? '',
+        //         ))));
+        Navigator.pushNamed(context, AppRoutes.userProfile,
+            arguments: {'sId': sId ?? '', 'uid': uid ?? ''});
       }),
       child: Container(
         decoration: BoxDecoration(

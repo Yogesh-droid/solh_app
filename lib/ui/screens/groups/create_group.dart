@@ -11,6 +11,7 @@ import 'package:solh/ui/screens/journaling/create-journal.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/group/create_group_controller.dart';
 import '../../../model/group/get_group_response_model.dart';
+import '../../../routes/routes.dart';
 import '../../../services/network/network.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -333,15 +334,12 @@ class _CreateGroupState extends State<CreateGroup> {
             _groupController.getJoinedGroups();
             _groupController.getCreatedGroups();
             _croppedFile = null;
-            //AutoRouter.of(context).popUntil(((route) => route.isFirst));
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => InviteMembersUI(
-                          groupId: widget.group != null
-                              ? widget.group!.sId
-                              : map['groupDetails']['_id'],
-                        )));
+            Navigator.pushNamed(context, AppRoutes.inviteGroupMemberPage,
+                arguments: {
+                  "groupId": widget.group != null
+                      ? widget.group!.sId
+                      : map['groupDetails']['_id'],
+                });
           }
         }
       },

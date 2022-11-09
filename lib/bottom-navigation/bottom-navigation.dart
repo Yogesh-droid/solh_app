@@ -1,4 +1,173 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/home/homescreen.dart';
+import 'package:solh/ui/screens/journaling/journaling.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import '../controllers/journals/journal_page_controller.dart';
+import '../widgets_constants/constants/textstyles.dart';
+import 'bottom_navigator_controller.dart';
+
+class MasterScreen extends StatelessWidget {
+  final JournalPageController journalPageController =
+      Get.put(JournalPageController());
+  final BottomNavigatorController bottomNavigatorController =
+      Get.put(BottomNavigatorController());
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: () {
+          return _onWillPop(context);
+        },
+        child: Scaffold(
+            appBar: SolhAppBar(title: Container(), isLandingScreen: true),
+            body: Obx(
+              () => IndexedStack(
+                  index: bottomNavigatorController.activeIndex.value,
+                  children: [
+                    HomeScreen(),
+                    Journaling(),
+                    GetHelpScreen(),
+                    MyGoalsScreen(),
+                    MyProfileScreen()
+                  ]),
+            ),
+            // body: Obx(() {
+            //   switch (bottomNavigatorController.activeIndex.value) {
+            //     case 0:
+            //       return HomeScreen();
+            //     case 1:
+            //       return Journaling();
+            //     case 3:
+            //       return GetHelpScreen();
+            //     case 4:
+            //       return MyProfileScreen();
+            //     default:
+            //       return Center(child: Text('Page not found'));
+            //   }
+            // }),
+            bottomNavigationBar: getBottomBar()));
+  }
+
+  Future<bool> _onWillPop(BuildContext context) async {
+    if (bottomNavigatorController.tabrouter!.activeIndex != 0) {
+      bottomNavigatorController.tabrouter!.setActiveIndex(0);
+      return Future.value(false);
+    } else {
+      return await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              actionsPadding: EdgeInsets.all(8.0),
+              content: Text(
+                'Do you really want to exit app ?',
+                style: SolhTextStyles.JournalingDescriptionText,
+              ),
+              actions: [
+                TextButton(
+                    child: Text(
+                      'No',
+                      style: SolhTextStyles.GreenButtonText,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(false);
+                    }),
+                TextButton(
+                    child: Text(
+                      'Yes',
+                      style: SolhTextStyles.GreenButtonText,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(true);
+                    }),
+              ],
+            );
+          });
+    }
+  }
+
+  BottomNavigationBar getBottomBar() {
+    return BottomNavigationBar(
+      currentIndex: 0,
+      enableFeedback: true,
+      type: BottomNavigationBarType.fixed,
+      selectedItemColor: SolhColors.green,
+      showUnselectedLabels: true,
+      unselectedItemColor: SolhColors.grey102,
+      unselectedLabelStyle: TextStyle(height: 1.5),
+      selectedFontSize: 13,
+      unselectedFontSize: 13,
+      onTap: (index) => bottomNavigatorController.activeIndex.value = index,
+      items: [
+        BottomNavigationBarItem(
+            icon: Obx(
+              () => Icon(
+                bottomNavigatorController.activeIndex.value == 0
+                    ? CupertinoIcons.house_fill
+                    : CupertinoIcons.house,
+              ),
+            ),
+            label: "Home"),
+        BottomNavigationBarItem(
+            icon: Obx(
+              () => bottomNavigatorController.activeIndex.value == 1
+                  ? SvgPicture.asset('assets/images/journaling.svg')
+                  : SvgPicture.asset('assets/images/journalling outline.svg',
+                      color: SolhColors.grey102),
+            ),
+            label: "journaling"),
+        userBlocNetwork.getUserType == 'SolhProvider'
+            ? BottomNavigationBarItem(
+                icon: Obx((() => Icon(
+                      CupertinoIcons.calendar_badge_plus,
+                      color: bottomNavigatorController.activeIndex.value == 2
+                          ? SolhColors.green
+                          : SolhColors.grey102,
+                    ))),
+                label: "My Schedule")
+            : BottomNavigationBarItem(
+                icon:
+                    Obx((() => bottomNavigatorController.activeIndex.value == 2
+                        ? SvgPicture.asset("assets/images/get help tab.svg")
+                        : SvgPicture.asset(
+                            "assets/images/get help. outline.svg",
+                            color: Colors.grey.shade600,
+                          ))),
+                label: "Get Help",
+              ),
+        BottomNavigationBarItem(
+            icon: Obx(() => SvgPicture.asset(
+                  'assets/images/groal tab vector.svg',
+                  color: bottomNavigatorController.activeIndex.value == 3
+                      ? SolhColors.green
+                      : Colors.grey.shade600,
+                )),
+            label: "My Goals"),
+        BottomNavigationBarItem(
+            icon: Obx(() => SvgPicture.asset(
+                  'assets/images/profile.svg',
+                  color: bottomNavigatorController.activeIndex.value == 4
+                      ? SolhColors.green
+                      : Colors.grey.shade600,
+                )),
+            label: "My profile")
+      ],
+    );
+  }
+}
+
+
+
+
+
+
+/* import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -174,27 +343,8 @@ class _MasterScreenState extends State<MasterScreen> {
             );
           });
 
-      // print(bottomNavigatorController.tabrouter!.activeIndex);
-      // DateTime now = DateTime.now();
-      // if (backPressedTime == null ||
-      //     now.difference(backPressedTime) > Duration(seconds: 2)) {
-      //   backPressedTime = now;
-      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //     content: Text(
-      //       'Press back button again to exit',
-      //       style: TextStyle(color: Colors.white),
-      //     ),
-      //     backgroundColor: Colors.red,
-      //     elevation: 5,
-      //     duration: Duration(seconds: 2),
-      //     shape: RoundedRectangleBorder(
-      //         borderRadius: BorderRadius.only(
-      //             topLeft: Radius.circular(5), topRight: Radius.circular(5))),
-      //   ));
-      //   return Future.value(false);
-      // } else {
-      //   return Future.value(true);
-      // }
+    
     }
   }
 }
+ */

@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/doctor/appointment_page.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
+import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
@@ -21,6 +23,81 @@ import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
+
+class AppRoutes {
+  ////  user profile related  /////
+  ///
+  static const String userProfile = '/userProfile';
+  static const String myProfile = '/myProfile';
+  static const String editProfilePage = '/editProfilePage';
+  static const String editAnonymousProfile = '/editAnonProfilePage';
+  static const String createProfile = '/createProfile';
+
+  ////  post related  /////
+  static const String commentScreen = '/commentScreen';
+  static const String master = '/';
+  static const String introScreen = '/intro';
+  static const String homeScreen = '/home';
+  static const String journaling = '/journaling';
+  static const String createJournal = '/createJournal';
+  static const String userPostScreen = '/userPostScreen';
+
+  ////    Get help related  ////////
+  ///
+  static const String getHelpPage = '/getHelpPage';
+  static const String appointmentPage = '/appointmentPage';
+  static const String viewAllConsultant = '/viewAllConsultant';
+
+  /// Goal related  ////
+  static const String myGoalScreen = '/myGoalScreen';
+
+  //// Auth related  ////
+  static const String phoneAuthScreen = '/phoneAuthScreen';
+  static const String otpScreen = '/otpScreen';
+
+  /// Group related  ///
+  ///
+  static const String inviteGroupMemberPage = '/inviteGroupMemberPage';
+}
+
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings routeSettings) {
+    final Object? args = routeSettings.arguments;
+
+    switch (routeSettings.name) {
+      case AppRoutes.master:
+        return MaterialPageRoute(builder: ((context) => MasterScreen()));
+      case AppRoutes.introScreen:
+        return MaterialPageRoute(builder: ((context) => IntroCrousel()));
+      case AppRoutes.phoneAuthScreen:
+        return MaterialPageRoute(builder: ((context) => PhoneAuthScreen()));
+      case AppRoutes.otpScreen:
+        return MaterialPageRoute(
+            builder: ((context) => OTPScreen(args: args as Map)));
+      case AppRoutes.userProfile:
+        return MaterialPageRoute(
+            builder: ((context) => ConnectProfileScreen(args: args as Map)));
+      case AppRoutes.userPostScreen:
+        return MaterialPageRoute(
+            builder: ((context) => PostScreen(args: args as Map)));
+      case AppRoutes.viewAllConsultant:
+        return MaterialPageRoute(
+            builder: ((context) => ConsultantsScreen(args: args as Map)));
+      case AppRoutes.inviteGroupMemberPage:
+        return MaterialPageRoute(
+            builder: ((context) => InviteMembersUI(args: args as Map)));
+      case AppRoutes.createProfile:
+        return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
+      default:
+        return MaterialPageRoute(
+            builder: ((context) => Scaffold(
+                  appBar:
+                      SolhAppBar(title: Text('ERROR'), isLandingScreen: false),
+                )));
+    }
+  }
+}
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',

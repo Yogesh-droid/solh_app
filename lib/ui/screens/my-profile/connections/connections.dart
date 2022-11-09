@@ -16,6 +16,7 @@ import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../../../../model/group/get_group_response_model.dart';
+import '../../../../routes/routes.dart';
 import '../../connect/connect-screen.dart';
 import '../../groups/group_detail.dart';
 
@@ -511,16 +512,25 @@ class _ConnectionsState extends State<Connections> {
                     (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConnectProfileScreen(
-                                      uid: connectionController.sentConnections
-                                              .value[index].uId ??
-                                          '',
-                                      sId: connectionController.sentConnections
-                                              .value[index].sId ??
-                                          '')));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ConnectProfileScreen(
+                          //             uid: connectionController.sentConnections
+                          //                     .value[index].uId ??
+                          //                 '',
+                          //             sId: connectionController.sentConnections
+                          //                     .value[index].sId ??
+                          //                 '')));
+                          Navigator.pushNamed(context, AppRoutes.userProfile,
+                              arguments: {
+                                "uid": connectionController
+                                        .sentConnections.value[index].uId ??
+                                    '',
+                                "sId": connectionController
+                                        .sentConnections.value[index].sId ??
+                                    ''
+                              });
                         },
                         child: Container(
                           padding: EdgeInsets.all(10),
@@ -697,20 +707,29 @@ class _ConnectionsState extends State<Connections> {
                     (context, index) {
                       return InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ConnectProfileScreen(
-                                      uid: connectionController
-                                              .receivedConnections
-                                              .value[index]
-                                              .uId ??
-                                          '',
-                                      sId: connectionController
-                                              .receivedConnections
-                                              .value[index]
-                                              .sId ??
-                                          '')));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ConnectProfileScreen(
+                          //             uid: connectionController
+                          //                     .receivedConnections
+                          //                     .value[index]
+                          //                     .uId ??
+                          //                 '',
+                          //             sId: connectionController
+                          //                     .receivedConnections
+                          //                     .value[index]
+                          //                     .sId ??
+                          //                 '')));
+                          Navigator.pushNamed(context, AppRoutes.userProfile,
+                              arguments: {
+                                "uid": connectionController
+                                        .sentConnections.value[index].uId ??
+                                    '',
+                                "sId": connectionController
+                                        .sentConnections.value[index].sId ??
+                                    ''
+                              });
                         },
                         child: Container(
                           padding: EdgeInsets.all(10),
@@ -1134,11 +1153,13 @@ class _ConnectionsState extends State<Connections> {
               connectionController.getUserAnalytics(sId!);
               print(sId);
               print(uid);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ConnectProfileScreen(uid: uid!, sId: sId)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) =>
+              //             ConnectProfileScreen(uid: uid!, sId: sId)));
+              Navigator.pushNamed(context, AppRoutes.userProfile,
+                  arguments: {"uid": uid, "sId": sId});
             }
           : () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

@@ -16,7 +16,9 @@ import '../../../../model/journals/journals_response_model.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 
 class PostScreen extends StatefulWidget {
-  PostScreen({Key? key, this.sId}) : super(key: key);
+  PostScreen({Key? key, Map<dynamic, dynamic>? args})
+      : sId = args!['sId'],
+        super(key: key);
   final String? sId;
 // FirebaseAuth.instance.currentUser!.uid
   @override

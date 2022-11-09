@@ -17,6 +17,7 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
@@ -270,12 +271,17 @@ class _JournalTileState extends State<JournalTile> {
                   ? {
                       // connectionController.getUserAnalytics(
                       //     widget._journalModel!.postedBy!.sId!),
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ConnectProfileScreen(
-                                  uid: widget._journalModel!.postedBy!.uid!,
-                                  sId: widget._journalModel!.postedBy!.sId!)))
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => ConnectProfileScreen(
+                      //             uid: widget._journalModel!.postedBy!.uid!,
+                      //             sId: widget._journalModel!.postedBy!.sId!)))
+                      Navigator.pushNamed(context, AppRoutes.userProfile,
+                          arguments: {
+                            "uid": widget._journalModel!.postedBy!.uid!,
+                            "sId": widget._journalModel!.postedBy!.sId!
+                          })
                     }
                   : {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -540,12 +546,16 @@ class _JournalTileState extends State<JournalTile> {
             ? {
                 // connectionController.getUserAnalytics(
                 //     widget._journalModel!.postedBy!.sId!),
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ConnectProfileScreen(
-                            uid: widget._journalModel!.postedBy!.uid!,
-                            sId: widget._journalModel!.postedBy!.sId!)))
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ConnectProfileScreen(
+                //             uid: widget._journalModel!.postedBy!.uid!,
+                //             sId: widget._journalModel!.postedBy!.sId!)))
+                Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
+                  "uid": widget._journalModel!.postedBy!.uid!,
+                  "sId": widget._journalModel!.postedBy!.sId!
+                })
               }
             : {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -1119,16 +1129,18 @@ class _PostContentWidgetState extends State<PostContentWidget> {
     return item.toString().trim().isNotEmpty && item.toString().trim()[0] == '@'
         ? InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConnectProfileScreen(
-                    username: item.toString().substring(1, item.length),
-                    uid: '',
-                    sId: '',
-                  ),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ConnectProfileScreen(
+              //       username: item.toString().substring(1, item.length),
+              //       uid: '',
+              //       sId: '',
+              //     ),
+              //   ),
+              // );
+              Navigator.pushNamed(context, AppRoutes.userProfile,
+                  arguments: {"uid": '', "sId": ''});
             },
             child: Text(
               item + " ",

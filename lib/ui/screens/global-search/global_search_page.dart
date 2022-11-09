@@ -13,6 +13,7 @@ import 'package:solh/widgets_constants/search/post_tile.dart';
 import 'package:solh/widgets_constants/solh_search.dart';
 import '../../../model/group/get_group_response_model.dart';
 import '../../../model/journals/journals_response_model.dart';
+import '../../../routes/routes.dart';
 import '../comment/comment-screen.dart';
 import '../connect/connect-screen.dart';
 import '../groups/group_detail.dart';
@@ -326,11 +327,13 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
         child: PeopleTile(
           connection: e,
           onTapped: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ConnectProfileScreen(
-                        uid: e.uid ?? '', sId: e.sId ?? '')));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ConnectProfileScreen(
+            //             uid: e.uid ?? '', sId: e.sId ?? '')));
+            Navigator.pushNamed(context, AppRoutes.userProfile,
+                arguments: {"uid": e.uid!, "sId": e.sId!});
           },
         ));
   }

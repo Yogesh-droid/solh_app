@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../routes/routes.gr.dart';
@@ -19,10 +20,9 @@ import '../../../services/user/session-cookie.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
 class OTPScreen extends StatefulWidget {
-  const OTPScreen(
-      {Key? key, required String phoneNo, required String verificationId})
-      : _phoneNo = phoneNo,
-        _verificationId = verificationId,
+  OTPScreen({Key? key, required Map<dynamic, dynamic> args})
+      : _phoneNo = args['phoneNo'],
+        _verificationId = args['verificationId'],
         super(key: key);
   final String _phoneNo;
   final String _verificationId;
@@ -131,12 +131,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           "^" * 30);
 
                       isProfileCreated
-                          ? AutoRouter.of(context).pushAndPopUntil(
-                              MasterScreenRouter(),
-                              predicate: (value) => false)
-                          : AutoRouter.of(context).pushAndPopUntil(
-                              CreateProfileScreenRouter(),
-                              predicate: (value) => false);
+                          ? Navigator.pushNamed(context, AppRoutes.master)
+                          : Navigator.pushNamed(
+                              context, AppRoutes.createProfile);
                     }).onError((error, stackTrace) {
                       isLoading = false;
                       ScaffoldMessenger.of(context).showSnackBar(

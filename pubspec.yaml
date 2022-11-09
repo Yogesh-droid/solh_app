@@ -2,7 +2,7 @@ name: solh
 description: Solh App by OMLogic
 
 
-version: 1.0.10+55
+version: 1.0.11+56
 
 
 environment:
@@ -78,11 +78,8 @@ flutter:
     - assets/icons/profile-setup/
     - assets/icons/journaling/
     - assets/icons/bottom-navigation-bar/
-    - assets/icons/comment-screen/
     - assets/images/logo/
     - assets/images/
     - assets/icons/group/
-    - assets/images/journal-demo/
-    - assets/icons/consultants/
     - assets/intro/png/
 

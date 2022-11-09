@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -18,11 +19,10 @@ import '../my-profile/posts/post.dart';
 import '../my-profile/profile/edit-profile.dart';
 
 class ConnectProfileScreen extends StatefulWidget {
-  ConnectProfileScreen(
-      {Key? key, String? username, required String uid, required String sId})
-      : _username = username,
-        _uid = uid,
-        _sId = sId,
+  ConnectProfileScreen({Key? key, Map<dynamic, dynamic>? args})
+      : _username = args != null ? args['username'] : null,
+        _uid = args != null ? args['uid'] : null,
+        _sId = args != null ? args['sId'] : null,
         super(key: key);
 
   final String? _username;
@@ -729,16 +729,8 @@ class _TabViewState extends State<TabView> {
               onTap: () {
                 print("Tab 1");
                 print(widget.sId);
-                // AutoRouter.of(context).push(PostScreenRouter(
-                //     sId: FirebaseAuth.instance.currentUser!.uid));
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PostScreen(
-                      sId: widget.sId,
-                    ),
-                  ),
-                );
+                Navigator.pushNamed(context, AppRoutes.userProfile,
+                    arguments: {'sId': widget.sId});
               },
               child: Text(
                 "Posts",

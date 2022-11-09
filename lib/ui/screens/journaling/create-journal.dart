@@ -748,7 +748,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     File(_xFile!.path).lengthSync()),
                                 // File(_xFile!.path).lengthSync() > 600000
                                 //     ? 20
-                                //     : 100, 
+                                //     : 100,
                                 uiSettings: [
                                   AndroidUiSettings(
                                       toolbarTitle: 'Edit',

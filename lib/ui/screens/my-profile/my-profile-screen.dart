@@ -14,6 +14,7 @@ import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/user/user.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -152,8 +153,10 @@ class ProfileMenu extends StatelessWidget {
           ProfileMenuTile(
             title: "Posts",
             onPressed: () {
-              AutoRouter.of(context)
-                  .push(PostScreenRouter(sId: userBlocNetwork.id));
+              // AutoRouter.of(context)
+              //     .push(PostScreenRouter(sId: userBlocNetwork.id));
+              Navigator.pushNamed(context, AppRoutes.userPostScreen,
+                  arguments: {"sId": userBlocNetwork.id});
             },
             svgIconPath: "assets/icons/profile/posts.svg",
           ),
@@ -472,10 +475,14 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PostScreen(
-                              sId: widget._userModel!.sId!,
-                            )));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => PostScreen(
+                    //           sId: widget._userModel!.sId!,
+                    //         )));
+                    Navigator.pushNamed(context, AppRoutes.userPostScreen,
+                        arguments: {
+                          "sId": widget._userModel!.sId!,
+                        });
                   },
                   child: Column(
                     children: [

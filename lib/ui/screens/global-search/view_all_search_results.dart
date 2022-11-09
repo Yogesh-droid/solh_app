@@ -5,6 +5,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../model/group/get_group_response_model.dart';
 import '../../../model/journals/journals_response_model.dart';
+import '../../../routes/routes.dart';
 import '../../../widgets_constants/group_card.dart';
 import '../../../widgets_constants/search/people_tile.dart';
 import '../../../widgets_constants/search/post_tile.dart';
@@ -85,12 +86,16 @@ class ViewAllSearchResults extends StatelessWidget {
             child: PeopleTile(
               connection: connection[index],
               onTapped: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ConnectProfileScreen(
-                            uid: connection[index].uid ?? '',
-                            sId: connection[index].sId ?? '')));
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => ConnectProfileScreen(
+                //             uid: connection[index].uid ?? '',
+                //             sId: connection[index].sId ?? '')));
+                Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
+                  "uid": connection[index].uid!,
+                  "sId": connection[index]..sId!
+                });
               },
             )));
   }

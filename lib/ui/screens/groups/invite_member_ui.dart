@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/my_connection_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -12,7 +13,11 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../controllers/group/create_group_controller.dart';
 
 class InviteMembersUI extends StatelessWidget {
-  InviteMembersUI({Key? key, required this.groupId}) : super(key: key);
+  InviteMembersUI({
+    Key? key,
+    required Map<dynamic, dynamic>? args,
+  })  : groupId = args!['groupId'],
+        super(key: key);
   final String groupId;
   final CreateGroupController controller = Get.find();
   final ConnectionController connectionController = Get.find();
@@ -55,7 +60,9 @@ class InviteMembersUI extends StatelessWidget {
           Text('Invite Members', style: SolhTextStyles.JournalingUsernameText),
           MaterialButton(
               onPressed: () {
-                AutoRouter.of(context).popUntil(((route) => route.isFirst));
+                //AutoRouter.of(context).popUntil(((route) => route.isFirst));
+                Navigator.popUntil(context,
+                    (route) => route.settings.name == AppRoutes.master);
               },
               child: Text(
                 'Skip',

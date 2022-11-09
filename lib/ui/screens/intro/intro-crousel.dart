@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -82,7 +83,7 @@ people & mental healthcare professionals.''',
                     )),
                 SkipButton(
                   onPressed: () {
-                    AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                    Navigator.pushNamed(context, AppRoutes.phoneAuthScreen);
                   },
                 )
               ])
@@ -91,7 +92,7 @@ people & mental healthcare professionals.''',
                   alignment: Alignment.topRight,
                   child: SkipButton(
                     onPressed: () {
-                      AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                      Navigator.pushNamed(context, AppRoutes.phoneAuthScreen);
                     },
                   )),
             Expanded(
@@ -122,7 +123,7 @@ people & mental healthcare professionals.''',
                     isOnLast: _currentPage == 3,
                     onPressed: () async {
                       if (_currentPage == 3)
-                        AutoRouter.of(context).push(PhoneAuthScreenRouter());
+                        Navigator.pushNamed(context, AppRoutes.phoneAuthScreen);
                       else
                         await _animatePageToForward();
                     },

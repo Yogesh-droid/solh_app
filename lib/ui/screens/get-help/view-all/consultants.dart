@@ -15,14 +15,11 @@ import '../../../../controllers/getHelp/get_help_controller.dart';
 import '../consultant_tile.dart';
 
 class ConsultantsScreen extends StatefulWidget {
-  ConsultantsScreen(
-      {Key? key, int? page, int? count, required this.slug, this.type})
-      : _page = page,
-        _count = count,
+  ConsultantsScreen({Key? key, Map<dynamic, dynamic>? args})
+      : type = args!['type'],
+        slug = args['slug'],
         super(key: key);
 
-  int? _page;
-  int? _count;
   final String slug;
   final String? type;
   @override
@@ -56,7 +53,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   }
 
   void _onRefresh() async {
-    await doctorsBlocNetwork.getDoctorsSnapshot(widget._page);
+    await doctorsBlocNetwork.getDoctorsSnapshot(1);
     _refreshController.refreshCompleted();
   }
 

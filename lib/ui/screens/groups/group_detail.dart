@@ -13,6 +13,7 @@ import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -473,12 +474,17 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ConnectProfileScreen(
-                              uid: groupList.groupMembers![index].uid!,
-                              sId: groupList.groupMembers![index].sId!)));
+                  Navigator.pushNamed(context, AppRoutes.userProfile,
+                      arguments: {
+                        "uid": groupList.groupMembers![index].uid!,
+                        "sId": groupList.groupMembers![index].sId!
+                      });
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => ConnectProfileScreen(
+                  //             uid: groupList.groupMembers![index].uid!,
+                  //             sId: groupList.groupMembers![index].sId!)));
                 },
                 child: Row(
                   children: [
@@ -530,11 +536,15 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => ConnectProfileScreen(
-                          uid: defaultAdmin.uid!, sId: defaultAdmin.sId!)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) => ConnectProfileScreen(
+              //             uid: defaultAdmin.uid!, sId: defaultAdmin.sId!)));
+              Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
+                "uid": defaultAdmin.uid!,
+                "sId": defaultAdmin.sId!
+              });
             },
             child: Column(
               children: [

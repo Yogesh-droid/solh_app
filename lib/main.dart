@@ -4,11 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'bottom-navigation/bottom_navigator_controller.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
+import 'controllers/goal-setting/goal_setting_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'controllers/profile/appointment_controller.dart';
 import 'firebase_options.dart';
@@ -34,17 +38,7 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-
-  await FirebaseAnalytics.instance.logBeginCheckout(
-      value: 10.0,
-      currency: 'USD',
-      items: [
-        AnalyticsEventItem(itemName: 'abc', itemId: 'xjw73ndnw', price: 10.0),
-      ],
-      coupon: '10PERCENTOFF');
-  // await FirebaseAnalytics.instance.logLogin(
-  //     loginMethod: 'Phone', callOptions: AnalyticsCallOptions(global: true));
-
+  await FirebaseAnalytics.instance.logBeginCheckout();
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
 
@@ -76,6 +70,8 @@ void initControllers() {
   PsychologyTestController psychologyTestController =
       Get.put(PsychologyTestController());
   final ChatListController chatListController = Get.put(ChatListController());
+  GoalSettingController goalSettingController =
+      Get.put(GoalSettingController());
 }
 
 /// app ////
@@ -95,8 +91,6 @@ class SolhApp extends StatefulWidget {
 
 class _SolhAppState extends State<SolhApp> {
   final _appRouter = AppRouter(globalNavigatorKey);
-  String channelName = '';
-  String channelToken = '';
 
   @override
   void initState() {
@@ -108,10 +102,14 @@ class _SolhAppState extends State<SolhApp> {
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
-      return GetMaterialApp.router(
-        supportedLocales: [
-          Locale("en"),
-        ],
+      return MaterialApp(
+        title: 'Solh Wellness',
+        initialRoute:
+            widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
+        onGenerateRoute: RouteGenerator.generateRoute,
+      );
+
+      /*  return GetMaterialApp.router(
         localizationsDelegates: [CountryLocalizations.delegate],
         routerDelegate: _appRouter.delegate(
             initialDeepLink: widget._isProfileCreated
@@ -121,9 +119,9 @@ class _SolhAppState extends State<SolhApp> {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,
-          primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          primarySwatch: Colors.green,
-          buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+          // primaryColor: Color.fromRGBO(95, 155, 140, 1),
+          // primarySwatch: Colors.green,
+          // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
                   splashFactory: InkRipple.splashFactory,
@@ -139,38 +137,7 @@ class _SolhAppState extends State<SolhApp> {
                       MaterialStateProperty.all<Color>(SolhColors.green))),
           inputDecorationTheme: InputDecorationTheme(),
         ),
-      );
-    });
-  }
-
-  void initDynamicLinks() async {
-    final PendingDynamicLinkData? data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-    print(data.toString() + '   This is data');
-    print(data!.link.data.toString() + '   This is data');
-    print(data.link.query.toString() + '   This is data');
-    print(data.link.queryParameters.toString() + '   This is data');
-    print(data.utmParameters.toString() + '   This is data');
-    final Uri? deepLink = data.link;
-
-    if (deepLink != null) {
-      print(deepLink.path);
-      print(deepLink);
-      print(deepLink.data);
-      // Utility.showToast(data!.link.query);
-      // Navigator.pushNamed(context, deepLink.path);
-    }
-
-    FirebaseDynamicLinks.instance.onLink.listen((event) {
-      // Utility.showToast(data!.link.query);
-      print(deepLink.toString() + ' This is link');
-      print(deepLink!.path + ' This is link');
-      print(deepLink.data.toString() + ' This is link');
-      print('${data.utmParameters}' + '   This is UTM');
-
-      // Navigator.pushNamed(context, event.link.path);
-    }).onError((error) {
-      print(error.message);
+      ); */
     });
   }
 }
