@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/typing_indicator.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
@@ -78,14 +80,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    _controller.istyping.value == true
+                     _controller.istyping==true
                         ? Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Text(
-                              'Typing....',
-                              style: TextStyle(color: Colors.grey),
-                            ),
+                                horizontal: 0, vertical: 10),
+                            child:TypingIndicator(),
                           )
                         : Container()
                   ],
@@ -272,11 +271,17 @@ class MessageBox extends StatelessWidget {
             Expanded(
               child: TextField(
                 onChanged: ((value) {
+
                   SocketService.typing(
                       _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                      _controller.isTypingEpochTime.value=DateTime.now().millisecondsSinceEpoch;
+
                   Future.delayed(Duration(seconds: 2), (() {
-                    SocketService.notTyping(
+                    if(DateTime.now().millisecondsSinceEpoch-_controller.isTypingEpochTime.value>=2000){
+                      SocketService.notTyping(
                         _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                    }
+                    
                   }));
                 }),
                 controller: _controller.messageEditingController,
@@ -339,7 +344,7 @@ class _MessageListState extends State<MessageList> {
       return _controller.isLoading == true
           ? Column(
               children: [
-                CircularProgressIndicator(),
+                MyLoader(),
               ],
             )
           : Align(

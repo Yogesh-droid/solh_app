@@ -17,6 +17,8 @@ import '../../../widgets_constants/zoom_image.dart';
 import '../chat/chat.dart';
 import '../my-profile/posts/post.dart';
 import '../my-profile/profile/edit-profile.dart';
+import 'connect_sceen_model/connect_screen_model.dart';
+import 'connect_screen_services/connect_screen_services.dart';
 
 class ConnectProfileScreen extends StatefulWidget {
   ConnectProfileScreen({Key? key, Map<dynamic, dynamic>? args})
@@ -41,8 +43,10 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   List recivedConnectionRequest = [];
   OverlayEntry? overlayEntry;
   late OverlayState _overlayState;
+  ConnectScreenServices connectScreenServices = ConnectScreenServices();
   @override
   void initState() {
+    connectScreenServices.getProfileDetails(widget._sId);
     print('UID: ${widget._uid}');
     print('SID: ${widget._sId}');
     getUserAnalyticsFromApi(sid: widget._sId);
@@ -700,6 +704,24 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
 //     );
 //   }
 // }
+
+class MessageButton extends StatelessWidget {
+  const MessageButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+class ConnectCancelUnfriendButton extends StatelessWidget {
+  const ConnectCancelUnfriendButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
 
 class TabView extends StatefulWidget {
   const TabView({

@@ -39,7 +39,7 @@ class FetchingAvalableConsultantsDialog extends StatelessWidget {
               radius: 26,
               child: MyLoader(
                 strokeWidth: 2.5,
-                backgroundColor: Colors.white,
+                
               ),
             ),
           ],

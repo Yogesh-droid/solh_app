@@ -9,7 +9,12 @@ class SolhColors {
       Color.fromRGBO(95, 155, 140, 1); //Figma Primary Green
 
   static const Color green228 =
-      Color.fromRGBO(228, 255, 248, 1); //Figma Light Green
+      Color.fromRGBO(228, 255, 248, 1);
+  static const Color greenShade1 =
+      Color.fromRGBO(127,175,163,1); 
+  static const Color greenShade2 =
+      Color.fromRGBO(159,195,186,1);   //Figma Light Green
+
 
 //Pink Shades
 

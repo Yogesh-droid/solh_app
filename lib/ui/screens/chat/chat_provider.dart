@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
@@ -410,7 +411,7 @@ class _MessageListProviderState extends State<MessageListProvider> {
       return _controller.isLoading == true
           ? Column(
               children: [
-                CircularProgressIndicator(),
+               MyLoader(),
               ],
             )
           : Align(

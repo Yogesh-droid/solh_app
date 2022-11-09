@@ -59,6 +59,7 @@ dependencies:
   firebase_dynamic_links: ^4.3.10
   youtube_player_iframe: ^3.1.0
   onesignal_flutter: ^3.4.2
+  gradient_progress_indicator: ^1.0.0+5
 
 
   #alt_sms_autofill: ^1.0.0
