@@ -13,12 +13,6 @@ class ConnectScreenServices {
           '${APIConstants.api}/api/user/v1/user-profile/$sId');
 
       return ConnectScreenModel.fromJson(response);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
+    } catch (e) {}
   }
-
-  checkIfAlreadyInConnection() {}
-
-  checkIfAlreadyInSendConnection() {}
 }
