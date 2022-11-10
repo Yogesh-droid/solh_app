@@ -7,5 +7,7 @@ class ConnectScreenController extends GetxController {
   var isConnectScreenDataLoading = false.obs;
   var connectScreenModel = ConnectScreenModel().obs;
 
-  void getProfileDetailsController() {}
+  void getProfileDetailsController() {
+    isConnectScreenDataLoading(true);
+  }
 }

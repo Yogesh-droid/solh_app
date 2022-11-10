@@ -52,11 +52,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
     });
   }
 
-  void _onRefresh() async {
-    await doctorsBlocNetwork.getDoctorsSnapshot(1);
-    _refreshController.refreshCompleted();
-  }
-
   late ScrollController _doctorsScrollController;
   late RefreshController _refreshController;
 

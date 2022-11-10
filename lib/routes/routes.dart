@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
+import 'package:solh/services/errors/not_found.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
@@ -61,6 +63,11 @@ class AppRoutes {
   /// Group related  ///
   ///
   static const String inviteGroupMemberPage = '/inviteGroupMemberPage';
+
+  /// errors  //////////
+  ///
+  static const String noInternetPage = '/noInternetPage';
+  static const String notFoundPage = '/notFoundPage';
 }
 
 class RouteGenerator {

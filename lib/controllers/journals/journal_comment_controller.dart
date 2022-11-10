@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
+import 'package:solh/services/network/exceptions.dart';
 import '../../constants/api.dart';
 import '../../services/network/error_handling.dart';
 import '../../services/network/network.dart';
@@ -19,6 +20,7 @@ class JournalCommentController extends GetxController {
   int pageNo = 1;
   int endPage = 1;
   var isReportingPost = false.obs;
+  var getJournalcommentStatus = 0;
 
   Future<void> getJournalComment(
       {required String postId, required int pageNo}) async {
@@ -27,8 +29,10 @@ class JournalCommentController extends GetxController {
       Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
           "${APIConstants.api}/api/get-parent?journal=$postId&page=$pageNo");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
-    } on Exception catch (e) {
-      ErrorHandler.handleException(e.toString());
+      getJournalcommentStatus = 0;
+    } on Exceptions catch (e) {
+      print(e.getStatus());
+      getJournalcommentStatus = e.getStatus();
     }
 
     /// repliesList is list<Map<List<comments,bool>>> where bool is false by default initially as all list is hidden,
@@ -139,7 +143,9 @@ class JournalCommentController extends GetxController {
   }
 
   Future<bool> reportPost(
-      {required String journalId, required String reason,required String type}) async {
+      {required String journalId,
+      required String reason,
+      required String type}) async {
     isReportingPost.value = true;
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/reportpost",
