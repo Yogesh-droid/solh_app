@@ -96,8 +96,6 @@ class SolhPinkBorderMiniButton extends StatelessWidget {
   }
 }
 
-
-
 class SolhGreenMiniButton extends StatelessWidget {
   const SolhGreenMiniButton({
     Key? key,
@@ -138,7 +136,7 @@ class SolhGreenMiniButton extends StatelessWidget {
           borderRadius: borderRadius ?? BorderRadius.circular(20),
         ),
         height: height ?? MediaQuery.of(context).size.height / 18,
-        width:width ?? MediaQuery.of(context).size.width / 3,
+        width: width ?? MediaQuery.of(context).size.width / 3,
         child: child,
       ),
     );
@@ -146,7 +144,7 @@ class SolhGreenMiniButton extends StatelessWidget {
 }
 
 class SolhPinkMiniButton extends StatelessWidget {
-    const SolhPinkMiniButton({
+  const SolhPinkMiniButton({
     Key? key,
     this.child,
     this.onPressed,
@@ -191,8 +189,9 @@ class SolhPinkMiniButton extends StatelessWidget {
     );
   }
 }
+
 class SolhGreenButton extends StatelessWidget {
-   const SolhGreenButton({
+  const SolhGreenButton({
     Key? key,
     required this.child,
     this.onPressed,
@@ -220,7 +219,7 @@ class SolhGreenButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height:height ?? 5.h,
+      height: height ?? 5.h,
       width: width ?? double.infinity,
       child: TextButton(
         style: ButtonStyle(
@@ -231,7 +230,7 @@ class SolhGreenButton extends StatelessWidget {
           )),
         ),
         onPressed: onPressed,
-        child: Container(alignment: Alignment.center, child:child),
+        child: Container(alignment: Alignment.center, child: child),
       ),
     );
   }
@@ -285,5 +284,3 @@ class SolhGreenBorderButton extends StatelessWidget {
     );
   }
 }
-
-

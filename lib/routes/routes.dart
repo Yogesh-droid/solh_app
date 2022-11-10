@@ -91,7 +91,7 @@ class RouteGenerator {
             builder: ((context) => InviteMembersUI(args: args as Map)));
       case AppRoutes.createProfile:
         return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
-      case AppRoutes.commentScreen:
+      case AppRoutes.connectScreen:
         return MaterialPageRoute(builder: ((context) => ConnectScreen2()));
       default:
         return MaterialPageRoute(

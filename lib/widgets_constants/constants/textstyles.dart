@@ -33,6 +33,13 @@ class SolhTextStyles {
     height: 1.23, //Figma Line Height 17.25
   );
 
+  static const TextStyle LargeNameText = TextStyle(
+    fontSize: 20,
+    color: SolhColors.black34,
+    fontWeight: FontWeight.w400,
+    height: 1.23, //Figma Line Height 17.25
+  );
+
   static const TextStyle LandingButtonHeaderText = TextStyle(
     fontSize: 14,
     color: SolhColors.grey102,

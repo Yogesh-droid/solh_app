@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class SimpleImageContainer extends StatelessWidget {
   SimpleImageContainer(
@@ -35,9 +36,7 @@ class SimpleImageContainer extends StatelessWidget {
           imageUrl: imageUrl,
           color: SolhColors.grey,
           placeholder: (_, k) {
-            return const CircularProgressIndicator(
-              strokeWidth: 1,
-            );
+            return MyLoader();
           },
           imageBuilder: (context, imageProvider) => Container(
             width: radius,
