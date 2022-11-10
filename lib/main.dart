@@ -1,31 +1,26 @@
-import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get/get.dart';
+import 'package:sizer/sizer.dart' as sizer;
 import 'package:solh/controllers/getHelp/book_appointment.dart';
-import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'bottom-navigation/bottom_navigator_controller.dart';
+
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/goal-setting/goal_setting_controller.dart';
 import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'controllers/profile/appointment_controller.dart';
 import 'firebase_options.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sizer/sizer.dart' as sizer;
-import 'package:solh/controllers/profile/age_controller.dart';
-import 'package:solh/init-app.dart';
-import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
     GlobalKey<NavigatorState>();
@@ -103,6 +98,7 @@ class _SolhAppState extends State<SolhApp> {
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
+        navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,

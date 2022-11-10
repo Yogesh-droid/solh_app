@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -13,7 +12,6 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import '../../../bloc/user-bloc.dart';
-import '../../../routes/routes.gr.dart';
 import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 import '../../../services/user/session-cookie.dart';
