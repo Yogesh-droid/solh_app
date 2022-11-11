@@ -286,7 +286,7 @@ class _JournalTileState extends State<JournalTile> {
                       Navigator.pushNamed(context, AppRoutes.connectScreen,
                           arguments: {
                             // "uid": widget._journalModel!.postedBy!.uid!,
-                            // "sId": widget._journalModel!.postedBy!.sId!
+                            "sId": widget._journalModel!.postedBy!.sId!
                           })
                     }
                   : {
@@ -563,7 +563,7 @@ class _JournalTileState extends State<JournalTile> {
                 //   "sId": widget._journalModel!.postedBy!.sId!
                 // })
                 Navigator.pushNamed(context, AppRoutes.connectScreen,
-                    arguments: {})
+                    arguments: {"sId": widget._journalModel!.postedBy!.sId!})
               }
             : {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(

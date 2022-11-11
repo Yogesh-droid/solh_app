@@ -99,7 +99,8 @@ class RouteGenerator {
       case AppRoutes.createProfile:
         return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
       case AppRoutes.connectScreen:
-        return MaterialPageRoute(builder: ((context) => ConnectScreen2()));
+        return MaterialPageRoute(
+            builder: ((context) => ConnectScreen2(args: args as Map)));
       default:
         return MaterialPageRoute(
             builder: ((context) => Scaffold(

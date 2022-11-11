@@ -43,7 +43,7 @@ class SimpleImageContainer extends StatelessWidget {
             height: radius,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
             ),
           ),
         ),
