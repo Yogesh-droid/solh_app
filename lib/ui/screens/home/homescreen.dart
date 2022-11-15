@@ -179,7 +179,6 @@ class _HomePageState extends State<HomePage> {
           child: Stack(
             children: [
               Scaffold(
-                appBar: getAppBar(),
                 body: UpgradeAlert(
                   upgrader: Upgrader(
                       showIgnore: false,
@@ -520,9 +519,7 @@ class _HomePageState extends State<HomePage> {
             decoration: BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
                 _bottomNavigatorController.isDrawerOpen.value = true;
-                print("opened");
               },
               child: Container(
                 decoration: BoxDecoration(shape: BoxShape.circle),

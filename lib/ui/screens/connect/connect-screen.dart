@@ -472,22 +472,36 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                   setState(() {});
 
                                   widget.isMyConnection
-                                      ? Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ChatScreen(
-                                                    name: userProfileSnapshot
-                                                            .requireData
-                                                            .firstName ??
-                                                        '',
-                                                    imageUrl: userProfileSnapshot
-                                                            .requireData
-                                                            .profilePicture ??
-                                                        '',
-                                                    sId: userProfileSnapshot
-                                                            .requireData.sId ??
-                                                        '',
-                                                  )))
+                                      // ? Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) => ChatScreen(
+                                      //               name: userProfileSnapshot
+                                      //                       .requireData
+                                      //                       .firstName ??
+                                      //                   '',
+                                      //               imageUrl: userProfileSnapshot
+                                      //                       .requireData
+                                      //                       .profilePicture ??
+                                      //                   '',
+                                      //               sId: userProfileSnapshot
+                                      //                       .requireData.sId ??
+                                      //                   '',
+                                      //             )))
+                                      ? Navigator.pushNamed(
+                                          context, AppRoutes.chatUser,
+                                          arguments: {
+                                              "name": userProfileSnapshot
+                                                      .requireData.firstName ??
+                                                  '',
+                                              "imageUrl": userProfileSnapshot
+                                                      .requireData
+                                                      .profilePicture ??
+                                                  '',
+                                              "sId": userProfileSnapshot
+                                                      .requireData.sId ??
+                                                  '',
+                                            })
                                       : (checkIfAlreadyInSendConnection(
                                               widget._sId)
                                           ? await connectionController

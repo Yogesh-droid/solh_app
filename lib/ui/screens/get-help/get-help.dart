@@ -88,7 +88,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             child: Stack(
               children: [
                 Scaffold(
-                  appBar: getAppBar(),
                   body: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,

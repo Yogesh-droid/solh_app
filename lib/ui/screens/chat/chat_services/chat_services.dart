@@ -1,17 +1,19 @@
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/network/networkV2.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 
 class ChatServices {
   Future getChat(userId) async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+    Map<String, dynamic> map = await NetworkV2.makeHttpGetRequestWithTokenV2(
             APIConstants.api + '/api/chat?connection=' + userId)
         .onError((error, stackTrace) {
       print(error);
       return {};
     });
-    print(map);
+    print('message' + map.toString());
     if (map.isNotEmpty) {
+      print('it ran');
       return MessageModel.fromJson(map);
     }
   }

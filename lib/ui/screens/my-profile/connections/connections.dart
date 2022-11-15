@@ -21,7 +21,9 @@ import '../../connect/connect-screen.dart';
 import '../../groups/group_detail.dart';
 
 class Connections extends StatefulWidget {
-  Connections({Key? key}) : super(key: key);
+  Connections({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Connections> createState() => _ConnectionsState();
@@ -165,23 +167,35 @@ class _ConnectionsState extends State<Connections> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                      name: chatListController.chatList
-                                              .value[index].user!.name ??
-                                          '',
-                                      imageUrl: chatListController
-                                              .chatList
-                                              .value[index]
-                                              .user!
-                                              .profilePicture ??
-                                          '',
-                                      sId: chatListController.chatList
-                                              .value[index].user!.sId ??
-                                          '',
-                                    )));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ChatScreen(
+                        //               name: chatListController.chatList
+                        //                       .value[index].user!.name ??
+                        //                   '',
+                        //               imageUrl: chatListController
+                        //                       .chatList
+                        //                       .value[index]
+                        //                       .user!
+                        //                       .profilePicture ??
+                        //                   '',
+                        //               sId: chatListController.chatList
+                        //                       .value[index].user!.sId ??
+                        //                   '',
+                        //             )));
+                        Navigator.pushNamed(context, AppRoutes.chatUser,
+                            arguments: {
+                              "name": chatListController
+                                      .chatList.value[index].user!.name ??
+                                  '',
+                              "imageUrl": chatListController.chatList
+                                      .value[index].user!.profilePicture ??
+                                  '',
+                              "sId": chatListController.chatList.value[index]
+                                      .user!.profilePicture ??
+                                  '',
+                            });
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -389,37 +403,22 @@ class _ConnectionsState extends State<Connections> {
                   itemBuilder: (context, index) {
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                      name: connectionController
-                                              .myConnectionModel
-                                              .value
-                                              .myConnections![index]
-                                              .name ??
-                                          '',
-                                      imageUrl: connectionController
-                                              .myConnectionModel
-                                              .value
-                                              .myConnections![index]
-                                              .profilePicture ??
-                                          '',
-                                      sId: connectionController
-                                              .myConnectionModel
-                                              .value
-                                              .myConnections![index]
-                                              .sId ??
-                                          '',
-                                    )
-                                // ConnectProfileScreen(
-                                //     uid: connectionController.myConnectionModel
-                                //             .value.myConnections![index].uId ??
-                                //         '',
-                                //     sId: connectionController.myConnectionModel
-                                //             .value.myConnections![index].sId ??
-                                //         '')
-                                ));
+                        Navigator.pushNamed(context, AppRoutes.chatUser,
+                            arguments: {
+                              "name": connectionController.myConnectionModel
+                                      .value.myConnections![index].name ??
+                                  '',
+                              "imageUrl": connectionController
+                                      .myConnectionModel
+                                      .value
+                                      .myConnections![index]
+                                      .profilePicture ??
+                                  '',
+                              "sId": connectionController.myConnectionModel
+                                      .value.myConnections![index].sId ??
+                                  '',
+                            });
+                        ;
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),
@@ -1158,8 +1157,8 @@ class _ConnectionsState extends State<Connections> {
               //     MaterialPageRoute(
               //         builder: (context) =>
               //             ConnectProfileScreen(uid: uid!, sId: sId)));
-              Navigator.pushNamed(context, AppRoutes.userProfile,
-                  arguments: {"uid": uid, "sId": sId});
+              Navigator.pushNamed(context, AppRoutes.connectScreen,
+                  arguments: {"sId": sId});
             }
           : () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

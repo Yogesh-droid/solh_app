@@ -74,12 +74,12 @@ class WhatsOnYourMindSection extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: 4.w,
                   ),
-                  onPressed: () {
-                    bottomNavigatorController.tabrouter!.setActiveIndex(1);
-                    Navigator.push(
+                  onPressed: () async {
+                    await Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreatePostScreen()));
+                    bottomNavigatorController.activeIndex.value = 1;
                   },
                   //AutoRouter.of(context).push(CreatePostScreenRouter()),
                   child: Obx(() {

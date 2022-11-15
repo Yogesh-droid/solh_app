@@ -75,22 +75,25 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.isPostedFromDiaryDetails == null) {
-      journalPageController.selectedDiary.value = Journals();
-      _customFeelingController.clear();
-      feelingsController.selectedFeelingsId.value.clear();
-      _searchController.clear();
-      journalPageController.descriptionController.clear();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.isPostedFromDiaryDetails == null) {
+        journalPageController.selectedDiary.value = Journals();
+        _customFeelingController.clear();
+        feelingsController.selectedFeelingsId.value.clear();
+        _searchController.clear();
+        journalPageController.descriptionController.clear();
+      }
 
-    if (widget.croppedFile != null) {
-      _croppedFile = widget.croppedFile;
-      _isImageAdded = true;
-    }
-    if (widget.map != null) {
-      print("map is not null + " + widget.map.toString());
-      imgUploadResponse = widget.map!;
-    }
+      if (widget.croppedFile != null) {
+        _croppedFile = widget.croppedFile;
+        _isImageAdded = true;
+      }
+      if (widget.map != null) {
+        print("map is not null + " + widget.map.toString());
+        imgUploadResponse = widget.map!;
+      }
+    });
+
     // userBlocNetwork.getMyProfileSnapshot();
   }
 

@@ -76,7 +76,6 @@ class _MyGoalPageState extends State<MyGoalPage> {
             child: Stack(
               children: [
                 Scaffold(
-                  appBar: getAppBar(),
                   body: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -49,16 +49,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(251, 251, 251, 1),
-      appBar: SolhAppBar(
-        // title: Text(
-        //   "Profile",
-        //   style: SolhTextStyles.AppBarText,
-        // ),
-        title: Container(
-          width: 10,
-        ),
-        isLandingScreen: true,
-      ),
       body: SingleChildScrollView(
         child: StreamBuilder<UserModel?>(
             stream: userBlocNetwork.userStateStream,

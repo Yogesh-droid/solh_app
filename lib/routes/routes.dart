@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/errors/not_found.dart';
+import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
@@ -46,6 +47,10 @@ class AppRoutes {
   static const String journaling = '/journaling';
   static const String createJournal = '/createJournal';
   static const String userPostScreen = '/userPostScreen';
+
+  /// chat and video call//
+  static const String chatUser = '/chatUser';
+  static const String chatProvider = '/chatProvider';
 
   ////    Get help related  ////////
   ///
@@ -98,6 +103,9 @@ class RouteGenerator {
             builder: ((context) => InviteMembersUI(args: args as Map)));
       case AppRoutes.createProfile:
         return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
+      case AppRoutes.chatUser:
+        return MaterialPageRoute(
+            builder: ((context) => ChatScreen(args: args as Map)));
       case AppRoutes.connectScreen:
         return MaterialPageRoute(
             builder: ((context) => ConnectScreen2(args: args as Map)));

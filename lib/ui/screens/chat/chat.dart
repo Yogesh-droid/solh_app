@@ -14,14 +14,10 @@ import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen(
-      {Key? key,
-      required String imageUrl,
-      required String name,
-      required String sId})
-      : _imageUrl = imageUrl,
-        _name = name,
-        _sId = sId,
+  ChatScreen({Key? key, required Map<dynamic, dynamic> args})
+      : _imageUrl = args['imageUrl'],
+        _name = args["name"],
+        _sId = args["sId"],
         super(key: key);
 
   final String _imageUrl;
@@ -80,11 +76,11 @@ class _ChatScreenState extends State<ChatScreen> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                     _controller.istyping==true
+                    _controller.istyping == true
                         ? Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 10),
-                            child:TypingIndicator(),
+                            child: TypingIndicator(),
                           )
                         : Container()
                   ],
@@ -271,17 +267,18 @@ class MessageBox extends StatelessWidget {
             Expanded(
               child: TextField(
                 onChanged: ((value) {
-
                   SocketService.typing(
                       _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
-                      _controller.isTypingEpochTime.value=DateTime.now().millisecondsSinceEpoch;
+                  _controller.isTypingEpochTime.value =
+                      DateTime.now().millisecondsSinceEpoch;
 
                   Future.delayed(Duration(seconds: 2), (() {
-                    if(DateTime.now().millisecondsSinceEpoch-_controller.isTypingEpochTime.value>=2000){
+                    if (DateTime.now().millisecondsSinceEpoch -
+                            _controller.isTypingEpochTime.value >=
+                        2000) {
                       SocketService.notTyping(
-                        _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                          _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
                     }
-                    
                   }));
                 }),
                 controller: _controller.messageEditingController,

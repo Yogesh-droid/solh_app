@@ -176,7 +176,6 @@ class _JournalingState extends State<Journaling> {
             child: Stack(
               children: [
                 Scaffold(
-                  appBar: getAppBar(),
                   body: SmartRefresher(
                     controller: _refreshController,
                     onRefresh: _onRefresh,
@@ -185,6 +184,7 @@ class _JournalingState extends State<Journaling> {
                       children: [
                         Column(
                           children: [
+                            WhatsOnYourMindSection(),
                             groupRow(),
                             Obx(() {
                               return !_journalPageController.isLoading.value

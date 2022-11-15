@@ -332,7 +332,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
             //     MaterialPageRoute(
             //         builder: (context) => ConnectProfileScreen(
             //             uid: e.uid ?? '', sId: e.sId ?? '')));
-            Navigator.pushNamed(context, AppRoutes.userProfile,
+            Navigator.pushNamed(context, AppRoutes.connectScreen,
                 arguments: {"uid": e.uid!, "sId": e.sId!});
           },
         ));

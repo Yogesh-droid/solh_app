@@ -232,11 +232,13 @@ class Network {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
       });
 
+      print(apiResponse.body);
+
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
@@ -285,9 +287,9 @@ class Network {
 
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
@@ -343,9 +345,66 @@ class Network {
 
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
+        case 404:
+          throw Exceptions(error: 'Data Not Found', statusCode: 404);
+        default:
+          return {};
+      }
+    } on SocketException {
+      throw Exceptions(error: 'No Network', statusCode: 100);
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+
+    /*  print(apiResponse.statusCode);
+      print(jsonEncode(body));
+
+      if (apiResponse.statusCode == 201) {
+        print(jsonDecode(apiResponse.body));
+        return jsonDecode(apiResponse.body);
+      } else if (apiResponse.statusCode == 200) {
+        print(jsonDecode(apiResponse.body));
+        return jsonDecode(apiResponse.body);
+      } else {
+        print("Status Code: " + apiResponse.statusCode.toString());
+        throw "server-error";
+      }
+    } on SocketException {
+      // internetConnectivityBloc.noInternet();
+      throw "no-internet";
+    } catch (e) {
+      print(e);
+      throw e;
+    } */
+  }
+
+  static Future<Map<String, dynamic>> makeDeleteRequestWithToken(
+      {required String url,
+      required Map<String, dynamic> body,
+      bool? isEncoded}) async {
+    try {
+      Uri _uri = Uri.parse(url);
+      print(url);
+      print(body);
+      print("token: ${userBlocNetwork.getSessionCookie}");
+      http.Response apiResponse = await http.delete(_uri,
+          headers: isEncoded != null
+              ? {
+                  "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
+                  "Content-Type": "application/json"
+                }
+              : {"Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"},
+          body: isEncoded != null ? jsonEncode(body) : body);
+
+      switch (apiResponse.statusCode) {
+        case 200:
+          return jsonDecode(apiResponse.body);
+        case 201:
+          return jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
@@ -397,9 +456,9 @@ class Network {
 
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:

@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -15,44 +17,90 @@ import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
+  const MasterScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            SideDrawer(),
+            MasterScreen2(),
+          ],
+        ),
+      ),
+    );
+    ;
+  }
+}
+
+class MasterScreen2 extends StatelessWidget {
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-          return _onWillPop(context);
-        },
-        child: Scaffold(
-            appBar: SolhAppBar(title: Container(), isLandingScreen: true),
-            body: Obx(
-              () => IndexedStack(
-                  index: bottomNavigatorController.activeIndex.value,
-                  children: [
-                    HomeScreen(),
-                    Journaling(),
-                    GetHelpScreen(),
-                    MyGoalsScreen(),
-                    MyProfileScreen()
-                  ]),
-            ),
-            // body: Obx(() {
-            //   switch (bottomNavigatorController.activeIndex.value) {
-            //     case 0:
-            //       return HomeScreen();
-            //     case 1:
-            //       return Journaling();
-            //     case 3:
-            //       return GetHelpScreen();
-            //     case 4:
-            //       return MyProfileScreen();
-            //     default:
-            //       return Center(child: Text('Page not found'));
-            //   }
-            // }),
-            bottomNavigationBar: getBottomBar()));
+    return WillPopScope(onWillPop: () {
+      return _onWillPop(context);
+    }, child: Obx(() {
+      return AnimatedPositioned(
+        duration: Duration(milliseconds: 300),
+        left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
+        child: Container(
+          height: 100.h,
+          width: 100.w,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.35),
+                  offset: const Offset(
+                    14.0,
+                    14.0,
+                  ),
+                  blurRadius: 20.0,
+                  spreadRadius: 4.0,
+                )
+              ],
+              color: Colors.white),
+          child: Scaffold(
+              appBar: SolhAppBar(
+                title: getDrawer(),
+                isLandingScreen: true,
+              ),
+              body: Obx(
+                () => IndexedStack(
+                    index: bottomNavigatorController.activeIndex.value,
+                    children: [
+                      HomeScreen(),
+                      Journaling(),
+                      GetHelpScreen(),
+                      MyGoalsScreen(),
+                      MyProfileScreen()
+                    ]),
+              ),
+              // body: Obx(() {
+              //   switch (bottomNavigatorController.activeIndex.value) {
+              //     case 0:
+              //       return HomeScreen();
+              //     case 1:
+              //       return Journaling();
+              //     case 3:
+              //       return GetHelpScreen();
+              //     case 4:
+              //       return MyProfileScreen();
+              //     default:
+              //       return Center(child: Text('Page not found'));
+              //   }
+              // }),
+              bottomNavigationBar: getBottomBar()),
+        ),
+      );
+    }));
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
@@ -159,6 +207,34 @@ class MasterScreen extends StatelessWidget {
             label: "My profile")
       ],
     );
+  }
+
+  Widget getDrawer() {
+    return Container(
+        decoration: BoxDecoration(shape: BoxShape.circle),
+        child: InkWell(
+          onTap: () {
+            print("side bar tapped");
+
+            bottomNavigatorController.isDrawerOpen.value
+                ? bottomNavigatorController.isDrawerOpen.value = false
+                : bottomNavigatorController.isDrawerOpen.value = true;
+
+            print("opened");
+          },
+          child: Container(
+            decoration: BoxDecoration(shape: BoxShape.circle),
+            height: 40,
+            width: 40,
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: SvgPicture.asset(
+              "assets/icons/app-bar/app-bar-menu.svg",
+              width: 26,
+              height: 24,
+              color: SolhColors.green,
+            ),
+          ),
+        ));
   }
 }
 
