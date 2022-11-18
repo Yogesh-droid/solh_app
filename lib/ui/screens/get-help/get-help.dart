@@ -15,6 +15,7 @@ import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
+import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -808,6 +809,8 @@ class SolhVolunteers extends StatelessWidget {
   final String? userType;
 
   ConnectionController connectionController = Get.find();
+  ConnectScreenController connectScreenController =
+      Get.put(ConnectScreenController());
   //optimization needed in cancle and connect
   @override
   Widget build(BuildContext context) {

@@ -32,7 +32,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     print(phoneNo);
     _otpVerificationController.isLoading.value = true;
     setState(() {});
-    FirebaseNetwork().signInWithPhoneNumber(context,phoneNo,
+    FirebaseNetwork().signInWithPhoneNumber(context, phoneNo,
         onCodeSent: (String verificationId) => setState(() {
               _otpVerificationController.isLoading.value = false;
             }));

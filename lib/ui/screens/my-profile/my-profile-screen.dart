@@ -82,10 +82,8 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               Get.delete<ConnectionController>();
                               Get.delete<DiscoverGroupController>();
                               Get.delete<CreateGroupController>();
-                              Get.delete<FeelingsController>();
-                              AutoRouter.of(context).pushAndPopUntil(
-                                  IntroCarouselScreenRouter(),
-                                  predicate: (route) => false);
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  AppRoutes.phoneAuthScreen, (route) => false);
                             });
                           }),
                     ),

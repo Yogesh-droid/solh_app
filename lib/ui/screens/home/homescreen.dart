@@ -12,7 +12,9 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
@@ -72,6 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(JournalCommentController());
   MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
+  SearchMarketController searchMarketController =
+      Get.put(SearchMarketController());
+
+  PsychologyTestController psychologyTestController =
+      Get.put(PsychologyTestController());
+
+  GoalSettingController goalSettingController =
+      Get.put(GoalSettingController());
 
   late bool isMoodMeterShown;
 
