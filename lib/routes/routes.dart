@@ -38,6 +38,7 @@ class AppRoutes {
   static const String editProfilePage = '/editProfilePage';
   static const String editAnonymousProfile = '/editAnonProfilePage';
   static const String createProfile = '/createProfile';
+  static const String accountPrivacy = '/accountPrivacy';
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
@@ -109,6 +110,9 @@ class RouteGenerator {
       case AppRoutes.connectScreen:
         return MaterialPageRoute(
             builder: ((context) => ConnectScreen2(args: args as Map)));
+      case AppRoutes.accountPrivacy:
+        return MaterialPageRoute(
+            builder: ((context) => AccountPrivacyScreen(args: args as Map)));
       default:
         return MaterialPageRoute(
             builder: ((context) => Scaffold(

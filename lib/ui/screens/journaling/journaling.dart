@@ -13,6 +13,7 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
+import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
@@ -33,13 +34,16 @@ class JournalingScreen extends StatefulWidget {
 
 class _JournalingScreenState extends State<JournalingScreen> {
   FeelingsController feelingsController = Get.find();
+
   JournalCommentController journalCommentController = Get.find();
   MoodMeterController moodMeterController = Get.find();
   late bool isMoodMeterShown;
 
   final DiscoverGroupController discoverGroupController = Get.find();
 
-  ConnectionController connectionController = Get.find();
+  ConnectionController connectionController = Get.put(ConnectionController());
+  ConnectScreenController connectScreenController =
+      Get.put(ConnectScreenController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -248,6 +252,9 @@ class _JournalingState extends State<Journaling> {
                         ),
                         if (_fetchingMore) Center(child: MyLoader()),
                         SizedBox(height: Platform.isIOS ? 80 : 50),
+                        SizedBox(
+                          height: 200,
+                        ),
                       ],
                     ),
                   ),

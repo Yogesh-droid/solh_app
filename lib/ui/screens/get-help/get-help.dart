@@ -21,6 +21,7 @@ import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/others/semi-circle.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import 'consultant_profile.dart';
@@ -380,7 +381,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           //             ))),
                         ),
                         Container(
-                          height: 38.h,
+                          height: 290,
                           margin: EdgeInsets.only(bottom: 2.h),
                           child: Container(child: Obx(() {
                             return getHelpController
@@ -457,7 +458,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           })),
                         ),
                         SizedBox(
-                          height: 50,
+                          height: 150,
                         )
                       ],
                     ),
@@ -817,8 +818,8 @@ class SolhVolunteers extends StatelessWidget {
         //           uid: uid!,
         //           sId: sId ?? '',
         //         ))));
-        Navigator.pushNamed(context, AppRoutes.userProfile,
-            arguments: {'sId': sId ?? '', 'uid': uid ?? ''});
+        Navigator.pushNamed(context, AppRoutes.connectScreen,
+            arguments: {'sId': sId ?? '', 'userName': null});
       }),
       child: Container(
         decoration: BoxDecoration(
@@ -845,39 +846,13 @@ class SolhVolunteers extends StatelessWidget {
             top: 8,
             child: Column(
               children: [
-                Container(
-                  // height: 70,
-                  width: 70,
-                  padding: EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                      color: Colors.white, shape: BoxShape.circle),
-                  child: Container(
-                    child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.white,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 35,
-                          backgroundImage: CachedNetworkImageProvider(
-                            imgUrl ?? "",
-                          ),
-                          // child: CachedNetworkImage(
-                          //   imageUrl: imgUrl ?? '',
-                          //   fit: BoxFit.fill,
-                          //   placeholder: (context, url) => Shimmer.fromColors(
-                          //       child: CircleAvatar(
-                          //         backgroundColor: Colors.grey,
-                          //       ),
-                          //       baseColor: Colors.grey[300]!,
-                          //       highlightColor: Colors.grey[300]!),
-                          //   errorWidget: (context, url, error) =>
-                          //       Icon(Icons.person, size: 35, color: Colors.grey),
-                          // ),
-                        ),
-                      ),
-                    ),
-                  ),
+                SimpleImageContainer(
+                  imageUrl: imgUrl ?? "",
+                  enableborder: true,
+                  radius: 80,
+                  borderColor: Colors.white,
+                  boxFit: BoxFit.cover,
+                  zoomEnabled: true,
                 ),
                 Text(name ?? ''),
                 Row(

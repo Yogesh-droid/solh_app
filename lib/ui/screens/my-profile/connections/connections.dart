@@ -192,8 +192,8 @@ class _ConnectionsState extends State<Connections> {
                               "imageUrl": chatListController.chatList
                                       .value[index].user!.profilePicture ??
                                   '',
-                              "sId": chatListController.chatList.value[index]
-                                      .user!.profilePicture ??
+                              "sId": chatListController
+                                      .chatList.value[index].user!.sId ??
                                   '',
                             });
                       },

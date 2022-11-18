@@ -23,9 +23,11 @@ class ConnectScreen2 extends StatefulWidget {
     Key? key,
     required Map<dynamic, dynamic>? args,
   })  : sId = args!['sId'],
+        userName = args['userName'],
         super(key: key);
 
-  final String sId;
+  final String? sId;
+  final String? userName;
 
   @override
   State<ConnectScreen2> createState() => _ConnectScreen2State();
@@ -46,15 +48,29 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
     super.initState();
   }
 
-  void loadData() async {
-    connectScreenController
-        .getProfileDetailsController(widget.sId)
-        .then((value) => initFunctions());
+  void loadData() {
+    if (widget.userName != null) {
+      connectScreenController
+          .getProfileDetailsFromUserNameController(widget.userName!)
+          .then((value) => initfuntionsUserName());
+    } else {
+      connectScreenController
+          .getProfileDetailsController(widget.sId!)
+          .then((value) => initFunctions());
+    }
+  }
+
+  initfuntionsUserName() {
+    connectScreenController.checkIfAlreadyInRecivedConnection(
+        connectScreenController.connectScreenModel.value.user!.sId!);
+    connectScreenController.checkIfAlreadyInSendConnection(
+        connectScreenController.connectScreenModel.value.user!.sId!);
+    connectScreenController.isMyConnectionController(userBlocNetwork.id);
   }
 
   initFunctions() {
-    connectScreenController.checkIfAlreadyInRecivedConnection(widget.sId);
-    connectScreenController.checkIfAlreadyInSendConnection(widget.sId);
+    connectScreenController.checkIfAlreadyInRecivedConnection(widget.sId!);
+    connectScreenController.checkIfAlreadyInSendConnection(widget.sId!);
     connectScreenController.isMyConnectionController(userBlocNetwork.id);
   }
 
@@ -65,10 +81,16 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
       appBar: SolhAppBar(
         isLandingScreen: false,
         title: Text('Connect', style: SolhTextStyles.AppBarText),
-        menuButton: getpopUpMenu(context, widget.sId, journalCommentController),
+        menuButton: getpopUpMenu(
+            context,
+            widget.sId ??
+                connectScreenController.connectScreenModel.value.user!.sId!,
+            journalCommentController),
       ),
       body: Obx(() {
-        return connectScreenController.isConnectScreenDataLoading.value
+        return connectScreenController.isConnectScreenDataLoading.value ||
+                connectScreenController.connectScreenModel.value.user!.sId ==
+                    null
             ? MyLoader()
             : ListView(
                 children: [
@@ -81,6 +103,7 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
                         '',
                     enableborder: true,
                     radius: 15.h,
+                    zoomEnabled: true,
                   ),
                   SizedBox(
                     height: 2.h,
@@ -119,11 +142,18 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
                   ),
                   GetConnectJoinUnfriendButton(
                       connectScreenController: connectScreenController,
-                      sId: widget.sId),
+                      sId: widget.sId == null || widget.sId == '123'
+                          ? connectScreenController
+                              .connectScreenModel.value.user!.sId!
+                          : widget.sId!),
                   SizedBox(
                     height: 3.h,
                   ),
-                  GetPostsButton(sId: widget.sId),
+                  GetPostsButton(
+                      sId: widget.sId == null || widget.sId == '123'
+                          ? connectScreenController
+                              .connectScreenModel.value.user!.sId!
+                          : widget.sId!),
                 ],
               );
       }),

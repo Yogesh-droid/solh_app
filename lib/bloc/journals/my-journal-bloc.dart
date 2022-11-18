@@ -22,11 +22,12 @@ class MyJournalsBloc {
   Stream<List<Journals?>> get journalsStateStream =>
       _myJournalController.stream;
 
-  Future<List<Journals?>> _fetchDetailsFirstTime(String? sId) async {
+  Future<List<Journals?>> fetchDetailsFirstTime(String? sId) async {
     print("getting my journals for the first time...");
 
     _currentPage = 1;
     // try {
+    _myJournalController.sink.add([]);
     Map<String, dynamic> apiResponse =
         // await Network.makeHttpGetRequestWithToken(
         //     "${APIConstants.api}/api/get-my-journal");
@@ -44,6 +45,7 @@ class MyJournalsBloc {
 
     if (_journalsResponseModel.journals != null) {
       _journals = _journalsResponseModel.journals!;
+      _myJournalController.sink.add(_journals);
     }
 
     _journalPageController.myVideoPlayerControllers.value.forEach((element) {
@@ -97,7 +99,7 @@ class MyJournalsBloc {
 
   Future getJournalsSnapshot(String? sId) async {
     _journalsList = [];
-    await _fetchDetailsFirstTime(sId).then((journals) {
+    await fetchDetailsFirstTime(sId).then((journals) {
       _journalsList.addAll(journals);
       print("journals fetched: " + journals.length.toString());
       _journalsList.forEach((journal) {

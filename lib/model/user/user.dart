@@ -180,6 +180,7 @@ class UserModel {
   int? commentCount;
   String? connectionCount;
   List<String>? hiddenposts;
+  List<String>? connectionsList;
   String? postCount;
 
   UserModel(
@@ -197,6 +198,7 @@ class UserModel {
       this.firstName,
       this.userName,
       this.dob,
+      this.connectionsList,
       this.email,
       this.name,
       this.experience,
@@ -223,6 +225,7 @@ class UserModel {
     postCount = json['postCount'];
     gender = json['gender'];
     status = json['status'];
+
     profilePicture = json['profilePicture'];
     profilePictureType = json['profilePictureType'];
     userType = json['userType'];
@@ -245,6 +248,12 @@ class UserModel {
     bio = json['bio'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    if (json['connectionsList'] != null) {
+      connectionsList = <String>[];
+      json['connectionsList'].forEach((v) {
+        connectionsList!.add(v);
+      });
+    }
     anonymous = json['anonymous'] != null
         ? json['anonymous'] is Map
             ? new Anonymous.fromJson(json['anonymous'])

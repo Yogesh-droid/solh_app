@@ -20,4 +20,16 @@ class ConnectScreenServices {
       throw e.getStatus();
     }
   }
+
+  Future<dynamic> getProfileDetailsFromUserName(String userName) async {
+    try {
+      var response = await NetworkV2.makeHttpGetRequestWithTokenV2(
+          '${APIConstants.api}/api/user/v1/user-profile?user=$userName');
+      print('response ' + response.toString());
+
+      return ConnectScreenModel.fromJson(response);
+    } on Exceptions catch (e) {
+      throw e.getStatus();
+    }
+  }
 }

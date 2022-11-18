@@ -14,7 +14,8 @@ import '../../../../routes/routes.gr.dart';
 import '../../../../services/utility.dart';
 
 class AccountPrivacyScreen extends StatelessWidget {
-  const AccountPrivacyScreen({Key? key}) : super(key: key);
+  const AccountPrivacyScreen({Key? key, Map<dynamic, dynamic>? args})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

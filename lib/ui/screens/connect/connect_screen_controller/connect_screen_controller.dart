@@ -10,7 +10,7 @@ import 'package:solh/ui/screens/connect/connect_sceen_model/connect_screen_model
 import 'package:solh/ui/screens/connect/connect_screen_services/connect_screen_services.dart';
 
 class ConnectScreenController extends GetxController {
-  ConnectionController connectionController = Get.find();
+  ConnectionController connectionController = Get.put(ConnectionController());
   ConnectScreenServices connectScreenServices = ConnectScreenServices();
   ConnectionServices connectionServices = ConnectionServices();
   var isConnectScreenDataLoading = false.obs;
@@ -30,7 +30,22 @@ class ConnectScreenController extends GetxController {
       isConnectScreenDataLoading(false);
     } catch (e) {
       debugPrint('error ' + e.toString());
-      connectionErrorStatus.value = e as int;
+      // connectionErrorStatus.value = e as int;
+    }
+  }
+
+  Future<void> getProfileDetailsFromUserNameController(String userName) async {
+    try {
+      isConnectScreenDataLoading(true);
+      var response =
+          await connectScreenServices.getProfileDetailsFromUserName(userName);
+      print('it ran');
+      connectScreenModel.value = response;
+      isConnectScreenDataLoading(false);
+    } catch (e) {
+      debugPrint('error ' + e.toString());
+      // connectionErrorStatus.value = e as int;
+
     }
   }
 
@@ -106,6 +121,7 @@ class ConnectScreenController extends GetxController {
 
       if (response["success"] == true) {
         isInSentRequest(false);
+
         Utility.showToast('Successfully removed from connection');
       } else {
         Utility.showToast(response["message"]);
@@ -138,6 +154,7 @@ class ConnectScreenController extends GetxController {
     String connectionId = '';
     connectionController.allConnectionModel.value.connections!
         .forEach((element) {
+      print('${element.sId} $sId');
       if (element.sId == sId && element.flag == 'sent') {
         connectionId = element.connectionId!;
       }

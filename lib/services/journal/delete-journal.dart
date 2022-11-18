@@ -8,6 +8,7 @@ class DeleteJournal {
 
   Future deletePost() async {
     try {
+      print('delete journal $journalId');
       await Network.makeHttpDeleteRequestWithToken(
           url: "${APIConstants.api}/api/journal/$journalId", body: {});
     } catch (e) {

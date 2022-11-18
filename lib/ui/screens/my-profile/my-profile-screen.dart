@@ -40,12 +40,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   ConnectionController connectionController = Get.find();
 
   @override
-  void initState() {
-    getMyProfile();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(251, 251, 251, 1),
@@ -111,11 +105,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       ),
     );
   }
-
-  getMyProfile() async {
-    await userBlocNetwork.getMyProfileSnapshot();
-    connectionController.getUserAnalytics(userBlocNetwork.id);
-  }
 }
 
 class ProfileMenu extends StatelessWidget {
@@ -154,7 +143,8 @@ class ProfileMenu extends StatelessWidget {
               title: "Account Privacy",
               svgIconPath: "assets/icons/profile/privacy.svg",
               onPressed: () {
-                AutoRouter.of(context).push(AccountPrivacyScreenRouter());
+                Navigator.pushNamed(context, AppRoutes.accountPrivacy,
+                    arguments: {});
               }),
           // ProfileMenuTile(
           //   title: "Settings",
@@ -409,14 +399,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         SizedBox(
                           width: 2.w,
                         ),
-                        Obx(() {
-                          return Text(
-                            '${_connectionController.userAnalyticsModel.value.journalLikeCount ?? 0}',
-                            style:
-                                SolhTextStyles.GreenBorderButtonText.copyWith(
-                                    fontSize: 18),
-                          );
-                        })
+                        Text(
+                          '${widget._userModel!.likes ?? 0}',
+                          style: SolhTextStyles.GreenBorderButtonText.copyWith(
+                              fontSize: 18),
+                        ),
                       ],
                     ),
                     InkWell(child: Text("Likes")),
@@ -444,14 +431,12 @@ class _ProfileContainerState extends State<ProfileContainer> {
                           SizedBox(
                             width: 5,
                           ),
-                          Obx(() {
-                            return Text(
-                              '${_connectionController.userAnalyticsModel.value.connectionCount ?? 0}',
-                              style:
-                                  SolhTextStyles.GreenBorderButtonText.copyWith(
-                                      fontSize: 18),
-                            );
-                          }),
+                          Text(
+                            '${widget._userModel!.connectionsList!.length ?? 0}',
+                            style:
+                                SolhTextStyles.GreenBorderButtonText.copyWith(
+                                    fontSize: 18),
+                          ),
                         ],
                       ),
                       Text("Connections"),

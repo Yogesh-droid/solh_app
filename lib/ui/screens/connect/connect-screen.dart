@@ -46,7 +46,6 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
   ConnectScreenServices connectScreenServices = ConnectScreenServices();
   @override
   void initState() {
-    connectScreenServices.getProfileDetails(widget._sId);
     print('UID: ${widget._uid}');
     print('SID: ${widget._sId}');
     getUserAnalyticsFromApi(sid: widget._sId);

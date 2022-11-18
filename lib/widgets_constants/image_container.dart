@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/zoom_image.dart';
 
 class SimpleImageContainer extends StatelessWidget {
   SimpleImageContainer(
@@ -12,7 +13,9 @@ class SimpleImageContainer extends StatelessWidget {
       required this.imageUrl,
       this.radius = 40,
       this.onClick,
+      this.zoomEnabled = false,
       this.borderWidth = 2.0,
+      this.boxFit = BoxFit.contain,
       this.borderColor = SolhColors.green,
       this.enableborder})
       : super(key: key);
@@ -20,12 +23,17 @@ class SimpleImageContainer extends StatelessWidget {
   final double radius;
   final VoidCallback? onClick;
   final bool? enableborder;
+  final bool zoomEnabled;
   final double borderWidth;
   final Color borderColor;
+  final BoxFit boxFit;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
+      onTap: (() => zoomEnabled
+          ? Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ZoomImage(image: imageUrl)))
+          : onClick),
       child: Container(
         padding: EdgeInsets.all(borderWidth),
         decoration: BoxDecoration(
@@ -43,7 +51,10 @@ class SimpleImageContainer extends StatelessWidget {
             height: radius,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: boxFit,
+              ),
             ),
           ),
         ),

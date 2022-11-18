@@ -154,14 +154,18 @@ class MasterScreen2 extends StatelessWidget {
       onTap: (index) => bottomNavigatorController.activeIndex.value = index,
       items: [
         BottomNavigationBarItem(
-            icon: Obx(
-              () => Icon(
-                bottomNavigatorController.activeIndex.value == 0
-                    ? CupertinoIcons.house_fill
-                    : CupertinoIcons.house,
-              ),
+          icon: Obx(
+            () => Icon(
+              bottomNavigatorController.activeIndex.value == 0
+                  ? CupertinoIcons.house_fill
+                  : CupertinoIcons.house,
+              color: bottomNavigatorController.activeIndex.value == 0
+                  ? SolhColors.green
+                  : SolhColors.grey102,
             ),
-            label: "Home"),
+          ),
+          label: "Home",
+        ),
         BottomNavigationBarItem(
             icon: Obx(
               () => bottomNavigatorController.activeIndex.value == 1

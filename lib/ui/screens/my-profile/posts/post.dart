@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/my-journal-bloc.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -67,7 +68,7 @@ class _PostScreenState extends State<PostScreen> {
       body: StreamBuilder<List<Journals?>>(
           stream: myJournalsBloc.journalsStateStream,
           builder: (_, journalsSnapshot) {
-            if (journalsSnapshot.hasData) {
+            if (journalsSnapshot.hasData && !journalsSnapshot.data!.isEmpty) {
               journalsSnapshot.data!.forEach((journal) {
                 print(journal!.postedBy!.name);
               });
@@ -92,7 +93,8 @@ class _PostScreenState extends State<PostScreen> {
                               journalModel: journalsSnapshot.data![index],
                               index: index,
                               deletePost: () async {
-                                await deletePost(index, _journalPageController);
+                                await deletePost(index, _journalPageController,
+                                    myJournalsBloc);
                               },
                               isMyJournal: true,
                             ),
@@ -151,8 +153,9 @@ class _PostScreenState extends State<PostScreen> {
                       );
                     }),
               );
+            } else {
+              return Center(child: MyLoader());
             }
-            return Center(child: MyLoader());
           }),
     );
   }
@@ -166,7 +169,11 @@ class _PostScreenState extends State<PostScreen> {
   }
 }
 
-Future<void> deletePost(int index, _journalPageController) async {
+Future<void> deletePost(
+  int index,
+  _journalPageController,
+  MyJournalsBloc myJournalsBloc,
+) async {
   print("deleting post");
   DeleteJournal _deleteJournal = DeleteJournal(
       journalId: _journalPageController.journalsList.value[index].id!);
@@ -184,6 +191,7 @@ Future<void> deletePost(int index, _journalPageController) async {
   // _journalPageController
   //     .journalsList
   //     .refresh();
+  myJournalsBloc.fetchDetailsFirstTime(userBlocNetwork.id);
   _journalPageController.journalsList.clear();
   _journalPageController.pageNo = 1;
   _journalPageController.endPageLimit = 1;

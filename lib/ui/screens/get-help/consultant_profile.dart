@@ -12,6 +12,7 @@ import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 
 class ConsultantProfile extends StatefulWidget {
   const ConsultantProfile({Key? key, required id})
@@ -29,7 +30,10 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
 
   @override
   void initState() {
-    _controller.getConsultantDataController(widget.id);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _controller.getConsultantDataController(widget.id);
+    });
+
     super.initState();
   }
 
@@ -86,18 +90,12 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
   }
 
   consultantProfileImage() {
-    return Container(
-      padding: EdgeInsets.all(4),
-      height: 124,
-      width: 124,
-      decoration:
-          BoxDecoration(shape: BoxShape.circle, color: SolhColors.green),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        backgroundImage: CachedNetworkImageProvider(_controller
-                .consultantModelController.value.provder!.profilePicture ??
-            'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'),
-      ),
+    return SimpleImageContainer(
+      imageUrl: _controller
+              .consultantModelController.value.provder!.profilePicture ??
+          'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
+      enableborder: true,
+      radius: 120,
     );
   }
 

@@ -1147,8 +1147,10 @@ class _PostContentWidgetState extends State<PostContentWidget> {
               //     ),
               //   ),
               // );
-              Navigator.pushNamed(context, AppRoutes.userProfile,
-                  arguments: {"uid": '', "sId": ''});
+              Navigator.pushNamed(context, AppRoutes.connectScreen, arguments: {
+                "userName": item.toString().substring(1, item.length),
+                "sId": "123",
+              });
             },
             child: Text(
               item + " ",

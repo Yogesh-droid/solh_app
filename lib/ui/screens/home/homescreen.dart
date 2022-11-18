@@ -65,11 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
   FeelingsController feelingsController = Get.put(FeelingsController());
+
   BookAppointmentController bookAppointmentController = Get.find();
 
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
   MoodMeterController moodMeterController = Get.find();
+  BottomNavigatorController bottomNavigatorController = Get.find();
+
   late bool isMoodMeterShown;
 
   @override
@@ -202,8 +205,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           InkWell(
                             onTap: () {
-                              _bottomNavigatorController.tabrouter!
-                                  .setActiveIndex(1);
+                              _bottomNavigatorController.activeIndex.value = 1;
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -288,8 +290,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           InkWell(
                             onTap: () {
-                              _bottomNavigatorController.tabrouter!
-                                  .setActiveIndex(3);
+                              _bottomNavigatorController.activeIndex.value = 3;
                             },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -363,8 +364,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           InkWell(
                             onTap: () {
-                              _bottomNavigatorController.tabrouter!
-                                  .setActiveIndex(2);
+                              _bottomNavigatorController.activeIndex.value = 1;
                             },
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -486,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       getRecommendedReadsUI(),
                       SizedBox(
-                        height: 100,
+                        height: 150,
                       ),
                     ]),
                   ),
@@ -858,7 +858,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getSolhBuddiesUI() {
     return Container(
-      height: 270,
+      height: 290,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&
@@ -1068,7 +1068,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getPeopleYouMayKnowUI() {
     return Container(
-      height: 270,
+      height: 290,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return ListView.separated(

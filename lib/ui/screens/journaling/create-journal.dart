@@ -12,6 +12,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/connections/tag_controller.dart';
@@ -62,6 +63,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   String _journalType = JournalType.Publicaly.toShortString();
   TextEditingController _customFeelingController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
+  BottomNavigatorController bottomNavigatorController = Get.find();
   TagsController tagsController = Get.put(TagsController());
   FocusNode _customFeelingFocusNode = FocusNode();
   XFile? _xFile;
@@ -293,8 +295,12 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
       //journalsBloc.getJournalsSnapshot();
     }
-
-    AutoRouter.of(context).popUntil(((route) => route.isFirst));
+    if (bottomNavigatorController.activeIndex == 1) {
+      Navigator.pop(context);
+    } else {
+      bottomNavigatorController.activeIndex.value = 1;
+      Navigator.pop(context);
+    }
   }
 
   Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
