@@ -181,7 +181,9 @@ class JournalPageController extends GetxController {
         .then((value) {
       map = {
         //"mediaType": value['announcementList']['mediaType'],
-        "media": value['announcementList'][0]['announcementMedia']
+        "media": value['announcementList'].isEmpty
+            ? ''
+            : value['announcementList'][0]['announcementMedia']
       };
     });
     return map;
@@ -190,8 +192,9 @@ class JournalPageController extends GetxController {
   Future<void> getHeaderAnnounce() async {
     await Network.makeGetRequest("${APIConstants.api}/api/header-announcement")
         .then((value) {
-      announcementData.value =
-          value['announcementList'][0]['announcementMedia'];
+      announcementData.value = value['announcementList'].isEmpty
+          ? ''
+          : value['announcementList'][0]['announcementMedia'];
     });
   }
 
