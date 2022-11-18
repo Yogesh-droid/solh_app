@@ -148,7 +148,9 @@ class MasterScreen2 extends StatelessWidget {
       selectedItemColor: SolhColors.green,
       showUnselectedLabels: true,
       unselectedItemColor: SolhColors.grey102,
-      unselectedLabelStyle: TextStyle(height: 1.5),
+      unselectedLabelStyle: TextStyle(
+        height: 1.5,
+      ),
       selectedFontSize: 13,
       unselectedFontSize: 13,
       onTap: (index) => bottomNavigatorController.activeIndex.value = index,
