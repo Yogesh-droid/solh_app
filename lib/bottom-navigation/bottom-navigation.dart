@@ -4,6 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
@@ -42,6 +44,10 @@ class MasterScreen2 extends StatelessWidget {
       Get.put(JournalPageController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
+  final MoodMeterController moodMeterController =
+      Get.put(MoodMeterController());
+  AppointmentController appointmentController =
+      Get.put(AppointmentController());
   @override
   Widget build(BuildContext context) {
     return WillPopScope(onWillPop: () {

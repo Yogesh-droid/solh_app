@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -72,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
-  MoodMeterController moodMeterController = Get.find();
+
   BottomNavigatorController bottomNavigatorController = Get.find();
   SearchMarketController searchMarketController =
       Get.put(SearchMarketController());
@@ -83,13 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
 
+  final MoodMeterController moodMeterController = Get.find();
+
   late bool isMoodMeterShown;
 
   @override
   void initState() {
     super.initState();
     userBlocNetwork.getMyProfileSnapshot();
-    openMoodMeter();
+    if (FirebaseAuth.instance.currentUser != null) {
+      debugPrint('mood meter shown');
+      openMoodMeter();
+    }
+    ;
   }
 
   @override
@@ -112,8 +120,8 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getInt('lastDateShown') != null) {
       if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
-              .day ==
-          DateTime.now().day) {
+              .second ==
+          DateTime.now().second) {
         return;
       } else {
         if (moodMeterController.moodList.length > 0) {

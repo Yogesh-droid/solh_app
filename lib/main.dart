@@ -16,7 +16,6 @@ import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
-import 'controllers/mood-meter/mood_meter_controller.dart';
 import 'controllers/profile/appointment_controller.dart';
 import 'firebase_options.dart';
 
@@ -51,10 +50,7 @@ void main() async {
 ////////   required controllers are initialized here ///////////
 void initControllers() {
   final AgeController ageController = Get.put(AgeController());
-  AppointmentController appointmentController =
-      Get.put(AppointmentController());
 
-  final moodMeterController = Get.put(MoodMeterController());
   final AnonController anonController = Get.put(AnonController());
   BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
