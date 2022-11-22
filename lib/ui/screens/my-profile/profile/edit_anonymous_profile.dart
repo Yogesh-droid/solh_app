@@ -191,6 +191,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                   if (imgUrl != null ||
                       _userNameController.text !=
                           userBlocNetwork.anonUserName) {
+                    debugPrint("anon upload try $imgUrl");
                     var response = await Network.makePutRequestWithToken(
                         url: "${APIConstants.api}/api/anonymous",
                         body: {
@@ -198,12 +199,13 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                           "profilePicture": imgUrl,
                           "profilePictureType": imgType
                         });
+                    debugPrint("anon upload try2 $response");
                     if (response != null) {
                       print(response['imageUrl']);
                     }
                   }
                   userBlocNetwork.getMyProfileSnapshot();
-                  AutoRouter.of(context).pop();
+                  Navigator.of(context).pop();
                 },
               ),
             )

@@ -88,74 +88,99 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
             journalCommentController),
       ),
       body: Obx(() {
-        return connectScreenController.isConnectScreenDataLoading.value ||
-                connectScreenController.connectScreenModel.value.user!.sId ==
-                    null
-            ? MyLoader()
-            : ListView(
-                children: [
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  SimpleImageContainer(
-                    imageUrl: connectScreenController
-                            .connectScreenModel.value.user!.profilePicture ??
-                        '',
-                    enableborder: true,
-                    radius: 15.h,
-                    zoomEnabled: true,
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  GetNaameBadgeAndBio(
-                    name: connectScreenController
-                            .connectScreenModel.value.user!.name ??
-                        '',
-                    bio: connectScreenController
-                            .connectScreenModel.value.user!.bio ??
-                        '',
-                    userType: connectScreenController
-                            .connectScreenModel.value.user!.userType ??
-                        '',
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  GetProfileStats(
-                      connections: connectScreenController.connectScreenModel
-                          .value.user!.connectionsList!.length,
-                      like: connectScreenController
-                          .connectScreenModel.value.journalLikeCount),
-                  GetMessageButton(
-                    isMyConnection:
-                        connectScreenController.isMyConnection.value,
-                    name: connectScreenController
-                            .connectScreenModel.value.user!.name ??
-                        '',
-                    profilePicture: connectScreenController
-                            .connectScreenModel.value.user!.profilePicture ??
-                        '',
-                    sId: connectScreenController
-                            .connectScreenModel.value.user!.sId ??
-                        '',
-                  ),
-                  GetConnectJoinUnfriendButton(
-                      connectScreenController: connectScreenController,
-                      sId: widget.sId == null || widget.sId == '123'
-                          ? connectScreenController
-                              .connectScreenModel.value.user!.sId!
-                          : widget.sId!),
-                  SizedBox(
-                    height: 3.h,
-                  ),
-                  GetPostsButton(
-                      sId: widget.sId == null || widget.sId == '123'
-                          ? connectScreenController
-                              .connectScreenModel.value.user!.sId!
-                          : widget.sId!),
-                ],
-              );
+        return connectScreenController.connectScreenModel.value.user == null
+            ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error,
+                      size: 70,
+                      color: SolhColors.grey102,
+                    ),
+                    Text(
+                      'No User Found',
+                      style: SolhTextStyles.AppBarText,
+                    ),
+                  ],
+                ),
+              )
+            : (connectScreenController.isConnectScreenDataLoading.value ||
+                    connectScreenController
+                            .connectScreenModel.value.user!.sId ==
+                        null)
+                ? MyLoader()
+                : ListView(
+                    children: [
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      SimpleImageContainer(
+                        imageUrl: connectScreenController.connectScreenModel
+                                .value.user!.profilePicture ??
+                            '',
+                        enableborder: true,
+                        radius: 15.h,
+                        zoomEnabled: true,
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      GetNaameBadgeAndBio(
+                        name: connectScreenController
+                                .connectScreenModel.value.user!.name ??
+                            '',
+                        bio: connectScreenController
+                                .connectScreenModel.value.user!.bio ??
+                            '',
+                        userType: connectScreenController
+                                .connectScreenModel.value.user!.userType ??
+                            '',
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      GetProfileStats(
+                          connections: connectScreenController
+                              .connectScreenModel
+                              .value
+                              .user!
+                              .connectionsList!
+                              .length,
+                          like: connectScreenController
+                              .connectScreenModel.value.journalLikeCount),
+                      GetMessageButton(
+                        isMyConnection:
+                            connectScreenController.isMyConnection.value,
+                        name: connectScreenController
+                                .connectScreenModel.value.user!.name ??
+                            '',
+                        profilePicture: connectScreenController
+                                .connectScreenModel
+                                .value
+                                .user!
+                                .profilePicture ??
+                            '',
+                        sId: connectScreenController
+                                .connectScreenModel.value.user!.sId ??
+                            '',
+                      ),
+                      GetConnectJoinUnfriendButton(
+                          connectScreenController: connectScreenController,
+                          sId: widget.sId == null || widget.sId == '123'
+                              ? connectScreenController
+                                  .connectScreenModel.value.user!.sId!
+                              : widget.sId!),
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      GetPostsButton(
+                          sId: widget.sId == null || widget.sId == '123'
+                              ? connectScreenController
+                                  .connectScreenModel.value.user!.sId!
+                              : widget.sId!),
+                    ],
+                  );
       }),
     ));
   }
@@ -379,9 +404,6 @@ class GetConnectJoinUnfriendButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 15,
-        ),
         sId == "62e125176a858283a925d15c"
             ? Container()
             : Obx((() {

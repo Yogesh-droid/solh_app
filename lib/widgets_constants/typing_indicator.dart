@@ -9,7 +9,7 @@ class TypingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBubbleContatiner();
+    return BubbleContainer();
   }
 }
 
@@ -40,7 +40,7 @@ class _AnimatedBubbleContatinerState extends State<AnimatedBubbleContatiner> {
     return Stack(
       children: [
         Container(
-          height: 45,
+          height: 20,
           width: 90,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -65,10 +65,10 @@ class BubbleContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 40,
+        height: 30,
         width: 70,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 216, 255, 172),
+          color: Color.fromARGB(255, 255, 255, 255),
           borderRadius: BorderRadius.circular(50),
         ),
         child: BallsRow(),

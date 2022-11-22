@@ -161,6 +161,12 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                     onPressed: () {
                                       bookAppointmentController.query =
                                           issue.name;
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.viewAllConsultant,
+                                          arguments: {
+                                            "slug": issue.slug ?? '',
+                                            "type": 'issue'
+                                          });
                                       // AutoRouter.of(context).push(
                                       //     ConsultantsScreenRouter(
                                       //         slug: issue.slug ?? '',

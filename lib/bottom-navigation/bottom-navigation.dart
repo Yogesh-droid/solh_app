@@ -85,7 +85,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       return _onWillPop(context);
     }, child: Obx(() {
       return AnimatedPositioned(
-        duration: Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 0),
         left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
         child: Container(
           height: 100.h,

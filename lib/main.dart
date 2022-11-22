@@ -93,10 +93,23 @@ class _SolhAppState extends State<SolhApp> {
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,
           primaryColor: SolhColors.green,
+
           inputDecorationTheme: InputDecorationTheme(
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: SolhColors.green, width: 2))),
-          accentColor: SolhColors.green,
+                  borderSide: BorderSide(
+                      color: Color.fromARGB(255, 248, 248, 248), width: 2))),
+          colorScheme: ColorScheme(
+              secondary: SolhColors.green,
+              background: SolhColors.green,
+              brightness: Brightness.light,
+              error: SolhColors.green,
+              onBackground: SolhColors.green,
+              surface: SolhColors.green,
+              onError: SolhColors.green,
+              onPrimary: SolhColors.green,
+              onSecondary: SolhColors.green,
+              onSurface: SolhColors.green,
+              primary: SolhColors.green),
           // primaryColor: Color.fromRGBO(95, 155, 140, 1),
           // primarySwatch: Colors.green,
           // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),

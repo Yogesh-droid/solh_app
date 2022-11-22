@@ -78,6 +78,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      feelingsController.selectedFeelingsId.value = [];
       if (widget.isPostedFromDiaryDetails == null) {
         journalPageController.selectedDiary.value = Journals();
         _customFeelingController.clear();
