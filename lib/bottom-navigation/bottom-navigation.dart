@@ -15,6 +15,7 @@ import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../controllers/journals/journal_page_controller.dart';
+import '../controllers/profile/profile_controller.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
@@ -28,6 +29,7 @@ class MasterScreen extends StatelessWidget {
       Get.put(JournalPageController());
   AppointmentController appointmentController =
       Get.put(AppointmentController());
+  ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {

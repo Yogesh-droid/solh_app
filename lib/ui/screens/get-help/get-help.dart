@@ -144,104 +144,101 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           GetHelpCategory(
             title: "Search by speciality",
           ),
-          getHelpController.getSpecializationModel.value.specializationList !=
-                  null
-              ? Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        mainAxisSpacing: 2.5.w,
-                        crossAxisSpacing: 2.5.w,
-                        crossAxisCount: 2,
-                        childAspectRatio: 2),
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: getHelpController.getSpecializationModel.value
-                        .specializationList!.length,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) => GestureDetector(
-                      onTap: () {
-                        bookAppointmentController.query = getHelpController
-                            .getSpecializationModel
-                            .value
-                            .specializationList![index]
-                            .name;
-                        // AutoRouter.of(context).push(
-                        //     ConsultantsScreenRouter(
-                        //         slug: getHelpController
-                        //                 .getSpecializationModel
-                        //                 .value
-                        //                 .specializationList![
-                        //                     index]
-                        //                 .slug ??
-                        //             '',
-                        //         type: 'specialization'));
-                        Navigator.pushNamed(
-                            context, AppRoutes.viewAllConsultant,
-                            arguments: {
-                              "slug": getHelpController.getSpecializationModel
-                                      .value.specializationList![index].slug ??
-                                  '',
-                              "type": 'specialization'
-                            });
-                      },
-                      child: Container(
-                        height: 1.h,
-                        width: 10.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Color(0xFFEFEFEF)),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                              child: CircleAvatar(
-                                radius: 8.w,
+          Obx(() {
+            return getHelpController
+                        .getSpecializationModel.value.specializationList !=
+                    null
+                ? Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          mainAxisSpacing: 2.5.w,
+                          crossAxisSpacing: 2.5.w,
+                          crossAxisCount: 2,
+                          childAspectRatio: 2),
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: getHelpController.getSpecializationModel.value
+                          .specializationList!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (_, index) => GestureDetector(
+                        onTap: () {
+                          bookAppointmentController.query = getHelpController
+                              .getSpecializationModel
+                              .value
+                              .specializationList![index]
+                              .name;
+                          Navigator.pushNamed(
+                              context, AppRoutes.viewAllConsultant,
+                              arguments: {
+                                "slug": getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .slug ??
+                                    '',
+                                "type": 'specialization'
+                              });
+                        },
+                        child: Container(
+                          height: 1.h,
+                          width: 10.w,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: Color(0xFFEFEFEF)),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
                                 child: CircleAvatar(
-                                  radius: 7.8.w,
-                                  backgroundColor: Colors.white,
-                                  child: CachedNetworkImage(
-                                    imageUrl: getHelpController
-                                            .getSpecializationModel
-                                            .value
-                                            .specializationList![index]
-                                            .displayImage ??
-                                        '',
-                                    placeholder: (context, url) =>
-                                        Shimmer.fromColors(
-                                            child: Container(
-                                              height: 1.h,
-                                              width: 1.w,
-                                              color: Colors.grey,
-                                            ),
-                                            baseColor: Colors.grey,
-                                            highlightColor: Colors.white),
-                                    errorWidget: (context, url, error) => Icon(
-                                      Icons.person,
-                                      size: 50,
-                                      color: Colors.grey,
+                                  radius: 8.w,
+                                  child: CircleAvatar(
+                                    radius: 7.8.w,
+                                    backgroundColor: Colors.white,
+                                    child: CachedNetworkImage(
+                                      imageUrl: getHelpController
+                                              .getSpecializationModel
+                                              .value
+                                              .specializationList![index]
+                                              .displayImage ??
+                                          '',
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                              child: Container(
+                                                height: 1.h,
+                                                width: 1.w,
+                                                color: Colors.grey,
+                                              ),
+                                              baseColor: Colors.grey,
+                                              highlightColor: Colors.white),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 2.w),
-                            Container(
-                              width: 25.w,
-                              child: Text(
-                                getHelpController.getSpecializationModel.value
-                                        .specializationList![index].name ??
-                                    '',
-                                style: TextStyle(),
+                              SizedBox(width: 2.w),
+                              Container(
+                                width: 25.w,
+                                child: Text(
+                                  getHelpController.getSpecializationModel.value
+                                          .specializationList![index].name ??
+                                      '',
+                                  style: TextStyle(),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              : Container(),
+                  )
+                : Container();
+          }),
           GetHelpDivider(),
           GetHelpCategory(
               title: "Top Consultants",
@@ -256,8 +253,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           Container(
             height: 17.h,
             margin: EdgeInsets.only(bottom: 2.h),
-            child: Container(
-              child: getHelpController.topConsultantList.value.doctors != null
+            child: Container(child: Obx(() {
+              return getHelpController.topConsultantList.value.doctors != null
                   ? getHelpController.topConsultantList.value.doctors!.isEmpty
                       ? Center(
                           child:
@@ -290,8 +287,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   : Container(
                       child: Center(
                       child: Text('No Doctors Found'),
-                    )),
-            ),
+                    ));
+            })),
           ),
           GetHelpDivider(),
           GetHelpCategory(
@@ -356,9 +353,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     );
             })),
           ),
-          SizedBox(
-            height: 150,
-          )
         ],
       ),
     );
@@ -373,51 +367,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
     });
     debugPrint('++++' + sId + isInConnection.toString());
     return isInConnection;
-  }
-
-  SolhAppBar getAppBar() {
-    return SolhAppBar(
-      title: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            child: InkWell(
-              onTap: () {
-                debugPrint("side bar tapped");
-
-                _bottomNavigatorController.isDrawerOpen.value == true
-                    ? _bottomNavigatorController.isDrawerOpen.value = false
-                    : _bottomNavigatorController.isDrawerOpen.value = true;
-                // setState(() {
-                //   _isDrawerOpen = !_isDrawerOpen;
-                // });
-                debugPrint("opened");
-              },
-              child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                height: 40,
-                width: 30,
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: SvgPicture.asset(
-                  "assets/icons/app-bar/app-bar-menu.svg",
-                  width: 26,
-                  height: 24,
-                  color: SolhColors.green,
-                ),
-              ),
-            ),
-          ),
-          // SizedBox(
-          //   width: 2.h,
-          // ),
-          // Text(
-          //   "Get help",
-          //   style: SolhTextStyles.AppBarText,
-          // ),
-        ],
-      ),
-      isLandingScreen: true,
-    );
   }
 }
 
@@ -542,82 +491,10 @@ class TopConsultantsTile extends StatelessWidget {
                         },
                       ),
                     )
-                    // Text(
-                    //   "07 Year of Experience",
-                    //   style: TextStyle(fontSize: 12),
-                    // ),
-                    // Padding(
-                    //   padding: EdgeInsets.symmetric(horizontal: 1.w),
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //     children: [
-                    //       Row(
-                    //         children: [
-                    //           Icon(
-                    //             Icons.people,
-                    //             color: SolhColors.green,
-                    //             size: 18,
-                    //           ),
-                    //           Text(
-                    //             "72",
-                    //             style: SolhTextStyles.GreenBorderButtonText,
-                    //           )
-                    //         ],
-                    //       ),
-                    //       Text(
-                    //         "Free",
-                    //         style: TextStyle(color: SolhColors.green),
-                    //       )
-                    //     ],
-                    //   ),
-                    // )
                   ],
                 )),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ProfilePictureHeader extends StatelessWidget {
-  const ProfilePictureHeader({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 12.8.h,
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-                color: SolhColors.green,
-                borderRadius: BorderRadius.circular(8)),
-            height: 6.5.h,
-          ),
-          Positioned(
-            top: 1.54.h,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                MyArc(
-                  diameter: 10.h,
-                  color: Colors.white,
-                ),
-                RotatedBox(quarterTurns: 2, child: MyArc(diameter: 10.h)),
-                CircleAvatar(
-                  radius: 4.75.h,
-                  backgroundImage: CachedNetworkImageProvider(
-                    "https://techcrunch.com/wp-content/uploads/2017/09/sunshine.jpg?w=1000",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -709,11 +586,6 @@ class SolhVolunteers extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (() {
-        // Navigator.of(context).push(MaterialPageRoute(
-        //     builder: ((context) => ConnectProfileScreen(
-        //           uid: uid!,
-        //           sId: sId ?? '',
-        //         ))));
         Navigator.pushNamed(context, AppRoutes.connectScreen,
             arguments: {'sId': sId ?? '', 'userName': null});
       }),
@@ -754,14 +626,6 @@ class SolhVolunteers extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Text(
-                    //   'Solh Expert',
-                    //   style: GoogleFonts.signika(
-                    //     fontSize: 12,
-                    //     color: Color(0xFF5F9B8C),
-                    //   ),
-                    // ),
-                    // Image(image: AssetImage('assets/images/verifiedTick.png')),
                     Text(
                       userType ?? '',
                       style: GoogleFonts.signika(
@@ -888,14 +752,6 @@ class SolhVolunteers extends StatelessWidget {
                 Obx(() {
                   return InkWell(
                     onTap: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => ConnectProfileScreen(
-                      //           sId: sId ?? '',
-                      //           uid: uid!,
-                      //         )));
-                      // getConnectionIdBySId(sId ?? '');
-                      debugPrint('Connection ID' +
-                          getConnectionIdBySId(sId ?? '').toString());
                       getConnectionIdBySId(sId ?? '') != ''
                           ? connectionController.deleteConnectionRequest(
                               getConnectionIdBySId(sId ?? ''))
@@ -965,205 +821,6 @@ class SolhVolunteers extends StatelessWidget {
         ]),
       ),
     );
-
-    // return Container(
-    //   child: Column(
-    //     children: [
-
-    //       // Container(
-    //       //   height: 300,
-    //       //   padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-    //       //   child: ListView.separated(
-    //       //     separatorBuilder: (context, index) => SizedBox(
-    //       //       width: 10,
-    //       //     ),
-    //       //     shrinkWrap: true,
-    //       //     scrollDirection: Axis.horizontal,
-    //       //     itemCount: _solhVolunteers.length,
-    //       //     itemBuilder: (context, index) {
-    //       //       return Container(
-    //       //         decoration: BoxDecoration(
-    //       //           borderRadius: BorderRadius.circular(8),
-    //       //           border: Border.all(
-    //       //             color: Color(0xFFEFEFEF),
-    //       //             width: 1,
-    //       //           ),
-    //       //         ),
-    //       //         height: 289,
-    //       //         width: 164,
-    //       //         child: Stack(children: [
-    //       //           Container(
-    //       //             height: 52,
-    //       //             width: 164,
-    //       //             decoration: BoxDecoration(
-    //       //               color: SolhColors.green,
-    //       //               borderRadius: BorderRadius.circular(8),
-    //       //             ),
-    //       //           ),
-    //       //           Positioned(
-    //       //             left: 0,
-    //       //             right: 0,
-    //       //             top: 8,
-    //       //             child: Column(
-    //       //               children: [
-    //       //                 Container(
-    //       //                   height: 70,
-    //       //                   width: 70,
-    //       //                   padding: EdgeInsets.all(1),
-    //       //                   decoration: BoxDecoration(
-    //       //                       color: Colors.white, shape: BoxShape.circle),
-    //       //                   child: Container(
-    //       //                     child: FittedBox(
-    //       //                         fit: BoxFit.fill,
-    //       //                         child: CircleAvatar(
-    //       //                           backgroundColor: Colors.white,
-    //       //                           backgroundImage: AssetImage(
-    //       //                               _solhVolunteers[index]['image']!),
-    //       //                         )),
-    //       //                   ),
-    //       //                 ),
-    //       //                 Text(_solhVolunteers[index]['name']!),
-    //       //                 Row(
-    //       //                   mainAxisAlignment: MainAxisAlignment.center,
-    //       //                   children: [
-    //       //                     Text(
-    //       //                       'Solh Expert',
-    //       //                       style: GoogleFonts.signika(
-    //       //                         fontSize: 10,
-    //       //                         color: Color(0xFF5F9B8C),
-    //       //                       ),
-    //       //                     ),
-    //       //                     Image(
-    //       //                         image: AssetImage(
-    //       //                             'assets/images/verifiedTick.png')),
-    //       //                   ],
-    //       //                 ),
-    //       //                 SizedBox(
-    //       //                   height: 4,
-    //       //                 ),
-    //       //                 Container(
-    //       //                   height: 45,
-    //       //                   child: Padding(
-    //       //                     padding:
-    //       //                         const EdgeInsets.symmetric(horizontal: 8),
-    //       //                     child: Text(
-    //       //                       _solhVolunteers[index]['bio']!,
-    //       //                       textAlign: TextAlign.center,
-    //       //                       maxLines: 3,
-    //       //                       overflow: TextOverflow.ellipsis,
-    //       //                       style: GoogleFonts.signika(
-    //       //                         fontSize: 12,
-    //       //                         color: Color(0xff666666),
-    //       //                       ),
-    //       //                     ),
-    //       //                   ),
-    //       //                 ),
-    //       //                 SizedBox(
-    //       //                   height: 13,
-    //       //                 ),
-    //       //                 Padding(
-    //       //                   padding: const EdgeInsets.symmetric(horizontal: 8),
-    //       //                   child: Row(
-    //       //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       //                     children: [
-    //       //                       Row(
-    //       //                         children: [
-    //       //                           Icon(
-    //       //                             Icons.thumb_up,
-    //       //                             size: 12,
-    //       //                             color: Color(0xff5F9B8C),
-    //       //                           ),
-    //       //                           SizedBox(
-    //       //                             width: 4,
-    //       //                           ),
-    //       //                           Text(
-    //       //                             _solhVolunteers[index]['like']!,
-    //       //                             style: GoogleFonts.signika(
-    //       //                                 fontSize: 12,
-    //       //                                 color: Color(0xff5F9B8C)),
-    //       //                           ),
-    //       //                         ],
-    //       //                       ),
-    //       //                       Row(
-    //       //                         children: [
-    //       //                           SvgPicture.asset(
-    //       //                             'assets/images/connect.svg',
-    //       //                           ),
-    //       //                           SizedBox(
-    //       //                             width: 4,
-    //       //                           ),
-    //       //                           Text(
-    //       //                             _solhVolunteers[index]['helped']!,
-    //       //                             style: GoogleFonts.signika(
-    //       //                                 fontSize: 12,
-    //       //                                 color: Color(0xff5F9B8C)),
-    //       //                           ),
-    //       //                         ],
-    //       //                       ),
-    //       //                       Row(
-    //       //                         children: [
-    //       //                           Icon(
-    //       //                             Icons.group,
-    //       //                             size: 12,
-    //       //                             color: Color(0xff5F9B8C),
-    //       //                           ),
-    //       //                           SizedBox(
-    //       //                             width: 4,
-    //       //                           ),
-    //       //                           Text(
-    //       //                             _solhVolunteers[index]['interaction']!,
-    //       //                             style: GoogleFonts.signika(
-    //       //                                 fontSize: 12,
-    //       //                                 color: Color(0xff5F9B8C)),
-    //       //                           ),
-    //       //                         ],
-    //       //                       ),
-    //       //                     ],
-    //       //                   ),
-    //       //                 ),
-    //       //                 SizedBox(
-    //       //                   height: 33,
-    //       //                 ),
-    //       //                 Container(
-    //       //                   height: 32,
-    //       //                   width: 148,
-    //       //                   decoration: BoxDecoration(
-    //       //                       color: SolhColors.green,
-    //       //                       borderRadius: BorderRadius.circular(16)),
-    //       //                   child: Center(
-    //       //                     child: Row(
-    //       //                       mainAxisAlignment: MainAxisAlignment.center,
-    //       //                       children: [
-    //       //                         SvgPicture.asset(
-    //       //                           'assets/images/connect.svg',
-    //       //                           height: 14,
-    //       //                           color: Colors.white,
-    //       //                         ),
-    //       //                         SizedBox(
-    //       //                           width: 4,
-    //       //                         ),
-    //       //                         Text(
-    //       //                           'Connect',
-    //       //                           style: GoogleFonts.signika(
-    //       //                             fontSize: 14,
-    //       //                             color: Colors.white,
-    //       //                           ),
-    //       //                         ),
-    //       //                       ],
-    //       //                     ),
-    //       //                   ),
-    //       //                 )
-    //       //               ],
-    //       //             ),
-    //       //           )
-    //       //         ]),
-    //       //       );
-    //       //     },
-    //       //   ),
-    //       // ),
-    //     ],
-    //   ),
-    // );
   }
 
   String getConnectionIdBySId(String sId) {

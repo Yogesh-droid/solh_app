@@ -7,6 +7,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import '../../../../bloc/user-bloc.dart';
 import '../../../../constants/api.dart';
@@ -27,18 +28,12 @@ class EditAnonymousProfile extends StatefulWidget {
 
 class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
   final AnonController _anonController = Get.put(AnonController());
+  final ProfileController profileController = Get.find();
   XFile? _xFile;
   File? _croppedFile;
   String? imgUrl = '';
   String? imgType = '';
   TextEditingController _userNameController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,7 +132,9 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                     hintText: "Anonymous Username",
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     textEditingController: _userNameController
-                      ..text = userBlocNetwork.anonUserName,
+                      ..text = profileController.myProfileModel.value.body!
+                              .user!.anonymous!.userName ??
+                          '',
                     validator: (value) {
                       if (value!.isEmpty) {
                         _anonController.isNameTaken.value = false;
@@ -190,7 +187,8 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                   }
                   if (imgUrl != null ||
                       _userNameController.text !=
-                          userBlocNetwork.anonUserName) {
+                          profileController.myProfileModel.value.body!.user!
+                              .anonymous!.userName) {
                     var response = await Network.makePutRequestWithToken(
                         url: "${APIConstants.api}/api/anonymous",
                         body: {
@@ -202,8 +200,8 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                       print(response['imageUrl']);
                     }
                   }
-                  userBlocNetwork.getMyProfileSnapshot();
-                  AutoRouter.of(context).pop();
+                  profileController.getMyProfile();
+                  Navigator.of(context).pop();
                 },
               ),
             )

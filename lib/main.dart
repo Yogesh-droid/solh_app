@@ -87,6 +87,7 @@ class _SolhAppState extends State<SolhApp> {
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
+        //initialRoute: AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
