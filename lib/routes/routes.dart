@@ -42,7 +42,7 @@ class AppRoutes {
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
-  static const String master = '/';
+  static const String master = '/master';
   static const String introScreen = '/intro';
   static const String homeScreen = '/home';
   static const String journaling = '/journaling';
@@ -82,15 +82,19 @@ class RouteGenerator {
 
     switch (routeSettings.name) {
       case AppRoutes.master:
+        print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => MasterScreen()));
       case AppRoutes.introScreen:
+        print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => IntroCrousel()));
       case AppRoutes.phoneAuthScreen:
+        print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => PhoneAuthScreen()));
       case AppRoutes.otpScreen:
         return MaterialPageRoute(
             builder: ((context) => OTPScreen(args: args as Map)));
       case AppRoutes.userProfile:
+        print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(
             builder: ((context) => ConnectProfileScreen(args: args as Map)));
       case AppRoutes.userPostScreen:
@@ -141,7 +145,7 @@ class RouteGenerator {
               name: "JournalingScreenRouter",
               page: EmptyRouterPage,
               children: [
-                AutoRoute(path: "", page: JournalingScreen),
+                // AutoRoute(path: "", page: JournalingScreen),
                 AutoRoute(
                   path: "CreatePostScreen",
                   name: "CreatePostScreenRouter",

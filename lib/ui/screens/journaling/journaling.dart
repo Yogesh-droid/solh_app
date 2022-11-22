@@ -25,7 +25,7 @@ import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 
-class JournalingScreen extends StatefulWidget {
+/* class JournalingScreen extends StatefulWidget {
   const JournalingScreen({Key? key}) : super(key: key);
 
   @override
@@ -62,10 +62,11 @@ class _JournalingScreenState extends State<JournalingScreen> {
 
   @override
   void initState() {
+    print('Running init state of journaling2');
     moodMeterController.getMoodAnalytics(7);
     super.initState();
   }
-}
+} */
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
@@ -85,6 +86,7 @@ class _JournalingState extends State<Journaling> {
 
   void initState() {
     super.initState();
+    print('Running init state of journaling1');
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
 

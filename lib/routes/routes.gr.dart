@@ -132,10 +132,10 @@ class AppRouter extends _i10.RootStackRouter {
       return _i10.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i10.EmptyRouterPage());
     },
-    JournalingScreen.name: (routeData) {
-      return _i10.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i15.JournalingScreen());
-    },
+    // JournalingScreen.name: (routeData) {
+    //   return _i10.MaterialPageX<dynamic>(
+    //       routeData: routeData, child: const _i15.JournalingScreen());
+    // },
     CreatePostScreenRouter.name: (routeData) {
       final args = routeData.argsAs<CreatePostScreenRouterArgs>(
           orElse: () => const CreatePostScreenRouterArgs());

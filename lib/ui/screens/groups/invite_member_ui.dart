@@ -131,9 +131,9 @@ class InviteMembersUI extends StatelessWidget {
               .then((value) {
             Utility.showToast('Invitation sent successfully');
           });
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return JournalingScreen();
-          }));
+          // Navigator.push(context, MaterialPageRoute(builder: (context) {
+          //   return JournalingScreen();
+          // }));
         },
         label: Container(
           width: MediaQuery.of(context).size.width * 0.8,

@@ -15,8 +15,6 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-
-import 'controllers/profile/appointment_controller.dart';
 import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
@@ -89,6 +87,7 @@ class _SolhAppState extends State<SolhApp> {
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
+        //initialRoute: AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,

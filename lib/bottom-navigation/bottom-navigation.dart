@@ -19,10 +19,19 @@ import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
-  const MasterScreen({Key? key}) : super(key: key);
+  MasterScreen({Key? key}) : super(key: key);
+  final MoodMeterController moodMeterController =
+      Get.put(MoodMeterController());
+  final BottomNavigatorController bottomNavigatorController =
+      Get.put(BottomNavigatorController());
+  JournalPageController _journalPageController =
+      Get.put(JournalPageController());
+  AppointmentController appointmentController =
+      Get.put(AppointmentController());
 
   @override
   Widget build(BuildContext context) {
+    print('master 1');
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -35,19 +44,41 @@ class MasterScreen extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }
 
-class MasterScreen2 extends StatelessWidget {
+class MasterScreen2 extends StatefulWidget {
+  @override
+  State<MasterScreen2> createState() => _MasterScreen2State();
+}
+
+class _MasterScreen2State extends State<MasterScreen2>
+    with SingleTickerProviderStateMixin {
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
-  final BottomNavigatorController bottomNavigatorController =
-      Get.put(BottomNavigatorController());
+  final MoodMeterController meterController = Get.find();
+  final BottomNavigatorController bottomNavigatorController = Get.find();
+
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
-  AppointmentController appointmentController =
-      Get.put(AppointmentController());
+
+  late TabController tabController;
+
+  List<Widget> bottomWidgetList = [
+    HomeScreen(),
+    Journaling(),
+    GetHelpScreen(),
+    MyGoalsScreen(),
+    MyProfileScreen()
+  ];
+
+  @override
+  void initState() {
+    print('init master');
+    tabController = TabController(length: 5, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(onWillPop: () {
@@ -78,16 +109,11 @@ class MasterScreen2 extends StatelessWidget {
                 title: getDrawer(),
                 isLandingScreen: true,
               ),
+              //body: GetPages(),
               body: Obx(
                 () => IndexedStack(
                     index: bottomNavigatorController.activeIndex.value,
-                    children: [
-                      HomeScreen(),
-                      Journaling(),
-                      GetHelpScreen(),
-                      MyGoalsScreen(),
-                      MyProfileScreen()
-                    ]),
+                    children: bottomWidgetList),
               ),
               // body: Obx(() {
               //   switch (bottomNavigatorController.activeIndex.value) {
@@ -103,6 +129,7 @@ class MasterScreen2 extends StatelessWidget {
               //       return Center(child: Text('Page not found'));
               //   }
               // }),
+              //body: TabBarView(children: bottomWidgetList),
               bottomNavigationBar: getBottomBar()),
         ),
       );
@@ -160,6 +187,8 @@ class MasterScreen2 extends StatelessWidget {
       selectedFontSize: 13,
       unselectedFontSize: 13,
       onTap: (index) => bottomNavigatorController.activeIndex.value = index,
+      // onTap: (index) =>
+      //     bottomNavigatorController.pageController.jumpToPage(index),
       items: [
         BottomNavigationBarItem(
           icon: Obx(
@@ -247,6 +276,23 @@ class MasterScreen2 extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+class GetPages extends StatelessWidget {
+  BottomNavigatorController bottomNavigatorController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return PageView(
+        controller: bottomNavigatorController.pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          HomeScreen(),
+          Journaling(),
+          GetHelpScreen(),
+          MyGoalsScreen(),
+          MyProfileScreen()
+        ]);
   }
 }
 

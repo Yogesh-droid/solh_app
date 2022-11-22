@@ -93,7 +93,6 @@ class MoodMeterController extends GetxController {
 
   @override
   void onInit() {
-    getMoodList();
     super.onInit();
   }
 }

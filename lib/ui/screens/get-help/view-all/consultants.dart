@@ -34,6 +34,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   String? defaultCountry;
 
   void initState() {
+    print('Running init state of Consultant');
     super.initState();
     getResultByCountry();
     _doctorsScrollController = ScrollController();

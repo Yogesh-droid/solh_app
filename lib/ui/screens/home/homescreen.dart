@@ -58,8 +58,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
-  JournalPageController _journalPageController =
-      Get.put(JournalPageController());
+
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
 
@@ -91,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print('Running init state of HomeScreen');
     super.initState();
     userBlocNetwork.getMyProfileSnapshot();
     if (FirebaseAuth.instance.currentUser != null) {
@@ -106,12 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            SideDrawer(),
-            HomePage(),
-          ],
-        ),
+        child: HomePage(),
       ),
     );
   }
