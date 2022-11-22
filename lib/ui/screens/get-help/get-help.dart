@@ -66,409 +66,302 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return AnimatedPositioned(
-          duration: Duration(milliseconds: 300),
-          left: _bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    offset: const Offset(
-                      14.0,
-                      14.0,
-                    ),
-                    blurRadius: 20.0,
-                    spreadRadius: 4.0,
-                  )
-                ],
-                color: Colors.white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                Scaffold(
-                  body: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SolhSearchField(
-                              hintText:
-                                  'Anxiety, Corporate Stress, Family Issues',
-                              icon: 'assets/icons/app-bar/search.svg',
-                              onTap: () {
-                                searchMarketController.searchMarketModel.value =
-                                    SearchMarketModel();
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SolhSearchField(
+                hintText: 'Anxiety, Corporate Stress, Family Issues',
+                icon: 'assets/icons/app-bar/search.svg',
+                onTap: () {
+                  searchMarketController.searchMarketModel.value =
+                      SearchMarketModel();
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SearchScreen(),
-                                  ),
-                                );
-                              }),
-                        ),
-                        GetHelpDivider(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GetHelpCategory(title: 'Search for support'),
-                              InkWell(
-                                onTap: () {
-                                  getHelpController.isAllIssueShown.value
-                                      ? getHelpController.showLessIssues()
-                                      : getHelpController.showAllIssues();
-                                  getHelpController.isAllIssueShown.value =
-                                      !getHelpController.isAllIssueShown.value;
-                                },
-                                child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 11.0,
-                                        bottom: 11,
-                                        top: 11,
-                                        left: 11),
-                                    child: Obx(() {
-                                      return Text(
-                                        !getHelpController.isAllIssueShown.value
-                                            ? "Show More"
-                                            : "Show less",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: SolhColors.green,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      );
-                                    })),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(bottom: 1.5.h),
-                            child: Obx(() {
-                              return Wrap(
-                                runSpacing: 5,
-                                children: getHelpController.issueList.value
-                                    .map((issue) {
-                                  return IssuesTile(
-                                    title: issue.name ?? '',
-                                    onPressed: () {
-                                      bookAppointmentController.query =
-                                          issue.name;
-                                      // AutoRouter.of(context).push(
-                                      //     ConsultantsScreenRouter(
-                                      //         slug: issue.slug ?? '',
-                                      //         type: 'issue'));
-                                    },
-                                  );
-                                }).toList(),
-                              );
-                            })),
-                        GetHelpDivider(),
-                        GetHelpCategory(
-                          title: "Search by speciality",
-                        ),
-                        getHelpController.getSpecializationModel.value
-                                    .specializationList !=
-                                null
-                            ? Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 4.w, vertical: 1.5.h),
-                                child: GridView.builder(
-                                  gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
-                                          mainAxisSpacing: 2.5.w,
-                                          crossAxisSpacing: 2.5.w,
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 2),
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemCount: getHelpController
-                                      .getSpecializationModel
-                                      .value
-                                      .specializationList!
-                                      .length,
-                                  shrinkWrap: true,
-                                  itemBuilder: (_, index) => GestureDetector(
-                                    onTap: () {
-                                      bookAppointmentController.query =
-                                          getHelpController
-                                              .getSpecializationModel
-                                              .value
-                                              .specializationList![index]
-                                              .name;
-                                      // AutoRouter.of(context).push(
-                                      //     ConsultantsScreenRouter(
-                                      //         slug: getHelpController
-                                      //                 .getSpecializationModel
-                                      //                 .value
-                                      //                 .specializationList![
-                                      //                     index]
-                                      //                 .slug ??
-                                      //             '',
-                                      //         type: 'specialization'));
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.viewAllConsultant,
-                                          arguments: {
-                                            "slug": getHelpController
-                                                    .getSpecializationModel
-                                                    .value
-                                                    .specializationList![index]
-                                                    .slug ??
-                                                '',
-                                            "type": 'specialization'
-                                          });
-                                    },
-                                    child: Container(
-                                      height: 1.h,
-                                      width: 10.w,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          color: Color(0xFFEFEFEF)),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                4, 0, 0, 0),
-                                            child: CircleAvatar(
-                                              radius: 8.w,
-                                              child: CircleAvatar(
-                                                radius: 7.8.w,
-                                                backgroundColor: Colors.white,
-                                                child: CachedNetworkImage(
-                                                  imageUrl: getHelpController
-                                                          .getSpecializationModel
-                                                          .value
-                                                          .specializationList![
-                                                              index]
-                                                          .displayImage ??
-                                                      '',
-                                                  placeholder: (context, url) =>
-                                                      Shimmer.fromColors(
-                                                          child: Container(
-                                                            height: 1.h,
-                                                            width: 1.w,
-                                                            color: Colors.grey,
-                                                          ),
-                                                          baseColor:
-                                                              Colors.grey,
-                                                          highlightColor:
-                                                              Colors.white),
-                                                  errorWidget:
-                                                      (context, url, error) =>
-                                                          Icon(
-                                                    Icons.person,
-                                                    size: 50,
-                                                    color: Colors.grey,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(width: 2.w),
-                                          Container(
-                                            width: 25.w,
-                                            child: Text(
-                                              getHelpController
-                                                      .getSpecializationModel
-                                                      .value
-                                                      .specializationList![
-                                                          index]
-                                                      .name ??
-                                                  '',
-                                              style: TextStyle(),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        GetHelpDivider(),
-                        GetHelpCategory(
-                            title: "Top Consultants",
-                            onPressed: () =>
-                                // Navigator.of(context).push(MaterialPageRoute(
-                                //     builder: (_) => ConsultantsScreen(
-                                //           slug: '',
-                                //           type: 'topconsultant',
-                                //         ))),
-                                Navigator.pushNamed(
-                                    context, AppRoutes.viewAllConsultant,
-                                    arguments: {
-                                      "slug": '',
-                                      "type": 'topconsultant'
-                                    })),
-                        Container(
-                          height: 17.h,
-                          margin: EdgeInsets.only(bottom: 2.h),
-                          child: Container(
-                            child: getHelpController
-                                        .topConsultantList.value.doctors !=
-                                    null
-                                ? getHelpController.topConsultantList.value
-                                        .doctors!.isEmpty
-                                    ? Center(
-                                        child: Text(
-                                            'No Consultant available for your country'),
-                                      )
-                                    : ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: getHelpController
-                                            .topConsultantList
-                                            .value
-                                            .doctors!
-                                            .length,
-                                        itemBuilder: (_, index) {
-                                          debugPrint(getHelpController
-                                              .topConsultantList
-                                              .value
-                                              .doctors![index]
-                                              .profilePicture);
-                                          return TopConsultantsTile(
-                                            bio: getHelpController
-                                                    .topConsultantList
-                                                    .value
-                                                    .doctors![index]
-                                                    .bio ??
-                                                '',
-                                            name: getHelpController
-                                                    .topConsultantList
-                                                    .value
-                                                    .doctors![index]
-                                                    .name ??
-                                                '',
-                                            mobile: getHelpController
-                                                    .topConsultantList
-                                                    .value
-                                                    .doctors![index]
-                                                    .contactNumber ??
-                                                '',
-                                            imgUrl: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .profilePicture,
-                                            sId: getHelpController
-                                                .topConsultantList
-                                                .value
-                                                .doctors![index]
-                                                .sId,
-                                          );
-                                        })
-                                : Container(
-                                    child: Center(
-                                    child: Text('No Doctors Found'),
-                                  )),
-                          ),
-                        ),
-                        GetHelpDivider(),
-                        GetHelpCategory(
-                          title: "Solh Volunteer",
-                          // onPressed: () =>
-                          //     Navigator.of(context).push(MaterialPageRoute(
-                          //         builder: (_) => ConsultantsScreen(
-                          //               slug: '',
-                          //               type: 'topconsultant',
-                          //             ))),
-                        ),
-                        Container(
-                          height: 290,
-                          margin: EdgeInsets.only(bottom: 2.h),
-                          child: Container(child: Obx(() {
-                            return getHelpController
-                                        .solhVolunteerList.value.provider !=
-                                    null
-                                ? ListView.separated(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 2.h),
-                                    separatorBuilder: (_, __) =>
-                                        SizedBox(width: 2.w),
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: getHelpController
-                                        .solhVolunteerList
-                                        .value
-                                        .provider!
-                                        .length,
-                                    itemBuilder: (context, index) =>
-                                        SolhVolunteers(
-                                      bio: getHelpController.solhVolunteerList
-                                              .value.provider![index].bio ??
-                                          '',
-                                      isInSendRequest:
-                                          checkIfAlreadyInSendConnection(
-                                        getHelpController.solhVolunteerList
-                                                .value.provider![index].sId ??
-                                            '',
-                                      ),
-                                      name: getHelpController.solhVolunteerList
-                                              .value.provider![index].name ??
-                                          '',
-                                      mobile: getHelpController
-                                              .solhVolunteerList
-                                              .value
-                                              .provider![index]
-                                              .contactNumber ??
-                                          '',
-                                      imgUrl: getHelpController
-                                          .solhVolunteerList
-                                          .value
-                                          .provider![index]
-                                          .profilePicture,
-                                      sId: getHelpController.solhVolunteerList
-                                          .value.provider![index].sId,
-                                      uid: getHelpController.solhVolunteerList
-                                          .value.provider![index].uid,
-                                      comments: getHelpController
-                                          .solhVolunteerList
-                                          .value
-                                          .provider![index]
-                                          .commentCount
-                                          .toString(),
-                                      connections: getHelpController
-                                          .solhVolunteerList
-                                          .value
-                                          .provider![index]
-                                          .connectionsCount
-                                          .toString(),
-                                      likes: getHelpController.solhVolunteerList
-                                          .value.provider![index].likesCount
-                                          .toString(),
-                                      userType: getHelpController
-                                          .solhVolunteerList
-                                          .value
-                                          .provider![index]
-                                          .userType,
-                                    ),
-                                  )
-                                : Container(
-                                    child: Center(
-                                      child: Text('No Volunteers Found'),
-                                    ),
-                                  );
-                          })),
-                        ),
-                        SizedBox(
-                          height: 150,
-                        )
-                      ],
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SearchScreen(),
                     ),
-                  ),
+                  );
+                }),
+          ),
+          GetHelpDivider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GetHelpCategory(title: 'Search for support'),
+                InkWell(
+                  onTap: () {
+                    getHelpController.isAllIssueShown.value
+                        ? getHelpController.showLessIssues()
+                        : getHelpController.showAllIssues();
+                    getHelpController.isAllIssueShown.value =
+                        !getHelpController.isAllIssueShown.value;
+                  },
+                  child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 11.0, bottom: 11, top: 11, left: 11),
+                      child: Obx(() {
+                        return Text(
+                          !getHelpController.isAllIssueShown.value
+                              ? "Show More"
+                              : "Show less",
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: SolhColors.green,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      })),
                 ),
               ],
             ),
-          ));
-    });
+          ),
+          Container(
+              margin: EdgeInsets.only(bottom: 1.5.h),
+              child: Obx(() {
+                return Wrap(
+                  runSpacing: 5,
+                  children: getHelpController.issueList.value.map((issue) {
+                    return IssuesTile(
+                      title: issue.name ?? '',
+                      onPressed: () {
+                        bookAppointmentController.query = issue.name;
+                        // AutoRouter.of(context).push(
+                        //     ConsultantsScreenRouter(
+                        //         slug: issue.slug ?? '',
+                        //         type: 'issue'));
+                      },
+                    );
+                  }).toList(),
+                );
+              })),
+          GetHelpDivider(),
+          GetHelpCategory(
+            title: "Search by speciality",
+          ),
+          getHelpController.getSpecializationModel.value.specializationList !=
+                  null
+              ? Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        mainAxisSpacing: 2.5.w,
+                        crossAxisSpacing: 2.5.w,
+                        crossAxisCount: 2,
+                        childAspectRatio: 2),
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: getHelpController.getSpecializationModel.value
+                        .specializationList!.length,
+                    shrinkWrap: true,
+                    itemBuilder: (_, index) => GestureDetector(
+                      onTap: () {
+                        bookAppointmentController.query = getHelpController
+                            .getSpecializationModel
+                            .value
+                            .specializationList![index]
+                            .name;
+                        // AutoRouter.of(context).push(
+                        //     ConsultantsScreenRouter(
+                        //         slug: getHelpController
+                        //                 .getSpecializationModel
+                        //                 .value
+                        //                 .specializationList![
+                        //                     index]
+                        //                 .slug ??
+                        //             '',
+                        //         type: 'specialization'));
+                        Navigator.pushNamed(
+                            context, AppRoutes.viewAllConsultant,
+                            arguments: {
+                              "slug": getHelpController.getSpecializationModel
+                                      .value.specializationList![index].slug ??
+                                  '',
+                              "type": 'specialization'
+                            });
+                      },
+                      child: Container(
+                        height: 1.h,
+                        width: 10.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Color(0xFFEFEFEF)),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                              child: CircleAvatar(
+                                radius: 8.w,
+                                child: CircleAvatar(
+                                  radius: 7.8.w,
+                                  backgroundColor: Colors.white,
+                                  child: CachedNetworkImage(
+                                    imageUrl: getHelpController
+                                            .getSpecializationModel
+                                            .value
+                                            .specializationList![index]
+                                            .displayImage ??
+                                        '',
+                                    placeholder: (context, url) =>
+                                        Shimmer.fromColors(
+                                            child: Container(
+                                              height: 1.h,
+                                              width: 1.w,
+                                              color: Colors.grey,
+                                            ),
+                                            baseColor: Colors.grey,
+                                            highlightColor: Colors.white),
+                                    errorWidget: (context, url, error) => Icon(
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 2.w),
+                            Container(
+                              width: 25.w,
+                              child: Text(
+                                getHelpController.getSpecializationModel.value
+                                        .specializationList![index].name ??
+                                    '',
+                                style: TextStyle(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              : Container(),
+          GetHelpDivider(),
+          GetHelpCategory(
+              title: "Top Consultants",
+              onPressed: () =>
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (_) => ConsultantsScreen(
+                  //           slug: '',
+                  //           type: 'topconsultant',
+                  //         ))),
+                  Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                      arguments: {"slug": '', "type": 'topconsultant'})),
+          Container(
+            height: 17.h,
+            margin: EdgeInsets.only(bottom: 2.h),
+            child: Container(
+              child: getHelpController.topConsultantList.value.doctors != null
+                  ? getHelpController.topConsultantList.value.doctors!.isEmpty
+                      ? Center(
+                          child:
+                              Text('No Consultant available for your country'),
+                        )
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: getHelpController
+                              .topConsultantList.value.doctors!.length,
+                          itemBuilder: (_, index) {
+                            debugPrint(getHelpController.topConsultantList.value
+                                .doctors![index].profilePicture);
+                            return TopConsultantsTile(
+                              bio: getHelpController.topConsultantList.value
+                                      .doctors![index].bio ??
+                                  '',
+                              name: getHelpController.topConsultantList.value
+                                      .doctors![index].name ??
+                                  '',
+                              mobile: getHelpController.topConsultantList.value
+                                      .doctors![index].contactNumber ??
+                                  '',
+                              imgUrl: getHelpController.topConsultantList.value
+                                  .doctors![index].profilePicture,
+                              sId: getHelpController
+                                  .topConsultantList.value.doctors![index].sId,
+                            );
+                          })
+                  : Container(
+                      child: Center(
+                      child: Text('No Doctors Found'),
+                    )),
+            ),
+          ),
+          GetHelpDivider(),
+          GetHelpCategory(
+            title: "Solh Volunteer",
+            // onPressed: () =>
+            //     Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (_) => ConsultantsScreen(
+            //               slug: '',
+            //               type: 'topconsultant',
+            //             ))),
+          ),
+          Container(
+            height: 290,
+            margin: EdgeInsets.only(bottom: 2.h),
+            child: Container(child: Obx(() {
+              return getHelpController.solhVolunteerList.value.provider != null
+                  ? ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 2.h),
+                      separatorBuilder: (_, __) => SizedBox(width: 2.w),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: getHelpController
+                          .solhVolunteerList.value.provider!.length,
+                      itemBuilder: (context, index) => SolhVolunteers(
+                        bio: getHelpController
+                                .solhVolunteerList.value.provider![index].bio ??
+                            '',
+                        isInSendRequest: checkIfAlreadyInSendConnection(
+                          getHelpController.solhVolunteerList.value
+                                  .provider![index].sId ??
+                              '',
+                        ),
+                        name: getHelpController.solhVolunteerList.value
+                                .provider![index].name ??
+                            '',
+                        mobile: getHelpController.solhVolunteerList.value
+                                .provider![index].contactNumber ??
+                            '',
+                        imgUrl: getHelpController.solhVolunteerList.value
+                            .provider![index].profilePicture,
+                        sId: getHelpController
+                            .solhVolunteerList.value.provider![index].sId,
+                        uid: getHelpController
+                            .solhVolunteerList.value.provider![index].uid,
+                        comments: getHelpController.solhVolunteerList.value
+                            .provider![index].commentCount
+                            .toString(),
+                        connections: getHelpController.solhVolunteerList.value
+                            .provider![index].connectionsCount
+                            .toString(),
+                        likes: getHelpController
+                            .solhVolunteerList.value.provider![index].likesCount
+                            .toString(),
+                        userType: getHelpController
+                            .solhVolunteerList.value.provider![index].userType,
+                      ),
+                    )
+                  : Container(
+                      child: Center(
+                        child: Text('No Volunteers Found'),
+                      ),
+                    );
+            })),
+          ),
+          SizedBox(
+            height: 150,
+          )
+        ],
+      ),
+    );
   }
 
   bool checkIfAlreadyInSendConnection(String sId) {

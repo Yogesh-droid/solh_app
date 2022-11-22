@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,65 +9,17 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
-import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
-import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import '../../../controllers/journals/journal_comment_controller.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
-
-/* class JournalingScreen extends StatefulWidget {
-  const JournalingScreen({Key? key}) : super(key: key);
-
-  @override
-  _JournalingScreenState createState() => _JournalingScreenState();
-}
-
-class _JournalingScreenState extends State<JournalingScreen> {
-  FeelingsController feelingsController = Get.find();
-
-  JournalCommentController journalCommentController = Get.find();
-  MoodMeterController moodMeterController = Get.find();
-  late bool isMoodMeterShown;
-
-  final DiscoverGroupController discoverGroupController = Get.find();
-
-  ConnectionController connectionController = Get.put(ConnectionController());
-  ConnectScreenController connectScreenController =
-      Get.put(ConnectScreenController());
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            SideDrawer(),
-            Journaling(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    print('Running init state of journaling2');
-    moodMeterController.getMoodAnalytics(7);
-    super.initState();
-  }
-} */
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
@@ -92,8 +45,6 @@ class _JournalingState extends State<Journaling> {
 
     /////   Loop for fetching groups shown on home screen discover + joined groups ////
 
-    // journalsBloc.getJournalsSnapshot();
-    //openMoodMeter();
     _journalsScrollController.addListener(() async {
       if (_journalsScrollController.position.pixels ==
           _journalsScrollController.position.minScrollExtent) {
@@ -159,124 +110,71 @@ class _JournalingState extends State<Journaling> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => AnimatedPositioned(
-          duration: Duration(milliseconds: 300),
-          left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    offset: const Offset(
-                      14.0,
-                      14.0,
-                    ),
-                    blurRadius: 20.0,
-                    spreadRadius: 4.0,
-                  )
-                ],
-                color: Colors.white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                Scaffold(
-                  body: SmartRefresher(
-                    controller: _refreshController,
-                    onRefresh: _onRefresh,
-                    child: ListView(
-                      controller: _journalsScrollController,
-                      children: [
-                        Column(
-                          children: [
-                            WhatsOnYourMindSection(),
-                            groupRow(),
-                            Obx(() {
-                              return !_journalPageController.isLoading.value
-                                  ? Obx(() {
-                                      return _journalPageController
-                                              .journalsList.value.isNotEmpty
-                                          ? ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount: _journalPageController
-                                                  .journalsList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return _journalPageController
-                                                                .journalsList
-                                                                .value[index]
-                                                                .id !=
-                                                            null &&
-                                                        !userBlocNetwork
-                                                            .hiddenPosts
-                                                            .contains(
-                                                                _journalPageController
-                                                                    .journalsList
-                                                                    .value[
-                                                                        index]
-                                                                    .id)
-                                                    ? getJournalTile(index)
-                                                    : Container();
-                                              })
-                                          : Center(
-                                              child: Column(
-                                                children: [
-                                                  SizedBox(
-                                                    height: 25.h,
-                                                  ),
-                                                  Obx(() {
-                                                    return Text(
-                                                      _journalPageController
-                                                                  .selectedGroupId
-                                                                  .value ==
-                                                              ''
-                                                          ? "No Journals"
-                                                          : 'No Post',
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: Color(
-                                                              0xFFD9D9D9)),
-                                                    );
-                                                  })
-                                                ],
-                                              ),
-                                            );
+    return SmartRefresher(
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: ListView(
+        controller: _journalsScrollController,
+        children: [
+          Column(
+            children: [
+              WhatsOnYourMindSection(),
+              groupRow(),
+              Obx(() {
+                return !_journalPageController.isLoading.value
+                    ? Obx(() {
+                        return _journalPageController
+                                .journalsList.value.isNotEmpty
+                            ? ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount:
+                                    _journalPageController.journalsList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _journalPageController.journalsList
+                                                  .value[index].id !=
+                                              null &&
+                                          !userBlocNetwork.hiddenPosts.contains(
+                                              _journalPageController
+                                                  .journalsList.value[index].id)
+                                      ? getJournalTile(index)
+                                      : Container();
+                                })
+                            : Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 25.h,
+                                    ),
+                                    Obx(() {
+                                      return Text(
+                                        _journalPageController
+                                                    .selectedGroupId.value ==
+                                                ''
+                                            ? "No Journals"
+                                            : 'No Post',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFFD9D9D9)),
+                                      );
                                     })
-                                  : getShimmer(context);
-                            }),
-                          ],
-                        ),
-                        if (_fetchingMore) Center(child: MyLoader()),
-                        SizedBox(height: Platform.isIOS ? 80 : 50),
-                        SizedBox(
-                          height: 200,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (bottomNavigatorController.isDrawerOpen.value)
-                  GestureDetector(
-                    // onTap: () => setState(() => _isDrawerOpen = false),
-                    onTap: () {
-                      bottomNavigatorController.isDrawerOpen.value = false;
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                    ),
-                  ),
-              ],
-            ),
+                                  ],
+                                ),
+                              );
+                      })
+                    : getShimmer(context);
+              }),
+            ],
           ),
-        ));
+          if (_fetchingMore) Center(child: MyLoader()),
+          SizedBox(height: Platform.isIOS ? 80 : 50),
+          SizedBox(
+            height: 200,
+          ),
+        ],
+      ),
+    );
   }
 
   SolhAppBar getAppBar() {

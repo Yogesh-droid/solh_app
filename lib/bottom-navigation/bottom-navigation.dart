@@ -31,7 +31,6 @@ class MasterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('master 1');
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -65,6 +64,23 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
 
   List<Widget> bottomWidgetList = [
+    // Container(
+    //   child: ListView(
+    //     children: List.generate(100, (index) => Text(index.toString())),
+    //   ),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // )
     HomeScreen(),
     Journaling(),
     GetHelpScreen(),
@@ -121,8 +137,10 @@ class _MasterScreen2State extends State<MasterScreen2>
               //       return HomeScreen();
               //     case 1:
               //       return Journaling();
-              //     case 3:
+              //     case 2:
               //       return GetHelpScreen();
+              //     case 3:
+              //       return MyGoalsScreen();
               //     case 4:
               //       return MyProfileScreen();
               //     default:
