@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
@@ -34,6 +35,7 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   ConnectionController connectionController = Get.find();
+  BottomNavigatorController bottomNavigatorController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +82,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               Get.delete<CreateGroupController>();
                               Navigator.pushNamedAndRemoveUntil(context,
                                   AppRoutes.phoneAuthScreen, (route) => false);
+                              bottomNavigatorController.activeIndex.value = 1;
                             });
                           }),
                     ),
