@@ -117,6 +117,9 @@ class RouteGenerator {
       case AppRoutes.accountPrivacy:
         return MaterialPageRoute(
             builder: ((context) => AccountPrivacyScreen(args: args as Map)));
+      case AppRoutes.appointmentPage:
+        return MaterialPageRoute(
+            builder: ((context) => AppointmentScreen(args: args as Map)));
       default:
         return MaterialPageRoute(
             builder: ((context) => Scaffold(

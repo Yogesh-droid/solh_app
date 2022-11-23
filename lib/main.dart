@@ -87,17 +87,12 @@ class _SolhAppState extends State<SolhApp> {
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
-        //initialRoute: AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,
           primaryColor: SolhColors.green,
 
-          inputDecorationTheme: InputDecorationTheme(
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Color.fromARGB(255, 248, 248, 248), width: 2))),
           colorScheme: ColorScheme(
               secondary: SolhColors.green,
               background: SolhColors.green,
@@ -113,6 +108,8 @@ class _SolhAppState extends State<SolhApp> {
           // primaryColor: Color.fromRGBO(95, 155, 140, 1),
           // primarySwatch: Colors.green,
           // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+
+          buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
                   splashFactory: InkRipple.splashFactory,
@@ -128,36 +125,6 @@ class _SolhAppState extends State<SolhApp> {
                       MaterialStateProperty.all<Color>(SolhColors.green))),
         ),
       );
-
-      /*  return GetMaterialApp.router(
-        localizationsDelegates: [CountryLocalizations.delegate],
-        routerDelegate: _appRouter.delegate(
-            initialDeepLink: widget._isProfileCreated
-                ? "MasterScreen"
-                : "IntroCarouselScreen"),
-        routeInformationParser: _appRouter.defaultRouteParser(),
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: GoogleFonts.signika().fontFamily,
-          // primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          // primarySwatch: Colors.green,
-          // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-          textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                  splashFactory: InkRipple.splashFactory,
-                  overlayColor:
-                      MaterialStateProperty.all<Color>(SolhColors.grey),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  )),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.green))),
-          inputDecorationTheme: InputDecorationTheme(),
-        ),
-      ); */
     });
   }
 }

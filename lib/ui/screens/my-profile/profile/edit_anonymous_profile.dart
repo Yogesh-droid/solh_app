@@ -192,7 +192,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                       _userNameController.text !=
                           userBlocNetwork.anonUserName) {
                     debugPrint("anon upload try $imgUrl");
-                    var response = await Network.makePutRequestWithToken(
+                    var response = await Network.makePostRequestWithToken(
                         url: "${APIConstants.api}/api/anonymous",
                         body: {
                           "userName": _userNameController.text,
@@ -255,7 +255,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
     var response = await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/anonymous", "file", _croppedFile!);
     if (response["success"]) {
-      imgUrl = response["imageUrl"];
+      imgUrl = response["location"];
       imgType = response["mimetype"];
       Utility.showToast('Profile picture updated');
     }

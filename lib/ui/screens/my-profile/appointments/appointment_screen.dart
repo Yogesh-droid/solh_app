@@ -19,7 +19,7 @@ import '../../../../widgets_constants/loader/my-loader.dart';
 import '../../chat/chat.dart';
 
 class AppointmentScreen extends StatelessWidget {
-  AppointmentScreen({Key? key}) : super(key: key);
+  AppointmentScreen({Key? key, Map<dynamic, dynamic>? args}) : super(key: key);
   final AppointmentController appointmentController = Get.find();
 
   @override

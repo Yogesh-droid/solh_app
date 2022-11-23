@@ -165,6 +165,9 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
                                 .connectScreenModel.value.user!.sId ??
                             '',
                       ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       GetConnectJoinUnfriendButton(
                           connectScreenController: connectScreenController,
                           sId: widget.sId == null || widget.sId == '123'
@@ -469,9 +472,11 @@ Widget getUnfriendAcceptPendingButton(
   if (connectScreenController.isInSentRequest.value) {
     return SolhGreenBorderButton(
       width: 70.w,
-      child: Text(
-        'Cancle',
-        style: SolhTextStyles.GreenBorderButtonText,
+      child: Container(
+        child: Text(
+          'Cancle',
+          style: SolhTextStyles.GreenBorderButtonText,
+        ),
       ),
       onPressed: () => connectScreenController.removeConnectionRequest(sId),
     );

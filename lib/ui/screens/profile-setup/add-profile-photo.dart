@@ -144,6 +144,7 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
                     height: 6.h,
                     width: MediaQuery.of(context).size.width / 1.1,
                     onPressed: () async {
+                      print(_croppedFile!.path);
                       var response = await Network.uploadFileToServer(
                           "${APIConstants.api}/api/fileupload/user-profile-picture",
                           "profile",

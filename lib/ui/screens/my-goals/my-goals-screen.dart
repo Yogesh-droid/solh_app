@@ -27,16 +27,7 @@ class MyGoalsScreen extends StatefulWidget {
 class _MyGoalsScreenState extends State<MyGoalsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Stack(children: [
-          SideDrawer(),
-          MyGoalPage(),
-        ]),
-      ),
-    );
+    return MyGoalPage();
   }
 }
 
@@ -52,91 +43,58 @@ class _MyGoalPageState extends State<MyGoalPage> {
   GoalSettingController goalSettingController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      return AnimatedPositioned(
-          duration: Duration(milliseconds: 300),
-          left: _bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
-          child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.35),
-                    offset: const Offset(
-                      14.0,
-                      14.0,
-                    ),
-                    blurRadius: 20.0,
-                    spreadRadius: 4.0,
-                  )
-                ],
-                color: Colors.white),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Stack(
-              children: [
-                Scaffold(
-                  body: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 0,
-                        ),
-                        getTodayGoal(context),
-                        Obx(() {
-                          return goalSettingController
-                                          .pesonalGoalModel.value.goalList !=
-                                      null &&
-                                  goalSettingController.pesonalGoalModel.value
-                                          .goalList!.length >
-                                      0
-                              ? GetHelpDivider()
-                              : Container();
-                        }),
-                        Obx(() {
-                          return !goalSettingController
-                                  .isPersonalGoalLoading.value
-                              ? GoalName()
-                              : personalGoallistShimmer();
-                        }),
-                        SizedBox(
-                          height: 10,
-                        ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 0,
+          ),
+          getTodayGoal(context),
+          Obx(() {
+            return goalSettingController.pesonalGoalModel.value.goalList !=
+                        null &&
+                    goalSettingController
+                            .pesonalGoalModel.value.goalList!.length >
+                        0
+                ? GetHelpDivider()
+                : Container();
+          }),
+          Obx(() {
+            return !goalSettingController.isPersonalGoalLoading.value
+                ? GoalName()
+                : personalGoallistShimmer();
+          }),
+          SizedBox(
+            height: 10,
+          ),
 
-                        Obx(() {
-                          return goalSettingController
-                                          .pesonalGoalModel.value.goalList !=
-                                      null &&
-                                  goalSettingController.pesonalGoalModel.value
-                                          .goalList!.length >
-                                      0 &&
-                                  goalSettingController.isExpanded.value
-                                          .toString() !=
-                                      goalSettingController.pesonalGoalModel
-                                          .value.goalList!.last.sId
-                                          .toString()
-                              ? GetHelpDivider()
-                              : Container();
-                        }),
+          Obx(() {
+            return goalSettingController.pesonalGoalModel.value.goalList !=
+                        null &&
+                    goalSettingController
+                            .pesonalGoalModel.value.goalList!.length >
+                        0 &&
+                    goalSettingController.isExpanded.value.toString() !=
+                        goalSettingController
+                            .pesonalGoalModel.value.goalList!.last.sId
+                            .toString()
+                ? GetHelpDivider()
+                : Container();
+          }),
 
-                        // MileStone(),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        GetHelpCategory(title: "I want to work on"),
-                        IWantToWorkOn(),
-                        SizedBox(
-                          height: 150,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ));
-    });
+          // MileStone(),
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpCategory(title: "I want to work on"),
+          IWantToWorkOn(),
+          SizedBox(
+            height: 150,
+          ),
+        ],
+      ),
+    );
   }
 
   Widget getTodayGoal(BuildContext context) {

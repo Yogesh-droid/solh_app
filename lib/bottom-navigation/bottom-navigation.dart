@@ -31,7 +31,6 @@ class MasterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('master 1');
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -65,6 +64,23 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
 
   List<Widget> bottomWidgetList = [
+    // Container(
+    //   child: ListView(
+    //     children: List.generate(100, (index) => Text(index.toString())),
+    //   ),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // ),
+    // Container(
+    //   child: Text('HomeScreen'),
+    // )
     HomeScreen(),
     Journaling(),
     GetHelpScreen(),
@@ -85,7 +101,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       return _onWillPop(context);
     }, child: Obx(() {
       return AnimatedPositioned(
-        duration: Duration(milliseconds: 0),
+        duration: Duration(milliseconds: 300),
         left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
         child: Container(
           height: 100.h,
@@ -121,8 +137,10 @@ class _MasterScreen2State extends State<MasterScreen2>
               //       return HomeScreen();
               //     case 1:
               //       return Journaling();
-              //     case 3:
+              //     case 2:
               //       return GetHelpScreen();
+              //     case 3:
+              //       return MyGoalsScreen();
               //     case 4:
               //       return MyProfileScreen();
               //     default:
@@ -268,12 +286,19 @@ class _MasterScreen2State extends State<MasterScreen2>
             height: 40,
             width: 40,
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: SvgPicture.asset(
-              "assets/icons/app-bar/app-bar-menu.svg",
-              width: 26,
-              height: 24,
-              color: SolhColors.green,
-            ),
+            child: Obx(() {
+              return bottomNavigatorController.isDrawerOpen.value
+                  ? Icon(
+                      Icons.close,
+                      size: 26,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/app-bar/app-bar-menu.svg",
+                      width: 26,
+                      height: 24,
+                      color: SolhColors.green,
+                    );
+            }),
           ),
         ));
   }
