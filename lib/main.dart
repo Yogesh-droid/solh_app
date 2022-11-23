@@ -70,8 +70,6 @@ class SolhApp extends StatefulWidget {
 }
 
 class _SolhAppState extends State<SolhApp> {
-  final _appRouter = AppRouter(globalNavigatorKey);
-
   @override
   void initState() {
     // initDynamicLinks();
@@ -96,7 +94,7 @@ class _SolhAppState extends State<SolhApp> {
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: SolhColors.green, width: 2))),
           primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          primarySwatch: Colors.green,
+          //primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
