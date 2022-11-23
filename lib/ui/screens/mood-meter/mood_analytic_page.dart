@@ -17,26 +17,37 @@ class MoodAnalyticPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: SolhColors.greyS200,
-      appBar: getAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            getMoodRightNowWidget(context),
-            getMoodCountWidget(context),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        moodMeterController.selectedFrequency.value = '7';
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: SolhColors.greyS200,
+        appBar: getAppBar(moodMeterController, context),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              getMoodRightNowWidget(context),
+              getMoodCountWidget(context),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  SolhAppBar getAppBar() {
+  SolhAppBar getAppBar(MoodMeterController moodMeterController, context) {
     return SolhAppBar(
       title: Text(
         'Mood Analytics',
         style: SolhTextStyles.AppBarText,
       ),
+      callback: (() {
+        moodMeterController.selectedFrequency.value = '7';
+        Navigator.pop(context);
+      }),
       isLandingScreen: false,
     );
   }
