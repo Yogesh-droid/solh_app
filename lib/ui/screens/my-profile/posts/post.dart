@@ -68,10 +68,19 @@ class _PostScreenState extends State<PostScreen> {
       body: StreamBuilder<List<Journals?>>(
           stream: myJournalsBloc.journalsStateStream,
           builder: (_, journalsSnapshot) {
-            if (journalsSnapshot.hasData && !journalsSnapshot.data!.isEmpty) {
-              journalsSnapshot.data!.forEach((journal) {
-                print(journal!.postedBy!.name);
-              });
+            if (journalsSnapshot.hasData &&
+                myJournalsBloc.isFetchingPost == false) {
+              if (journalsSnapshot.data!.isEmpty) {
+                return Center(
+                    child: Text(
+                  "Well, there's nothing here! Why don't you begin today?",
+                  style: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ));
+              }
               return Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
@@ -79,7 +88,6 @@ class _PostScreenState extends State<PostScreen> {
                     shrinkWrap: true,
                     itemCount: journalsSnapshot.requireData.length,
                     itemBuilder: (_, index) {
-                      print(journalsSnapshot.data![index]);
                       return InkWell(
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
