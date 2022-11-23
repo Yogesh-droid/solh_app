@@ -190,7 +190,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 label: Container(
                                     width: MediaQuery.of(context).size.width -
                                         20.w,
-                                    child: Center(child: Text("Post"))))
+                                    child: Center(
+                                        child: Text(
+                                      "Post",
+                                      style: TextStyle(color: Colors.white),
+                                    ))))
                             : Container();
                       });
               }));

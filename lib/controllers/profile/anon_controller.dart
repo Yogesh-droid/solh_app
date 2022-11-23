@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
@@ -26,14 +27,16 @@ class AnonController extends GetxController {
 
   Future<String?> createAnonProfile() async {
     isLoading.value = true;
+    debugPrint(avtarImageUrl.value);
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/anonymous',
         body: {
           'userName': userName.value,
-          'avtarImageUrl': avtarImageUrl.value,
+          'profilePicture': avtarImageUrl.value,
           'profilePictureType': avtarType.value,
         });
     isLoading.value = false;
+    debugPrint('trying to create anon profile $map');
     if (map['success']) {
       return map['message'];
     }

@@ -617,7 +617,7 @@ class ProfileDetailsButton extends StatelessWidget {
 
 void clearOneSignalID() {
   Network.makePutRequestWithToken(
-      url: "${APIConstants.api}/api/edit-user-details",
+      url: "${APIConstants.api}/api/edit-onesignal-id",
       body: {
         'onesignal_device_id': '',
       });
