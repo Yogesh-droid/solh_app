@@ -9,6 +9,7 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -159,10 +160,15 @@ class BookAppointmentWidget extends StatelessWidget {
 
                         if (val == 'Successfully created appointment.') {
                           await _appointmentController.getUserAppointments();
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
-                                  builder: (context) => AppointmentScreen()),
-                              (route) => true);
+
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+
+                          Navigator.pushNamed(
+                              context, AppRoutes.appointmentPage,
+                              arguments: {});
+
                           final snackBar = SnackBar(
                             content: Text(
                               'Appointment request sent.',
@@ -640,15 +646,12 @@ class BookAppointmentPopup extends StatelessWidget {
                 // await Future.delayed(Duration(seconds: 2), () {});
                 String response = await _controller.bookAppointment(body);
                 Get.find<AppointmentController>().getUserAppointments();
-
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                        builder: (context) => AppointmentScreen()),
-                    (route) => true);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, AppRoutes.appointmentPage,
+                    arguments: {});
 
                 showDialog(
                     context: context,

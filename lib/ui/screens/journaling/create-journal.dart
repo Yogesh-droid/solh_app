@@ -1,10 +1,8 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -78,6 +76,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      feelingsController.selectedFeelingsId.value = [];
       if (widget.isPostedFromDiaryDetails == null) {
         journalPageController.selectedDiary.value = Journals();
         _customFeelingController.clear();
@@ -189,7 +188,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 label: Container(
                                     width: MediaQuery.of(context).size.width -
                                         20.w,
-                                    child: Center(child: Text("Post"))))
+                                    child: Center(
+                                        child: Text(
+                                      "Post",
+                                      style: TextStyle(color: SolhColors.white),
+                                    ))))
                             : Container();
                       });
               }));

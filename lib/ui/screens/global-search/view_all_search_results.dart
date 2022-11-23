@@ -59,7 +59,15 @@ class ViewAllSearchResults extends StatelessWidget {
         itemCount: groupCount!.length,
         itemBuilder: (context, index) => GroupCard(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                Navigator.pushNamed(context, AppRoutes.groupDetails,
+                    arguments: {
+                      "group": GroupList(
+                        sId: groupCount[index].sId,
+                        groupName: groupCount[index].groupName,
+                        groupMediaUrl: groupCount[index].groupMediaUrl,
+                      )
+                    });
+                /*  Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return GroupDetailsPage(
                     ///// this case is for group journal
                     group: GroupList(
@@ -68,7 +76,7 @@ class ViewAllSearchResults extends StatelessWidget {
                       groupMediaUrl: groupCount[index].groupMediaUrl,
                     ),
                   );
-                }));
+                })); */
               },
               groupMediaUrl: groupCount[index].groupMediaUrl,
               groupName: groupCount[index].groupName,
@@ -94,7 +102,7 @@ class ViewAllSearchResults extends StatelessWidget {
                 //             sId: connection[index].sId ?? '')));
                 Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
                   "uid": connection[index].uid!,
-                  "sId": connection[index]..sId!
+                  "sId": connection[index].sId!
                 });
               },
             )));

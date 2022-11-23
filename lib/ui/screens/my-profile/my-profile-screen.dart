@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
@@ -25,6 +26,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/chat-list/chat_list_controller.dart';
+import '../../../main.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -89,8 +91,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               Get.delete<ConnectionController>();
                               Get.delete<DiscoverGroupController>();
                               Get.delete<CreateGroupController>();
+
+                              Get.delete<BottomNavigatorController>();
                               Navigator.pushNamedAndRemoveUntil(context,
                                   AppRoutes.phoneAuthScreen, (route) => false);
+                              RestartWidget.restartApp(context);
                             });
                           }),
                     ),

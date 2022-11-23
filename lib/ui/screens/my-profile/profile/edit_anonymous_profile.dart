@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import '../../../../bloc/user-bloc.dart';
 import '../../../../constants/api.dart';
 import '../../../../services/network/network.dart';
 import '../../../../services/utility.dart';
@@ -75,11 +73,12 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                               _pickImage();
                             },
                             child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 14.w,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  userBlocNetwork.anonUserPic),
-                            ),
+                                backgroundColor: Colors.white,
+                                radius: 14.w,
+                                backgroundImage: CachedNetworkImageProvider(
+                                    profileController.myProfileModel.value.body!
+                                            .user!.anonymous!.profilePicture ??
+                                        '')),
                           ),
                         ),
                   Positioned(
@@ -149,7 +148,8 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                       _anonController.isNameTaken.value = false;
                       if (val!.length >= 3 &&
                           _userNameController.text !=
-                              userBlocNetwork.anonUserName) {
+                              profileController.myProfileModel.value.body!.user!
+                                  .anonymous!.userName) {
                         _anonController.checkIfUserNameTaken(val);
                       }
                     },
@@ -196,6 +196,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                           "profilePicture": imgUrl,
                           "profilePictureType": imgType
                         });
+                    debugPrint("anon upload try2 $response");
                     if (response != null) {
                       print(response['imageUrl']);
                     }
@@ -251,7 +252,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
     var response = await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/anonymous", "file", _croppedFile!);
     if (response["success"]) {
-      imgUrl = response["imageUrl"];
+      imgUrl = response["location"];
       imgType = response["mimetype"];
       Utility.showToast('Profile picture updated');
     }

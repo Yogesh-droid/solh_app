@@ -573,16 +573,26 @@ class _CommentScreenState extends State<CommentScreen> {
         onTap: () => widget._journalModel!.group != null &&
                 _journalPageController.selectedGroupId.value.length == 0
             ? {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return GroupDetailsPage(
-                    ///// this case is for group journal
-                    group: GroupList(
+                Navigator.pushNamed(context, AppRoutes.groupDetails,
+                    arguments: {
+                      "group":GroupList(
                       sId: widget._journalModel!.group!.sId,
                       groupName: widget._journalModel!.group!.groupName,
                       groupMediaUrl: widget._journalModel!.group!.groupImage,
                     ),
-                  );
-                }))
+                    }),
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return GroupDetailsPage(
+                //     ///// this case is for group journal
+                //     args: {
+                //       "group":GroupList(
+                //       sId: widget._journalModel!.group!.sId,
+                //       groupName: widget._journalModel!.group!.groupName,
+                //       groupMediaUrl: widget._journalModel!.group!.groupImage,
+                //     ),
+                //     },
+                //   );
+                // }))
               }
             : widget._journalModel!.postedBy!.sId !=
                         null && ////// this case is for user journal
@@ -1427,18 +1437,26 @@ class _PostForCommentState extends State<PostForComment> {
           onTap: () async {
             widget._journalModel!.group != null
                 ? {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return GroupDetailsPage(
-                        ///// this case is for group journal
-                        group: GroupList(
-                          sId: widget._journalModel!.group!.sId,
-                          groupName: widget._journalModel!.group!.groupName,
-                          groupMediaUrl:
-                              widget._journalModel!.group!.groupImage,
-                        ),
-                      );
-                    }))
+                   Navigator.pushNamed(context, AppRoutes.groupDetails,
+                    arguments: {
+                      "group":GroupList(
+                      sId: widget._journalModel!.group!.sId,
+                      groupName: widget._journalModel!.group!.groupName,
+                      groupMediaUrl: widget._journalModel!.group!.groupImage,
+                    ),
+                    }),
+                    // Navigator.push(context,
+                    //     MaterialPageRoute(builder: (context) {
+                    //   return GroupDetailsPage(
+                    //     ///// this case is for group journal
+                    //     group: GroupList(
+                    //       sId: widget._journalModel!.group!.sId,
+                    //       groupName: widget._journalModel!.group!.groupName,
+                    //       groupMediaUrl:
+                    //           widget._journalModel!.group!.groupImage,
+                    //     ),
+                    //   );
+                    // }))
                   }
                 : await connectionController.addConnection(
                     widget._journalModel!.postedBy!.sId!,

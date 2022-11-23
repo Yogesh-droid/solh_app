@@ -14,10 +14,7 @@ import '../../../model/user/user.dart';
 import '../../../services/user/user-profile.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/zoom_image.dart';
-import '../chat/chat.dart';
-import '../my-profile/posts/post.dart';
 import '../my-profile/profile/edit-profile.dart';
-import 'connect_sceen_model/connect_screen_model.dart';
 import 'connect_screen_services/connect_screen_services.dart';
 
 class ConnectProfileScreen extends StatefulWidget {

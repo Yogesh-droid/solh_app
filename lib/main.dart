@@ -12,9 +12,10 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'controllers/chat-list/chat_list_controller.dart';
+import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
@@ -33,14 +34,16 @@ void main() async {
     bool? newUser = await isNewUser();
 
     Map<String, dynamic> _initialAppData = await initApp();
-    runApp(SolhApp(
+    runApp(RestartWidget(
+        child: SolhApp(
       isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
-    ));
+    )));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
   } else
-    runApp(SolhApp(
+    runApp(RestartWidget(
+        child: SolhApp(
       isProfileCreated: false,
-    ));
+    )));
 
   FlutterNativeSplash.remove();
 }
@@ -48,10 +51,8 @@ void main() async {
 ////////   required controllers are initialized here ///////////
 void initControllers() {
   final AgeController ageController = Get.put(AgeController());
-
-  final AnonController anonController = Get.put(AnonController());
-  BookAppointmentController bookAppointment =
-      Get.put(BookAppointmentController());
+  ProfileController profileController = Get.put(ProfileController());
+  var _chatListController = Get.put(ChatListController());
 }
 
 /// app ////
@@ -90,11 +91,20 @@ class _SolhAppState extends State<SolhApp> {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,
-          inputDecorationTheme: InputDecorationTheme(
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: SolhColors.green, width: 2))),
-          primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          //primarySwatch: Colors.green,
+          primaryColor: SolhColors.green,
+          colorScheme: ColorScheme(
+              secondary: SolhColors.green,
+              background: SolhColors.green,
+              brightness: Brightness.light,
+              error: SolhColors.green,
+              onBackground: SolhColors.green,
+              surface: SolhColors.green,
+              onError: SolhColors.green,
+              onPrimary: SolhColors.green,
+              onSecondary: SolhColors.green,
+              onSurface: SolhColors.green,
+              primary: SolhColors.green),
+          primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
@@ -112,5 +122,36 @@ class _SolhAppState extends State<SolhApp> {
         ),
       );
     });
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
+    );
   }
 }

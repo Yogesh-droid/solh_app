@@ -39,7 +39,7 @@ class ChatProviderScreen extends StatefulWidget {
 class _ChatProviderScreenState extends State<ChatProviderScreen> {
   SocketService _service = SocketService();
   var _controller = Get.put(ChatController());
-  var _chatListController = Get.put(ChatListController());
+
   @override
   void initState() {
     if (mounted) {
@@ -411,7 +411,7 @@ class _MessageListProviderState extends State<MessageListProvider> {
       return _controller.isLoading == true
           ? Column(
               children: [
-               MyLoader(),
+                MyLoader(),
               ],
             )
           : Align(

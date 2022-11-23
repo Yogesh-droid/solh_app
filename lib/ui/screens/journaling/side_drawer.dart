@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -12,15 +13,16 @@ import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
-import 'package:solh/ui/screens/psychology-test/psychology_test_page.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/profile/appointment_controller.dart';
 import '../../../model/user/user.dart';
+import '../../../routes/routes.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../../../widgets_constants/privacy_web.dart';
 
+/* 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({
     Key? key,
@@ -29,8 +31,8 @@ class SideDrawer extends StatefulWidget {
   @override
   State<SideDrawer> createState() => _SideDrawerState();
 }
-
-class _SideDrawerState extends State<SideDrawer> {
+ */
+class SideDrawer extends StatelessWidget {
   final MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
   AppointmentController appointmentController = Get.find();
@@ -45,60 +47,72 @@ class _SideDrawerState extends State<SideDrawer> {
           width: 78.w,
           child: Column(
             children: [
-              /* Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 2.5.h, horizontal: 3.8.w),
-                child: InkWell(onTap: () {
-                  bottomNavigatorController.isDrawerOpen.value = false;
-                  bottomNavigatorController.tabrouter!.setActiveIndex(4);
-                }, child: Obx(() {
-                  return profileController.isProfileLoading.value ? Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 7.w,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 6.8.w,
-                          backgroundImage: CachedNetworkImageProvider(
-                            profileController.myProfileModel.value.body!.user!
-                                    .profilePicture ??
-                                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Hi, there",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                profileController.myProfileModel.value.body!
-                                        .user!.name ??
-                                    "",
-                                style: TextStyle(color: Color(0xFF666666)),
-                              ),
-                              SizedBox(width: 1.5.w),
-                              GetBadge(
-                                  userType: profileController.myProfileModel
-                                          .value.body!.user!.userType ??
-                                      '')
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ):Container(child: MyLoader(),);
-                })),
-              ), */
-              StreamBuilder<UserModel?>(
+              Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 2.5.h, horizontal: 3.8.w),
+                  child: Obx(() {
+                    return profileController.isProfileLoading.value
+                        ? Center(
+                            child: MyLoader(),
+                          )
+                        : InkWell(
+                            onTap: () {
+                              bottomNavigatorController.isDrawerOpen.value =
+                                  false;
+                              bottomNavigatorController.activeIndex.value = 4;
+                            },
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 7.w,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 6.8.w,
+                                    backgroundImage: CachedNetworkImageProvider(
+                                      profileController.myProfileModel.value
+                                              .body!.user!.profilePicture ??
+                                          "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Hi, there",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          profileController.myProfileModel.value
+                                                  .body!.user!.name ??
+                                              "",
+                                          style: TextStyle(
+                                              color: Color(0xFF666666)),
+                                        ),
+                                        SizedBox(width: 1.5.w),
+                                        GetBadge(
+                                            userType: profileController
+                                                    .myProfileModel
+                                                    .value
+                                                    .body!
+                                                    .user!
+                                                    .userType ??
+                                                '')
+                                      ],
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ));
+                  })),
+              /*  StreamBuilder<UserModel?>(
                   stream: userBlocNetwork.userStateStream,
                   builder: (context, userSnapshot) {
                     if (userSnapshot.hasData)
@@ -109,8 +123,7 @@ class _SideDrawerState extends State<SideDrawer> {
                           onTap: () {
                             bottomNavigatorController.isDrawerOpen.value =
                                 false;
-                            bottomNavigatorController.tabrouter!
-                                .setActiveIndex(4);
+                            bottomNavigatorController.activeIndex.value = 4;
                           },
                           child: Row(
                             children: [
@@ -160,7 +173,7 @@ class _SideDrawerState extends State<SideDrawer> {
                     return Container(
                       child: MyLoader(),
                     );
-                  }),
+                  }), */
               Container(
                 height: 0.25.h,
                 width: double.infinity,
@@ -212,10 +225,7 @@ class _SideDrawerState extends State<SideDrawer> {
                 SideDrawerMenuTile(
                   title: "Psychological Tests",
                   onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PsychologyTestPage()));
+                    Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   },
                 ),
                 SideDrawerMenuTile(

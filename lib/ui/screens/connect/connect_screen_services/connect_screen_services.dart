@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/services/network/exceptions.dart';
-import 'package:solh/services/network/network.dart';
 import 'package:solh/services/network/networkV2.dart';
 import 'package:solh/ui/screens/connect/connect_sceen_model/connect_screen_model.dart';
 

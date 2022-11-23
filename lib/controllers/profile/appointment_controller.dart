@@ -10,6 +10,7 @@ class AppointmentController extends GetxController {
   var userAppointmentModel = UserAppointmentModel().obs;
   var doctorAppointmentModel = DoctorsAppointmentModel().obs;
   var isAppointmentLoading = false.obs;
+  var isRoutingFromBookAppointment = false;
 
   Future<void> getUserAppointments() async {
     isAppointmentLoading.value = true;

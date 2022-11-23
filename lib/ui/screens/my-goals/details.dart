@@ -1,6 +1,4 @@
 import 'dart:ui';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -57,7 +55,6 @@ class Details extends StatelessWidget {
                         goalId: sampleGoal.sId,
                         goalCatId: goalId);
                     Utility.showToast('Goal set successfully');
-                    AutoRouter.of(context).popUntil(((route) => route.isFirst));
                   },
                 ),
               ),
@@ -307,33 +304,6 @@ class TaskList extends StatelessWidget {
               ]),
         )
       ],
-    );
-  }
-}
-
-class DoneButton extends StatelessWidget {
-  const DoneButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        height: 48,
-        width: 70.w,
-        decoration: BoxDecoration(
-            color: SolhColors.green,
-            borderRadius: BorderRadius.circular(
-              24,
-            )),
-        child: Center(
-          child: Text(
-            'Set Goal',
-            style: GoogleFonts.signika(
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

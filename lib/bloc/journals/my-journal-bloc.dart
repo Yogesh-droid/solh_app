@@ -63,10 +63,11 @@ class MyJournalsBloc {
         }
 
         _journalPageController.myVideoPlayerControllers.value.add({
-          i: VideoPlayerController.network(_journals[i].mediaUrl!)..initialize()
+          i: await VideoPlayerController.network(_journals[i].mediaUrl!)
+            ..initialize()
         });
       } else {
-        _journalPageController.myVideoPlayerControllers.value.add(null);
+        _journalPageController.myVideoPlayerControllers.value.add({});
       }
     }
     print('length of video player controller: ' +

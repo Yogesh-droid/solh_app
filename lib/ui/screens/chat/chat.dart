@@ -72,20 +72,27 @@ class _ChatScreenState extends State<ChatScreen> {
                   sId: widget._sId,
                 ),
               ),
-              Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    _controller.istyping == true
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 10),
-                            child: TypingIndicator(),
-                          )
-                        : Container()
-                  ],
-                );
-              }),
+              Stack(
+                children: [
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Obx(() {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _controller.istyping == true
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 0),
+                                child: TypingIndicator(),
+                              )
+                            : Container()
+                      ],
+                    );
+                  }),
+                ],
+              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: MessageBox(

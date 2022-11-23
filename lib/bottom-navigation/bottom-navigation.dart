@@ -14,22 +14,27 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/journals/journal_page_controller.dart';
-import '../controllers/profile/profile_controller.dart';
+import '../controllers/profile/anon_controller.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
+  //ProfileController profileController = Get.put(ProfileController());
+  final AnonController anonController = Get.put(AnonController());
+  BookAppointmentController bookAppointment =
+      Get.put(BookAppointmentController());
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
-  JournalPageController _journalPageController =
+  JournalPageController journalPageController =
       Get.put(JournalPageController());
   AppointmentController appointmentController =
       Get.put(AppointmentController());
-  ProfileController profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +128,8 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    if (bottomNavigatorController.tabrouter!.activeIndex != 0) {
-      bottomNavigatorController.tabrouter!.setActiveIndex(0);
+    if (bottomNavigatorController.activeIndex != 0) {
+      bottomNavigatorController.activeIndex.value = 0;
       return Future.value(false);
     } else {
       return await showDialog(
@@ -261,28 +266,6 @@ class _MasterScreen2State extends State<MasterScreen2>
         ));
   }
 }
-
-class GetPages extends StatelessWidget {
-  BottomNavigatorController bottomNavigatorController = Get.find();
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-        controller: bottomNavigatorController.pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          HomeScreen(),
-          Journaling(),
-          GetHelpScreen(),
-          MyGoalsScreen(),
-          MyProfileScreen()
-        ]);
-  }
-}
-
-
-
-
-
 
 /* import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';

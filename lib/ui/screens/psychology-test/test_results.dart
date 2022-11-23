@@ -9,6 +9,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../model/psychology-test/psychology_test_model.dart';
 import '../../../model/psychology-test/testHistory_result_model.dart';
+import '../../../routes/routes.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
 class TestResultPage extends StatelessWidget {
@@ -18,119 +19,130 @@ class TestResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
+      appBar: getAppBar(context),
       body: getBody(context),
     );
   }
 
   Widget getBody(BuildContext context) {
-    return SingleChildScrollView(
-      child: Obx(() => psychologyTestController.isResultLoading.value
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8),
-                      width: MediaQuery.of(context).size.width - 50,
-                      child: Text(
-                        "Your test result is given below, It is not exact, but close enogh.",
-                        style: SolhTextStyles.JournalingHintText,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                          color: SolhColors.green),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(0.0),
-                            child: Text(
-                              psychologyTestController.testResultModel.value
-                                      .result!.testResult ??
-                                  '',
-                              // style: SolhTextStyles.GreenBorderButtonText,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(0),
-                            child: ReadMoreText(
-                              psychologyTestController.testResultModel.value
-                                      .result!.explanation ??
-                                  '',
-                              style: SolhTextStyles.GreenButtonText,
-                              trimMode: TrimMode.Line,
-                              trimLines: 15,
-                              textAlign: TextAlign.center,
-                              lessStyle: SolhTextStyles
-                                  .JournalingDescriptionReadMoreText,
-                              moreStyle: SolhTextStyles
-                                  .JournalingDescriptionReadMoreText,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
+    return WillPopScope(
+      onWillPop: () => _onWillPop(context),
+      child: SingleChildScrollView(
+        child: Obx(() => psychologyTestController.isResultLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(14.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        width: MediaQuery.of(context).size.width - 50,
                         child: Text(
-                          'Other Psychological Tests',
-                          style: SolhTextStyles.AppBarText,
+                          "Your test result is given below, It is not exact, but close enogh.",
+                          style: SolhTextStyles.JournalingHintText,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Align(
-                        alignment: Alignment.topLeft,
-                        child: Container(
-                          width: 300,
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: SolhColors.green),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(0.0),
+                              child: Text(
+                                psychologyTestController.testResultModel.value
+                                        .result!.testResult ??
+                                    '',
+                                // style: SolhTextStyles.GreenBorderButtonText,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.all(0),
+                              child: ReadMoreText(
+                                psychologyTestController.testResultModel.value
+                                        .result!.explanation ??
+                                    '',
+                                style: SolhTextStyles.GreenButtonText,
+                                trimMode: TrimMode.Line,
+                                trimLines: 15,
+                                textAlign: TextAlign.center,
+                                lessStyle: SolhTextStyles
+                                    .JournalingDescriptionReadMoreText,
+                                moreStyle: SolhTextStyles
+                                    .JournalingDescriptionReadMoreText,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
                           child: Text(
-                              'It will be a guide to your therapy and to your own self-evaluation.'),
+                            'Other Psychological Tests',
+                            style: SolhTextStyles.AppBarText,
+                          ),
                         ),
                       ),
-                    ),
-                    Obx(() =>
-                        psychologyTestController.testHistoryMoreTest.isNotEmpty
-                            ? getOtherTestWidget(psychologyTestController
-                                    .testResultModel.value.moreTests ??
-                                [])
-                            : Container()),
-                  ]),
-            )),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            width: 300,
+                            child: Text(
+                                'It will be a guide to your therapy and to your own self-evaluation.'),
+                          ),
+                        ),
+                      ),
+                      Obx(() => psychologyTestController
+                              .testHistoryMoreTest.isNotEmpty
+                          ? getOtherTestWidget(psychologyTestController
+                                  .testResultModel.value.moreTests ??
+                              [])
+                          : Container()),
+                    ]),
+              )),
+      ),
     );
   }
 
-  getAppBar() {
+  getAppBar(BuildContext context) {
     return SolhAppBar(
       isLandingScreen: false,
       title: Text(
         'Results',
         style: SolhTextStyles.AppBarText,
       ),
+      callback: () {
+        // Navigator.popUntil(context,
+        //     (route) => route.settings.name == AppRoutes.psychologyTest);
+        // Navigator.pushNamedAndRemoveUntil(
+        //     context, AppRoutes.psychologyTest, (route) => false);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
     );
   }
 
@@ -168,5 +180,11 @@ class TestResultPage extends StatelessWidget {
             );
           }),
     );
+  }
+
+  Future<bool> _onWillPop(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.pop(context);
+    return Future.value(true);
   }
 }

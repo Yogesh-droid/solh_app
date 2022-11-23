@@ -112,19 +112,22 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                   onPressed: () async {
                     if (_dropdownValue == "N/A") {
                       Utility.showToast('Please select gender');
+                    }
+                    if (_ageController.selectedAge.value ==
+                        DateFormat('dd MMMM yyyy').format(DateTime.now())) {
+                      Utility.showToast('Please select DOB');
                     } else {
                       widget._onNext();
-                    }
-
-                    try {
-                      Provider.of<ProviderUser>(context, listen: false)
-                          .updateUserDetails();
-                    } catch (e) {
-                      print(e);
-                    } finally {
-                      if (_dropdownValue != "N/A") {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfileCreated()));
+                      try {
+                        Provider.of<ProviderUser>(context, listen: false)
+                            .updateUserDetails();
+                      } catch (e) {
+                        print(e);
+                      } finally {
+                        if (_dropdownValue != "N/A") {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileCreated()));
+                        }
                       }
                     }
                   }),

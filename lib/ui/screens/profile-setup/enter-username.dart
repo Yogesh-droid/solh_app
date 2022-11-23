@@ -1,15 +1,12 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/profile-setup/add-profile-photo.dart';
+import 'package:solh/model/user/provider-user.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:solh/model/user/provider-user.dart';
-import 'package:provider/provider.dart';
 import '../../../controllers/profile/anon_controller.dart';
-import '../../../routes/routes.gr.dart';
 import 'enter-full-name.dart';
 
 class EnterUsernameScreen extends StatelessWidget {

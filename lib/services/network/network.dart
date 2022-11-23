@@ -191,6 +191,7 @@ class Network {
   static Future<Map<String, dynamic>> uploadFileToServer(
       String url, String key, File file,
       {bool? isVideo}) async {
+    print(userBlocNetwork.getSessionCookie);
     Uri uri = Uri.parse(url);
 
     var request = http.MultipartRequest(

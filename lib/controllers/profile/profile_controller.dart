@@ -16,15 +16,13 @@ class ProfileController extends GetxController {
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
       print('This is profile   $map');
-    } on Exception catch (e) {
-      isProfileLoading.value = false;
-    }
+    } on Exception catch (e) {}
     isProfileLoading.value = false;
   }
 
   @override
-  void onInit() {
-    getMyProfile();
+  Future<void> onInit() async {
+    await getMyProfile();
     super.onInit();
   }
 }

@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -6,10 +5,10 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/my_connection_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
 import '../../../controllers/group/create_group_controller.dart';
 
 class InviteMembersUI extends StatelessWidget {
@@ -61,8 +60,10 @@ class InviteMembersUI extends StatelessWidget {
           MaterialButton(
               onPressed: () {
                 //AutoRouter.of(context).popUntil(((route) => route.isFirst));
-                Navigator.popUntil(context,
-                    (route) => route.settings.name == AppRoutes.master);
+                // Navigator.popUntil(context,
+                //     (route) => route.settings.name == AppRoutes.master);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AppRoutes.master, (route) => false);
               },
               child: Text(
                 'Skip',

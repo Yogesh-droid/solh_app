@@ -116,6 +116,9 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                                   '$_countryCode$value', country ?? '');
                             },
                             decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: SolhColors.green)),
                                 hintText: " Phone No.",
                                 hintStyle: TextStyle(),
                                 border: OutlineInputBorder(

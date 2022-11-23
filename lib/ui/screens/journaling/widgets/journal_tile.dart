@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,14 +17,13 @@ import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/ui/screens/connect/connect-screen.dart';
+import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 import '../../groups/group_detail.dart';
 import 'solh_expert_badge.dart';
@@ -253,7 +251,16 @@ class _JournalTileState extends State<JournalTile> {
           onTap: () => widget._journalModel!.group != null &&
                   journalPageController.selectedGroupId.value.length == 0
               ? {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  Navigator.pushNamed(context, AppRoutes.groupDetails,
+                      arguments: {
+                        "group": GroupList(
+                          sId: widget._journalModel!.group!.sId,
+                          groupName: widget._journalModel!.group!.groupName,
+                          groupMediaUrl:
+                              widget._journalModel!.group!.groupImage,
+                        ),
+                      })
+                  /* Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return GroupDetailsPage(
                       ///// this case is for group journal
                       group: GroupList(
@@ -262,7 +269,7 @@ class _JournalTileState extends State<JournalTile> {
                         groupMediaUrl: widget._journalModel!.group!.groupImage,
                       ),
                     );
-                  }))
+                  })) */
                 }
               : widget._journalModel!.postedBy!.sId !=
                           null && ////// this case is for user journal
@@ -678,35 +685,34 @@ class _JournalTileState extends State<JournalTile> {
             ),
           ),
           InkWell(
-            onTap: () => AutoRouter.of(context).push(CommentScreenRouter(
-                journalModel: widget._journalModel, index: widget.index)),
+            onTap: () =>
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return CommentScreen(
+                  journalModel: widget._journalModel, index: widget.index);
+            })),
             child: Container(
-              width: MediaQuery.of(context).size.width / 3.5,
-              height: MediaQuery.of(context).size.height / 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    "assets/icons/journaling/post-comment.svg",
-                    width: 17,
-                    height: 17,
-                    color: SolhColors.green,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width / 40,
+                width: MediaQuery.of(context).size.width / 3.5,
+                height: MediaQuery.of(context).size.height / 20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/icons/journaling/post-comment.svg",
+                      width: 17,
+                      height: 17,
+                      color: SolhColors.green,
                     ),
-                    child: Text(
-                      widget._journalModel!.comments.toString(),
-                      style: SolhTextStyles.GreenBorderButtonText,
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width / 40,
+                      ),
+                      child: Text(
+                        widget._journalModel!.comments.toString(),
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              // onPressed: () {
-              //   AutoRouter.of(context).push(CommentScreenRouter());
-              // },
-            ),
+                  ],
+                )),
           ),
           widget._journalModel!.postedBy != null
               ? widget._journalModel!.anonymousJournal != null &&
@@ -727,7 +733,21 @@ class _JournalTileState extends State<JournalTile> {
                                                 .selectedGroupId.value.length ==
                                             0
                                     ? {
-                                        Navigator.push(context,
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.groupDetails,
+                                            arguments: {
+                                              "group": GroupList(
+                                                sId: widget
+                                                    ._journalModel!.group!.sId,
+                                                groupName: widget._journalModel!
+                                                    .group!.groupName,
+                                                groupMediaUrl: widget
+                                                    ._journalModel!
+                                                    .group!
+                                                    .groupImage,
+                                              ),
+                                            })
+                                        /* Navigator.push(context,
                                             MaterialPageRoute(
                                                 builder: (context) {
                                           return GroupDetailsPage(
@@ -743,7 +763,7 @@ class _JournalTileState extends State<JournalTile> {
                                                   .groupImage,
                                             ),
                                           );
-                                        }))
+                                        })) */
                                       }
                                     : await connectionController.addConnection(
                                         widget._journalModel!.postedBy!.sId!,
@@ -961,16 +981,31 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                 .refresh();
                       },
                       child: Stack(
+                        alignment: Alignment.center,
                         children: [
-                          Container(
-                            height: MediaQuery.of(context).size.width,
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            // height: MediaQuery.of(context).size.height / 16 * 8,
+                            // aspectRatio: widget.isMyJournal
+                            //     ? journalPageController
+                            //         .myVideoPlayerControllers
+                            //         .value[widget.index][widget.index]!
+                            //         .value
+                            //         .size
+                            //         .aspectRatio
+                            //     : journalPageController
+                            //         .videoPlayerController
+                            //         .value[widget.index][widget.index]!
+                            //         .value
+                            //         .size
+                            //         .aspectRatio,
                             child: VideoPlayer(
                               widget.isMyJournal
                                   ? journalPageController
                                       .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]
+                                      .value[widget.index][widget.index]!
                                   : journalPageController.videoPlayerController
-                                      .value[widget.index][widget.index],
+                                      .value[widget.index][widget.index]!,
                             ),
                           ),
                           Obx(() {
@@ -986,7 +1021,21 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                             .value[widget.index][widget.index]!
                                             .value
                                             .isPlaying
-                                ? getBlackOverlay(context)
+                                ? getBlackOverlay(context, aspectRatio: 16 / 9
+                                    // aspectRatio: widget.isMyJournal
+                                    //     ? journalPageController
+                                    //         .myVideoPlayerControllers
+                                    //         .value[widget.index][widget.index]!
+                                    //         .value
+                                    //         .size
+                                    //         .aspectRatio
+                                    //     : journalPageController
+                                    //         .videoPlayerController
+                                    //         .value[widget.index][widget.index]!
+                                    //         .value
+                                    //         .size
+                                    //         .aspectRatio,
+                                    )
                                 : Container();
                           }),
                           Obx(() {
@@ -1003,11 +1052,11 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                             .value
                                             .isPlaying
                                 ? Positioned(
-                                    bottom:
-                                        MediaQuery.of(context).size.height / 5,
-                                    left: MediaQuery.of(context).size.width /
-                                            2 -
-                                        MediaQuery.of(context).size.width / 10,
+                                    // bottom:
+                                    //     MediaQuery.of(context).size.height / 5,
+                                    // left: MediaQuery.of(context).size.width /
+                                    //         2 -
+                                    //     MediaQuery.of(context).size.width / 10,
                                     child: IconButton(
                                       onPressed: () {
                                         widget.isMyJournal
@@ -1100,14 +1149,12 @@ class _PostContentWidgetState extends State<PostContentWidget> {
     print(feelingList);
   }
 
-  Widget getBlackOverlay(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        vertical: MediaQuery.of(context).size.height / 200,
+  Widget getBlackOverlay(BuildContext context, {required double aspectRatio}) {
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: Container(
+        color: Colors.black.withOpacity(0.5),
       ),
-      color: Colors.black.withOpacity(0.5),
     );
   }
 
