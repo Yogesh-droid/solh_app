@@ -289,7 +289,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             child: Obx(() {
               return bottomNavigatorController.isDrawerOpen.value
                   ? Icon(
-                      Icons.close,
+                      Icons.arrow_back,
                       size: 26,
                     )
                   : SvgPicture.asset(
