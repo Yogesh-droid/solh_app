@@ -140,6 +140,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                                       email:
                                           searchMarketController.issueModel.value.doctors![index].email ?? '',
                                       clinic: '',
+                                      fee: searchMarketController.issueModel.value.doctors![index].fee ?? '',
+                                      feeCurrency: searchMarketController.issueModel.value.doctors![index].feeCurrency ?? '',
+                                      fee_amount: searchMarketController.issueModel.value.doctors![index].fee_amount ?? 0,
                                       id: searchMarketController.issueModel.value.doctors![index].sId ?? '',
                                       locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
                                       pincode: '',
@@ -185,8 +188,10 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
                                               .value.provider![index].email ??
                                           '',
                                       clinic: '',
-                                      locality:
-                                          searchMarketController.issueModel.value.provider![index].addressLineOne ?? '',
+                                      fee: searchMarketController.issueModel.value.provider![index].fee,
+                                      feeCurrency: searchMarketController.issueModel.value.provider![index].feeCurrency,
+                                      fee_amount: searchMarketController.issueModel.value.provider![index].fee_amount,
+                                      locality: searchMarketController.issueModel.value.provider![index].addressLineOne ?? '',
                                       pincode: '',
                                       city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
                                       bio: searchMarketController.issueModel.value.provider![index].bio ?? '',

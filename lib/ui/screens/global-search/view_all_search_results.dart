@@ -13,8 +13,8 @@ import '../comment/comment-screen.dart';
 import '../connect/connect-screen.dart';
 import '../groups/group_detail.dart';
 
-class ViewAllSearchResults extends StatelessWidget {
-  const ViewAllSearchResults(
+class ViewAllSearchResults extends StatefulWidget {
+  ViewAllSearchResults(
       {required String title,
       List<PostCount>? postCount,
       List<GroupCount>? groupCount,
@@ -31,15 +31,29 @@ class ViewAllSearchResults extends StatelessWidget {
   final List<Connection>? _connection;
 
   @override
+  State<ViewAllSearchResults> createState() => _ViewAllSearchResultsState();
+}
+
+class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
+  final FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    focusNode.requestFocus();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(),
-      body: _postCount != null
-          ? getPostView(_postCount)
-          : _groupCount != null
-              ? getGroupView(_groupCount)
-              : _connection != null
-                  ? getPeopleView(_connection)
+      body: widget._postCount != null
+          ? getPostView(widget._postCount)
+          : widget._groupCount != null
+              ? getGroupView(widget._groupCount)
+              : widget._connection != null
+                  ? getPeopleView(widget._connection)
                   : Container(),
     );
   }
@@ -48,7 +62,7 @@ class ViewAllSearchResults extends StatelessWidget {
     return SolhAppBar(
       isLandingScreen: false,
       title: Text(
-        _title,
+        widget._title,
         style: SolhTextStyles.AppBarText,
       ),
     );
@@ -92,10 +106,10 @@ class ViewAllSearchResults extends StatelessWidget {
                 //         builder: (context) => ConnectProfileScreen(
                 //             uid: connection[index].uid ?? '',
                 //             sId: connection[index].sId ?? '')));
-                Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
-                  "uid": connection[index].uid!,
-                  "sId": connection[index]..sId!
-                });
+                Navigator.pushNamed(context, AppRoutes.connectScreen,
+                    arguments: {
+                      "sId": connection[index].sId!,
+                    });
               },
             )));
   }

@@ -19,6 +19,7 @@ class ConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('${_doctorModel.feeCurrency} ${_doctorModel.fee_amount}');
     return InkWell(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ConsultantProfile(
@@ -119,7 +120,14 @@ class ConsultantsTile extends StatelessWidget {
               ),
             ],
           ),
-          Text('free',
+          Text(
+              _doctorModel.fee_amount! > 0
+                  ? '${_doctorModel.feeCurrency} ${_doctorModel.fee_amount}'
+                  : (_doctorModel.fee == null ||
+                          _doctorModel.fee == 'Paid' ||
+                          _doctorModel.fee == ''
+                      ? 'Paid'
+                      : ''),
               style: TextStyle(
                   fontSize: 15,
                   color: SolhColors.green,

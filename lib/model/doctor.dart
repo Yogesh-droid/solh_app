@@ -12,6 +12,9 @@ class DoctorModel {
   String profilePicture;
   String specialization;
   String id;
+  String? fee;
+  String? feeCurrency;
+  int? fee_amount;
 
   DoctorModel(
       {required this.organisation,
@@ -23,6 +26,9 @@ class DoctorModel {
       required this.pincode,
       required this.city,
       required this.bio,
+      this.fee,
+      this.feeCurrency,
+      this.fee_amount,
       required this.abbrevations,
       required this.profilePicture,
       required this.specialization,
@@ -34,6 +40,9 @@ class DoctorModel {
         name: doctorJson["name"],
         mobile: doctorJson["mobile"],
         email: doctorJson["email"],
+        fee: doctorJson["fee"],
+        feeCurrency: doctorJson["feeCurrency"],
+        fee_amount: doctorJson["fee_amount"],
         clinic: doctorJson["clinic"],
         locality: doctorJson["locality"],
         pincode: doctorJson["pincode"],
