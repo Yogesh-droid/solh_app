@@ -126,8 +126,9 @@ class JournalPageController extends GetxController {
     isTrendingLoading.value = false;
   }
 
-  void playVideo(int index) {
+  Future<void> playVideo(int index) async {
     isPlayingMyPostVideo = false;
+
     isPlayingTrendingPostVideo = false;
     if (videoPlayerController.value[index] != null) {
       if (videoIndex != index) {
@@ -144,8 +145,9 @@ class JournalPageController extends GetxController {
     }
   }
 
-  void playMyPostVideo(int index) {
+  Future<void> playMyPostVideo(int index) async {
     isPlayingMyPostVideo = true;
+
     if (myVideoPlayerControllers.value[index] != null) {
       if (myVideoIndex != index) {
         myVideoPlayerControllers.value[index][index]!.pause();
@@ -159,7 +161,7 @@ class JournalPageController extends GetxController {
     }
   }
 
-  void playTrendingPostVideo(int index) {
+  Future<void> playTrendingPostVideo(int index) async {
     isPlayingTrendingPostVideo = true;
     if (tredingVideoPlayerController.value[index] != null) {
       if (trendingVideoIndex != index) {

@@ -53,118 +53,70 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           ? Center(
               child: MyLoader(),
             )
-          : SmartRefresher(
-              controller: refreshController,
-              onRefresh: reloadProfile,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (FirebaseAuth.instance.currentUser == null)
-                      Center(
-                        child: SignInButton(),
-                      )
-                    else
-                      ProfileContainer(
-                          userModel: profileController
-                              .myProfileModel.value.body!.user),
-                    ProfileMenu(),
-                    SizedBox(height: 5.h),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SolhGreenBorderButton(
-                          height: 50,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(
-                                fontSize: 18, color: SolhColors.black166),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut().then((value) {
-                              clearOneSignalID();
-                              userBlocNetwork.updateSessionCookie = "";
-                              Get.delete<NotificationController>();
-                              Get.delete<ChatListController>();
-                              Get.delete<GoalSettingController>();
-                              Get.delete<ConnectionController>();
-                              Get.delete<DiscoverGroupController>();
-                              Get.delete<CreateGroupController>();
-
-                              Get.delete<BottomNavigatorController>();
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  AppRoutes.phoneAuthScreen, (route) => false);
-                              RestartWidget.restartApp(context);
-                            });
-                          }),
+          : profileController.myProfileModel.value.body != null
+              ? SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: reloadProfile,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (FirebaseAuth.instance.currentUser == null)
+                          Center(
+                            child: SignInButton(),
+                          )
+                        else
+                          ProfileContainer(
+                              userModel: profileController
+                                  .myProfileModel.value.body!.user),
+                        ProfileMenu(),
+                        SizedBox(height: 5.h),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SolhGreenBorderButton(
+                              height: 50,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 10.h),
+                              child: Text(
+                                "Logout",
+                                style: TextStyle(
+                                    fontSize: 18, color: SolhColors.black166),
+                              ),
+                              onPressed: () {
+                                FirebaseAuth.instance.signOut().then((value) {
+                                  clearOneSignalID();
+                                  userBlocNetwork.updateSessionCookie = "";
+                                  Get.delete<NotificationController>();
+                                  Get.delete<ChatListController>();
+                                  Get.delete<GoalSettingController>();
+                                  Get.delete<ConnectionController>();
+                                  Get.delete<DiscoverGroupController>();
+                                  Get.delete<CreateGroupController>();
+                                  Get.delete<BottomNavigatorController>();
+                                  Get.delete<ProfileController>();
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      AppRoutes.phoneAuthScreen,
+                                      (route) => false);
+                                  RestartWidget.restartApp(context);
+                                });
+                              }),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            );
-    });
-    /* return Scaffold(
-      backgroundColor: Color.fromRGBO(251, 251, 251, 1),
-      body: SingleChildScrollView(
-        child: StreamBuilder<UserModel?>(
-            stream: userBlocNetwork.userStateStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print(
-                    'snapshot.data.profilePictureUrl: ${snapshot.data!.firstName}');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (FirebaseAuth.instance.currentUser == null)
-                      Center(
-                        child: SignInButton(),
-                      )
-                    else
-                      ProfileContainer(userModel: snapshot.requireData),
-                    ProfileMenu(),
-                    SizedBox(height: 5.h),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SolhGreenBorderButton(
-                          height: 50,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(
-                                fontSize: 18, color: SolhColors.black166),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut().then((value) {
-                              clearOneSignalID();
-                              userBlocNetwork.updateSessionCookie = "";
-                              Get.delete<NotificationController>();
-                              Get.delete<ChatListController>();
-                              Get.delete<GoalSettingController>();
-                              Get.delete<ConnectionController>();
-                              Get.delete<DiscoverGroupController>();
-                              Get.delete<CreateGroupController>();
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  AppRoutes.phoneAuthScreen, (route) => false);
-                            });
-                          }),
-                    ),
-                  ],
+                  ),
+                )
+              : Container(
+                  child: Center(
+                      child: SolhGreenButton(
+                    child: Text('Reload Profile',
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () async {
+                      await profileController.getMyProfile();
+                    },
+                  )),
                 );
-              }
-              if (snapshot.hasError)
-                Container(child: Text(snapshot.error.toString()));
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height / 3),
-                  Center(child: MyLoader()),
-                ],
-              );
-            }),
-      ),
-    ); */
+    });
   }
 
   Future<void> reloadProfile() async {
@@ -683,7 +635,7 @@ class ProfileDetailsButton extends StatelessWidget {
 
 void clearOneSignalID() {
   Network.makePutRequestWithToken(
-      url: "${APIConstants.api}/api/edit-user-details",
+      url: "${APIConstants.api}/api/edit-onesignal-id",
       body: {
         'onesignal_device_id': '',
       });

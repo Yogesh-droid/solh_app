@@ -15,6 +15,7 @@ import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
+import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../controllers/profile/anon_controller.dart';
@@ -256,12 +257,19 @@ class _MasterScreen2State extends State<MasterScreen2>
             height: 40,
             width: 40,
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: SvgPicture.asset(
-              "assets/icons/app-bar/app-bar-menu.svg",
-              width: 26,
-              height: 24,
-              color: SolhColors.green,
-            ),
+            child: Obx(() {
+              return bottomNavigatorController.isDrawerOpen.value
+                  ? Icon(
+                      Icons.arrow_back,
+                      size: 26,
+                    )
+                  : SvgPicture.asset(
+                      "assets/icons/app-bar/app-bar-menu.svg",
+                      width: 26,
+                      height: 24,
+                      color: SolhColors.green,
+                    );
+            }),
           ),
         ));
   }

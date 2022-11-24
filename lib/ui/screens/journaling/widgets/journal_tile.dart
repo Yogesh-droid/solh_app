@@ -840,6 +840,8 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   List<String> descriptionTexts = [];
   bool showMoreBtn = false;
   bool isExpanded = false;
+  VideoPlayerController videoPlayerController = VideoPlayerController.network(
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
 
   @override
   void initState() {
@@ -873,49 +875,6 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                             .replaceAll("]", ""),
                         style: SolhTextStyles.PinkBorderButtonText)
                     : Container(),
-                // widget._journalModel!.description != null
-                //     ? RichText(
-                //         text: TextSpan(children: [
-                //         TextSpan(
-                //             text: getTexts()['text1'] ?? '',
-                //             style: SolhTextStyles.JournalingDescriptionText,
-                //             children: [
-                //               getTexts().containsKey('text3')
-                //                   ? TextSpan(
-                //                       text: '@' + getTexts()['text3'],
-                //                       recognizer: TapGestureRecognizer()
-                //                         ..onTap = () async {
-                //                           Navigator.push(
-                //                               context,
-                //                               MaterialPageRoute(
-                //                                   builder: (context) =>
-                //                                       ConnectProfileScreen(
-                //                                         username: getTexts()['text3']
-                //                                             .toString(),
-                //                                         uid: '',
-                //                                         sId: '',
-                //                                       )));
-                //                         },
-                //                       style: TextStyle(color: Color(0xffE1555A)))
-                //                   : TextSpan(text: ''),
-                //               getTexts().containsKey('text2')
-                //                   ? TextSpan(text: getTexts()['text2'])
-                //                   : TextSpan(text: ''),
-                //             ]),
-                //       ]))
-
-                // ? ReadMoreText(
-                //     widget._journalModel!.description!,
-                //     trimLines: 3,
-                //     //trimLength: 100,
-                //     style: SolhTextStyles.JournalingDescriptionText,
-                //     colorClickableText: SolhColors.green,
-                //     //trimMode: TrimMode.Length,
-                //     trimMode: TrimMode.Line,
-                //     trimCollapsedText: ' Read more',
-                //     trimExpandedText: ' Less',
-                //   )
-
                 descriptionTexts.length == 1
                     ? ReadMoreText(
                         descriptionTexts[0],
@@ -984,21 +943,9 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                         alignment: Alignment.center,
                         children: [
                           AspectRatio(
-                            aspectRatio: 16 / 9,
-                            // height: MediaQuery.of(context).size.height / 16 * 8,
-                            // aspectRatio: widget.isMyJournal
-                            //     ? journalPageController
-                            //         .myVideoPlayerControllers
-                            //         .value[widget.index][widget.index]!
-                            //         .value
-                            //         .size
-                            //         .aspectRatio
-                            //     : journalPageController
-                            //         .videoPlayerController
-                            //         .value[widget.index][widget.index]!
-                            //         .value
-                            //         .size
-                            //         .aspectRatio,
+                            aspectRatio: double.parse(
+                                widget.journalModel.aspectRatio ??
+                                    (16 / 9).toString()),
                             child: VideoPlayer(
                               widget.isMyJournal
                                   ? journalPageController
@@ -1021,21 +968,12 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                             .value[widget.index][widget.index]!
                                             .value
                                             .isPlaying
-                                ? getBlackOverlay(context, aspectRatio: 16 / 9
-                                    // aspectRatio: widget.isMyJournal
-                                    //     ? journalPageController
-                                    //         .myVideoPlayerControllers
-                                    //         .value[widget.index][widget.index]!
-                                    //         .value
-                                    //         .size
-                                    //         .aspectRatio
-                                    //     : journalPageController
-                                    //         .videoPlayerController
-                                    //         .value[widget.index][widget.index]!
-                                    //         .value
-                                    //         .size
-                                    //         .aspectRatio,
-                                    )
+                                ? getBlackOverlay(
+                                    context,
+                                    aspectRatio: double.parse(
+                                        widget.journalModel.aspectRatio ??
+                                            (16 / 9).toString()),
+                                  )
                                 : Container();
                           }),
                           Obx(() {
@@ -1052,13 +990,8 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                             .value
                                             .isPlaying
                                 ? Positioned(
-                                    // bottom:
-                                    //     MediaQuery.of(context).size.height / 5,
-                                    // left: MediaQuery.of(context).size.width /
-                                    //         2 -
-                                    //     MediaQuery.of(context).size.width / 10,
                                     child: IconButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         widget.isMyJournal
                                             ? journalPageController
                                                 .playMyPostVideo(

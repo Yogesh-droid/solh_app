@@ -65,8 +65,8 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
             ),
             DropdownMenuItem(child: Text("Female"), value: "Female"),
             DropdownMenuItem(
-              child: Text("Other"),
-              value: "Other",
+              child: Text("Others"),
+              value: "Others",
             )
           ]),
     );

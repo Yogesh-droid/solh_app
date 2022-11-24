@@ -49,9 +49,11 @@ void main() async {
 }
 
 ////////   required controllers are initialized here ///////////
-void initControllers() {
-  final AgeController ageController = Get.put(AgeController());
+Future<void> initControllers() async {
   ProfileController profileController = Get.put(ProfileController());
+  await profileController.getMyProfile();
+  final AgeController ageController = Get.put(AgeController());
+
   var _chatListController = Get.put(ChatListController());
 }
 

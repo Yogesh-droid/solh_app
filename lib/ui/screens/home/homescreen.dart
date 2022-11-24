@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
+
   FeelingsController feelingsController = Get.put(FeelingsController());
 
   BookAppointmentController bookAppointmentController = Get.find();

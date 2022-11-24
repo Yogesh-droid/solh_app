@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +22,6 @@ import '../../../controllers/mood-meter/mood_meter_controller.dart';
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
-
   @override
   _JournalingState createState() => _JournalingState();
 }
@@ -51,13 +49,12 @@ class _JournalingState extends State<Journaling> {
         print("refreshing");
         _journalPageController.isScrollingStarted.value = false;
       }
-      if (_journalsScrollController.position.pixels > 0) {
+      if (_journalsScrollController.position.pixels > 600) {
         _journalPageController.isScrollingStarted.value = true;
       }
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&
           !_fetchingMore) {
-        print("fetching more");
         setState(() {
           _fetchingMore = true;
         });
@@ -110,70 +107,94 @@ class _JournalingState extends State<Journaling> {
 
   @override
   Widget build(BuildContext context) {
-    return SmartRefresher(
-      controller: _refreshController,
-      onRefresh: _onRefresh,
-      child: ListView(
-        controller: _journalsScrollController,
-        children: [
-          Column(
-            children: [
-              WhatsOnYourMindSection(),
-              groupRow(),
-              Obx(() {
-                return !_journalPageController.isLoading.value
-                    ? Obx(() {
-                        return _journalPageController
-                                .journalsList.value.isNotEmpty
-                            ? ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount:
-                                    _journalPageController.journalsList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return _journalPageController.journalsList
-                                                  .value[index].id !=
-                                              null &&
-                                          !userBlocNetwork.hiddenPosts.contains(
-                                              _journalPageController
-                                                  .journalsList.value[index].id)
-                                      ? getJournalTile(index)
-                                      : Container();
-                                })
-                            : Center(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 25.h,
-                                    ),
-                                    Obx(() {
-                                      return Text(
-                                        _journalPageController
-                                                    .selectedGroupId.value ==
-                                                ''
-                                            ? "No Journals"
-                                            : 'No Post',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: Color(0xFFD9D9D9)),
-                                      );
-                                    })
-                                  ],
-                                ),
-                              );
-                      })
-                    : getShimmer(context);
-              }),
-            ],
-          ),
-          if (_fetchingMore) Center(child: MyLoader()),
-          SizedBox(height: Platform.isIOS ? 80 : 50),
-          SizedBox(
-            height: 200,
-          ),
-        ],
+    return Scaffold(
+      body: SmartRefresher(
+        controller: _refreshController,
+        onRefresh: _onRefresh,
+        child: ListView(
+          controller: _journalsScrollController,
+          children: [
+            Column(
+              children: [
+                WhatsOnYourMindSection(),
+                groupRow(),
+                Obx(() {
+                  return !_journalPageController.isLoading.value
+                      ? Obx(() {
+                          return _journalPageController
+                                  .journalsList.value.isNotEmpty
+                              ? ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: _journalPageController
+                                      .journalsList.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return _journalPageController.journalsList
+                                                    .value[index].id !=
+                                                null &&
+                                            !userBlocNetwork.hiddenPosts
+                                                .contains(_journalPageController
+                                                    .journalsList
+                                                    .value[index]
+                                                    .id)
+                                        ? getJournalTile(index)
+                                        : Container();
+                                  })
+                              : Center(
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      Obx(() {
+                                        return Text(
+                                          _journalPageController
+                                                      .selectedGroupId.value ==
+                                                  ''
+                                              ? "No Journals"
+                                              : 'No Post',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500,
+                                              color: Color(0xFFD9D9D9)),
+                                        );
+                                      })
+                                    ],
+                                  ),
+                                );
+                        })
+                      : getShimmer(context);
+                }),
+              ],
+            ),
+            if (_fetchingMore) Center(child: MyLoader()),
+            SizedBox(height: Platform.isIOS ? 80 : 50),
+            SizedBox(
+              height: 200,
+            ),
+          ],
+        ),
       ),
+      floatingActionButton:
+          Obx((() => _journalPageController.isScrollingStarted.value
+              ? Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black.withOpacity(0.15),
+                  ),
+                  child: IconButton(
+                      onPressed: () {
+                        _journalsScrollController.animateTo(0.0,
+                            duration: Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      },
+                      iconSize: 40,
+                      icon: Icon(
+                        Icons.keyboard_arrow_up,
+                        color: SolhColors.green,
+                      )))
+              : Container())),
     );
   }
 

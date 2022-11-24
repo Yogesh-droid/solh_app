@@ -13,6 +13,9 @@ class CreateJournal {
   String? groupId;
   String? postId;
   bool? isAnonymous;
+  double? mediaHeight;
+  double? mediaWidth;
+  double? aspectRatio;
 
   CreateJournal(
       {this.mediaUrl,
@@ -23,7 +26,10 @@ class CreateJournal {
       this.postedIn,
       this.groupId,
       this.postId,
-      this.isAnonymous});
+      this.isAnonymous,
+      this.mediaHeight,
+      this.mediaWidth,
+      this.aspectRatio});
 
   Future<String> postJournal() async {
     if (mediaUrl != null) {
@@ -60,7 +66,10 @@ class CreateJournal {
               "journalType": journalType,
               'postIn': 'Group',
               "groupPostedIn": groupId,
-              "anonymousJournal": isAnonymous
+              "anonymousJournal": isAnonymous,
+              "mediaHeight": mediaHeight,
+              "mediaWidth": mediaHeight,
+              "aspectRatio": aspectRatio
             }
           : {
               "description": description,
@@ -68,7 +77,10 @@ class CreateJournal {
               "mediaUrl": mediaUrl,
               "feelings": feelings,
               "journalType": journalType,
-              "anonymousJournal": isAnonymous
+              "anonymousJournal": isAnonymous,
+              "mediaHeight": mediaHeight,
+              "mediaWidth": mediaHeight,
+              "aspectRatio": aspectRatio
             };
       print('${APIConstants.api}/api/create-user-post');
       print(body);
@@ -124,7 +136,10 @@ class CreateJournal {
                   "journalType": journalType,
                   'postIn': 'Group',
                   "groupPostedIn": groupId,
-                  "anonymousJournal": isAnonymous
+                  "anonymousJournal": isAnonymous,
+                  "mediaHeight": mediaHeight,
+                  "mediaWidth": mediaHeight,
+                  "aspectRatio": aspectRatio
                 })
               : jsonEncode({
                   "postId": postId,

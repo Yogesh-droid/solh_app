@@ -17,6 +17,7 @@ import 'package:solh/controllers/connections/tag_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journal.dart';
 import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
@@ -70,6 +71,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   bool _isPosting = false;
   bool _isImageAdded = false;
   bool _isVideoAdded = false;
+  double? aspectRatio;
+  double? mediaHeight;
+  double? mediaWidth;
   Map<String, dynamic> imgUploadResponse = {};
 
   @override
@@ -221,21 +225,23 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         feelings.add(element);
       });
       CreateJournal _createJournal = CreateJournal(
-        postId: journalPageController.selectedDiary.value.id,
-        mediaUrl: journalPageController.selectedDiary.value.mediaType != null
-            ? journalPageController.selectedDiary.value.mediaUrl
-            : imgUploadResponse["imageUrl"],
-        description: journalPageController.descriptionController.text +
-            " " +
-            getDescriptionTags(),
-        feelings: feelings,
-        journalType: _journalType,
-        mimetype: journalPageController.selectedDiary.value.mediaType != null
-            ? journalPageController.selectedDiary.value.mediaType
-            : imgUploadResponse["mimetype"],
-        groupId: journalPageController.selectedGroupId.value,
-        isAnonymous: journalPageController.isAnonymousSelected.value,
-      );
+          postId: journalPageController.selectedDiary.value.id,
+          mediaUrl: journalPageController.selectedDiary.value.mediaType != null
+              ? journalPageController.selectedDiary.value.mediaUrl
+              : imgUploadResponse["imageUrl"],
+          description: journalPageController.descriptionController.text +
+              " " +
+              getDescriptionTags(),
+          feelings: feelings,
+          journalType: _journalType,
+          mimetype: journalPageController.selectedDiary.value.mediaType != null
+              ? journalPageController.selectedDiary.value.mediaType
+              : imgUploadResponse["mimetype"],
+          groupId: journalPageController.selectedGroupId.value,
+          isAnonymous: journalPageController.isAnonymousSelected.value,
+          mediaHeight: mediaHeight ?? 0.0,
+          mediaWidth: mediaWidth ?? 0.0,
+          aspectRatio: aspectRatio ?? 0.0);
       print('posting + ${journalPageController.selectedDiary.value.id}');
       journalPageController.selectedDiary.value.id != null
           ? await _createJournal.postJournalFromDiary()
@@ -816,6 +822,16 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             );
                             Navigator.pop(context);
                           }
+                          VideoPlayerController vc =
+                              VideoPlayerController.network(
+                                  imgUploadResponse["imageUrl"]);
+
+                          await vc.initialize();
+                          aspectRatio = vc.value.size.aspectRatio;
+                          mediaHeight = vc.value.size.height;
+                          mediaWidth = vc.value.size.width;
+
+                          print("/" * 30 + aspectRatio.toString() + "/" * 30);
 
                           ////////////////////////////////////////////////////////////
                           ///
@@ -1291,7 +1307,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
         context: context,
         builder: (context) => AnonymousBottomSheet(onTap: () async {
               await _anonController.createAnonProfile();
-              await userBlocNetwork.getMyProfileSnapshot();
+              await Get.find<ProfileController>().getMyProfile();
               Navigator.pop(context);
               setState(() {
                 widget._userModel = userBlocNetwork.myData;
@@ -1313,8 +1329,6 @@ class _JournalTextFieldState extends State<JournalTextField> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // selectedItems = {};
     super.initState();
   }
 

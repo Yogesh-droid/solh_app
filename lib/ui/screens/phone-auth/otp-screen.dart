@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import '../../../bloc/user-bloc.dart';
@@ -32,6 +34,8 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _otpController = TextEditingController();
   OtpVerificationController otpVerificationController = Get.find();
+  static final facebookAppEvents = FacebookAppEvents();
+
   final scaffoldKey = GlobalKey();
   String? utm_medium;
   String? utm_source;
@@ -117,6 +121,9 @@ class _OTPScreenState extends State<OTPScreen> {
                               utm_medium: utm_medium,
                               utm_compaign: utm_name,
                               utm_source: utm_source);
+                      ProfileController profileController =
+                          Get.put(ProfileController());
+                      await profileController.getMyProfile();
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =
@@ -127,11 +134,22 @@ class _OTPScreenState extends State<OTPScreen> {
                           "Is Profile Created:" +
                           isProfileCreated.toString() +
                           "^" * 30);
+                      if (isProfileCreated) {
+                        Navigator.pushNamed(context, AppRoutes.master);
+                      } else {
+                        facebookAppEvents.logEvent(
+                          name: 'signup',
+                          parameters: {
+                            'method': 'Phone Auth',
+                          },
+                        );
+                        //// .  Firebase Signup event //////
+                        FirebaseAnalytics.instance
+                            .logSignUp(signUpMethod: 'PhoneAuth');
+                        Navigator.pushNamed(context, AppRoutes.createProfile);
 
-                      isProfileCreated
-                          ? Navigator.pushNamed(context, AppRoutes.master)
-                          : Navigator.pushNamed(
-                              context, AppRoutes.createProfile);
+                        ////////////////////
+                      }
                     }).onError((error, stackTrace) {
                       isLoading = false;
                       ScaffoldMessenger.of(context).showSnackBar(

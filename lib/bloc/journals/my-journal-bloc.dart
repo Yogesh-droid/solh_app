@@ -15,6 +15,8 @@ class MyJournalsBloc {
   int _endPageLimit = 1;
   int _numberOfPosts = 0;
 
+  bool isFetchingPost = false;
+
   int numberOfPosts() {
     return _numberOfPosts;
   }
@@ -27,7 +29,7 @@ class MyJournalsBloc {
 
     _currentPage = 1;
     // try {
-    _myJournalController.sink.add([]);
+    isFetchingPost = true;
     Map<String, dynamic> apiResponse =
         // await Network.makeHttpGetRequestWithToken(
         //     "${APIConstants.api}/api/get-my-journal");
@@ -45,6 +47,7 @@ class MyJournalsBloc {
 
     if (_journalsResponseModel.journals != null) {
       _journals = _journalsResponseModel.journals!;
+      isFetchingPost = false;
       _myJournalController.sink.add(_journals);
     }
 
