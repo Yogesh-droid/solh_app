@@ -61,8 +61,8 @@ class InviteMembersUI extends StatelessWidget {
           MaterialButton(
               onPressed: () {
                 //AutoRouter.of(context).popUntil(((route) => route.isFirst));
-                Navigator.popUntil(context,
-                    (route) => route.settings.name == AppRoutes.master);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    AppRoutes.master, (route) => false);
               },
               child: Text(
                 'Skip',
@@ -131,9 +131,8 @@ class InviteMembersUI extends StatelessWidget {
               .then((value) {
             Utility.showToast('Invitation sent successfully');
           });
-          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return JournalingScreen();
-          // }));
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil(AppRoutes.master, (route) => false);
         },
         label: Container(
           width: MediaQuery.of(context).size.width * 0.8,

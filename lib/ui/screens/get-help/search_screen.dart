@@ -29,8 +29,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   BookAppointmentController bookAppointmentController = Get.find();
 
+  FocusNode focusNode = FocusNode();
+
   @override
   void initState() {
+    focusNode.requestFocus();
     getResultByCountry();
     super.initState();
   }

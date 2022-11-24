@@ -434,7 +434,7 @@ class _HomePageState extends State<HomePage> {
           ),
           getRecommendedReadsUI(),
           SizedBox(
-            height: 150,
+            height: 70,
           ),
         ]),
       ),
