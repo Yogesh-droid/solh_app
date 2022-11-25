@@ -81,7 +81,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               Get.delete<DiscoverGroupController>();
                               Get.delete<CreateGroupController>();
                               Navigator.pushNamedAndRemoveUntil(context,
-                                  AppRoutes.phoneAuthScreen, (route) => false);
+                                  AppRoutes.getStarted, (route) => false);
                               bottomNavigatorController.activeIndex.value = 1;
                             });
                           }),
