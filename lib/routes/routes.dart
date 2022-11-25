@@ -12,6 +12,7 @@ import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/phone-auth/otp-screen.dart';
 import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
+import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/psychology-test/psychology_test_page.dart';
 
@@ -52,6 +53,10 @@ class AppRoutes {
   //// Auth related  ////
   static const String phoneAuthScreen = '/phoneAuthScreen';
   static const String otpScreen = '/otpScreen';
+
+  /// Auth V2 ////
+
+  static const String getStarted = '/getStarted';
 
   /// Group related  ///
   ///
@@ -113,9 +118,15 @@ class RouteGenerator {
       case AppRoutes.appointmentPage:
         return MaterialPageRoute(
             builder: ((context) => AppointmentScreen(args: args as Map)));
+
+      case AppRoutes.getStarted:
+        return MaterialPageRoute(
+            builder: ((context) => GetStartedScreen(args: args as Map)));
+
       case AppRoutes.groupDetails:
         return MaterialPageRoute(
             builder: ((context) => GroupDetailsPage(args: args as Map)));
+
       default:
         return MaterialPageRoute(
             builder: ((context) => Scaffold(
