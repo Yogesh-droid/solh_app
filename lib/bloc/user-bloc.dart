@@ -77,13 +77,6 @@ class UserBlocNetwork {
     print('user details fetched');
   }
 
-  void getUserProfileSnapshot(String uid) async {
-    await _fetchUserDetails(uid)
-        .then((user) => _userController.sink.add(user))
-        .onError((error, stackTrace) =>
-            _userController.sink.addError(error.toString()));
-  }
-
   Future<bool> isProfileCreated() async {
     var response = await Network.makeHttpGetRequestWithToken(
             "${APIConstants.api}/api/is-profile-created")
@@ -98,13 +91,6 @@ class UserBlocNetwork {
       return false;
     }
   }
-
-  // Future<String?> CreateSessionCookie(String idToken) async {
-  //   Map<String, dynamic> apiResponse = await Network.makeHttpPostRequest(
-  //       url: "${APIConstants.api}/create-session-cookie",
-  //       body: {"idToken": idToken});
-  //   print(apiResponse);
-  // }
 
   Future<String> deleteAccount() async {
     String msg = '';

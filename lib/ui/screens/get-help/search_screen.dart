@@ -33,6 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
+    focusNode.requestFocus();
     getResultByCountry();
     super.initState();
   }

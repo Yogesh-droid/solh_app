@@ -20,6 +20,11 @@
 		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		</dict>
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
@@ -30,7 +35,29 @@
 					<string>app-1-729100578162-ios-8bba3add7e1c3d4616c1eb</string>
 				</array>
 			</dict>
+			<!-- Facebook start  -->
+			<dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb1611258852623703</string>
+            </array>
+        </dict>
+		<!-- Facebook done  -->
 		</array>
+		<!-- Facebook start  -->
+		<key>FacebookAppID</key>
+    <string>378304280550867</string>
+	<key>FacebookClientToken</key>
+	<string>f4e915f5a1cf401e2be8d77e5a268849</string>
+    <key>FacebookDisplayName</key>
+    <string>Solh Wellness</string>
+    <key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
+
+	<!-- Facebook done  -->
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
 		<key>LSRequiresIPhoneOS</key>

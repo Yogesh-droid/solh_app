@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -22,13 +21,14 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bottom-navigation/bottom_navigator_controller.dart';
-import '../connect/connect-screen.dart';
 import '../journaling/create-journal.dart';
 import '../my-goals/my-goals-screen.dart';
 
 class GroupDetailsPage extends StatefulWidget {
-  GroupDetailsPage({Key? key, required this.group, this.isJoined})
-      : super(key: key);
+  GroupDetailsPage({Key? key, Map<dynamic, dynamic>? args})
+      : group = args!['group'],
+        isJoined = args['isJoined'];
+
   final GroupList group;
   bool? isJoined;
   @override
@@ -419,26 +419,21 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       journalPageController.selectedGroupIndex =
                           discoverGroupController.groupsShownOnHome
                               .indexOf(groupList.sId!);
-                      // AutoRouter.of(context).pushAndPopUntil(
-                      //   JournalingScreenRouter(),
-                      //   predicate: (Route<dynamic> route) {
-                      //     return route.settings.name == 'JournalingScreen';
-                      //   },
-                      // );
-                      Future.delayed(Duration(milliseconds: 500), () {
+                      Future.delayed(Duration(milliseconds: 500), () async {
                         journalPageController.customeScrollController.jumpTo(
                             80 *
                                 discoverGroupController.groupsShownOnHome
                                     .indexOf(groupList.sId!)
                                     .toDouble());
                       });
-                      _bottomNavigatorController.tabrouter!.setActiveIndex(1);
-                      AutoRouter.of(context)
-                          .popUntil(((route) => route.isFirst));
-                      // Navigator.of(context).pushReplacement(
-                      //     MaterialPageRoute(builder: (context) {
-                      //   return Journaling();
-                      // }));
+                      _bottomNavigatorController.activeIndex.value = 1;
+
+                      // Navigator.popUntil(
+                      //     context,
+                      //     (route) =>
+                      //         route.settings.name == AppRoutes.groupDetails);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutes.master, (route) => false);
                     }),
               ],
             ),

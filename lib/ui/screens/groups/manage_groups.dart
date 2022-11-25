@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -119,13 +121,18 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                       //     isJoined: true);
                       return GroupCard(
                         onTap: () {
-                          Navigator.push(context,
+                          Navigator.pushNamed(context, AppRoutes.groupDetails,
+                              arguments: {
+                                "group": groupList[index],
+                                "isJoined": true,
+                              });
+                          /*  Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return GroupDetailsPage(
                               group: groupList[index],
                               isJoined: true,
                             );
-                          }));
+                          })); */
                         },
                         groupMediaUrl: groupList[index].groupMediaUrl,
                         groupName: groupList[index].groupName,
@@ -154,13 +161,18 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                       //     isJoined: true);
                       return GroupCard(
                         onTap: () {
-                          Navigator.push(context,
+                          Navigator.pushNamed(context, AppRoutes.groupDetails,
+                              arguments: {
+                                "group": groupList[index],
+                                "isJoined": true,
+                              });
+                          /* Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return GroupDetailsPage(
                               group: groupList[index],
                               isJoined: true,
                             );
-                          }));
+                          })); */
                         },
                         groupMediaUrl: groupList[index].groupMediaUrl,
                         groupName: groupList[index].groupName,
@@ -187,12 +199,16 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                     itemBuilder: (context, index) {
                       return GroupCard(
                         onTap: () {
-                          Navigator.push(context,
+                          Navigator.pushNamed(context, AppRoutes.groupDetails,
+                              arguments: {
+                                "group": groupList[index],
+                              });
+                          /* Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return GroupDetailsPage(
                               group: groupList[index],
                             );
-                          }));
+                          })); */
                         },
                         groupMediaUrl: groupList[index].groupMediaUrl,
                         groupName: groupList[index].groupName,

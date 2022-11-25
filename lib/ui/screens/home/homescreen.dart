@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,14 +19,13 @@ import 'package:solh/controllers/psychology-test/psychology_test_controller.dart
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
-import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../bloc/user-bloc.dart';
@@ -47,7 +45,6 @@ import '../get-help/get-help.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -67,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   ConnectionController connectionController = Get.put(ConnectionController());
+
   FeelingsController feelingsController = Get.put(FeelingsController());
 
   BookAppointmentController bookAppointmentController = Get.find();
@@ -109,8 +107,8 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getInt('lastDateShown') != null) {
       if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
-              .second ==
-          DateTime.now().second) {
+              .day ==
+          DateTime.now().day) {
         return;
       } else {
         if (moodMeterController.moodList.length > 0) {
@@ -830,11 +828,16 @@ class _HomePageState extends State<HomePage> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: (() {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  /*   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => GroupDetailsPage(
                             group: discoverGroupController
                                 .discoveredGroupModel.value.groupList![index],
-                          )));
+                          ))); */
+                  Navigator.pushNamed(context, AppRoutes.groupDetails,
+                      arguments: {
+                        "group": discoverGroupController
+                            .discoveredGroupModel.value.groupList![index],
+                      });
                 }),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.5,

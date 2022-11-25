@@ -29,6 +29,9 @@ class Provder {
   String? email;
   String? country;
   int? experience;
+  String? fee;
+  int? fee_amount;
+  String? feeCurrency;
   String? profilePicture;
   bool? solhCertified;
   String? sId;
@@ -47,8 +50,11 @@ class Provder {
       this.experience,
       this.profilePicture,
       this.solhCertified,
+      this.fee,
+      this.feeCurrency,
       this.sId,
       this.uid,
+      this.fee_amount,
       this.prefix,
       this.type});
 
@@ -56,6 +62,7 @@ class Provder {
     offlineSession = json['offlineSession'];
     name = json['name'];
     bio = json['bio'];
+    fee_amount = json['fee_amount'];
     specialization = json['specialization'];
     contactNumber = json['contactNumber'];
     email = json['email'];
@@ -63,6 +70,8 @@ class Provder {
     experience = json['experience'];
     profilePicture = json['profilePicture'];
     solhCertified = json['solhCertified'];
+    fee = json['fee'];
+    feeCurrency = json['feeCurrency'];
     sId = json['_id'];
     uid = json['uid'];
     prefix = json['prefix'];
@@ -82,6 +91,8 @@ class Provder {
     data['profilePicture'] = this.profilePicture;
     data['solhCertified'] = this.solhCertified;
     data['_id'] = this.sId;
+    data['fee'] = this.fee;
+    data['feeCurrency'] = this.feeCurrency;
     data['uid'] = this.uid;
     data['prefix'] = this.prefix;
     data['type'] = this.type;

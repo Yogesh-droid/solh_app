@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../constants/api.dart';
+import '../../../routes/routes.dart';
 import '../../../services/network/network.dart';
 import '../../../services/utility.dart';
 import '../journaling/create-journal.dart';
@@ -131,7 +131,10 @@ class _GoalFormState extends State<GoalForm> {
                       goalName: _goalNameController.text,
                       imageUrl: _imageUrl);
                   Utility.showToast('Goal set successfully');
-                  AutoRouter.of(context).popUntil(((route) => route.isFirst));
+                  // Navigator.popUntil(context,
+                  //     (route) => route.settings.name == AppRoutes.myGoalScreen);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, AppRoutes.myGoalScreen, (route) => false);
                 },
               ),
               SizedBox(

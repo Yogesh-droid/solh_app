@@ -1,10 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/controllers/otp_verification_controller.dart';
 
 class FirebaseNetwork {

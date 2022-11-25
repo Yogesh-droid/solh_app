@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +10,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../../bloc/user-bloc.dart';
 import '../../../../controllers/connections/connection_controller.dart';
 import '../../../../controllers/goal-setting/goal_setting_controller.dart';
-import '../../../../routes/routes.gr.dart';
+import '../../../../routes/routes.dart';
 import '../../../../services/utility.dart';
 
 class AccountPrivacyScreen extends StatelessWidget {
@@ -156,9 +155,16 @@ You will have to create a new account and start your journey from the beginning 
                                                             .pushNamedAndRemoveUntil(
                                                                 context,
                                                                 AppRoutes
-                                                                    .phoneAuthScreen,
+                                                                    .introScreen,
                                                                 (route) =>
                                                                     false);
+                                                        // Navigator.popUntil(
+                                                        //     context,
+                                                        //     (route) =>
+                                                        //         route.settings
+                                                        //             .name ==
+                                                        //         AppRoutes
+                                                        //             .introScreen);
                                                       });
                                                     },
                                                   ),

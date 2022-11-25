@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
@@ -11,13 +10,10 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/routes/routes.gr.dart';
-import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
-import '../../connect/connect-screen.dart';
 import '../../groups/group_detail.dart';
 
 class Connections extends StatefulWidget {
@@ -630,19 +626,20 @@ class _ConnectionsState extends State<Connections> {
                                         connectionController.sentConnections
                                                 .value[index].sId ??
                                             '');
-                                    AutoRouter.of(context).push(
-                                        ConnectScreenRouter(
-                                            uid:
-                                                connectionController
-                                                        .sentConnections
-                                                        .value[index]
-                                                        .uId ??
-                                                    '',
-                                            sId: connectionController
-                                                    .sentConnections
-                                                    .value[index]
-                                                    .sId ??
-                                                ''));
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.userProfile,
+                                        arguments: {
+                                          "uid": connectionController
+                                                  .sentConnections
+                                                  .value[index]
+                                                  .uId ??
+                                              '',
+                                          "sId": connectionController
+                                                  .sentConnections
+                                                  .value[index]
+                                                  .sId ??
+                                              ''
+                                        });
                                   } else if (value == '2') {
                                     connectionController
                                         .isCancelingConnection.value = true;
@@ -841,19 +838,20 @@ class _ConnectionsState extends State<Connections> {
                                 },
                                 onSelected: (value) async {
                                   if (value == '1') {
-                                    AutoRouter.of(context).push(
-                                        ConnectScreenRouter(
-                                            uid:
-                                                connectionController
-                                                        .receivedConnections
-                                                        .value[index]
-                                                        .uId ??
-                                                    '',
-                                            sId: connectionController
-                                                    .receivedConnections
-                                                    .value[index]
-                                                    .sId ??
-                                                ''));
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.userProfile,
+                                        arguments: {
+                                          "uid": connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .uId ??
+                                              '',
+                                          "sId": connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .sId ??
+                                              ''
+                                        });
                                   } else if (value == '2') {
                                     connectionController
                                         .isDecliningConnection.value = true;
@@ -1019,19 +1017,20 @@ class _ConnectionsState extends State<Connections> {
                                 },
                                 onSelected: (value) {
                                   if (value == '1') {
-                                    AutoRouter.of(context).push(
-                                        ConnectScreenRouter(
-                                            uid:
-                                                connectionController
-                                                        .groupInvites
-                                                        .value[index]
-                                                        .groupId ??
-                                                    '',
-                                            sId: connectionController
-                                                    .groupInvites
-                                                    .value[index]
-                                                    .groupId ??
-                                                ''));
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.userProfile,
+                                        arguments: {
+                                          "uid": connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .uId ??
+                                              '',
+                                          "sId": connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .sId ??
+                                              ''
+                                        });
                                   } else if (value == '2') {
                                     connectionController.acceptConnection(
                                         connectionController.groupInvites
@@ -1161,7 +1160,14 @@ class _ConnectionsState extends State<Connections> {
                   arguments: {"sId": sId});
             }
           : () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+              Navigator.pushNamed(context, AppRoutes.groupDetails, arguments: {
+                "group": GroupList(
+                  sId: sId,
+                  groupName: groupName,
+                  groupMediaUrl: groupMediaUrl,
+                ),
+              });
+              /* Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return GroupDetailsPage(
                   ///// this case is for group journal
                   group: GroupList(
@@ -1170,7 +1176,7 @@ class _ConnectionsState extends State<Connections> {
                     groupMediaUrl: groupMediaUrl,
                   ),
                 );
-              }));
+              })); */
             },
       child: CircleAvatar(
         backgroundColor: Colors.white,

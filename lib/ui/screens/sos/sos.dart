@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/sos/emergency-consultation.dart';
 import 'package:solh/ui/screens/sos/setup-sos.dart';
 import 'package:solh/ui/screens/sos/sos_controller/sos_controller.dart';
@@ -129,8 +127,10 @@ class SOSDialog extends StatelessWidget {
                               style: TextStyle(color: SolhColors.green),
                             ),
                             onPressed: () {
-                              AutoRouter.of(context)
-                                  .navigate(SetupSOSScreenRouter());
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (context) {
+                                return SetupSOSScreen();
+                              }));
                             },
                           )
                         ],

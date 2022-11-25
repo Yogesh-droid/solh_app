@@ -89,9 +89,6 @@ class _MyGoalPageState extends State<MyGoalPage> {
           ),
           GetHelpCategory(title: "I want to work on"),
           IWantToWorkOn(),
-          SizedBox(
-            height: 150,
-          ),
         ],
       ),
     );

@@ -1,8 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/ui/screens/profile-setup/anonymous/pick_user_name_screen.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 

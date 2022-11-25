@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
@@ -12,7 +13,8 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/model/user/user.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/model/profile/my_profile_model.dart' as myProfile;
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -23,8 +25,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../controllers/chat-list/chat_list_controller.dart';
+import '../../../main.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -35,72 +37,99 @@ class MyProfileScreen extends StatefulWidget {
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
   ConnectionController connectionController = Get.find();
-  BottomNavigatorController bottomNavigatorController = Get.find();
+  ProfileController profileController = Get.find();
+  late RefreshController refreshController;
+
+  @override
+  void initState() {
+    refreshController = RefreshController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(251, 251, 251, 1),
-      body: SingleChildScrollView(
-        child: StreamBuilder<UserModel?>(
-            stream: userBlocNetwork.userStateStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print(
-                    'snapshot.data.profilePictureUrl: ${snapshot.data!.firstName}');
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (FirebaseAuth.instance.currentUser == null)
-                      Center(
-                        child: SignInButton(),
-                      )
-                    else
-                      ProfileContainer(userModel: snapshot.requireData),
-                    ProfileMenu(),
-                    SizedBox(height: 5.h),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SolhGreenBorderButton(
-                          height: 50,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 10.h),
-                          child: Text(
-                            "Logout",
-                            style: TextStyle(
-                                fontSize: 18, color: SolhColors.black166),
-                          ),
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut().then((value) {
-                              clearOneSignalID();
-                              userBlocNetwork.updateSessionCookie = "";
-                              Get.delete<NotificationController>();
-                              Get.delete<ChatListController>();
-                              Get.delete<GoalSettingController>();
-                              Get.delete<ConnectionController>();
-                              Get.delete<DiscoverGroupController>();
-                              Get.delete<CreateGroupController>();
-                              Navigator.pushNamedAndRemoveUntil(context,
-                                  AppRoutes.getStarted, (route) => false);
-                              bottomNavigatorController.activeIndex.value = 1;
-                            });
-                          }),
+
+    return Obx(() {
+      return profileController.isProfileLoading.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : profileController.myProfileModel.value.body != null
+              ? SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: reloadProfile,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (FirebaseAuth.instance.currentUser == null)
+                          Center(
+                            child: SignInButton(),
+                          )
+                        else
+                          ProfileContainer(
+                              userModel: profileController
+                                  .myProfileModel.value.body!.user),
+                        ProfileMenu(),
+                        SizedBox(height: 5.h),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SolhGreenBorderButton(
+                              height: 50,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20.w, vertical: 10.h),
+                              child: Text(
+                                "Logout",
+                                style: TextStyle(
+                                    fontSize: 18, color: SolhColors.black166),
+                              ),
+                              onPressed: () {
+                                FirebaseAuth.instance.signOut().then((value) {
+                                  clearOneSignalID();
+                                  Get.find<BottomNavigatorController>()
+                                      .activeIndex
+                                      .value = 0;
+                                  userBlocNetwork.updateSessionCookie = "";
+                                  Get.delete<NotificationController>();
+                                  Get.delete<ChatListController>();
+                                  Get.delete<GoalSettingController>();
+                                  Get.delete<ConnectionController>();
+                                  Get.delete<DiscoverGroupController>();
+                                  Get.delete<CreateGroupController>();
+                                  Get.delete<BottomNavigatorController>();
+                                  Get.delete<ProfileController>();
+
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      AppRoutes.phoneAuthScreen,
+                                      (route) => false);
+                                  RestartWidget.restartApp(context);
+                                });
+                              }),
+                        ),
+                      ],
+
                     ),
-                  ],
+                  ),
+                )
+              : Container(
+                  child: Center(
+                      child: Container(
+                    width: 150,
+                    child: SolhGreenButton(
+                      child: Text('Reload Profile',
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        await profileController.getMyProfile();
+                      },
+                    ),
+                  )),
                 );
-              }
-              if (snapshot.hasError)
-                Container(child: Text(snapshot.error.toString()));
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height / 3),
-                  Center(child: MyLoader()),
-                ],
-              );
-            }),
-      ),
-    );
+    });
+  }
+
+  Future<void> reloadProfile() async {
+    await profileController.getMyProfile();
   }
 }
 
@@ -258,19 +287,17 @@ class SignInButton extends StatelessWidget {
 }
 
 class ProfileContainer extends StatefulWidget {
-  ProfileContainer({Key? key, required UserModel? userModel})
+  ProfileContainer({Key? key, required myProfile.User? userModel})
       : _userModel = userModel,
         super(key: key);
 
-  final UserModel? _userModel;
+  final myProfile.User? _userModel;
 
   @override
   State<ProfileContainer> createState() => _ProfileContainerState();
 }
 
 class _ProfileContainerState extends State<ProfileContainer> {
-  final ConnectionController _connectionController = Get.find();
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -322,61 +349,61 @@ class _ProfileContainerState extends State<ProfileContainer> {
                 textAlign: TextAlign.center,
               ),
             ),
-            // ProfileDetailsButtonRow(
-            //   connections: _userModel!.connections,
-            //   // likes: _userModel!.likes,
-            //   likes: 0,
-            //   // posts: _userModel!.posts,
-            //   posts: 0,
-            //   reviews: _userModel!.reviews,
-            // ),
-            // Padding(
-            //   padding: EdgeInsets.only(
-            //       left: 6.w, right: 6.w, top: 1.8.h, bottom: 0.7.h),
-            //   child: Row(
-            //     children: [
-            //       Expanded(
-            //           child: SolhGreenBorderButton(
-            //               child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Icon(
-            //             CupertinoIcons.pencil,
-            //             color: SolhColors.green,
-            //             size: 16,
-            //           ),
-            //           SizedBox(
-            //             width: 1.w,
-            //           ),
-            //           Text(
-            //             "Edit",
-            //             style: SolhTextStyles.GreenBorderButtonText,
-            //           ),
-            //         ],
-            //       ))),
-            //       SizedBox(
-            //         width: 4.w,
-            //       ),
-            //       Expanded(
-            //           child: SolhGreenBorderButton(
-            //               child: Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text(
-            //             "Anonymous",
-            //             style: SolhTextStyles.GreenBorderButtonText,
-            //           ),
-            //           SizedBox(width: 1.w),
-            //           Icon(
-            //             CupertinoIcons.arrow_right,
-            //             color: SolhColors.green,
-            //             size: 16,
-            //           )
-            //         ],
-            //       )))
-            //     ],
-            //   ),
-            // ),
+            /* ProfileDetailsButtonRow(
+              connections: _userModel!.connections,
+              // likes: _userModel!.likes,
+              likes: 0,
+              // posts: _userModel!.posts,
+              posts: 0,
+              reviews: _userModel!.reviews,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: 6.w, right: 6.w, top: 1.8.h, bottom: 0.7.h),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: SolhGreenBorderButton(
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        CupertinoIcons.pencil,
+                        color: SolhColors.green,
+                        size: 16,
+                      ),
+                      SizedBox(
+                        width: 1.w,
+                      ),
+                      Text(
+                        "Edit",
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      ),
+                    ],
+                  ))),
+                  SizedBox(
+                    width: 4.w,
+                  ),
+                  Expanded(
+                      child: SolhGreenBorderButton(
+                          child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Anonymous",
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      ),
+                      SizedBox(width: 1.w),
+                      Icon(
+                        CupertinoIcons.arrow_right,
+                        color: SolhColors.green,
+                        size: 16,
+                      )
+                    ],
+                  )))
+                ],
+              ),
+            ), */
             SizedBox(height: 3.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -429,7 +456,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                             width: 5,
                           ),
                           Text(
-                            '${widget._userModel!.connectionsList!.length ?? 0}',
+                            '${widget._userModel!.connectionsList!.length}',
                             style:
                                 SolhTextStyles.GreenBorderButtonText.copyWith(
                                     fontSize: 18),

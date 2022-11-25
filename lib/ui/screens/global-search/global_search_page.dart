@@ -252,7 +252,18 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                           groupCount.length >= 2 ? 2 : groupCount.length,
                           (index) => GroupCard(
                                 onTap: () {
-                                  Navigator.push(context,
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.groupDetails,
+                                      arguments: {
+                                        "group": GroupList(
+                                          sId: groupCount[index].sId,
+                                          groupName:
+                                              groupCount[index].groupName,
+                                          groupMediaUrl:
+                                              groupCount[index].groupMediaUrl,
+                                        ),
+                                      });
+                                  /*   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return GroupDetailsPage(
                                       ///// this case is for group journal
@@ -263,7 +274,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                                             groupCount[index].groupMediaUrl,
                                       ),
                                     );
-                                  }));
+                                  })); */
                                 },
                                 groupMediaUrl: groupCount[index].groupMediaUrl,
                                 groupName: groupCount[index].groupName,

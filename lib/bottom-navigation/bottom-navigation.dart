@@ -14,17 +14,25 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../controllers/connections/connection_controller.dart';
+import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/journals/journal_page_controller.dart';
+import '../controllers/profile/anon_controller.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
+  //ProfileController profileController = Get.put(ProfileController());
+  final AnonController anonController = Get.put(AnonController());
+  BookAppointmentController bookAppointment =
+      Get.put(BookAppointmentController());
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
-  JournalPageController _journalPageController =
+  JournalPageController journalPageController =
       Get.put(JournalPageController());
   AppointmentController appointmentController =
       Get.put(AppointmentController());
@@ -64,23 +72,6 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
 
   List<Widget> bottomWidgetList = [
-    // Container(
-    //   child: ListView(
-    //     children: List.generate(100, (index) => Text(index.toString())),
-    //   ),
-    // ),
-    // Container(
-    //   child: Text('HomeScreen'),
-    // ),
-    // Container(
-    //   child: Text('HomeScreen'),
-    // ),
-    // Container(
-    //   child: Text('HomeScreen'),
-    // ),
-    // Container(
-    //   child: Text('HomeScreen'),
-    // )
     HomeScreen(),
     Journaling(),
     GetHelpScreen(),
@@ -131,23 +122,6 @@ class _MasterScreen2State extends State<MasterScreen2>
                     index: bottomNavigatorController.activeIndex.value,
                     children: bottomWidgetList),
               ),
-              // body: Obx(() {
-              //   switch (bottomNavigatorController.activeIndex.value) {
-              //     case 0:
-              //       return HomeScreen();
-              //     case 1:
-              //       return Journaling();
-              //     case 2:
-              //       return GetHelpScreen();
-              //     case 3:
-              //       return MyGoalsScreen();
-              //     case 4:
-              //       return MyProfileScreen();
-              //     default:
-              //       return Center(child: Text('Page not found'));
-              //   }
-              // }),
-              //body: TabBarView(children: bottomWidgetList),
               bottomNavigationBar: getBottomBar()),
         ),
       );
@@ -155,8 +129,8 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    if (bottomNavigatorController.tabrouter!.activeIndex != 0) {
-      bottomNavigatorController.tabrouter!.setActiveIndex(0);
+    if (bottomNavigatorController.activeIndex != 0) {
+      bottomNavigatorController.activeIndex.value = 0;
       return Future.value(false);
     } else {
       return await showDialog(
@@ -199,14 +173,11 @@ class _MasterScreen2State extends State<MasterScreen2>
       selectedItemColor: SolhColors.green,
       showUnselectedLabels: true,
       unselectedItemColor: SolhColors.grey102,
-      unselectedLabelStyle: TextStyle(
-        height: 1.5,
-      ),
+      unselectedLabelStyle: TextStyle(height: 1.5, color: SolhColors.grey102),
+      selectedLabelStyle: TextStyle(height: 1.5, color: SolhColors.green),
       selectedFontSize: 13,
       unselectedFontSize: 13,
       onTap: (index) => bottomNavigatorController.activeIndex.value = index,
-      // onTap: (index) =>
-      //     bottomNavigatorController.pageController.jumpToPage(index),
       items: [
         BottomNavigationBarItem(
           icon: Obx(
@@ -303,28 +274,6 @@ class _MasterScreen2State extends State<MasterScreen2>
         ));
   }
 }
-
-class GetPages extends StatelessWidget {
-  BottomNavigatorController bottomNavigatorController = Get.find();
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-        controller: bottomNavigatorController.pageController,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          HomeScreen(),
-          Journaling(),
-          GetHelpScreen(),
-          MyGoalsScreen(),
-          MyProfileScreen()
-        ]);
-  }
-}
-
-
-
-
-
 
 /* import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';

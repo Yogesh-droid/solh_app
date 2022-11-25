@@ -34,7 +34,8 @@ class AnonController extends GetxController {
           'userName': userName.value,
           'profilePicture': avtarImageUrl.value,
           'profilePictureType': avtarType.value,
-        });
+        },
+        isEncoded: true);
     isLoading.value = false;
     debugPrint('trying to create anon profile $map');
     if (map['success']) {

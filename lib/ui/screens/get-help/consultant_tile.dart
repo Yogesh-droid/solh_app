@@ -19,7 +19,6 @@ class ConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('${_doctorModel.feeCurrency} ${_doctorModel.fee_amount}');
     return InkWell(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ConsultantProfile(

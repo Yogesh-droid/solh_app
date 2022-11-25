@@ -10,8 +10,6 @@ import '../../../widgets_constants/group_card.dart';
 import '../../../widgets_constants/search/people_tile.dart';
 import '../../../widgets_constants/search/post_tile.dart';
 import '../comment/comment-screen.dart';
-import '../connect/connect-screen.dart';
-import '../groups/group_detail.dart';
 
 class ViewAllSearchResults extends StatefulWidget {
   ViewAllSearchResults(
@@ -73,7 +71,15 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
         itemCount: groupCount!.length,
         itemBuilder: (context, index) => GroupCard(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                Navigator.pushNamed(context, AppRoutes.groupDetails,
+                    arguments: {
+                      "group": GroupList(
+                        sId: groupCount[index].sId,
+                        groupName: groupCount[index].groupName,
+                        groupMediaUrl: groupCount[index].groupMediaUrl,
+                      )
+                    });
+                /*  Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return GroupDetailsPage(
                     ///// this case is for group journal
                     group: GroupList(
@@ -82,7 +88,7 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
                       groupMediaUrl: groupCount[index].groupMediaUrl,
                     ),
                   );
-                }));
+                })); */
               },
               groupMediaUrl: groupCount[index].groupMediaUrl,
               groupName: groupCount[index].groupName,

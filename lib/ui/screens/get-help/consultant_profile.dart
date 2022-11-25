@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,11 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/ui/screens/get-help/book_appointment.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 
@@ -82,6 +81,37 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                   SizedBox(
                     height: 41,
                   ),
+                  Text(
+                    _controller
+                                .consultantModelController.value.provder!.fee_amount! >
+                            0
+                        ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
+                        : (_controller.consultantModelController.value.provder!
+                                        .fee ==
+                                    null ||
+                                _controller.consultantModelController.value
+                                        .provder!.fee ==
+                                    'Paid' ||
+                                _controller.consultantModelController.value
+                                        .provder!.fee ==
+                                    ''
+                            ? 'Paid'
+                            : ''),
+                    style: GoogleFonts.signika(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.pink224),
+                  ),
+                  Text(
+                    'Consultation Fees',
+                    style: GoogleFonts.signika(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.grey196),
+                  ),
+                  SizedBox(
+                    height: 41,
+                  ),
                   BookAppointmentButton()
                 ],
               ),
@@ -144,23 +174,19 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                       SizedBox(
                         width: 8,
                       ),
-                      Container(
-                        width: 2,
-                        height: 12,
-                        color: Colors.grey.shade300,
-                      ),
+                      // Container(
+                      //   width: 2,
+                      //   height: 12,
+                      //   color: Colors.grey.shade300,
+                      // ),
                     ],
                   )
                 : Container(),
             SizedBox(
               width: 8,
             ),
-            Text(
-              'Free',
-              style: GoogleFonts.signika(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: SolhColors.pink224),
+            Row(
+              children: [],
             ),
           ],
         ),

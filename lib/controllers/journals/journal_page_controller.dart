@@ -30,9 +30,9 @@ class JournalPageController extends GetxController {
   int trendingVideoIndex = 0;
   bool isPlayingMyPostVideo = false;
   bool isPlayingTrendingPostVideo = false;
-  var videoPlayerController = [].obs;
+  var videoPlayerController = <Map<int, VideoPlayerController>>[].obs;
   var tredingVideoPlayerController = [].obs;
-  var myVideoPlayerControllers = [].obs;
+  var myVideoPlayerControllers = <Map<int, VideoPlayerController>>[].obs;
   var selectedGroupId = "".obs;
   int selectedGroupIndex = 0;
   var isScrollingStarted = false.obs;
@@ -74,13 +74,12 @@ class JournalPageController extends GetxController {
             if (videoPlayerController.value.isEmpty) {
               videoIndex = i;
             }
+            VideoPlayerController vc =
+                VideoPlayerController.network(journalsList.value[i].mediaUrl!);
 
-            videoPlayerController.value.add({
-              i: VideoPlayerController.network(journalsList.value[i].mediaUrl!)
-                ..initialize()
-            });
+            videoPlayerController.value.add({i: vc..initialize()});
           } else {
-            videoPlayerController.value.add(null);
+            videoPlayerController.value.add({});
           }
         }
       }
@@ -113,7 +112,7 @@ class JournalPageController extends GetxController {
           }
 
           tredingVideoPlayerController.value.add({
-            i: VideoPlayerController.network(
+            i: await VideoPlayerController.network(
                 trendingJournalsList.value[i].mediaUrl!)
               ..initialize()
           });
@@ -127,8 +126,9 @@ class JournalPageController extends GetxController {
     isTrendingLoading.value = false;
   }
 
-  void playVideo(int index) {
+  Future<void> playVideo(int index) async {
     isPlayingMyPostVideo = false;
+
     isPlayingTrendingPostVideo = false;
     if (videoPlayerController.value[index] != null) {
       if (videoIndex != index) {
@@ -145,22 +145,23 @@ class JournalPageController extends GetxController {
     }
   }
 
-  void playMyPostVideo(int index) {
+  Future<void> playMyPostVideo(int index) async {
     isPlayingMyPostVideo = true;
+
     if (myVideoPlayerControllers.value[index] != null) {
       if (myVideoIndex != index) {
-        myVideoPlayerControllers.value[index]![index]!.pause();
+        myVideoPlayerControllers.value[index][index]!.pause();
       }
-      if (myVideoPlayerControllers.value[index]![index]!.value.isPlaying) {
-        myVideoPlayerControllers.value[index]![index]!.pause();
+      if (myVideoPlayerControllers.value[index][index]!.value.isPlaying) {
+        myVideoPlayerControllers.value[index][index]!.pause();
       } else {
-        myVideoPlayerControllers.value[index]![index]!.play();
+        myVideoPlayerControllers.value[index][index]!.play();
         myVideoIndex = index;
       }
     }
   }
 
-  void playTrendingPostVideo(int index) {
+  Future<void> playTrendingPostVideo(int index) async {
     isPlayingTrendingPostVideo = true;
     if (tredingVideoPlayerController.value[index] != null) {
       if (trendingVideoIndex != index) {

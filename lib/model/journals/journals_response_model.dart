@@ -67,7 +67,9 @@ class Journals {
   BestComment? bestComment;
   PostedBy? postedBy;
   bool? anonymousJournal;
-
+  String? mediaHeight;
+  String? aspectRatio;
+  String? mediaWidth;
   String? mediaUrl;
   String? mediaType;
   Group? group;
@@ -88,6 +90,9 @@ class Journals {
       this.anonymousJournal,
       this.mediaUrl,
       this.mediaType,
+      this.aspectRatio,
+      this.mediaHeight,
+      this.mediaWidth,
       this.group});
 
   Journals.fromJson(Map<String, dynamic> json) {
@@ -106,6 +111,9 @@ class Journals {
         : null;
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    mediaHeight = json['mediaHeight'];
+    mediaWidth = json['mediaWidth'];
+    aspectRatio = json['aspectRatio'];
     // bestComment = json['bestComment'] != null
     //     ? new BestComment.fromJson(json['bestComment'])
     //     : null;

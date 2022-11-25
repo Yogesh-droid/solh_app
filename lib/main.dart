@@ -12,9 +12,10 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/routes/routes.gr.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'controllers/chat-list/chat_list_controller.dart';
+import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey =
@@ -33,25 +34,27 @@ void main() async {
     bool? newUser = await isNewUser();
 
     Map<String, dynamic> _initialAppData = await initApp();
-    runApp(SolhApp(
+    runApp(RestartWidget(
+        child: SolhApp(
       isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
-    ));
+    )));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
   } else
-    runApp(SolhApp(
+    runApp(RestartWidget(
+        child: SolhApp(
       isProfileCreated: false,
-    ));
+    )));
 
   FlutterNativeSplash.remove();
 }
 
 ////////   required controllers are initialized here ///////////
-void initControllers() {
+Future<void> initControllers() async {
+  ProfileController profileController = Get.put(ProfileController());
+  await profileController.getMyProfile();
   final AgeController ageController = Get.put(AgeController());
 
-  final AnonController anonController = Get.put(AnonController());
-  BookAppointmentController bookAppointment =
-      Get.put(BookAppointmentController());
+  var _chatListController = Get.put(ChatListController());
 }
 
 /// app ////
@@ -70,8 +73,6 @@ class SolhApp extends StatefulWidget {
 }
 
 class _SolhAppState extends State<SolhApp> {
-  final _appRouter = AppRouter(globalNavigatorKey);
-
   @override
   void initState() {
     // initDynamicLinks();
@@ -87,12 +88,12 @@ class _SolhAppState extends State<SolhApp> {
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
+        //initialRoute: AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.signika().fontFamily,
           primaryColor: SolhColors.green,
-
           colorScheme: ColorScheme(
               secondary: SolhColors.green,
               background: SolhColors.green,
@@ -105,10 +106,7 @@ class _SolhAppState extends State<SolhApp> {
               onSecondary: SolhColors.green,
               onSurface: SolhColors.green,
               primary: SolhColors.green),
-          // primaryColor: Color.fromRGBO(95, 155, 140, 1),
-          // primarySwatch: Colors.green,
-          // buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-
+          primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
@@ -126,5 +124,36 @@ class _SolhAppState extends State<SolhApp> {
         ),
       );
     });
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(
+      key: key,
+      child: widget.child,
+    );
   }
 }
