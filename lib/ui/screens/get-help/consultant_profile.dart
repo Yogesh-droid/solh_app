@@ -81,6 +81,37 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                   SizedBox(
                     height: 41,
                   ),
+                  Text(
+                    _controller
+                                .consultantModelController.value.provder!.fee_amount! >
+                            0
+                        ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
+                        : (_controller.consultantModelController.value.provder!
+                                        .fee ==
+                                    null ||
+                                _controller.consultantModelController.value
+                                        .provder!.fee ==
+                                    'Paid' ||
+                                _controller.consultantModelController.value
+                                        .provder!.fee ==
+                                    ''
+                            ? 'Paid'
+                            : ''),
+                    style: GoogleFonts.signika(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.pink224),
+                  ),
+                  Text(
+                    'Consultation Fees',
+                    style: GoogleFonts.signika(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: SolhColors.grey196),
+                  ),
+                  SizedBox(
+                    height: 41,
+                  ),
                   BookAppointmentButton()
                 ],
               ),
@@ -143,11 +174,11 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                       SizedBox(
                         width: 8,
                       ),
-                      Container(
-                        width: 2,
-                        height: 12,
-                        color: Colors.grey.shade300,
-                      ),
+                      // Container(
+                      //   width: 2,
+                      //   height: 12,
+                      //   color: Colors.grey.shade300,
+                      // ),
                     ],
                   )
                 : Container(),
@@ -155,38 +186,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
               width: 8,
             ),
             Row(
-              children: [
-                Text(
-                  controller.consultantModelController.value.provder!.fee!
-                          .isNotEmpty
-                      ? controller.consultantModelController.value.provder!
-                              .feeCurrency ??
-                          ''
-                      : '',
-                  style: GoogleFonts.signika(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: SolhColors.pink224),
-                ),
-                Text(
-                  controller.consultantModelController.value.provder!.fee!
-                                  .trim() ==
-                              '' ||
-                          controller.consultantModelController.value.provder!
-                                  .fee! ==
-                              'Paid' ||
-                          controller.consultantModelController.value.provder!
-                                  .fee ==
-                              null
-                      ? 'Paid'
-                      : controller
-                          .consultantModelController.value.provder!.fee!,
-                  style: GoogleFonts.signika(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: SolhColors.pink224),
-                ),
-              ],
+              children: [],
             ),
           ],
         ),

@@ -30,6 +30,7 @@ class Provder {
   String? country;
   int? experience;
   String? fee;
+  int? fee_amount;
   String? feeCurrency;
   String? profilePicture;
   bool? solhCertified;
@@ -53,6 +54,7 @@ class Provder {
       this.feeCurrency,
       this.sId,
       this.uid,
+      this.fee_amount,
       this.prefix,
       this.type});
 
@@ -60,6 +62,7 @@ class Provder {
     offlineSession = json['offlineSession'];
     name = json['name'];
     bio = json['bio'];
+    fee_amount = json['fee_amount'];
     specialization = json['specialization'];
     contactNumber = json['contactNumber'];
     email = json['email'];

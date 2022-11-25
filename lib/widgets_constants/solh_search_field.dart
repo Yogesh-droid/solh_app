@@ -6,6 +6,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 class SolhSearchField extends StatelessWidget {
   const SolhSearchField(
       {Key? key,
+      this.focusNode,
       required this.hintText,
       required this.icon,
       required this.onTap})
@@ -13,6 +14,7 @@ class SolhSearchField extends StatelessWidget {
   final String hintText;
   final String icon;
   final Callback onTap;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {

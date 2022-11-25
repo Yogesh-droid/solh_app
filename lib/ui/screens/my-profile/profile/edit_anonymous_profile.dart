@@ -43,192 +43,197 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
           ),
           isLandingScreen: false,
         ),
-        body: profileController.myProfileModel.value.body!.user!.anonymous !=
-                null
-            ? Column(
-                children: [
-                  SizedBox(
-                    height: 3.5.h,
-                  ),
-                  Container(
-                    child: Stack(
-                      children: [
-                        _croppedFile != null
-                            ? CircleAvatar(
-                                radius: 14.5.w,
-                                backgroundColor: SolhColors.green,
-                                child: InkWell(
-                                  onTap: () {
-                                    _pickImage();
-                                  },
-                                  child: CircleAvatar(
-                                    radius: 14.w,
-                                    backgroundImage: FileImage(_croppedFile!),
+        body: Obx(() {
+          return profileController.myProfileModel.value.body!.user!.anonymous !=
+                  null
+              ? Column(
+                  children: [
+                    SizedBox(
+                      height: 3.5.h,
+                    ),
+                    Container(
+                      child: Stack(
+                        children: [
+                          _croppedFile != null
+                              ? CircleAvatar(
+                                  radius: 14.5.w,
+                                  backgroundColor: SolhColors.green,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _pickImage();
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 14.w,
+                                      backgroundImage: FileImage(_croppedFile!),
+                                    ),
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  radius: 14.5.w,
+                                  backgroundColor: SolhColors.green,
+                                  child: InkWell(
+                                    onTap: () {
+                                      _pickImage();
+                                    },
+                                    child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 14.w,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                                profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .anonymous!
+                                                        .profilePicture ??
+                                                    '')),
                                   ),
                                 ),
-                              )
-                            : CircleAvatar(
-                                radius: 14.5.w,
-                                backgroundColor: SolhColors.green,
-                                child: InkWell(
-                                  onTap: () {
-                                    _pickImage();
-                                  },
-                                  child: CircleAvatar(
-                                      backgroundColor: Colors.white,
-                                      radius: 14.w,
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                              profileController
-                                                      .myProfileModel
-                                                      .value
-                                                      .body!
-                                                      .user!
-                                                      .anonymous!
-                                                      .profilePicture ??
-                                                  '')),
-                                ),
-                              ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: InkWell(
-                              onTap: () {
-                                _croppedFile != null
-                                    ? uploadImage()
-                                    : _pickImage();
-                              },
-                              child: _croppedFile != null
-                                  ? Icon(Icons.check_box_outlined,
-                                      color: SolhColors.green)
-                                  : Container(
-                                      height: 35,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.black26,
-                                              blurRadius: 5,
-                                              offset: Offset(0, 2)
-                                              // spreadRadius: 3
-                                              )
-                                        ],
-                                      ),
-                                      child: IconButton(
-                                        onPressed: () {
-                                          _pickImage();
-                                        },
-                                        iconSize: 14,
-                                        icon: Icon(Icons.edit_outlined,
-                                            color: SolhColors.green),
-                                      ),
-                                    )),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: InkWell(
+                                onTap: () {
+                                  _croppedFile != null
+                                      ? uploadImage()
+                                      : _pickImage();
+                                },
+                                child: _croppedFile != null
+                                    ? Icon(Icons.check_box_outlined,
+                                        color: SolhColors.green)
+                                    : Container(
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black26,
+                                                blurRadius: 5,
+                                                offset: Offset(0, 2)
+                                                // spreadRadius: 3
+                                                )
+                                          ],
+                                        ),
+                                        child: IconButton(
+                                          onPressed: () {
+                                            _pickImage();
+                                          },
+                                          iconSize: 14,
+                                          icon: Icon(Icons.edit_outlined,
+                                              color: SolhColors.green),
+                                        ),
+                                      )),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 3.5.h,
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 18.0,
+                          ),
+                          child: ProfielTextField(
+                            hintText: "Anonymous Username",
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            textEditingController: _userNameController
+                              ..text = profileController.myProfileModel.value
+                                      .body!.user!.anonymous!.userName ??
+                                  '',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                _anonController.isNameTaken.value = false;
+                              }
+                              return value == ''
+                                  ? "Required*"
+                                  : value.length < 3
+                                      ? "Username must be at least 3 characters long"
+                                      : null;
+                            },
+                            onChanged: (val) {
+                              _anonController.isNameTaken.value = false;
+                              if (val!.length >= 3 &&
+                                  _userNameController.text !=
+                                      profileController.myProfileModel.value
+                                          .body!.user!.anonymous!.userName) {
+                                _anonController.checkIfUserNameTaken(val);
+                              }
+                            },
+                          ),
                         ),
+                        Obx(() {
+                          return _anonController.isNameTaken.value
+                              ? Text(
+                                  "Username Already taken",
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              : Container();
+                        }),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: 3.5.h,
-                  ),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 18.0,
-                        ),
-                        child: ProfielTextField(
-                          hintText: "Anonymous Username",
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          textEditingController: _userNameController
-                            ..text = profileController.myProfileModel.value
-                                    .body!.user!.anonymous!.userName ??
-                                '',
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              _anonController.isNameTaken.value = false;
-                            }
-                            return value == ''
-                                ? "Required*"
-                                : value.length < 3
-                                    ? "Username must be at least 3 characters long"
-                                    : null;
-                          },
-                          onChanged: (val) {
-                            _anonController.isNameTaken.value = false;
-                            if (val!.length >= 3 &&
-                                _userNameController.text !=
-                                    profileController.myProfileModel.value.body!
-                                        .user!.anonymous!.userName) {
-                              _anonController.checkIfUserNameTaken(val);
-                            }
-                          },
-                        ),
-                      ),
-                      Obx(() {
-                        return _anonController.isNameTaken.value
-                            ? Text(
-                                "Username Already taken",
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : Container();
-                      }),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 3.5.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                    child: SolhGreenButton(
-                      child: Text(
-                        "Save",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      onPressed: () async {
-                        if (_anonController.isNameTaken.value) {
-                          return;
-                        }
-                        if (_croppedFile != null) {
-                          await uploadImage();
-                        }
-                        if (imgUrl != null ||
-                            _userNameController.text !=
-                                profileController.myProfileModel.value.body!
-                                    .user!.anonymous!.userName) {
-                          print(imgUrl);
-                          var response = await Network.makePutRequestWithToken(
-                              url: "${APIConstants.api}/api/anonymous",
-                              body: {
-                                "userName": _userNameController.text,
-                                "profilePicture": imgUrl,
-                                "profilePictureType": imgType
-                              });
-                          debugPrint("anon upload try2 $response");
-                          if (response != null) {
-                            print(response['imageUrl']);
-                          }
-                        }
-                        profileController.getMyProfile();
-                        Navigator.of(context).pop();
-                      },
+                    SizedBox(
+                      height: 3.5.h,
                     ),
-                  )
-                ],
-              )
-            : Container(
-                child: Center(
-                    child: SolhGreenButton(
-                  child: Text('Reload Profile',
-                      style: TextStyle(color: Colors.white)),
-                  onPressed: () async {
-                    await profileController.getMyProfile();
-                  },
-                )),
-              ));
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                      child: SolhGreenButton(
+                        child: Text(
+                          "Save",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        onPressed: () async {
+                          if (_anonController.isNameTaken.value) {
+                            return;
+                          }
+                          if (_croppedFile != null) {
+                            await uploadImage();
+                          }
+                          if (imgUrl != null ||
+                              _userNameController.text !=
+                                  profileController.myProfileModel.value.body!
+                                      .user!.anonymous!.userName) {
+                            print('imgurl ++' + imgUrl.toString());
+                            var response =
+                                await Network.makePutRequestWithToken(
+                                    url: "${APIConstants.api}/api/anonymous",
+                                    body: {
+                                  "userName": _userNameController.text,
+                                  "profilePicture": imgUrl,
+                                  "profilePictureType": imgType
+                                });
+                            debugPrint("anon upload try2 $response");
+                            if (response != null) {
+                              print(response['imageUrl']);
+                            }
+                          }
+                          profileController.getMyProfile();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    )
+                  ],
+                )
+              : Container(
+                  width: 150,
+                  child: Center(
+                      child: SolhGreenButton(
+                    child: Text('Reload Profile',
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () async {
+                      await profileController.getMyProfile();
+                    },
+                  )),
+                );
+        }));
   }
 
   void _pickImage() async {
@@ -272,8 +277,9 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
   Future<void> uploadImage() async {
     var response = await Network.uploadFileToServer(
         "${APIConstants.api}/api/fileupload/anonymous", "file", _croppedFile!);
+    print('upload image $response');
     if (response["success"]) {
-      imgUrl = response["location"];
+      imgUrl = response["imageUrl"];
       imgType = response["mimetype"];
       Utility.showToast('Profile picture updated');
     }

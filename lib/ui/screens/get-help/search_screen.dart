@@ -29,8 +29,11 @@ class _SearchScreenState extends State<SearchScreen> {
 
   BookAppointmentController bookAppointmentController = Get.find();
 
+  FocusNode focusNode = FocusNode();
+
   @override
   void initState() {
+    focusNode.requestFocus();
     getResultByCountry();
     super.initState();
   }
@@ -313,27 +316,30 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         .doctors![index]
                                                         .organisation ??
                                                     '',
-                                                name: searchMarketController.searchMarketModel.value.doctors![index].name ??
-                                                    '',
-                                                mobile: searchMarketController
+                                                name: searchMarketController
                                                         .searchMarketModel
                                                         .value
                                                         .doctors![index]
-                                                        .contactNumber ??
+                                                        .name ??
                                                     '',
-                                                email: searchMarketController
+                                                fee: searchMarketController.searchMarketModel.value.doctors![index].fee ??
+                                                    '',
+                                                feeCurrency: searchMarketController
                                                         .searchMarketModel
                                                         .value
                                                         .doctors![index]
-                                                        .email ??
+                                                        .feeCurrency ??
                                                     '',
+                                                fee_amount: searchMarketController
+                                                        .searchMarketModel
+                                                        .value
+                                                        .doctors![index]
+                                                        .fee_amount ??
+                                                    0,
+                                                mobile: searchMarketController.searchMarketModel.value.doctors![index].contactNumber ?? '',
+                                                email: searchMarketController.searchMarketModel.value.doctors![index].email ?? '',
                                                 clinic: '',
-                                                locality: searchMarketController
-                                                        .searchMarketModel
-                                                        .value
-                                                        .doctors![index]
-                                                        .addressLineOne ??
-                                                    '',
+                                                locality: searchMarketController.searchMarketModel.value.doctors![index].addressLineOne ?? '',
                                                 pincode: '',
                                                 city: searchMarketController.searchMarketModel.value.doctors![index].addressLineFour ?? '',
                                                 bio: searchMarketController.searchMarketModel.value.doctors![index].bio ?? '',
@@ -356,6 +362,25 @@ class _SearchScreenState extends State<SearchScreen> {
                                             doctorModel: DoctorModel(
                                               specialization: '',
                                               organisation: '',
+                                              fee: searchMarketController
+                                                      .searchMarketModel
+                                                      .value
+                                                      .provider![index]
+                                                      .fee ??
+                                                  '',
+                                              feeCurrency:
+                                                  searchMarketController
+                                                          .searchMarketModel
+                                                          .value
+                                                          .provider![index]
+                                                          .feeCurrency ??
+                                                      '',
+                                              fee_amount: searchMarketController
+                                                      .searchMarketModel
+                                                      .value
+                                                      .provider![index]
+                                                      .fee_amount ??
+                                                  0,
                                               name: searchMarketController
                                                       .searchMarketModel
                                                       .value

@@ -119,7 +119,14 @@ class ConsultantsTile extends StatelessWidget {
               ),
             ],
           ),
-          Text('free',
+          Text(
+              _doctorModel.fee_amount! > 0
+                  ? '${_doctorModel.feeCurrency} ${_doctorModel.fee_amount}'
+                  : (_doctorModel.fee == null ||
+                          _doctorModel.fee == 'Paid' ||
+                          _doctorModel.fee == ''
+                      ? 'Paid'
+                      : ''),
               style: TextStyle(
                   fontSize: 15,
                   color: SolhColors.green,

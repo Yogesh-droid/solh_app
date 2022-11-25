@@ -51,10 +51,14 @@ class Doctors {
   String? sId;
   String? profilePicture;
   String? specialization;
+  String? fee;
+  String? feeCurrency;
+  int? fee_amount;
 
   Doctors(
       {this.offlineSession,
       this.name,
+      this.fee_amount,
       this.organisation,
       this.addressLineOne,
       this.addressLineTwo,
@@ -64,11 +68,16 @@ class Doctors {
       this.contactNumber,
       this.email,
       this.sId,
+      this.fee,
+      this.feeCurrency,
       this.specialization,
       this.profilePicture});
 
   Doctors.fromJson(Map<String, dynamic> json) {
     offlineSession = json['offlineSession'];
+    fee = json['fee'];
+    fee_amount = json['fee_amount'];
+    feeCurrency = json['feeCurrency'];
     name = json['name'];
     organisation = json['organisation'];
     addressLineOne = json['addressLineOne'];
@@ -128,10 +137,14 @@ class Provider {
   double? score;
   String? id;
   String? profilePicture;
+  String? fee;
+  String? feeCurrency;
+  int? fee_amount;
 
   Provider(
       {this.sId,
       this.gender,
+      this.fee_amount,
       this.language,
       this.offlineSession,
       this.education,
@@ -154,11 +167,16 @@ class Provider {
       this.profession,
       this.score,
       this.id,
+      this.fee,
+      this.feeCurrency,
       this.profilePicture});
 
   Provider.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     gender = json['gender'];
+    fee = json['fee'];
+    fee_amount = json['fee_amount'];
+    feeCurrency = json['fee_currency'];
     language = json['language'].cast<String>();
     offlineSession = json['offlineSession'];
     education = json['education'].cast<String>();
@@ -188,6 +206,7 @@ class Provider {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['gender'] = this.gender;
+
     data['language'] = this.language;
     data['offlineSession'] = this.offlineSession;
     data['education'] = this.education;

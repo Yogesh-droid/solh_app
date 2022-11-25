@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +26,7 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/connections/connection_controller.dart';
@@ -341,7 +340,7 @@ class _HomePageState extends State<HomePage> {
               ),
               InkWell(
                 onTap: () {
-                  _bottomNavigatorController.activeIndex.value = 1;
+                  _bottomNavigatorController.activeIndex.value = 2;
                 },
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
@@ -434,7 +433,7 @@ class _HomePageState extends State<HomePage> {
           ),
           getRecommendedReadsUI(),
           SizedBox(
-            height: 150,
+            height: 70,
           ),
         ]),
       ),
@@ -517,6 +516,11 @@ class _HomePageState extends State<HomePage> {
     return CachedNetworkImage(
       imageUrl: value['media'],
       fit: BoxFit.fill,
+      placeholder: (context, url) {
+        return Center(
+          child: MyLoader(),
+        );
+      },
     );
   }
 

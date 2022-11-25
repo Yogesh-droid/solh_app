@@ -85,6 +85,9 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               onPressed: () {
                                 FirebaseAuth.instance.signOut().then((value) {
                                   clearOneSignalID();
+                                  Get.find<BottomNavigatorController>()
+                                      .activeIndex
+                                      .value = 0;
                                   userBlocNetwork.updateSessionCookie = "";
                                   Get.delete<NotificationController>();
                                   Get.delete<ChatListController>();
@@ -94,6 +97,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                   Get.delete<CreateGroupController>();
                                   Get.delete<BottomNavigatorController>();
                                   Get.delete<ProfileController>();
+
                                   Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       AppRoutes.phoneAuthScreen,
@@ -108,12 +112,15 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 )
               : Container(
                   child: Center(
-                      child: SolhGreenButton(
-                    child: Text('Reload Profile',
-                        style: TextStyle(color: Colors.white)),
-                    onPressed: () async {
-                      await profileController.getMyProfile();
-                    },
+                      child: Container(
+                    width: 150,
+                    child: SolhGreenButton(
+                      child: Text('Reload Profile',
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        await profileController.getMyProfile();
+                      },
+                    ),
                   )),
                 );
     });
