@@ -261,18 +261,6 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                               Text("Connections"),
                                             ],
                                           ),
-                                          // Divider(),
-                                          // Column(
-                                          //   children: [
-                                          //     Text(
-                                          //       '17',
-                                          //       style:
-                                          //           SolhTextStyles.GreenBorderButtonText
-                                          //               .copyWith(fontSize: 18),
-                                          //     ),
-                                          //     Text("Reviews"),
-                                          //   ],
-                                          // )
                                         ],
                                       ),
                                       SizedBox(height: 3.h),
@@ -761,8 +749,9 @@ class _TabViewState extends State<TabView> {
               onTap: () {
                 print("Tab 1");
                 print(widget.sId);
-                Navigator.pushNamed(context, AppRoutes.userProfile,
-                    arguments: {'sId': widget.sId});
+                Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
+                  'sId': widget.sId,
+                });
               },
               child: Text(
                 "Posts",

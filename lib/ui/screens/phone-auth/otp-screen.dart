@@ -121,9 +121,7 @@ class _OTPScreenState extends State<OTPScreen> {
                               utm_medium: utm_medium,
                               utm_compaign: utm_name,
                               utm_source: utm_source);
-                      ProfileController profileController =
-                          Get.put(ProfileController());
-                      await profileController.getMyProfile();
+
                       print(isSessionCookieCreated);
                       print("checking is profile created");
                       bool isProfileCreated =
@@ -135,6 +133,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           isProfileCreated.toString() +
                           "^" * 30);
                       if (isProfileCreated) {
+                        ProfileController profileController =
+                            Get.put(ProfileController());
+                        await profileController.getMyProfile();
                         Navigator.pushNamed(context, AppRoutes.master);
                       } else {
                         facebookAppEvents.logEvent(

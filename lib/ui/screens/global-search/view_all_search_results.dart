@@ -115,6 +115,7 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
                 Navigator.pushNamed(context, AppRoutes.connectScreen,
                     arguments: {
                       "sId": connection[index].sId!,
+                      "uid": connection[index].uid!
                     });
               },
             )));

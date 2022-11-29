@@ -15,8 +15,6 @@ import '../../../model/group/get_group_response_model.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../routes/routes.dart';
 import '../comment/comment-screen.dart';
-import '../connect/connect-screen.dart';
-import '../groups/group_detail.dart';
 
 class GlobalSearchPage extends StatefulWidget {
   GlobalSearchPage({Key? key}) : super(key: key);
@@ -344,7 +342,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
             //         builder: (context) => ConnectProfileScreen(
             //             uid: e.uid ?? '', sId: e.sId ?? '')));
             Navigator.pushNamed(context, AppRoutes.connectScreen,
-                arguments: {"uid": e.uid!, "sId": e.sId!});
+                arguments: {"sId": e.sId!});
           },
         ));
   }

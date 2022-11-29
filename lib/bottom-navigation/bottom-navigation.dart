@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -14,18 +17,15 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-
-import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/journals/journal_page_controller.dart';
-import '../controllers/profile/anon_controller.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
   //ProfileController profileController = Get.put(ProfileController());
-  final AnonController anonController = Get.put(AnonController());
+
   BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
   final MoodMeterController moodMeterController =
@@ -157,7 +157,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                       style: SolhTextStyles.GreenButtonText,
                     ),
                     onPressed: () {
-                      Navigator.of(context).pop(true);
+                      exit(0);
                     }),
               ],
             );
@@ -165,78 +165,69 @@ class _MasterScreen2State extends State<MasterScreen2>
     }
   }
 
-  BottomNavigationBar getBottomBar() {
-    return BottomNavigationBar(
-      currentIndex: 0,
-      enableFeedback: true,
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: SolhColors.green,
-      showUnselectedLabels: true,
-      unselectedItemColor: SolhColors.grey102,
-      unselectedLabelStyle: TextStyle(height: 1.5, color: SolhColors.grey102),
-      selectedLabelStyle: TextStyle(height: 1.5, color: SolhColors.green),
-      selectedFontSize: 13,
-      unselectedFontSize: 13,
-      onTap: (index) => bottomNavigatorController.activeIndex.value = index,
-      items: [
-        BottomNavigationBarItem(
-          icon: Obx(
-            () => Icon(
-              bottomNavigatorController.activeIndex.value == 0
-                  ? CupertinoIcons.house_fill
-                  : CupertinoIcons.house,
-              color: bottomNavigatorController.activeIndex.value == 0
-                  ? SolhColors.green
-                  : SolhColors.grey102,
-            ),
-          ),
-          label: "Home",
-        ),
-        BottomNavigationBarItem(
-            icon: Obx(
-              () => bottomNavigatorController.activeIndex.value == 1
-                  ? SvgPicture.asset('assets/images/journaling.svg')
-                  : SvgPicture.asset('assets/images/journalling outline.svg',
-                      color: SolhColors.grey102),
-            ),
-            label: "journaling"),
-        userBlocNetwork.getUserType == 'SolhProvider'
-            ? BottomNavigationBarItem(
-                icon: Obx((() => Icon(
-                      CupertinoIcons.calendar_badge_plus,
-                      color: bottomNavigatorController.activeIndex.value == 2
-                          ? SolhColors.green
-                          : SolhColors.grey102,
-                    ))),
-                label: "My Schedule")
-            : BottomNavigationBarItem(
-                icon:
-                    Obx((() => bottomNavigatorController.activeIndex.value == 2
-                        ? SvgPicture.asset("assets/images/get help tab.svg")
-                        : SvgPicture.asset(
-                            "assets/images/get help. outline.svg",
-                            color: Colors.grey.shade600,
-                          ))),
-                label: "Get Help",
+  Widget getBottomBar() {
+    return Obx(() => BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          currentIndex: bottomNavigatorController.activeIndex.value,
+          showUnselectedLabels: true,
+          selectedItemColor: SolhColors.green,
+          unselectedItemColor: SolhColors.grey102,
+          onTap: (index) => bottomNavigatorController.activeIndex.value = index,
+          items: [
+            BottomNavigationBarItem(
+              icon: Obx(
+                () => bottomNavigatorController.activeIndex.value == 0
+                    ? SvgPicture.asset('assets/images/home_solid.svg')
+                    : SvgPicture.asset('assets/images/home_outlined.svg'),
               ),
-        BottomNavigationBarItem(
-            icon: Obx(() => SvgPicture.asset(
-                  'assets/images/groal tab vector.svg',
-                  color: bottomNavigatorController.activeIndex.value == 3
-                      ? SolhColors.green
-                      : Colors.grey.shade600,
-                )),
-            label: "My Goals"),
-        BottomNavigationBarItem(
-            icon: Obx(() => SvgPicture.asset(
-                  'assets/images/profile.svg',
-                  color: bottomNavigatorController.activeIndex.value == 4
-                      ? SolhColors.green
-                      : Colors.grey.shade600,
-                )),
-            label: "My profile")
-      ],
-    );
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+                icon: Obx(
+                  () => bottomNavigatorController.activeIndex.value == 1
+                      ? SvgPicture.asset('assets/images/journaling.svg')
+                      : SvgPicture.asset(
+                          'assets/images/journalling outline.svg',
+                        ),
+                ),
+                label: "journaling"),
+            userBlocNetwork.getUserType == 'SolhProvider'
+                ? BottomNavigationBarItem(
+                    icon: Obx((() => Icon(
+                          CupertinoIcons.calendar_badge_plus,
+                          color:
+                              bottomNavigatorController.activeIndex.value == 2
+                                  ? SolhColors.green
+                                  : SolhColors.grey102,
+                        ))),
+                    label: "My Schedule")
+                : BottomNavigationBarItem(
+                    icon: Obx(
+                        (() => bottomNavigatorController.activeIndex.value == 2
+                            ? SvgPicture.asset("assets/images/get help tab.svg")
+                            : SvgPicture.asset(
+                                "assets/images/get help. outline.svg",
+                              ))),
+                    label: "Get Help",
+                  ),
+            BottomNavigationBarItem(
+                icon: Obx(() => SvgPicture.asset(
+                      'assets/images/groal tab vector.svg',
+                      color: bottomNavigatorController.activeIndex.value == 3
+                          ? SolhColors.green
+                          : Colors.grey.shade600,
+                    )),
+                label: "My Goals"),
+            BottomNavigationBarItem(
+                icon: Obx(() => SvgPicture.asset(
+                      'assets/images/profile.svg',
+                      color: bottomNavigatorController.activeIndex.value == 4
+                          ? SolhColors.green
+                          : Colors.grey.shade600,
+                    )),
+                label: "My profile")
+          ],
+        ));
   }
 
   Widget getDrawer() {

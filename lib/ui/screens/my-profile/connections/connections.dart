@@ -1157,7 +1157,7 @@ class _ConnectionsState extends State<Connections> {
               //         builder: (context) =>
               //             ConnectProfileScreen(uid: uid!, sId: sId)));
               Navigator.pushNamed(context, AppRoutes.connectScreen,
-                  arguments: {"sId": sId});
+                  arguments: {"sId": sId, "uid": uid});
             }
           : () {
               Navigator.pushNamed(context, AppRoutes.groupDetails, arguments: {

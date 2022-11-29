@@ -102,7 +102,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       context,
                                       AppRoutes.phoneAuthScreen,
                                       (route) => false);
-                                  RestartWidget.restartApp(context);
                                 });
                               }),
                         ),

@@ -7,7 +7,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
-import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
@@ -34,32 +33,17 @@ void main() async {
     bool? newUser = await isNewUser();
 
     Map<String, dynamic> _initialAppData = await initApp();
-    runApp(RestartWidget(
-        child: SolhApp(
+    runApp(SolhApp(
       isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
-    )));
+    ));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
   } else
-    runApp(RestartWidget(
-        child: SolhApp(
+    runApp(SolhApp(
       isProfileCreated: false,
-    )));
+    ));
 
   FlutterNativeSplash.remove();
 }
-
-////////   required controllers are initialized here ///////////
-Future<void> initControllers() async {
-  ProfileController profileController = Get.put(ProfileController());
-  await profileController.getMyProfile();
-  final AgeController ageController = Get.put(AgeController());
-
-  var _chatListController = Get.put(ChatListController());
-}
-
-/// app ////
-///
-///
 
 class SolhApp extends StatefulWidget {
   SolhApp({Key? key, required bool isProfileCreated})
@@ -125,35 +109,14 @@ class _SolhAppState extends State<SolhApp> {
       );
     });
   }
-}
 
-class RestartWidget extends StatefulWidget {
-  RestartWidget({required this.child});
-
-  final Widget child;
-
-  static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
-  }
-
-  @override
-  _RestartWidgetState createState() => _RestartWidgetState();
-}
-
-class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
-
-  void restartApp() {
-    setState(() {
-      key = UniqueKey();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return KeyedSubtree(
-      key: key,
-      child: widget.child,
-    );
+  Future<void> initControllers() async {
+    if (widget._isProfileCreated) {
+      ProfileController profileController = Get.put(ProfileController());
+      await profileController.getMyProfile();
+      Get.put(ChatListController());
+    }
+    Get.put(AnonController());
+    Get.put(AgeController());
   }
 }

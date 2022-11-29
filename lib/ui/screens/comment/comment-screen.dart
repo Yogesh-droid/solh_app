@@ -575,11 +575,11 @@ class _CommentScreenState extends State<CommentScreen> {
             ? {
                 Navigator.pushNamed(context, AppRoutes.groupDetails,
                     arguments: {
-                      "group":GroupList(
-                      sId: widget._journalModel!.group!.sId,
-                      groupName: widget._journalModel!.group!.groupName,
-                      groupMediaUrl: widget._journalModel!.group!.groupImage,
-                    ),
+                      "group": GroupList(
+                        sId: widget._journalModel!.group!.sId,
+                        groupName: widget._journalModel!.group!.groupName,
+                        groupMediaUrl: widget._journalModel!.group!.groupImage,
+                      ),
                     }),
                 // Navigator.push(context, MaterialPageRoute(builder: (context) {
                 //   return GroupDetailsPage(
@@ -608,7 +608,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     //             uid: widget._journalModel!.postedBy!.uid!,
                     //             sId: widget._journalModel!.postedBy!.sId!)))
 
-                    Navigator.pushNamed(context, AppRoutes.userProfile,
+                    Navigator.pushNamed(context, AppRoutes.connectScreen,
                         arguments: {
                           "uid": widget._journalModel!.postedBy!.uid!,
                           "sId": widget._journalModel!.postedBy!.sId!
@@ -1437,14 +1437,15 @@ class _PostForCommentState extends State<PostForComment> {
           onTap: () async {
             widget._journalModel!.group != null
                 ? {
-                   Navigator.pushNamed(context, AppRoutes.groupDetails,
-                    arguments: {
-                      "group":GroupList(
-                      sId: widget._journalModel!.group!.sId,
-                      groupName: widget._journalModel!.group!.groupName,
-                      groupMediaUrl: widget._journalModel!.group!.groupImage,
-                    ),
-                    }),
+                    Navigator.pushNamed(context, AppRoutes.groupDetails,
+                        arguments: {
+                          "group": GroupList(
+                            sId: widget._journalModel!.group!.sId,
+                            groupName: widget._journalModel!.group!.groupName,
+                            groupMediaUrl:
+                                widget._journalModel!.group!.groupImage,
+                          ),
+                        }),
                     // Navigator.push(context,
                     //     MaterialPageRoute(builder: (context) {
                     //   return GroupDetailsPage(

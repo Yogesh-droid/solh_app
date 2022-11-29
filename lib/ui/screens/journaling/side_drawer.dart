@@ -13,6 +13,7 @@ import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/profile/appointment_controller.dart';
@@ -55,62 +56,91 @@ class SideDrawer extends StatelessWidget {
                         ? Center(
                             child: MyLoader(),
                           )
-                        : InkWell(
-                            onTap: () {
-                              bottomNavigatorController.isDrawerOpen.value =
-                                  false;
-                              bottomNavigatorController.activeIndex.value = 4;
-                            },
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 7.w,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 6.8.w,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                      profileController.myProfileModel.value
-                                              .body!.user!.profilePicture ??
-                                          "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                                    ),
+                        : profileController.myProfileModel.value.body == null
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: SolhColors.green),
+                                    child: IconButton(
+                                        onPressed: () {
+                                          profileController.getMyProfile();
+                                        },
+                                        icon: Icon(
+                                          Icons.refresh,
+                                          color: SolhColors.white,
+                                        )),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 2.w,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Click to reload',
+                                    style: SolhTextStyles.JournalingHintText,
+                                  )
+                                ],
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  bottomNavigatorController.isDrawerOpen.value =
+                                      false;
+                                  bottomNavigatorController.activeIndex.value =
+                                      4;
+                                },
+                                child: Row(
                                   children: [
-                                    Text(
-                                      "Hi, there",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
+                                    CircleAvatar(
+                                      radius: 7.w,
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        radius: 6.8.w,
+                                        backgroundImage:
+                                            CachedNetworkImageProvider(
+                                          profileController.myProfileModel.value
+                                                  .body!.user!.profilePicture ??
+                                              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                                        ),
+                                      ),
                                     ),
-                                    Row(
+                                    SizedBox(
+                                      width: 2.w,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          profileController.myProfileModel.value
-                                                  .body!.user!.name ??
-                                              "",
+                                          "Hi, there",
                                           style: TextStyle(
-                                              color: Color(0xFF666666)),
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                         ),
-                                        SizedBox(width: 1.5.w),
-                                        GetBadge(
-                                            userType: profileController
-                                                    .myProfileModel
-                                                    .value
-                                                    .body!
-                                                    .user!
-                                                    .userType ??
-                                                '')
+                                        Row(
+                                          children: [
+                                            Text(
+                                              profileController.myProfileModel
+                                                      .value.body!.user!.name ??
+                                                  "",
+                                              style: TextStyle(
+                                                  color: Color(0xFF666666)),
+                                            ),
+                                            SizedBox(width: 1.5.w),
+                                            GetBadge(
+                                                userType: profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .userType ??
+                                                    '')
+                                          ],
+                                        ),
                                       ],
-                                    ),
+                                    )
                                   ],
-                                )
-                              ],
-                            ));
+                                ));
                   })),
               /*  StreamBuilder<UserModel?>(
                   stream: userBlocNetwork.userStateStream,
