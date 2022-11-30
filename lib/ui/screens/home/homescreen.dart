@@ -60,10 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(VideoTutorialController());
 
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
-  GetHelpController getHelpController = Get.put(GetHelpController());
-  final DiscoverGroupController discoverGroupController =
-      Get.put(DiscoverGroupController());
-  ConnectionController connectionController = Get.put(ConnectionController());
 
   FeelingsController feelingsController = Get.put(FeelingsController());
 
@@ -73,8 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(JournalCommentController());
 
   BottomNavigatorController bottomNavigatorController = Get.find();
-  SearchMarketController searchMarketController =
-      Get.put(SearchMarketController());
 
   PsychologyTestController psychologyTestController =
       Get.put(PsychologyTestController());

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
@@ -76,30 +75,34 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
           Container(
             height: 2.5.h,
           ),
-          Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: SolhGreenBorderMiniButton(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.edit_outlined, color: SolhColors.green),
-                      Text(
-                        "Anonymous",
-                        style: SolhTextStyles.GreenBorderButtonText,
+          Obx(() => profileController
+                      .myProfileModel.value.body!.user!.anonymous !=
+                  null
+              ? Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: SolhGreenBorderMiniButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.edit_outlined, color: SolhColors.green),
+                          Text(
+                            "Anonymous",
+                            style: SolhTextStyles.GreenBorderButtonText,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditAnonymousProfile()),
-                    );
-                  },
-                ),
-              )),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditAnonymousProfile()),
+                        );
+                      },
+                    ),
+                  ))
+              : Container()),
           Container(
             child: Stack(
               children: [
@@ -458,7 +461,9 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   Future<void> getUserCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     country = sharedPreferences.getString('userCountry');
-    setState(() {});
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {});
+    });
   }
 
   void fillUserDetails() {

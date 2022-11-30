@@ -9,6 +9,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
@@ -17,8 +18,13 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
+import '../controllers/getHelp/get_help_controller.dart';
+import '../controllers/getHelp/search_market_controller.dart';
+import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
+import '../widgets_constants/buttonLoadingAnimation.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
@@ -34,8 +40,14 @@ class MasterScreen extends StatelessWidget {
       Get.put(BottomNavigatorController());
   JournalPageController journalPageController =
       Get.put(JournalPageController());
+  SearchMarketController searchMarketController =
+      Get.put(SearchMarketController());
+  final DiscoverGroupController discoverGroupController =
+      Get.put(DiscoverGroupController());
+  ConnectionController connectionController = Get.put(ConnectionController());
   AppointmentController appointmentController =
       Get.put(AppointmentController());
+  GetHelpController getHelpController = Get.put(GetHelpController());
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +77,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       Get.put(JournalPageController());
   final MoodMeterController meterController = Get.find();
   final BottomNavigatorController bottomNavigatorController = Get.find();
+  ProfileController profileController = Get.find();
 
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
@@ -191,25 +204,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                         ),
                 ),
                 label: "journaling"),
-            userBlocNetwork.getUserType == 'SolhProvider'
-                ? BottomNavigationBarItem(
-                    icon: Obx((() => Icon(
-                          CupertinoIcons.calendar_badge_plus,
-                          color:
-                              bottomNavigatorController.activeIndex.value == 2
-                                  ? SolhColors.green
-                                  : SolhColors.grey102,
-                        ))),
-                    label: "My Schedule")
-                : BottomNavigationBarItem(
-                    icon: Obx(
-                        (() => bottomNavigatorController.activeIndex.value == 2
-                            ? SvgPicture.asset("assets/images/get help tab.svg")
-                            : SvgPicture.asset(
-                                "assets/images/get help. outline.svg",
-                              ))),
-                    label: "Get Help",
-                  ),
+            getHelpItem(),
             BottomNavigationBarItem(
                 icon: Obx(() => SvgPicture.asset(
                       'assets/images/groal tab vector.svg',
@@ -228,6 +223,71 @@ class _MasterScreen2State extends State<MasterScreen2>
                 label: "My profile")
           ],
         ));
+  }
+
+  BottomNavigationBarItem getHelpItem() {
+    return BottomNavigationBarItem(
+        icon: Obx(() {
+          return profileController.isProfileLoading.value ||
+                  profileController.myProfileModel.value.body == null
+              ? Container(
+                  height: 20,
+                  child: ButtonLoadingAnimation(
+                    ballColor: SolhColors.green,
+                    ballSizeLowerBound: 3,
+                    ballSizeUpperBound: 8,
+                  ),
+                )
+              : profileController.myProfileModel.value.body!.user!.userType ==
+                      'SolhProvider'
+                  ? Icon(
+                      CupertinoIcons.calendar_badge_plus,
+                      color: bottomNavigatorController.activeIndex.value == 2
+                          ? SolhColors.green
+                          : SolhColors.grey102,
+                    )
+                  : bottomNavigatorController.activeIndex.value == 2
+                      ? SvgPicture.asset("assets/images/get help tab.svg")
+                      : SvgPicture.asset(
+                          "assets/images/get help. outline.svg",
+                        );
+        }),
+        label: profileController.isProfileLoading.value ||
+                profileController.myProfileModel.value.body == null
+            ? ''
+            : profileController.myProfileModel.value.body!.user!.userType ==
+                    'SolhProvider'
+                ? 'My Schedule'
+                : 'Get Help');
+    /* profileController.isProfileLoading.value
+                ? BottomNavigationBarItem(
+                    icon: ButtonLoadingAnimation(
+                      ballColor: SolhColors.green,
+                      ballSizeLowerBound: 3,
+                      ballSizeUpperBound: 8,
+                    ),
+                  )
+                : userBlocNetwork.getUserType == 'SolhProvider'
+                    ? BottomNavigationBarItem(
+                        icon: Obx((() => Icon(
+                              CupertinoIcons.calendar_badge_plus,
+                              color:
+                                  bottomNavigatorController.activeIndex.value ==
+                                          2
+                                      ? SolhColors.green
+                                      : SolhColors.grey102,
+                            ))),
+                        label: "My Schedule")
+                    : BottomNavigationBarItem(
+                        icon: Obx((() => bottomNavigatorController
+                                    .activeIndex.value ==
+                                2
+                            ? SvgPicture.asset("assets/images/get help tab.svg")
+                            : SvgPicture.asset(
+                                "assets/images/get help. outline.svg",
+                              ))),
+                        label: "Get Help",
+                      ), */
   }
 
   Widget getDrawer() {

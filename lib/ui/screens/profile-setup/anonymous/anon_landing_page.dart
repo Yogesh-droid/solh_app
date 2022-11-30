@@ -5,6 +5,8 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import '../../../../controllers/profile/anon_controller.dart';
+import '../../../../controllers/profile/profile_controller.dart';
+import '../../../../widgets_constants/loader/my-loader.dart';
 
 class AnonLandingPage extends StatelessWidget {
   AnonLandingPage({Key? key}) : super(key: key);
@@ -36,10 +38,22 @@ class AnonLandingPage extends StatelessWidget {
                   child: Text("Lets Go"),
                   height: 6.h,
                   onPressed: () async {
-                    Utility.showLoader(context);
-                    await anomymousController.createAnonProfile();
-                    Navigator.pop(context);
-                    Navigator.pushNamed(context, AppRoutes.master);
+                    showDialog(
+                        context: context,
+                        builder: (contex) {
+                          return MyLoader();
+                        });
+                    try {
+                      ProfileController profileController =
+                          Get.put(ProfileController());
+                      await anomymousController.createAnonProfile();
+                      await profileController.getMyProfile();
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, AppRoutes.master);
+                    } on Exception catch (e) {
+                      Navigator.pop(context);
+                      Utility.showToast(e.toString());
+                    }
                   }),
               SizedBox(
                 height: 1.h,

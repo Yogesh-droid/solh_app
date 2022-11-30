@@ -109,18 +109,37 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                     ),
                   ),
                 )
-              : Container(
-                  child: Center(
-                      child: Container(
-                    width: 150,
-                    child: SolhGreenButton(
-                      child: Text('Reload Profile',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () async {
-                        await profileController.getMyProfile();
-                      },
-                    ),
-                  )),
+              : SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: reloadProfile,
+                  child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: SolhColors.green),
+                            child: IconButton(
+                                onPressed: () {
+                                  profileController.getMyProfile();
+                                },
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: SolhColors.white,
+                                )),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Click to reload',
+                            style: SolhTextStyles.JournalingHintText,
+                          )
+                        ],
+                      )),
                 );
     });
   }

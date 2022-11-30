@@ -1227,10 +1227,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 journalPageController.isAnonymousSelected.value =
                     !journalPageController.isAnonymousSelected.value;
               } else {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PickUsernameScreen()));
+                openCreateAnonymousBottomSheet();
               }
             },
             child: Icon(

@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/controllers/video/video_tutorial_controller.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
@@ -142,68 +143,6 @@ class SideDrawer extends StatelessWidget {
                                   ],
                                 ));
                   })),
-              /*  StreamBuilder<UserModel?>(
-                  stream: userBlocNetwork.userStateStream,
-                  builder: (context, userSnapshot) {
-                    if (userSnapshot.hasData)
-                      return Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 2.5.h, horizontal: 3.8.w),
-                        child: InkWell(
-                          onTap: () {
-                            bottomNavigatorController.isDrawerOpen.value =
-                                false;
-                            bottomNavigatorController.activeIndex.value = 4;
-                          },
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 7.w,
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius: 6.8.w,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                    userSnapshot.data!.profilePicture ??
-                                        "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Hi, there",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        userSnapshot.requireData!.name ?? "",
-                                        style:
-                                            TextStyle(color: Color(0xFF666666)),
-                                      ),
-                                      SizedBox(width: 1.5.w),
-                                      GetBadge(
-                                          userType: userSnapshot
-                                                  .requireData!.userType ??
-                                              '')
-                                    ],
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    return Container(
-                      child: MyLoader(),
-                    );
-                  }), */
               Container(
                 height: 0.25.h,
                 width: double.infinity,
@@ -240,27 +179,35 @@ class SideDrawer extends StatelessWidget {
                             builder: (context) => MoodAnalyticPage()));
                   },
                 ),
-                userBlocNetwork.getUserType == 'SolhProvider'
+                profileController.isProfileLoading.value
                     ? Container()
-                    : SideDrawerMenuTile(
-                        title: "Appointments",
-                        onPressed: () async {
-                          appointmentController.getUserAppointments();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AppointmentScreen()));
-                        },
-                      ),
+                    : profileController.myProfileModel.value.body != null
+                        ? profileController.myProfileModel.value.body!.user!
+                                    .userType ==
+                                'SolhProvider'
+                            ? Container()
+                            : SideDrawerMenuTile(
+                                title: "Appointments",
+                                onPressed: () async {
+                                  appointmentController.getUserAppointments();
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              AppointmentScreen()));
+                                },
+                              )
+                        : Container(),
                 SideDrawerMenuTile(
-                  title: "Psychological Tests",
+                  title: "Explore Thyself",
                   onPressed: () async {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   },
                 ),
                 SideDrawerMenuTile(
-                  title: "Tutorials",
+                  title: "Know Us More",
                   onPressed: () async {
+                    Get.find<VideoTutorialController>().getVideolist();
                     Navigator.push(
                         context,
                         MaterialPageRoute(

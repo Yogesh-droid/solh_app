@@ -56,6 +56,7 @@ class _CallState extends State<VideoCallUser> {
   @override
   void initState() {
     print('callType ${widget.type}');
+    print('call token  ${widget.token}');
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       SocketService.currentSId = widget.sId ?? '';
       _controller.currentSid = widget.sId ?? '';
