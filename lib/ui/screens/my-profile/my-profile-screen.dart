@@ -48,6 +48,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Obx(() {
       return profileController.isProfileLoading.value
           ? Center(
@@ -106,6 +107,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               }),
                         ),
                       ],
+
                     ),
                   ),
                 )

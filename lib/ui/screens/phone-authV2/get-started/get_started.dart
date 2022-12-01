@@ -1,0 +1,90 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
+import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
+
+class GetStartedScreen extends StatelessWidget {
+  GetStartedScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: ScaffoldWithBackgroundArt(
+        body: SizedBox(
+          width: 100.w,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                  Text(
+                    'Solh Wellness',
+                    style: SolhTextStyles.LargeGreenTextS32W7,
+                  ),
+                  SizedBox(
+                    width: 60.w,
+                    child: Text(
+                      'Clear your Mind. Find Happiness in Chaos. Seek Solh Within.',
+                      style: SolhTextStyles.NormalTextBlackS14W5,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              Image(
+                  image:
+                      AssetImage('assets/images/Get_the_help_you_deserve.png')),
+              Column(
+                children: [
+                  SolhGreenButton(
+                    width: 80.w,
+                    child: Text('Get Started'),
+                    onPressed: () => Navigator.pushNamed(
+                        context, AppRoutes.loginSignup,
+                        arguments: {
+                          'isLogin': false,
+                        }),
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  RichText(
+                      text: TextSpan(
+                          text: 'Already have an account? ',
+                          style: Theme.of(context).textTheme.bodyText2,
+                          children: [
+                        TextSpan(
+                            text: 'Login',
+                            style: SolhTextStyles.NormalTextGreenS14W5,
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Navigator.pushNamed(
+                                      context, AppRoutes.loginSignup,
+                                      arguments: {
+                                        'isLogin': true,
+                                      }))
+                      ])),
+                  SizedBox(
+                    height: 4.h,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

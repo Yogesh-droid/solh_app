@@ -33,7 +33,7 @@ class OTPScreen extends StatefulWidget {
 
 class _OTPScreenState extends State<OTPScreen> {
   final TextEditingController _otpController = TextEditingController();
-  OtpVerificationController otpVerificationController = Get.find();
+  // OtpVerificationController otpVerificationController = Get.find();
   static final facebookAppEvents = FacebookAppEvents();
 
   final scaffoldKey = GlobalKey();
@@ -43,7 +43,7 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void initState() {
     super.initState();
-    otpVerificationController.otpController = TextEditingController();
+    // otpVerificationController.otpController = TextEditingController();
   }
 
   bool isLoading = false;
@@ -70,7 +70,7 @@ class _OTPScreenState extends State<OTPScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 PinCodeTextField(
-                  controller: otpVerificationController.otpController,
+                  // controller: otpVerificationController.otpController,
                   appContext: context,
                   onChanged: (String value) {},
                   keyboardType: TextInputType.number,
@@ -86,9 +86,9 @@ class _OTPScreenState extends State<OTPScreen> {
                     print("smscode: ${_otpController.text}");
                     PhoneAuthCredential _phoneAuthCredential =
                         PhoneAuthProvider.credential(
-                            verificationId: widget._verificationId,
-                            smsCode:
-                                otpVerificationController.otpController.text);
+                            verificationId: widget._verificationId, smsCode: ''
+                            // otpVerificationController.otpController.text
+                            );
 
                     await FirebaseNetwork.signInWithPhoneCredential(
                             _phoneAuthCredential)

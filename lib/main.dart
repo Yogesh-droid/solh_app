@@ -12,6 +12,7 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -45,6 +46,22 @@ void main() async {
   FlutterNativeSplash.remove();
 }
 
+////////   required controllers are initialized here ///////////
+Future<void> initControllers() async {
+  ProfileController profileController = Get.put(ProfileController());
+  // await profileController.getMyProfile();
+  final AgeController ageController = Get.put(AgeController());
+
+  var _chatListController = Get.put(ChatListController());
+  print('init Controllers');
+  PhoneAuthController phoneAuthController = Get.put(PhoneAuthController());
+  print('phoneAuthController');
+}
+
+/// app ////
+///
+///
+
 class SolhApp extends StatefulWidget {
   SolhApp({Key? key, required bool isProfileCreated})
       : _isProfileCreated = isProfileCreated,
@@ -67,31 +84,40 @@ class _SolhAppState extends State<SolhApp> {
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
-      return MaterialApp(
+      return GetMaterialApp(
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
         initialRoute:
-            widget._isProfileCreated ? AppRoutes.master : AppRoutes.introScreen,
+            widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
         //initialRoute: AppRoutes.introScreen,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
+          //using textTheme only for rich text ,else use constant text Styles
+          textTheme: TextTheme(
+            bodyText2: TextStyle(
+              color: SolhColors.black666,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+            headline1: TextStyle(
+              color: SolhColors.black53,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            bodyText1: TextStyle(
+                color: SolhColors.black666,
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+                decoration: TextDecoration.underline),
+          ),
+
           scaffoldBackgroundColor: Colors.white,
-          fontFamily: GoogleFonts.signika().fontFamily,
+          fontFamily: GoogleFonts.quicksand().fontFamily,
           primaryColor: SolhColors.green,
-          colorScheme: ColorScheme(
-              secondary: SolhColors.green,
-              background: SolhColors.green,
-              brightness: Brightness.light,
-              error: SolhColors.green,
-              onBackground: SolhColors.green,
-              surface: SolhColors.green,
-              onError: SolhColors.green,
-              onPrimary: SolhColors.green,
-              onSecondary: SolhColors.green,
-              onSurface: SolhColors.green,
-              primary: SolhColors.green),
+
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+          iconTheme: IconThemeData(color: Colors.black),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
                   splashFactory: InkRipple.splashFactory,
