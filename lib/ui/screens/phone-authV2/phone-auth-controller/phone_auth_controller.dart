@@ -6,7 +6,5 @@ class PhoneAuthController extends GetxController {
 
   var countryCode = '+91';
   var isRequestingAuth = false.obs;
-  List<TextEditingController> otpCode = <TextEditingController>[];
-
-  void assignOtp(String otp) {}
+  TextEditingController otpCode = TextEditingController();
 }

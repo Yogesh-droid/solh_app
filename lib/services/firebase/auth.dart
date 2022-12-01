@@ -50,6 +50,7 @@ class FirebaseNetwork {
             print(phoneAuthCredential.smsCode.toString());
             phoneAuthController.otpCode.text =
                 phoneAuthCredential.smsCode.toString();
+
             // otpVerificationController
             //     .updateOtp(phoneAuthCredential.smsCode.toString());
 
