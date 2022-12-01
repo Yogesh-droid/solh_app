@@ -454,7 +454,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
     profileController.isEditProfilePicUploading(false);
     if (response["success"]) {
       Utility.showToast('Profile picture updated');
-      userBlocNetwork.getMyProfileSnapshot();
+      //userBlocNetwork.getMyProfileSnapshot();
+      await profileController.getMyProfile();
     }
   }
 

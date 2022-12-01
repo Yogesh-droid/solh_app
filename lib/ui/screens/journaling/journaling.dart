@@ -85,7 +85,7 @@ class _JournalingState extends State<Journaling> {
     //           .toDouble());
     // }
 
-    userBlocNetwork.getMyProfileSnapshot();
+    // userBlocNetwork.getMyProfileSnapshot();
   }
 
   void _onRefresh() async {

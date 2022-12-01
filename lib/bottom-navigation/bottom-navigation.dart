@@ -203,7 +203,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           'assets/images/journalling outline.svg',
                         ),
                 ),
-                label: "journaling"),
+                label: "Journaling"),
             getHelpItem(),
             BottomNavigationBarItem(
                 icon: Obx(() => SvgPicture.asset(

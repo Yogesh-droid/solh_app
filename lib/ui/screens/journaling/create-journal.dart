@@ -32,6 +32,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
 import '../../../controllers/profile/anon_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
+import '../../../model/profile/my_profile_model.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/anonymous/pick_user_name_screen.dart';
@@ -124,7 +125,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     UsernameHeader(
-                      userModel: userBlocNetwork.myData,
+                      //userModel: userBlocNetwork.myData,
                       onTypeChanged: (value) {
                         print("Changed to $value");
                         _journalType = value;
@@ -1044,15 +1045,12 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
 }
 
 class UsernameHeader extends StatefulWidget {
-  UsernameHeader(
-      {Key? key,
-      required Function(String) onTypeChanged,
-      required UserModel? userModel})
-      : _onTypeChanged = onTypeChanged,
-        _userModel = userModel,
+  UsernameHeader({
+    Key? key,
+    required Function(String) onTypeChanged,
+  })  : _onTypeChanged = onTypeChanged,
         super(key: key);
   final Function(String) _onTypeChanged;
-  UserModel? _userModel;
 
   @override
   _UsernameHeaderState createState() => _UsernameHeaderState();
@@ -1062,6 +1060,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
   JournalPageController journalPageController = Get.find();
   String _dropdownValue = "Publicaly";
   AnonController _anonController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -1074,7 +1073,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              getUserImg(widget._userModel),
+              getUserImg(),
               SizedBox(
                 width: 2.w,
               ),
@@ -1087,33 +1086,61 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   ),
                   Column(
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            journalPageController.isAnonymousSelected == true
-                                ? (widget._userModel!.anonymous!.userName!
-                                        .isNotEmpty
-                                    ? widget._userModel!.anonymous!.userName!
-                                    : 'Anonymous')
-                                : widget._userModel!.name ?? "",
-                            style:
-                                SolhTextStyles.JournalingUsernameText.copyWith(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 14),
-                          ),
-                          journalPageController.isAnonymousSelected == false
-                              ? widget._userModel!.isSolhExpert != null
-                                  ? Text(widget._userModel!.isSolhExpert!
-                                      ? ''
-                                      : '')
-                                  : Container()
-                              : Container()
-                        ],
-                      ),
+                      Obx(() => profileController.myProfileModel.value.body !=
+                              null
+                          ? Row(
+                              children: [
+                                Text(
+                                  journalPageController.isAnonymousSelected ==
+                                          true
+                                      ? (profileController
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .user!
+                                              .anonymous!
+                                              .userName!
+                                              .isNotEmpty
+                                          ? profileController
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .user!
+                                              .anonymous!
+                                              .userName!
+                                          : 'Anonymous')
+                                      : profileController.myProfileModel.value
+                                              .body!.user!.name ??
+                                          "",
+                                  style: SolhTextStyles.JournalingUsernameText
+                                      .copyWith(
+                                          fontWeight: FontWeight.normal,
+                                          fontSize: 14),
+                                ),
+                                journalPageController.isAnonymousSelected ==
+                                        false
+                                    ? profileController.myProfileModel.value
+                                                .body!.user!.isSolhExpert !=
+                                            null
+                                        ? Text(profileController.myProfileModel
+                                                .value.body!.user!.isSolhExpert!
+                                            ? ''
+                                            : '')
+                                        : Container()
+                                    : Container()
+                              ],
+                            )
+                          : Container()),
                       SizedBox(
                         height: 1.h,
                       ),
-                      GetBadge(userType: widget._userModel!.userType ?? ''),
+                      Obx(() =>
+                          profileController.myProfileModel.value.body != null
+                              ? GetBadge(
+                                  userType: profileController.myProfileModel
+                                          .value.body!.user!.userType ??
+                                      '')
+                              : Container()),
                       SizedBox(
                         height: 4.h,
                       ),
@@ -1173,31 +1200,44 @@ class _UsernameHeaderState extends State<UsernameHeader> {
     });
   }
 
-  Widget getUserImg(UserModel? userModel) {
-    return GestureDetector(
-        onTap: () {
-          if (widget._userModel!.anonymous != null) {
-            journalPageController.isAnonymousSelected.value =
-                !journalPageController.isAnonymousSelected.value;
-          } else {
-            // Navigator.push(context,
-            //     MaterialPageRoute(builder: (context) => PickUsernameScreen()));\
-            openCreateAnonymousBottomSheet();
-          }
-        },
-        child: Container(
-            height: 10.h,
-            width: 20.w,
-            child: Obx(() {
-              return journalPageController.isAnonymousSelected.value
+  Widget getUserImg() {
+    return Obx(
+      () => profileController.myProfileModel.value.body != null
+          ? GestureDetector(
+              onTap: () {
+                if (profileController
+                        .myProfileModel.value.body!.user!.anonymous !=
+                    null) {
+                  journalPageController.isAnonymousSelected.value =
+                      !journalPageController.isAnonymousSelected.value;
+                } else {
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (context) => PickUsernameScreen()));\
+                  openCreateAnonymousBottomSheet();
+                }
+              },
+              child: Container(
+                  height: 10.h,
+                  width: 20.w,
+                  child: Obx(() {
+                    return journalPageController.isAnonymousSelected.value
 
-                  /// if anonymous is selected
-                  ? getAnonymousStack(userModel)
-                  : getNormalStack(userModel);
-            })));
+                        /// if anonymous is selected
+                        ? getAnonymousStack(
+                            profileController.myProfileModel.value.body!.user)
+                        : getNormalStack(
+                            profileController.myProfileModel.value.body!.user);
+                  })))
+          : CircleAvatar(
+              radius: journalPageController.anonymousProfileRadius.value,
+              backgroundColor: Colors.grey,
+              backgroundImage: CachedNetworkImageProvider(
+                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+              )),
+    );
   }
 
-  Widget getNormalStack(UserModel? userModel) {
+  Widget getNormalStack(User? userModel) {
     return Stack(
       children: [
         getCircleImg(
@@ -1223,7 +1263,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             onTap: () {
               /// if Anon user is true anonymous, then show anonymous profile picture
 
-              if (widget._userModel!.anonymous != null) {
+              if (userModel.anonymous != null) {
                 journalPageController.isAnonymousSelected.value =
                     !journalPageController.isAnonymousSelected.value;
               } else {
@@ -1240,7 +1280,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
     );
   }
 
-  Widget getAnonymousStack(UserModel? userModel) {
+  Widget getAnonymousStack(User? userModel) {
     return Stack(
       children: [
         getCircleImg(
@@ -1306,9 +1346,9 @@ class _UsernameHeaderState extends State<UsernameHeader> {
               await _anonController.createAnonProfile();
               await Get.find<ProfileController>().getMyProfile();
               Navigator.pop(context);
-              setState(() {
-                widget._userModel = userBlocNetwork.myData;
-              });
+              // setState(() {
+              //   widget._userModel = userBlocNetwork.myData;
+              // });
             }));
   }
 }

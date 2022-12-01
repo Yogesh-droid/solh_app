@@ -113,7 +113,7 @@ class _SolhAppState extends State<SolhApp> {
   Future<void> initControllers() async {
     if (widget._isProfileCreated) {
       ProfileController profileController = Get.put(ProfileController());
-      await profileController.getMyProfile();
+      // await profileController.getMyProfile();
       Get.put(ChatListController());
     }
     Get.put(AnonController());

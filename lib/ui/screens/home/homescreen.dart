@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,7 +14,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
-import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
@@ -25,8 +25,8 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
 import '../../../bloc/user-bloc.dart';
 import '../../../controllers/connections/connection_controller.dart';
@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     print('Running init state of HomeScreen');
     super.initState();
-    userBlocNetwork.getMyProfileSnapshot();
+    //userBlocNetwork.getMyProfileSnapshot();
     if (FirebaseAuth.instance.currentUser != null) {
       debugPrint('mood meter shown');
       openMoodMeter();
