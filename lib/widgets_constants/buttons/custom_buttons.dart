@@ -284,3 +284,53 @@ class SolhGreenBorderButton extends StatelessWidget {
     );
   }
 }
+
+class SolhGreenButtonWithWhiteBorder extends StatelessWidget {
+  const SolhGreenButtonWithWhiteBorder({
+    Key? key,
+    required this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
+
+  final double? height;
+  final double? width;
+  final Widget child;
+  final Color? backgroundColor;
+  final VoidCallback? onPressed;
+  final EdgeInsets? padding;
+  final Border? border;
+  final BorderRadius? borderRadius;
+  final Alignment? alignment;
+  final EdgeInsets? margin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height ?? 5.h,
+      width: width ?? double.infinity,
+      decoration: BoxDecoration(
+          border: Border.all(color: SolhColors.white),
+          boxShadow: [BoxShadow(blurRadius: 2, color: Colors.black54)],
+          borderRadius: BorderRadius.circular(24)),
+      child: TextButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(backgroundColor),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+            borderRadius: borderRadius ?? BorderRadius.circular(30.0),
+          )),
+        ),
+        onPressed: onPressed,
+        child: Container(alignment: Alignment.center, child: child),
+      ),
+    );
+  }
+}

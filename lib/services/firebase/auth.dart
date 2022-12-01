@@ -4,32 +4,39 @@ import 'package:get/get.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/controllers/otp_verification_controller.dart';
+import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class FirebaseNetwork {
-  OtpVerificationController otpVerificationController = Get.find();
+  // OtpVerificationController otpVerificationController = Get.find();
+  PhoneAuthController phoneAuthController = Get.find();
   int? resendToken;
 
-  void signInWithPhoneNumber(BuildContext context, String phoneNo,
-      {required Function(String) onCodeSent}) async {
+  void signInWithPhoneNumber(
+    BuildContext context,
+    String phoneNo,
+  ) async {
     try {
-      print("calling verify phoneNo");
+      print("calling verify phoneNo" + phoneNo);
       await FirebaseAuth.instance.verifyPhoneNumber(
           timeout: const Duration(seconds: 60),
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
             print(error.message);
-            otpVerificationController.isLoading.value = false;
-            ScaffoldMessenger.of(globalNavigatorKey.currentState!.context)
-                .showSnackBar(SnackBar(content: Text(error.code.toString())));
+            phoneAuthController.isRequestingAuth.value = false;
+            Get.snackbar('Error', error.message.toString(),
+                backgroundColor: SolhColors.primaryRed,
+                snackPosition: SnackPosition.BOTTOM);
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
           codeSent: (String verificationId, int? forceResendingToken) {
             //otpVerificationController.updateOtp('123456');
+            phoneAuthController.isRequestingAuth.value = false;
             resendToken = forceResendingToken;
             print("Code Sent");
-            onCodeSent.call(verificationId);
-            Navigator.pushNamed(context, AppRoutes.otpScreen, arguments: {
-              "phoneNo": phoneNo,
+
+            Navigator.pushNamed(context, AppRoutes.otpVerification, arguments: {
+              "phoneNumber": phoneNo,
               "verificationId": verificationId
             });
             // AutoRouter.of(globalNavigatorKey.currentState!.context).push(
@@ -40,8 +47,11 @@ class FirebaseNetwork {
           phoneNumber: phoneNo,
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
-            otpVerificationController
-                .updateOtp(phoneAuthCredential.smsCode.toString());
+            print(phoneAuthCredential.smsCode.toString());
+            phoneAuthController.otpCode.text =
+                phoneAuthCredential.smsCode.toString();
+            // otpVerificationController
+            //     .updateOtp(phoneAuthCredential.smsCode.toString());
 
             /* print(phoneAuthCredential.smsCode.toString());
           print(phoneAuthCredential.verificationId);
@@ -97,7 +107,7 @@ class FirebaseNetwork {
           verificationFailed: (FirebaseAuthException error) {
             print("@@@@@@@@@@@@@@@@@@@@/n");
             print(error.message);
-            otpVerificationController.isLoading.value = false;
+            // otpVerificationController.isLoading.value = false;
             ScaffoldMessenger.of(globalNavigatorKey.currentState!.context)
                 .showSnackBar(SnackBar(content: Text(error.code.toString())));
           },
@@ -111,8 +121,8 @@ class FirebaseNetwork {
           forceResendingToken: resendToken,
           verificationCompleted:
               (PhoneAuthCredential phoneAuthCredential) async {
-            otpVerificationController
-                .updateOtp(phoneAuthCredential.smsCode.toString());
+            // otpVerificationController
+            //     .updateOtp(phoneAuthCredential.smsCode.toString());
           });
     } on FirebaseAuthException catch (e) {
       print("bdkasbfk fk sbg kbjkrgb kajdfngljnealrgnalsf ;lawrnh");

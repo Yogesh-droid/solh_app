@@ -167,4 +167,75 @@ class SolhTextStyles {
 
   static const ProfileSetupSubHeading =
       TextStyle(color: Color(0xFFA6A6A6), fontSize: 16);
+
+  ///second version of text styles starts from here
+  static const TextStyle LargeGreenTextS32W7 = TextStyle(
+    fontSize: 32,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle Large2BlackTextS24W7 = TextStyle(
+    fontSize: 24,
+    color: SolhColors.black666,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle Large2TextWhiteS24W7 = TextStyle(
+    fontSize: 24,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle NormalTextBlackS14W5 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.black166,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle NormalTextBlack2S14W6 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.black53,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const TextStyle NormalTextGreenS14W5 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle NormalTextWhiteS14W5 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle NormalTextWhiteS14W6 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const TextStyle NormalTextGreyS14W5 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.grey,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle SmallTextGrey1S12W5 = TextStyle(
+    fontSize: 12,
+    color: SolhColors.grey7E,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle SmallTextGreen1S12W5 = TextStyle(
+    fontSize: 12,
+    color: SolhColors.green,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const TextStyle SmallTextWhiteS12W7 = TextStyle(
+    fontSize: 12,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w700,
+  );
 }

@@ -279,3 +279,33 @@ class ProfileSetupAppBar extends StatelessWidget
   @override
   Size get preferredSize => Size(0, 50);
 }
+
+class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
+    implements PreferredSizeWidget {
+  SolhAppBarTanasparentOnlyBackButton(
+      {Key? key, this.onBackButton, this.backButtonColor = Colors.black})
+      : super(key: key);
+
+  final VoidCallback? onBackButton;
+
+  Color backButtonColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(
+          CupertinoIcons.back,
+          color: backButtonColor,
+        ),
+        onPressed: onBackButton,
+      ),
+    );
+  }
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size(0, 50);
+}

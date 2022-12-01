@@ -22,20 +22,21 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? country = 'IN';
   late FocusNode _focusNode;
   late TextEditingController _phoneController;
-  OtpVerificationController _otpVerificationController = Get.put(
-    OtpVerificationController(),
-  );
+  // OtpVerificationController _otpVerificationController = Get.put(
+  //   OtpVerificationController(),
+  // );
 
   bool _hintShown = false;
 
   Future<void> _signInWithPhone(String phoneNo, String country) async {
     print(phoneNo);
-    _otpVerificationController.isLoading.value = true;
+    // _otpVerificationController.isLoading.value = true;
     setState(() {});
-    FirebaseNetwork().signInWithPhoneNumber(context, phoneNo,
-        onCodeSent: (String verificationId) => setState(() {
-              _otpVerificationController.isLoading.value = false;
-            }));
+    // FirebaseNetwork().signInWithPhoneNumber(context, phoneNo,
+    //     onCodeSent: (String verificationId) => setState(() {
+    //           // _otpVerificationController.isLoading.value = false;
+    //         })
+    //         );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userCountry', country);
     Get.find<SearchMarketController>().country = country;
@@ -138,7 +139,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _otpVerificationController.isLoading.value
+                        false
                             ? CircularProgressIndicator()
                             : Container(
                                 height: 5.8.h,
