@@ -1,13 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -18,7 +14,8 @@ import 'package:solh/widgets_constants/text_field_styles.dart';
 class PhoneAuthCommonWidget extends StatelessWidget {
   PhoneAuthCommonWidget({Key? key, required this.isLogin}) : super(key: key);
 
-  final PhoneAuthController phoneAuthController = Get.find();
+  final PhoneAuthController phoneAuthController =
+      Get.put(PhoneAuthController());
 
   FirebaseNetwork firebaseNetwork = FirebaseNetwork();
 

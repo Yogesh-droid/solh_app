@@ -12,7 +12,6 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -54,7 +53,7 @@ Future<void> initControllers() async {
 
   var _chatListController = Get.put(ChatListController());
   print('init Controllers');
-  PhoneAuthController phoneAuthController = Get.put(PhoneAuthController());
+
   print('phoneAuthController');
 }
 
@@ -85,6 +84,7 @@ class _SolhAppState extends State<SolhApp> {
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
         initialRoute:
