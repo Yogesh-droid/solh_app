@@ -1,29 +1,39 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/consultant_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../controllers/getHelp/consultant_controller.dart';
 import '../../../model/doctor.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import 'consultant_profile_page.dart';
 
 class ConsultantsTile extends StatelessWidget {
-  const ConsultantsTile(
+  ConsultantsTile(
       {Key? key, required DoctorModel doctorModel, required this.onTap})
       : _doctorModel = doctorModel,
         super(key: key);
 
   final DoctorModel _doctorModel;
+  final ConsultantController _controller = Get.put(ConsultantController());
   final Callback onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ConsultantProfile(
-                id: _doctorModel.id,
-              ))),
+      onTap: () {
+        _controller.getConsultantDataController(_doctorModel.id);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return ConsultantProfilePage();
+        }));
+      },
+      // onTap: () => Navigator.of(context).push(MaterialPageRoute(
+      //     builder: (context) => ConsultantProfile(
+      //           id: _doctorModel.id,
+      //         ))),
       child: Container(
           height: 180,
           decoration: BoxDecoration(

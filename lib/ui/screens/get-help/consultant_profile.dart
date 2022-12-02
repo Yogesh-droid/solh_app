@@ -174,11 +174,6 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                       SizedBox(
                         width: 8,
                       ),
-                      // Container(
-                      //   width: 2,
-                      //   height: 12,
-                      //   color: Colors.grey.shade300,
-                      // ),
                     ],
                   )
                 : Container(),
@@ -312,26 +307,15 @@ class BookAppointmentButton extends StatelessWidget {
   BookAppointmentButton({Key? key}) : super(key: key);
 
   BookAppointmentController _controller = Get.find();
-  var _consultantController = Get.put(ConsultantController());
   var isExpandedHeight = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // _controller.doctorName = _consultantController
-        //         .consultantModelController.value.provder!.name ??
-        //     "";
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => BookAppointment(),
-        //   ),
-        // );
-
         showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            //constraints: BoxConstraints(maxHeight: 80.h),
             builder: (BuildContext context) {
               return Obx(() {
                 return _controller.showBookingDetail.value

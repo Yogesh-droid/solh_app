@@ -83,6 +83,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       Get.put(MoodMeterController());
 
   late TabController tabController;
+  late AnimationController animationController;
 
   List<Widget> bottomWidgetList = [
     HomeScreen(),
@@ -95,7 +96,8 @@ class _MasterScreen2State extends State<MasterScreen2>
   @override
   void initState() {
     print('init master');
-    tabController = TabController(length: 5, vsync: this);
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
     super.initState();
   }
 
@@ -129,11 +131,34 @@ class _MasterScreen2State extends State<MasterScreen2>
                 title: getDrawer(),
                 isLandingScreen: true,
               ),
-              //body: GetPages(),
               body: Obx(
-                () => IndexedStack(
-                    index: bottomNavigatorController.activeIndex.value,
-                    children: bottomWidgetList),
+                () => Stack(
+                  children: [
+                    IgnorePointer(
+                      ignoring: bottomNavigatorController.isDrawerOpen.value,
+                      child: IndexedStack(
+                          index: bottomNavigatorController.activeIndex.value,
+                          children: bottomWidgetList),
+                    ),
+                    bottomNavigatorController.isDrawerOpen.value
+                        ? GestureDetector(
+                            onHorizontalDragStart: (details) {
+                              //print(details.globalPosition.direction);
+                              bottomNavigatorController.isDrawerOpen.value =
+                                  false;
+                              animationController.reverse();
+                            },
+                            child: Container(
+                              decoration:
+                                  BoxDecoration(color: Colors.transparent),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0,
+                            width: 0,
+                          ),
+                  ],
+                ),
               ),
               bottomNavigationBar: getBottomBar()),
         ),
@@ -142,7 +167,9 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    if (bottomNavigatorController.activeIndex != 0) {
+    if (bottomNavigatorController.isDrawerOpen.value) {
+      return Future.value(false);
+    } else if (bottomNavigatorController.activeIndex != 0) {
       bottomNavigatorController.activeIndex.value = 0;
       return Future.value(false);
     } else {
@@ -300,6 +327,9 @@ class _MasterScreen2State extends State<MasterScreen2>
             bottomNavigatorController.isDrawerOpen.value
                 ? bottomNavigatorController.isDrawerOpen.value = false
                 : bottomNavigatorController.isDrawerOpen.value = true;
+            bottomNavigatorController.isDrawerOpen.value
+                ? animationController.forward()
+                : animationController.reverse();
 
             print("opened");
           },
@@ -308,19 +338,11 @@ class _MasterScreen2State extends State<MasterScreen2>
             height: 40,
             width: 40,
             padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: Obx(() {
-              return bottomNavigatorController.isDrawerOpen.value
-                  ? Icon(
-                      Icons.arrow_back,
-                      size: 26,
-                    )
-                  : SvgPicture.asset(
-                      "assets/icons/app-bar/app-bar-menu.svg",
-                      width: 26,
-                      height: 24,
-                      color: SolhColors.green,
-                    );
-            }),
+            child: AnimatedIcon(
+              icon: AnimatedIcons.menu_arrow,
+              progress: animationController,
+              color: SolhColors.green,
+            ),
           ),
         ));
   }
