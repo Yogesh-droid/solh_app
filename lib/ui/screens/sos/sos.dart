@@ -49,7 +49,7 @@ class SOSDialog extends StatelessWidget {
                               child: IconButton(
                                 icon: Icon(
                                   CupertinoIcons.pencil,
-                                  color: SolhColors.green,
+                                  color: SolhColors.primary_green,
                                 ),
                                 onPressed: () {
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -124,7 +124,7 @@ class SOSDialog extends StatelessWidget {
                             height: 6.h,
                             child: Text(
                               "Add contact",
-                              style: TextStyle(color: SolhColors.green),
+                              style: TextStyle(color: SolhColors.primary_green),
                             ),
                             onPressed: () {
                               Navigator.of(context)

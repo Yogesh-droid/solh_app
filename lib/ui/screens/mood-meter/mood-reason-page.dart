@@ -44,7 +44,7 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
               child: Text(
                 "Skip",
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 18,
                 ),
               ),
@@ -67,13 +67,13 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
               labelText: "Tell us something ...",
               labelStyle: TextStyle(color: Colors.grey),
               enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green),
+                borderSide: BorderSide(color: SolhColors.primary_green),
               ),
               disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green),
+                borderSide: BorderSide(color: SolhColors.primary_green),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: SolhColors.green),
+                borderSide: BorderSide(color: SolhColors.primary_green),
               ),
             ),
             maxLines: 4,

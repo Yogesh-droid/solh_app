@@ -48,7 +48,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Obx(() {
       return profileController.isProfileLoading.value
           ? Center(
@@ -107,7 +106,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               }),
                         ),
                       ],
-
                     ),
                   ),
                 )
@@ -123,7 +121,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: SolhColors.green),
+                                color: SolhColors.primary_green),
                             child: IconButton(
                                 onPressed: () {
                                   profileController.getMyProfile();
@@ -262,7 +260,7 @@ class ProfileMenuTile extends StatelessWidget {
             Icon(
               CupertinoIcons.right_chevron,
               size: 16,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
             )
           ],
         ),
@@ -436,7 +434,7 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         Icon(
                           Icons.thumb_up,
                           size: 18,
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                         ),
                         SizedBox(
                           width: 2.w,

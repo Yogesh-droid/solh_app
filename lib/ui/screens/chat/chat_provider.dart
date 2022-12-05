@@ -201,7 +201,8 @@ class ChatAppbar extends StatelessWidget {
                           _controller.seenStatus.value.toString());
                       return Text(
                         _controller.seenStatus.value,
-                        style: GoogleFonts.signika(color: SolhColors.green),
+                        style: GoogleFonts.signika(
+                            color: SolhColors.primary_green),
                       );
                     })
                   ],
@@ -273,7 +274,7 @@ class MessageBoxProvider extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
           borderRadius: BorderRadius.circular(22)),
       child: Padding(
@@ -376,7 +377,7 @@ class MessageBoxProvider extends StatelessWidget {
                   },
                   child: Icon(
                     Icons.send,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ),
                 ),
               ],
@@ -528,11 +529,11 @@ class MessageTile extends StatelessWidget {
                       moreStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: SolhColors.green),
+                          color: SolhColors.primary_green),
                       lessStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: SolhColors.green),
+                          color: SolhColors.primary_green),
                     ),
                     Text(
                       _dateTime == null
@@ -659,11 +660,11 @@ class Filetile extends StatelessWidget {
                                             .containsKey(_mediaUrl)
                                         ? Icon(
                                             Icons.done,
-                                            color: SolhColors.green,
+                                            color: SolhColors.primary_green,
                                           )
                                         : Icon(
                                             Icons.download_sharp,
-                                            color: SolhColors.green,
+                                            color: SolhColors.primary_green,
                                           ));
                               }),
                               SizedBox(

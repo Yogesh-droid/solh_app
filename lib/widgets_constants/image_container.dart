@@ -16,7 +16,7 @@ class SimpleImageContainer extends StatelessWidget {
       this.zoomEnabled = false,
       this.borderWidth = 2.0,
       this.boxFit = BoxFit.contain,
-      this.borderColor = SolhColors.green,
+      this.borderColor = SolhColors.primary_green,
       this.enableborder})
       : super(key: key);
   final String imageUrl;
@@ -73,7 +73,7 @@ class StackImage extends StatelessWidget {
     this.topImageBorderEnable = true,
     this.topImageBorderRadius = 1,
     this.topImageBorderColor = Colors.white,
-    this.bottomImageBorderColor = SolhColors.green,
+    this.bottomImageBorderColor = SolhColors.primary_green,
     this.onClick,
     required this.topImageOffset,
     required this.topImageUrl,

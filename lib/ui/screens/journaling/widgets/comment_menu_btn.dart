@@ -32,7 +32,7 @@ class CommentMenuButton extends StatelessWidget {
         icon: Icon(
           Icons.more_vert,
           size: 16,
-          color: SolhColors.grey102,
+          color: SolhColors.dark_grey,
         ),
         iconSize: 20,
         color: SolhColors.white,

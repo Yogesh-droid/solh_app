@@ -25,9 +25,9 @@ class _SolhToggleButtonState extends State<SolhToggleButton> {
   @override
   Widget build(BuildContext context) {
     return Switch(
-      activeColor: widget.activeColor ?? SolhColors.green,
-      activeTrackColor: widget.activeTrackColor ?? SolhColors.grey217,
-      inactiveTrackColor: widget.inactiveTrackColor ?? SolhColors.grey217,
+      activeColor: widget.activeColor ?? SolhColors.primary_green,
+      activeTrackColor: widget.activeTrackColor ?? SolhColors.grey_3,
+      inactiveTrackColor: widget.inactiveTrackColor ?? SolhColors.grey_3,
       inactiveThumbColor: widget.inactiveThumbColor ?? SolhColors.grey,
       value: widget.switchValue,
       onChanged: (value) {

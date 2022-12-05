@@ -180,7 +180,8 @@ class ChatAppbar extends StatelessWidget {
                           _controller.seenStatus.value.toString());
                       return Text(
                         _controller.seenStatus.value,
-                        style: GoogleFonts.signika(color: SolhColors.green),
+                        style: GoogleFonts.signika(
+                            color: SolhColors.primary_green),
                       );
                     })
                   ],
@@ -230,7 +231,7 @@ class ChatAppbar extends StatelessWidget {
                       child: Icon(
                         Icons.video_call_outlined,
                         size: 34,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                       ),
                     ),
                   )),
@@ -261,7 +262,7 @@ class MessageBox extends StatelessWidget {
       decoration: BoxDecoration(
           color: SolhColors.white,
           border: Border.all(
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
           borderRadius: BorderRadius.circular(22)),
       child: Padding(
@@ -316,7 +317,7 @@ class MessageBox extends StatelessWidget {
               },
               child: Icon(
                 Icons.send,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
             )
           ],
@@ -437,11 +438,11 @@ class MessageTile extends StatelessWidget {
                       moreStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: SolhColors.green),
+                          color: SolhColors.primary_green),
                       lessStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
-                          color: SolhColors.green),
+                          color: SolhColors.primary_green),
                     ),
                     Text(
                       _dateTime == null

@@ -191,13 +191,13 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           'Journaling',
                           style: GoogleFonts.signika(
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         Icon(
                           Icons.arrow_forward,
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                           size: 14,
                         )
                       ],
@@ -271,13 +271,13 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Goal Setting',
                         style: GoogleFonts.signika(
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                         size: 14,
                       )
                     ],
@@ -343,13 +343,13 @@ class _HomePageState extends State<HomePage> {
                       Text(
                         'Get Help',
                         style: GoogleFonts.signika(
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
                       Icon(
                         Icons.arrow_forward,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                         size: 14,
                       )
                     ],
@@ -572,7 +572,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: SolhColors.grey217,
+                  color: SolhColors.grey_3,
                   offset: const Offset(
                     5.0,
                     0.0,
@@ -599,7 +599,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: SolhColors.grey217,
+                  color: SolhColors.grey_3,
                   offset: const Offset(
                     5.0,
                     0.0,
@@ -903,7 +903,7 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             Icon(
                               CupertinoIcons.person_3,
-                              color: SolhColors.green,
+                              color: SolhColors.primary_green,
                             ),
                             SizedBox(
                               width: 2.w,
@@ -919,7 +919,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             SvgPicture.asset(
                               'assets/images/eye.svg',
-                              color: SolhColors.green,
+                              color: SolhColors.primary_green,
                             ),
                             SizedBox(
                               width: 2.w,
@@ -1042,7 +1042,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Icon(
                     Icons.thumb_up_alt_outlined,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ),
                   SizedBox(
                     width: 2.w,
@@ -1051,7 +1051,7 @@ class _HomePageState extends State<HomePage> {
                     journal.likes.toString(),
                     style: TextStyle(
                       fontSize: 18,
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     ),
                   ),
                 ],
@@ -1059,13 +1059,13 @@ class _HomePageState extends State<HomePage> {
               Container(
                 width: 1,
                 height: 20,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               Row(
                 children: [
                   Icon(
                     CupertinoIcons.chat_bubble,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ),
                   SizedBox(
                     width: 2.w,
@@ -1073,7 +1073,7 @@ class _HomePageState extends State<HomePage> {
                   Text(
                     journal.comments.toString(),
                     style: TextStyle(
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                       fontSize: 18,
                     ),
                   ),
@@ -1153,7 +1153,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Icon(
                                 Icons.thumb_up_alt_outlined,
-                                color: SolhColors.green,
+                                color: SolhColors.primary_green,
                               ),
                               SizedBox(
                                 width: 2.w,
@@ -1162,7 +1162,7 @@ class _HomePageState extends State<HomePage> {
                                 '0',
                                 style: TextStyle(
                                   fontSize: 18,
-                                  color: SolhColors.green,
+                                  color: SolhColors.primary_green,
                                 ),
                               ),
                             ],
@@ -1170,13 +1170,13 @@ class _HomePageState extends State<HomePage> {
                           Container(
                             width: 1,
                             height: 20,
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                           ),
                           Row(
                             children: [
                               Icon(
                                 CupertinoIcons.chat_bubble,
-                                color: SolhColors.green,
+                                color: SolhColors.primary_green,
                               ),
                               SizedBox(
                                 width: 2.w,
@@ -1184,7 +1184,7 @@ class _HomePageState extends State<HomePage> {
                               Text(
                                 '0',
                                 style: TextStyle(
-                                  color: SolhColors.green,
+                                  color: SolhColors.primary_green,
                                   fontSize: 18,
                                 ),
                               ),
@@ -1321,7 +1321,7 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Icon(
                                       CupertinoIcons.eye,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                       size: 12,
                                     ),
                                     SizedBox(
@@ -1333,7 +1333,7 @@ class _HomePageState extends State<HomePage> {
                                           .toString(),
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: SolhColors.green,
+                                        color: SolhColors.primary_green,
                                       ),
                                     ),
                                   ],

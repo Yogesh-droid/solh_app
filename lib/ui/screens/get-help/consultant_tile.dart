@@ -39,7 +39,7 @@ class ConsultantsTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: SolhColors.grey196.withOpacity(0.4)),
+            border: Border.all(color: SolhColors.grey_2.withOpacity(0.4)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -139,7 +139,7 @@ class ConsultantsTile extends StatelessWidget {
                       : ''),
               style: TextStyle(
                   fontSize: 15,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontWeight: FontWeight.w300)),
         ],
       ),
@@ -167,12 +167,12 @@ class ConsultantsTile extends StatelessWidget {
           children: [
             Icon(
               Icons.people,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               size: 10,
             ),
             Text('0',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 12,
                 )),
           ],
@@ -182,12 +182,12 @@ class ConsultantsTile extends StatelessWidget {
           children: [
             Icon(
               Icons.star_half,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               size: 10,
             ),
             Text('0',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 12,
                 )),
           ],
@@ -197,12 +197,12 @@ class ConsultantsTile extends StatelessWidget {
           children: [
             Icon(
               Icons.note_alt_outlined,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               size: 10,
             ),
             Text('0',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 12,
                 )),
           ],

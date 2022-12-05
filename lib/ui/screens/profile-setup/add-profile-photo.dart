@@ -54,7 +54,7 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
                 toolbarTitle: 'Edit',
                 toolbarColor: SolhColors.white,
                 toolbarWidgetColor: Colors.black,
-                activeControlsWidgetColor: SolhColors.green,
+                activeControlsWidgetColor: SolhColors.primary_green,
                 initAspectRatio: CropAspectRatioPreset.square,
                 lockAspectRatio: true),
             IOSUiSettings(

@@ -33,8 +33,8 @@ class NeedSupportOn extends StatelessWidget {
           children: [
             StepsProgressbar(
               stepNumber: 5,
-              bottomBarcolor: SolhColors.grey196,
-              upperBarcolor: SolhColors.green,
+              bottomBarcolor: SolhColors.grey_2,
+              upperBarcolor: SolhColors.primary_green,
             ),
             SizedBox(
               height: 3.h,
@@ -102,7 +102,7 @@ List<FilterChip> getAllChips(context) {
     label: Text('Other'),
     onSelected: (value) {},
     backgroundColor: SolhColors.grey239,
-    side: BorderSide(color: SolhColors.green),
+    side: BorderSide(color: SolhColors.primary_green),
   ));
 
   return chipsList;

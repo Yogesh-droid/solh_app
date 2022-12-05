@@ -82,7 +82,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 return phoneAuthController.isRequestingAuth.value
                     ? SolhGreenBorderButton(
                         child: ButtonLoadingAnimation(
-                          ballColor: SolhColors.green,
+                          ballColor: SolhColors.primary_green,
                           ballSizeLowerBound: 3,
                           ballSizeUpperBound: 8,
                         ),
@@ -147,12 +147,12 @@ class SolhCountryCodePicker extends StatelessWidget {
             children: [
               Text(
                 '${countryCode!.dialCode}',
-                style: TextStyle(color: SolhColors.green),
+                style: TextStyle(color: SolhColors.primary_green),
               ),
               Icon(
                 CupertinoIcons.chevron_down,
                 size: 15,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               )
             ],
           ),
@@ -246,7 +246,7 @@ class SocialLoginContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: SolhColors.white,
-        border: Border.all(color: SolhColors.green, width: 2),
+        border: Border.all(color: SolhColors.primary_green, width: 2),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(

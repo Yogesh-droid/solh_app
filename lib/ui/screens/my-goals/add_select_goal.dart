@@ -105,7 +105,7 @@ class AddGoalButton extends StatelessWidget {
       width: 70.w,
       height: 48,
       decoration: BoxDecoration(
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           borderRadius: BorderRadius.circular(
             24,
           )),

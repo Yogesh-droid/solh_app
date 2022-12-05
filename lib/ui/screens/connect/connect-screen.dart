@@ -69,7 +69,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               child: Icon(Icons.video_camera_front_rounded),
             ),
@@ -222,7 +222,8 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                                   Icon(
                                                     Icons.thumb_up,
                                                     size: 18,
-                                                    color: SolhColors.green,
+                                                    color: SolhColors
+                                                        .primary_green,
                                                   ),
                                                   SizedBox(
                                                     width: 2.w,
@@ -385,7 +386,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                     Icon(
                                       Icons.thumb_up,
                                       size: 18,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     ),
                                     SizedBox(
                                       width: 2.w,
@@ -447,7 +448,7 @@ class _ConnectProfileScreenState extends State<ConnectProfileScreen> {
                                   },
                                   child: Text('Cancel',
                                       style: GoogleFonts.signika(
-                                        color: SolhColors.green,
+                                        color: SolhColors.primary_green,
                                       )),
                                 ),
                               )
@@ -756,8 +757,9 @@ class _TabViewState extends State<TabView> {
               child: Text(
                 "Posts",
                 style: TextStyle(
-                    color:
-                        _currentPage == 0 ? SolhColors.green : SolhColors.grey,
+                    color: _currentPage == 0
+                        ? SolhColors.primary_green
+                        : SolhColors.grey,
                     fontSize: 20),
               ),
             ),

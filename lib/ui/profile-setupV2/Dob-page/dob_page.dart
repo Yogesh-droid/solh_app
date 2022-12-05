@@ -102,7 +102,7 @@ Container getDobContainer(String label) {
     decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           width: 3,
         ),
         borderRadius: BorderRadius.circular(4)),

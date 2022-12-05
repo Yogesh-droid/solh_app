@@ -116,7 +116,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: Icon(
                     Icons.notifications_none,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ))
               : Container(),
           _isLandingScreen
@@ -129,7 +129,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                   icon: Icon(
                     Icons.search,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ))
               : Container(),
 

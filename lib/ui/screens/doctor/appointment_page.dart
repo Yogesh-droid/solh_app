@@ -59,8 +59,8 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
       height: 50,
       child: TabBar(
         controller: _tabController,
-        indicatorColor: SolhColors.green,
-        labelColor: SolhColors.green,
+        indicatorColor: SolhColors.primary_green,
+        labelColor: SolhColors.primary_green,
         unselectedLabelColor: SolhColors.grey,
         tabs: [
           Tab(
@@ -127,7 +127,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                     borderRadius: BorderRadius.circular(2.w),
                                     color: SolhColors.white,
                                     border: Border.all(
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                       width: 0.5,
                                     ),
                                   ),
@@ -299,7 +299,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                     borderRadius: BorderRadius.circular(2.w),
                                     color: SolhColors.white,
                                     border: Border.all(
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                       width: 0.5,
                                     ),
                                   ),

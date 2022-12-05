@@ -119,7 +119,7 @@ class _PostScreenState extends State<PostScreen> {
                                     children: [
                                       Icon(
                                         Icons.favorite,
-                                        color: SolhColors.green,
+                                        color: SolhColors.primary_green,
                                         size: 18,
                                       ),
                                       SizedBox(
@@ -139,7 +139,7 @@ class _PostScreenState extends State<PostScreen> {
                                         "assets/icons/journaling/post-comment.svg",
                                         width: 17,
                                         height: 17,
-                                        color: SolhColors.green,
+                                        color: SolhColors.primary_green,
                                       ),
                                       SizedBox(
                                         width: 10,

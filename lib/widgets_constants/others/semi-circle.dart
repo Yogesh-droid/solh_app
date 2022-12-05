@@ -9,7 +9,7 @@ class MyArc extends StatelessWidget {
   const MyArc({
     Key? key,
     this.diameter = 200,
-    this.color = SolhColors.green,
+    this.color = SolhColors.primary_green,
   }) : super(key: key);
 
   final Color color;

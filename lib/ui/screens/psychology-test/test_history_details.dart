@@ -44,7 +44,7 @@ class TestHistoryDetails extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(18),
-                color: SolhColors.green),
+                color: SolhColors.primary_green),
             child: Obx(() {
               return psychologyTestController.isHistoryResultLoading.value
                   ? Center(

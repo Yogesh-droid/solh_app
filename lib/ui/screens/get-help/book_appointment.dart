@@ -343,9 +343,10 @@ class _DayPickerState extends State<DayPicker> {
                               decoration: BoxDecoration(
                                   color: _controller.selectedDay.value ==
                                           DateFormat('EEEE').format(days[index])
-                                      ? SolhColors.green
+                                      ? SolhColors.primary_green
                                       : Colors.white,
-                                  border: Border.all(color: SolhColors.green),
+                                  border: Border.all(
+                                      color: SolhColors.primary_green),
                                   borderRadius: BorderRadius.circular(18)),
                               child: Center(
                                 child: Padding(
@@ -365,7 +366,7 @@ class _DayPickerState extends State<DayPicker> {
                                               DateFormat('EEEE')
                                                   .format(days[index])
                                           ? SolhColors.white
-                                          : SolhColors.green,
+                                          : SolhColors.primary_green,
                                     ),
                                   ),
                                 ),
@@ -383,7 +384,7 @@ class _DayPickerState extends State<DayPicker> {
                     child: Text(
                     'Loading Time Slots...',
                     style: TextStyle(
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     ),
                   ))
                 : _controller.timeSlotList.isEmpty
@@ -391,7 +392,7 @@ class _DayPickerState extends State<DayPicker> {
                         child: Text(
                         'No Time Slots Available',
                         style: TextStyle(
-                          color: SolhColors.grey196,
+                          color: SolhColors.grey_2,
                         ),
                       ))
                     : Wrap(
@@ -449,12 +450,13 @@ class _DayPickerState extends State<DayPicker> {
                                 decoration: BoxDecoration(
                                     color: _controller.bookedTimeSlots
                                             .contains(e.toString())
-                                        ? SolhColors.grey102
+                                        ? SolhColors.dark_grey
                                         : _controller.selectedTimeSlot.value ==
                                                 e
-                                            ? SolhColors.green
+                                            ? SolhColors.primary_green
                                             : SolhColors.white,
-                                    border: Border.all(color: SolhColors.green),
+                                    border: Border.all(
+                                        color: SolhColors.primary_green),
                                     borderRadius: BorderRadius.circular(18)),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -468,7 +470,7 @@ class _DayPickerState extends State<DayPicker> {
                                                   _controller.bookedTimeSlots
                                                       .contains(e.toString())
                                               ? SolhColors.white
-                                              : SolhColors.green,
+                                              : SolhColors.primary_green,
                                     ),
                                   )),
                                 ),
@@ -584,7 +586,7 @@ class BookAppointmentPopup extends StatelessWidget {
                   ' at' ' ' +
                   _controller.selectedTimeSlot.value,
               style: GoogleFonts.montserrat(
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
             ),
           ],
@@ -600,7 +602,7 @@ class BookAppointmentPopup extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
                 decoration: BoxDecoration(
-                    border: Border.all(color: SolhColors.green),
+                    border: Border.all(color: SolhColors.primary_green),
                     borderRadius: BorderRadius.circular(24)),
                 child: Center(
                   child: Text('Cancel'),
@@ -669,8 +671,8 @@ class BookAppointmentPopup extends StatelessWidget {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.3,
                 decoration: BoxDecoration(
-                    color: SolhColors.green,
-                    border: Border.all(color: SolhColors.green),
+                    color: SolhColors.primary_green,
+                    border: Border.all(color: SolhColors.primary_green),
                     borderRadius: BorderRadius.circular(24)),
                 child: Center(
                   child: Text('Confirm',

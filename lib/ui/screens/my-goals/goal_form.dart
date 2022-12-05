@@ -194,7 +194,7 @@ class _GoalFormState extends State<GoalForm> {
                                       toolbarColor: SolhColors.white,
                                       toolbarWidgetColor: Colors.black,
                                       activeControlsWidgetColor:
-                                          SolhColors.green,
+                                          SolhColors.primary_green,
                                       initAspectRatio:
                                           CropAspectRatioPreset.square,
                                       lockAspectRatio: true),
@@ -249,7 +249,7 @@ class _GoalFormState extends State<GoalForm> {
                                             toolbarColor: SolhColors.white,
                                             toolbarWidgetColor: Colors.black,
                                             activeControlsWidgetColor:
-                                                SolhColors.green,
+                                                SolhColors.primary_green,
                                             initAspectRatio:
                                                 CropAspectRatioPreset.square,
                                             lockAspectRatio: true),
@@ -361,7 +361,7 @@ class _GoalFormState extends State<GoalForm> {
             topLeft: Radius.circular(15),
             topRight: Radius.circular(15),
           ),
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
         ),
         child: Center(
           child: Text(
@@ -573,7 +573,7 @@ class AddTaskButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         decoration: BoxDecoration(
-          border: Border.all(color: SolhColors.green),
+          border: Border.all(color: SolhColors.primary_green),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Padding(

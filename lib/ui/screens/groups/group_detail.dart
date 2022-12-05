@@ -319,7 +319,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               )),
           ReadMoreText(
             groupList.groupDescription ?? '',
@@ -347,7 +347,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               child: SolhGreenButton(
                   padding: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
-                  backgroundColor: SolhColors.green,
+                  backgroundColor: SolhColors.primary_green,
                   child: Obx(() {
                     return discoverGroupController.isLoading.value
                         ? MyLoader()
@@ -583,8 +583,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             ),
                             Text(
                               'Admin',
-                              style:
-                                  GoogleFonts.signika(color: SolhColors.green),
+                              style: GoogleFonts.signika(
+                                  color: SolhColors.primary_green),
                             ),
                             SizedBox(
                               width: 5,
@@ -652,7 +652,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     return PopupMenuButton(
       icon: Icon(
         Icons.more_vert,
-        color: SolhColors.green,
+        color: SolhColors.primary_green,
       ),
       itemBuilder: (context) {
         return [
@@ -773,7 +773,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               },
             ),
             MaterialButton(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               child: Text(
                 'Yes',
                 style: TextStyle(color: Colors.white),

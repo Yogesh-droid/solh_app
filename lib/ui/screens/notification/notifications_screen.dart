@@ -497,7 +497,8 @@ class RefreshContainer extends StatelessWidget {
       height: 30,
       width: 100,
       decoration: BoxDecoration(
-          color: SolhColors.green, borderRadius: BorderRadius.circular(24)),
+          color: SolhColors.primary_green,
+          borderRadius: BorderRadius.circular(24)),
       child: Center(
         child: Text('Refreshing...',
             style: GoogleFonts.signika(

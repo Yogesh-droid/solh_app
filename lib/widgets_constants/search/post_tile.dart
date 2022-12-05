@@ -147,7 +147,7 @@ class PostTile extends StatelessWidget {
             children: [
               Icon(
                 Icons.thumb_up_alt_outlined,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               SizedBox(
                 width: 2.w,
@@ -156,7 +156,7 @@ class PostTile extends StatelessWidget {
                 journal.likes.toString(),
                 style: TextStyle(
                   fontSize: 18,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ],
@@ -164,13 +164,13 @@ class PostTile extends StatelessWidget {
           Container(
             width: 1,
             height: 20,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
           Row(
             children: [
               Icon(
                 CupertinoIcons.chat_bubble,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               SizedBox(
                 width: 2.w,
@@ -178,7 +178,7 @@ class PostTile extends StatelessWidget {
               Text(
                 journal.comments.toString(),
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 18,
                 ),
               ),

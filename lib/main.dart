@@ -113,7 +113,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-          primaryColor: SolhColors.green,
+          primaryColor: SolhColors.primary_green,
 
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
@@ -129,8 +129,8 @@ class _SolhAppState extends State<SolhApp> {
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0),
                   )),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.green))),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      SolhColors.primary_green))),
         ),
       );
     });

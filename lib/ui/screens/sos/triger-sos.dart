@@ -57,7 +57,7 @@ class SOSTriggerDialog extends StatelessWidget {
                     },
                     child: Text(
                       "Cancel",
-                      style: TextStyle(color: SolhColors.green),
+                      style: TextStyle(color: SolhColors.primary_green),
                     )),
                 SolhGreenButton(
                     width: 40.w,

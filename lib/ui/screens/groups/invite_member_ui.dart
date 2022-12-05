@@ -111,7 +111,7 @@ class InviteMembersUI extends StatelessWidget {
             return controller.selectedMembersIndex.contains(index)
                 ? Icon(
                     Icons.check_circle,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   )
                 : Container();
           })),
@@ -144,7 +144,7 @@ class InviteMembersUI extends StatelessWidget {
         ),
         backgroundColor: controller.selectedMembersIndex.isEmpty
             ? SolhColors.grey
-            : SolhColors.green,
+            : SolhColors.primary_green,
       );
     });
   }

@@ -118,8 +118,8 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                             },
                             decoration: InputDecoration(
                                 focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: SolhColors.green)),
+                                    borderSide: BorderSide(
+                                        color: SolhColors.primary_green)),
                                 hintText: " Phone No.",
                                 hintStyle: TextStyle(),
                                 border: OutlineInputBorder(
@@ -209,11 +209,11 @@ class SolhCountryCodePicker extends StatelessWidget {
             children: [
               Text(
                 '${countryCode!.dialCode}(${countryCode.name})',
-                style: TextStyle(color: SolhColors.green),
+                style: TextStyle(color: SolhColors.primary_green),
               ),
               Icon(
                 Icons.arrow_drop_down,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               )
             ],
           ),

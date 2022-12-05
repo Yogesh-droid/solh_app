@@ -6,7 +6,7 @@ class ButtonLoadingAnimation extends StatelessWidget {
       {Key? key,
       this.ballSizeLowerBound,
       this.ballSizeUpperBound,
-      this.ballColor = SolhColors.green})
+      this.ballColor = SolhColors.primary_green})
       : super(key: key);
 
   final double? ballSizeUpperBound;

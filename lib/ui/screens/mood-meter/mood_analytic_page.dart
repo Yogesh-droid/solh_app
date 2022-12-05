@@ -197,7 +197,7 @@ class MoodAnalyticPage extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
             width: 1,
           ),
         ),
@@ -205,7 +205,7 @@ class MoodAnalyticPage extends StatelessWidget {
             child: DropdownButton(
           icon: Icon(
             Icons.keyboard_arrow_down_sharp,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
           value: moodMeterController.selectedFrequency.value,
           items: [
@@ -214,7 +214,7 @@ class MoodAnalyticPage extends StatelessWidget {
                 'Week',
                 style: TextStyle(
                   fontSize: 16,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
               value: '7',
@@ -224,7 +224,7 @@ class MoodAnalyticPage extends StatelessWidget {
                 '30 days',
                 style: TextStyle(
                   fontSize: 16,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
               value: '30',
@@ -234,7 +234,7 @@ class MoodAnalyticPage extends StatelessWidget {
                 '60 days',
                 style: TextStyle(
                   fontSize: 16,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
               value: '60',

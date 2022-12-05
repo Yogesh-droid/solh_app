@@ -106,7 +106,7 @@ class GetHelpScreen extends StatelessWidget {
                               : "Show less",
                           style: TextStyle(
                             fontSize: 16,
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                             fontWeight: FontWeight.w400,
                           ),
                         );
@@ -435,7 +435,7 @@ class TopConsultantsTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 2.5.w),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: SolhColors.grey196.withOpacity(0.4))),
+            border: Border.all(color: SolhColors.grey_2.withOpacity(0.4))),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -523,7 +523,7 @@ class GetHelpCategory extends StatelessWidget {
               onTap: _onPressed,
               child: Text(
                 "View All",
-                style: TextStyle(color: SolhColors.green),
+                style: TextStyle(color: SolhColors.primary_green),
               ),
             )
         ],
@@ -599,7 +599,7 @@ class SolhVolunteers extends StatelessWidget {
             height: 52,
             // width: 164,
             decoration: BoxDecoration(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               borderRadius: BorderRadius.circular(8),
             ),
           ),
@@ -758,8 +758,8 @@ class SolhVolunteers extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: getConnectionIdBySId(sId ?? '') != ''
                               ? Colors.white
-                              : SolhColors.green,
-                          border: Border.all(color: SolhColors.green),
+                              : SolhColors.primary_green,
+                          border: Border.all(color: SolhColors.primary_green),
                           borderRadius: BorderRadius.circular(16)),
                       child: connectionController
                                   .isSendingConnectionRequest.value &&
@@ -795,7 +795,7 @@ class SolhVolunteers extends StatelessWidget {
                                       ? Text('Cancel',
                                           style: GoogleFonts.signika(
                                             fontSize: 14,
-                                            color: SolhColors.green,
+                                            color: SolhColors.primary_green,
                                           ))
                                       : Text(
                                           'Connect',

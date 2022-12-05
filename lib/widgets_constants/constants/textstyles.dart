@@ -12,7 +12,7 @@ class SolhTextStyles {
 
   static const TextStyle AppBarText = TextStyle(
     fontSize: 24,
-    color: SolhColors.grey102,
+    color: SolhColors.dark_grey,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 29.57
   );
@@ -21,14 +21,14 @@ class SolhTextStyles {
 
   static const TextStyle LandingTitleText = TextStyle(
     fontSize: 24,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 29.57
   );
 
   static const TextStyle LandingParaText = TextStyle(
     fontSize: 16,
-    color: SolhColors.grey102,
+    color: SolhColors.dark_grey,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 17.25
   );
@@ -42,21 +42,21 @@ class SolhTextStyles {
 
   static const TextStyle LandingButtonHeaderText = TextStyle(
     fontSize: 14,
-    color: SolhColors.grey102,
+    color: SolhColors.dark_grey,
     fontWeight: FontWeight.w300,
     height: 1.23, //Figma Line Height 17.25
   );
 
   static const TextStyle ToggleParaText = TextStyle(
     fontSize: 16,
-    color: SolhColors.grey102,
+    color: SolhColors.dark_grey,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 19.71
   );
 
   static const TextStyle ToggleLinkText = TextStyle(
     fontSize: 16,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 19.71
   );
@@ -86,7 +86,7 @@ class SolhTextStyles {
   static const TextStyle JournalingBadgeText = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     height: 1.23, //Figma Line Height 14.78
   );
 
@@ -100,7 +100,7 @@ class SolhTextStyles {
   static const TextStyle JournalingDescriptionText = TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: SolhColors.grey102,
+      color: SolhColors.dark_grey,
       height: 1.25,
       letterSpacing: 0.1 //Figma Line Height 19.71
       );
@@ -108,14 +108,14 @@ class SolhTextStyles {
   static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     height: 1.23, //Figma Line Height 19.71
   );
 
   static const TextStyle JournalingPostMenuText = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: SolhColors.grey102,
+    color: SolhColors.dark_grey,
     height: 1.23, //Figma Line Height 19.71
   );
 
@@ -123,7 +123,7 @@ class SolhTextStyles {
 
   static const TextStyle GreenBorderButtonText = TextStyle(
     fontSize: 14,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
     height: 1.23, //Figma Line Height 17.25
   );
@@ -150,11 +150,11 @@ class SolhTextStyles {
   );
 
   static const TextStyle SOSGreenHeading =
-      TextStyle(color: SolhColors.green, fontSize: 20);
+      TextStyle(color: SolhColors.primary_green, fontSize: 20);
 
   static const TextStyle mostUpvoted = TextStyle(
     fontSize: 15,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,
     height: 1.25, //Figma Line Height 17.25
   );
@@ -171,7 +171,7 @@ class SolhTextStyles {
   ///second version of text styles starts from here
   static const TextStyle LargeGreenTextS32W7 = TextStyle(
     fontSize: 32,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w700,
   );
   static const TextStyle Large2BlackTextS24W7 = TextStyle(
@@ -200,7 +200,7 @@ class SolhTextStyles {
 
   static const TextStyle NormalTextGreenS14W5 = TextStyle(
     fontSize: 14,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,
   );
 
@@ -229,13 +229,115 @@ class SolhTextStyles {
   );
   static const TextStyle SmallTextGreen1S12W5 = TextStyle(
     fontSize: 12,
-    color: SolhColors.green,
+    color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,
   );
 
   static const TextStyle SmallTextWhiteS12W7 = TextStyle(
     fontSize: 12,
     color: SolhColors.white,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle appTextWhiteS12W7 = TextStyle(
+    fontSize: 16,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w700,
+  );
+
+  //////// .   new styles //////////
+  ///
+  static const TextStyle QS_head_1 = TextStyle(
+    fontSize: 96,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle QS_head_2 = TextStyle(
+    fontSize: 60,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle QS_head_3 = TextStyle(
+    fontSize: 48,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle QS_head_4 = TextStyle(
+    fontSize: 32,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle QS_head_5 = TextStyle(
+    fontSize: 24,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle QS_big_body = TextStyle(
+    fontSize: 20,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle QS_body_1_bold = TextStyle(
+    fontSize: 16,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle Body_1_Semi = TextStyle(
+    fontSize: 16,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w600,
+  );
+
+  static const TextStyle Body_1 = TextStyle(
+    fontSize: 16,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle BUTTON = TextStyle(
+    fontSize: 14,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle Body_2 = TextStyle(
+    fontSize: 14,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle Body_2_bold = TextStyle(
+    fontSize: 14,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle Caption = TextStyle(
+    fontSize: 12,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle Caption_semi = TextStyle(
+    fontSize: 12,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle Caption_Bold = TextStyle(
+    fontSize: 12,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle Caption_2 = TextStyle(
+    fontSize: 10,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w500,
+  );
+  static const TextStyle Caption_2_semi = TextStyle(
+    fontSize: 10,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w600,
+  );
+  static const TextStyle Caption_2_bold = TextStyle(
+    fontSize: 10,
+    color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
   );
 }

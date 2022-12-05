@@ -66,7 +66,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                           children: [
                             Icon(
                               CupertinoIcons.eye,
-                              color: SolhColors.green,
+                              color: SolhColors.primary_green,
                               size: 12,
                             ),
                             SizedBox(
@@ -77,7 +77,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                                   .toString(),
                               style: TextStyle(
                                 fontSize: 12,
-                                color: SolhColors.green,
+                                color: SolhColors.primary_green,
                               ),
                             ),
                           ],

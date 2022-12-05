@@ -83,8 +83,9 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                       },
                     ),
                     SolhGreenMiniButton(
-                      backgroundColor:
-                          isNextActive ? SolhColors.green : SolhColors.grey102,
+                      backgroundColor: isNextActive
+                          ? SolhColors.primary_green
+                          : SolhColors.dark_grey,
                       child: Text(isLast ? "Done" : 'Next',
                           style: SolhTextStyles.GreenButtonText),
                       onPressed: isNextActive
@@ -179,7 +180,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                                     psychologyTestController.questionList.value
                                         .indexOf(testQuestion)] ==
                                 answer.title
-                        ? SolhColors.green
+                        ? SolhColors.primary_green
                         : Colors.white),
                 borderRadius: BorderRadius.circular(5)),
             child: Row(children: [

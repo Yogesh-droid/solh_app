@@ -210,8 +210,8 @@ class _MasterScreen2State extends State<MasterScreen2>
           type: BottomNavigationBarType.fixed,
           currentIndex: bottomNavigatorController.activeIndex.value,
           showUnselectedLabels: true,
-          selectedItemColor: SolhColors.green,
-          unselectedItemColor: SolhColors.grey102,
+          selectedItemColor: SolhColors.primary_green,
+          unselectedItemColor: SolhColors.dark_grey,
           onTap: (index) => bottomNavigatorController.activeIndex.value = index,
           items: [
             BottomNavigationBarItem(
@@ -236,7 +236,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                 icon: Obx(() => SvgPicture.asset(
                       'assets/images/groal tab vector.svg',
                       color: bottomNavigatorController.activeIndex.value == 3
-                          ? SolhColors.green
+                          ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
                 label: "My Goals"),
@@ -244,7 +244,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                 icon: Obx(() => SvgPicture.asset(
                       'assets/images/profile.svg',
                       color: bottomNavigatorController.activeIndex.value == 4
-                          ? SolhColors.green
+                          ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
                 label: "My profile")
@@ -260,7 +260,7 @@ class _MasterScreen2State extends State<MasterScreen2>
               ? Container(
                   height: 20,
                   child: ButtonLoadingAnimation(
-                    ballColor: SolhColors.green,
+                    ballColor: SolhColors.primary_green,
                     ballSizeLowerBound: 3,
                     ballSizeUpperBound: 8,
                   ),
@@ -270,8 +270,8 @@ class _MasterScreen2State extends State<MasterScreen2>
                   ? Icon(
                       CupertinoIcons.calendar_badge_plus,
                       color: bottomNavigatorController.activeIndex.value == 2
-                          ? SolhColors.green
-                          : SolhColors.grey102,
+                          ? SolhColors.primary_green
+                          : SolhColors.dark_grey,
                     )
                   : bottomNavigatorController.activeIndex.value == 2
                       ? SvgPicture.asset("assets/images/get help tab.svg")
@@ -341,7 +341,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             child: AnimatedIcon(
               icon: AnimatedIcons.menu_arrow,
               progress: animationController,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
             ),
           ),
         ));

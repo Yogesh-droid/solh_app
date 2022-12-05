@@ -54,7 +54,7 @@ class TestResultPage extends StatelessWidget {
                         width: double.infinity,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
-                            color: SolhColors.green),
+                            color: SolhColors.primary_green),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [

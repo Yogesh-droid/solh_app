@@ -101,7 +101,7 @@ class AppointmentScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(2.w),
                                   color: SolhColors.white,
                                   border: Border.all(
-                                    color: SolhColors.green,
+                                    color: SolhColors.primary_green,
                                     width: 0.5,
                                   ),
                                 ),
@@ -229,7 +229,7 @@ class AppointmentScreen extends StatelessWidget {
                                                             style: GoogleFonts
                                                                 .signika(
                                                               color: SolhColors
-                                                                  .green,
+                                                                  .primary_green,
                                                               fontSize: 12,
                                                             )),
                                                         SizedBox(
@@ -237,8 +237,8 @@ class AppointmentScreen extends StatelessWidget {
                                                         ),
                                                         Icon(
                                                           Icons.check_circle,
-                                                          color:
-                                                              SolhColors.green,
+                                                          color: SolhColors
+                                                              .primary_green,
                                                           size: 14,
                                                         )
                                                       ],

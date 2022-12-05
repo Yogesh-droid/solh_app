@@ -115,8 +115,8 @@ class OtpField extends StatelessWidget {
           controllers = phoneAuthController.otpCode;
         },
         numberOfFields: 6,
-        borderColor: SolhColors.grey217,
-        focusedBorderColor: SolhColors.green,
+        borderColor: SolhColors.grey_3,
+        focusedBorderColor: SolhColors.primary_green,
         showFieldAsBox: true,
         borderWidth: 1,
         onCodeChanged: (String code) {

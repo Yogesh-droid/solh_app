@@ -102,7 +102,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
               )
             ],
             unselectedLabelColor: SolhColors.grey,
-            labelColor: SolhColors.green,
+            labelColor: SolhColors.primary_green,
             labelStyle: TextStyle(fontSize: 20),
             labelPadding: EdgeInsets.only(bottom: 16),
             onTap: (value) {
@@ -143,7 +143,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.grey102, width: 0.5),
+              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -210,7 +210,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.grey102, width: 0.5),
+              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -259,7 +259,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
             Spacer(),
             Container(
               decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: SolhColors.green),
+                  shape: BoxShape.circle, color: SolhColors.primary_green),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 8.0, right: 8.0, top: 8, bottom: 8),
@@ -352,7 +352,7 @@ class QuestionContainer extends StatelessWidget {
         // },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.grey102, width: 0.5),
+              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(

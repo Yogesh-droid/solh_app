@@ -44,7 +44,7 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
           isExpanded: true,
           icon: Icon(CupertinoIcons.chevron_down),
           iconSize: 18,
-          iconEnabledColor: SolhColors.green,
+          iconEnabledColor: SolhColors.primary_green,
           underline: SizedBox(),
           hint: Text(
             'Select Gender',
@@ -57,7 +57,7 @@ class _GenderSelectionDropdownState extends State<GenderSelectionDropdown> {
             });
             widget._newValue!.call(newValue.toString());
           },
-          style: TextStyle(color: SolhColors.green),
+          style: TextStyle(color: SolhColors.primary_green),
           items: [
             DropdownMenuItem(
               child: Text("Male"),

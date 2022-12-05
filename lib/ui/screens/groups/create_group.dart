@@ -142,7 +142,7 @@ class _CreateGroupState extends State<CreateGroup> {
                 toolbarTitle: 'Edit',
                 toolbarColor: SolhColors.white,
                 toolbarWidgetColor: Colors.black,
-                activeControlsWidgetColor: SolhColors.green,
+                activeControlsWidgetColor: SolhColors.primary_green,
                 initAspectRatio: CropAspectRatioPreset.square,
                 lockAspectRatio: true),
             IOSUiSettings(
@@ -223,7 +223,7 @@ class _CreateGroupState extends State<CreateGroup> {
                 spacing: 2.h,
                 children: _controller.tagList.value.map((tag) {
                   return Chip(
-                    backgroundColor: SolhColors.green,
+                    backgroundColor: SolhColors.primary_green,
                     label: Text(tag, style: TextStyle(color: Colors.white)),
                     deleteIcon: Icon(Icons.close, color: SolhColors.white),
                     onDeleted: () {
@@ -289,7 +289,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       child: IconButton(
                           icon: Icon(
                             Icons.edit,
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                           ),
                           onPressed: _pickImage),
                       top: 0,
@@ -366,7 +366,7 @@ class _CreateGroupState extends State<CreateGroup> {
           child: IconButton(
               icon: Icon(
                 Icons.edit,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               onPressed: _pickImage),
           top: 0,
