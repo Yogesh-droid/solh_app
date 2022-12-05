@@ -2,13 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/getHelp/consultant_controller.dart';
 import '../../../widgets_constants/image_container.dart';
 
@@ -45,67 +44,76 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
-      body: CustomScrollView(controller: _scrollController, slivers: [
-        Obx(() => SliverAppBar(
-              snap: false,
-              pinned: true,
-              floating: false,
-              leading: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
+        body: Obx(
+      () => _controller.isLoading.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : CustomScrollView(controller: _scrollController, slivers: [
+              Obx(() => SliverAppBar(
+                    snap: false,
+                    pinned: true,
+                    floating: false,
+                    leading: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios_new_rounded,
+                        )),
+                    backgroundColor: _controller.isTitleVisible.value
+                        ? SolhColors.primary_green
+                        : Colors.transparent,
+                    actions: [
+                      PopupMenuButton(
+                          itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  child: Text('Setting'),
+                                )
+                              ]),
+                      SOSButton()
+                    ],
+                    elevation: 0.0,
+                    expandedHeight: 320,
+                    flexibleSpace: expandedWidget(),
                   )),
-              backgroundColor: _controller.isTitleVisible.value
-                  ? SolhColors.primary_green
-                  : Colors.transparent,
-              actions: [
-                PopupMenuButton(
-                    itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: Text('Setting'),
-                          )
-                        ]),
-                SOSButton()
-              ],
-              elevation: 0.0,
-              expandedHeight: 320,
-              flexibleSpace: expandedWidget(),
-            )),
-        SliverToBoxAdapter(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: SolhColors.white,
-                borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(20), right: Radius.circular(20))),
-            child: Obx(() =>
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  bookingButton(),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  detailsContainer(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  aboutContainer(),
-                  Container(
-                    height: 200,
-                  ),
-                  Container(
-                    height: 200,
-                  ),
-                  Container(
-                    height: 200,
-                  ),
-                  Container(
-                    height: 200,
-                  ),
-                ])),
-          ),
-        )
-      ]),
-    );
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                      color: SolhColors.white,
+                      borderRadius: BorderRadius.horizontal(
+                          left: Radius.circular(20),
+                          right: Radius.circular(20))),
+                  child: Obx(() => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            bookingButton(),
+                            SizedBox(
+                              height: 40,
+                            ),
+                            detailsContainer(),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            aboutContainer(),
+                            Container(
+                              height: 200,
+                            ),
+                            Container(
+                              height: 200,
+                            ),
+                            Container(
+                              height: 200,
+                            ),
+                            Container(
+                              height: 200,
+                            ),
+                          ])),
+                ),
+              )
+            ]),
+    ));
   }
 
   Widget expandedWidget() {
@@ -155,9 +163,10 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                             _controller.consultantModelController.value.provder!
                                     .experience! >
                                 0
-                        ? _controller
-                            .consultantModelController.value.provder!.experience
-                            .toString()
+                        ? _controller.consultantModelController.value.provder!
+                                .experience
+                                .toString() +
+                            ' Years'
                         : '',
                     style:
                         SolhTextStyles.QS_caption.copyWith(color: Colors.white),

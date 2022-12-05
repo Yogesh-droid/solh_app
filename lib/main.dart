@@ -52,9 +52,6 @@ Future<void> initControllers() async {
   final AgeController ageController = Get.put(AgeController());
 
   var _chatListController = Get.put(ChatListController());
-  print('init Controllers');
-
-  print('phoneAuthController');
 }
 
 /// app ////
@@ -101,6 +98,11 @@ class _SolhAppState extends State<SolhApp> {
             ),
             headline1: TextStyle(
               color: SolhColors.black53,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+            ),
+            headline2: TextStyle(
+              color: SolhColors.primary_green,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),

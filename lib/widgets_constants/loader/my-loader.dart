@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'custom_loader.dart';
@@ -45,5 +46,22 @@ class SolhGradientLoader extends StatelessWidget {
           ],
           child: Container());
     });
+  }
+}
+
+class SolhSmallButtonLoader extends StatelessWidget {
+  SolhSmallButtonLoader(
+      {Key? key, this.strokeWidth = 1.0, this.color = Colors.white})
+      : super(key: key);
+
+  final double strokeWidth;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return CircularProgressIndicator(
+      strokeWidth: strokeWidth,
+      color: color,
+    );
   }
 }

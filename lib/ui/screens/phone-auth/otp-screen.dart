@@ -72,6 +72,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 PinCodeTextField(
                   // controller: otpVerificationController.otpController,
                   appContext: context,
+
                   onChanged: (String value) {},
                   keyboardType: TextInputType.number,
                   pinTheme: PinTheme(

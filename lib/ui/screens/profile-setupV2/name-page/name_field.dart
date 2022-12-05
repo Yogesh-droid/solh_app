@@ -1,29 +1,54 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButton.dart';
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/solh_snackBar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class NameField extends StatelessWidget {
-  const NameField({Key? key}) : super(key: key);
+  NameField({Key? key}) : super(key: key);
+
+  ProfileSetupController profileSetupController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
-      floatingActionButton:
-          ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, AppRoutes.dobField),
-      ),
+      floatingActionButton: Obx(() {
+        return ProfileSetupFloatingActionButton
+            .profileSetupFloatingActionButton(
+          child: profileSetupController.isUpdatingField.value
+              ? SolhSmallButtonLoader()
+              : const Icon(
+                  Icons.chevron_right_rounded,
+                  size: 40,
+                ),
+          onPressed: () async {
+            if (profileSetupController.firstNameController.text.trim() != '') {
+              bool response = await profileSetupController.updateUserProfile({
+                "first_name":
+                    profileSetupController.firstNameController.text.trim(),
+                "last_name":
+                    profileSetupController.lastNameController.text.trim()
+              });
+
+              if (response) {
+                Navigator.pushNamed(context, AppRoutes.dobField);
+              }
+            } else {
+              SolhSnackbar.error('Error', 'Enter a valid name');
+            }
+            // Navigator.pushNamed(context, AppRoutes.dobField);
+          },
+        );
+      }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
           backButtonColor: SolhColors.white,
           onBackButton: () => Navigator.of(context).pop()),
@@ -71,7 +96,9 @@ class WhatShouldWeCallYou extends StatelessWidget {
 }
 
 class NameTextField extends StatelessWidget {
-  const NameTextField({Key? key}) : super(key: key);
+  NameTextField({Key? key}) : super(key: key);
+
+  final ProfileSetupController profileSetupController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +113,7 @@ class NameTextField extends StatelessWidget {
           height: 1.h,
         ),
         TextField(
+          controller: profileSetupController.firstNameController,
           decoration: TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
         ),
         SizedBox(
@@ -99,6 +127,7 @@ class NameTextField extends StatelessWidget {
           height: 1.h,
         ),
         TextField(
+          controller: profileSetupController.lastNameController,
           decoration: TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
         ),
       ],

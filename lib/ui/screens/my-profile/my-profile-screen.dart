@@ -19,6 +19,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -446,7 +447,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         ),
                       ],
                     ),
-                    InkWell(child: Text("Likes")),
+                    InkWell(
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => MyProfileScreenV2())),
+                        child: Text("Likes")),
                   ],
                 ),
                 Container(

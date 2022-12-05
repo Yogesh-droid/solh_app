@@ -6,13 +6,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/state_manager.dart';
+
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -52,7 +52,17 @@ class OtpVerificationScreen extends StatelessWidget {
             SizedBox(
               height: 6.h,
             ),
-            OtpField(verificationId: _verificationId),
+            Row(
+              children: [
+                SizedBox(
+                  width: 1.w,
+                ),
+                Expanded(child: OtpField(verificationId: _verificationId)),
+                SizedBox(
+                  width: 1.w,
+                ),
+              ],
+            ),
             SizedBox(
               height: 1.h,
             ),
@@ -97,110 +107,119 @@ class VerifyPhoneNo extends StatelessWidget {
   }
 }
 
-class OtpField extends StatelessWidget {
+class OtpField extends StatefulWidget {
   OtpField({Key? key, required this.verificationId}) : super(key: key);
   final verificationId;
+
+  @override
+  State<OtpField> createState() => _OtpFieldState();
+}
+
+class _OtpFieldState extends State<OtpField> {
   final PhoneAuthController phoneAuthController = Get.find();
   static final facebookAppEvents = FacebookAppEvents();
 
   String otp = '';
 
   String? utm_medium;
+
   String? utm_source;
+
   String? utm_name;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    // phoneAuthController.otpCode.clear();
+    phoneAuthController.isRequestingAuth.value = false;
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return OtpTextField(
-        handleControllers: (controllers) {
-          controllers = phoneAuthController.otpCode;
-        },
-        numberOfFields: 6,
-        borderColor: SolhColors.grey_3,
-        focusedBorderColor: SolhColors.primary_green,
-        showFieldAsBox: true,
-        borderWidth: 1,
-        onCodeChanged: (String code) {
-          otp = otp + code;
-        },
-        onSubmit: (String value) async {
-          phoneAuthController.isRequestingAuth.value = true;
+    return PinCodeTextField(
+      appContext: context,
+      keyboardType: TextInputType.number,
+      length: 6,
+      controller: phoneAuthController.otpCode,
+      onChanged: (value) {},
+      pinTheme: PinTheme(
+          inactiveColor: SolhColors.grey239,
+          borderWidth: 1,
+          activeColor: SolhColors.primary_green,
+          shape: PinCodeFieldShape.box,
+          selectedColor: SolhColors.primary_green),
+      onCompleted: (String value) async {
+        phoneAuthController.isRequestingAuth.value = true;
 
-          print('verificationId++++$otp --' + verificationId);
+        PhoneAuthCredential _phoneAuthCredential = PhoneAuthProvider.credential(
+            verificationId: widget.verificationId,
+            smsCode: phoneAuthController.otpCode.text
+            // otpVerificationController.otpController.text
+            );
 
-          PhoneAuthCredential _phoneAuthCredential =
-              PhoneAuthProvider.credential(
-                  verificationId: verificationId, smsCode: otp
-                  // otpVerificationController.otpController.text
-                  );
+        await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)
+            .then((value) async {
+          String idToken = await value.user!.getIdToken();
+          print("user idToken: $idToken");
+          String? fcmToken = await FirebaseMessaging.instance.getToken();
+          String oneSignalId = '';
+          String deviceType = '';
+          await OneSignal.shared.getDeviceState().then((value) {
+            print(value!.userId);
+            oneSignalId = value.userId ?? '';
 
-          await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)
-              .then((value) async {
-            String idToken = await value.user!.getIdToken();
-            print("user idToken: $idToken");
-            String? fcmToken = await FirebaseMessaging.instance.getToken();
-            String oneSignalId = '';
-            String deviceType = '';
-            await OneSignal.shared.getDeviceState().then((value) {
-              print(value!.userId);
-              oneSignalId = value.userId ?? '';
+            FirebaseAnalytics.instance.logLogin(
+                loginMethod: 'PhoneAuth',
+                callOptions: AnalyticsCallOptions(global: true));
+          });
+          if (Platform.isAndroid) {
+            deviceType = 'Android';
+          } else {
+            deviceType = 'IOS';
+          }
 
-              FirebaseAnalytics.instance.logLogin(
-                  loginMethod: 'PhoneAuth',
-                  callOptions: AnalyticsCallOptions(global: true));
-            });
-            if (Platform.isAndroid) {
-              deviceType = 'Android';
-            } else {
-              deviceType = 'IOS';
-            }
+          await initDynamic();
 
-            await initDynamic();
+          bool isSessionCookieCreated = await SessionCookie.createSessionCookie(
+              idToken, fcmToken, oneSignalId, deviceType,
+              utm_medium: utm_medium,
+              utm_compaign: utm_name,
+              utm_source: utm_source);
+          ProfileController profileController = Get.put(ProfileController());
+          await profileController.getMyProfile();
+          print(isSessionCookieCreated);
+          print("checking is profile created");
+          bool isProfileCreated = await userBlocNetwork.isProfileCreated() &&
+              !isSessionCookieCreated;
+          print("profile checking complete");
+          print("^" * 30 +
+              "Is Profile Created:" +
+              isProfileCreated.toString() +
+              "^" * 30);
+          if (isProfileCreated) {
+            Navigator.pushNamed(context, AppRoutes.master);
+          } else {
+            facebookAppEvents.logEvent(
+              name: 'signup',
+              parameters: {
+                'method': 'Phone Auth',
+              },
+            );
+            //// .  Firebase Signup event //////
+            FirebaseAnalytics.instance.logSignUp(signUpMethod: 'PhoneAuth');
+            Navigator.pushNamed(context, AppRoutes.letsCreateYourProfile);
 
-            bool isSessionCookieCreated =
-                await SessionCookie.createSessionCookie(
-                    idToken, fcmToken, oneSignalId, deviceType,
-                    utm_medium: utm_medium,
-                    utm_compaign: utm_name,
-                    utm_source: utm_source);
-            ProfileController profileController = Get.put(ProfileController());
-            await profileController.getMyProfile();
-            print(isSessionCookieCreated);
-            print("checking is profile created");
-            bool isProfileCreated = await userBlocNetwork.isProfileCreated() &&
-                !isSessionCookieCreated;
-            print("profile checking complete");
-            print("^" * 30 +
-                "Is Profile Created:" +
-                isProfileCreated.toString() +
-                "^" * 30);
-            if (isProfileCreated) {
-              Navigator.pushNamed(context, AppRoutes.master);
-            } else {
-              facebookAppEvents.logEvent(
-                name: 'signup',
-                parameters: {
-                  'method': 'Phone Auth',
-                },
-              );
-              //// .  Firebase Signup event //////
-              FirebaseAnalytics.instance.logSignUp(signUpMethod: 'PhoneAuth');
-              Navigator.pushNamed(context, AppRoutes.letsCreateYourProfile);
-
-              ////////////////////
-            }
-          }).onError(
-            (error, stackTrace) {
-              print(error.toString());
-              phoneAuthController.isRequestingAuth.value = false;
-              Get.snackbar(
-                'Error',
-                error.toString(),
-                backgroundColor: SolhColors.primaryRed,
-                snackPosition: SnackPosition.BOTTOM,
-              );
-            }, // end onSubmitButton
-          );
+            ////////////////////
+          }
+        }).onError((error, stackTrace) {
+          phoneAuthController.isRequestingAuth.value = false;
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(error.toString())));
         });
+      },
+    );
   }
 
   Future<void> initDynamic() async {
