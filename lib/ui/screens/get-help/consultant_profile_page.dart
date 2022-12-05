@@ -128,11 +128,13 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
               ),
               Text(
                 _controller.consultantModelController.value.provder!.name ?? '',
-                style: SolhTextStyles.Large2TextWhiteS24W7,
+                style: SolhTextStyles.QS_body_1_bold.copyWith(
+                    color: SolhColors.white),
               ),
               Text(
                 'Profession(Doctor)',
-                style: SolhTextStyles.SmallTextWhiteS12W7,
+                style:
+                    SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
               ),
               SizedBox(
                 height: 10,
@@ -226,19 +228,19 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             children: [
               Text(
                 'Details',
-                style: SolhTextStyles.Body_2_bold.copyWith(
+                style: SolhTextStyles.QS_body_2_bold.copyWith(
                     color: SolhColors.primary_green),
               ),
               Text(
                 ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
-                style: SolhTextStyles.Caption,
+                style: SolhTextStyles.QS_caption,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
                 ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
-                style: SolhTextStyles.Caption,
+                style: SolhTextStyles.QS_caption,
                 maxLines: 2,
               ),
             ],
@@ -256,11 +258,11 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('About',
-              style: SolhTextStyles.Body_2_bold.copyWith(
+              style: SolhTextStyles.QS_body_2_bold.copyWith(
                   color: SolhColors.primary_green)),
           Text(
             "${_controller.consultantModelController.value.provder!.bio ?? ''}",
-            style: SolhTextStyles.Body_2,
+            style: SolhTextStyles.QS_body_2,
             maxLines: 2,
           ),
         ],
@@ -287,16 +289,19 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                     : ''),
             style: SolhTextStyles.QS_body_1_bold.copyWith(
                 color: SolhColors.primary_green)),
-        VerticalDivider(
-          color: SolhColors.black,
-          thickness: 2,
+        Container(
+          height: 30,
+          child: VerticalDivider(
+            color: SolhColors.grey,
+            thickness: 1,
+          ),
         ),
         SolhGreenButton(
           width: 200,
           height: 48,
           child: Text(
             'Book Appointment',
-            style: SolhTextStyles.BUTTON.copyWith(color: SolhColors.white),
+            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
           onPressed: () {},
         )

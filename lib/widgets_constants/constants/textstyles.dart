@@ -284,48 +284,48 @@ class SolhTextStyles {
     fontWeight: FontWeight.w700,
   );
 
-  static const TextStyle Body_1_Semi = TextStyle(
+  static const TextStyle QS_body_semi_1 = TextStyle(
     fontSize: 16,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w600,
   );
 
-  static const TextStyle Body_1 = TextStyle(
+  static const TextStyle QS_body_1_med = TextStyle(
     fontSize: 16,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle BUTTON = TextStyle(
+  static const TextStyle CTA = TextStyle(
     fontSize: 14,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle Body_2 = TextStyle(
+  static const TextStyle QS_body_2 = TextStyle(
     fontSize: 14,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle Body_2_bold = TextStyle(
+  static const TextStyle QS_body_2_bold = TextStyle(
     fontSize: 14,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
   );
-  static const TextStyle Caption = TextStyle(
+  static const TextStyle QS_caption = TextStyle(
     fontSize: 12,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle Caption_semi = TextStyle(
+  static const TextStyle QS_cap_semi = TextStyle(
     fontSize: 12,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle Caption_Bold = TextStyle(
+  static const TextStyle QS_coption_bold = TextStyle(
     fontSize: 12,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
   );
-  static const TextStyle Caption_2 = TextStyle(
+  static const TextStyle QS_cap_2 = TextStyle(
     fontSize: 10,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w500,
@@ -335,7 +335,12 @@ class SolhTextStyles {
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle Caption_2_bold = TextStyle(
+  static const TextStyle QS_cap_2_semi = TextStyle(
+    fontSize: 10,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w700,
+  );
+  static const TextStyle QS_caption_2_bold = TextStyle(
     fontSize: 10,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
