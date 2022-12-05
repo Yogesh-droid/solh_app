@@ -131,10 +131,38 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 style: SolhTextStyles.QS_body_1_bold.copyWith(
                     color: SolhColors.white),
               ),
-              Text(
-                'Profession(Doctor)',
-                style:
-                    SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Profession(Doctor)',
+                    style: SolhTextStyles.QS_caption.copyWith(
+                        color: SolhColors.white),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Container(
+                      width: 5,
+                      height: 5,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
+                    ),
+                  ),
+                  Text(
+                    _controller.consultantModelController.value.provder!
+                                    .experience !=
+                                null &&
+                            _controller.consultantModelController.value.provder!
+                                    .experience! >
+                                0
+                        ? _controller
+                            .consultantModelController.value.provder!.experience
+                            .toString()
+                        : '',
+                    style:
+                        SolhTextStyles.QS_caption.copyWith(color: Colors.white),
+                  )
+                ],
               ),
               SizedBox(
                 height: 10,
