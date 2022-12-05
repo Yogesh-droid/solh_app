@@ -57,7 +57,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                           _croppedFile != null
                               ? CircleAvatar(
                                   radius: 14.5.w,
-                                  backgroundColor: SolhColors.green,
+                                  backgroundColor: SolhColors.primary_green,
                                   child: InkWell(
                                     onTap: () {
                                       _pickImage();
@@ -70,7 +70,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                 )
                               : CircleAvatar(
                                   radius: 14.5.w,
-                                  backgroundColor: SolhColors.green,
+                                  backgroundColor: SolhColors.primary_green,
                                   child: InkWell(
                                     onTap: () {
                                       _pickImage();
@@ -101,7 +101,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                 },
                                 child: _croppedFile != null
                                     ? Icon(Icons.check_box_outlined,
-                                        color: SolhColors.green)
+                                        color: SolhColors.primary_green)
                                     : Container(
                                         height: 35,
                                         decoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                           },
                                           iconSize: 14,
                                           icon: Icon(Icons.edit_outlined,
-                                              color: SolhColors.green),
+                                              color: SolhColors.primary_green),
                                         ),
                                       )),
                           ),
@@ -259,7 +259,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                 toolbarTitle: 'Edit',
                 toolbarColor: SolhColors.white,
                 toolbarWidgetColor: Colors.black,
-                activeControlsWidgetColor: SolhColors.green,
+                activeControlsWidgetColor: SolhColors.primary_green,
                 initAspectRatio: CropAspectRatioPreset.square,
                 lockAspectRatio: true),
             IOSUiSettings(

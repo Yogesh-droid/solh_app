@@ -101,13 +101,13 @@ class SetupSOSScreen extends StatelessWidget {
                                       _controller.selectedItems.length
                                           .toString(),
                                       style: GoogleFonts.signika(
-                                          color: SolhColors.green));
+                                          color: SolhColors.primary_green));
                                 }),
                                 Text(' ,Selected',
                                     style: GoogleFonts.signika(
-                                        color: SolhColors.green)),
+                                        color: SolhColors.primary_green)),
                                 Icon(Icons.keyboard_arrow_down_sharp,
-                                    color: SolhColors.green)
+                                    color: SolhColors.primary_green)
                               ],
                             )
                           ],
@@ -343,7 +343,7 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                                       (states) => BorderSide(
                                           width: 1.0, color: Colors.white),
                                     ),
-                                    activeColor: SolhColors.green,
+                                    activeColor: SolhColors.primary_green,
                                     value: _controller.selectedTags[index],
                                     shape: CircleBorder(),
                                     onChanged: (bool? value) {

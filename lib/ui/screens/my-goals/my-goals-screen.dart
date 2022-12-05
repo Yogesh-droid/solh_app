@@ -110,7 +110,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                        border: Border.all(color: SolhColors.green),
+                        border: Border.all(color: SolhColors.primary_green),
                         borderRadius: BorderRadius.circular(16)),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -125,11 +125,12 @@ class _MyGoalPageState extends State<MyGoalPage> {
                           children: [
                             Text(
                               'Add',
-                              style: goalFontStyle(14.0, SolhColors.green),
+                              style:
+                                  goalFontStyle(14.0, SolhColors.primary_green),
                             ),
                             Icon(
                               Icons.add,
-                              color: SolhColors.green,
+                              color: SolhColors.primary_green,
                             )
                           ],
                         ),
@@ -142,21 +143,23 @@ class _MyGoalPageState extends State<MyGoalPage> {
                         position: PopupMenuPosition.under,
                         icon: Icon(
                           Icons.more_vert,
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                         ),
                         iconSize: 18,
                         itemBuilder: ((context) => [
                               PopupMenuItem(
                                 child: Text(
                                   'my Goals',
-                                  style: goalFontStyle(14.0, SolhColors.green),
+                                  style: goalFontStyle(
+                                      14.0, SolhColors.primary_green),
                                 ),
                                 value: 1,
                               ),
                               PopupMenuItem(
                                 child: Text(
                                   'Settings',
-                                  style: goalFontStyle(14.0, SolhColors.green),
+                                  style: goalFontStyle(
+                                      14.0, SolhColors.primary_green),
                                 ),
                                 value: 2,
                               ),
@@ -238,7 +241,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
                   "assets/icons/app-bar/app-bar-menu.svg",
                   width: 26,
                   height: 24,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ),
@@ -309,8 +312,8 @@ class TodaysGoal extends StatelessWidget {
                     width: 70,
                     height: 70,
                     child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(SolhColors.green),
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          SolhColors.primary_green),
                       backgroundColor: SolhColors.grey.withOpacity(0.5),
                       value: _goalSettingController.noOfGoalsCompleted == 0
                           ? 0
@@ -450,7 +453,7 @@ class GoalName extends StatelessWidget {
                                         .contains(e.sId)
                                     ? Icon(
                                         Icons.check_circle,
-                                        color: SolhColors.green,
+                                        color: SolhColors.primary_green,
                                       )
                                     : Container()
                               ],
@@ -468,7 +471,7 @@ class GoalName extends StatelessWidget {
                                   child: PopupMenuButton(
                                     icon: Icon(
                                       Icons.more_vert,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     ),
                                     itemBuilder: (context) =>
                                         <PopupMenuEntry<String>>[
@@ -492,7 +495,7 @@ class GoalName extends StatelessWidget {
                                 )
                               : Icon(
                                   Icons.arrow_drop_down_circle,
-                                  color: SolhColors.green,
+                                  color: SolhColors.primary_green,
                                 );
                     })
                   ],
@@ -526,7 +529,7 @@ class GoalName extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          color: SolhColors.green.withOpacity(0.3),
+          color: SolhColors.primary_green.withOpacity(0.3),
         ),
         child: InkWell(
           onTap: _goalSettingController.isUpdateGoal.value || e1.isComplete!
@@ -560,7 +563,7 @@ class GoalName extends StatelessWidget {
                         ? e1.isComplete!
                             ? Icon(
                                 Icons.check,
-                                color: SolhColors.green,
+                                color: SolhColors.primary_green,
                                 size: 16,
                               )
                             : Container()
@@ -597,7 +600,7 @@ class GoalName extends StatelessWidget {
               },
             ),
             MaterialButton(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               child: Text(
                 'Yes',
                 style: TextStyle(color: Colors.white),
@@ -637,7 +640,7 @@ class GoalName extends StatelessWidget {
               },
             ),
             MaterialButton(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               child: Text(
                 'Yes',
                 style: TextStyle(color: Colors.white),

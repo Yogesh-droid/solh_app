@@ -25,9 +25,9 @@ class AffirmationPage extends StatelessWidget {
             elevation: 0,
             automaticallyImplyLeading: false,
             title: TabBar(
-                indicatorColor: SolhColors.green,
+                indicatorColor: SolhColors.primary_green,
                 unselectedLabelColor: SolhColors.grey,
-                labelColor: SolhColors.green,
+                labelColor: SolhColors.primary_green,
                 tabs: [
                   Tab(
                     text: 'Solh',
@@ -46,7 +46,7 @@ class AffirmationPage extends StatelessWidget {
                   return ListTile(
                     title: Text(SolhAffirmationList[index]),
                     trailing: Icon(Icons.arrow_forward_ios,
-                        color: SolhColors.grey196, size: 16),
+                        color: SolhColors.grey_2, size: 16),
                   );
                 },
               ),
@@ -57,7 +57,7 @@ class AffirmationPage extends StatelessWidget {
                   return ListTile(
                     title: Text(AddedAffirmationList[index]),
                     trailing: Icon(Icons.arrow_forward_ios,
-                        color: SolhColors.grey196, size: 16),
+                        color: SolhColors.grey_2, size: 16),
                   );
                 },
               ),

@@ -14,11 +14,11 @@ class TextFieldStyles {
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.green),
+          borderSide: BorderSide(color: SolhColors.primary_green),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.grey102),
+          borderSide: BorderSide(color: SolhColors.dark_grey),
         ),
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);
@@ -30,11 +30,11 @@ class TextFieldStyles {
         filled: true,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.green, width: 3),
+          borderSide: BorderSide(color: SolhColors.primary_green, width: 3),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.green),
+          borderSide: BorderSide(color: SolhColors.primary_green),
         ),
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);

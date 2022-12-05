@@ -156,7 +156,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                color: SolhColors.green.withOpacity(0.25),
+                color: SolhColors.primary_green.withOpacity(0.25),
                 child: Center(child: MyLoader()),
               ),
             Column(
@@ -177,7 +177,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     .isCreatingCustomFeeling.value &&
                                 !feelingsController.isSearching.value
                             ? FloatingActionButton.extended(
-                                backgroundColor: SolhColors.green,
+                                backgroundColor: SolhColors.primary_green,
                                 onPressed: () {
                                   if (journalPageController
                                           .descriptionController.text.isEmpty &&
@@ -338,7 +338,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(40),
-                      border: Border.all(color: SolhColors.green, width: 1),
+                      border:
+                          Border.all(color: SolhColors.primary_green, width: 1),
                     ),
                     child: Row(
                       children: [
@@ -396,7 +397,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     width: 36,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     )),
                               ),
                             ),
@@ -434,7 +435,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         Text(
           "  Feelings",
           style: SolhTextStyles.JournalingDescriptionReadMoreText.copyWith(
-              color: SolhColors.grey102),
+              color: SolhColors.dark_grey),
         ),
         Expanded(
             child: Row(
@@ -489,7 +490,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               },
               icon: Icon(
                 Icons.add,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
                 size: 18,
               ),
             )
@@ -526,7 +527,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white.withOpacity(0.6),
-                          border: Border.all(color: SolhColors.green, width: 2),
+                          border: Border.all(
+                              color: SolhColors.primary_green, width: 2),
                         ),
                         child: IconButton(
                           onPressed: () {
@@ -566,8 +568,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white.withOpacity(0.6),
-                            border:
-                                Border.all(color: SolhColors.green, width: 2),
+                            border: Border.all(
+                                color: SolhColors.primary_green, width: 2),
                           ),
                           child: IconButton(
                             onPressed: () {
@@ -603,7 +605,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white.withOpacity(0.6),
-                          border: Border.all(color: SolhColors.green, width: 2),
+                          border: Border.all(
+                              color: SolhColors.primary_green, width: 2),
                         ),
                         child: IconButton(
                           onPressed: () {
@@ -630,7 +633,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 width: MediaQuery.of(context).size.width - 20,
                                 child: LinearProgressIndicator(
                                   backgroundColor: Colors.red.withOpacity(0.5),
-                                  color: SolhColors.green,
+                                  color: SolhColors.primary_green,
                                 ),
                               ),
                             )
@@ -661,7 +664,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                 shape: BoxShape.circle,
                                 color: Colors.white.withOpacity(0.6),
                                 border: Border.all(
-                                    color: SolhColors.green, width: 2),
+                                    color: SolhColors.primary_green, width: 2),
                               ),
                               child: IconButton(
                                 onPressed: () {
@@ -689,7 +692,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       backgroundColor:
                                           Colors.blue.withOpacity(0.5),
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          SolhColors.green),
+                                          SolhColors.primary_green),
                                     ),
                                   )
                                 : Container();
@@ -706,7 +709,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             "  Add Image/Video",
                             style:
                                 SolhTextStyles.JournalingDescriptionReadMoreText
-                                    .copyWith(color: SolhColors.grey102),
+                                    .copyWith(color: SolhColors.dark_grey),
                           ),
                         ),
                         SizedBox(
@@ -774,7 +777,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                       toolbarColor: SolhColors.white,
                                       toolbarWidgetColor: Colors.black,
                                       activeControlsWidgetColor:
-                                          SolhColors.green,
+                                          SolhColors.primary_green,
                                       initAspectRatio:
                                           CropAspectRatioPreset.square,
                                       lockAspectRatio: false),
@@ -875,7 +878,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                             toolbarColor: SolhColors.white,
                                             toolbarWidgetColor: Colors.black,
                                             activeControlsWidgetColor:
-                                                SolhColors.green,
+                                                SolhColors.primary_green,
                                             initAspectRatio:
                                                 CropAspectRatioPreset.square,
                                             lockAspectRatio: true),
@@ -977,7 +980,7 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                       print(feelingsController.feelingsList[index].createdBy);
                     },
                     child: FilterChip(
-                        selectedColor: SolhColors.green,
+                        selectedColor: SolhColors.primary_green,
                         backgroundColor: Color(0xFFEFEFEF),
                         showCheckmark: false,
                         label: Text(feelingsController
@@ -1163,13 +1166,13 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                       border: Border.all(
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                       )),
                   child: DropdownButton(
                       isExpanded: true,
                       icon: Icon(CupertinoIcons.chevron_down),
                       iconSize: 18,
-                      iconEnabledColor: SolhColors.green,
+                      iconEnabledColor: SolhColors.primary_green,
                       underline: SizedBox(),
                       value: _dropdownValue,
                       onChanged: (String? newValue) {
@@ -1178,7 +1181,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                         });
                         widget._onTypeChanged.call(_dropdownValue);
                       },
-                      style: TextStyle(color: SolhColors.green),
+                      style: TextStyle(color: SolhColors.primary_green),
                       items: [
                         DropdownMenuItem(
                           child: Text("publically"),
@@ -1272,7 +1275,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             },
             child: Icon(
               Icons.swap_horiz,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
             ),
           ),
         )
@@ -1310,7 +1313,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                   },
                   child: Icon(
                     Icons.swap_horiz,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                   ),
                 ),
               )
@@ -1374,7 +1377,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          border: Border.all(color: SolhColors.green)),
+          border: Border.all(color: SolhColors.primary_green)),
       child: Stack(
         children: [
           Padding(
@@ -1474,7 +1477,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
                               '@' + key.toString() + '  ',
                               style: GoogleFonts.signika(
                                 fontSize: 12,
-                                color: SolhColors.green,
+                                color: SolhColors.primary_green,
                               ),
                             );
                           }).toList(),
@@ -1514,7 +1517,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
                   children: [
                     Text(
                       'Tag',
-                      style: TextStyle(color: SolhColors.green),
+                      style: TextStyle(color: SolhColors.primary_green),
                     ),
                     SizedBox(
                       width: 2,
@@ -1701,7 +1704,7 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                                       (states) => BorderSide(
                                           width: 1.0, color: Colors.white),
                                     ),
-                                    activeColor: SolhColors.green,
+                                    activeColor: SolhColors.primary_green,
                                     value: _tagsController.selectedTags[index],
                                     shape: CircleBorder(),
                                     onChanged: (bool? value) {
@@ -1926,7 +1929,7 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
                 toolbarTitle: 'Edit',
                 toolbarColor: SolhColors.white,
                 toolbarWidgetColor: Colors.black,
-                activeControlsWidgetColor: SolhColors.green,
+                activeControlsWidgetColor: SolhColors.primary_green,
                 initAspectRatio: CropAspectRatioPreset.square,
                 lockAspectRatio: true),
             IOSUiSettings(

@@ -646,7 +646,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Text(
                 item['name'],
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 18,
                 ),
               ),

@@ -182,7 +182,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                     decoration: TextDecoration.underline,
                   ),
                   recognizer: TapGestureRecognizer()
@@ -201,7 +201,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
         ),
         Switch(
           value: isTnCChecked,
-          activeColor: SolhColors.green,
+          activeColor: SolhColors.primary_green,
           onChanged: (value) {
             setState(() {
               isTnCChecked = value;
@@ -220,7 +220,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               children: [
             TextSpan(
@@ -244,7 +244,7 @@ class _UserTypeScreenState extends State<UserTypeScreen> {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: SolhColors.grey102,
+            color: SolhColors.dark_grey,
           ),
         ),
         SizedBox(

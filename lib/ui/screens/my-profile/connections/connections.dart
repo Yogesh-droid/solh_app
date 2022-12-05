@@ -110,9 +110,9 @@ class _ConnectionsState extends State<Connections> {
 
   getConnectionTabs() {
     return TabBar(
-      labelColor: SolhColors.green,
+      labelColor: SolhColors.primary_green,
       unselectedLabelColor: SolhColors.grey,
-      indicatorColor: SolhColors.green,
+      indicatorColor: SolhColors.primary_green,
       indicatorWeight: 3,
       tabs: [
         Tab(
@@ -1066,19 +1066,19 @@ class _ConnectionsState extends State<Connections> {
           children: [
             FilterChip(
               label: Text('All'),
-              backgroundColor: SolhColors.grey196,
+              backgroundColor: SolhColors.grey_2,
               labelStyle: TextStyle(color: SolhColors.white),
               onSelected: (bool value) {},
             ),
             FilterChip(
               label: Text('Recent'),
-              backgroundColor: SolhColors.grey196,
+              backgroundColor: SolhColors.grey_2,
               labelStyle: TextStyle(color: SolhColors.white),
               onSelected: (bool value) {},
             ),
             FilterChip(
               label: Text('Invites'),
-              backgroundColor: SolhColors.grey196,
+              backgroundColor: SolhColors.grey_2,
               labelStyle: TextStyle(color: SolhColors.white),
               onSelected: (bool value) {},
             ),
@@ -1098,7 +1098,7 @@ class _ConnectionsState extends State<Connections> {
         width: 80,
         height: 36,
         decoration: BoxDecoration(
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
@@ -1219,7 +1219,7 @@ class _ConnectionsState extends State<Connections> {
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: SolhColors.grey196),
+                  color: SolhColors.grey_2),
             ),
           ),
       ],

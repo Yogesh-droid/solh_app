@@ -119,7 +119,7 @@ You will have to create a new account and start your journey from the beginning 
                                                     child: Text("Cancel",
                                                         style: TextStyle(
                                                             color: SolhColors
-                                                                .green)),
+                                                                .primary_green)),
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },

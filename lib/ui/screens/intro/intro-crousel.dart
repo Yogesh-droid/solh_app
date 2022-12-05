@@ -77,7 +77,7 @@ people & mental healthcare professionals.''',
                     },
                     icon: Icon(
                       Icons.arrow_back,
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     )),
                 SkipButton(
                   onPressed: () {

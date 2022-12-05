@@ -419,7 +419,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: SolhColors.green)),
+                      border: Border.all(color: SolhColors.primary_green)),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -547,7 +547,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                     child: Icon(
                                       Icons.send,
                                       size: 20,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     ),
                                   ),
                                 )
@@ -1045,7 +1045,7 @@ class CommentBoxWidget extends StatelessWidget {
                       bestComment != null
                           ? bestComment.sId == commentModel.sId
                               ? Chip(
-                                  backgroundColor: SolhColors.green,
+                                  backgroundColor: SolhColors.primary_green,
                                   label: Row(
                                     children: [
                                       Icon(
@@ -1086,7 +1086,7 @@ class CommentBoxWidget extends StatelessWidget {
                                     : '',
                                 style: TextStyle(
                                     height: 1.4,
-                                    color: SolhColors.green,
+                                    color: SolhColors.primary_green,
                                     fontSize: 14),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -1136,7 +1136,7 @@ class CommentBoxWidget extends StatelessWidget {
                 onTap: () {},
                 child: Icon(
                   Icons.thumb_up_outlined,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   size: 17,
                 ),
               ),
@@ -1148,7 +1148,7 @@ class CommentBoxWidget extends StatelessWidget {
                     ? commentModel.likes!.toString()
                     : '0',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ],
@@ -1163,7 +1163,7 @@ class CommentBoxWidget extends StatelessWidget {
                       commentModel!.user![0].name!,
                       commentModel!.user![0].sId!);
                 },
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               SizedBox(
                 width: 1.w,
@@ -1173,7 +1173,7 @@ class CommentBoxWidget extends StatelessWidget {
                     ? commentModel!.replyNum!.toString()
                     : '0',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ],
@@ -1187,7 +1187,7 @@ class CommentBoxWidget extends StatelessWidget {
                   "assets/icons/journaling/post-connect.svg",
                   width: 17,
                   height: 17,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ],
@@ -1229,7 +1229,7 @@ class CommentBoxWidget extends StatelessWidget {
                         ? 'View replies'
                         : 'Hide replies',
                 style: TextStyle(
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
@@ -1239,7 +1239,7 @@ class CommentBoxWidget extends StatelessWidget {
           ),
           Icon(
             Icons.keyboard_arrow_down_rounded,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
             size: 17,
           ),
         ],
@@ -1385,7 +1385,7 @@ class _PostForCommentState extends State<PostForComment> {
             !_journalPageController.journalsList[widget.index].isLiked!
                 ? Icons.favorite_border_outlined
                 : Icons.favorite_rounded,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
             size: 16,
           );
         })),
@@ -1409,7 +1409,7 @@ class _PostForCommentState extends State<PostForComment> {
             "assets/icons/journaling/post-comment.svg",
             width: 17,
             height: 17,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
         ),
         Text(
@@ -1430,7 +1430,7 @@ class _PostForCommentState extends State<PostForComment> {
             "assets/icons/journaling/post-connect.svg",
             width: 17,
             height: 17,
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
           ),
         ),
         InkWell(
@@ -1557,7 +1557,7 @@ class BestCommentWidget extends StatelessWidget {
                     padding:
                         EdgeInsets.symmetric(vertical: 1.h, horizontal: 4.w),
                     decoration: BoxDecoration(
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                         borderRadius: BorderRadius.circular(25)),
                     child: Row(
                       children: [
@@ -1584,7 +1584,7 @@ class BestCommentWidget extends StatelessWidget {
             width: double.infinity,
             padding: EdgeInsets.all(2.w),
             decoration: BoxDecoration(
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             child: Text(
               _commentModel!.commentBody,

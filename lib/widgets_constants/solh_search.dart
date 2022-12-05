@@ -26,7 +26,7 @@ class SolhSearch extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         color: Colors.white,
         border: Border.all(
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           width: 1,
         ),
       ),
@@ -35,7 +35,7 @@ class SolhSearch extends StatelessWidget {
           IconButton(
             icon: Icon(
               Icons.keyboard_arrow_left,
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               size: 30,
             ),
             onPressed: () => Navigator.pop(context),
@@ -43,7 +43,7 @@ class SolhSearch extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
             child: VerticalDivider(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               width: 2,
             ),
           ),
@@ -64,7 +64,7 @@ class SolhSearch extends StatelessWidget {
                       onTap: onCloseBtnTap,
                       child: Icon(
                         Icons.close,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                       ),
                     ),
                   ),

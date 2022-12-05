@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SkipButton extends StatelessWidget {
-  const SkipButton({Key? key,this.onClick}) : super(key: key);
+  const SkipButton({Key? key, this.onClick}) : super(key: key);
 
   final VoidCallback? onClick;
 
@@ -12,7 +12,7 @@ class SkipButton extends StatelessWidget {
       onTap: onClick,
       child: Text(
         "Skip",
-        style: TextStyle(color: SolhColors.green),
+        style: TextStyle(color: SolhColors.primary_green),
       ),
     );
   }

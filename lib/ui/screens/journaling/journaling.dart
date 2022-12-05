@@ -192,7 +192,7 @@ class _JournalingState extends State<Journaling> {
                       iconSize: 40,
                       icon: Icon(
                         Icons.keyboard_arrow_up,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                       )))
               : Container())),
     );
@@ -223,7 +223,7 @@ class _JournalingState extends State<Journaling> {
                   "assets/icons/app-bar/app-bar-menu.svg",
                   width: 26,
                   height: 24,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
               ),
             ),
@@ -300,7 +300,7 @@ class _JournalingState extends State<Journaling> {
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            SolhColors.green,
+                            SolhColors.primary_green,
                             Colors.red.withOpacity(0.3),
                             Colors.red.withOpacity(0.8),
                           ],
@@ -338,7 +338,7 @@ class _JournalingState extends State<Journaling> {
                             group.sId
                         ? Border()
                         : Border.all(
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                             width: 2,
                           ),
                     image: DecorationImage(
@@ -393,7 +393,7 @@ class _JournalingState extends State<Journaling> {
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
                       colors: [
-                        SolhColors.green,
+                        SolhColors.primary_green,
                         Colors.red.withOpacity(0.3),
                         Colors.red.withOpacity(0.8),
                       ],
@@ -420,7 +420,7 @@ class _JournalingState extends State<Journaling> {
                     border: _journalPageController.selectedGroupId == ''
                         ? Border()
                         : Border.all(
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                             width: 2,
                           ),
                   ),
@@ -627,13 +627,13 @@ class _JournalingState extends State<Journaling> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                     width: 2,
                   ),
                 ),
                 child: Icon(
                   Icons.add,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   size: 30,
                 ),
               ),

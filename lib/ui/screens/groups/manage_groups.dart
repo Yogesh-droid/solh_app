@@ -92,9 +92,9 @@ class _ManageGroupPageState extends State<ManageGroupPage>
         tabController.animateTo(index);
       },
       controller: tabController,
-      labelColor: SolhColors.green,
+      labelColor: SolhColors.primary_green,
       unselectedLabelColor: SolhColors.grey,
-      indicatorColor: SolhColors.green,
+      indicatorColor: SolhColors.primary_green,
       indicatorWeight: 3,
       tabs: [
         Tab(

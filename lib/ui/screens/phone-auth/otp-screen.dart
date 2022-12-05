@@ -77,8 +77,8 @@ class _OTPScreenState extends State<OTPScreen> {
                   keyboardType: TextInputType.number,
                   pinTheme: PinTheme(
                       inactiveColor: SolhColors.black,
-                      activeColor: SolhColors.green,
-                      selectedColor: SolhColors.green),
+                      activeColor: SolhColors.primary_green,
+                      selectedColor: SolhColors.primary_green),
                   length: 6,
                   onCompleted: (String value) async {
                     isLoading = true;

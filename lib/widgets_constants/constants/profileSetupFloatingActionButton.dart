@@ -16,9 +16,13 @@ class ProfileSetupFloatingActionButton {
           border: Border.all(color: SolhColors.white, width: 2),
           shape: BoxShape.circle),
       child: FloatingActionButton(
-          backgroundColor: SolhColors.green,
-          onPressed: onPressed,
-          child: child),
+        backgroundColor: SolhColors.primary_green,
+        onPressed: onPressed,
+        child: Icon(
+          Icons.chevron_right_rounded,
+          size: 40,
+        ),
+      ),
     );
   }
 }

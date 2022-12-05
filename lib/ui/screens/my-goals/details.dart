@@ -201,7 +201,7 @@ class TaskList extends StatelessWidget {
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               child: Center(
                   child: Text(
@@ -220,7 +220,7 @@ class TaskList extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.arrow_circle_right_rounded,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                       ),
                       SizedBox(
                         width: 10,

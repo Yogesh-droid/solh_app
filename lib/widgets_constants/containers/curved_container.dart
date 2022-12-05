@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class SolhContainer extends StatelessWidget {
-  const SolhContainer(
-      {
-      Key? key,
-      this.child,
-      this.onPressed,
-      this.height,
-      this.width,
-      this.backgroundColor,
-      this.padding,
-      this.border,
-      this.borderRadius,
-      this.alignment,
-      this.margin,
-      }) :
-      super (key: key);
+  const SolhContainer({
+    Key? key,
+    this.child,
+    this.onPressed,
+    this.height,
+    this.width,
+    this.backgroundColor,
+    this.padding,
+    this.border,
+    this.borderRadius,
+    this.alignment,
+    this.margin,
+  }) : super(key: key);
 
   final double? height;
   final double? width;
@@ -39,9 +37,9 @@ class SolhContainer extends StatelessWidget {
         padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
             color: backgroundColor ?? Colors.transparent,
-            border: border ?? Border.all(color: SolhColors.green, width: 2.0),
-            borderRadius: borderRadius ?? BorderRadius.circular(20)
-            ),
+            border: border ??
+                Border.all(color: SolhColors.primary_green, width: 2.0),
+            borderRadius: borderRadius ?? BorderRadius.circular(20)),
         height: height ?? MediaQuery.of(context).size.height / 18,
         width: width ?? MediaQuery.of(context).size.width / 1.8,
         child: child,

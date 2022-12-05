@@ -12,7 +12,6 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
-import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -49,7 +48,7 @@ void main() async {
 ////////   required controllers are initialized here ///////////
 Future<void> initControllers() async {
   ProfileController profileController = Get.put(ProfileController());
-  await profileController.getMyProfile();
+  // await profileController.getMyProfile();
   final AgeController ageController = Get.put(AgeController());
 
   var _chatListController = Get.put(ChatListController());
@@ -82,6 +81,7 @@ class _SolhAppState extends State<SolhApp> {
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
         initialRoute:
@@ -102,7 +102,7 @@ class _SolhAppState extends State<SolhApp> {
               fontWeight: FontWeight.w600,
             ),
             headline2: TextStyle(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -115,7 +115,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-          primaryColor: SolhColors.green,
+          primaryColor: SolhColors.primary_green,
 
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
@@ -131,8 +131,8 @@ class _SolhAppState extends State<SolhApp> {
                       RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.0),
                   )),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.green))),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      SolhColors.primary_green))),
         ),
       );
     });

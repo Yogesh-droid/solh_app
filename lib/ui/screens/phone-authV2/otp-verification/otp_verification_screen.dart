@@ -145,11 +145,11 @@ class _OtpFieldState extends State<OtpField> {
       controller: phoneAuthController.otpCode,
       onChanged: (value) {},
       pinTheme: PinTheme(
-          inactiveColor: SolhColors.grey102,
+          inactiveColor: SolhColors.grey239,
           borderWidth: 1,
-          activeColor: SolhColors.green,
+          activeColor: SolhColors.primary_green,
           shape: PinCodeFieldShape.box,
-          selectedColor: SolhColors.green),
+          selectedColor: SolhColors.primary_green),
       onCompleted: (String value) async {
         phoneAuthController.isRequestingAuth.value = true;
 

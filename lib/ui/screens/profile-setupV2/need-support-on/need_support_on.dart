@@ -59,8 +59,8 @@ class NeedSupportOn extends StatelessWidget {
           children: [
             StepsProgressbar(
               stepNumber: 5,
-              bottomBarcolor: SolhColors.grey196,
-              upperBarcolor: SolhColors.green,
+              bottomBarcolor: SolhColors.grey239,
+              upperBarcolor: SolhColors.primary_green,
             ),
             SizedBox(
               height: 3.h,
@@ -85,7 +85,7 @@ class NeedSupportOn extends StatelessWidget {
                         }
                       },
                       backgroundColor: SolhColors.grey239,
-                      side: BorderSide(color: SolhColors.green),
+                      side: BorderSide(color: SolhColors.primary_green),
                     ),
                   ),
                   Obx(() {
@@ -191,7 +191,7 @@ class _IssueChipsState extends State<IssueChips> {
                       },
                       selected:
                           profileSetupController.selectedIsses.contains(e.sId),
-                      selectedColor: SolhColors.green,
+                      selectedColor: SolhColors.primary_green,
                       backgroundColor: SolhColors.grey239,
                       label: Text(
                         e.slug!,
@@ -214,7 +214,7 @@ class OtherIssueList extends StatelessWidget {
             profileSetupController.selectedOtherIssues.value.map((element) {
           return FilterChip(
             showCheckmark: false,
-            selectedColor: SolhColors.green,
+            selectedColor: SolhColors.primary_green,
             label: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

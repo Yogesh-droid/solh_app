@@ -62,7 +62,7 @@ class MyDiaryDetails extends StatelessWidget {
               myDiary.description!,
               textAlign: TextAlign.left,
               style: TextStyle(
-                  color: SolhColors.grey102,
+                  color: SolhColors.dark_grey,
                   fontSize: 16,
                   fontWeight: FontWeight.w500),
             ),
@@ -105,7 +105,7 @@ class MyDiaryDetails extends StatelessWidget {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
                 height: 50,
                 child: Center(
@@ -144,13 +144,13 @@ class MyDiaryDetails extends StatelessWidget {
             height: 50,
             width: double.infinity,
             decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.green, width: 0.5),
+              border: Border.all(color: SolhColors.primary_green, width: 0.5),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Center(
               child: Text(
                 "Close",
-                style: TextStyle(color: SolhColors.green),
+                style: TextStyle(color: SolhColors.primary_green),
               ),
             )),
       ),
@@ -161,11 +161,11 @@ class MyDiaryDetails extends StatelessWidget {
     return Container(
       width: 70,
       decoration: BoxDecoration(
-        border: Border.all(color: SolhColors.green, width: 0.5),
+        border: Border.all(color: SolhColors.primary_green, width: 0.5),
         borderRadius: BorderRadius.circular(50),
       ),
       child: IconButton(
-        icon: Icon(icon, color: SolhColors.green),
+        icon: Icon(icon, color: SolhColors.primary_green),
         onPressed: callback,
       ),
     );
@@ -219,7 +219,7 @@ class MyDiaryDetails extends StatelessWidget {
       width: double.infinity,
       child: Shimmer.fromColors(
         baseColor: SolhColors.grey239,
-        highlightColor: SolhColors.grey102,
+        highlightColor: SolhColors.dark_grey,
         child: Container(
           height: 300,
           width: double.infinity,

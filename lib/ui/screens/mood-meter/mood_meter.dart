@@ -16,7 +16,7 @@ class MoodMeter extends StatelessWidget {
     Color(0xFFE1555A),
     Colors.yellow,
     Colors.blue,
-    SolhColors.green,
+    SolhColors.primary_green,
   ]);
   @override
   Widget build(BuildContext context) {
@@ -248,7 +248,7 @@ class MyThumbShape extends SliderComponentShape {
       ..style = PaintingStyle.fill;
 
     final Paint paint2 = Paint()
-      ..color = SolhColors.green
+      ..color = SolhColors.primary_green
       ..style = PaintingStyle.fill;
 
     final Paint paint3 = Paint()

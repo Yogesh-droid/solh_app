@@ -27,14 +27,14 @@ class SolhExpertBadge extends StatelessWidget {
           style: GoogleFonts.signika(
               fontSize: 12,
               fontWeight: FontWeight.w400,
-              color: SolhColors.green),
+              color: SolhColors.primary_green),
         ),
         SizedBox(
           width: 4,
         ),
         Icon(
           Icons.verified,
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           size: 14,
         ),
       ],

@@ -75,41 +75,42 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
           Container(
             height: 2.5.h,
           ),
-          Obx(() => profileController
-                      .myProfileModel.value.body!.user!.anonymous !=
-                  null
-              ? Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: SolhGreenBorderMiniButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.edit_outlined, color: SolhColors.green),
-                          Text(
-                            "Anonymous",
-                            style: SolhTextStyles.GreenBorderButtonText,
+          Obx(() =>
+              profileController.myProfileModel.value.body!.user!.anonymous !=
+                      null
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: SolhGreenBorderMiniButton(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.edit_outlined,
+                                  color: SolhColors.primary_green),
+                              Text(
+                                "Anonymous",
+                                style: SolhTextStyles.GreenBorderButtonText,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EditAnonymousProfile()),
-                        );
-                      },
-                    ),
-                  ))
-              : Container()),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditAnonymousProfile()),
+                            );
+                          },
+                        ),
+                      ))
+                  : Container()),
           Container(
             child: Stack(
               children: [
                 _croppedFile != null
                     ? CircleAvatar(
                         radius: 14.5.w,
-                        backgroundColor: SolhColors.green,
+                        backgroundColor: SolhColors.primary_green,
                         child: InkWell(
                           onTap: () {
                             _pickImage();
@@ -122,7 +123,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                       )
                     : CircleAvatar(
                         radius: 14.5.w,
-                        backgroundColor: SolhColors.green,
+                        backgroundColor: SolhColors.primary_green,
                         child: InkWell(
                           onTap: () {
                             _pickImage();
@@ -152,7 +153,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                       },
                       child: _croppedFile != null
                           ? Icon(Icons.check_box_outlined,
-                              color: SolhColors.green)
+                              color: SolhColors.primary_green)
                           : Container(
                               height: 35,
                               decoration: BoxDecoration(
@@ -173,7 +174,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                 },
                                 iconSize: 14,
                                 icon: Icon(Icons.edit_outlined,
-                                    color: SolhColors.green),
+                                    color: SolhColors.primary_green),
                               ),
                             )),
                 ),
@@ -219,7 +220,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
               GenderSelectionDropdown(
                 dropDownDecoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: SolhColors.green)),
+                    border: Border.all(color: SolhColors.primary_green)),
                 newValue: (String? newValue) {
                   print(newValue);
                   _gender = newValue!;
@@ -258,7 +259,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                 boxDecoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                     border: Border.all(
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     )),
               ),
               SizedBox(
@@ -298,11 +299,11 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                         children: [
                           Text(
                             '${country}',
-                            style: TextStyle(color: SolhColors.green),
+                            style: TextStyle(color: SolhColors.primary_green),
                           ),
                           Icon(
                             Icons.arrow_drop_down,
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                           )
                         ],
                       ),
@@ -432,7 +433,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                 toolbarTitle: 'Edit',
                 toolbarColor: SolhColors.white,
                 toolbarWidgetColor: Colors.black,
-                activeControlsWidgetColor: SolhColors.green,
+                activeControlsWidgetColor: SolhColors.primary_green,
                 initAspectRatio: CropAspectRatioPreset.square,
                 lockAspectRatio: true),
             IOSUiSettings(

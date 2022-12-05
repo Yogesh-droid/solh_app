@@ -107,7 +107,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                     style: GoogleFonts.signika(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                        color: SolhColors.grey196),
+                        color: SolhColors.grey_2),
                   ),
                   SizedBox(
                     height: 41,
@@ -149,7 +149,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
             ),
             SvgPicture.asset(
               'assets/images/solh_certified_consultant.svg',
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
             ),
           ],
         ),
@@ -169,16 +169,11 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                         style: GoogleFonts.signika(
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            color: SolhColors.green),
+                            color: SolhColors.primary_green),
                       ),
                       SizedBox(
                         width: 8,
                       ),
-                      // Container(
-                      //   width: 2,
-                      //   height: 12,
-                      //   color: Colors.grey.shade300,
-                      // ),
                     ],
                   )
                 : Container(),
@@ -219,14 +214,14 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
               children: [
                 Icon(
                   Icons.thumb_up,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
                 Text(
                   ' 0',
                   style: GoogleFonts.signika(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: SolhColors.green),
+                      color: SolhColors.primary_green),
                 ),
               ],
             ),
@@ -234,7 +229,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green))
+                    color: SolhColors.primary_green))
           ],
         ),
         Column(
@@ -243,14 +238,14 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
               children: [
                 Icon(
                   Icons.group,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                 ),
                 Text(
                   ' 0',
                   style: GoogleFonts.signika(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: SolhColors.green),
+                      color: SolhColors.primary_green),
                 ),
               ],
             ),
@@ -258,7 +253,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green))
+                    color: SolhColors.primary_green))
           ],
         ),
         Column(
@@ -271,7 +266,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                   style: GoogleFonts.signika(
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
-                      color: SolhColors.green),
+                      color: SolhColors.primary_green),
                 ),
               ],
             ),
@@ -279,7 +274,7 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
                 style: GoogleFonts.signika(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: SolhColors.green))
+                    color: SolhColors.primary_green))
           ],
         )
       ],
@@ -297,12 +292,14 @@ class _ConsultantProfileState extends State<ConsultantProfile> {
             fontWeight: FontWeight.w600,
             color: Colors.grey.shade700),
         trimLines: 4,
-        colorClickableText: SolhColors.green,
+        colorClickableText: SolhColors.primary_green,
         trimMode: TrimMode.Line,
         trimCollapsedText: ' More',
         trimExpandedText: 'Read less',
         moreStyle: TextStyle(
-            color: SolhColors.green, fontSize: 14, fontWeight: FontWeight.bold),
+            color: SolhColors.primary_green,
+            fontSize: 14,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -312,26 +309,15 @@ class BookAppointmentButton extends StatelessWidget {
   BookAppointmentButton({Key? key}) : super(key: key);
 
   BookAppointmentController _controller = Get.find();
-  var _consultantController = Get.put(ConsultantController());
   var isExpandedHeight = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // _controller.doctorName = _consultantController
-        //         .consultantModelController.value.provder!.name ??
-        //     "";
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => BookAppointment(),
-        //   ),
-        // );
-
         showModalBottomSheet(
             context: context,
             isScrollControlled: true,
-            //constraints: BoxConstraints(maxHeight: 80.h),
             builder: (BuildContext context) {
               return Obx(() {
                 return _controller.showBookingDetail.value
@@ -344,7 +330,8 @@ class BookAppointmentButton extends StatelessWidget {
         height: 48,
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
-            color: SolhColors.green, borderRadius: BorderRadius.circular(24)),
+            color: SolhColors.primary_green,
+            borderRadius: BorderRadius.circular(24)),
         child: Center(
           child: Text(
             'Book Appointment',
@@ -545,18 +532,20 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
                                                     : '${_bookingController.selectedDay.value}')
                                                 : 'Select',
                                             style: GoogleFonts.signika(
-                                                color: SolhColors.green)),
+                                                color:
+                                                    SolhColors.primary_green)),
                                         Row(
                                           children: [
                                             Text(
                                                 _bookingController
                                                     .selectedTimeSlot.value,
                                                 style: GoogleFonts.signika(
-                                                  color: SolhColors.green,
+                                                  color:
+                                                      SolhColors.primary_green,
                                                 )),
                                             Icon(
                                               Icons.arrow_drop_down,
-                                              color: SolhColors.green,
+                                              color: SolhColors.primary_green,
                                             )
                                           ],
                                         )

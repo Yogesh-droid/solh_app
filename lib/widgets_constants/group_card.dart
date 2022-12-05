@@ -39,7 +39,7 @@ class GroupCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: Container(
                   width: double.infinity,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   child: Container(
                     height: 300,
                     child: _groupMediaUrl != null

@@ -72,7 +72,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                     dropDownDecoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         border: Border.all(
-                          color: SolhColors.green,
+                          color: SolhColors.primary_green,
                         )),
                     // dropdownValue: _dropdownValue,
                     newValue: (String? newValue) {
@@ -93,7 +93,7 @@ class _GenderAndAgePageState extends State<GenderAndAgePage> {
                       boxDecoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                           border: Border.all(
-                            color: SolhColors.green,
+                            color: SolhColors.primary_green,
                           )),
                       onChanged: (val) =>
                           Provider.of<ProviderUser>(context, listen: false)
@@ -207,7 +207,7 @@ class DOBPicker extends StatelessWidget {
                       ),
                 Icon(
                   CupertinoIcons.chevron_down,
-                  color: SolhColors.green,
+                  color: SolhColors.primary_green,
                   size: 18,
                 )
               ],

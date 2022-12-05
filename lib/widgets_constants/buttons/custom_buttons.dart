@@ -38,7 +38,8 @@ class SolhGreenBorderMiniButton extends StatelessWidget {
         padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
           color: backgroundColor ?? Colors.transparent,
-          border: border ?? Border.all(color: SolhColors.green, width: 1.0),
+          border:
+              border ?? Border.all(color: SolhColors.primary_green, width: 1.0),
           borderRadius: borderRadius ?? BorderRadius.circular(25),
         ),
         height: height ?? MediaQuery.of(context).size.height / 18,
@@ -131,7 +132,7 @@ class SolhGreenMiniButton extends StatelessWidget {
         margin: margin,
         padding: padding ?? EdgeInsets.zero,
         decoration: BoxDecoration(
-          color: backgroundColor ?? SolhColors.green,
+          color: backgroundColor ?? SolhColors.primary_green,
           border: border ?? null,
           borderRadius: borderRadius ?? BorderRadius.circular(20),
         ),
@@ -269,7 +270,7 @@ class SolhGreenBorderButton extends StatelessWidget {
       width: width ?? double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30)),
-        border: Border.all(color: SolhColors.green),
+        border: Border.all(color: SolhColors.primary_green),
       ),
       child: TextButton(
         onPressed: onPressed,
@@ -277,7 +278,7 @@ class SolhGreenBorderButton extends StatelessWidget {
           backgroundColor: MaterialStateProperty.all<Color>(
               Theme.of(context).scaffoldBackgroundColor),
           overlayColor: MaterialStateProperty.all<Color>(
-              SolhColors.green.withOpacity(0.5)),
+              SolhColors.primary_green.withOpacity(0.5)),
         ),
         child: Container(alignment: Alignment.center, child: child),
       ),

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 

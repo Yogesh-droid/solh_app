@@ -23,13 +23,13 @@ class CreateProfileScreen extends StatelessWidget {
           ),
           CircleAvatar(
             radius: 53,
-            backgroundColor: SolhColors.green,
+            backgroundColor: SolhColors.primary_green,
             child: CircleAvatar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               radius: 52,
               child: Icon(
                 Icons.person,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
                 size: 60,
               ),
             ),

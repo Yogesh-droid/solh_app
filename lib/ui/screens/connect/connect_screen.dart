@@ -233,7 +233,7 @@ class GetProfileStats extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.thumb_up,
-                    color: SolhColors.green,
+                    color: SolhColors.primary_green,
                     size: 16,
                   ),
                   SizedBox(
@@ -350,7 +350,7 @@ class GetMessageButton extends StatelessWidget {
                           ? SolhGreenBorderButton(
                               width: 70.w,
                               child: ButtonLoadingAnimation(
-                                ballColor: SolhColors.green,
+                                ballColor: SolhColors.primary_green,
                                 ballSizeLowerBound: 3,
                                 ballSizeUpperBound: 8,
                               ),
@@ -397,7 +397,7 @@ class GetConnectJoinUnfriendButton extends StatelessWidget {
                     ? SolhGreenBorderButton(
                         width: 70.w,
                         child: ButtonLoadingAnimation(
-                          ballColor: SolhColors.green,
+                          ballColor: SolhColors.primary_green,
                           ballSizeLowerBound: 3,
                           ballSizeUpperBound: 8,
                         ),

@@ -84,15 +84,16 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                  border: Border.all(color: SolhColors.green, width: 0.5),
+                  border:
+                      Border.all(color: SolhColors.primary_green, width: 0.5),
                   borderRadius: BorderRadius.circular(50)),
               child: DropdownButtonFormField(
                 icon: Icon(Icons.keyboard_arrow_down, color: SolhColors.grey),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(0),
-                  labelStyle: TextStyle(color: SolhColors.green),
-                  hintStyle: TextStyle(color: SolhColors.green),
+                  labelStyle: TextStyle(color: SolhColors.primary_green),
+                  hintStyle: TextStyle(color: SolhColors.primary_green),
                 ),
                 value: myDiaryController.selectedElement.value,
                 items: [
@@ -100,7 +101,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                     value: 'My Diary',
                     child: Text(
                       "Diary Entries",
-                      style: TextStyle(color: SolhColors.green),
+                      style: TextStyle(color: SolhColors.primary_green),
                     ),
                   ),
                   // DropdownMenuItem(
@@ -172,7 +173,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                         child: Container(
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: SolhColors.grey196, width: 0.5),
+                                  color: SolhColors.grey_2, width: 0.5),
                               borderRadius: BorderRadius.circular(10)),
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 16),
@@ -209,7 +210,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
-                                    color: SolhColors.grey102,
+                                    color: SolhColors.dark_grey,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
                               ),
@@ -229,12 +230,13 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
   Widget getFilterButton(BuildContext context) {
     return CircleAvatar(
       radius: 21,
-      backgroundColor: SolhColors.green,
+      backgroundColor: SolhColors.primary_green,
       child: CircleAvatar(
         backgroundColor: SolhColors.white,
         radius: 20,
         child: IconButton(
-            icon: Icon(Icons.filter_alt_outlined, color: SolhColors.green),
+            icon: Icon(Icons.filter_alt_outlined,
+                color: SolhColors.primary_green),
             onPressed: () {}),
       ),
     );

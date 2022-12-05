@@ -123,7 +123,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
           width: double.maxFinite,
           decoration: BoxDecoration(
               color: SolhColors.white,
-              border: Border.all(color: SolhColors.green, width: 3),
+              border: Border.all(color: SolhColors.primary_green, width: 3),
               borderRadius: BorderRadius.circular(4)),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -174,7 +174,7 @@ class OrganisationDropDownItem extends StatelessWidget {
         underline: Container(),
         icon: Icon(
           Icons.keyboard_arrow_down_rounded,
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
         ),
         items: [
           DropdownMenuItem(

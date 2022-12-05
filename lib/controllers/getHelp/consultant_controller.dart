@@ -5,6 +5,7 @@ import 'package:solh/services/network/network.dart';
 
 class ConsultantController extends GetxController {
   var isLoading = false.obs;
+  var isTitleVisible = false.obs;
 
   var consultantModelController = ConsultantModel().obs;
   ConsultantDataService _consultantDataService = ConsultantDataService();

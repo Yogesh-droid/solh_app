@@ -26,7 +26,7 @@ class SolhSearchField extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
           color: Colors.white,
           border: Border.all(
-            color: SolhColors.green,
+            color: SolhColors.primary_green,
             width: 1,
           ),
         ),

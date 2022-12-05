@@ -607,7 +607,7 @@ class _JournalTileState extends State<JournalTile> {
                                 true
                             ? Icons.favorite
                             : Icons.favorite_border,
-                        color: SolhColors.green,
+                        color: SolhColors.primary_green,
                         size: 20,
                       );
                     }),
@@ -644,7 +644,7 @@ class _JournalTileState extends State<JournalTile> {
                       "assets/icons/journaling/post-comment.svg",
                       width: 17,
                       height: 17,
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     ),
                     Padding(
                       padding: EdgeInsets.only(
@@ -706,7 +706,7 @@ class _JournalTileState extends State<JournalTile> {
                                       "assets/icons/journaling/post-connect.svg",
                                       width: 17,
                                       height: 17,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     ),
                                     Padding(
                                       padding: EdgeInsets.only(
@@ -831,7 +831,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                 child: Text(
                                   !isExpanded ? '...show more' : '...show less',
                                   style: GoogleFonts.signika(
-                                      color: SolhColors.green),
+                                      color: SolhColors.primary_green),
                                 ),
                                 onTap: () {
                                   setState(() {
@@ -939,7 +939,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                       ),
                                       iconSize:
                                           MediaQuery.of(context).size.width / 8,
-                                      color: SolhColors.green,
+                                      color: SolhColors.primary_green,
                                     ),
                                   )
                                 : Container();
@@ -1083,7 +1083,7 @@ class PostMenuButton extends StatelessWidget {
     return PopupMenuButton(
         icon: Icon(
           Icons.more_vert,
-          color: SolhColors.grey102,
+          color: SolhColors.dark_grey,
         ),
         iconSize: 20,
         color: SolhColors.white,

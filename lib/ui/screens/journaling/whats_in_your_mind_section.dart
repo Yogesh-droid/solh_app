@@ -127,7 +127,8 @@ class WhatsOnYourMindSection extends StatelessWidget {
                                     toolbarTitle: 'Edit',
                                     toolbarColor: SolhColors.white,
                                     toolbarWidgetColor: Colors.black,
-                                    activeControlsWidgetColor: SolhColors.green,
+                                    activeControlsWidgetColor:
+                                        SolhColors.primary_green,
                                     initAspectRatio:
                                         CropAspectRatioPreset.square,
                                     lockAspectRatio: true),
@@ -148,7 +149,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                       },
                       icon: SvgPicture.asset(
                           "assets/icons/journaling/post-photo.svg"),
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     ),
                     Container(
                       height: 3.h,
@@ -166,7 +167,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                                 builder: (context) => Connections()));
                       },
                       icon: SvgPicture.asset("assets/images/connections.svg"),
-                      color: SolhColors.green,
+                      color: SolhColors.primary_green,
                     ),
                   ],
                 ),

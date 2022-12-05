@@ -64,7 +64,7 @@ class SideDrawer extends StatelessWidget {
                                   Container(
                                     decoration: BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: SolhColors.green),
+                                        color: SolhColors.primary_green),
                                     child: IconButton(
                                         onPressed: () {
                                           profileController.getMyProfile();
@@ -146,7 +146,7 @@ class SideDrawer extends StatelessWidget {
               Container(
                 height: 0.25.h,
                 width: double.infinity,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               Column(children: [
                 SideDrawerMenuTile(
@@ -293,7 +293,7 @@ Widget getBadge(String usertype) {
           Text(
             'Volunteer',
             style: GoogleFonts.signika(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               fontWeight: FontWeight.w400,
               fontSize: 12,
             ),
@@ -308,7 +308,7 @@ Widget getBadge(String usertype) {
           Text(
             'Counsellor',
             style: GoogleFonts.signika(
-              color: SolhColors.green,
+              color: SolhColors.primary_green,
               fontWeight: FontWeight.w400,
               fontSize: 12,
             ),

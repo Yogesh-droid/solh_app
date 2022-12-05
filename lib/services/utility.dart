@@ -60,7 +60,7 @@ class Utility {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: SolhColors.green,
+                color: SolhColors.primary_green,
               ),
               child: Icon(Icons.video_camera_front_rounded),
             ),

@@ -18,7 +18,7 @@ class SimpleImageContainer extends StatelessWidget {
       this.zoomEnabled = false,
       this.borderWidth = 2.0,
       this.boxFit = BoxFit.contain,
-      this.borderColor = SolhColors.green,
+      this.borderColor = SolhColors.primary_green,
       this.enableborder})
       : super(key: key);
   final String imageUrl;
@@ -75,7 +75,7 @@ class StackImage extends StatelessWidget {
     this.topImageBorderEnable = true,
     this.topImageBorderRadius = 1,
     this.topImageBorderColor = Colors.white,
-    this.bottomImageBorderColor = SolhColors.green,
+    this.bottomImageBorderColor = SolhColors.primary_green,
     this.onClick,
     required this.topImageOffset,
     required this.topImageUrl,
@@ -200,7 +200,7 @@ class OpenPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
-      ..color = SolhColors.green
+      ..color = SolhColors.primary_green
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
@@ -224,7 +224,7 @@ class OpenPainter2 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
-      ..color = SolhColors.grey217
+      ..color = SolhColors.grey_3
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6
       ..strokeCap = StrokeCap.round;
@@ -253,7 +253,7 @@ class Percentagebadge extends StatelessWidget {
       width: 14.w,
       height: 6.w,
       decoration: BoxDecoration(
-          color: SolhColors.green,
+          color: SolhColors.primary_green,
           border: Border.all(
             color: SolhColors.white,
             width: 1,
@@ -262,7 +262,7 @@ class Percentagebadge extends StatelessWidget {
       child: Center(
           child: Text(
         '$percent %',
-        style: SolhTextStyles.SmallTextWhiteS12W6,
+        style: SolhTextStyles.QS_cap_semi.copyWith(color: SolhColors.white),
       )),
     );
   }
