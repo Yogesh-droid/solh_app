@@ -40,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     _controller.currentSid = widget._sId;
 
-    SocketService.setUserName(userBlocNetwork.myData.name!);
+    SocketService.setUserName(userBlocNetwork.myData.name ?? '');
 
     super.initState();
   }

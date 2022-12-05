@@ -126,86 +126,99 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
               MediaQuery.of(context).padding.bottom -
               kToolbarHeight -
               50,
-          child: ListView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              itemCount: myDiaryController.myJournalsList.value.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
-                  child: InkWell(
-                    onTap: () {
-                      debugPrint('onTap Ran ${widget.isPickFromDiary}');
-                      if (widget.isPickFromDiary != null) {
-                        journalPageController.descriptionController.text =
-                            myDiaryController
-                                    .myJournalsList.value[index].description ??
-                                '';
-                        journalPageController.selectedDiary.value =
-                            myDiaryController.myJournalsList.value[index];
-                        feelingsController.selectedFeelingsId.value.add(
-                            myDiaryController.myJournalsList.value[index]
-                                    .feelings![0].sId ??
-                                '');
-                        feelingsController.selectedFeelingsId.refresh();
-                      } else {
-                        debugPrint('my diary ran');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MyDiaryDetails(
-                                    myDiary: myDiaryController
-                                        .myJournalsList.value[index])));
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: SolhColors.grey196, width: 0.5),
-                          borderRadius: BorderRadius.circular(10)),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            DateFormat('d MMM').format(DateTime.parse(
-                                myDiaryController
-                                    .myJournalsList.value[index].createdAt!)),
-                            style: TextStyle(
-                                color: SolhColors.black34,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(height: 2.0),
-                          myDiaryController.myJournalsList.value[index]
-                                  .feelings!.isNotEmpty
-                              ? Text(
-                                  myDiaryController.myJournalsList.value[index]
-                                      .feelings![0].feelingName!,
-                                  style: TextStyle(
-                                      color: SolhColors.pink224,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500))
-                              : Container(),
-                          SizedBox(height: 2),
-                          Text(
-                            myDiaryController
-                                .myJournalsList.value[index].description!,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: SolhColors.grey102,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
+          child: myDiaryController.myJournalsList.isEmpty
+              ? Center(
+                  child: Text(
+                  "Well, there's nothing here! Why don't you begin today?",
+                  style: TextStyle(
+                    color: Colors.grey.shade400,
+                    fontSize: 20,
                   ),
-                );
-              }),
+                  textAlign: TextAlign.center,
+                ))
+              : ListView.builder(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  itemCount: myDiaryController.myJournalsList.value.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12.0, vertical: 8),
+                      child: InkWell(
+                        onTap: () {
+                          debugPrint('onTap Ran ${widget.isPickFromDiary}');
+                          if (widget.isPickFromDiary != null) {
+                            journalPageController.descriptionController.text =
+                                myDiaryController.myJournalsList.value[index]
+                                        .description ??
+                                    '';
+                            journalPageController.selectedDiary.value =
+                                myDiaryController.myJournalsList.value[index];
+                            feelingsController.selectedFeelingsId.value.add(
+                                myDiaryController.myJournalsList.value[index]
+                                        .feelings![0].sId ??
+                                    '');
+                            feelingsController.selectedFeelingsId.refresh();
+                          } else {
+                            debugPrint('my diary ran');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyDiaryDetails(
+                                        myDiary: myDiaryController
+                                            .myJournalsList.value[index])));
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: SolhColors.grey196, width: 0.5),
+                              borderRadius: BorderRadius.circular(10)),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                DateFormat('d MMM').format(DateTime.parse(
+                                    myDiaryController.myJournalsList
+                                        .value[index].createdAt!)),
+                                style: TextStyle(
+                                    color: SolhColors.black34,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(height: 2.0),
+                              myDiaryController.myJournalsList.value[index]
+                                      .feelings!.isNotEmpty
+                                  ? Text(
+                                      myDiaryController
+                                          .myJournalsList
+                                          .value[index]
+                                          .feelings![0]
+                                          .feelingName!,
+                                      style: TextStyle(
+                                          color: SolhColors.pink224,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500))
+                                  : Container(),
+                              SizedBox(height: 2),
+                              Text(
+                                myDiaryController
+                                    .myJournalsList.value[index].description!,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: SolhColors.grey102,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
         ));
   }
 

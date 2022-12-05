@@ -5,38 +5,61 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
+
+import '../../../widgets_constants/loader/my-loader.dart';
+import '../doctor/appointment_page.dart';
 import 'consultant_profile.dart';
 
-class GetHelpScreen extends StatefulWidget {
-  const GetHelpScreen({Key? key}) : super(key: key);
-
-  @override
-  State<GetHelpScreen> createState() => _GetHelpScreenState();
-}
-
-class _GetHelpScreenState extends State<GetHelpScreen> {
+class GetHelpScreen extends StatelessWidget {
   GetHelpController getHelpController = Get.find();
   SearchMarketController searchMarketController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
   ConnectionController connectionController = Get.find();
-  BottomNavigatorController _bottomNavigatorController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+      return profileController.isProfileLoading.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : profileController.myProfileModel.value.body == null
+              ? Container(
+                  child: Center(
+                      child: Container(
+                    width: 150,
+                    child: SolhGreenButton(
+                      child: Text('Reload Profile',
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () async {
+                        await profileController.getMyProfile();
+                      },
+                    ),
+                  )),
+                )
+              : profileController.myProfileModel.value.body!.user!.userType ==
+                      'SolhProvider'
+                  ? DoctorsAppointmentPage()
+                  : getHelpPage(context);
+    });
+  }
+
+  Widget getHelpPage(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

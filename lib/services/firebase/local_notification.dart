@@ -53,6 +53,8 @@ class LocalNotification {
         case 'call':
           if (result.action != null) {
             if (result.action!.actionId == "accept") {
+              print(
+                  "this is sender ID${result.notification.additionalData!['data']["senderId"]}");
               Future.delayed(Duration(milliseconds: 500), () {
                 globalNavigatorKey.currentState!.push(
                   MaterialPageRoute(
@@ -65,7 +67,8 @@ class LocalNotification {
                                 : null,
                             channel: result.notification.additionalData!['data']
                                 ["channelName"],
-                            token: result.notification.additionalData!['type'],
+                            token: result.notification.additionalData!['data']
+                                ['rtcToken'],
                             type:
                                 result.notification.additionalData!['callType'],
                           )),
@@ -117,16 +120,14 @@ class LocalNotification {
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
-                    args: {
-                       "name":
-                              jsonDecode(result
+                        args: {
+                          "name": jsonDecode(result
                               .notification.additionalData!['data'])['author'],
-                          "imageUrl":
-                             jsonDecode(result.notification
+                          "imageUrl": jsonDecode(result.notification
                               .additionalData!['data'])['profilePicture'],
-                          "sId": jsonDecode(
-                            result.notification.additionalData!['data'])['_id'],
-                    },
+                          "sId": jsonDecode(result
+                              .notification.additionalData!['data'])['_id'],
+                        },
                         // name: jsonDecode(result
                         //     .notification.additionalData!['data'])['author'],
                         // imageUrl: jsonDecode(result.notification

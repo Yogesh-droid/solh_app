@@ -3,29 +3,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-model/need_support_on_model.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButton.dart';
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
+import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class NeedSupportOn extends StatelessWidget {
-  const NeedSupportOn({Key? key}) : super(key: key);
+  NeedSupportOn({Key? key}) : super(key: key);
+
+  ProfileSetupController profileSetupController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
       floatingActionButton:
           ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-        onPressed: () =>
-            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation),
+        child: profileSetupController.isUpdatingField.value
+            ? SolhSmallButtonLoader()
+            : const Icon(
+                Icons.chevron_right_rounded,
+                size: 40,
+              ),
+        onPressed: (() async {
+          bool response = await profileSetupController.updateUserProfile({
+            "issuesList": profileSetupController.selectedIsses.value.toString(),
+            "issueOther":
+                profileSetupController.selectedOtherIssues.value.toString(),
+          });
+
+          if (response) {
+            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation);
+          }
+        }),
       ),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
+        onSkip: (() =>
+            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,6 +73,53 @@ class NeedSupportOn extends StatelessWidget {
               child: ListView(
                 children: [
                   IssueChips(),
+                  OtherIssueList(),
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: FilterChip(
+                      label: Text('Other'),
+                      onSelected: (value) {
+                        if (value) {
+                          profileSetupController.showOtherissueField.value =
+                              true;
+                        }
+                      },
+                      backgroundColor: SolhColors.grey239,
+                      side: BorderSide(color: SolhColors.green),
+                    ),
+                  ),
+                  Obx(() {
+                    return profileSetupController.showOtherissueField.value
+                        ? Column(
+                            children: [
+                              TextField(
+                                controller:
+                                    profileSetupController.otherIssueTextField,
+                                decoration: TextFieldStyles.greenF_greyUF_4R(
+                                    hintText: " Enter Custom issue"),
+                              ),
+                              SizedBox(
+                                height: 1.h,
+                              ),
+                              SolhGreenMiniButton(
+                                onPressed: (() {
+                                  profileSetupController.selectedOtherIssues
+                                      .add(profileSetupController
+                                          .otherIssueTextField.text);
+                                  profileSetupController
+                                      .otherIssueTextField.text = '';
+                                  profileSetupController
+                                      .showOtherissueField.value = false;
+                                }),
+                                child: Text(
+                                  'Add',
+                                  style: SolhTextStyles.NormalTextWhiteS14W6,
+                                ),
+                              )
+                            ],
+                          )
+                        : Container();
+                  })
                 ],
               ),
             )
@@ -78,84 +151,94 @@ class NeedSupportOnText extends StatelessWidget {
   }
 }
 
-class IssueChips extends StatelessWidget {
+class IssueChips extends StatefulWidget {
   const IssueChips({Key? key}) : super(key: key);
 
   @override
+  State<IssueChips> createState() => _IssueChipsState();
+}
+
+class _IssueChipsState extends State<IssueChips> {
+  ProfileSetupController profileSetupController = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    profileSetupController.getNeedSupportOnIssues();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Wrap(spacing: 5, children: getAllChips(context));
+    return Obx(() {
+      return profileSetupController.isLoadingIssues.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : Wrap(
+              spacing: 5,
+              children: profileSetupController
+                  .needSupportOnModel.value.specialization!
+                  .map((e) => FilterChip(
+                      onSelected: (value) {
+                        print(profileSetupController.selectedIsses.toString());
+                        value
+                            ? profileSetupController.selectedIsses.value
+                                .add(e.sId)
+                            : profileSetupController.selectedIsses.value
+                                .remove(e.sId);
+                        setState(() {});
+                      },
+                      selected:
+                          profileSetupController.selectedIsses.contains(e.sId),
+                      selectedColor: SolhColors.green,
+                      backgroundColor: SolhColors.grey239,
+                      label: Text(
+                        e.slug!,
+                        style: Theme.of(context).textTheme.headline1,
+                      )))
+                  .toList());
+    });
   }
 }
 
-List<FilterChip> getAllChips(context) {
-  List<FilterChip> chipsList = issues
-      .map((e) => FilterChip(
-          onSelected: (value) {},
-          backgroundColor: SolhColors.grey239,
-          label: Text(
-            e,
-            style: Theme.of(context).textTheme.headline1,
-          )))
-      .toList();
-
-  chipsList.add(FilterChip(
-    label: Text('Other'),
-    onSelected: (value) {},
-    backgroundColor: SolhColors.grey239,
-    side: BorderSide(color: SolhColors.green),
-  ));
-
-  return chipsList;
+class OtherIssueList extends StatelessWidget {
+  OtherIssueList({Key? key}) : super(key: key);
+  final ProfileSetupController profileSetupController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return Wrap(
+        spacing: 5,
+        children:
+            profileSetupController.selectedOtherIssues.value.map((element) {
+          return FilterChip(
+            showCheckmark: false,
+            selectedColor: SolhColors.green,
+            label: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(
+                  Icons.cancel_outlined,
+                  size: 19,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  element,
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+              ],
+            ),
+            onSelected: (Value) {
+              profileSetupController.selectedOtherIssues.remove(element);
+            },
+            selected: true,
+          );
+        }).toList(),
+      );
+    });
+  }
 }
-
-List issues = [
-  "ADHD",
-  "Addiction",
-  "Adoption/Foster Care",
-  "Alcohol/Drug Abuse",
-  "Anxiety",
-  "Autism Spectrum",
-  "Bipolar",
-  "Borderline (BPD)",
-  "Breakups",
-  "Bullying",
-  "Cancer",
-  "Chronic Pain",
-  "Depression",
-  "Diabetes",
-  "Disabilities",
-  "Dissociative Identity Disorder (DID)",
-  "Domestic Violence",
-  "Eating Disorder",
-  "Exercise Motivation",
-  "Family Stress",
-  "Financial Stress",
-  "Forgiveness",
-  "General Mental Health"
-      "Getting Unstuck",
-  "Grief",
-  "LGBTQ+ Issues",
-  "Loneliness",
-  "Managing Emotions",
-  "Men's Issues",
-  "Obsessive Compulsive Disorder"
-      "PTSD",
-  "Panic Attacks",
-  "Parenting",
-  "Perinatal Mood Disorder",
-  "Personality Disorder",
-  "Racial & Cultural Identity",
-  "Recovery",
-  "Relationship Stress",
-  "Schizophrenia",
-  "Self-Esteem",
-  "Self-Harm",
-  "Sexual Health"
-      "Sleeping Well   ",
-  "Social Anxiety",
-  "Spirituality",
-  "Student Life",
-  "Weight Management",
-  "Women's Issues",
-  "Work Stress",
-];

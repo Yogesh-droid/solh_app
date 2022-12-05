@@ -12,9 +12,9 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
-import '../../groups/group_detail.dart';
 
 class Connections extends StatefulWidget {
   Connections({
@@ -38,7 +38,9 @@ class _ConnectionsState extends State<Connections> {
 
   @override
   void initState() {
-    chatListController.chatListController();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      chatListController.chatListController();
+    });
   }
 
   @override
@@ -1157,7 +1159,7 @@ class _ConnectionsState extends State<Connections> {
               //         builder: (context) =>
               //             ConnectProfileScreen(uid: uid!, sId: sId)));
               Navigator.pushNamed(context, AppRoutes.connectScreen,
-                  arguments: {"sId": sId});
+                  arguments: {"sId": sId, "uid": uid});
             }
           : () {
               Navigator.pushNamed(context, AppRoutes.groupDetails, arguments: {

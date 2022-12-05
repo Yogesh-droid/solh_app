@@ -11,6 +11,7 @@ import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../ui/my_diary/my_diary_list_page.dart';
 import '../../ui/screens/global-search/global_search_page.dart';
 
@@ -282,11 +283,17 @@ class ProfileSetupAppBar extends StatelessWidget
 
 class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
     implements PreferredSizeWidget {
-  SolhAppBarTanasparentOnlyBackButton(
-      {Key? key, this.onBackButton, this.backButtonColor = Colors.black})
-      : super(key: key);
+  SolhAppBarTanasparentOnlyBackButton({
+    Key? key,
+    this.onBackButton,
+    this.onSkip,
+    this.skipButtonStyle = SolhTextStyles.GreenBorderButtonText,
+    this.backButtonColor = Colors.black,
+  }) : super(key: key);
 
   final VoidCallback? onBackButton;
+  final VoidCallback? onSkip;
+  final TextStyle skipButtonStyle;
 
   Color backButtonColor;
 
@@ -294,6 +301,14 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
+      actions: [
+        onSkip != null
+            ? SkipButton(
+                buttonstyle: skipButtonStyle,
+                onPressed: onSkip,
+              )
+            : Container()
+      ],
       elevation: 0,
       leading: IconButton(
         icon: Icon(

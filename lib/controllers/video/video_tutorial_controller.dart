@@ -16,7 +16,6 @@ class VideoTutorialController extends GetxController {
         "${APIConstants.api}/api/custom/get-tutorial-list");
     VideoTutorialModel videoTutorialModel = VideoTutorialModel.fromJson(map);
     videoList.value = videoTutorialModel.tutorialList ?? [];
-
     isLoading.value = false;
   }
 

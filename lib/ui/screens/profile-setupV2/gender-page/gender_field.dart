@@ -2,25 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButton.dart';
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/solh_snackBar.dart';
 
 class GenderField extends StatelessWidget {
-  const GenderField({Key? key}) : super(key: key);
-
-  @override
+  GenderField({Key? key}) : super(key: key);
+  ProfileSetupController profileSetupController = Get.find();
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
-      floatingActionButton:
-          ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-              onPressed: () {
-        Navigator.pushNamed(context, AppRoutes.roleField);
+      floatingActionButton: Obx(() {
+        return ProfileSetupFloatingActionButton
+            .profileSetupFloatingActionButton(
+          child: profileSetupController.isUpdatingField.value
+              ? SolhSmallButtonLoader()
+              : const Icon(
+                  Icons.chevron_right_rounded,
+                  size: 40,
+                ),
+          onPressed: (() async {
+            if (profileSetupController.gender.value != '') {
+              bool response = await profileSetupController.updateUserProfile({
+                "gender": profileSetupController.gender.value.toString(),
+              });
+
+              if (response) {
+                Navigator.pushNamed(context, AppRoutes.roleField);
+              }
+            } else {
+              SolhSnackbar.error('Error', 'Please select a gender');
+            }
+          }),
+        );
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.white,
@@ -40,7 +62,11 @@ class GenderField extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            GenderSelection()
+            Stack(
+              children: [
+                GenderSelection(),
+              ],
+            ),
           ],
         ),
       ),
@@ -70,7 +96,9 @@ class GenderText extends StatelessWidget {
 }
 
 class GenderSelection extends StatelessWidget {
-  const GenderSelection({Key? key}) : super(key: key);
+  GenderSelection({Key? key}) : super(key: key);
+
+  final ProfileSetupController profileSetupController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -84,31 +112,79 @@ class GenderSelection extends StatelessWidget {
         SizedBox(
           height: 1.h,
         ),
-        Container(
-          height: 6.h,
-          width: double.maxFinite,
-          decoration: BoxDecoration(
-              color: SolhColors.white,
-              border: Border.all(color: SolhColors.green, width: 3),
-              borderRadius: BorderRadius.circular(4)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Select',
-                  style: SolhTextStyles.NormalTextGreyS14W5,
-                ),
-                Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: SolhColors.green,
-                )
-              ],
+        InkWell(
+          onTap: () {},
+          child: Container(
+            height: 6.h,
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+                color: SolhColors.white,
+                border: Border.all(color: SolhColors.green, width: 3),
+                borderRadius: BorderRadius.circular(4)),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Obx(() {
+                    return profileSetupController.gender.value == ''
+                        ? Text(
+                            'Select',
+                            style: SolhTextStyles.NormalTextGreyS14W5,
+                          )
+                        : Text(
+                            profileSetupController.gender.value,
+                            style: SolhTextStyles.NormalTextBlack2S14W6,
+                          );
+                  }),
+                  Container(child: DropDownItem())
+                ],
+              ),
             ),
           ),
         ),
       ],
     );
+  }
+}
+
+class DropDownItem extends StatelessWidget {
+  DropDownItem({Key? key}) : super(key: key);
+  final ProfileSetupController profileSetupController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    print('sfs');
+    return DropdownButton<String>(
+        underline: Container(),
+        icon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: SolhColors.green,
+        ),
+        items: [
+          DropdownMenuItem(
+            child: Text(
+              'Male',
+              style: SolhTextStyles.NormalTextGreenS14W5,
+            ),
+            value: 'Male',
+          ),
+          DropdownMenuItem(
+            child: Text(
+              'Female',
+              style: SolhTextStyles.NormalTextGreenS14W5,
+            ),
+            value: 'Female',
+          ),
+          DropdownMenuItem(
+            child: Text(
+              'Others',
+              style: SolhTextStyles.NormalTextGreenS14W5,
+            ),
+            value: 'Others',
+          )
+        ],
+        onChanged: (value) {
+          profileSetupController.gender.value = value ?? '';
+        });
   }
 }

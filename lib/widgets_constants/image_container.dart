@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/zoom_image.dart';
 
@@ -120,6 +122,148 @@ class StackImage extends StatelessWidget {
               )),
         ],
       ),
+    );
+  }
+}
+
+class ImageWithProgressBarAndBadge extends StatelessWidget {
+  const ImageWithProgressBarAndBadge(
+      {Key? key,
+      this.imageRadius = const Size(100, 100),
+      this.percent = 0,
+      required this.imageUrl})
+      : super(key: key);
+
+  final Size imageRadius;
+  final int percent;
+  final String imageUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Stack(
+            children: [
+              CustomPaint(
+                painter: OpenPainter2(imageRadius),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.transparent,
+                ),
+                child: CustomPaint(
+                    child: CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      color: SolhColors.grey,
+                      placeholder: (_, k) {
+                        return MyLoader();
+                      },
+                      imageBuilder: (context, imageProvider) => Container(
+                        width: imageRadius.width,
+                        height: imageRadius.height,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                          ),
+                        ),
+                      ),
+                    ),
+                    painter: OpenPainter(imageRadius, percent)),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 0,
+          left: 0,
+          bottom: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Percentagebadge(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class OpenPainter extends CustomPainter {
+  final Size imageSize;
+  final int percent;
+  OpenPainter(this.imageSize, this.percent);
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint1 = Paint()
+      ..color = SolhColors.green
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 6
+      ..strokeCap = StrokeCap.round;
+
+    //draw arc
+    canvas.drawArc(
+        Offset(0, 0) & Size(imageSize.height, imageSize.width),
+        1.5, //radians
+        6.25 * (percent / 100), //radians
+        false,
+        paint1);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class OpenPainter2 extends CustomPainter {
+  final Size imageSize;
+  OpenPainter2(this.imageSize);
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint1 = Paint()
+      ..color = SolhColors.grey217
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 6
+      ..strokeCap = StrokeCap.round;
+
+    //draw arc
+    canvas.drawArc(
+        Offset(0, 0) & Size(imageSize.height, imageSize.width),
+        1.5, //radians
+        6.4, //radians
+        false,
+        paint1);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
+}
+
+class Percentagebadge extends StatelessWidget {
+  const Percentagebadge({Key? key, this.percent = 0}) : super(key: key);
+
+  final int percent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 14.w,
+      height: 6.w,
+      decoration: BoxDecoration(
+          color: SolhColors.green,
+          border: Border.all(
+            color: SolhColors.white,
+            width: 1,
+          ),
+          borderRadius: BorderRadius.circular(10)),
+      child: Center(
+          child: Text(
+        '$percent %',
+        style: SolhTextStyles.SmallTextWhiteS12W6,
+      )),
     );
   }
 }

@@ -19,6 +19,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -48,7 +49,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Obx(() {
       return profileController.isProfileLoading.value
           ? Center(
@@ -103,27 +103,44 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                                       context,
                                       AppRoutes.phoneAuthScreen,
                                       (route) => false);
-                                  RestartWidget.restartApp(context);
                                 });
                               }),
                         ),
                       ],
-
                     ),
                   ),
                 )
-              : Container(
-                  child: Center(
-                      child: Container(
-                    width: 150,
-                    child: SolhGreenButton(
-                      child: Text('Reload Profile',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () async {
-                        await profileController.getMyProfile();
-                      },
-                    ),
-                  )),
+              : SmartRefresher(
+                  controller: refreshController,
+                  onRefresh: reloadProfile,
+                  child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: SolhColors.green),
+                            child: IconButton(
+                                onPressed: () {
+                                  profileController.getMyProfile();
+                                },
+                                icon: Icon(
+                                  Icons.refresh,
+                                  color: SolhColors.white,
+                                )),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Click to reload',
+                            style: SolhTextStyles.JournalingHintText,
+                          )
+                        ],
+                      )),
                 );
     });
   }
@@ -430,7 +447,11 @@ class _ProfileContainerState extends State<ProfileContainer> {
                         ),
                       ],
                     ),
-                    InkWell(child: Text("Likes")),
+                    InkWell(
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => MyProfileScreenV2())),
+                        child: Text("Likes")),
                   ],
                 ),
                 Container(

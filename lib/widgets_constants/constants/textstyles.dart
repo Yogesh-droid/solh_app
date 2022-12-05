@@ -238,4 +238,10 @@ class SolhTextStyles {
     color: SolhColors.white,
     fontWeight: FontWeight.w700,
   );
+
+  static const TextStyle SmallTextWhiteS12W6 = TextStyle(
+    fontSize: 12,
+    color: SolhColors.white,
+    fontWeight: FontWeight.w600,
+  );
 }

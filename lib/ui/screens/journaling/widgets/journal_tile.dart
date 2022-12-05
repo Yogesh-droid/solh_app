@@ -25,7 +25,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
-import '../../groups/group_detail.dart';
 import 'solh_expert_badge.dart';
 
 class JournalTile extends StatefulWidget {
@@ -70,22 +69,6 @@ class _JournalTileState extends State<JournalTile> {
       }
     }
   }
-
-  // bool checkConnectionExist(username) {
-  //   bool connectionExits = true;
-
-  //   for (var i in connectionController.myConnectionModel.value.myConnections!) {
-  //     print('@' + i.userName.toString() + username.toString());
-  //     if ('@' + i.userName.toString() == username) {
-  //       connectionExits = false;
-  //       break;
-  //     } else {
-  //       connectionExits = true;
-  //     }
-  //   }
-  //   print(connectionExits);
-  //   return connectionExits;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -260,39 +243,15 @@ class _JournalTileState extends State<JournalTile> {
                               widget._journalModel!.group!.groupImage,
                         ),
                       })
-                  /* Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return GroupDetailsPage(
-                      ///// this case is for group journal
-                      group: GroupList(
-                        sId: widget._journalModel!.group!.sId,
-                        groupName: widget._journalModel!.group!.groupName,
-                        groupMediaUrl: widget._journalModel!.group!.groupImage,
-                      ),
-                    );
-                  })) */
                 }
               : widget._journalModel!.postedBy!.sId !=
                           null && ////// this case is for user journal
                       widget._journalModel!.anonymousJournal != null &&
                       !widget._journalModel!.anonymousJournal!
                   ? {
-                      // connectionController.getUserAnalytics(
-                      //     widget._journalModel!.postedBy!.sId!),
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => ConnectProfileScreen(
-                      //             uid: widget._journalModel!.postedBy!.uid!,
-                      //             sId: widget._journalModel!.postedBy!.sId!)))
-                      //   Navigator.pushNamed(context, AppRoutes.userProfile,
-                      //       arguments: {
-                      //         "uid": widget._journalModel!.postedBy!.uid!,
-                      //         "sId": widget._journalModel!.postedBy!.sId!
-                      //       })
-                      // }
                       Navigator.pushNamed(context, AppRoutes.connectScreen,
                           arguments: {
-                            // "uid": widget._journalModel!.postedBy!.uid!,
+                            "uid": widget._journalModel!.postedBy!.uid!,
                             "sId": widget._journalModel!.postedBy!.sId!
                           })
                     }
@@ -407,12 +366,6 @@ class _JournalTileState extends State<JournalTile> {
                                     ),
                                   ),
                                   SizedBox(width: 1.5.w),
-
-                                  // if (widget._journalModel!.postedBy != null &&
-                                  //     widget._journalModel!.postedBy!
-                                  //             .userType ==
-                                  //         "Expert")
-                                  //   SolhExpertBadge(),
                                 ],
                               ),
                               Row(
@@ -557,20 +510,11 @@ class _JournalTileState extends State<JournalTile> {
                 widget._journalModel!.anonymousJournal != null &&
                 !widget._journalModel!.anonymousJournal!
             ? {
-                // connectionController.getUserAnalytics(
-                //     widget._journalModel!.postedBy!.sId!),
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //         builder: (context) => ConnectProfileScreen(
-                //             uid: widget._journalModel!.postedBy!.uid!,
-                //             sId: widget._journalModel!.postedBy!.sId!)))
-                // Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
-                //   "uid": widget._journalModel!.postedBy!.uid!,
-                //   "sId": widget._journalModel!.postedBy!.sId!
-                // })
                 Navigator.pushNamed(context, AppRoutes.connectScreen,
-                    arguments: {"sId": widget._journalModel!.postedBy!.sId!})
+                    arguments: {
+                      "sId": widget._journalModel!.postedBy!.sId!,
+                      "uid": widget._journalModel!.postedBy!.uid!
+                    })
               }
             : {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -747,23 +691,6 @@ class _JournalTileState extends State<JournalTile> {
                                                     .groupImage,
                                               ),
                                             })
-                                        /* Navigator.push(context,
-                                            MaterialPageRoute(
-                                                builder: (context) {
-                                          return GroupDetailsPage(
-                                            ///// this case is for group journal
-                                            group: GroupList(
-                                              sId: widget
-                                                  ._journalModel!.group!.sId,
-                                              groupName: widget._journalModel!
-                                                  .group!.groupName,
-                                              groupMediaUrl: widget
-                                                  ._journalModel!
-                                                  .group!
-                                                  .groupImage,
-                                            ),
-                                          );
-                                        })) */
                                       }
                                     : await connectionController.addConnection(
                                         widget._journalModel!.postedBy!.sId!,
@@ -840,8 +767,6 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   List<String> descriptionTexts = [];
   bool showMoreBtn = false;
   bool isExpanded = false;
-  VideoPlayerController videoPlayerController = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4');
 
   @override
   void initState() {
@@ -1117,16 +1042,6 @@ class _PostContentWidgetState extends State<PostContentWidget> {
     return item.toString().trim().isNotEmpty && item.toString().trim()[0] == '@'
         ? InkWell(
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => ConnectProfileScreen(
-              //       username: item.toString().substring(1, item.length),
-              //       uid: '',
-              //       sId: '',
-              //     ),
-              //   ),
-              // );
               Navigator.pushNamed(context, AppRoutes.connectScreen, arguments: {
                 "userName": item.toString().substring(1, item.length),
                 "sId": "123",
@@ -1267,25 +1182,6 @@ class PostMenuButton extends StatelessWidget {
                 textStyle: SolhTextStyles.JournalingPostMenuText,
                 padding: EdgeInsets.zero,
               ),
-              // PopupMenuItem(
-              //   child: Container(
-              //     alignment: Alignment.centerLeft,
-              //     padding: EdgeInsets.symmetric(
-              //       horizontal: MediaQuery.of(context).size.width / 20,
-              //       vertical: MediaQuery.of(context).size.height / 80,
-              //     ),
-              //     decoration: BoxDecoration(
-              //         border: Border(
-              //       bottom: BorderSide(color: SolhColors.grey239),
-              //     )),
-              //     child: Text(
-              //       "Report this post",
-              //     ),
-              //   ),
-              //   value: 4,
-              //   textStyle: SolhTextStyles.JournalingPostMenuText,
-              //   padding: EdgeInsets.zero,
-              // ),
             ]);
   }
 

@@ -8,7 +8,6 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
-import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -41,10 +40,7 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
 
   @override
   void initState() {
-    // TODO: implement initState
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) => loadData());
-
     super.initState();
   }
 
@@ -90,20 +86,7 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
       body: Obx(() {
         return connectScreenController.connectScreenModel.value.user == null
             ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.error,
-                      size: 70,
-                      color: SolhColors.grey102,
-                    ),
-                    Text(
-                      'No User Found',
-                      style: SolhTextStyles.AppBarText,
-                    ),
-                  ],
-                ),
+                child: MyLoader(),
               )
             : (connectScreenController.isConnectScreenDataLoading.value ||
                     connectScreenController
