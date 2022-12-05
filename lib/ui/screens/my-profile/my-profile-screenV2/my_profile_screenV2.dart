@@ -1,11 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -13,7 +8,6 @@ import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
-import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class MyProfileScreenV2 extends StatelessWidget {
   MyProfileScreenV2({Key? key}) : super(key: key);
