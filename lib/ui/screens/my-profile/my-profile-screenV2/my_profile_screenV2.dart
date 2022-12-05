@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +50,7 @@ class MyProfileScreenV2 extends StatelessWidget {
               NameUsertypeBio(
                 name: 'Name of the Person',
                 bio: 'Complete Your Profile',
-                userType: 'SolhProvider',
+                userType: 'SolhVolunteer',
               )
             ],
           ),
@@ -81,7 +79,9 @@ class NameUsertypeBio extends StatelessWidget {
               SolhTextStyles.QS_body_1_med.copyWith(color: SolhColors.black666),
         ),
         GetBadge(userType: userType),
-        Text(bio),
+        Text(
+          bio,
+        ),
       ],
     );
   }
