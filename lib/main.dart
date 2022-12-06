@@ -112,6 +112,11 @@ class _SolhAppState extends State<SolhApp> {
                 fontWeight: FontWeight.w800,
                 decoration: TextDecoration.underline),
           ),
+          switchTheme: SwitchThemeData(
+            thumbColor:
+                MaterialStateProperty.all<Color>(SolhColors.primary_green),
+            trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
+          ),
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,

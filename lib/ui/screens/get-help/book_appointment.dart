@@ -207,55 +207,9 @@ class DayPicker extends StatefulWidget {
 class _DayPickerState extends State<DayPicker> {
   BookAppointmentController _controller = Get.find();
   ConsultantController _consultantController = Get.find();
-  /* Map timeSlot = {
-    '10:00-10:30': false,
-    '11:00-11:30': false,
-    '12:00-12:30': false,
-    '13:00-13:30': false,
-    '14:00-14:30': false,
-    '15:00-15:30': false,
-  }; */
 
   List<DateTime> days = [];
   List<DateTime> updatedList = [];
-  // getUpcomingMap() {
-  //   var date = DateTime.now();
-  //   String today = DateFormat('EEEE').format(date);
-
-  //   Map newMap = {};
-  //   var index;
-  //   for (var i = 0; i < 6; i++) {
-  //     if (day.keys.elementAt(i) == today) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-  //   print(index);
-  //   for (var i = index; i < 6; i++) {
-  //     int count = 1;
-  //     if (day.keys.elementAt(i) == today) {
-  //       newMap['Today'] = false;
-  //     } else {
-  //       newMap[day.keys.elementAt(i)] = false;
-  //     }
-
-  //     if (count < 5 && i == 5) {
-  //       print('it ran');
-  //       print(count);
-  //       i = 0;
-  //     }
-
-  //     if (day.keys.elementAt(index) == day.keys.elementAt(i + 1)) {
-  //       print('it ran2');
-  //       print(i);
-  //       break;
-  //     }
-  //     count = count++;
-  //   }
-
-  //   print(newMap.toString());
-  //   return newMap;
-  // }
 
   @override
   void initState() {

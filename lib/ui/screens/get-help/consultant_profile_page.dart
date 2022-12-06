@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:intl/intl.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -10,6 +12,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/getHelp/consultant_controller.dart';
 import '../../../widgets_constants/image_container.dart';
+import 'widgets/book_appointment_sheet.dart';
 
 class ConsultantProfilePage extends StatefulWidget {
   ConsultantProfilePage({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class ConsultantProfilePage extends StatefulWidget {
 
 class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   final ConsultantController _controller = Get.find();
+  final BookAppointmentController bookAppointmentController = Get.find();
   late final ScrollController _scrollController;
 
   @override
@@ -255,56 +259,53 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   }
 
   Widget detailsContainer() {
-    return Row(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width - 50,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Details',
-                style: SolhTextStyles.QS_body_2_bold.copyWith(
-                    color: SolhColors.primary_green),
-              ),
-              Text(
-                ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
-                style: SolhTextStyles.QS_caption,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
-                style: SolhTextStyles.QS_caption,
-                maxLines: 2,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+    return Obx(() =>
+        _controller.consultantModelController.value.provder!.specialization !=
+                null
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Details',
+                    style: SolhTextStyles.QS_body_2_bold.copyWith(
+                        color: SolhColors.primary_green),
+                  ),
+                  Text(
+                    ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
+                    style: SolhTextStyles.QS_caption,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
+                    style: SolhTextStyles.QS_caption,
+                    maxLines: 2,
+                  ),
+                ],
+              )
+            : Container());
   }
 
   Widget aboutContainer() {
-    return Container(
-      width: MediaQuery.of(context).size.width - 50,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('About',
-              style: SolhTextStyles.QS_body_2_bold.copyWith(
-                  color: SolhColors.primary_green)),
-          Text(
-            "${_controller.consultantModelController.value.provder!.bio ?? ''}",
-            style: SolhTextStyles.QS_body_2,
-            maxLines: 2,
-          ),
-        ],
-      ),
-    );
+    return Obx(() =>
+        _controller.consultantModelController.value.provder!.bio!.isNotEmpty
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('About',
+                      style: SolhTextStyles.QS_body_2_bold.copyWith(
+                          color: SolhColors.primary_green)),
+                  Text(
+                    "${_controller.consultantModelController.value.provder!.bio ?? ''}",
+                    style: SolhTextStyles.QS_body_2,
+                    maxLines: 2,
+                  ),
+                ],
+              )
+            : Container());
   }
 
   Widget bookingButton() {
@@ -340,9 +341,26 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             'Book Appointment',
             style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
-          onPressed: () {},
+          onPressed: () {
+            bookAppointmentController.selectedDayForTimeSlot.value =
+                DateTime.now().day;
+            bookAppointmentController.getTimeSlot(
+                providerId:
+                    _controller.consultantModelController.value.provder!.sId,
+                date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            openBookingSheet();
+          },
         )
       ],
     );
+  }
+
+  void openBookingSheet() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return BookAppoinmentSheet();
+        });
   }
 }

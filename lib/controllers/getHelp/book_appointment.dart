@@ -5,10 +5,13 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
+  var selectedDayForTimeSlot = DateTime.now().day.obs;
+
   var selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
 
   /// It's String like Sunday, Monday, Tuesday etc.
   var selectedTimeSlot = ''.obs;
+  var selectedTimeSlotN = ''.obs;
 
   /// It's String like 9:30-10:30, 10:00-11:00 etc.
   var timeSlotList = [].obs;
@@ -73,6 +76,7 @@ class BookAppointmentController extends GetxController {
           .where((element) => element.toString().compareTo(currentTimeSlot) > 0)
           .toList();
     }
+    print(timeSlotList.length);
     timeSlotList.refresh();
     loadingTimeSlots.value = false;
   }
