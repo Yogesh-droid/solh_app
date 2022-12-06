@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import '../../../../constants/api.dart';
 import '../../../../services/network/network.dart';
@@ -35,11 +36,11 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldWithBackgroundArt(
         appBar: SolhAppBar(
           title: Text(
             "Edit Anonymous Profile",
-            style: SolhTextStyles.AppBarText,
+            style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false,
         ),
@@ -92,7 +93,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                 ),
                           Positioned(
                             right: 0,
-                            top: 0,
+                            bottom: 0,
                             child: InkWell(
                                 onTap: () {
                                   _croppedFile != null
@@ -106,7 +107,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                         height: 35,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.white,
+                                          color: SolhColors.primary_green,
                                           boxShadow: [
                                             BoxShadow(
                                                 color: Colors.black26,
@@ -122,7 +123,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                           },
                                           iconSize: 14,
                                           icon: Icon(Icons.edit_outlined,
-                                              color: SolhColors.primary_green),
+                                              color: SolhColors.white),
                                         ),
                                       )),
                           ),
@@ -185,10 +186,8 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                       child: SolhGreenButton(
                         child: Text(
                           "Save",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
                         ),
                         onPressed: () async {
                           if (_anonController.isNameTaken.value) {
