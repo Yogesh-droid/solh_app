@@ -737,14 +737,6 @@ getdateTime(selectedDay, selectedSlot, itemNoinList, DateTime selectedDate) {
     return selectedSlot.toString().split('-');
   }
 
-  // print(DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
-  //     'T' +
-  //     getTime()[itemNoinList].toString() +
-  //     ':00');
-  // return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
-  //     'T' +
-  //     getTime()[itemNoinList].toString() +
-  //     ':00';
   print(DateFormat('yyyy-MM-dd').format(selectedDate) +
       'T' +
       getTime()[itemNoinList].toString() +

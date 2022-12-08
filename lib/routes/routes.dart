@@ -8,7 +8,11 @@ import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
+
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
+import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
 import 'package:solh/ui/screens/phone-auth/otp-screen.dart';
 import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
@@ -90,6 +94,10 @@ class AppRoutes {
   static const String roleField = '/roleField';
   static const String needSupportOn = '/needSupportOn';
   static const String partOfAnOrgnisation = '/partOfAnOrgnisation';
+
+  //my profile v2
+
+  static const String editProfileOption = '/editProfileOption';
 }
 
 class RouteGenerator {
@@ -167,6 +175,13 @@ class RouteGenerator {
       case AppRoutes.partOfAnOrgnisation:
         return MaterialPageRoute(
             builder: ((context) => PartOfAnOrganisationPage()));
+      case AppRoutes.editProfileOption:
+        return MaterialPageRoute(builder: ((context) => EditProfileOptions()));
+      case AppRoutes.editProfilePage:
+        return MaterialPageRoute(builder: ((context) => EditMyProfileScreen()));
+      case AppRoutes.editAnonymousProfile:
+        return MaterialPageRoute(
+            builder: ((context) => EditAnonymousProfile()));
 
       default:
         return MaterialPageRoute(

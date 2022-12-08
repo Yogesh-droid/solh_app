@@ -39,4 +39,17 @@ class TextFieldStyles {
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);
   }
+
+  static InputDecoration greenF_noBorderUF_4R({String? hintText}) {
+    return InputDecoration(
+        fillColor: SolhColors.light_Bg,
+        filled: true,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(4),
+          borderSide: BorderSide(color: SolhColors.primary_green, width: 1.5),
+        ),
+        border: InputBorder.none,
+        hintText: hintText,
+        hintStyle: SolhTextStyles.NormalTextBlackS14W5);
+  }
 }

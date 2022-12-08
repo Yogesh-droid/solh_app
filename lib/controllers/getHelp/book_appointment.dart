@@ -29,6 +29,7 @@ class BookAppointmentController extends GetxController {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController mobileNotextEditingController = TextEditingController();
   TextEditingController catTextEditingController = TextEditingController();
+  TextEditingController descTextEditingController = TextEditingController();
   var isLoading = false.obs;
   var loadingTimeSlots = false.obs;
   dynamic isTimeSlotAdded = ''.obs;
@@ -37,6 +38,7 @@ class BookAppointmentController extends GetxController {
 
   Future<String> bookAppointment(Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
+    print(body);
     isLoading.value = true;
     var response = await Network.makeHttpPostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);

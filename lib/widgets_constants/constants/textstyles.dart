@@ -320,7 +320,7 @@ class SolhTextStyles {
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w600,
   );
-  static const TextStyle QS_coption_bold = TextStyle(
+  static const TextStyle QS_caption_bold = TextStyle(
     fontSize: 12,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,

@@ -20,10 +20,12 @@ import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
+import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../../../../controllers/profile/anon_controller.dart';
 import '../../journaling/create-journal.dart';
@@ -61,11 +63,11 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldWithBackgroundArt(
       appBar: SolhAppBar(
         title: Text(
-          "Edit Profile",
-          style: SolhTextStyles.AppBarText,
+          "Personal Details",
+          style: SolhTextStyles.QS_body_1_bold,
         ),
         isLandingScreen: false,
       ),
@@ -75,35 +77,6 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
           Container(
             height: 2.5.h,
           ),
-          Obx(() =>
-              profileController.myProfileModel.value.body!.user!.anonymous !=
-                      null
-                  ? Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: SolhGreenBorderMiniButton(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.edit_outlined,
-                                  color: SolhColors.primary_green),
-                              Text(
-                                "Anonymous",
-                                style: SolhTextStyles.GreenBorderButtonText,
-                              ),
-                            ],
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EditAnonymousProfile()),
-                            );
-                          },
-                        ),
-                      ))
-                  : Container()),
           Container(
             child: Stack(
               children: [
@@ -121,32 +94,42 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                           ),
                         ),
                       )
-                    : CircleAvatar(
-                        radius: 14.5.w,
-                        backgroundColor: SolhColors.primary_green,
-                        child: InkWell(
-                          onTap: () {
-                            _pickImage();
-                          },
-                          child: CircleAvatar(
-                            radius: 14.w,
-                            backgroundImage: profileController
-                                    .isEditProfilePicUploading.value
-                                ? CachedNetworkImageProvider(
-                                    'https://banner2.cleanpng.com/20180628/xvr/kisspng-apple-id-computer-icons-macos-axle-load-5b354557d17970.908537281530217815858.jpg')
-                                : CachedNetworkImageProvider(profileController
-                                        .myProfileModel
-                                        .value
-                                        .body!
-                                        .user!
-                                        .profilePicture ??
-                                    ''),
+                    : Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                blurRadius: 2,
+                                color: Colors.black38,
+                              )
+                            ]),
+                        child: CircleAvatar(
+                          radius: 14.5.w,
+                          backgroundColor: SolhColors.primary_green,
+                          child: InkWell(
+                            onTap: () {
+                              _pickImage();
+                            },
+                            child: CircleAvatar(
+                              radius: 14.w,
+                              backgroundImage: profileController
+                                      .isEditProfilePicUploading.value
+                                  ? CachedNetworkImageProvider(
+                                      'https://banner2.cleanpng.com/20180628/xvr/kisspng-apple-id-computer-icons-macos-axle-load-5b354557d17970.908537281530217815858.jpg')
+                                  : CachedNetworkImageProvider(profileController
+                                          .myProfileModel
+                                          .value
+                                          .body!
+                                          .user!
+                                          .profilePicture ??
+                                      ''),
+                            ),
                           ),
                         ),
                       ),
                 Positioned(
                   right: 0,
-                  top: 0,
+                  bottom: 0,
                   child: InkWell(
                       onTap: () {
                         _croppedFile != null ? uploadImage() : _pickImage();
@@ -158,7 +141,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                               height: 35,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: Colors.white,
+                                color: SolhColors.primary_green,
                                 boxShadow: [
                                   BoxShadow(
                                       color: Colors.black26,
@@ -174,7 +157,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                                 },
                                 iconSize: 14,
                                 icon: Icon(Icons.edit_outlined,
-                                    color: SolhColors.primary_green),
+                                    color: SolhColors.white),
                               ),
                             )),
                 ),
@@ -215,12 +198,13 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             children: [
               Text(
                 "Gender",
-                style: TextStyle(color: Color(0xFFA6A6A6)),
+                style: SolhTextStyles.QS_caption_bold,
               ),
               GenderSelectionDropdown(
                 dropDownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: SolhColors.primary_green)),
+                  color: SolhColors.light_Bg,
+                  borderRadius: BorderRadius.circular(6),
+                ),
                 newValue: (String? newValue) {
                   print(newValue);
                   _gender = newValue!;
@@ -239,7 +223,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             children: [
               Text(
                 "DOB",
-                style: TextStyle(color: Color(0xFFA6A6A6)),
+                style: SolhTextStyles.QS_caption_bold,
               ),
               DOBPicker(
                 initialDateOfBirth: DateTime.parse(
@@ -257,10 +241,9 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                       .onChanged(DateFormat('dd MMMM yyyy').format(date));
                 },
                 boxDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(6)),
-                    border: Border.all(
-                      color: SolhColors.primary_green,
-                    )),
+                  color: SolhColors.light_Bg,
+                  borderRadius: BorderRadius.all(Radius.circular(6)),
+                ),
               ),
               SizedBox(
                 height: 2.25.h,
@@ -268,13 +251,13 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Select country',
-                  style: SolhTextStyles.JournalingUsernameText,
+                  style: SolhTextStyles.QS_caption_bold,
                 ),
                 // Text(
                 //   'Choose the default country from which you want to \nget consultation.',
@@ -290,7 +273,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                     return Container(
                       height: MediaQuery.of(context).size.height / 15,
                       decoration: BoxDecoration(
-                          border: Border.all(color: SolhColors.black166),
+                          color: SolhColors.light_Bg,
                           borderRadius: BorderRadius.all(Radius.circular(4))),
                       padding: EdgeInsets.symmetric(
                           horizontal: MediaQuery.of(context).size.height / 60),
@@ -516,12 +499,12 @@ class TextFieldB extends StatelessWidget {
         children: [
           Text(
             _label,
-            style: TextStyle(color: Color(0xFFA6A6A6)),
+            style: SolhTextStyles.QS_caption_bold,
           ),
           Container(
             child: TextField(
               controller: _textEditingController,
-              decoration: InputDecoration(border: OutlineInputBorder()),
+              decoration: TextFieldStyles.greenF_noBorderUF_4R(),
               maxLines: _maxLine,
               style: TextStyle(),
             ),

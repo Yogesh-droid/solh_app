@@ -196,14 +196,9 @@ class DOBPicker extends StatelessWidget {
               children: [
                 ageController.selectedAge.value ==
                         DateFormat('dd MMMM yyyy').format(DateTime.now())
-                    ? Text('Select DOB',
-                        style: SolhTextStyles.ProfileMenuGreyText)
+                    ? Text('Select DOB', style: SolhTextStyles.QS_caption)
                     : Text(
                         ageController.selectedAge.value,
-                        style: TextStyle(
-                          fontSize: 2.5.h,
-                          fontWeight: FontWeight.w500,
-                        ),
                       ),
                 Icon(
                   CupertinoIcons.chevron_down,

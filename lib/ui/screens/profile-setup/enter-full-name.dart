@@ -9,6 +9,7 @@ import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/text_field_styles.dart';
 import 'enter-username.dart';
 import 'user_type_screen.dart';
 
@@ -187,12 +188,8 @@ class ProfielTextField extends StatelessWidget {
       validator: _validator,
       autovalidateMode: _autovalidateMode,
       onChanged: _onChanged,
-      decoration: InputDecoration(
-          contentPadding:
-              EdgeInsets.symmetric(vertical: 2.5.h, horizontal: 3.5.w),
-          hintText: _hintText,
-          hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-          border: OutlineInputBorder()),
+      decoration: TextFieldStyles.greenF_noBorderUF_4R(
+          hintText: 'Enter Anonymous name'),
     );
   }
 }

@@ -281,7 +281,9 @@ class GetBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //return getBadge(_userType);
-    return Container();
+    return Container(
+      child: getBadge(_userType),
+    );
   }
 }
 
@@ -289,6 +291,7 @@ Widget getBadge(String usertype) {
   switch (usertype) {
     case "SolhVolunteer":
       return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             'Volunteer',
@@ -304,6 +307,7 @@ Widget getBadge(String usertype) {
 
     case "SolhProvider":
       return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             'Counsellor',

@@ -344,6 +344,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
           onPressed: () {
             bookAppointmentController.selectedDayForTimeSlot.value =
                 DateTime.now().day;
+            bookAppointmentController.selectedDate.value = DateTime.now();
             bookAppointmentController.getTimeSlot(
                 providerId:
                     _controller.consultantModelController.value.provder!.sId,

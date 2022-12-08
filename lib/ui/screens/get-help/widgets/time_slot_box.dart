@@ -15,7 +15,7 @@ class TimeSlotBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Wrap(
-          children: bookAppointmentController.timeSlotList
+          children: bookAppointmentController.timeSlotList.value
               .map((element) => getTimeSlotcontainer(element))
               .toList(),
         ));
@@ -25,14 +25,14 @@ class TimeSlotBox extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 12.0, bottom: 14),
       child: InkWell(
-        onTap: () {
-          bookAppointmentController.bookedTimeSlots.value.contains(element)
-              ? () {
-                  Utility.showToast('This time slot is not available');
-                  return;
-                }
-              : onTap(element);
-        },
+        onTap: bookAppointmentController.bookedTimeSlots.value.contains(element)
+            ? () {
+                Utility.showToast('This time slot is not available');
+                return;
+              }
+            : () {
+                onTap(element);
+              },
         child: Container(
           height: 32,
           width: 95,
