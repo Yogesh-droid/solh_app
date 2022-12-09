@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -145,6 +146,8 @@ You will have to create a new account and start your journey from the beginning 
                                                             ConnectionController>();
                                                         Get.delete<
                                                             ConnectionController>();
+                                                        Get.delete<
+                                                            PhoneAuthController>();
                                                         Utility.showLoader(
                                                             context);
                                                         await userBlocNetwork
@@ -155,7 +158,7 @@ You will have to create a new account and start your journey from the beginning 
                                                             .pushNamedAndRemoveUntil(
                                                                 context,
                                                                 AppRoutes
-                                                                    .introScreen,
+                                                                    .getStarted,
                                                                 (route) =>
                                                                     false);
                                                         // Navigator.popUntil(

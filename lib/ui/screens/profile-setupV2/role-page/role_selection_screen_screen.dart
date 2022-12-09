@@ -12,6 +12,8 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/solh_snackBar.dart';
 
+import 'package:solh/widgets_constants/text_field_styles.dart';
+
 enum RoleType { Seeker, Volunteer, Provider, Explorer, Undefined }
 
 class RoleSection extends StatelessWidget {
@@ -31,20 +33,25 @@ class RoleSection extends StatelessWidget {
                   size: 40,
                 ),
           onPressed: () async {
-            if (profileSetupController.selectedRoleType.value !=
-                RoleType.Undefined) {
-              bool response = await profileSetupController.updateUserProfile({
-                "userType":
-                    getUserType(profileSetupController.selectedRoleType.value)
-              });
+            if (coditionChecker(profileSetupController) == '') {
+              if (profileSetupController.selectedRoleType.value !=
+                  RoleType.Undefined) {
+                bool response = await profileSetupController.updateUserProfile({
+                  "email": profileSetupController.providerEmailController.text
+                      .trim(),
+                  "userType":
+                      getUserType(profileSetupController.selectedRoleType.value)
+                });
 
-              if (response) {
-                Navigator.pushNamed(context, AppRoutes.needSupportOn);
+                if (response) {
+                  Navigator.pushNamed(context, AppRoutes.needSupportOn);
+                }
+              } else {
+                SolhSnackbar.error('Error', 'Choose a valid option');
               }
             } else {
-              SolhSnackbar.error('Error', 'Choose a valid option');
+              SolhSnackbar.error('Error', 'Enter/select all options');
             }
-            // Navigator.pushNamed(context, AppRoutes.dobField);
           },
         );
       }),
@@ -54,8 +61,11 @@ class RoleSection extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
+        child: ListView(
           children: [
+            SizedBox(
+              height: 3.h,
+            ),
             StepsProgressbar(stepNumber: 4),
             SizedBox(
               height: 3.h,
@@ -64,7 +74,8 @@ class RoleSection extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            RoleOptions()
+            RoleOptions(),
+            BottomNote()
           ],
         ),
       ),
@@ -167,6 +178,47 @@ Widget getRoleOption(String iconPath, String roleText, RoleType roleType,
   });
 }
 
+class BottomNote extends StatelessWidget {
+  BottomNote({Key? key}) : super(key: key);
+  final ProfileSetupController profileSetupController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      SizedBox(
+        height: 1.h,
+      ),
+      Obx(() {
+        return getBottomRole(profileSetupController.selectedRoleType.value);
+      }),
+      SizedBox(
+        height: 2.5.h,
+      ),
+      Obx(() {
+        return profileSetupController.selectedRoleType == RoleType.Provider
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'First Name',
+                    style: SolhTextStyles.SmallTextWhiteS12W7,
+                  ),
+                  SizedBox(
+                    height: 1.h,
+                  ),
+                  TextField(
+                    controller: profileSetupController.providerEmailController,
+                    decoration:
+                        TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
+                  ),
+                ],
+              )
+            : Container();
+      }),
+    ]);
+  }
+}
+
 String getUserType(RoleType roleType) {
   if (roleType == RoleType.Seeker) {
     return "Seeker";
@@ -181,5 +233,47 @@ String getUserType(RoleType roleType) {
     return "Seeker";
   } else {
     return "Undefined";
+  }
+}
+
+Widget getBottomRole(RoleType roleType) {
+  if (roleType == RoleType.Volunteer) {
+    return Text(
+      'Note: This role comes up with many important reponsibilities, our coaching manual & screening processes will guide you further.',
+      style: SolhTextStyles.QS_body_2.copyWith(color: SolhColors.white),
+    );
+  }
+
+  if (roleType == RoleType.Provider) {
+    return Text(
+      'To complete further processes, provide email-id below. E-mail from solh will guide you further',
+      style: SolhTextStyles.QS_body_2.copyWith(color: SolhColors.white),
+    );
+  } else {
+    return Container();
+  }
+}
+
+String coditionChecker(ProfileSetupController profileSetupController) {
+  if (!emailVarification(
+      profileSetupController.providerEmailController.text.trim())) {
+    if (profileSetupController.selectedRoleType == RoleType.Provider) {
+      debugPrint('Please enter a valid email');
+      return 'Please enter a valid email';
+    } else {
+      return '';
+    }
+  } else {
+    return '';
+  }
+}
+
+bool emailVarification(email) {
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email)) {
+    return false;
+  } else {
+    return true;
   }
 }

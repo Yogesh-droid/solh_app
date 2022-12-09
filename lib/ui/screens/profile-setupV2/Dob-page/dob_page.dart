@@ -60,8 +60,11 @@ class DobField extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
+        child: ListView(
           children: [
+            SizedBox(
+              height: 3.h,
+            ),
             StepsProgressbar(stepNumber: 2),
             SizedBox(
               height: 3.h,
@@ -149,15 +152,36 @@ class GetDobContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => _showDialog(
-        CupertinoDatePicker(
-          maximumDate: DateTime.now().add(Duration(days: 1)),
-          initialDateTime: DateTime.now(),
-          mode: CupertinoDatePickerMode.date,
-          use24hFormat: true,
-          // This is called when the user changes the date.
-          onDateTimeChanged: (DateTime newDate) {
-            profileSetupController.dobDate.value = newDate;
-          },
+        Stack(
+          children: [
+            CupertinoDatePicker(
+              dateOrder: DatePickerDateOrder.dmy,
+              maximumDate: DateTime.now().add(Duration(days: 1)),
+              initialDateTime: DateTime.now(),
+              mode: CupertinoDatePickerMode.date,
+              use24hFormat: true,
+              // This is called when the user changes the date.
+              onDateTimeChanged: (DateTime newDate) {
+                profileSetupController.dobDate.value = newDate;
+              },
+            ),
+            Positioned(
+              right: 10,
+              child: Material(
+                child: InkWell(
+                  onTap: (() {
+                    print('sdfsdfsdf');
+                    Navigator.of(context).pop();
+                  }),
+                  child: Icon(
+                    Icons.cancel,
+                    size: 30,
+                    color: SolhColors.primary_green,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         context,
       ),

@@ -28,18 +28,21 @@ class LetsCreateYourProfile extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            CreateYourProfile(),
-            Expanded(child: SizedBox()),
-            CreateProfileButton(),
-            SizedBox(
-              height: 10.h,
-            ),
-          ],
+        child: SizedBox(
+          height: 100.h,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              CreateYourProfile(),
+              Expanded(child: SizedBox()),
+              CreateProfileButton(),
+              SizedBox(
+                height: 10.h,
+              ),
+            ],
+          ),
         ),
       ),
     );

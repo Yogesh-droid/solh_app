@@ -54,6 +54,9 @@ class GenderField extends StatelessWidget {
         ),
         child: Column(
           children: [
+            SizedBox(
+              height: 3.h,
+            ),
             StepsProgressbar(stepNumber: 3),
             SizedBox(
               height: 3.h,
@@ -123,21 +126,37 @@ class GenderSelection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4)),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: [
-                  Obx(() {
-                    return profileSetupController.gender.value == ''
-                        ? Text(
-                            'Select',
-                            style: SolhTextStyles.NormalTextGreyS14W5,
-                          )
-                        : Text(
-                            profileSetupController.gender.value,
-                            style: SolhTextStyles.NormalTextBlack2S14W6,
-                          );
-                  }),
-                  Container(child: DropDownItem())
+                  Positioned(
+                      top: 0,
+                      bottom: 0,
+                      right: 0,
+                      child: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: SolhColors.primary_green,
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(() {
+                        return profileSetupController.gender.value == ''
+                            ? Text(
+                                'Select',
+                                style: SolhTextStyles.NormalTextGreyS14W5,
+                              )
+                            : Text(
+                                profileSetupController.gender.value,
+                                style: SolhTextStyles.NormalTextBlack2S14W6,
+                              );
+                      }),
+                      Container(
+                        child: Expanded(
+                          child: DropDownItem(),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -158,7 +177,7 @@ class DropDownItem extends StatelessWidget {
         underline: Container(),
         icon: Icon(
           Icons.keyboard_arrow_down_rounded,
-          color: SolhColors.primary_green,
+          color: SolhColors.white,
         ),
         items: [
           DropdownMenuItem(

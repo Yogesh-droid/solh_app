@@ -133,6 +133,8 @@ class _OtpFieldState extends State<OtpField> {
     // phoneAuthController.otpCode.clear();
     phoneAuthController.isRequestingAuth.value = false;
 
+    phoneAuthController.dispose();
+
     super.dispose();
   }
 

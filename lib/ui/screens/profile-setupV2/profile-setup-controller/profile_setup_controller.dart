@@ -42,6 +42,7 @@ class ProfileSetupController extends GetxController {
   TextEditingController organisationNameController = TextEditingController();
 
   TextEditingController otherIssueTextField = TextEditingController();
+  TextEditingController providerEmailController = TextEditingController();
 
   Future<bool> updateUserProfile(Map<String, dynamic> body) async {
     try {

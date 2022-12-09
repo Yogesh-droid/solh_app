@@ -20,6 +20,7 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
+import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -157,6 +158,7 @@ class GetLogoutButton extends StatelessWidget {
           Get.delete<NotificationController>();
           Get.delete<ChatListController>();
           Get.delete<GoalSettingController>();
+          Get.delete<PhoneAuthController>();
           Get.delete<ConnectionController>();
           Get.delete<DiscoverGroupController>();
           Get.delete<CreateGroupController>();

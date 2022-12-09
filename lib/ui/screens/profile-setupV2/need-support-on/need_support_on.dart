@@ -193,10 +193,23 @@ class _IssueChipsState extends State<IssueChips> {
                           profileSetupController.selectedIsses.contains(e.sId),
                       selectedColor: SolhColors.primary_green,
                       backgroundColor: SolhColors.grey239,
-                      label: Text(
-                        e.slug!,
-                        style: Theme.of(context).textTheme.headline1,
-                      )))
+                      checkmarkColor:
+                          profileSetupController.selectedIsses.contains(e.sId)
+                              ? SolhColors.white
+                              : SolhColors.black,
+                      label:
+                          profileSetupController.selectedIsses.contains(e.sId)
+                              ? Text(
+                                  e.slug!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .copyWith(color: SolhColors.white),
+                                )
+                              : Text(
+                                  e.slug!,
+                                  style: Theme.of(context).textTheme.headline1,
+                                )))
                   .toList());
     });
   }
@@ -222,13 +235,17 @@ class OtherIssueList extends StatelessWidget {
                 Icon(
                   Icons.cancel_outlined,
                   size: 19,
+                  color: SolhColors.white,
                 ),
                 SizedBox(
                   width: 5,
                 ),
                 Text(
                   element,
-                  style: Theme.of(context).textTheme.headline1,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline1!
+                      .copyWith(color: SolhColors.white),
                 ),
               ],
             ),
