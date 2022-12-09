@@ -8,4 +8,10 @@ class SolhSnackbar {
         backgroundColor: SolhColors.primaryRed,
         snackPosition: SnackPosition.BOTTOM);
   }
+
+  static SnackbarController sucess(String title, String message) {
+    return Get.snackbar(title, message,
+        backgroundColor: SolhColors.greenShade1,
+        snackPosition: SnackPosition.BOTTOM);
+  }
 }

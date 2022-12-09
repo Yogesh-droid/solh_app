@@ -9,6 +9,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -32,13 +33,15 @@ class GetStartedScreen extends StatelessWidget {
                   ),
                   Text(
                     'Solh Wellness',
-                    style: SolhTextStyles.LargeGreenTextS32W7,
+                    style: SolhTextStyles.QS_head_4_1.copyWith(
+                        color: SolhColors.primary_green),
                   ),
                   SizedBox(
                     width: 60.w,
                     child: Text(
                       'Clear your Mind. Find Happiness in Chaos. Seek Solh Within.',
-                      style: SolhTextStyles.NormalTextBlackS14W5,
+                      style: SolhTextStyles.QS_body_2_semi.copyWith(
+                          color: SolhColors.dark_grey),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -59,7 +62,7 @@ class GetStartedScreen extends StatelessWidget {
                         }),
                   ),
                   SizedBox(
-                    height: 1.h,
+                    height: 2.5.h,
                   ),
                   RichText(
                       text: TextSpan(

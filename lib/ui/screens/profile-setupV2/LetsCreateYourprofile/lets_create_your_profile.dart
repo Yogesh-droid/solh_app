@@ -88,12 +88,12 @@ class CreateProfileButton extends StatelessWidget {
           onPressed: () => Navigator.pushNamed(context, AppRoutes.nameField),
         ),
         SizedBox(
-          height: 1.h,
+          height: 3.5.h,
         ),
-        Text(
-          'Do it later',
-          style: SolhTextStyles.NormalTextWhiteS14W6,
-        )
+        // Text(
+        //   'Do it later',
+        //   style: SolhTextStyles.NormalTextWhiteS14W6,
+        // )
       ],
     );
   }

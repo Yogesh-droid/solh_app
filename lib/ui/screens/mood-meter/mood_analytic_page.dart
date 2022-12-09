@@ -12,7 +12,9 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class MoodAnalyticPage extends StatelessWidget {
-  MoodAnalyticPage({Key? key}) : super(key: key);
+  MoodAnalyticPage({
+    Key? key,
+  }) : super(key: key);
   final MoodMeterController moodMeterController = Get.find();
 
   @override

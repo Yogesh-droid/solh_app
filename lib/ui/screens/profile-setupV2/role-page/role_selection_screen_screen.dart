@@ -151,7 +151,10 @@ Widget getRoleOption(String iconPath, String roleText, RoleType roleType,
                 SizedBox(
                   width: 2.w,
                 ),
-                Text(roleText),
+                Text(
+                  roleText,
+                  style: SolhTextStyles.QS_body_2_bold,
+                ),
               ],
             ),
             profileSetupController.selectedRoleType.value == roleType

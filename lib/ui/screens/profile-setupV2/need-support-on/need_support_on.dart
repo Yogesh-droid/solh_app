@@ -37,7 +37,7 @@ class NeedSupportOn extends StatelessWidget {
               ),
         onPressed: (() async {
           bool response = await profileSetupController.updateUserProfile({
-            "issuesList": profileSetupController.selectedIsses.value.toString(),
+            "issueList": profileSetupController.selectedIsses.value.toString(),
             "issueOther":
                 profileSetupController.selectedOtherIssues.value.toString(),
           });

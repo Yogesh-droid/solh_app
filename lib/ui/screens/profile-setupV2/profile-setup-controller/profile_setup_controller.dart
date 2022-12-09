@@ -46,20 +46,25 @@ class ProfileSetupController extends GetxController {
   Future<bool> updateUserProfile(Map<String, dynamic> body) async {
     try {
       isUpdatingField(true);
+
       var response = await Network.makePutRequestWithToken(
         url: '${APIConstants.api}/api/edit-user-details',
         body: body,
       );
+      debugPrint("response" + response.toString());
       isUpdatingField(false);
       if (response["success"]) {
+        debugPrint("response" + response.toString());
         profileController.myProfileModel.value =
             MyProfileModel.fromJson(response);
+
         return true;
       } else {
         SolhSnackbar.error('Error', 'Opps, Something went wrong');
         return false;
       }
     } catch (e) {
+      SolhSnackbar.error('Error', 'Opps, Something went wrong');
       debugPrint(e.toString());
       return false;
     }

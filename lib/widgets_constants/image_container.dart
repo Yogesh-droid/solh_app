@@ -140,55 +140,71 @@ class ImageWithProgressBarAndBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: Stack(
-            children: [
-              CustomPaint(
-                painter: OpenPainter2(imageRadius),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.transparent,
+    return Container(
+      // color: Colors.black45,
+
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Stack(
+              children: [
+                Positioned(
+                  child: CustomPaint(
+                    painter: OpenPainter2(imageRadius),
+                  ),
                 ),
-                child: CustomPaint(
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrl,
-                      color: SolhColors.grey,
-                      placeholder: (_, k) {
-                        return MyLoader();
-                      },
-                      imageBuilder: (context, imageProvider) => Container(
-                        width: imageRadius.width,
-                        height: imageRadius.height,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: imageProvider,
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                  ),
+                  child: CustomPaint(
+                      // child: MyLoader(
+                      //   radius: imageRadius.width / 2,
+                      // ),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        placeholder: (_, k) {
+                          return Container(
+                            child: Center(
+                              child: MyLoader(
+                                radius: imageRadius.width / 2,
+                              ),
+                            ),
+                          );
+                        },
+                        imageBuilder: (context, imageProvider) => Container(
+                          width: imageRadius.width,
+                          height: imageRadius.height,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: imageProvider,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    painter: OpenPainter(imageRadius, percent)),
-              ),
-            ],
+                      painter: OpenPainter(imageRadius, percent)),
+                ),
+              ],
+            ),
           ),
-        ),
-        Positioned(
-          right: 0,
-          left: 0,
-          bottom: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Percentagebadge(),
-            ],
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Percentagebadge(
+                  percent: percent,
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

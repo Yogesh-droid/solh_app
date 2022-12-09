@@ -192,6 +192,7 @@ class Network {
       String url, String key, File file,
       {bool? isVideo}) async {
     print(userBlocNetwork.getSessionCookie);
+    print(url);
     Uri uri = Uri.parse(url);
 
     var request = http.MultipartRequest(
@@ -454,7 +455,7 @@ class Network {
             "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
           },
           body: body);
-
+      print('send sucessfully' + apiResponse.body);
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);
