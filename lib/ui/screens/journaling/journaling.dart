@@ -16,6 +16,7 @@ import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
@@ -645,12 +646,7 @@ class _JournalingState extends State<Journaling> {
         ),
         Text(
           "Discover",
-          style: TextStyle(
-            fontSize: 14,
-            color: Color(0xFF666666),
-            fontWeight: FontWeight.w400,
-            height: 1.23, //Figma Line Height 17.25
-          ),
+          style: SolhTextStyles.QS_cap_semi,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),

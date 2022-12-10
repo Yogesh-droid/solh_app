@@ -40,11 +40,12 @@ class BookAppointmentController extends GetxController {
     print(APIConstants.api + '/api/appointment');
     print(body);
     isLoading.value = true;
-    var response = await Network.makeHttpPostRequestWithToken(
-        url: APIConstants.api + '/api/appointment', body: body);
-    print('---' + response.toString());
+    // var response = await Network.makeHttpPostRequestWithToken(
+    //     url: APIConstants.api + '/api/appointment', body: body);
+    // print('---' + response.toString());
     isLoading.value = false;
-    return response;
+    // return response;
+    return Future.value('');
   }
 
   Future<void> isSlotAdded({required String providerId}) async {

@@ -240,7 +240,7 @@ class SideDrawer extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => PrivacyWeb(
-                                  title: 'Privacy policy',
+                                  title: 'Privacy Policy',
                                   url: "https://solhapp.com/privacypolicy.html",
                                 )));
                   },
@@ -254,7 +254,7 @@ class SideDrawer extends StatelessWidget {
                       MaterialPageRoute(
                         builder: (context) => PrivacyWeb(
                             url: 'https://solhapp.com/termsandcondition.html',
-                            title: 'Terms and condtions'),
+                            title: 'Terms and Conditions'),
                       ),
                     );
                   },

@@ -14,7 +14,9 @@ import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
 
 class BookAppoinmentSheet extends StatelessWidget {
-  BookAppoinmentSheet({Key? key}) : super(key: key);
+  BookAppoinmentSheet({Key? key, required this.onContinueBtnPressed})
+      : super(key: key);
+  final Function() onContinueBtnPressed;
   final BookAppointmentController bookAppointmentController = Get.find();
   final ConsultantController _controller = Get.find();
   final PageController pageController = PageController();
@@ -59,7 +61,7 @@ class BookAppoinmentSheet extends StatelessWidget {
               controller: pageController,
               children: [
                 getBookcalenderWidget(context),
-                getBookingInputWidget()
+                getBookingInputWidget(context)
               ],
             ),
           )
@@ -151,15 +153,15 @@ class BookAppoinmentSheet extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: SolhGreenButton(
                 height: 48,
+                width: MediaQuery.of(context).size.width,
                 onPressed: () {
-                  print(DateTime.now().toUtc());
-                  // if (bookAppointmentController
-                  //     .selectedTimeSlotN.value.isEmpty) {
-                  //   Utility.showToast('Please choose a time slot');
-                  //   return;
-                  // }
-                  // pageController.animateToPage(1,
-                  //     duration: Duration(seconds: 1), curve: Curves.decelerate);
+                  if (bookAppointmentController
+                      .selectedTimeSlotN.value.isEmpty) {
+                    Utility.showToast('Please choose a time slot');
+                    return;
+                  }
+                  pageController.animateToPage(1,
+                      duration: Duration(seconds: 1), curve: Curves.decelerate);
                 },
                 child: Text(
                   'Next',
@@ -171,7 +173,7 @@ class BookAppoinmentSheet extends StatelessWidget {
     );
   }
 
-  Widget getBookingInputWidget() {
+  Widget getBookingInputWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -269,9 +271,8 @@ class BookAppoinmentSheet extends StatelessWidget {
           ),
           SolhGreenButton(
               height: 48,
-              onPressed: () {
-                // bookAppointmentController.bookAppointment(body);
-              },
+              width: MediaQuery.of(context).size.width,
+              onPressed: onContinueBtnPressed,
               child: Text(
                 'Continue',
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),

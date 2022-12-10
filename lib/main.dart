@@ -125,19 +125,6 @@ class _SolhAppState extends State<SolhApp> {
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
-          textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                  splashFactory: InkRipple.splashFactory,
-                  overlayColor:
-                      MaterialStateProperty.all<Color>(SolhColors.grey),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  )),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      SolhColors.primary_green))),
         ),
       );
     });

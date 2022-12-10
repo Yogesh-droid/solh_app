@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:solh/bloc/doctors-bloc.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../../controllers/connections/connection_controller.dart';
 import '../../../../controllers/getHelp/get_help_controller.dart';
 import '../consultant_tile.dart';

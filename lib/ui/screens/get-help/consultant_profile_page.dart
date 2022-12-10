@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/ui/screens/get-help/booking_price_details.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -361,7 +362,13 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return BookAppoinmentSheet();
+          return BookAppoinmentSheet(
+            onContinueBtnPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return BookingPriceDetails();
+              }));
+            },
+          );
         });
   }
 }

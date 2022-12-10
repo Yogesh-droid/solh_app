@@ -28,7 +28,6 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
-import '../../../bloc/user-bloc.dart';
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -521,30 +520,30 @@ class _HomePageState extends State<HomePage> {
   Widget getTrendingPostUI() {
     return _journalPageController.trendingJournalsList.isNotEmpty
         ? Container(
-            // height: MediaQuery.of(context).size.height * 0.55,
             height: 340,
             child: Obx(() {
               return Stack(
+                alignment: Alignment.center,
                 children: [
                   _journalPageController.trendingJournalsList.length > 2
                       ? Positioned(
-                          right: 15,
-                          top: 70,
-                          left: 30,
+                          // right: 15,
+                          // top: 70,
+                          // left: 30,
                           child: getPostCard2(
                               _journalPageController.trendingJournalsList[2]))
                       : Container(),
                   _journalPageController.trendingJournalsList.length > 1
                       ? Positioned(
-                          right: 30,
-                          top: 40,
-                          left: 30,
+                          // right: 30,
+                          // top: 40,
+                          // left: 30,
                           child: getPostCard(
                               _journalPageController.trendingJournalsList[1]))
                       : Container(),
                   Positioned(
-                      left: 2.h,
-                      top: 10,
+                      // left: 2.h,
+                      // top: 10,
                       child: getDraggable(
                           _journalPageController.trendingJournalsList[0]))
                 ],
@@ -568,7 +567,27 @@ class _HomePageState extends State<HomePage> {
           height: 300,
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
-              color: Colors.white,
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: journal.mediaUrl != null
+                      ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                      : AssetImage(
+                          'assets/images/backgroundScaffold.png',
+                        ) as ImageProvider),
+              gradient: journal.postedBy!.userType == 'Official'
+                  ? LinearGradient(
+                      stops: [0.1, 0.9],
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        Color.fromARGB(255, 173, 215, 204),
+                        Color.fromARGB(255, 201, 156, 157),
+                      ],
+                    )
+                  : LinearGradient(colors: [
+                      SolhColors.Counsellor_Blue,
+                      SolhColors.Counsellor_Blue,
+                    ]),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -596,6 +615,9 @@ class _HomePageState extends State<HomePage> {
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
               color: Colors.white,
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: CachedNetworkImageProvider(journal.mediaUrl ?? '')),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -631,8 +653,12 @@ class _HomePageState extends State<HomePage> {
     return Container(
       // height: MediaQuery.of(context).size.height * 0.4,
       height: 240,
+      width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+              fit: BoxFit.fill,
+              image: CachedNetworkImageProvider(journal.mediaUrl ?? '')),
           border: Border.all(color: Colors.grey[200]!),
           color: Colors.white),
       child: getPostContent(journal, 10),
@@ -647,6 +673,11 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey[200]!),
+          image: DecorationImage(
+              fit: BoxFit.fill,
+              image: CachedNetworkImageProvider(
+                journal.mediaUrl ?? '',
+              )),
           color: Colors.white),
       child: getPostContent(journal, 7),
     );
@@ -674,63 +705,65 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getPostContent(Journals journal, int maxLine) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        getUserTile(journal),
-        Divider(height: 1),
-        journal.feelings!.length > 0
-            ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  children: journal.feelings!
-                      .map((e) => Text(
-                            '${e.feelingName}',
-                            style: SolhTextStyles.JournalingHashtagText,
-                          ))
-                      .toList(),
-                ),
-              )
-            : Container(),
-        journal.description!.trim().isEmpty
-            ? SizedBox(
-                height: 0,
-              )
-            : Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  journal.description ?? '',
-                  style: SolhTextStyles.LandingParaText,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                ),
+    return Container(
+      decoration: BoxDecoration(),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          getUserTile(journal),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Color.fromRGBO(255, 255, 255, 0.85)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  journal.feelings!.length > 0
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Wrap(
+                            children: journal.feelings!.length > 3
+                                ? journal.feelings!
+                                    .sublist(0, 3)
+                                    .map((e) => Text(
+                                          '${e.feelingName}',
+                                          style: SolhTextStyles
+                                              .JournalingHashtagText,
+                                        ))
+                                    .toList()
+                                : journal.feelings!
+                                    .map((e) => Text(
+                                          '${e.feelingName}',
+                                          style: SolhTextStyles
+                                              .JournalingHashtagText,
+                                        ))
+                                    .toList(),
+                          ),
+                        )
+                      : Container(),
+                  journal.description!.trim().isEmpty
+                      ? SizedBox(
+                          height: 0,
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            journal.description ?? '',
+                            style: SolhTextStyles.QS_cap_semi,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                ],
               ),
-        Expanded(
-          child: Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10),
-                    bottomRight: Radius.circular(10)),
-                child: CachedNetworkImage(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  imageUrl: journal.mediaUrl ?? '',
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Container(),
-                  placeholder: (context, url) => getImgShimmer(),
-                ),
-              ),
-              Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: getInteractionButton(journal))
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -749,7 +782,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getSolhBuddiesUI() {
     return Container(
-      height: 290,
+      height: 270,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&
@@ -786,8 +819,6 @@ class _HomePageState extends State<HomePage> {
                       likes: getHelpController
                           .solhVolunteerList.value.provider![index].likesCount
                           .toString(),
-
-                      /// ye deepak ne phir dobara se activete karwaya hai ///  featured only
                       userType: getHelpController
                           .solhVolunteerList.value.provider![index].userType,
                     ))
@@ -964,7 +995,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getPeopleYouMayKnowUI() {
     return Container(
-      height: 290,
+      height: 270,
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return ListView.separated(
@@ -1363,66 +1394,73 @@ class _HomePageState extends State<HomePage> {
   }
 
   getUserTile(Journals journal) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(
-                !journal.anonymousJournal!
-                    ? journal.postedBy!.profilePicture ?? ''
-                    : journal.postedBy!.anonymous!.profilePicture ?? ''),
-            backgroundColor: SolhColors.grey,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                !journal.anonymousJournal!
-                    ? journal.postedBy!.name ?? ''
-                    : 'Anonymous',
-                style: SolhTextStyles.JournalingUsernameText,
-              ),
-              Row(
-                children: [
-                  Text(
-                    timeago.format(DateTime.parse(journal.createdAt ?? '')),
-                    style: SolhTextStyles.JournalingTimeStampText,
-                  ),
-                  VerticalDivider(
-                    color: SolhColors.grey,
-                  ),
-                  journal.postedBy != null &&
-                          !journal.anonymousJournal! &&
-                          journal.postedBy!.userType == "Official"
-                      ? SolhExpertBadge(
-                          usertype: 'Official',
-                        )
-                      : journal.postedBy != null &&
-                              !journal.anonymousJournal! &&
-                              journal.postedBy!.userType == "SolhProvider"
-                          ? SolhExpertBadge(
-                              usertype: 'Counsellor',
-                            )
-                          : journal.postedBy != null &&
-                                  !journal.anonymousJournal! &&
-                                  journal.postedBy!.userType == "SolhVolunteer"
-                              ? SolhExpertBadge(
-                                  usertype: 'Volunteer',
-                                )
-                              : journal.postedBy != null &&
-                                      !journal.anonymousJournal! &&
-                                      journal.postedBy!.userType == "Seeker"
-                                  ? Container()
-                                  : Container(),
-                ],
-              ),
-            ],
-          )
-        ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Color.fromRGBO(255, 255, 255, 0.85)),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(
+                  !journal.anonymousJournal!
+                      ? journal.postedBy!.profilePicture ?? ''
+                      : journal.postedBy!.anonymous!.profilePicture ?? ''),
+              backgroundColor: SolhColors.grey,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  !journal.anonymousJournal!
+                      ? journal.postedBy!.name ?? ''
+                      : 'Anonymous',
+                  style: SolhTextStyles.QS_caption_bold,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      timeago.format(DateTime.parse(journal.createdAt ?? '')),
+                      style: SolhTextStyles.QS_caption_2_bold,
+                    ),
+                    VerticalDivider(
+                      color: SolhColors.grey,
+                    ),
+                    journal.postedBy != null &&
+                            !journal.anonymousJournal! &&
+                            journal.postedBy!.userType == "Official"
+                        ? SolhExpertBadge(
+                            usertype: 'Official',
+                          )
+                        : journal.postedBy != null &&
+                                !journal.anonymousJournal! &&
+                                journal.postedBy!.userType == "SolhProvider"
+                            ? SolhExpertBadge(
+                                usertype: 'Counsellor',
+                              )
+                            : journal.postedBy != null &&
+                                    !journal.anonymousJournal! &&
+                                    journal.postedBy!.userType ==
+                                        "SolhVolunteer"
+                                ? SolhExpertBadge(
+                                    usertype: 'Volunteer',
+                                  )
+                                : journal.postedBy != null &&
+                                        !journal.anonymousJournal! &&
+                                        journal.postedBy!.userType == "Seeker"
+                                    ? Container()
+                                    : Container(),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

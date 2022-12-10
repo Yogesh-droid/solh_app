@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/consultant_profile.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../controllers/getHelp/consultant_controller.dart';
 import '../../../model/doctor.dart';
@@ -35,7 +36,6 @@ class ConsultantsTile extends StatelessWidget {
       //           id: _doctorModel.id,
       //         ))),
       child: Container(
-          height: 180,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
@@ -212,50 +212,23 @@ class ConsultantsTile extends StatelessWidget {
   }
 
   Widget getActivityDetails(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MaterialButton(
-            onPressed: () {
-              launchUrl(Uri.parse("tel://${8284848028}"));
-            },
-            // child: Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            //   decoration: BoxDecoration(
-            //       border: Border.all(color: SolhColors.green),
-            //       borderRadius: BorderRadius.circular(18)),
-            //   child: Row(
-            //     children: [
-            //       Text('Call',
-            //           style: TextStyle(
-            //             color: SolhColors.green,
-            //             fontSize: 14,
-            //           )),
-            //       Icon(
-            //         Icons.call,
-            //         color: SolhColors.green,
-            //       )
-            //     ],
-            //   ),
-            // ),
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: SolhGreenButton(
+          child: Text(
+            "Book Appointment",
+            textAlign: TextAlign.center,
+            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
-          SolhGreenButton(
-            height: 6.h,
-            width: 35.w,
-            child: Text(
-              "Book Appointment",
-              style: TextStyle(fontSize: 12),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ConsultantProfile(
-                        id: _doctorModel.id,
-                      )));
-            },
-          )
-        ],
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ConsultantProfile(
+                      id: _doctorModel.id,
+                    )));
+          },
+        ),
       ),
     );
   }
