@@ -2,20 +2,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/buttons/primary-buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../../../controllers/getHelp/book_appointment.dart';
+import '../../../routes/routes.dart';
+import '../../../services/utility.dart';
 import '../../../widgets_constants/privacy_web.dart';
 import 'book_appointment.dart';
 
@@ -44,7 +46,7 @@ class BookingPriceDetails extends StatelessWidget {
       child: ListView(children: [
         getDoctorDetails(),
         GetHelpDivider(),
-        getSelectedDateTimeWidget(),
+        getSelectedDateTimeWidget(context),
         GetHelpDivider(),
         couponAndBillwidget(),
         SizedBox(
@@ -98,7 +100,7 @@ class BookingPriceDetails extends StatelessWidget {
     );
   }
 
-  Widget getSelectedDateTimeWidget() {
+  Widget getSelectedDateTimeWidget(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 20.0, right: 20),
       height: 77,
@@ -115,7 +117,9 @@ class BookingPriceDetails extends StatelessWidget {
                   .copyWith(color: SolhColors.primary_green))),
           Spacer(),
           TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text(
                 'Change',
                 style: SolhTextStyles.QS_cap_semi.copyWith(
@@ -132,7 +136,7 @@ class BookingPriceDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            /* Container(
               height: 90,
               padding: EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
@@ -159,7 +163,7 @@ class BookingPriceDetails extends StatelessWidget {
             ),
             SizedBox(
               height: 30,
-            ),
+            ), */
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -183,7 +187,7 @@ class BookingPriceDetails extends StatelessWidget {
                             color: SolhColors.Grey_1)),
                   ],
                 ),
-                SizedBox(
+                /*  SizedBox(
                   height: 5,
                 ),
                 Row(
@@ -197,7 +201,7 @@ class BookingPriceDetails extends StatelessWidget {
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.Grey_1)),
                   ],
-                ),
+                ), */
                 Divider(
                   color: SolhColors.Grey_1,
                 ),
@@ -211,7 +215,7 @@ class BookingPriceDetails extends StatelessWidget {
                             color: SolhColors.black)),
                     Spacer(),
                     Text(
-                        "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount! + 49)} ",
+                        "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.black)),
                   ],
@@ -241,7 +245,7 @@ class BookingPriceDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount! + 49)} ",
+                "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black)),
             SizedBox(
@@ -264,37 +268,21 @@ class BookingPriceDetails extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'Pay & confirm',
-                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-                  )
+                  Obx(() => bookAppointmentController.isLoading.value
+                      ? MyLoader(
+                          radius: 8,
+                          strokeWidth: 2,
+                        )
+                      : Text(
+                          'Pay & confirm',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        ))
                 ],
               ),
-              onPressed: () {
-                // print(getdateTime(
-                //     bookAppointmentController.selectedDay,
-                //     bookAppointmentController.selectedTimeSlot,
-                //     0,
-                //     bookAppointmentController.selectedDate.value));
-                // print(
-                //   getdateTime(
-                //       bookAppointmentController.selectedDay,
-                //       bookAppointmentController.selectedTimeSlot,
-                //       1,
-                //       bookAppointmentController.selectedDate.value),
-                // );
-                print(
-                  bookAppointmentController.emailTextEditingController.text,
-                );
-                print(
-                  bookAppointmentController.selectedTimeSlot.split('-')[0],
-                );
-                print(bookAppointmentController.selectedTimeSlot.split('-')[1]);
-                print(
-                  bookAppointmentController.catTextEditingController.value.text,
-                );
-                print(bookAppointmentController.query ?? '');
-                bookAppointmentController.bookAppointment({
+              onPressed: () async {
+                Map<String, dynamic> map =
+                    await bookAppointmentController.bookAppointment({
                   'provider': consultantController
                               .consultantModelController.value.provder!.type ==
                           'provider'
@@ -309,26 +297,69 @@ class BookingPriceDetails extends StatelessWidget {
                       : '',
                   'start': getdateTime(
                       bookAppointmentController.selectedDay,
-                      bookAppointmentController.selectedTimeSlot,
+                      bookAppointmentController.selectedTimeSlotN,
                       0,
                       bookAppointmentController.selectedDate.value),
                   'end': getdateTime(
                       bookAppointmentController.selectedDay,
-                      bookAppointmentController.selectedTimeSlot,
+                      bookAppointmentController.selectedTimeSlotN,
                       1,
                       bookAppointmentController.selectedDate.value),
                   'seekerEmail':
                       bookAppointmentController.emailTextEditingController.text,
                   'from':
-                      bookAppointmentController.selectedTimeSlot.split('-')[0],
+                      bookAppointmentController.selectedTimeSlotN.split('-')[0],
                   'to':
-                      bookAppointmentController.selectedTimeSlot.split('-')[1],
+                      bookAppointmentController.selectedTimeSlotN.split('-')[1],
                   "type": "app",
                   "duration": "30",
                   "label": bookAppointmentController
                       .catTextEditingController.value.text,
                   "concern": bookAppointmentController.query ?? ''
                 });
+
+                if (map['success']) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Card(
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: AssetImage(
+                                        'assets/images/ScaffoldBackgroundGreen.png'))),
+                            child: Column(children: [
+                              Image.asset('assets/images/thankripple.png'),
+                              Text(
+                                'Thank You',
+                                style: SolhTextStyles.QS_head_4.copyWith(
+                                    color: SolhColors.white),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(18.0),
+                                child: Text(
+                                  "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
+                                  style: SolhTextStyles.QS_cap_semi.copyWith(
+                                      color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ]),
+                          ),
+                        );
+                      });
+                  await Get.find<AppointmentController>().getUserAppointments();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+
+                  Navigator.pushNamed(context, AppRoutes.appointmentPage,
+                      arguments: {});
+                } else {
+                  Utility.showToast(map['message']);
+                }
               },
             ),
             RichText(

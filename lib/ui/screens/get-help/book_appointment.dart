@@ -596,7 +596,8 @@ class BookAppointmentPopup extends StatelessWidget {
                 Utility.showLoader(context);
                 // await Future.delayed(Duration(seconds: 2), () {});
                 // await Future.delayed(Duration(seconds: 2), () {});
-                String response = await _controller.bookAppointment(body);
+                Map<String, dynamic> response =
+                    await _controller.bookAppointment(body);
                 Get.find<AppointmentController>().getUserAppointments();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
@@ -610,7 +611,7 @@ class BookAppointmentPopup extends StatelessWidget {
                     builder: (context) {
                       Future.delayed(Duration(seconds: 1), () {
                         Navigator.pop(context);
-                        if (response == 'Successfully created appointment.') {}
+                        if (response['success']) {}
                       });
                       return appointmentConfirmationPopup(
                         response,

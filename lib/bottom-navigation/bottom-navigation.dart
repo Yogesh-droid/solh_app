@@ -1,12 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -212,6 +209,7 @@ class _MasterScreen2State extends State<MasterScreen2>
           showUnselectedLabels: true,
           selectedItemColor: SolhColors.primary_green,
           unselectedItemColor: SolhColors.dark_grey,
+          selectedLabelStyle: SolhTextStyles.QS_cap_semi,
           onTap: (index) => bottomNavigatorController.activeIndex.value = index,
           items: [
             BottomNavigationBarItem(
@@ -247,7 +245,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
-                label: "My profile")
+                label: "My Profile")
           ],
         ));
   }

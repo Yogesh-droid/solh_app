@@ -133,8 +133,7 @@ class _GoalFormState extends State<GoalForm> {
                   Utility.showToast('Goal set successfully');
                   // Navigator.popUntil(context,
                   //     (route) => route.settings.name == AppRoutes.myGoalScreen);
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, AppRoutes.myGoalScreen, (route) => false);
+                  Navigator.pop(context);
                 },
               ),
               SizedBox(

@@ -273,14 +273,14 @@ class SolhGreenBorderButton extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(30)),
         border: Border.all(color: SolhColors.primary_green),
       ),
-      child: TextButton(
+      child: MaterialButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              Theme.of(context).scaffoldBackgroundColor),
-          overlayColor: MaterialStateProperty.all<Color>(
-              SolhColors.primary_green.withOpacity(0.5)),
-        ),
+        // style: ButtonStyle(
+        //   backgroundColor:
+        //       MaterialStateProperty.all<Color>(SolhColors.primary_green),
+        //   overlayColor: MaterialStateProperty.all<Color>(
+        //       SolhColors.primary_green.withOpacity(0.5)),
+        // ),
         child: Container(alignment: Alignment.center, child: child),
       ),
     );
