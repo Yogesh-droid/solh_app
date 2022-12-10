@@ -11,6 +11,7 @@ import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_avatar.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_email.dart';
@@ -116,6 +117,7 @@ class AppRoutes {
   static const String addEmail = '/addEmail';
   static const String emergencyContact = '/emergencyContact';
   static const String partOfOrg = '/partOfOrg';
+  static const String editNeedSupportOn = '/editNeedSupportOn';
 }
 
 class RouteGenerator {
@@ -216,6 +218,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => EmergencyContacts()));
       case AppRoutes.partOfOrg:
         return MaterialPageRoute(builder: ((context) => PartOfOrg()));
+      case AppRoutes.needSupportOn:
+        return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
 
       default:
         return MaterialPageRoute(

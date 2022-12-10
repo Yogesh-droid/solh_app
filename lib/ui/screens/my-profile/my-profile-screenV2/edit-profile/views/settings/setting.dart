@@ -1,12 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
@@ -21,6 +16,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -28,7 +24,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class Setting extends StatelessWidget {
-  const Setting({Key? key}) : super(key: key);
+  Setting({Key? key}) : super(key: key);
+
+  ProfileSetupController profileSetupController =
+      Get.put(ProfileSetupController());
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +69,17 @@ class Setting extends StatelessWidget {
               ),
               'User Type',
               'Seeker, Volunteer, Provider',
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, AppRoutes.needSupportOn),
+            child: getSettingOptions(
+              SvgPicture.asset('assets/images/other_detail.svg'),
+              'Other detail,',
+              'Issues, Organisation',
             ),
           ),
           Expanded(child: SizedBox()),
@@ -136,6 +146,7 @@ class GetLogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SolhGreenBorderButton(
+      backgroundColor: SolhColors.primary_green,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Icon(
           Icons.logout,

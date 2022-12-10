@@ -119,7 +119,19 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
                       TextSpan(
-                          text: ' Terms of service & Privicy Policies ',
+                          text: ' Terms of service  ',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PrivacyWeb(
+                                          title: 'Terms of services',
+                                          url:
+                                              "https://solhapp.com/terms-condition.html",
+                                        )))),
+                      TextSpan(
+                          text: '& Privicy Policies ',
                           style: Theme.of(context).textTheme.bodyText1,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(
@@ -128,7 +140,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                                     builder: (context) => PrivacyWeb(
                                           title: 'Privacy policy',
                                           url:
-                                              "https://solhapp.com/privacypolicy.html",
+                                              "https://solhapp.com/privacy-policy.html",
                                         ))))
                     ]),
               ),

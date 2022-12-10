@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -13,39 +14,38 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
-class NeedSupportOn extends StatelessWidget {
-  NeedSupportOn({Key? key}) : super(key: key);
+class EditNeedSupportOn extends StatelessWidget {
+  EditNeedSupportOn({Key? key}) : super(key: key);
 
-  final ProfileSetupController profileSetupController = Get.find();
+  final UserTypeController userTypeController = Get.put(UserTypeController());
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
       floatingActionButton:
           ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-        child: profileSetupController.isUpdatingField.value
+        child: userTypeController.isUpdatingField.value
             ? SolhSmallButtonLoader()
             : const Icon(
                 Icons.chevron_right_rounded,
                 size: 40,
               ),
         onPressed: (() async {
-          bool response = await profileSetupController.updateUserProfile({
-            "issueList": profileSetupController.selectedIsses.value.toString(),
+          bool response = await userTypeController.updateUserProfile({
+            "issueList": userTypeController.selectedIsses.value.toString(),
             "issueOther":
-                profileSetupController.selectedOtherIssues.value.toString(),
+                userTypeController.selectedOtherIssues.value.toString(),
           });
 
           if (response) {
-            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation);
+            Navigator.of(context).pop();
           }
         }),
       ),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
-        onSkip: (() =>
-            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation)),
+        onSkip: (() => Navigator.pop(context)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -59,7 +59,7 @@ class NeedSupportOn extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            NeedSupportOnText(),
+            EditNeedSupportOnText(),
             SizedBox(
               height: 3.h,
             ),
@@ -74,8 +74,7 @@ class NeedSupportOn extends StatelessWidget {
                       label: Text('Other'),
                       onSelected: (value) {
                         if (value) {
-                          profileSetupController.showOtherissueField.value =
-                              true;
+                          userTypeController.showOtherissueField.value = true;
                         }
                       },
                       backgroundColor: SolhColors.grey239,
@@ -83,12 +82,12 @@ class NeedSupportOn extends StatelessWidget {
                     ),
                   ),
                   Obx(() {
-                    return profileSetupController.showOtherissueField.value
+                    return userTypeController.showOtherissueField.value
                         ? Column(
                             children: [
                               TextField(
                                 controller:
-                                    profileSetupController.otherIssueTextField,
+                                    userTypeController.otherIssueTextField,
                                 decoration: TextFieldStyles.greenF_greyUF_4R(
                                     hintText: " Enter Custom issue"),
                               ),
@@ -97,13 +96,13 @@ class NeedSupportOn extends StatelessWidget {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  profileSetupController.selectedOtherIssues
-                                      .add(profileSetupController
+                                  userTypeController.selectedOtherIssues.add(
+                                      userTypeController
                                           .otherIssueTextField.text);
-                                  profileSetupController
-                                      .otherIssueTextField.text = '';
-                                  profileSetupController
-                                      .showOtherissueField.value = false;
+                                  userTypeController.otherIssueTextField.text =
+                                      '';
+                                  userTypeController.showOtherissueField.value =
+                                      false;
                                 }),
                                 child: Text(
                                   'Add',
@@ -124,8 +123,8 @@ class NeedSupportOn extends StatelessWidget {
   }
 }
 
-class NeedSupportOnText extends StatelessWidget {
-  const NeedSupportOnText({Key? key}) : super(key: key);
+class EditNeedSupportOnText extends StatelessWidget {
+  const EditNeedSupportOnText({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -153,57 +152,57 @@ class IssueChips extends StatefulWidget {
 }
 
 class _IssueChipsState extends State<IssueChips> {
-  ProfileSetupController profileSetupController = Get.find();
+  UserTypeController userTypeController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
-    profileSetupController.getNeedSupportOnIssues();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      userTypeController.getNeedSupportOnIssues();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return profileSetupController.isLoadingIssues.value
+      return userTypeController.isLoadingIssues.value
           ? Center(
               child: MyLoader(),
             )
           : Wrap(
               spacing: 5,
-              children: profileSetupController
+              children: userTypeController
                   .needSupportOnModel.value.specialization!
                   .map((e) => FilterChip(
                       onSelected: (value) {
-                        print(profileSetupController.selectedIsses.toString());
+                        print(userTypeController.selectedIsses.toString());
                         value
-                            ? profileSetupController.selectedIsses.value
-                                .add(e.sId)
-                            : profileSetupController.selectedIsses.value
+                            ? userTypeController.selectedIsses.value.add(e.sId)
+                            : userTypeController.selectedIsses.value
                                 .remove(e.sId);
                         setState(() {});
                       },
                       selected:
-                          profileSetupController.selectedIsses.contains(e.sId),
+                          userTypeController.selectedIsses.contains(e.sId),
                       selectedColor: SolhColors.primary_green,
                       backgroundColor: SolhColors.grey239,
                       checkmarkColor:
-                          profileSetupController.selectedIsses.contains(e.sId)
+                          userTypeController.selectedIsses.contains(e.sId)
                               ? SolhColors.white
                               : SolhColors.black,
-                      label:
-                          profileSetupController.selectedIsses.contains(e.sId)
-                              ? Text(
-                                  e.slug!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1!
-                                      .copyWith(color: SolhColors.white),
-                                )
-                              : Text(
-                                  e.slug!,
-                                  style: Theme.of(context).textTheme.headline1,
-                                )))
+                      label: userTypeController.selectedIsses.contains(e.sId)
+                          ? Text(
+                              e.slug!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1!
+                                  .copyWith(color: SolhColors.white),
+                            )
+                          : Text(
+                              e.slug!,
+                              style: Theme.of(context).textTheme.headline1,
+                            )))
                   .toList());
     });
   }
@@ -211,14 +210,13 @@ class _IssueChipsState extends State<IssueChips> {
 
 class OtherIssueList extends StatelessWidget {
   OtherIssueList({Key? key}) : super(key: key);
-  final ProfileSetupController profileSetupController = Get.find();
+  final UserTypeController userTypeController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Wrap(
         spacing: 5,
-        children:
-            profileSetupController.selectedOtherIssues.value.map((element) {
+        children: userTypeController.selectedOtherIssues.value.map((element) {
           return FilterChip(
             showCheckmark: false,
             selectedColor: SolhColors.primary_green,
@@ -244,7 +242,7 @@ class OtherIssueList extends StatelessWidget {
               ],
             ),
             onSelected: (Value) {
-              profileSetupController.selectedOtherIssues.remove(element);
+              userTypeController.selectedOtherIssues.remove(element);
             },
             selected: true,
           );

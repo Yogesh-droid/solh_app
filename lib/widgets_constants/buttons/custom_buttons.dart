@@ -269,6 +269,7 @@ class SolhGreenBorderButton extends StatelessWidget {
       height: height ?? 5.h,
       width: width ?? double.infinity,
       decoration: BoxDecoration(
+        color: backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(30)),
         border: Border.all(color: SolhColors.primary_green),
       ),

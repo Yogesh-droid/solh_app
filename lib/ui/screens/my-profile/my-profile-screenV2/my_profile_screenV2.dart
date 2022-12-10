@@ -122,9 +122,13 @@ class MyProfileScreenV2 extends StatelessWidget {
                             0,
                       ),
                       SizedBox(
-                        height: 2.h,
+                        height: 1.h,
                       ),
-                      YouAreAlmostThere(),
+                      profileController
+                                  .myProfileModel.value.body!.percentProfile ==
+                              100
+                          ? Container()
+                          : YouAreAlmostThere(),
                       SizedBox(
                         height: 2.h,
                       ),
@@ -163,6 +167,8 @@ class NameUsertypeBio extends StatelessWidget {
         Text(
           bio,
           style: SolhTextStyles.QS_caption,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -184,7 +190,7 @@ class StatsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         getStatsItem(
             Icon(
@@ -206,16 +212,16 @@ class StatsRow extends StatelessWidget {
             ),
             posts.toString(),
             'Posts'),
-        reviews != null
-            ? getStatsItem(
-                Icon(
-                  Icons.star,
-                  color: SolhColors.primary_green,
-                  size: 18,
-                ),
-                reviews!.toString(),
-                'Reviews')
-            : Container(),
+        // reviews != null
+        //     ? getStatsItem(
+        //         Icon(
+        //           Icons.star,
+        //           color: SolhColors.primary_green,
+        //           size: 18,
+        //         ),
+        //         reviews!.toString(),
+        //         'Reviews')
+        //     : Container(),
       ],
     );
   }
@@ -224,7 +230,8 @@ class StatsRow extends StatelessWidget {
 Container getStatsItem(Widget icon, String statNumber, String stat) {
   return Container(
     padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-    color: SolhColors.light_Bg,
+    decoration: BoxDecoration(
+        color: SolhColors.light_Bg, borderRadius: BorderRadius.circular(4)),
     child: Column(
       children: [
         Row(
@@ -288,7 +295,7 @@ class YouAreAlmostThere extends StatelessWidget {
                       width: 40.w,
                       child: Text(
                         "Let's take your profile from good to greate. The details matter",
-                        style: SolhTextStyles.QS_cap_2,
+                        style: SolhTextStyles.QS_cap_2_semi,
                       ),
                     ),
                   ],
@@ -409,37 +416,37 @@ class EditAndSettingOption extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => EditProfileOptions()));
           }),
           child: Container(
-            padding: EdgeInsets.all(4),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: SolhColors.light_Bg,
             ),
             child: Center(
               child: Icon(
-                Icons.edit,
-                size: 20,
+                CupertinoIcons.pen,
+                size: 24,
                 color: SolhColors.primary_green,
               ),
             ),
           ),
         ),
         SizedBox(
-          width: 8,
+          width: 12,
         ),
         InkWell(
           onTap: () => Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => Setting())),
           child: Container(
-            padding: EdgeInsets.all(4),
+            padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: SolhColors.light_Bg,
             ),
             child: Center(
               child: Icon(
-                Icons.settings,
+                CupertinoIcons.settings,
                 color: SolhColors.primary_green,
-                size: 20,
+                size: 24,
               ),
             ),
           ),
