@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/typing_indicator.dart';
 import '../../../bloc/user-bloc.dart';
@@ -253,6 +254,7 @@ class MessageBox extends StatelessWidget {
   ChatController _controller = Get.put(ChatController());
   SocketService service = SocketService();
   ChatListController chatListController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -311,6 +313,8 @@ class MessageBox extends StatelessWidget {
                     fileName: '',
                     appointmentId: '',
                     conversationType: 'text',
+                    authorId:
+                        profileController.myProfileModel.value.body!.user!.sId,
                   );
                 }
                 chatListController.chatListController();

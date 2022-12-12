@@ -37,7 +37,7 @@ class MyProfileScreenV2 extends StatelessWidget {
                   child: ListView(
                     children: [
                       SizedBox(
-                        height: 5.h,
+                        height: 2.h,
                       ),
                       Center(
                         child: Stack(

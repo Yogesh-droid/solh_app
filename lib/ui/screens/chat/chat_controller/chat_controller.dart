@@ -34,7 +34,7 @@ class ChatController extends GetxController {
 
   var seenStatus = ''.obs;
 
-  var isTypingEpochTime= 0.obs;
+  var isTypingEpochTime = 0.obs;
 
   var currentSid;
   TextEditingController messageEditingController = TextEditingController();
@@ -173,9 +173,10 @@ class ChatController extends GetxController {
       required mediaUrl,
       required appointmentId,
       required mediaType,
+      required authorId,
       required fileName}) {
     SocketService.sendMessage(message, sId, autherType, ct, mediaUrl,
-        appointmentId, mediaType, fileName, conversationType);
+        appointmentId, mediaType, fileName, conversationType, authorId);
 
     messageEditingController.text = '';
     convo.add(Conversation(

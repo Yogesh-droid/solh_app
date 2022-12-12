@@ -1,4 +1,6 @@
+import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 
 import 'dart:async';
@@ -10,6 +12,8 @@ class SocketService {
   static late StreamController<Conversation> _socketResponse;
   static late StreamController<List<String>> _userResponse;
   // final ChatController _chatController = Get.find();
+
+  ProfileController profileController = Get.find();
 
   // ChatController _chatController = ChatController();
   static late io.Socket socket = io.io(
@@ -48,12 +52,13 @@ class SocketService {
     String mediaType,
     String fileName,
     String conversationType,
+    String authorId,
   ) {
     print('message emmited' + ct);
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
-      'authorId': userBlocNetwork.id,
+      'authorId': authorId,
       'authorType': autherType,
       'body': message,
       'connection': sId,
