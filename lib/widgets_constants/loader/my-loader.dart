@@ -29,13 +29,17 @@ class SolhGradientLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
+      print('maxHeight' + constraints.maxHeight.toString());
       return GradientProgressIndicator(
-          radius: radius == null &&
-                  (constraints.maxHeight > 300 || constraints.maxWidth > 300)
-              ? 25
-              : (constraints.maxHeight > constraints.maxWidth
-                  ? constraints.maxWidth / 2
-                  : constraints.maxHeight / 2),
+          radius: radius != null
+              ? radius!
+              : (radius == null &&
+                      (constraints.maxHeight > 200 ||
+                          constraints.maxWidth > 200)
+                  ? 25
+                  : (constraints.maxHeight > constraints.maxWidth
+                      ? constraints.maxWidth / 2
+                      : constraints.maxHeight / 2)),
           duration: Duration(milliseconds: 500),
           strokeWidth: strokeWidth,
           gradientStops: const [0.2, 0.8, 0.10],

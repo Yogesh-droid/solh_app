@@ -27,11 +27,15 @@ class MyProfileModel {
 
 class Body {
   User? user;
+  int? percentProfile;
+  List? userMoveEmptyScreenEmpty;
 
-  Body({this.user});
+  Body({this.user, this.percentProfile, this.userMoveEmptyScreenEmpty});
 
   Body.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    percentProfile = json['percentProfile'];
+    userMoveEmptyScreenEmpty = json['userMoveEmptyScreenEmpty'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +71,7 @@ class User {
   int? reviews;
   int? likes;
   int? posts;
+
   String? bio;
   String? createdAt;
   String? updatedAt;
@@ -92,6 +97,7 @@ class User {
   User(
       {this.sId,
       this.gender,
+      this.reviews,
       this.status,
       this.connectionsList,
       this.profilePicture,
@@ -110,7 +116,6 @@ class User {
       this.experience,
       this.connections,
       this.ratings,
-      this.reviews,
       this.likes,
       this.posts,
       this.bio,

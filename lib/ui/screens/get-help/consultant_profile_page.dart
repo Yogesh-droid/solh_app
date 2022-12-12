@@ -148,19 +148,24 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Profession(Doctor)',
+                    //'Profession(Doctor)',
+                    'Consultant',
                     style: SolhTextStyles.QS_caption.copyWith(
                         color: SolhColors.white),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Container(
-                      width: 5,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.white),
-                    ),
-                  ),
+                  _controller.consultantModelController.value.provder!
+                              .experience ==
+                          0
+                      ? Container()
+                      : Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Container(
+                            width: 5,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.white),
+                          ),
+                        ),
                   Text(
                     _controller.consultantModelController.value.provder!
                                     .experience !=
@@ -186,14 +191,14 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 children: [
                   getAnalyticsBox(
                       icon: Icons.emoji_people_outlined,
-                      no: '23',
+                      no: '0',
                       title: 'Consultant'),
                   getAnalyticsBox(
-                      icon: Icons.star_rate, no: '5', title: 'Ratings'),
+                      icon: Icons.star_rate, no: '0', title: 'Ratings'),
                   getAnalyticsBox(
-                      icon: Icons.edit_note, no: '23', title: 'Posts'),
+                      icon: Icons.edit_note, no: '0', title: 'Posts'),
                   getAnalyticsBox(
-                      icon: Icons.thumb_up_rounded, no: '23', title: 'likes'),
+                      icon: Icons.thumb_up_rounded, no: '0', title: 'likes'),
                 ],
               ),
             ],
@@ -313,21 +318,34 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        Column(
+          children: [
+            Text(
+                _controller.consultantModelController.value.provder!.fee_amount! >
+                        0
+                    ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
+                    : (_controller.consultantModelController.value.provder!
+                                    .fee ==
+                                null ||
+                            _controller.consultantModelController.value.provder!
+                                    .fee ==
+                                'Paid' ||
+                            _controller.consultantModelController.value.provder!
+                                    .fee ==
+                                ''
+                        ? 'Paid'
+                        : ''),
+                style: SolhTextStyles.QS_body_1_bold.copyWith(
+                    color: SolhColors.primary_green)),
             _controller.consultantModelController.value.provder!.fee_amount! > 0
-                ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
-                : (_controller.consultantModelController.value.provder!.fee ==
-                            null ||
-                        _controller
-                                .consultantModelController.value.provder!.fee ==
-                            'Paid' ||
-                        _controller
-                                .consultantModelController.value.provder!.fee ==
-                            ''
-                    ? 'Paid'
-                    : ''),
-            style: SolhTextStyles.QS_body_1_bold.copyWith(
-                color: SolhColors.primary_green)),
+                ? Text(
+                    'Consultation Fee',
+                    style: SolhTextStyles.QS_cap_2.copyWith(
+                        color: SolhColors.Grey_1),
+                  )
+                : Container()
+          ],
+        ),
         Container(
           height: 30,
           child: VerticalDivider(

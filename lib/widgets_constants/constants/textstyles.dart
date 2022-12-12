@@ -268,6 +268,12 @@ class SolhTextStyles {
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
   );
+
+  static const TextStyle QS_head_4_1 = TextStyle(
+    fontSize: 32,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w800,
+  );
   static const TextStyle QS_head_5 = TextStyle(
     fontSize: 24,
     color: SolhColors.dark_grey,
@@ -309,6 +315,12 @@ class SolhTextStyles {
     fontSize: 14,
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle QS_body_2_semi = TextStyle(
+    fontSize: 14,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w600,
   );
   static const TextStyle QS_caption = TextStyle(
     fontSize: 12,

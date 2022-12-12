@@ -18,7 +18,7 @@ class TextFieldStyles {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.dark_grey),
+          borderSide: BorderSide(color: SolhColors.grey_3),
         ),
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);

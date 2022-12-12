@@ -7,6 +7,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
@@ -52,6 +53,8 @@ Future<void> initControllers() async {
   final AgeController ageController = Get.put(AgeController());
 
   var _chatListController = Get.put(ChatListController());
+
+  var journalpageController = Get.put(JournalPageController());
 }
 
 /// app ////

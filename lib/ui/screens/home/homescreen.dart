@@ -585,8 +585,8 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )
                   : LinearGradient(colors: [
-                      SolhColors.Counsellor_Blue,
-                      SolhColors.Counsellor_Blue,
+                      SolhColors.greenShade4,
+                      SolhColors.greenShade4,
                     ]),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [

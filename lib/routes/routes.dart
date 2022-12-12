@@ -7,9 +7,18 @@ import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
+import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_avatar.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_email.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/anonymous_profile.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/bio.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/part_of_org.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
@@ -77,6 +86,9 @@ class AppRoutes {
   ///
   static const String inviteGroupMemberPage = '/inviteGroupMemberPage';
 
+  /// mood related//
+  static const String moodAnalytics = '/moodAnalytics';
+
   /// errors  //////////
   ///
   static const String noInternetPage = '/noInternetPage';
@@ -98,6 +110,14 @@ class AppRoutes {
   //my profile v2
 
   static const String editProfileOption = '/editProfileOption';
+  static const String userType = '/userType';
+  static const String addAvatar = '/addAvatar';
+  static const String bio = '/bio';
+  static const String anonymousProfile = '/anonymousProfile';
+  static const String addEmail = '/addEmail';
+  static const String emergencyContact = '/emergencyContact';
+  static const String partOfOrg = '/partOfOrg';
+  static const String editNeedSupportOn = '/editNeedSupportOn';
 }
 
 class RouteGenerator {
@@ -172,6 +192,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => RoleSection()));
       case AppRoutes.needSupportOn:
         return MaterialPageRoute(builder: ((context) => NeedSupportOn()));
+      case AppRoutes.moodAnalytics:
+        return MaterialPageRoute(builder: ((context) => MoodAnalyticPage()));
       case AppRoutes.partOfAnOrgnisation:
         return MaterialPageRoute(
             builder: ((context) => PartOfAnOrganisationPage()));
@@ -182,6 +204,22 @@ class RouteGenerator {
       case AppRoutes.editAnonymousProfile:
         return MaterialPageRoute(
             builder: ((context) => EditAnonymousProfile()));
+      case AppRoutes.userType:
+        return MaterialPageRoute(builder: ((context) => UserType()));
+      case AppRoutes.addAvatar:
+        return MaterialPageRoute(builder: ((context) => AddAvatar()));
+      case AppRoutes.bio:
+        return MaterialPageRoute(builder: ((context) => Bio()));
+      case AppRoutes.anonymousProfile:
+        return MaterialPageRoute(builder: ((context) => AnonymousProfile()));
+      case AppRoutes.addEmail:
+        return MaterialPageRoute(builder: ((context) => AddEmail()));
+      case AppRoutes.emergencyContact:
+        return MaterialPageRoute(builder: ((context) => EmergencyContacts()));
+      case AppRoutes.partOfOrg:
+        return MaterialPageRoute(builder: ((context) => PartOfOrg()));
+      case AppRoutes.needSupportOn:
+        return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
 
       default:
         return MaterialPageRoute(

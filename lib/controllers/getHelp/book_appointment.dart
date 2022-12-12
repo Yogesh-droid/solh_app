@@ -45,7 +45,6 @@ class BookAppointmentController extends GetxController {
     isLoading.value = true;
     var response = await Network.makePostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);
-    print('---' + response.toString());
     isLoading.value = false;
     return response;
   }

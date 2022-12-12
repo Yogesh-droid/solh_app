@@ -36,7 +36,9 @@ class NameField extends StatelessWidget {
                 "first_name":
                     profileSetupController.firstNameController.text.trim(),
                 "last_name":
-                    profileSetupController.lastNameController.text.trim()
+                    profileSetupController.firstNameController.text.trim() != ''
+                        ? profileSetupController.lastNameController.text.trim()
+                        : ''
               });
 
               if (response) {
@@ -56,7 +58,10 @@ class NameField extends StatelessWidget {
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
         ),
-        child: Column(children: [
+        child: ListView(children: [
+          SizedBox(
+            height: 3.h,
+          ),
           StepsProgressbar(
             stepNumber: 1,
           ),

@@ -274,7 +274,7 @@ class BookingPriceDetails extends StatelessWidget {
                           strokeWidth: 2,
                         )
                       : Text(
-                          'Pay & confirm',
+                          'Book Now & Pay Later',
                           style: SolhTextStyles.CTA
                               .copyWith(color: SolhColors.white),
                         ))
@@ -315,7 +315,10 @@ class BookingPriceDetails extends StatelessWidget {
                   "duration": "30",
                   "label": bookAppointmentController
                       .catTextEditingController.value.text,
-                  "concern": bookAppointmentController.query ?? ''
+                  "concern": bookAppointmentController.query ?? '',
+                  "anonymousSession": consultantController
+                      .isAnonymousBookingEnabled.value
+                      .toString()
                 });
 
                 if (map['success']) {

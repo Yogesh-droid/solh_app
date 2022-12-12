@@ -58,8 +58,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       builder: (context, player) {
         return Scaffold(
             appBar: SolhAppBar(
-                title:
-                    Text('Video Tutorials', style: SolhTextStyles.AppBarText),
+                title: Text('Know Us More', style: SolhTextStyles.AppBarText),
                 isLandingScreen: false),
             body: getBody(player));
       },

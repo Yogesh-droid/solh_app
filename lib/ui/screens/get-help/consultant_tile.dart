@@ -223,10 +223,14 @@ class ConsultantsTile extends StatelessWidget {
             style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ConsultantProfile(
-                      id: _doctorModel.id,
-                    )));
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => ConsultantProfile(
+            //           id: _doctorModel.id,
+            //         )));
+            _controller.getConsultantDataController(_doctorModel.id);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ConsultantProfilePage();
+            }));
           },
         ),
       ),

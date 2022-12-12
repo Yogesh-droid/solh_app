@@ -7,20 +7,19 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
+import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
-
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
 import 'consultant_profile.dart';
@@ -73,7 +72,6 @@ class GetHelpScreen extends StatelessWidget {
                 onTap: () {
                   searchMarketController.searchMarketModel.value =
                       SearchMarketModel();
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -224,7 +222,7 @@ class GetHelpScreen extends StatelessWidget {
                                   getHelpController.getSpecializationModel.value
                                           .specializationList![index].name ??
                                       '',
-                                  style: TextStyle(),
+                                  style: SolhTextStyles.QS_cap_semi,
                                 ),
                               ),
                             ],
@@ -396,7 +394,7 @@ class IssuesTile extends StatelessWidget {
         ),
         child: Text(
           _title,
-          style: TextStyle(color: Color(0xFF666666)),
+          style: SolhTextStyles.QS_cap_semi,
         ),
       ),
     );
@@ -404,7 +402,7 @@ class IssuesTile extends StatelessWidget {
 }
 
 class TopConsultantsTile extends StatelessWidget {
-  const TopConsultantsTile({
+  TopConsultantsTile({
     required String name,
     required String bio,
     required String mobile,
@@ -423,14 +421,15 @@ class TopConsultantsTile extends StatelessWidget {
   final String _bio;
   final String? _imgUrl;
   final String? _sId;
-
+  ConsultantController consultantController = Get.put(ConsultantController());
   @override
   Widget build(BuildContext context) {
     debugPrint(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ConsultantProfile(id: _sId)));
+        consultantController.getConsultantDataController(_sId);
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ConsultantProfilePage()));
       },
       child: Container(
         //width: 70.w,
@@ -475,17 +474,19 @@ class TopConsultantsTile extends StatelessWidget {
                     ),
                     Center(
                       child: SolhGreenButton(
-                        height: 5.h,
-                        width: 35.w,
+                        height: 6.h,
+                        width: 44.w,
                         child: Text(
                           "Book Appointment",
-                          style: TextStyle(fontSize: 12),
+                          style: SolhTextStyles.QS_cap_semi.copyWith(
+                              fontSize: 10, color: SolhColors.white),
                         ),
                         onPressed: () {
                           //launch("tel://$_mobile");
+                          consultantController
+                              .getConsultantDataController(_sId);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ConsultantProfile(id: _sId)));
+                              builder: (context) => ConsultantProfilePage()));
                         },
                       ),
                     )

@@ -28,18 +28,21 @@ class LetsCreateYourProfile extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 10.h,
-            ),
-            CreateYourProfile(),
-            Expanded(child: SizedBox()),
-            CreateProfileButton(),
-            SizedBox(
-              height: 10.h,
-            ),
-          ],
+        child: SizedBox(
+          height: 100.h,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10.h,
+              ),
+              CreateYourProfile(),
+              Expanded(child: SizedBox()),
+              CreateProfileButton(),
+              SizedBox(
+                height: 10.h,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -88,12 +91,12 @@ class CreateProfileButton extends StatelessWidget {
           onPressed: () => Navigator.pushNamed(context, AppRoutes.nameField),
         ),
         SizedBox(
-          height: 1.h,
+          height: 3.5.h,
         ),
-        Text(
-          'Do it later',
-          style: SolhTextStyles.NormalTextWhiteS14W6,
-        )
+        // Text(
+        //   'Do it later',
+        //   style: SolhTextStyles.NormalTextWhiteS14W6,
+        // )
       ],
     );
   }

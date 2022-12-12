@@ -986,12 +986,14 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                         label: Text(feelingsController
                                 .feelingsList.value[index].feelingName ??
                             ''),
-                        labelStyle: TextStyle(
-                            color: feelingsController.selectedFeelingsId.value
-                                    .contains(feelingsController
-                                        .feelingsList.value[index].sId!)
-                                ? Colors.white
-                                : Color(0xFF666666)),
+                        labelStyle: feelingsController.selectedFeelingsId.value
+                                .contains(feelingsController
+                                    .feelingsList.value[index].sId!)
+                            ? Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: SolhColors.white)
+                            : Theme.of(context).textTheme.bodyText2,
                         onSelected: (value) {
                           widget._onFeelingsChanged.call(_selectedFeeling);
                           feelingsController.selectedFeelingsId.contains(
@@ -1137,13 +1139,13 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      Obx(() =>
-                          profileController.myProfileModel.value.body != null
-                              ? GetBadge(
-                                  userType: profileController.myProfileModel
-                                          .value.body!.user!.userType ??
-                                      '')
-                              : Container()),
+                      // Obx(() =>
+                      //     profileController.myProfileModel.value.body != null
+                      //         ? GetBadge(
+                      //             userType: profileController.myProfileModel
+                      //                     .value.body!.user!.userType ??
+                      //                 '')
+                      //         : Container()),
                       SizedBox(
                         height: 4.h,
                       ),
@@ -1184,7 +1186,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       style: TextStyle(color: SolhColors.primary_green),
                       items: [
                         DropdownMenuItem(
-                          child: Text("publically"),
+                          child: Text("Publically"),
                           value: "Publicaly",
                         ),
                         DropdownMenuItem(

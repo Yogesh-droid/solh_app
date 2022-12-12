@@ -1,5 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
@@ -9,6 +10,8 @@ import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_co
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/privacy_web.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class PhoneAuthCommonWidget extends StatelessWidget {
@@ -78,6 +81,9 @@ class PhoneAuthCommonWidget extends StatelessWidget {
           width: 80.w,
           child: Column(
             children: [
+              SizedBox(
+                height: 2.h,
+              ),
               Obx(() {
                 return phoneAuthController.isRequestingAuth.value
                     ? SolhGreenBorderButton(
@@ -88,10 +94,20 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                         ),
                       )
                     : SolhGreenButton(
+                        width: double.maxFinite,
                         child: Text(
                           'Continue',
                         ),
-                        onPressed: (() => signInWithPhoneNumber(context)),
+                        onPressed: (() {
+                          if (phoneAuthController.phoneNumber.text
+                              .trim()
+                              .isEmpty) {
+                            SolhSnackbar.error(
+                                'Opps !!', 'Enter a valid number');
+                          } else {
+                            signInWithPhoneNumber(context);
+                          }
+                        }),
                       );
               }),
               SizedBox(
@@ -100,13 +116,33 @@ class PhoneAuthCommonWidget extends StatelessWidget {
               RichText(
                 text: TextSpan(
                     text:
-                        'By Signing ${isLogin ? 'in' : 'up'} you agree to our',
+                        'By Clicking Signing ${isLogin ? 'in' : 'up'} you agree to our',
                     style: Theme.of(context).textTheme.bodyText2,
                     children: <TextSpan>[
                       TextSpan(
-                        text: ' Terms of service & Privicy Policies ',
-                        style: Theme.of(context).textTheme.bodyText1,
-                      )
+                          text: ' Terms of service  ',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PrivacyWeb(
+                                          title: 'Terms of services',
+                                          url:
+                                              "https://solhapp.com/terms-condition.html",
+                                        )))),
+                      TextSpan(
+                          text: '& Privicy Policies ',
+                          style: Theme.of(context).textTheme.bodyText1,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PrivacyWeb(
+                                          title: 'Privacy policy',
+                                          url:
+                                              "https://solhapp.com/privacy-policy.html",
+                                        ))))
                     ]),
               ),
               SizedBox(
@@ -138,10 +174,12 @@ class SolhCountryCodePicker extends StatelessWidget {
         return Container(
           height: MediaQuery.of(context).size.height / 15,
           decoration: BoxDecoration(
+              color: SolhColors.white,
               border: Border.all(color: SolhColors.black666),
               borderRadius: BorderRadius.all(Radius.circular(4))),
           padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.height / 100),
+            horizontal: MediaQuery.of(context).size.height / 100,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
