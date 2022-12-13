@@ -10,7 +10,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class MoodMeter extends StatelessWidget {
-  MoodMeter({Key? key}) : super(key: key);
+  MoodMeter({Key? key, Map<String, dynamic>? args})
+      : continueAction = args!['continueAction'],
+        super(key: key);
+  final VoidCallback? continueAction;
   final MoodMeterController moodMeterController = Get.find();
   LinearGradient gradient = LinearGradient(colors: <Color>[
     Color(0xFFE1555A),
@@ -146,13 +149,15 @@ class MoodMeter extends StatelessWidget {
                         child: SolhGreenButton(
                             height: 50,
                             child: Text("Done"),
-                            onPressed: () {
-                              moodMeterController.saveMoodOfday();
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(builder: (context) {
-                                return MoodReasonPage();
-                              }));
-                            }),
+                            onPressed: continueAction != null
+                                ? continueAction
+                                : () {
+                                    moodMeterController.saveMoodOfday();
+                                    Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(builder: (context) {
+                                      return MoodReasonPage();
+                                    }));
+                                  }),
                       ),
                     ],
                   );

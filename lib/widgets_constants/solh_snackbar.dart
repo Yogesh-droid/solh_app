@@ -9,9 +9,11 @@ class SolhSnackbar {
         snackPosition: SnackPosition.BOTTOM);
   }
 
-  static SnackbarController sucess(String title, String message) {
+  static SnackbarController sucess(String title, String message,
+      {Icon? icon = null}) {
     return Get.snackbar(title, message,
         backgroundColor: SolhColors.greenShade1,
+        icon: icon,
         snackPosition: SnackPosition.BOTTOM);
   }
 }

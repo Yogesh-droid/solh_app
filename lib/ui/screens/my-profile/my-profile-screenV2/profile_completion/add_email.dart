@@ -89,7 +89,9 @@ class AddEmail extends StatelessWidget {
           }
         }),
         backButtonColor: SolhColors.white,
-        onBackButton: (() {}),
+        onBackButton: (() {
+          Navigator.of(context).pop();
+        }),
         skipButtonStyle: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
       ),
       body: Padding(

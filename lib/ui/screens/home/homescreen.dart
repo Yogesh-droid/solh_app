@@ -109,7 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
           showGeneralDialog(
               context: context,
               pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(body: MoodMeter());
+                return Scaffold(
+                    body: MoodMeter(
+                  args: {},
+                ));
               });
         }
 
@@ -171,6 +174,10 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           SizedBox(
             height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ChatAnonymouslyCard(),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1448,4 +1455,115 @@ Widget getIssueUI(bookAppointmentController, getHelpController, context) {
           }).toList(),
         );
       }));
+}
+
+class ChatAnonymouslyCard extends StatelessWidget {
+  const ChatAnonymouslyCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, AppRoutes.chatAnonIssues),
+      child: Container(
+        height: 27.h,
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 4.w,
+            vertical: 2.h,
+          ),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 60.w,
+                    child: Text(
+                      'Chat anonymously and get support on a range of issues',
+                      style: SolhTextStyles.QS_body_1_bold.copyWith(
+                          color: SolhColors.white),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(2.w),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: SolhColors.primary_green,
+                        border: Border.all(color: SolhColors.white, width: 1)),
+                    child: Center(
+                        child: Icon(
+                      CupertinoIcons.arrow_right,
+                      color: SolhColors.white,
+                    )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/anxiety.png')),
+                      'Anxiety'),
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/depression.png')),
+                      'Depression'),
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/addiction.png')),
+                      'Addiction'),
+                  getIssuesRowItem(
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: SolhColors.white),
+                        child: Center(child: Text('50+')),
+                      ),
+                      'More')
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Divider(
+                color: SolhColors.white,
+                thickness: 1,
+              ),
+              Text(
+                'Start chatting for free right away, with a Sohl Certified Volunteer. ',
+                style:
+                    SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+getIssuesRowItem(Widget widget, String subtext) {
+  return Column(
+    children: [
+      Container(
+        height: 15.w,
+        width: 15.w,
+        decoration: BoxDecoration(shape: BoxShape.circle),
+        child: widget,
+      ),
+      Text(
+        subtext,
+        style: SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+      )
+    ],
+  );
 }

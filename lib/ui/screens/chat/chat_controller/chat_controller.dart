@@ -36,6 +36,12 @@ class ChatController extends GetxController {
 
   var isTypingEpochTime = 0.obs;
 
+  //anon chat
+
+  var selectedStar = 0.obs;
+  final PageController pageController = PageController();
+  //anon chat
+
   var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();

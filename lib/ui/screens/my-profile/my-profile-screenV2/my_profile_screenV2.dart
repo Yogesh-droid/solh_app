@@ -124,11 +124,13 @@ class MyProfileScreenV2 extends StatelessWidget {
                       SizedBox(
                         height: 1.h,
                       ),
-                      profileController
-                                  .myProfileModel.value.body!.percentProfile ==
-                              100
-                          ? Container()
-                          : YouAreAlmostThere(),
+                      Obx(() {
+                        return profileController.myProfileModel.value.body!
+                                    .percentProfile ==
+                                100
+                            ? Container()
+                            : YouAreAlmostThere();
+                      }),
                       SizedBox(
                         height: 2.h,
                       ),

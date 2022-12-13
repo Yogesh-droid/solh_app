@@ -64,11 +64,10 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     height: 5,
                   ),
                   TextField(
-                    keyboardType: TextInputType.number,
-                    controller: phoneAuthController.phoneNumber,
-                    decoration: TextFieldStyles.greenF_greyUF_4R(
-                        hintText: 'Your mobile no.'),
-                  )
+                      keyboardType: TextInputType.number,
+                      controller: phoneAuthController.phoneNumber,
+                      decoration: TextFieldStyles.greenF_greyUF_4R
+                          .copyWith(hintText: 'Your mobile no.'))
                 ],
               ),
             )

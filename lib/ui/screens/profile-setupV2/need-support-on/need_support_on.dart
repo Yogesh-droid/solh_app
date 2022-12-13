@@ -89,8 +89,8 @@ class NeedSupportOn extends StatelessWidget {
                               TextField(
                                 controller:
                                     profileSetupController.otherIssueTextField,
-                                decoration: TextFieldStyles.greenF_greyUF_4R(
-                                    hintText: " Enter Custom issue"),
+                                decoration: TextFieldStyles.greenF_greyUF_4R
+                                    .copyWith(hintText: " Enter Custom issue"),
                               ),
                               SizedBox(
                                 height: 1.h,

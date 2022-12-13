@@ -8,21 +8,20 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
   R = border radius 
 */
 class TextFieldStyles {
-  static InputDecoration greenF_greyUF_4R({String? hintText}) {
-    return InputDecoration(
-        fillColor: SolhColors.white,
-        filled: true,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.primary_green),
-        ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.grey_3),
-        ),
-        hintText: hintText,
-        hintStyle: SolhTextStyles.NormalTextBlackS14W5);
-  }
+  // static InputDecoration greenF_greyUF_4R({String? hintText}) {
+  //   return InputDecoration(
+  //       fillColor: SolhColors.white,
+  //       filled: true,
+  //       focusedBorder: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(4),
+  //         borderSide: BorderSide(color: SolhColors.primary_green),
+  //       ),
+  //       border: OutlineInputBorder(
+  //         borderRadius: BorderRadius.circular(4),
+  //         borderSide: BorderSide(color: SolhColors.grey_3),
+  //       ),
+  //       hintText: hintText,
+  //       hintStyle: SolhTextStyles.NormalTextBlackS14W5);
 
   static InputDecoration greenF_greenBroadUF_4R({String? hintText}) {
     return InputDecoration(
@@ -32,10 +31,10 @@ class TextFieldStyles {
           borderRadius: BorderRadius.circular(4),
           borderSide: BorderSide(color: SolhColors.primary_green, width: 3),
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4),
-          borderSide: BorderSide(color: SolhColors.primary_green),
-        ),
+        // border: OutlineInputBorder(
+        //   borderRadius: BorderRadius.circular(4),
+        //   borderSide: BorderSide(color: SolhColors.primary_green),
+        // ),
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);
   }
@@ -52,4 +51,18 @@ class TextFieldStyles {
         hintText: hintText,
         hintStyle: SolhTextStyles.NormalTextBlackS14W5);
   }
+
+  static InputDecoration greenF_greyUF_4R = InputDecoration(
+      fillColor: SolhColors.white,
+      filled: true,
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        borderSide: BorderSide(color: SolhColors.primary_green),
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(4),
+        borderSide: BorderSide(color: SolhColors.grey_3),
+      ),
+      hintText: '',
+      hintStyle: SolhTextStyles.NormalTextBlackS14W5);
 }

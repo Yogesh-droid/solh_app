@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type_controller.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
+import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -14,52 +16,53 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
-class EditNeedSupportOn extends StatelessWidget {
-  EditNeedSupportOn({Key? key}) : super(key: key);
+class ChatAnonIssues extends StatelessWidget {
+  ChatAnonIssues({Key? key}) : super(key: key);
 
-  final UserTypeController userTypeController = Get.put(UserTypeController());
+  final ChatAnonController chatAnonController = Get.put(ChatAnonController());
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
       floatingActionButton:
           ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-        child: userTypeController.isUpdatingField.value
-            ? SolhSmallButtonLoader()
-            : const Icon(
-                Icons.chevron_right_rounded,
-                size: 40,
-              ),
+        child: const Icon(
+          Icons.chevron_right_rounded,
+          size: 40,
+        ),
         onPressed: (() async {
-          bool response = await userTypeController.updateUserProfile({
-            "issueList": userTypeController.selectedIsses.value.toString(),
-            "issueOther":
-                userTypeController.selectedOtherIssues.value.toString(),
-          });
-
-          if (response) {
-            Navigator.of(context).pop();
-          }
+          showGeneralDialog(
+              context: context,
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return Scaffold(
+                    body: MoodMeter(
+                  args: {
+                    "continueAction": () {
+                      Navigator.pushNamed(context, AppRoutes.chatUser,
+                          arguments: {
+                            "imageUrl": "https://picsum.photos/200",
+                            "name": "MUNEET",
+                            "sId": "6284caa1077c63c27f63342d",
+                            "isAnonChat": true
+                          });
+                    }
+                  },
+                ));
+              });
         }),
       ),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
-        onSkip: (() => Navigator.pop(context)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
-            StepsProgressbar(
-              stepNumber: 5,
-              bottomBarcolor: SolhColors.grey239,
-              upperBarcolor: SolhColors.primary_green,
-            ),
             SizedBox(
               height: 3.h,
             ),
-            EditNeedSupportOnText(),
+            NeedSupportOnText(),
             SizedBox(
               height: 3.h,
             ),
@@ -74,7 +77,7 @@ class EditNeedSupportOn extends StatelessWidget {
                       label: Text('Other'),
                       onSelected: (value) {
                         if (value) {
-                          userTypeController.showOtherissueField.value = true;
+                          chatAnonController.showOtherissueField.value = true;
                         }
                       },
                       backgroundColor: SolhColors.grey239,
@@ -82,12 +85,12 @@ class EditNeedSupportOn extends StatelessWidget {
                     ),
                   ),
                   Obx(() {
-                    return userTypeController.showOtherissueField.value
+                    return chatAnonController.showOtherissueField.value
                         ? Column(
                             children: [
                               TextField(
                                   controller:
-                                      userTypeController.otherIssueTextField,
+                                      chatAnonController.otherIssueTextField,
                                   decoration: TextFieldStyles.greenF_greyUF_4R
                                       .copyWith(
                                           hintText: " Enter Custom issue")),
@@ -96,12 +99,12 @@ class EditNeedSupportOn extends StatelessWidget {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  userTypeController.selectedOtherIssues.add(
-                                      userTypeController
+                                  chatAnonController.selectedOtherIssues.add(
+                                      chatAnonController
                                           .otherIssueTextField.text);
-                                  userTypeController.otherIssueTextField.text =
+                                  chatAnonController.otherIssueTextField.text =
                                       '';
-                                  userTypeController.showOtherissueField.value =
+                                  chatAnonController.showOtherissueField.value =
                                       false;
                                 }),
                                 child: Text(
@@ -123,8 +126,8 @@ class EditNeedSupportOn extends StatelessWidget {
   }
 }
 
-class EditNeedSupportOnText extends StatelessWidget {
-  const EditNeedSupportOnText({Key? key}) : super(key: key);
+class NeedSupportOnText extends StatelessWidget {
+  const NeedSupportOnText({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -152,46 +155,44 @@ class IssueChips extends StatefulWidget {
 }
 
 class _IssueChipsState extends State<IssueChips> {
-  UserTypeController userTypeController = Get.find();
+  ChatAnonController chatAnonController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      userTypeController.getNeedSupportOnIssues();
-    });
+    chatAnonController.getNeedSupportOnIssues();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return userTypeController.isLoadingIssues.value
+      return chatAnonController.isLoadingIssues.value
           ? Center(
               child: MyLoader(),
             )
           : Wrap(
               spacing: 5,
-              children: userTypeController
+              children: chatAnonController
                   .needSupportOnModel.value.specialization!
                   .map((e) => FilterChip(
                       onSelected: (value) {
-                        print(userTypeController.selectedIsses.toString());
+                        print(chatAnonController.selectedIsses.toString());
                         value
-                            ? userTypeController.selectedIsses.value.add(e.sId)
-                            : userTypeController.selectedIsses.value
+                            ? chatAnonController.selectedIsses.value.add(e.sId)
+                            : chatAnonController.selectedIsses.value
                                 .remove(e.sId);
                         setState(() {});
                       },
                       selected:
-                          userTypeController.selectedIsses.contains(e.sId),
+                          chatAnonController.selectedIsses.contains(e.sId),
                       selectedColor: SolhColors.primary_green,
                       backgroundColor: SolhColors.grey239,
                       checkmarkColor:
-                          userTypeController.selectedIsses.contains(e.sId)
+                          chatAnonController.selectedIsses.contains(e.sId)
                               ? SolhColors.white
                               : SolhColors.black,
-                      label: userTypeController.selectedIsses.contains(e.sId)
+                      label: chatAnonController.selectedIsses.contains(e.sId)
                           ? Text(
                               e.slug!,
                               style: Theme.of(context)
@@ -210,13 +211,13 @@ class _IssueChipsState extends State<IssueChips> {
 
 class OtherIssueList extends StatelessWidget {
   OtherIssueList({Key? key}) : super(key: key);
-  final UserTypeController userTypeController = Get.find();
+  final ChatAnonController chatAnonController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return Wrap(
         spacing: 5,
-        children: userTypeController.selectedOtherIssues.value.map((element) {
+        children: chatAnonController.selectedOtherIssues.value.map((element) {
           return FilterChip(
             showCheckmark: false,
             selectedColor: SolhColors.primary_green,
@@ -242,7 +243,7 @@ class OtherIssueList extends StatelessWidget {
               ],
             ),
             onSelected: (Value) {
-              userTypeController.selectedOtherIssues.remove(element);
+              chatAnonController.selectedOtherIssues.remove(element);
             },
             selected: true,
           );
