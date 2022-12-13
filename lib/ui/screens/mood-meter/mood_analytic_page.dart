@@ -469,14 +469,17 @@ class MoodAnalyticPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    moodMeterController
-                            .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                    moodMeterController.moodAnlyticsModel.value.moodAnalytic ==
+                            null
                         ? ''
-                        : (moodMeterController
-                                    .moodAnlyticsModel.value.avgMood !=
-                                null
-                            ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
-                            : 'Loading ...'),
+                        : moodMeterController
+                                .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                            ? ''
+                            : (moodMeterController
+                                        .moodAnlyticsModel.value.avgMood !=
+                                    null
+                                ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
+                                : 'Loading ...'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
@@ -497,14 +500,17 @@ class MoodAnalyticPage extends StatelessWidget {
                     thickness: 1,
                   ),
                   Text(
-                    moodMeterController
-                            .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                    moodMeterController.moodAnlyticsModel.value.moodAnalytic ==
+                            null
                         ? ''
-                        : (moodMeterController
-                                    .moodAnlyticsModel.value.avgMood !=
-                                null
-                            ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
-                            : 'Loading ...'),
+                        : moodMeterController
+                                .moodAnlyticsModel.value.moodAnalytic!.isEmpty
+                            ? ''
+                            : (moodMeterController
+                                        .moodAnlyticsModel.value.avgMood !=
+                                    null
+                                ? "${moodMeterController.moodAnlyticsModel.value.avgFeeling!.name} \n Average Mood"
+                                : 'Loading ...'),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,

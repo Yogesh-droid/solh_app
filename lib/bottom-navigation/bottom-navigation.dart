@@ -37,8 +37,7 @@ class MasterScreen extends StatelessWidget {
       Get.put(BottomNavigatorController());
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
-  final SearchMarketController searchMarketController =
-      Get.put(SearchMarketController());
+
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   final ConnectionController connectionController =

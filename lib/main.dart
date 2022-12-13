@@ -7,7 +7,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
-import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
@@ -16,6 +15,7 @@ import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
+import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 
@@ -31,6 +31,8 @@ void main() async {
   LocalNotification.initOneSignal();
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   await FirebaseAnalytics.instance.logBeginCheckout();
+  final SearchMarketController searchMarketController =
+      Get.put(SearchMarketController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
@@ -129,6 +131,7 @@ class _SolhAppState extends State<SolhApp> {
       ProfileController profileController = Get.put(ProfileController());
       ProfileSetupController profileSetupController =
           Get.put(ProfileSetupController());
+
       // await profileController.getMyProfile();
       Get.put(ChatListController());
     }
