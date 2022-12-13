@@ -15,10 +15,7 @@ class ProfileSetupFloatingActionButton {
       child: FloatingActionButton(
         backgroundColor: SolhColors.primary_green,
         onPressed: onPressed,
-        child: Icon(
-          Icons.chevron_right_rounded,
-          size: 40,
-        ),
+        child: child,
       ),
     );
   }

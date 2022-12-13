@@ -34,7 +34,7 @@ class Body {
 
   Body.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    percentProfile = json['percentProfile'];
+    percentProfile = json['percentProfile'].toInt();
     userMoveEmptyScreenEmpty = json['userMoveEmptyScreenEmpty'];
   }
 

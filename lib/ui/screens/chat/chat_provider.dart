@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
@@ -265,6 +266,7 @@ class MessageBoxProvider extends StatelessWidget {
   SocketService service = SocketService();
   ChatListController chatListController = Get.find();
   AppointmentController appointmentController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -343,6 +345,8 @@ class MessageBoxProvider extends StatelessWidget {
                                     fileName: result.files.first.name,
                                     mediaUrl: mediaUrl,
                                     appointmentId: '',
+                                    authorId: profileController
+                                        .myProfileModel.value.body!.user!.sId,
                                     conversationType: 'media');
                               }
                             }
@@ -371,6 +375,8 @@ class MessageBoxProvider extends StatelessWidget {
                           mediaUrl: mediaUrl,
                           appointmentId: '',
                           fileName: '',
+                          authorId: profileController
+                              .myProfileModel.value.body!.user!.sId,
                           conversationType: 'text');
                     }
                     chatListController.chatListController();

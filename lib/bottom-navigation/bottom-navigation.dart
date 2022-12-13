@@ -22,7 +22,6 @@ import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/getHelp/search_market_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
-import '../widgets_constants/buttonLoadingAnimation.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
@@ -30,22 +29,23 @@ class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
   //ProfileController profileController = Get.put(ProfileController());
 
-  BookAppointmentController bookAppointment =
+  final BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
-  JournalPageController journalPageController =
+  final JournalPageController journalPageController =
       Get.put(JournalPageController());
-  SearchMarketController searchMarketController =
+  final SearchMarketController searchMarketController =
       Get.put(SearchMarketController());
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
-  ConnectionController connectionController = Get.put(ConnectionController());
-  AppointmentController appointmentController =
+  final ConnectionController connectionController =
+      Get.put(ConnectionController());
+  final AppointmentController appointmentController =
       Get.put(AppointmentController());
-  GetHelpController getHelpController = Get.put(GetHelpController());
+  final GetHelpController getHelpController = Get.put(GetHelpController());
 
   @override
   Widget build(BuildContext context) {
@@ -83,19 +83,23 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
   late AnimationController animationController;
 
-  List<Widget> bottomWidgetList = [
-    HomeScreen(),
-    Journaling(),
-    GetHelpScreen(),
-    MyGoalsScreen(),
-    MyProfileScreenV2()
-  ];
+  List<Widget> bottomWidgetList = [];
 
   @override
   void initState() {
     print('init master');
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      profileController.getMyProfile();
+    });
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    bottomWidgetList.addAll([
+      HomeScreen(),
+      Journaling(),
+      GetHelpScreen(),
+      MyGoalsScreen(),
+      MyProfileScreenV2()
+    ]);
     super.initState();
   }
 
@@ -256,14 +260,11 @@ class _MasterScreen2State extends State<MasterScreen2>
         icon: Obx(() {
           return profileController.isProfileLoading.value ||
                   profileController.myProfileModel.value.body == null
-              ? Container(
-                  height: 20,
-                  child: ButtonLoadingAnimation(
-                    ballColor: SolhColors.primary_green,
-                    ballSizeLowerBound: 3,
-                    ballSizeUpperBound: 8,
-                  ),
-                )
+              ? bottomNavigatorController.activeIndex.value == 2
+                  ? SvgPicture.asset("assets/images/get help tab.svg")
+                  : SvgPicture.asset(
+                      "assets/images/get help. outline.svg",
+                    )
               : profileController.myProfileModel.value.body!.user!.userType ==
                       'SolhProvider'
                   ? Icon(
@@ -280,7 +281,7 @@ class _MasterScreen2State extends State<MasterScreen2>
         }),
         label: profileController.isProfileLoading.value ||
                 profileController.myProfileModel.value.body == null
-            ? ''
+            ? 'Get Help'
             : profileController.myProfileModel.value.body!.user!.userType ==
                     'SolhProvider'
                 ? 'My Schedule'

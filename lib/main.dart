@@ -13,6 +13,7 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -30,6 +31,7 @@ void main() async {
   LocalNotification.initOneSignal();
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   await FirebaseAnalytics.instance.logBeginCheckout();
+
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
 
@@ -44,17 +46,6 @@ void main() async {
     ));
 
   FlutterNativeSplash.remove();
-}
-
-////////   required controllers are initialized here ///////////
-Future<void> initControllers() async {
-  ProfileController profileController = Get.put(ProfileController());
-  // await profileController.getMyProfile();
-  final AgeController ageController = Get.put(AgeController());
-
-  var _chatListController = Get.put(ChatListController());
-
-  var journalpageController = Get.put(JournalPageController());
 }
 
 /// app ////
@@ -136,6 +127,8 @@ class _SolhAppState extends State<SolhApp> {
   Future<void> initControllers() async {
     if (widget._isProfileCreated) {
       ProfileController profileController = Get.put(ProfileController());
+      ProfileSetupController profileSetupController =
+          Get.put(ProfileSetupController());
       // await profileController.getMyProfile();
       Get.put(ChatListController());
     }

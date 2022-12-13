@@ -201,7 +201,7 @@ class BookAppoinmentSheet extends StatelessWidget {
                               BorderSide(color: SolhColors.primary_green)),
                       fillColor: SolhColors.light_Bg,
                       hintStyle: SolhTextStyles.QS_body_2.copyWith(
-                          color: SolhColors.black)),
+                          color: SolhColors.grey_2)),
               controller: bookAppointmentController.emailTextEditingController,
             ),
           ),

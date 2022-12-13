@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/booking_price_details.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -70,12 +73,12 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                         ? SolhColors.primary_green
                         : Colors.transparent,
                     actions: [
-                      PopupMenuButton(
-                          itemBuilder: (context) => [
-                                PopupMenuItem(
-                                  child: Text('Setting'),
-                                )
-                              ]),
+                      // PopupMenuButton(
+                      //     itemBuilder: (context) => [
+                      //           PopupMenuItem(
+                      //             child: Text('Setting'),
+                      //           )
+                      //         ]),
                       SOSButton()
                     ],
                     elevation: 0.0,
@@ -103,16 +106,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                             ),
                             aboutContainer(),
                             Container(
-                              height: 200,
-                            ),
-                            Container(
-                              height: 200,
-                            ),
-                            Container(
-                              height: 200,
-                            ),
-                            Container(
-                              height: 200,
+                              height: 400,
                             ),
                           ])),
                 ),
@@ -139,23 +133,38 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 borderWidth: 5,
                 radius: 100,
               ),
-              Text(
-                _controller.consultantModelController.value.provder!.name ?? '',
-                style: SolhTextStyles.QS_body_1_bold.copyWith(
-                    color: SolhColors.white),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _controller
+                            .consultantModelController.value.provder!.prefix ??
+                        '',
+                    style: SolhTextStyles.QS_body_1_bold.copyWith(
+                        color: SolhColors.white),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    _controller.consultantModelController.value.provder!.name ??
+                        '',
+                    style: SolhTextStyles.QS_body_1_bold.copyWith(
+                        color: SolhColors.white),
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    //'Profession(Doctor)',
-                    'Consultant',
-                    style: SolhTextStyles.QS_caption.copyWith(
+                    '${_controller.consultantModelController.value.provder!.profession}',
+                    style: SolhTextStyles.QS_cap_semi.copyWith(
                         color: SolhColors.white),
                   ),
                   _controller.consultantModelController.value.provder!
                               .experience ==
-                          0
+                          null
                       ? Container()
                       : Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5),
@@ -178,8 +187,8 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                                 .toString() +
                             ' Years'
                         : '',
-                    style:
-                        SolhTextStyles.QS_caption.copyWith(color: Colors.white),
+                    style: SolhTextStyles.QS_cap_semi.copyWith(
+                        color: Colors.white),
                   )
                 ],
               ),
@@ -190,15 +199,21 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   getAnalyticsBox(
-                      icon: Icons.emoji_people_outlined,
-                      no: '0',
+                      icon: 'assets/images/get_help/smile.svg',
+                      no: '${_controller.consultantModelController.value.provder!.apptCount}',
                       title: 'Consultant'),
                   getAnalyticsBox(
-                      icon: Icons.star_rate, no: '0', title: 'Ratings'),
+                      icon: 'assets/images/get_help/star.svg',
+                      no: '${_controller.consultantModelController.value.provder!.ratingCount}',
+                      title: 'Ratings'),
                   getAnalyticsBox(
-                      icon: Icons.edit_note, no: '0', title: 'Posts'),
+                      icon: 'assets/images/get_help/post.svg',
+                      no: '${_controller.consultantModelController.value.provder!.postCount}',
+                      title: 'Posts'),
                   getAnalyticsBox(
-                      icon: Icons.thumb_up_rounded, no: '0', title: 'likes'),
+                      icon: 'assets/images/get_help/thumbs up.svg',
+                      no: '${_controller.consultantModelController.value.provder!.likeCount}',
+                      title: 'likes'),
                 ],
               ),
             ],
@@ -235,7 +250,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   }
 
   Widget getAnalyticsBox(
-      {required IconData icon, required String no, required String title}) {
+      {required String icon, required String no, required String title}) {
     return Container(
       padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
@@ -245,9 +260,9 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         children: [
           Row(
             children: [
-              Icon(
-                icon,
-                color: Colors.white,
+              SvgPicture.asset(icon),
+              SizedBox(
+                width: 5,
               ),
               Text(
                 no,
@@ -285,7 +300,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                     height: 10,
                   ),
                   Text(
-                    ". ${_controller.consultantModelController.value.provder!.specialization ?? ''}",
+                    ". ${_controller.consultantModelController.value.provder!.education ?? ''}",
                     style: SolhTextStyles.QS_caption,
                     maxLines: 2,
                   ),
@@ -304,10 +319,11 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                   Text('About',
                       style: SolhTextStyles.QS_body_2_bold.copyWith(
                           color: SolhColors.primary_green)),
-                  Text(
+                  ReadMoreText(
                     "${_controller.consultantModelController.value.provder!.bio ?? ''}",
                     style: SolhTextStyles.QS_body_2,
-                    maxLines: 2,
+                    trimLines: 2,
+                    trimMode: TrimMode.Line,
                   ),
                 ],
               )
@@ -380,6 +396,16 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         context: context,
         isScrollControlled: true,
         builder: (context) {
+          print(
+              "This is user's email ID   ${Get.find<ProfileController>().myProfileModel.value.body!.user!.email ?? ''}");
+          bookAppointmentController.emailTextEditingController.text =
+              Get.find<ProfileController>()
+                      .myProfileModel
+                      .value
+                      .body!
+                      .user!
+                      .email ??
+                  '';
           return BookAppoinmentSheet(
             onContinueBtnPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -187,13 +186,9 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                     child: Row(
                       children: [
-                        Text(
-                          'Journaling',
-                          style: GoogleFonts.signika(
-                            color: SolhColors.primary_green,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        Text('Journaling',
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primary_green)),
                         Icon(
                           Icons.arrow_forward,
                           color: SolhColors.primary_green,
@@ -441,6 +436,8 @@ class _HomePageState extends State<HomePage> {
               .day ==
           DateTime.now().day) {
         return;
+      } else if (value['media'] == null) {
+        return;
       } else {
         showDialog(
             context: context,
@@ -502,7 +499,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> getAnnouncement() async {
     _journalPageController.getHeaderAnnounce();
     Map<String, dynamic> map = await _journalPageController.getAnnouncement();
-    openAnnouncement(map);
+    map['media'].isEmpty ? () {} : openAnnouncement(map);
   }
 
   announcementMedia(Map<String, dynamic> value) {
@@ -749,13 +746,16 @@ class _HomePageState extends State<HomePage> {
                       ? SizedBox(
                           height: 0,
                         )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            journal.description ?? '',
-                            style: SolhTextStyles.QS_cap_semi,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                      : Container(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              journal.description ?? '',
+                              style: SolhTextStyles.QS_cap_semi,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
                 ],
@@ -811,7 +811,7 @@ class _HomePageState extends State<HomePage> {
                       uid: getHelpController
                           .solhVolunteerList.value.provider![index].uid,
                       comments: getHelpController
-                          .solhVolunteerList.value.provider![index].commentCount
+                          .solhVolunteerList.value.provider![index].postCount
                           .toString(),
                       connections: getHelpController.solhVolunteerList.value
                           .provider![index].connectionsCount
@@ -821,6 +821,9 @@ class _HomePageState extends State<HomePage> {
                           .toString(),
                       userType: getHelpController
                           .solhVolunteerList.value.provider![index].userType,
+                      post: getHelpController.solhVolunteerList.value
+                              .provider![index].postCount ??
+                          0,
                     ))
             : solhBuddiesShimmer(context);
       }),
@@ -1040,6 +1043,11 @@ class _HomePageState extends State<HomePage> {
                 .likesCount
                 .toString(),
             userType: null,
+            post: connectionController
+                    .peopleYouMayKnowHome.value.reccomendation!
+                    .elementAt(index)
+                    .postCount ??
+                0,
           ),
         );
       }),

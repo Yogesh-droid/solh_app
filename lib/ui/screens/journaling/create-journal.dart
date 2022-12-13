@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -35,7 +35,6 @@ import '../../../model/journals/journals_response_model.dart';
 import '../../../model/profile/my_profile_model.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../profile-setup/add-profile-photo.dart';
-import '../profile-setup/anonymous/pick_user_name_screen.dart';
 import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
 

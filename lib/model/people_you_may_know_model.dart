@@ -40,6 +40,7 @@ class Reccomendation {
   int? commentCount;
   bool? featured;
   int? connectionsCount;
+  int? postCount;
 
   Reccomendation(
       {this.name,
@@ -52,7 +53,8 @@ class Reccomendation {
       this.likesCount,
       this.commentCount,
       this.featured,
-      this.connectionsCount});
+      this.connectionsCount,
+      this.postCount});
 
   Reccomendation.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -66,6 +68,7 @@ class Reccomendation {
     commentCount = json['commentCount'];
     featured = json['featured'];
     connectionsCount = json['connectionsCount'];
+    postCount = json['postCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,7 +83,7 @@ class Reccomendation {
     data['likesCount'] = this.likesCount;
     data['commentCount'] = this.commentCount;
     data['featured'] = this.featured;
-    data['connectionsCount'] = this.connectionsCount;
+    data['postCount'] = this.postCount;
     return data;
   }
 }

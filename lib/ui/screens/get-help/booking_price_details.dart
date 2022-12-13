@@ -182,7 +182,11 @@ class BookingPriceDetails extends StatelessWidget {
                             color: SolhColors.Grey_1)),
                     Spacer(),
                     Text(
-                        "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${consultantController.consultantModelController.value.provder!.fee_amount ?? ''}",
+                        consultantController.consultantModelController.value
+                                    .provder!.fee_amount! ==
+                                0
+                            ? 'Paid'
+                            : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${consultantController.consultantModelController.value.provder!.fee_amount ?? ''}",
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.Grey_1)),
                   ],
@@ -215,7 +219,11 @@ class BookingPriceDetails extends StatelessWidget {
                             color: SolhColors.black)),
                     Spacer(),
                     Text(
-                        "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+                        consultantController.consultantModelController.value
+                                    .provder!.fee_amount! ==
+                                0
+                            ? 'Paid'
+                            : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.black)),
                   ],
@@ -245,7 +253,11 @@ class BookingPriceDetails extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-                "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+                consultantController.consultantModelController.value.provder!
+                            .fee_amount! ==
+                        0
+                    ? 'Paid'
+                    : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black)),
             SizedBox(
@@ -353,7 +365,9 @@ class BookingPriceDetails extends StatelessWidget {
                           ),
                         );
                       });
-                  await Get.find<AppointmentController>().getUserAppointments();
+
+                  Get.find<AppointmentController>().getUserAppointments();
+                  await Future.delayed(Duration(seconds: 2), () {});
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();

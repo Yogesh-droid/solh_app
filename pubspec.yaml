@@ -74,6 +74,7 @@ flutter:
     - assets/icons/bottom-navigation-bar/
     - assets/images/logo/
     - assets/images/
+    - assets/images/get_help/
     - assets/icons/group/
     - assets/intro/png/
 

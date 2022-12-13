@@ -267,7 +267,7 @@ class SolhGreenBorderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 5.h,
+      height: height ?? 7.h,
       width: width ?? double.infinity,
       decoration: BoxDecoration(
         color: backgroundColor,
@@ -317,11 +317,12 @@ class SolhGreenButtonWithWhiteBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 5.h,
+      height: height ?? 7.h,
       width: width ?? double.infinity,
       decoration: BoxDecoration(
           border: Border.all(color: SolhColors.white),
           boxShadow: [BoxShadow(blurRadius: 2, color: Colors.black54)],
+          color: SolhColors.primary_green,
           borderRadius: BorderRadius.circular(24)),
       child: TextButton(
         style: ButtonStyle(

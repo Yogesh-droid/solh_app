@@ -1,17 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/instance_manager.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class EditProfileOptions extends StatelessWidget {
-  const EditProfileOptions({Key? key}) : super(key: key);
+  EditProfileOptions({Key? key}) : super(key: key);
+  final ProfileController _profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +44,26 @@ class EditProfileOptions extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
+          _profileController.myProfileModel.value.body!.user!.anonymous != null
+              ? InkWell(
+                  onTap: () => Navigator.pushNamed(
+                      context, AppRoutes.editAnonymousProfile),
+                  child: getOptions(
+                    SvgPicture.asset('assets/images/anon_glasses.svg'),
+                    'Anonymous profile',
+                    'Name, Avatar',
+                  ),
+                )
+              : Container(),
+          SizedBox(
+            height: 15,
+          ),
           InkWell(
-            onTap: () =>
-                Navigator.pushNamed(context, AppRoutes.editAnonymousProfile),
-            child: getOptions(
-              SvgPicture.asset('assets/images/anon_glasses.svg'),
-              'Anonymous profile',
-              'Name, Avatar',
+            onTap: () => Navigator.pushNamed(context, AppRoutes.needSupportOn),
+            child: getSettingOptions(
+              SvgPicture.asset('assets/images/other_detail.svg'),
+              'Other Detail',
+              'Issues, Organisation',
             ),
           ),
         ]),

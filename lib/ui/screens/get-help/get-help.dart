@@ -22,14 +22,30 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
-import 'consultant_profile.dart';
 
-class GetHelpScreen extends StatelessWidget {
+class GetHelpScreen extends StatefulWidget {
+  @override
+  State<GetHelpScreen> createState() => _GetHelpScreenState();
+}
+
+class _GetHelpScreenState extends State<GetHelpScreen> {
   GetHelpController getHelpController = Get.find();
+
   SearchMarketController searchMarketController = Get.find();
+
   BookAppointmentController bookAppointmentController = Get.find();
+
   ConnectionController connectionController = Get.find();
+
   ProfileController profileController = Get.find();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //getProfile();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +55,7 @@ class GetHelpScreen extends StatelessWidget {
               child: MyLoader(),
             )
           : profileController.myProfileModel.value.body == null
-              ? Container(
-                  child: Center(
-                      child: Container(
-                    width: 150,
-                    child: SolhGreenButton(
-                      child: Text('Reload Profile',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () async {
-                        await profileController.getMyProfile();
-                      },
-                    ),
-                  )),
-                )
+              ? getHelpPage(context)
               : profileController.myProfileModel.value.body!.user!.userType ==
                       'SolhProvider'
                   ? DoctorsAppointmentPage()
@@ -310,8 +314,9 @@ class GetHelpScreen extends StatelessWidget {
                         bio: getHelpController
                                 .solhVolunteerList.value.provider![index].bio ??
                             '',
-                        post: getHelpController
-                            .solhVolunteerList.value.provider![index].postCount,
+                        post: getHelpController.solhVolunteerList.value
+                                .provider![index].postCount ??
+                            0,
                         isInSendRequest: checkIfAlreadyInSendConnection(
                           getHelpController.solhVolunteerList.value
                                   .provider![index].sId ??
@@ -363,6 +368,12 @@ class GetHelpScreen extends StatelessWidget {
     });
     debugPrint('++++' + sId + isInConnection.toString());
     return isInConnection;
+  }
+
+  void getProfile() {
+    if (profileController.myProfileModel.value.body == null) {
+      profileController.getMyProfile();
+    }
   }
 }
 
@@ -527,7 +538,8 @@ class GetHelpCategory extends StatelessWidget {
               onTap: _onPressed,
               child: Text(
                 "View All",
-                style: TextStyle(color: SolhColors.primary_green),
+                style: SolhTextStyles.CTA
+                    .copyWith(color: SolhColors.primary_green),
               ),
             )
         ],
@@ -564,7 +576,7 @@ class SolhVolunteers extends StatelessWidget {
       this.likes,
       this.uid,
       this.userType,
-      int? post})
+      required this.post})
       : super(key: key);
   final String? mobile;
   final String? name;
@@ -577,6 +589,7 @@ class SolhVolunteers extends StatelessWidget {
   final String? comments;
   final String? uid;
   final String? userType;
+  final int post;
 
   ConnectionController connectionController = Get.find();
   ConnectScreenController connectScreenController =
@@ -614,7 +627,7 @@ class SolhVolunteers extends StatelessWidget {
                   height: 121,
                   width: 164,
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(95, 155, 140, 0.6),
+                    color: Color.fromRGBO(9, 62, 49, 0.45),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -680,58 +693,45 @@ class SolhVolunteers extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(
                     children: [
-                      Icon(
-                        Icons.comment,
-                        color: Color(0xFF5F9B8C),
-                        size: 12,
+                      SvgPicture.asset(
+                        'assets/images/get_help/post.svg',
+                        color: SolhColors.primary_green,
                       ),
                       SizedBox(
                         width: 2,
                       ),
-                      Text(
-                        comments ?? '',
-                        style: GoogleFonts.signika(
-                          fontSize: 12,
-                          color: Color(0xFF5F9B8C),
-                        ),
-                      ),
+                      Text(post.toString(),
+                          style: SolhTextStyles.QS_caption_bold),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.thumb_up,
-                        size: 12,
-                        color: Color(0xff5F9B8C),
+                      SvgPicture.asset(
+                        'assets/images/get_help/thumbs up.svg',
+                        color: SolhColors.primary_green,
                       ),
                       SizedBox(
                         width: 4,
                       ),
-                      Text(
-                        likes ?? '',
-                        style: GoogleFonts.signika(
-                            fontSize: 12, color: Color(0xff5F9B8C)),
-                      ),
+                      Text(likes ?? '', style: SolhTextStyles.QS_caption_bold)
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(
-                        Icons.people,
-                        size: 12,
-                        color: Color(0xff5F9B8C),
+                      SvgPicture.asset(
+                        'assets/images/connection.svg',
+                        color: SolhColors.primary_green,
                       ),
                       SizedBox(
                         width: 4,
                       ),
                       Text(
                         connections ?? '',
-                        style: GoogleFonts.signika(
-                            fontSize: 12, color: Color(0xff5F9B8C)),
+                        style: SolhTextStyles.QS_caption_bold,
                       ),
                     ],
                   ),

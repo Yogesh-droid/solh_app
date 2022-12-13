@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
@@ -27,8 +26,7 @@ class BookAppointmentController extends GetxController {
 
   /// It's list of dateTime
   String? query;
-  TextEditingController emailTextEditingController = TextEditingController()
-    ..text = userBlocNetwork.userEmail;
+  TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController mobileNotextEditingController = TextEditingController();
   TextEditingController catTextEditingController = TextEditingController();
   TextEditingController descTextEditingController = TextEditingController();
@@ -45,8 +43,10 @@ class BookAppointmentController extends GetxController {
     isLoading.value = true;
     var response = await Network.makePostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);
+    // await Future.delayed(Duration(seconds: 1), () {});
     isLoading.value = false;
     return response;
+    // return {'success': true};
   }
 
   Future<void> isSlotAdded({required String providerId}) async {

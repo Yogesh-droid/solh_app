@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
@@ -133,7 +131,7 @@ class ProfileCompletionController extends GetxController {
     try {
       isUpdatingField(true);
 
-      var response = await Network.makePutRequestWithToken(
+      var response = await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/anonymous',
         body: body,
       );

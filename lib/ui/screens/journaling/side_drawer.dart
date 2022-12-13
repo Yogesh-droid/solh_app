@@ -15,10 +15,8 @@ import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import '../../../bloc/user-bloc.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/profile/appointment_controller.dart';
-import '../../../model/user/user.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
@@ -152,7 +150,6 @@ class SideDrawer extends StatelessWidget {
                 SideDrawerMenuTile(
                   title: "My Diary",
                   onPressed: () {
-                    bottomNavigatorController.isDrawerOpen.value = false;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -162,7 +159,7 @@ class SideDrawer extends StatelessWidget {
                 SideDrawerMenuTile(
                   title: "Groups",
                   onPressed: () {
-                    bottomNavigatorController.isDrawerOpen.value = false;
+                    //bottomNavigatorController.isDrawerOpen.value = false;
                     Navigator.push(
                         context,
                         MaterialPageRoute(

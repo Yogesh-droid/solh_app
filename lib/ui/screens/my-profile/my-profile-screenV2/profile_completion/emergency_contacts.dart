@@ -94,7 +94,7 @@ class EmergencyContacts extends StatelessWidget {
         }),
         backButtonColor: SolhColors.white,
         onBackButton: (() {
-          Navigator.of(context);
+          Navigator.of(context).pop();
         }),
         skipButtonStyle: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
       ),
