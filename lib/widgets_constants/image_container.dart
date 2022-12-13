@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -168,9 +169,7 @@ class ImageWithProgressBarAndBadge extends StatelessWidget {
                         placeholder: (_, k) {
                           return Container(
                             child: Center(
-                              child: MyLoader(
-                                radius: imageRadius.width / 2,
-                              ),
+                              child: getImageShimmer(imageRadius.width),
                             ),
                           );
                         },
@@ -282,4 +281,16 @@ class Percentagebadge extends StatelessWidget {
       )),
     );
   }
+}
+
+Widget getImageShimmer(double width) {
+  return Shimmer.fromColors(
+    child: Container(
+      height: width,
+      width: width,
+      decoration: BoxDecoration(shape: BoxShape.circle),
+    ),
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+  );
 }

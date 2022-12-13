@@ -207,17 +207,28 @@ class RouteGenerator {
       case AppRoutes.userType:
         return MaterialPageRoute(builder: ((context) => UserType()));
       case AppRoutes.addAvatar:
-        return MaterialPageRoute(builder: ((context) => AddAvatar()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                AddAvatar(args: args as Map<String, dynamic>)));
       case AppRoutes.bio:
-        return MaterialPageRoute(builder: ((context) => Bio()));
+        return MaterialPageRoute(
+            builder: ((context) => Bio(args: args as Map<String, dynamic>)));
       case AppRoutes.anonymousProfile:
-        return MaterialPageRoute(builder: ((context) => AnonymousProfile()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                AnonymousProfile(args: args as Map<String, dynamic>)));
       case AppRoutes.addEmail:
-        return MaterialPageRoute(builder: ((context) => AddEmail()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                AddEmail(args: args as Map<String, dynamic>)));
       case AppRoutes.emergencyContact:
-        return MaterialPageRoute(builder: ((context) => EmergencyContacts()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                EmergencyContacts(args: args as Map<String, dynamic>)));
       case AppRoutes.partOfOrg:
-        return MaterialPageRoute(builder: ((context) => PartOfOrg()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                PartOfOrg(args: args as Map<String, dynamic>)));
       case AppRoutes.needSupportOn:
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
 

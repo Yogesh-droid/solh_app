@@ -16,9 +16,12 @@ import 'package:solh/widgets_constants/solh_snackBar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class AddEmail extends StatelessWidget {
-  AddEmail({Key? key}) : super(key: key);
+  AddEmail({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   final ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -44,13 +47,15 @@ class AddEmail extends StatelessWidget {
                     });
                     if (response) {
                       SolhSnackbar.success("Success", " Email updated");
-                      if (profileController.myProfileModel.value.body!
-                          .userMoveEmptyScreenEmpty!.isNotEmpty) {
+                      if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
                         Navigator.pushNamed(
                             context,
                             profileCompletionController.getAppRoute(
-                                profileController.myProfileModel.value.body!
-                                    .userMoveEmptyScreenEmpty!.first));
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
                           context,

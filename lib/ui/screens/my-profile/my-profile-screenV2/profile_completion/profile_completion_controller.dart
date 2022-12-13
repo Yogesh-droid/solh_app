@@ -23,6 +23,8 @@ class ProfileCompletionController extends GetxController {
 
   var isUpdatingField = false.obs;
 
+  List uncompleteFields = [];
+
   var orgType = ''.obs;
 
   TextEditingController bioTextEditingController = TextEditingController();

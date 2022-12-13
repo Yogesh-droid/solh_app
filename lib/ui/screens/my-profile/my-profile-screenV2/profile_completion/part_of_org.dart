@@ -20,9 +20,12 @@ import 'package:solh/widgets_constants/solh_snackBar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class PartOfOrg extends StatelessWidget {
-  PartOfOrg({Key? key}) : super(key: key);
+  PartOfOrg({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -46,16 +49,14 @@ class PartOfOrg extends StatelessWidget {
               });
 
               if (response) {
-                if (profileController.myProfileModel.value.body!
-                    .userMoveEmptyScreenEmpty!.isNotEmpty) {
+                if (profileCompletionController.uncompleteFields.last !=
+                    profileCompletionController.uncompleteFields[indexOfpage]) {
                   Navigator.pushNamed(
                       context,
-                      profileCompletionController.getAppRoute(profileController
-                          .myProfileModel
-                          .value
-                          .body!
-                          .userMoveEmptyScreenEmpty!
-                          .first));
+                      profileCompletionController.getAppRoute(
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage + 1]),
+                      arguments: {"indexOfpage": indexOfpage + 1});
                 } else {
                   Navigator.pushNamedAndRemoveUntil(
                     context,
@@ -75,18 +76,14 @@ class PartOfOrg extends StatelessWidget {
           backButtonColor: SolhColors.white,
           skipButtonStyle: SolhTextStyles.NormalTextWhiteS14W6,
           onSkip: (() {
-            int currentPageIndex =
-                profileCompletionController.getPageFromIndex('partOfOrg');
-            if (profileController.myProfileModel.value.body!
-                    .userMoveEmptyScreenEmpty!.last !=
-                currentPageIndex) {
-              debugPrint(currentPageIndex.toString());
+            if (profileCompletionController.uncompleteFields.last !=
+                profileCompletionController.uncompleteFields[indexOfpage]) {
               Navigator.pushNamed(
                   context,
-                  profileCompletionController.getNextPageOnSkip(
-                      currentpageIndex: currentPageIndex));
-              debugPrint(profileCompletionController.getNextPageOnSkip(
-                  currentpageIndex: currentPageIndex));
+                  profileCompletionController.getAppRoute(
+                      profileCompletionController
+                          .uncompleteFields[indexOfpage + 1]),
+                  arguments: {"indexOfpage": indexOfpage + 1});
             } else {
               Navigator.pushNamedAndRemoveUntil(
                 context,
