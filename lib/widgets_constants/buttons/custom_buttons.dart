@@ -219,21 +219,22 @@ class SolhGreenButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height ?? 48,
-      width: width ?? 180,
-      padding: EdgeInsets.all(8),
-      child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-                backgroundColor ?? SolhColors.primary_green),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-              borderRadius: borderRadius ?? BorderRadius.circular(30.0),
-            )),
-          ),
-          onPressed: onPressed,
-          child: child),
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+            backgroundColor ?? SolhColors.primary_green),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(30.0),
+        )),
+      ),
+      onPressed: onPressed,
+      child: Container(
+        height: height ?? 7.h,
+        width: width ?? 180,
+        padding: EdgeInsets.all(8),
+        child: Center(child: child),
+      ),
     );
   }
 }

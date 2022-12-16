@@ -466,6 +466,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         profileController.myProfileModel.value.body!.user!.lastName ?? '';
     _bioTextEditingController.text =
         profileController.myProfileModel.value.body!.user!.bio ?? '';
+    _emailTextEditingController.text =
+        profileController.myProfileModel.value.body!.user!.email ?? '';
 
     _ageController.selectedAge.value = profileController
                 .myProfileModel.value.body!.user!.dob !=

@@ -16,9 +16,12 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class AddAvatar extends StatelessWidget {
-  AddAvatar({Key? key}) : super(key: key);
+  AddAvatar({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   final ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -43,13 +46,15 @@ class AddAvatar extends StatelessWidget {
                         .updateUserProfile({"profilePicture": url});
                     if (response) {
                       SolhSnackbar.success("Success", "Avatar uploaded");
-                      if (profileController.myProfileModel.value.body!
-                          .userMoveEmptyScreenEmpty!.isNotEmpty) {
+                      if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
                         Navigator.pushNamed(
                             context,
                             profileCompletionController.getAppRoute(
-                                profileController.myProfileModel.value.body!
-                                    .userMoveEmptyScreenEmpty!.first));
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
@@ -68,18 +73,14 @@ class AddAvatar extends StatelessWidget {
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         onSkip: (() {
-          int currentPageIndex =
-              profileCompletionController.getPageFromIndex('avatar');
-          if (profileController
-                  .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.last !=
-              currentPageIndex) {
-            debugPrint(currentPageIndex.toString());
+          if (profileCompletionController.uncompleteFields.last !=
+              profileCompletionController.uncompleteFields[indexOfpage]) {
             Navigator.pushNamed(
                 context,
-                profileCompletionController.getNextPageOnSkip(
-                    currentpageIndex: currentPageIndex));
-            debugPrint(profileCompletionController.getNextPageOnSkip(
-                currentpageIndex: currentPageIndex));
+                profileCompletionController.getAppRoute(
+                    profileCompletionController
+                        .uncompleteFields[indexOfpage + 1]),
+                arguments: {"indexOfpage": indexOfpage + 1});
           } else {
             Navigator.pushNamedAndRemoveUntil(
               context,

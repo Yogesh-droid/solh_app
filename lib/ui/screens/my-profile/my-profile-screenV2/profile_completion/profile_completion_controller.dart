@@ -23,10 +23,13 @@ class ProfileCompletionController extends GetxController {
 
   var isUpdatingField = false.obs;
 
+  List uncompleteFields = [];
+
   var orgType = ''.obs;
 
   TextEditingController bioTextEditingController = TextEditingController();
-  TextEditingController anonNameTextEditingController = TextEditingController();
+  TextEditingController anonNameTextEditingController =
+      TextEditingController(text: 'Anonymous_User');
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController orgNameTextEditingController = TextEditingController();
   TextEditingController sosMessageTextEditingController =

@@ -45,6 +45,7 @@ class BookAppointmentController extends GetxController {
         url: APIConstants.api + '/api/appointment', body: body);
     // await Future.delayed(Duration(seconds: 1), () {});
     isLoading.value = false;
+    print(response);
     return response;
     // return {'success': true};
   }

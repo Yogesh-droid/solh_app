@@ -382,7 +382,7 @@ class BookingPriceDetails extends StatelessWidget {
             RichText(
               text: TextSpan(
                   text: 'By confirming you agree',
-                  style: SolhTextStyles.QS_cap_semi.copyWith(
+                  style: SolhTextStyles.QS_cap_2_semi.copyWith(
                       color: SolhColors.Grey_1),
                   children: [
                     TextSpan(

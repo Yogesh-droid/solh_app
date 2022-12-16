@@ -1249,7 +1249,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           imgUrl: userModel!.anonymous != null
               ? userModel.anonymous!.profilePicture ??
                   "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-              : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+              : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
           top: journalPageController.anonymousProfilePositionT.value,
           left: journalPageController.anonymousProfilePositionL.value,
         ),

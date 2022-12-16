@@ -19,9 +19,12 @@ import 'package:solh/widgets_constants/solh_snackBar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class AnonymousProfile extends StatelessWidget {
-  AnonymousProfile({Key? key}) : super(key: key);
+  AnonymousProfile({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   final ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -37,17 +40,19 @@ class AnonymousProfile extends StatelessWidget {
                 onPressed: () async {
                   profileCompletionController.isUpdatingField.value = true;
                   if (profileCompletionController
-                              .anonNameTextEditingController.text
-                              .trim() !=
-                          '' ||
-                      profileCompletionController.anonImageUrl.value.trim() !=
-                          '') {
+                          .anonNameTextEditingController.text
+                          .trim() !=
+                      '') {
                     print(profileCompletionController.anonImageUrl.value +
                         '---------');
-                    String url = await profileCompletionController.uploadImage(
-                        profileCompletionController.anonImageUrl.value,
-                        "file",
-                        "anonymous");
+                    String url =
+                        profileCompletionController.anonImageUrl.value.trim() ==
+                                ''
+                            ? ''
+                            : await profileCompletionController.uploadImage(
+                                profileCompletionController.anonImageUrl.value,
+                                "file",
+                                "anonymous");
 
                     var response = await profileCompletionController
                         .updateUserAnonProfile({
@@ -58,13 +63,15 @@ class AnonymousProfile extends StatelessWidget {
                     if (response) {
                       SolhSnackbar.success(
                           "Success", "Anonymous profile updated");
-                      if (profileController.myProfileModel.value.body!
-                          .userMoveEmptyScreenEmpty!.isNotEmpty) {
+                      if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
                         Navigator.pushNamed(
                             context,
                             profileCompletionController.getAppRoute(
-                                profileController.myProfileModel.value.body!
-                                    .userMoveEmptyScreenEmpty!.first));
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
@@ -83,18 +90,14 @@ class AnonymousProfile extends StatelessWidget {
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         onSkip: (() {
-          int currentPageIndex =
-              profileCompletionController.getPageFromIndex('anonProfile');
-          if (profileController
-                  .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.last !=
-              currentPageIndex) {
-            debugPrint(currentPageIndex.toString());
+          if (profileCompletionController.uncompleteFields.last !=
+              profileCompletionController.uncompleteFields[indexOfpage]) {
             Navigator.pushNamed(
                 context,
-                profileCompletionController.getNextPageOnSkip(
-                    currentpageIndex: currentPageIndex));
-            debugPrint(profileCompletionController.getNextPageOnSkip(
-                currentpageIndex: currentPageIndex));
+                profileCompletionController.getAppRoute(
+                    profileCompletionController
+                        .uncompleteFields[indexOfpage + 1]),
+                arguments: {"indexOfpage": indexOfpage + 1});
           } else {
             Navigator.pushNamedAndRemoveUntil(
               context,

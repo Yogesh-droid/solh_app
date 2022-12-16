@@ -16,9 +16,12 @@ import 'package:solh/widgets_constants/solh_snackBar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class AddEmail extends StatelessWidget {
-  AddEmail({Key? key}) : super(key: key);
+  AddEmail({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   final ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -33,9 +36,12 @@ class AddEmail extends StatelessWidget {
                       ),
                 onPressed: () async {
                   if (profileCompletionController
+                              .emailTextEditingController.text
+                              .trim() !=
+                          '' &&
+                      emailVarification(profileCompletionController
                           .emailTextEditingController.text
-                          .trim() !=
-                      '') {
+                          .trim())) {
                     var response =
                         await profileCompletionController.updateUserProfile({
                       "email": profileCompletionController
@@ -44,13 +50,15 @@ class AddEmail extends StatelessWidget {
                     });
                     if (response) {
                       SolhSnackbar.success("Success", " Email updated");
-                      if (profileController.myProfileModel.value.body!
-                          .userMoveEmptyScreenEmpty!.isNotEmpty) {
+                      if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
                         Navigator.pushNamed(
                             context,
                             profileCompletionController.getAppRoute(
-                                profileController.myProfileModel.value.body!
-                                    .userMoveEmptyScreenEmpty!.first));
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
@@ -69,18 +77,14 @@ class AddEmail extends StatelessWidget {
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         onSkip: (() {
-          int currentPageIndex =
-              profileCompletionController.getPageFromIndex('addEmail');
-          if (profileController
-                  .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.last !=
-              currentPageIndex) {
-            debugPrint(currentPageIndex.toString());
+          if (profileCompletionController.uncompleteFields.last !=
+              profileCompletionController.uncompleteFields[indexOfpage]) {
             Navigator.pushNamed(
                 context,
-                profileCompletionController.getNextPageOnSkip(
-                    currentpageIndex: currentPageIndex));
-            debugPrint(profileCompletionController.getNextPageOnSkip(
-                currentpageIndex: currentPageIndex));
+                profileCompletionController.getAppRoute(
+                    profileCompletionController
+                        .uncompleteFields[indexOfpage + 1]),
+                arguments: {"indexOfpage": indexOfpage + 1});
           } else {
             Navigator.pushNamedAndRemoveUntil(
               context,
@@ -156,5 +160,15 @@ class EmailTextField extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+bool emailVarification(email) {
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email)) {
+    return false;
+  } else {
+    return true;
   }
 }

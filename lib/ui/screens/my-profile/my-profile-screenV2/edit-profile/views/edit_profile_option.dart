@@ -59,7 +59,8 @@ class EditProfileOptions extends StatelessWidget {
             height: 15,
           ),
           InkWell(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.needSupportOn),
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
             child: getSettingOptions(
               SvgPicture.asset('assets/images/other_detail.svg'),
               'Other Detail',

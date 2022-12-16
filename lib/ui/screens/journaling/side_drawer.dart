@@ -159,7 +159,7 @@ class SideDrawer extends StatelessWidget {
                 SideDrawerMenuTile(
                   title: "Groups",
                   onPressed: () {
-                    //bottomNavigatorController.isDrawerOpen.value = false;
+                    bottomNavigatorController.isDrawerOpen.value = false;
                     Navigator.push(
                         context,
                         MaterialPageRoute(

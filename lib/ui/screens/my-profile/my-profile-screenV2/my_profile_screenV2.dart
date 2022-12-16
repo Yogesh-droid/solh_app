@@ -59,15 +59,21 @@ class MyProfileScreenV2 extends StatelessWidget {
                                           .body!
                                           .userMoveEmptyScreenEmpty!
                                           .isNotEmpty) {
+                                        profileCompletionController
+                                                .uncompleteFields =
+                                            profileController
+                                                .myProfileModel
+                                                .value
+                                                .body!
+                                                .userMoveEmptyScreenEmpty!;
                                         Navigator.pushNamed(
                                             context,
                                             profileCompletionController
-                                                .getAppRoute(profileController
-                                                    .myProfileModel
-                                                    .value
-                                                    .body!
-                                                    .userMoveEmptyScreenEmpty!
-                                                    .first));
+                                                .getAppRoute(
+                                                    profileCompletionController
+                                                        .uncompleteFields
+                                                        .first),
+                                            arguments: {"indexOfpage": 0});
                                       }
                                     },
                                     child: ImageWithProgressBarAndBadge(
@@ -271,10 +277,13 @@ class YouAreAlmostThere extends StatelessWidget {
       onTap: () {
         if (profileController
             .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.isNotEmpty) {
+          profileCompletionController.uncompleteFields = profileController
+              .myProfileModel.value.body!.userMoveEmptyScreenEmpty!;
           Navigator.pushNamed(
               context,
-              profileCompletionController.getAppRoute(profileController
-                  .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.first));
+              profileCompletionController.getAppRoute(
+                  profileCompletionController.uncompleteFields.first),
+              arguments: {"indexOfpage": 0});
         }
       },
       child: Card(

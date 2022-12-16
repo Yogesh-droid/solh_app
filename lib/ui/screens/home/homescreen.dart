@@ -1436,9 +1436,6 @@ class _HomePageState extends State<HomePage> {
                       timeago.format(DateTime.parse(journal.createdAt ?? '')),
                       style: SolhTextStyles.QS_caption_2_bold,
                     ),
-                    VerticalDivider(
-                      color: SolhColors.grey,
-                    ),
                     journal.postedBy != null &&
                             !journal.anonymousJournal! &&
                             journal.postedBy!.userType == "Official"

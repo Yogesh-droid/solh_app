@@ -48,7 +48,7 @@ class SearchMarketController extends GetxController {
       url = APIConstants.api +
           '/api/v1/get-help?specialization=$slug&country=$country';
     }
-    Map<String, dynamic> map = await Network.makeGetRequest(url);
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
     issueModel.value = SearchMarketModel.fromJson(map);
     isSearchingDoctors.value = false;
@@ -78,7 +78,7 @@ class SearchMarketController extends GetxController {
       url = APIConstants.api +
           '/api/v1/get-help?specialization=$slug&country=$country';
     }
-    Map<String, dynamic> map = await Network.makeGetRequest(url);
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
     issueModel.value = SearchMarketModel.fromJson(map);
     isSearchingDoctors.value = false;
