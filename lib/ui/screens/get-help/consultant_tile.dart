@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/get-help/consultant_profile.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../controllers/getHelp/consultant_controller.dart';
 import '../../../model/doctor.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -30,12 +30,7 @@ class ConsultantsTile extends StatelessWidget {
           return ConsultantProfilePage();
         }));
       },
-      // onTap: () => Navigator.of(context).push(MaterialPageRoute(
-      //     builder: (context) => ConsultantProfile(
-      //           id: _doctorModel.id,
-      //         ))),
       child: Container(
-          height: 180,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(12),
@@ -67,53 +62,45 @@ class ConsultantsTile extends StatelessWidget {
               SizedBox(width: 3.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: 50.w,
-                    child: Text(
-                      "${_doctorModel.name}",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF222222)),
-                      overflow: TextOverflow.ellipsis,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _doctorModel.prefix != null
+                            ? Text(
+                                "${_doctorModel.prefix}",
+                                style: SolhTextStyles.QS_body_1_bold,
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : Container(),
+                        _doctorModel.prefix != null
+                            ? _doctorModel.prefix!.isNotEmpty
+                                ? SizedBox(
+                                    width: 5,
+                                  )
+                                : Container()
+                            : Container(),
+                        Container(
+                          width: 40.w,
+                          child: Text(
+                            "${_doctorModel.name}",
+                            style: SolhTextStyles.QS_body_1_bold,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  // Container(
-                  //   width: 50.w,
-                  //   child: Text(
-                  //     "${_doctorModel.bio}",
-                  //     style: TextStyle(
-                  //         fontSize: 14,
-                  //         color: Color(0xFF666666),
-                  //         fontWeight: FontWeight.w300),
-                  //     overflow: TextOverflow.ellipsis,
-                  //     maxLines: 2,
-                  //   ),
-                  // ),
-                  // Container(
-                  //   width: 50.w,
-                  //   child: Text(
-                  //     "${_doctorModel.bio}",
-                  //     style: TextStyle(
-                  //         fontSize: 14,
-                  //         color: Color(0xFF666666),
-                  //         fontWeight: FontWeight.w300),
-                  //     overflow: TextOverflow.ellipsis,
-                  //     maxLines: 2,
-                  //   ),
-                  // ),
                   Container(
                     width: 50.w,
                     child: Text(
                       _doctorModel.specialization != ''
                           ? "${_doctorModel.specialization}"
                           : "${_doctorModel.bio}",
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF666666),
-                          fontWeight: FontWeight.w300),
+                      style: SolhTextStyles.QS_cap_semi,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
@@ -165,16 +152,17 @@ class ConsultantsTile extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(
-              Icons.people,
+            SvgPicture.asset(
+              'assets/images/get_help/smile.svg',
               color: SolhColors.primary_green,
-              size: 10,
+              height: 12,
+            ),
+            SizedBox(
+              width: 5,
             ),
             Text('0',
-                style: TextStyle(
-                  color: SolhColors.primary_green,
-                  fontSize: 12,
-                )),
+                style: SolhTextStyles.QS_cap_semi.copyWith(
+                    color: SolhColors.dark_grey))
           ],
         ),
         SizedBox(width: 3.w),
@@ -183,27 +171,30 @@ class ConsultantsTile extends StatelessWidget {
             Icon(
               Icons.star_half,
               color: SolhColors.primary_green,
-              size: 10,
+              size: 15,
+            ),
+            SizedBox(
+              width: 5,
             ),
             Text('0',
-                style: TextStyle(
-                  color: SolhColors.primary_green,
-                  fontSize: 12,
-                )),
+                style: SolhTextStyles.QS_cap_semi.copyWith(
+                    color: SolhColors.dark_grey))
           ],
         ),
         SizedBox(width: 3.w),
         Row(
           children: [
-            Icon(
-              Icons.note_alt_outlined,
+            SvgPicture.asset(
+              'assets/images/get_help/post.svg',
               color: SolhColors.primary_green,
-              size: 10,
+              height: 12,
+            ),
+            SizedBox(
+              width: 5,
             ),
             Text('0',
-                style: TextStyle(
-                  color: SolhColors.primary_green,
-                  fontSize: 12,
+                style: SolhTextStyles.QS_cap_semi.copyWith(
+                  color: SolhColors.dark_grey,
                 )),
           ],
         ),
@@ -212,50 +203,27 @@ class ConsultantsTile extends StatelessWidget {
   }
 
   Widget getActivityDetails(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          MaterialButton(
-            onPressed: () {
-              launchUrl(Uri.parse("tel://${8284848028}"));
-            },
-            // child: Container(
-            //   padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            //   decoration: BoxDecoration(
-            //       border: Border.all(color: SolhColors.green),
-            //       borderRadius: BorderRadius.circular(18)),
-            //   child: Row(
-            //     children: [
-            //       Text('Call',
-            //           style: TextStyle(
-            //             color: SolhColors.green,
-            //             fontSize: 14,
-            //           )),
-            //       Icon(
-            //         Icons.call,
-            //         color: SolhColors.green,
-            //       )
-            //     ],
-            //   ),
-            // ),
+    return Align(
+      alignment: Alignment.topRight,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: SolhGreenButton(
+          child: Text(
+            "Book Appointment",
+            textAlign: TextAlign.center,
+            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
-          SolhGreenButton(
-            height: 6.h,
-            width: 35.w,
-            child: Text(
-              "Book Appointment",
-              style: TextStyle(fontSize: 12),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ConsultantProfile(
-                        id: _doctorModel.id,
-                      )));
-            },
-          )
-        ],
+          onPressed: () {
+            // Navigator.of(context).push(MaterialPageRoute(
+            //     builder: (context) => ConsultantProfile(
+            //           id: _doctorModel.id,
+            //         )));
+            _controller.getConsultantDataController(_doctorModel.id);
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ConsultantProfilePage();
+            }));
+          },
+        ),
       ),
     );
   }

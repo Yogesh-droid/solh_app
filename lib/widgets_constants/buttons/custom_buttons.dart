@@ -219,19 +219,21 @@ class SolhGreenButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height ?? 5.h,
-      width: width ?? double.infinity,
-      child: TextButton(
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(backgroundColor),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-            borderRadius: borderRadius ?? BorderRadius.circular(30.0),
-          )),
-        ),
-        onPressed: onPressed,
-        child: Container(alignment: Alignment.center, child: child),
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(
+            backgroundColor ?? SolhColors.primary_green),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
+          borderRadius: borderRadius ?? BorderRadius.circular(30.0),
+        )),
+      ),
+      onPressed: onPressed,
+      child: Container(
+        height: height ?? 7.h,
+        width: width ?? 180,
+        padding: EdgeInsets.all(8),
+        child: Center(child: child),
       ),
     );
   }
@@ -266,21 +268,21 @@ class SolhGreenBorderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 5.h,
+      height: height ?? 7.h,
       width: width ?? double.infinity,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.all(Radius.circular(30)),
         border: Border.all(color: SolhColors.primary_green),
       ),
-      child: TextButton(
+      child: MaterialButton(
         onPressed: onPressed,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(
-              Theme.of(context).scaffoldBackgroundColor),
-          overlayColor: MaterialStateProperty.all<Color>(
-              SolhColors.primary_green.withOpacity(0.5)),
-        ),
+        // style: ButtonStyle(
+        //   backgroundColor:
+        //       MaterialStateProperty.all<Color>(SolhColors.primary_green),
+        //   overlayColor: MaterialStateProperty.all<Color>(
+        //       SolhColors.primary_green.withOpacity(0.5)),
+        // ),
         child: Container(alignment: Alignment.center, child: child),
       ),
     );
@@ -316,11 +318,12 @@ class SolhGreenButtonWithWhiteBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height ?? 5.h,
+      height: height ?? 7.h,
       width: width ?? double.infinity,
       decoration: BoxDecoration(
           border: Border.all(color: SolhColors.white),
           boxShadow: [BoxShadow(blurRadius: 2, color: Colors.black54)],
+          color: SolhColors.primary_green,
           borderRadius: BorderRadius.circular(24)),
       child: TextButton(
         style: ButtonStyle(

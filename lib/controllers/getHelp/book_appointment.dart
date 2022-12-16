@@ -5,10 +5,13 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
+  var selectedDayForTimeSlot = DateTime.now().day.obs;
+
   var selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
 
   /// It's String like Sunday, Monday, Tuesday etc.
   var selectedTimeSlot = ''.obs;
+  var selectedTimeSlotN = ''.obs;
 
   /// It's String like 9:30-10:30, 10:00-11:00 etc.
   var timeSlotList = [].obs;
@@ -26,20 +29,25 @@ class BookAppointmentController extends GetxController {
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController mobileNotextEditingController = TextEditingController();
   TextEditingController catTextEditingController = TextEditingController();
+  TextEditingController descTextEditingController = TextEditingController();
   var isLoading = false.obs;
   var loadingTimeSlots = false.obs;
   dynamic isTimeSlotAdded = ''.obs;
 
   var showBookingDetail = false.obs;
 
-  Future<String> bookAppointment(Map<String, dynamic> body) async {
+  Future<Map<String, dynamic>> bookAppointment(
+      Map<String, dynamic> body) async {
     print(APIConstants.api + '/api/appointment');
+    print(body);
     isLoading.value = true;
-    var response = await Network.makeHttpPostRequestWithToken(
+    var response = await Network.makePostRequestWithToken(
         url: APIConstants.api + '/api/appointment', body: body);
-    print('---' + response.toString());
+    // await Future.delayed(Duration(seconds: 1), () {});
     isLoading.value = false;
+    print(response);
     return response;
+    // return {'success': true};
   }
 
   Future<void> isSlotAdded({required String providerId}) async {
@@ -73,6 +81,7 @@ class BookAppointmentController extends GetxController {
           .where((element) => element.toString().compareTo(currentTimeSlot) > 0)
           .toList();
     }
+    print(timeSlotList.length);
     timeSlotList.refresh();
     loadingTimeSlots.value = false;
   }

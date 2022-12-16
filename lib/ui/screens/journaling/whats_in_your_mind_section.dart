@@ -87,7 +87,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
                       _journalPageController.selectedGroupId.value == ''
                           ? "What's on your mind?"
                           : "post in group",
-                      style: SolhTextStyles.JournalingHintText,
+                      style: SolhTextStyles.QS_cap_semi,
                     );
                   })),
               Expanded(

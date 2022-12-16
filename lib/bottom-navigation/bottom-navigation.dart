@@ -1,12 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -15,17 +12,14 @@ import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
-import '../controllers/getHelp/search_market_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
-import '../widgets_constants/buttonLoadingAnimation.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import 'bottom_navigator_controller.dart';
 
@@ -33,22 +27,22 @@ class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
   //ProfileController profileController = Get.put(ProfileController());
 
-  BookAppointmentController bookAppointment =
+  final BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
   final BottomNavigatorController bottomNavigatorController =
       Get.put(BottomNavigatorController());
-  JournalPageController journalPageController =
+  final JournalPageController journalPageController =
       Get.put(JournalPageController());
-  SearchMarketController searchMarketController =
-      Get.put(SearchMarketController());
+
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
-  ConnectionController connectionController = Get.put(ConnectionController());
-  AppointmentController appointmentController =
+  final ConnectionController connectionController =
+      Get.put(ConnectionController());
+  final AppointmentController appointmentController =
       Get.put(AppointmentController());
-  GetHelpController getHelpController = Get.put(GetHelpController());
+  final GetHelpController getHelpController = Get.put(GetHelpController());
 
   @override
   Widget build(BuildContext context) {
@@ -86,19 +80,23 @@ class _MasterScreen2State extends State<MasterScreen2>
   late TabController tabController;
   late AnimationController animationController;
 
-  List<Widget> bottomWidgetList = [
-    HomeScreen(),
-    Journaling(),
-    GetHelpScreen(),
-    MyGoalsScreen(),
-    MyProfileScreenV2()
-  ];
+  List<Widget> bottomWidgetList = [];
 
   @override
   void initState() {
     print('init master');
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      profileController.getMyProfile();
+    });
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    bottomWidgetList.addAll([
+      HomeScreen(),
+      Journaling(),
+      GetHelpScreen(),
+      MyGoalsScreen(),
+      MyProfileScreenV2()
+    ]);
     super.initState();
   }
 
@@ -213,6 +211,7 @@ class _MasterScreen2State extends State<MasterScreen2>
           showUnselectedLabels: true,
           selectedItemColor: SolhColors.primary_green,
           unselectedItemColor: SolhColors.dark_grey,
+          selectedLabelStyle: SolhTextStyles.QS_cap_semi,
           onTap: (index) => bottomNavigatorController.activeIndex.value = index,
           items: [
             BottomNavigationBarItem(
@@ -248,7 +247,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
-                label: "My profile")
+                label: "My Profile")
           ],
         ));
   }
@@ -258,14 +257,11 @@ class _MasterScreen2State extends State<MasterScreen2>
         icon: Obx(() {
           return profileController.isProfileLoading.value ||
                   profileController.myProfileModel.value.body == null
-              ? Container(
-                  height: 20,
-                  child: ButtonLoadingAnimation(
-                    ballColor: SolhColors.primary_green,
-                    ballSizeLowerBound: 3,
-                    ballSizeUpperBound: 8,
-                  ),
-                )
+              ? bottomNavigatorController.activeIndex.value == 2
+                  ? SvgPicture.asset("assets/images/get help tab.svg")
+                  : SvgPicture.asset(
+                      "assets/images/get help. outline.svg",
+                    )
               : profileController.myProfileModel.value.body!.user!.userType ==
                       'SolhProvider'
                   ? Icon(
@@ -282,7 +278,7 @@ class _MasterScreen2State extends State<MasterScreen2>
         }),
         label: profileController.isProfileLoading.value ||
                 profileController.myProfileModel.value.body == null
-            ? ''
+            ? 'Get Help'
             : profileController.myProfileModel.value.body!.user!.userType ==
                     'SolhProvider'
                 ? 'My Schedule'

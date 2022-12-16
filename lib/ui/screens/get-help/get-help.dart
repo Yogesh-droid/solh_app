@@ -7,29 +7,45 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
+import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screen.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/image_container.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
-
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
-import 'consultant_profile.dart';
 
-class GetHelpScreen extends StatelessWidget {
+class GetHelpScreen extends StatefulWidget {
+  @override
+  State<GetHelpScreen> createState() => _GetHelpScreenState();
+}
+
+class _GetHelpScreenState extends State<GetHelpScreen> {
   GetHelpController getHelpController = Get.find();
+
   SearchMarketController searchMarketController = Get.find();
+
   BookAppointmentController bookAppointmentController = Get.find();
+
   ConnectionController connectionController = Get.find();
+
   ProfileController profileController = Get.find();
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //getProfile();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,19 +55,7 @@ class GetHelpScreen extends StatelessWidget {
               child: MyLoader(),
             )
           : profileController.myProfileModel.value.body == null
-              ? Container(
-                  child: Center(
-                      child: Container(
-                    width: 150,
-                    child: SolhGreenButton(
-                      child: Text('Reload Profile',
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () async {
-                        await profileController.getMyProfile();
-                      },
-                    ),
-                  )),
-                )
+              ? getHelpPage(context)
               : profileController.myProfileModel.value.body!.user!.userType ==
                       'SolhProvider'
                   ? DoctorsAppointmentPage()
@@ -72,7 +76,6 @@ class GetHelpScreen extends StatelessWidget {
                 onTap: () {
                   searchMarketController.searchMarketModel.value =
                       SearchMarketModel();
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -223,7 +226,7 @@ class GetHelpScreen extends StatelessWidget {
                                   getHelpController.getSpecializationModel.value
                                           .specializationList![index].name ??
                                       '',
-                                  style: TextStyle(),
+                                  style: SolhTextStyles.QS_cap_semi,
                                 ),
                               ),
                             ],
@@ -311,6 +314,9 @@ class GetHelpScreen extends StatelessWidget {
                         bio: getHelpController
                                 .solhVolunteerList.value.provider![index].bio ??
                             '',
+                        post: getHelpController.solhVolunteerList.value
+                                .provider![index].postCount ??
+                            0,
                         isInSendRequest: checkIfAlreadyInSendConnection(
                           getHelpController.solhVolunteerList.value
                                   .provider![index].sId ??
@@ -363,6 +369,12 @@ class GetHelpScreen extends StatelessWidget {
     debugPrint('++++' + sId + isInConnection.toString());
     return isInConnection;
   }
+
+  void getProfile() {
+    if (profileController.myProfileModel.value.body == null) {
+      profileController.getMyProfile();
+    }
+  }
 }
 
 class IssuesTile extends StatelessWidget {
@@ -393,7 +405,7 @@ class IssuesTile extends StatelessWidget {
         ),
         child: Text(
           _title,
-          style: TextStyle(color: Color(0xFF666666)),
+          style: SolhTextStyles.QS_cap_semi,
         ),
       ),
     );
@@ -401,7 +413,7 @@ class IssuesTile extends StatelessWidget {
 }
 
 class TopConsultantsTile extends StatelessWidget {
-  const TopConsultantsTile({
+  TopConsultantsTile({
     required String name,
     required String bio,
     required String mobile,
@@ -420,14 +432,15 @@ class TopConsultantsTile extends StatelessWidget {
   final String _bio;
   final String? _imgUrl;
   final String? _sId;
-
+  ConsultantController consultantController = Get.put(ConsultantController());
   @override
   Widget build(BuildContext context) {
     debugPrint(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ConsultantProfile(id: _sId)));
+        consultantController.getConsultantDataController(_sId);
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => ConsultantProfilePage()));
       },
       child: Container(
         //width: 70.w,
@@ -472,17 +485,19 @@ class TopConsultantsTile extends StatelessWidget {
                     ),
                     Center(
                       child: SolhGreenButton(
-                        height: 5.h,
-                        width: 35.w,
+                        height: 6.h,
+                        width: 44.w,
                         child: Text(
                           "Book Appointment",
-                          style: TextStyle(fontSize: 12),
+                          style: SolhTextStyles.QS_cap_semi.copyWith(
+                              fontSize: 10, color: SolhColors.white),
                         ),
                         onPressed: () {
                           //launch("tel://$_mobile");
+                          consultantController
+                              .getConsultantDataController(_sId);
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ConsultantProfile(id: _sId)));
+                              builder: (context) => ConsultantProfilePage()));
                         },
                       ),
                     )
@@ -523,7 +538,8 @@ class GetHelpCategory extends StatelessWidget {
               onTap: _onPressed,
               child: Text(
                 "View All",
-                style: TextStyle(color: SolhColors.primary_green),
+                style: SolhTextStyles.CTA
+                    .copyWith(color: SolhColors.primary_green),
               ),
             )
         ],
@@ -559,7 +575,8 @@ class SolhVolunteers extends StatelessWidget {
       this.connections,
       this.likes,
       this.uid,
-      this.userType})
+      this.userType,
+      required this.post})
       : super(key: key);
   final String? mobile;
   final String? name;
@@ -572,11 +589,11 @@ class SolhVolunteers extends StatelessWidget {
   final String? comments;
   final String? uid;
   final String? userType;
+  final int post;
 
   ConnectionController connectionController = Get.find();
   ConnectScreenController connectScreenController =
       Get.put(ConnectScreenController());
-  //optimization needed in cancle and connect
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -592,177 +609,179 @@ class SolhVolunteers extends StatelessWidget {
             width: 1,
           ),
         ),
-        // height: 289,
         width: 164,
-        child: Stack(children: [
-          Container(
-            height: 52,
-            // width: 164,
-            decoration: BoxDecoration(
-              color: SolhColors.primary_green,
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 8,
-            child: Column(
+        child: Column(
+          children: [
+            Stack(
               children: [
-                SimpleImageContainer(
-                  imageUrl: imgUrl ?? "",
-                  enableborder: true,
-                  radius: 80,
-                  borderColor: Colors.white,
-                  boxFit: BoxFit.cover,
-                  zoomEnabled: true,
-                ),
-                Text(name ?? ''),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      userType ?? '',
-                      style: GoogleFonts.signika(
-                        fontSize: 12,
-                        color: Color(0xFF5F9B8C),
-                      ),
-                    ),
-                    userType != null
-                        ? Image(
-                            image: AssetImage('assets/images/verifiedTick.png'))
-                        : Container(),
-                  ],
-                ),
-                SizedBox(
-                  height: 4,
+                Container(
+                  height: 121,
+                  decoration: BoxDecoration(
+                      color: SolhColors.grey,
+                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: CachedNetworkImageProvider(imgUrl ?? ""))),
                 ),
                 Container(
-                  height: 45,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Text(
-                      bio ?? '',
-                      textAlign: TextAlign.center,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.signika(
-                        fontSize: 12,
-                        color: Color(0xff666666),
-                      ),
-                    ),
+                  height: 121,
+                  width: 164,
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(9, 62, 49, 0.45),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-                SizedBox(
-                  height: 13,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.comment,
-                            color: Color(0xFF5F9B8C),
-                            size: 12,
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            comments ?? '',
-                            style: GoogleFonts.signika(
-                              fontSize: 12,
-                              color: Color(0xFF5F9B8C),
-                            ),
-                          ),
-                        ],
+                      Text(name ?? '',
+                          style: SolhTextStyles.QS_body_2_bold.copyWith(
+                              color: SolhColors.white)),
+                      SizedBox(
+                        height: 5,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.thumb_up,
-                            size: 12,
-                            color: Color(0xff5F9B8C),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            likes ?? '',
-                            style: GoogleFonts.signika(
-                                fontSize: 12, color: Color(0xff5F9B8C)),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.group,
-                            size: 12,
-                            color: Color(0xff5F9B8C),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            connections ?? '',
-                            style: GoogleFonts.signika(
-                                fontSize: 12, color: Color(0xff5F9B8C)),
-                          ),
-                        ],
-                      ),
+                      userType != null
+                          ? Container(
+                              width: 100,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: SolhColors.white),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(userType ?? '',
+                                      style: SolhTextStyles.QS_caption.copyWith(
+                                          color: SolhColors.white)),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  userType != null
+                                      ? Image(
+                                          color: Colors.white,
+                                          image: AssetImage(
+                                            'assets/images/verifiedTick.png',
+                                          ))
+                                      : Container(),
+                                ],
+                              ),
+                            )
+                          : SizedBox(),
+                      SizedBox(
+                        height: 10,
+                      )
                     ],
                   ),
                 ),
-                Obx(() {
-                  return SizedBox(
-                    height: getConnectionIdBySId(sId ?? '') != '' ? 17 : 33,
-                  );
-                }),
-                Obx(() {
-                  return getConnectionIdBySId(sId ?? '') != ''
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Request Sent',
-                                style: GoogleFonts.signika(
-                                  fontSize: 12,
-                                  color: Color(0xffA6A6A6),
-                                )),
-                            Icon(
-                              Icons.done,
+              ],
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Container(
+              height: 30,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(bio ?? ''.trim(),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: SolhTextStyles.QS_cap_2_semi),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/get_help/post.svg',
+                        color: SolhColors.primary_green,
+                      ),
+                      SizedBox(
+                        width: 2,
+                      ),
+                      Text(post.toString(),
+                          style: SolhTextStyles.QS_caption_bold),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/get_help/thumbs up.svg',
+                        color: SolhColors.primary_green,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(likes ?? '', style: SolhTextStyles.QS_caption_bold)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/connection.svg',
+                        color: SolhColors.primary_green,
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        connections ?? '',
+                        style: SolhTextStyles.QS_caption_bold,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Obx(() {
+              return getConnectionIdBySId(sId ?? '') != ''
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Request Sent',
+                            style: GoogleFonts.signika(
+                              fontSize: 12,
                               color: Color(0xffA6A6A6),
-                              size: 15,
-                            )
-                          ],
+                            )),
+                        Icon(
+                          Icons.done,
+                          color: Color(0xffA6A6A6),
+                          size: 15,
                         )
-                      : Container();
-                }),
-                SizedBox(
-                  height: 5,
-                ),
-                Obx(() {
-                  return InkWell(
-                    onTap: () {
-                      getConnectionIdBySId(sId ?? '') != ''
-                          ? connectionController.deleteConnectionRequest(
-                              getConnectionIdBySId(sId ?? ''))
-                          : connectionController.addConnection(sId ?? '');
-                    },
-                    child: Container(
-                      height: 32,
-                      width: 148,
-                      decoration: BoxDecoration(
-                          color: getConnectionIdBySId(sId ?? '') != ''
-                              ? Colors.white
-                              : SolhColors.primary_green,
-                          border: Border.all(color: SolhColors.primary_green),
-                          borderRadius: BorderRadius.circular(16)),
-                      child: connectionController
-                                  .isSendingConnectionRequest.value &&
+                      ],
+                    )
+                  : Container(
+                      height: 15,
+                    );
+            }),
+            SizedBox(
+              height: 5,
+            ),
+            Obx(() {
+              return InkWell(
+                onTap: () {
+                  getConnectionIdBySId(sId ?? '') != ''
+                      ? connectionController.deleteConnectionRequest(
+                          getConnectionIdBySId(sId ?? ''))
+                      : connectionController.addConnection(sId ?? '');
+                },
+                child: Container(
+                  height: 32,
+                  width: 148,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: SolhColors.primary_green),
+                      borderRadius: BorderRadius.circular(16)),
+                  child:
+                      connectionController.isSendingConnectionRequest.value &&
                               connectionController.currentSendingRequest == sId
                           ? Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -771,7 +790,7 @@ class SolhVolunteers extends StatelessWidget {
                                   height: 15,
                                   width: 15,
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: SolhColors.primary_green,
                                     strokeWidth: 1,
                                   ),
                                 ),
@@ -786,7 +805,7 @@ class SolhVolunteers extends StatelessWidget {
                                       : SvgPicture.asset(
                                           'assets/images/connect.svg',
                                           height: 14,
-                                          color: Colors.white,
+                                          color: SolhColors.primary_green,
                                         ),
                                   SizedBox(
                                     width: 4,
@@ -801,19 +820,17 @@ class SolhVolunteers extends StatelessWidget {
                                           'Connect',
                                           style: GoogleFonts.signika(
                                             fontSize: 14,
-                                            color: Colors.white,
+                                            color: SolhColors.primary_green,
                                           ),
                                         ),
                                 ],
                               ),
                             ),
-                    ),
-                  );
-                })
-              ],
-            ),
-          )
-        ]),
+                ),
+              );
+            })
+          ],
+        ),
       ),
     );
   }

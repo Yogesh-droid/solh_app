@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
@@ -7,8 +6,6 @@ import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-model/need_support_on_model.dart';
 import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-service/need_support_on_service.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need_support_on.dart';
-import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/part_of_an_organisation.dart';
 import 'package:solh/ui/screens/profile-setupV2/role-page/role_selection_screen_screen.dart';
 import 'package:solh/widgets_constants/solh_snackBar.dart';
 
@@ -53,20 +50,22 @@ class ProfileSetupController extends GetxController {
         body: body,
       );
       debugPrint("response" + response.toString());
-      isUpdatingField(false);
+
       if (response["success"]) {
         debugPrint("response" + response.toString());
         profileController.myProfileModel.value =
             MyProfileModel.fromJson(response);
-
+        isUpdatingField(false);
         return true;
       } else {
         SolhSnackbar.error('Error', 'Opps, Something went wrong');
+        isUpdatingField(false);
         return false;
       }
     } catch (e) {
       SolhSnackbar.error('Error', 'Opps, Something went wrong');
       debugPrint(e.toString());
+      isUpdatingField(false);
       return false;
     }
   }

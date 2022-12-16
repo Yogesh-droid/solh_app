@@ -15,6 +15,7 @@ class DoctorModel {
   String? fee;
   String? feeCurrency;
   int? fee_amount;
+  String? prefix;
 
   DoctorModel(
       {required this.organisation,
@@ -32,6 +33,7 @@ class DoctorModel {
       required this.abbrevations,
       required this.profilePicture,
       required this.specialization,
+      required this.prefix,
       required this.id});
 
   factory DoctorModel.fromJson(Map<String, dynamic> doctorJson) {
@@ -51,6 +53,7 @@ class DoctorModel {
         abbrevations: doctorJson["Abbrevations"],
         profilePicture: doctorJson["profilePicture"],
         id: doctorJson["_id"],
+        prefix: doctorJson["prefix"],
         specialization: doctorJson['specialization']);
   }
 }

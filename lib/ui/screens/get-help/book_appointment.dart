@@ -4,15 +4,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -207,55 +203,9 @@ class DayPicker extends StatefulWidget {
 class _DayPickerState extends State<DayPicker> {
   BookAppointmentController _controller = Get.find();
   ConsultantController _consultantController = Get.find();
-  /* Map timeSlot = {
-    '10:00-10:30': false,
-    '11:00-11:30': false,
-    '12:00-12:30': false,
-    '13:00-13:30': false,
-    '14:00-14:30': false,
-    '15:00-15:30': false,
-  }; */
 
   List<DateTime> days = [];
   List<DateTime> updatedList = [];
-  // getUpcomingMap() {
-  //   var date = DateTime.now();
-  //   String today = DateFormat('EEEE').format(date);
-
-  //   Map newMap = {};
-  //   var index;
-  //   for (var i = 0; i < 6; i++) {
-  //     if (day.keys.elementAt(i) == today) {
-  //       index = i;
-  //       break;
-  //     }
-  //   }
-  //   print(index);
-  //   for (var i = index; i < 6; i++) {
-  //     int count = 1;
-  //     if (day.keys.elementAt(i) == today) {
-  //       newMap['Today'] = false;
-  //     } else {
-  //       newMap[day.keys.elementAt(i)] = false;
-  //     }
-
-  //     if (count < 5 && i == 5) {
-  //       print('it ran');
-  //       print(count);
-  //       i = 0;
-  //     }
-
-  //     if (day.keys.elementAt(index) == day.keys.elementAt(i + 1)) {
-  //       print('it ran2');
-  //       print(i);
-  //       break;
-  //     }
-  //     count = count++;
-  //   }
-
-  //   print(newMap.toString());
-  //   return newMap;
-  // }
 
   @override
   void initState() {
@@ -646,7 +596,8 @@ class BookAppointmentPopup extends StatelessWidget {
                 Utility.showLoader(context);
                 // await Future.delayed(Duration(seconds: 2), () {});
                 // await Future.delayed(Duration(seconds: 2), () {});
-                String response = await _controller.bookAppointment(body);
+                Map<String, dynamic> response =
+                    await _controller.bookAppointment(body);
                 Get.find<AppointmentController>().getUserAppointments();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
@@ -660,7 +611,7 @@ class BookAppointmentPopup extends StatelessWidget {
                     builder: (context) {
                       Future.delayed(Duration(seconds: 1), () {
                         Navigator.pop(context);
-                        if (response == 'Successfully created appointment.') {}
+                        if (response['success']) {}
                       });
                       return appointmentConfirmationPopup(
                         response,
@@ -783,14 +734,6 @@ getdateTime(selectedDay, selectedSlot, itemNoinList, DateTime selectedDate) {
     return selectedSlot.toString().split('-');
   }
 
-  // print(DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
-  //     'T' +
-  //     getTime()[itemNoinList].toString() +
-  //     ':00');
-  // return DateFormat('yyyy-MM-dd').format(getDate() as DateTime) +
-  //     'T' +
-  //     getTime()[itemNoinList].toString() +
-  //     ':00';
   print(DateFormat('yyyy-MM-dd').format(selectedDate) +
       'T' +
       getTime()[itemNoinList].toString() +

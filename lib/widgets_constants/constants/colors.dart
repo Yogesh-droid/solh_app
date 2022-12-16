@@ -6,6 +6,7 @@ class SolhColors {
   // static const Color green = Color(0xFF1DA1F2);
 
   static const Color primary_green = Color.fromRGBO(95, 155, 140, 1);
+  static const Color card = Color.fromRGBO(251, 251, 251, 1);
 
   static const Color secondary_green = Color.fromRGBO(130, 194, 178, 1);
 

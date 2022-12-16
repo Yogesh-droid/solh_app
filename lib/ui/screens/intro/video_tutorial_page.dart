@@ -18,7 +18,7 @@ class VideoTutorialPage extends StatelessWidget {
     return Scaffold(
         appBar: SolhAppBar(
             title: Text(
-              'Video Tutorials',
+              'Videos',
               style: SolhTextStyles.AppBarText,
             ),
             isLandingScreen: false),

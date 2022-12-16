@@ -29,7 +29,6 @@ class FirebaseNetwork {
           },
           codeAutoRetrievalTimeout: (String verificationId) {},
           codeSent: (String verificationId, int? forceResendingToken) {
-            //otpVerificationController.updateOtp('123456');
             phoneAuthController.isRequestingAuth.value = false;
             resendToken = forceResendingToken;
             print("Code Sent");
@@ -38,9 +37,6 @@ class FirebaseNetwork {
               "phoneNumber": phoneNo,
               "verificationId": verificationId
             });
-            // AutoRouter.of(globalNavigatorKey.currentState!.context).push(
-            //     OTPScreenRouter(
-            //         phoneNo: phoneNo, verificationId: verificationId));
             print("verification ID:" + verificationId);
           },
           phoneNumber: phoneNo,
@@ -49,51 +45,13 @@ class FirebaseNetwork {
             print(phoneAuthCredential.smsCode.toString());
             phoneAuthController.otpCode.text =
                 phoneAuthCredential.smsCode.toString();
-
-            // otpVerificationController
-            //     .updateOtp(phoneAuthCredential.smsCode.toString());
-
-            /* print(phoneAuthCredential.smsCode.toString());
-          print(phoneAuthCredential.verificationId);
-          // print(phoneAuthCredential.providerId);
-          UserCredential userCredential =
-              await signInWithPhoneCredential(phoneAuthCredential);
-          print("user token" + userCredential.credential!.token.toString());
-          print("verified");
-
-          print("user idToken: ${userCredential.credential!.token}");
-          bool isSessionCookieCreated =
-              await SessionCookie.createSessionCookie(
-                  userCredential.credential!.token.toString());
-          print(isSessionCookieCreated);
-          print("checking is profile created");
-          bool isProfileCreated = await userBlocNetwork.isProfileCreated();
-          print("profile checking complete");
-
-          print("^" * 30 +
-              "Is Profile Created:" +
-              isProfileCreated.toString() +
-              "^" * 30);
-          isProfileCreated
-              ? AutoRouter.of(globalNavigatorKey.currentState!.context)
-                  .pushAndPopUntil(MasterScreenRouter(),
-                      predicate: (value) => false)
-              : AutoRouter.of(globalNavigatorKey.currentState!.context)
-                  .pushAndPopUntil(CreateProfileScreenRouter(),
-                      predicate: (value) => false); */
           });
     } on FirebaseAuthException catch (e) {
-      print("bdkasbfk fk sbg kbjkrgb kajdfngljnealrgnalsf ;lawrnh");
-      print('Failed with error code: ${e.code}');
       print(e.message);
     } catch (e) {
-      print("bdkasbfk fk sbg kbjkrgb kajdfngljnealrgnalsf ;lawrnh");
-
       print(e);
     }
     print("Completed");
-    // print(_user.verificationId);
-    // _user.confirm(verificationCode);
   }
 
   void resendOtp(

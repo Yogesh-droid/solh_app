@@ -1,30 +1,23 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
-
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/services/user/session-cookie.dart';
-
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
-
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';

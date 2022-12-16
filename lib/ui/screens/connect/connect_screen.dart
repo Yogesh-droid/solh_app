@@ -5,6 +5,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -37,6 +38,7 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
       Get.put(ConnectScreenController());
   ConnectionController connectionController = Get.find();
   JournalCommentController journalCommentController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   void initState() {
@@ -67,7 +69,8 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
   initFunctions() {
     connectScreenController.checkIfAlreadyInRecivedConnection(widget.sId!);
     connectScreenController.checkIfAlreadyInSendConnection(widget.sId!);
-    connectScreenController.isMyConnectionController(userBlocNetwork.id);
+    connectScreenController.isMyConnectionController(
+        profileController.myProfileModel.value.body!.user!.sId!);
   }
 
   @override

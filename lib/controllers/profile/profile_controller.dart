@@ -10,8 +10,10 @@ class ProfileController extends GetxController {
 
   Future<void> getMyProfile() async {
     print('gettting My profile');
+
     try {
       isProfileLoading.value = true;
+      //await Future.delayed(Duration(seconds: 30));
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
@@ -23,6 +25,6 @@ class ProfileController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    getMyProfile();
+    //getMyProfile();
   }
 }

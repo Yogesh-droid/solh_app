@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
@@ -14,24 +15,29 @@ import 'package:solh/widgets_constants/privacy_web.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
+import '../../../../../controllers/getHelp/search_market_controller.dart';
+
 class PhoneAuthCommonWidget extends StatelessWidget {
   PhoneAuthCommonWidget({Key? key, required this.isLogin}) : super(key: key);
 
   final PhoneAuthController phoneAuthController =
       Get.put(PhoneAuthController());
 
-  FirebaseNetwork firebaseNetwork = FirebaseNetwork();
+  final FirebaseNetwork firebaseNetwork = FirebaseNetwork();
+  String? _countryCode = '+91';
+  String? country = 'IN';
 
   final isLogin;
 
-  signInWithPhoneNumber(
-    context,
-  ) {
+  signInWithPhoneNumber(context, String country) async {
     phoneAuthController.isRequestingAuth.value = true;
     firebaseNetwork.signInWithPhoneNumber(
       context,
       phoneAuthController.countryCode + phoneAuthController.phoneNumber.text,
     );
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('userCountry', country);
+    Get.find<SearchMarketController>().country = country;
   }
 
   @override
@@ -48,6 +54,8 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 ),
                 SolhCountryCodePicker(onCountryChange: ((countryCode) {
                   print(countryCode.dialCode);
+                  _countryCode = countryCode.dialCode;
+                  country = countryCode.code;
                   phoneAuthController.countryCode = countryCode.dialCode!;
                 }))
               ],
@@ -64,6 +72,11 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     height: 5,
                   ),
                   TextField(
+                    keyboardType: TextInputType.number,
+                    controller: phoneAuthController.phoneNumber,
+                    decoration: TextFieldStyles.greenF_greyUF_4R
+                        .copyWith(hintText: 'Your mobile no.'),
+                  )
                       keyboardType: TextInputType.number,
                       controller: phoneAuthController.phoneNumber,
                       decoration: TextFieldStyles.greenF_greyUF_4R
@@ -93,6 +106,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                         ),
                       )
                     : SolhGreenButton(
+                        width: double.maxFinite,
                         child: Text(
                           'Continue',
                         ),
@@ -103,7 +117,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                             SolhSnackbar.error(
                                 'Opps !!', 'Enter a valid number');
                           } else {
-                            signInWithPhoneNumber(context);
+                            signInWithPhoneNumber(context, country ?? 'IN');
                           }
                         }),
                       );

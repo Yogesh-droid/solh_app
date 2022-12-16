@@ -322,7 +322,16 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         .doctors![index]
                                                         .name ??
                                                     '',
-                                                fee: searchMarketController.searchMarketModel.value.doctors![index].fee ??
+                                                prefix: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .prefix,
+                                                fee: searchMarketController
+                                                        .searchMarketModel
+                                                        .value
+                                                        .doctors![index]
+                                                        .fee ??
                                                     '',
                                                 feeCurrency: searchMarketController
                                                         .searchMarketModel
@@ -330,12 +339,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                         .doctors![index]
                                                         .feeCurrency ??
                                                     '',
-                                                fee_amount: searchMarketController
-                                                        .searchMarketModel
-                                                        .value
-                                                        .doctors![index]
-                                                        .fee_amount ??
-                                                    0,
+                                                fee_amount: searchMarketController.searchMarketModel.value.doctors![index].fee_amount ?? 0,
                                                 mobile: searchMarketController.searchMarketModel.value.doctors![index].contactNumber ?? '',
                                                 email: searchMarketController.searchMarketModel.value.doctors![index].email ?? '',
                                                 clinic: '',
@@ -368,6 +372,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                                       .provider![index]
                                                       .fee ??
                                                   '',
+                                              prefix: searchMarketController
+                                                  .searchMarketModel
+                                                  .value
+                                                  .provider![index]
+                                                  .prefix,
                                               feeCurrency:
                                                   searchMarketController
                                                           .searchMarketModel

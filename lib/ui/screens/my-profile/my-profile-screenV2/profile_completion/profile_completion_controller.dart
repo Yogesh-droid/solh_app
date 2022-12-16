@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
-
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
@@ -25,10 +23,13 @@ class ProfileCompletionController extends GetxController {
 
   var isUpdatingField = false.obs;
 
+  List uncompleteFields = [];
+
   var orgType = ''.obs;
 
   TextEditingController bioTextEditingController = TextEditingController();
-  TextEditingController anonNameTextEditingController = TextEditingController();
+  TextEditingController anonNameTextEditingController =
+      TextEditingController(text: 'Anonymous_User');
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController orgNameTextEditingController = TextEditingController();
   TextEditingController sosMessageTextEditingController =
@@ -133,7 +134,7 @@ class ProfileCompletionController extends GetxController {
     try {
       isUpdatingField(true);
 
-      var response = await Network.makePutRequestWithToken(
+      var response = await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/anonymous',
         body: body,
       );
@@ -167,7 +168,7 @@ class ProfileCompletionController extends GetxController {
           });
       Map<String, dynamic> decodedResponse = json.decode(response.body);
       if (decodedResponse["success"]) {
-        SolhSnackbar.sucess('Success', decodedResponse["message"]);
+        SolhSnackbar.success('Success', decodedResponse["message"]);
         return true;
       } else {
         SolhSnackbar.error('Error', 'Opps, Something went wrong');

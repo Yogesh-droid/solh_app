@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ import 'package:solh/model/user/user.dart';
 import 'package:solh/services/journal/create-journal.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -35,7 +35,6 @@ import '../../../model/journals/journals_response_model.dart';
 import '../../../model/profile/my_profile_model.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../profile-setup/add-profile-photo.dart';
-import '../profile-setup/anonymous/pick_user_name_screen.dart';
 import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
 
@@ -986,12 +985,14 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                         label: Text(feelingsController
                                 .feelingsList.value[index].feelingName ??
                             ''),
-                        labelStyle: TextStyle(
-                            color: feelingsController.selectedFeelingsId.value
-                                    .contains(feelingsController
-                                        .feelingsList.value[index].sId!)
-                                ? Colors.white
-                                : Color(0xFF666666)),
+                        labelStyle: feelingsController.selectedFeelingsId.value
+                                .contains(feelingsController
+                                    .feelingsList.value[index].sId!)
+                            ? Theme.of(context)
+                                .textTheme
+                                .bodyText2!
+                                .copyWith(color: SolhColors.white)
+                            : Theme.of(context).textTheme.bodyText2,
                         onSelected: (value) {
                           widget._onFeelingsChanged.call(_selectedFeeling);
                           feelingsController.selectedFeelingsId.contains(
@@ -1137,13 +1138,13 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      Obx(() =>
-                          profileController.myProfileModel.value.body != null
-                              ? GetBadge(
-                                  userType: profileController.myProfileModel
-                                          .value.body!.user!.userType ??
-                                      '')
-                              : Container()),
+                      // Obx(() =>
+                      //     profileController.myProfileModel.value.body != null
+                      //         ? GetBadge(
+                      //             userType: profileController.myProfileModel
+                      //                     .value.body!.user!.userType ??
+                      //                 '')
+                      //         : Container()),
                       SizedBox(
                         height: 4.h,
                       ),
@@ -1184,7 +1185,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       style: TextStyle(color: SolhColors.primary_green),
                       items: [
                         DropdownMenuItem(
-                          child: Text("publically"),
+                          child: Text("Publically"),
                           value: "Publicaly",
                         ),
                         DropdownMenuItem(
@@ -1248,7 +1249,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
           imgUrl: userModel!.anonymous != null
               ? userModel.anonymous!.profilePicture ??
                   "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-              : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+              : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
           top: journalPageController.anonymousProfilePositionT.value,
           left: journalPageController.anonymousProfilePositionL.value,
         ),

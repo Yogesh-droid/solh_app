@@ -4,11 +4,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
-import 'package:solh/services/controllers/otp_verification_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/assets-path.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import '../../../services/firebase/auth.dart';
 
 class PhoneAuthScreen extends StatefulWidget {
   const PhoneAuthScreen({Key? key}) : super(key: key);
@@ -22,21 +20,12 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
   String? country = 'IN';
   late FocusNode _focusNode;
   late TextEditingController _phoneController;
-  // OtpVerificationController _otpVerificationController = Get.put(
-  //   OtpVerificationController(),
-  // );
 
   bool _hintShown = false;
 
   Future<void> _signInWithPhone(String phoneNo, String country) async {
     print(phoneNo);
-    // _otpVerificationController.isLoading.value = true;
     setState(() {});
-    // FirebaseNetwork().signInWithPhoneNumber(context, phoneNo,
-    //     onCodeSent: (String verificationId) => setState(() {
-    //           // _otpVerificationController.isLoading.value = false;
-    //         })
-    //         );
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString('userCountry', country);
     Get.find<SearchMarketController>().country = country;
@@ -53,24 +42,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
     _phoneController = TextEditingController();
     _focusNode = FocusNode();
     saveCountryToPrefs();
-    // _focusNode.addListener(() async {
-    //   if (_focusNode.hasFocus && !_hintShown) {
-    //     _hintShown = true;
-    //     scheduleMicrotask(() {
-    //       _askPhoneHint();
-    //     });
-    //   }
-    // });
   }
-
-  // Future<void> _askPhoneHint() async {
-  //   String? hint = await _autoFill.hint;
-  //   if (hint != null) {
-  //     _phoneController.value =
-  //         TextEditingValue(text: hint.substring(hint.length - 10, hint.length));
-  //   }
-  //   print(_phoneController.value.text);
-  // }
 
   @override
   Widget build(BuildContext context) {

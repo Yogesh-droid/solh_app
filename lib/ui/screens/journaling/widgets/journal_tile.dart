@@ -1105,12 +1105,14 @@ class PostMenuButton extends StatelessWidget {
                 ),
                 onTap: _deletePost != null
                     ? _deletePost
-                    : () {
+                    : () async {
                         journalCommentController.isReportingPost.value = false;
-                        showDialog(
+                        await showDialog(
                           context: context,
-                          builder: (context) => ReportPostDialog(context,
-                              journalId: _journalId, type: 'post'),
+                          builder: (context) {
+                            return ReportPostDialog(context,
+                                journalId: _journalId, type: 'post');
+                          },
                         );
                       },
                 value: 1,

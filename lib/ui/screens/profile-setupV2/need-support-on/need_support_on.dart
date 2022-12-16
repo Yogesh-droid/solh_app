@@ -157,8 +157,9 @@ class _IssueChipsState extends State<IssueChips> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    profileSetupController.getNeedSupportOnIssues();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      profileSetupController.getNeedSupportOnIssues();
+    });
     super.initState();
   }
 

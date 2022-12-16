@@ -16,7 +16,6 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
-import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -25,9 +24,6 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class Setting extends StatelessWidget {
   Setting({Key? key}) : super(key: key);
-
-  ProfileSetupController profileSetupController =
-      Get.put(ProfileSetupController());
 
   @override
   Widget build(BuildContext context) {
@@ -69,17 +65,6 @@ class Setting extends StatelessWidget {
               ),
               'User Type',
               'Seeker, Volunteer, Provider',
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          InkWell(
-            onTap: () => Navigator.pushNamed(context, AppRoutes.needSupportOn),
-            child: getSettingOptions(
-              SvgPicture.asset('assets/images/other_detail.svg'),
-              'Other detail,',
-              'Issues, Organisation',
             ),
           ),
           Expanded(child: SizedBox()),
@@ -146,7 +131,7 @@ class GetLogoutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SolhGreenBorderButton(
-      backgroundColor: SolhColors.primary_green,
+      backgroundColor: SolhColors.greenShade3,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         Icon(
           Icons.logout,

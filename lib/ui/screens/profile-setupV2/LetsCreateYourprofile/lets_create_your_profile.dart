@@ -85,7 +85,11 @@ class CreateProfileButton extends StatelessWidget {
                 'Create Profile',
                 style: SolhTextStyles.NormalTextWhiteS14W6,
               ),
-              Icon(Icons.arrow_right_alt_rounded),
+              Icon(
+                CupertinoIcons.arrow_right,
+                color: SolhColors.white,
+                size: 18,
+              ),
             ],
           ),
           onPressed: () => Navigator.pushNamed(context, AppRoutes.nameField),

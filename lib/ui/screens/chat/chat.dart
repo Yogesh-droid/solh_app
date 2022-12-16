@@ -12,7 +12,8 @@ import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import 'package:solh/widgets_constants/solh_snackbar.dart';
+import 'package:solh/widgets_constants/solh_snackBar.dart';
+
 import 'package:solh/widgets_constants/text_field_styles.dart';
 import 'package:solh/widgets_constants/typing_indicator.dart';
 import '../../../bloc/user-bloc.dart';
@@ -735,8 +736,8 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.master);
 
-                    SolhSnackbar.sucess('', 'Feedback sent',
-                        icon: Icon(Icons.check));
+                    // SolhSnackbar.success('', 'Feedback sent',
+                    //     icon: Icon(Icons.check));
                   },
                   child: Text('Submit')),
               SizedBox(

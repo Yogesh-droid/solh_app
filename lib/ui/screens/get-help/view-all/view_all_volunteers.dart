@@ -86,6 +86,7 @@ class ViewAllVolunteers extends StatelessWidget {
                 .likesCount
                 .toString(),
             userType: null,
+            post: 0,
           ),
         ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

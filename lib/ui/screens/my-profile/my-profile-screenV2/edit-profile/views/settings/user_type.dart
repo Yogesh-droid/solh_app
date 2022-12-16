@@ -157,7 +157,7 @@ class SaveChangesButton extends StatelessWidget {
                           getUserType(userTypeController.selectedUserType.value)
                     });
                     if (response) {
-                      SolhSnackbar.sucess(
+                      SolhSnackbar.success(
                           'Sucess', 'User type updated sucessfully');
                     }
                   },

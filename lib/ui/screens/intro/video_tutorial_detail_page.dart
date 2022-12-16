@@ -30,7 +30,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   @override
   void initState() {
-    getVideosPlaylist();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getVideosPlaylist();
+    });
     videoTutorialController.currentVideo.value = widget.videoTutorialModel;
     controller = YoutubePlayerController(
         params: const YoutubePlayerParams(
@@ -58,8 +60,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       builder: (context, player) {
         return Scaffold(
             appBar: SolhAppBar(
-                title:
-                    Text('Video Tutorials', style: SolhTextStyles.AppBarText),
+                title: Text('Videos', style: SolhTextStyles.AppBarText),
                 isLandingScreen: false),
             body: getBody(player));
       },

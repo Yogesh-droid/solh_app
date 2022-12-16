@@ -7,14 +7,15 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
-import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
+import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 
@@ -30,6 +31,9 @@ void main() async {
   LocalNotification.initOneSignal();
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   await FirebaseAnalytics.instance.logBeginCheckout();
+  final SearchMarketController searchMarketController =
+      Get.put(SearchMarketController());
+
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
 
@@ -44,17 +48,6 @@ void main() async {
     ));
 
   FlutterNativeSplash.remove();
-}
-
-////////   required controllers are initialized here ///////////
-Future<void> initControllers() async {
-  ProfileController profileController = Get.put(ProfileController());
-  // await profileController.getMyProfile();
-  final AgeController ageController = Get.put(AgeController());
-
-  var _chatListController = Get.put(ChatListController());
-
-  var journalpageController = Get.put(JournalPageController());
 }
 
 /// app ////
@@ -115,6 +108,11 @@ class _SolhAppState extends State<SolhApp> {
                 fontWeight: FontWeight.w800,
                 decoration: TextDecoration.underline),
           ),
+          switchTheme: SwitchThemeData(
+            thumbColor:
+                MaterialStateProperty.all<Color>(SolhColors.primary_green),
+            trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
+          ),
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
@@ -123,19 +121,6 @@ class _SolhAppState extends State<SolhApp> {
           primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
-          textButtonTheme: TextButtonThemeData(
-              style: ButtonStyle(
-                  splashFactory: InkRipple.splashFactory,
-                  overlayColor:
-                      MaterialStateProperty.all<Color>(SolhColors.grey),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(SolhColors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40.0),
-                  )),
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      SolhColors.primary_green))),
         ),
       );
     });
@@ -144,6 +129,9 @@ class _SolhAppState extends State<SolhApp> {
   Future<void> initControllers() async {
     if (widget._isProfileCreated) {
       ProfileController profileController = Get.put(ProfileController());
+      ProfileSetupController profileSetupController =
+          Get.put(ProfileSetupController());
+
       // await profileController.getMyProfile();
       Get.put(ChatListController());
     }

@@ -45,6 +45,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
       TextEditingController();
   TextEditingController _lastNameTextEditingController =
       TextEditingController();
+  TextEditingController _emailTextEditingController = TextEditingController();
   TextEditingController _bioTextEditingController = TextEditingController();
   TextEditingController _userNameController = TextEditingController();
   final AgeController _ageController = Get.find();
@@ -250,6 +251,10 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
               ),
             ],
           ),
+          TextFieldB(
+            label: "Your Email id",
+            textEditingController: _emailTextEditingController,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 4.w),
             child: Column(
@@ -358,6 +363,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                           "dob": _ageController.DOB.value,
                           "isProvider": _ageController.isProvider.value,
                           "userCountry": coutry,
+                          "email": _emailTextEditingController.text,
                           'username': _userNameController
                               .text ////// ==> To be implemented for username
                         }),
@@ -460,6 +466,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         profileController.myProfileModel.value.body!.user!.lastName ?? '';
     _bioTextEditingController.text =
         profileController.myProfileModel.value.body!.user!.bio ?? '';
+    _emailTextEditingController.text =
+        profileController.myProfileModel.value.body!.user!.email ?? '';
 
     _ageController.selectedAge.value = profileController
                 .myProfileModel.value.body!.user!.dob !=

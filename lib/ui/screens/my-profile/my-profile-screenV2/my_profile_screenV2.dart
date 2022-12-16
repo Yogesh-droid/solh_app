@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
@@ -58,15 +59,21 @@ class MyProfileScreenV2 extends StatelessWidget {
                                           .body!
                                           .userMoveEmptyScreenEmpty!
                                           .isNotEmpty) {
+                                        profileCompletionController
+                                                .uncompleteFields =
+                                            profileController
+                                                .myProfileModel
+                                                .value
+                                                .body!
+                                                .userMoveEmptyScreenEmpty!;
                                         Navigator.pushNamed(
                                             context,
                                             profileCompletionController
-                                                .getAppRoute(profileController
-                                                    .myProfileModel
-                                                    .value
-                                                    .body!
-                                                    .userMoveEmptyScreenEmpty!
-                                                    .first));
+                                                .getAppRoute(
+                                                    profileCompletionController
+                                                        .uncompleteFields
+                                                        .first),
+                                            arguments: {"indexOfpage": 0});
                                       }
                                     },
                                     child: ImageWithProgressBarAndBadge(
@@ -270,10 +277,13 @@ class YouAreAlmostThere extends StatelessWidget {
       onTap: () {
         if (profileController
             .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.isNotEmpty) {
+          profileCompletionController.uncompleteFields = profileController
+              .myProfileModel.value.body!.userMoveEmptyScreenEmpty!;
           Navigator.pushNamed(
               context,
-              profileCompletionController.getAppRoute(profileController
-                  .myProfileModel.value.body!.userMoveEmptyScreenEmpty!.first));
+              profileCompletionController.getAppRoute(
+                  profileCompletionController.uncompleteFields.first),
+              arguments: {"indexOfpage": 0});
         }
       },
       child: Card(
@@ -358,6 +368,7 @@ class OptionsColumn extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
+            Get.find<MoodMeterController>().getMoodAnalytics(7);
             Navigator.pushNamed(context, AppRoutes.moodAnalytics,
                 arguments: {});
           },
@@ -368,6 +379,9 @@ class OptionsColumn extends StatelessWidget {
               ),
               'Wheel of Emotions'),
         ),
+        SizedBox(
+          height: 8,
+        )
       ],
     );
   }
