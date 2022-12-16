@@ -6,6 +6,7 @@ import 'package:solh/services/network/network.dart';
 class AnonController extends GetxController {
   var isNameTaken = false.obs;
   var isNormalNameTaken = false.obs;
+  var anonSid = ''.obs;
   var userName = "".obs;
   var avtarImageUrl = "".obs;
   var avtarType = "".obs;

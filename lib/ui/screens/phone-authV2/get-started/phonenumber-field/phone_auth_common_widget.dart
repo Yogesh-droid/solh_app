@@ -76,11 +76,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     controller: phoneAuthController.phoneNumber,
                     decoration: TextFieldStyles.greenF_greyUF_4R
                         .copyWith(hintText: 'Your mobile no.'),
-                  )
-                      keyboardType: TextInputType.number,
-                      controller: phoneAuthController.phoneNumber,
-                      decoration: TextFieldStyles.greenF_greyUF_4R
-                          .copyWith(hintText: 'Your mobile no.'))
+                  ),
                 ],
               ),
             )

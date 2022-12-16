@@ -142,8 +142,10 @@ class ProfileCompletionController extends GetxController {
       isUpdatingField(false);
       if (response["success"]) {
         debugPrint("response" + response.toString());
-        profileController.myProfileModel.value =
-            MyProfileModel.fromJson(response);
+        await profileController.getMyProfile();
+
+        // profileController.myProfileModel.value =
+        //     MyProfileModel.fromJson(response);
 
         return true;
       } else {

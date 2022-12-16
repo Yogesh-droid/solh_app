@@ -237,6 +237,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
       case AppRoutes.chatAnonIssues:
         return MaterialPageRoute(builder: ((context) => ChatAnonIssues()));
+      case AppRoutes.editNeedSupportOn:
+        return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
 
       default:
         return MaterialPageRoute(

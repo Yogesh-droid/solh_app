@@ -34,7 +34,7 @@ class _ConnectionsState extends State<Connections> {
 
   final DiscoverGroupController groupController = Get.find();
 
-  final ChatListController chatListController = Get.put(ChatListController());
+  final ChatListController chatListController = Get.find();
 
   @override
   void initState() {

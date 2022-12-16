@@ -11,7 +11,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class MoodMeter extends StatelessWidget {
   MoodMeter({Key? key, Map<String, dynamic>? args})
-      : continueAction = args!['continueAction'],
+      : continueAction = args?['continueAction'],
         super(key: key);
   final VoidCallback? continueAction;
   final MoodMeterController moodMeterController = Get.find();

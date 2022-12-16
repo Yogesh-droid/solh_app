@@ -181,8 +181,17 @@ class ChatController extends GetxController {
       required mediaType,
       required authorId,
       required fileName}) {
-    SocketService.sendMessage(message, sId, autherType, ct, mediaUrl,
-        appointmentId, mediaType, fileName, conversationType, authorId);
+    SocketService.sendMessage(
+        message: message,
+        sId: sId,
+        autherType: autherType,
+        ct: ct,
+        mediaUrl: mediaUrl,
+        appointmentId: appointmentId,
+        mediaType: mediaType,
+        fileName: fileName,
+        conversationType: conversationType,
+        authorId: authorId);
 
     messageEditingController.text = '';
     convo.add(Conversation(

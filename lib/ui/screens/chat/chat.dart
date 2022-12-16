@@ -5,10 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -43,20 +47,27 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   SocketService _service = SocketService();
   ProfileController profileController = Get.find();
+  ChatAnonController chatAnonController = Get.put(ChatAnonController());
   var _controller = Get.put(ChatController());
   @override
   void initState() {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     if (widget._isAnonChat == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) =>
-          _controller.getChatController(
-              profileController.myProfileModel.value.body!.user!.name!));
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => _controller.getChatController(widget._sId));
     }
-
+    if (widget._isAnonChat) {
+      chatAnonController.anonSId.value = widget._sId;
+    }
     _controller.currentSid = widget._sId;
 
-    SocketService.setUserName(userBlocNetwork.myData.name ?? '');
+    widget._isAnonChat
+        ? SocketService.setUserName(profileController
+                .myProfileModel.value.body!.user!.anonymous!.userName ??
+            '')
+        : SocketService.setUserName(
+            profileController.myProfileModel.value.body!.user!.name ?? '');
 
     super.initState();
   }
@@ -65,90 +76,90 @@ class _ChatScreenState extends State<ChatScreen> {
   void dispose() {
     // TODO: implement dispose
     _controller.isVideoConnecting.value = false;
-    SocketService.userLeft();
+    _service.userLeft();
     SocketService.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ScaffoldWithBackgroundArt(
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: double.maxFinite,
-          child: Column(
-            children: [
-              InkWell(
-                onTap: () {
-                  showModalBottomSheet(
-                      // enableDrag: false,
-                      // isDismissible: false,
-                      context: context,
-                      builder: (context) {
-                        return RatingBottomSheet();
-                      });
-                },
-                child: ChatAppbar(
-                  imageUrl: widget._imageUrl,
-                  name: widget._name,
-                  sId: widget._sId,
-                  isAnonChat: widget._isAnonChat,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              widget._isAnonChat
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Text(
-                        'You are connected to solh certified volunteer, its not a bot ',
-                        style: SolhTextStyles.QS_cap_2,
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  : Container(),
-              SizedBox(
-                height: 10,
-              ),
-              Expanded(
-                child: MessageList(
-                  sId: widget._sId,
-                ),
-              ),
-              Stack(
-                children: [
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Obx(() {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _controller.istyping == true
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 0),
-                                child: TypingIndicator(),
-                              )
-                            : Container()
-                      ],
-                    );
-                  }),
-                ],
-              ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w),
-                  child: MessageBox(
+    return WillPopScope(
+      onWillPop: () async {
+        if (widget._isAnonChat) {
+          return _onWillPop(context, widget._sId);
+        }
+        return true;
+      },
+      child: SafeArea(
+        child: ScaffoldWithBackgroundArt(
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.maxFinite,
+            child: Column(
+              children: [
+                InkWell(
+                  onTap: () {},
+                  child: ChatAppbar(
+                    imageUrl: widget._imageUrl,
+                    name: widget._name,
                     sId: widget._sId,
-                    chatType: 'cc',
+                    isAnonChat: widget._isAnonChat,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 10,
+                ),
+                widget._isAnonChat
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Text(
+                          'You are connected to solh certified volunteer, its not a bot ',
+                          style: SolhTextStyles.QS_cap_2,
+                          textAlign: TextAlign.center,
+                        ),
+                      )
+                    : Container(),
+                SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: MessageList(
+                    sId: widget._sId,
+                  ),
+                ),
+                Stack(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Obx(() {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          _controller.istyping == true
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 0),
+                                  child: TypingIndicator(),
+                                )
+                              : Container()
+                        ],
+                      );
+                    }),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.w),
+                    child: MessageBox(
+                      sId: widget._sId,
+                      chatType: 'cc',
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -175,6 +186,7 @@ class ChatAppbar extends StatelessWidget {
   final bool _isAnonChat;
 
   ChatController _controller = Get.put(ChatController());
+  SocketService service = SocketService();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -199,9 +211,15 @@ class ChatAppbar extends StatelessWidget {
                 //     }),
                 //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
-                  onTap: (() {
-                    SocketService.userLeft();
-                    Navigator.of(context).pop();
+                  onTap: (() async {
+                    if (_isAnonChat) {
+                      await _onWillPop(context, _sId);
+                      service.userLeft();
+                    } else {
+                      service.userLeft();
+
+                      Navigator.of(context).pop();
+                    }
                   }),
                   child: Container(
                     width: 50,
@@ -333,8 +351,7 @@ class MessageBox extends StatelessWidget {
             Expanded(
               child: TextField(
                 onChanged: ((value) {
-                  SocketService.typing(
-                      _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                  service.typing(_sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
                   _controller.isTypingEpochTime.value =
                       DateTime.now().millisecondsSinceEpoch;
 
@@ -342,7 +359,7 @@ class MessageBox extends StatelessWidget {
                     if (DateTime.now().millisecondsSinceEpoch -
                             _controller.isTypingEpochTime.value >=
                         2000) {
-                      SocketService.notTyping(
+                      service.notTyping(
                           _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
                     }
                   }));
@@ -360,18 +377,17 @@ class MessageBox extends StatelessWidget {
                   return;
                 } else {
                   _controller.sendMessageController(
-                    message: _controller.messageEditingController.text,
-                    sId: _sId,
-                    autherType: 'users',
-                    ct: chatType == 'sc' ? 'sc' : 'cc',
-                    mediaType: '',
-                    mediaUrl: '',
-                    fileName: '',
-                    appointmentId: '',
-                    conversationType: 'text',
-                    authorId:
-                        profileController.myProfileModel.value.body!.user!.sId,
-                  );
+                      message: _controller.messageEditingController.text,
+                      sId: _sId,
+                      autherType: 'users',
+                      ct: chatType == 'sc' ? 'sc' : 'cc',
+                      mediaType: '',
+                      mediaUrl: '',
+                      fileName: '',
+                      appointmentId: '',
+                      conversationType: 'text',
+                      authorId: profileController
+                          .myProfileModel.value.body!.user!.sId!);
                 }
                 chatListController.chatListController();
               },
@@ -528,8 +544,8 @@ class MessageTile extends StatelessWidget {
 }
 
 class RatingBottomSheet extends StatelessWidget {
-  RatingBottomSheet({Key? key}) : super(key: key);
-
+  RatingBottomSheet({Key? key, required this.sId}) : super(key: key);
+  final String sId;
   final PageController pageController = PageController();
 
   final ChatController chatController = Get.find();
@@ -539,16 +555,24 @@ class RatingBottomSheet extends StatelessWidget {
     return PageView(
       controller: chatController.pageController,
       children: [
-        RatingBottomSheetChild1(),
-        RatingBottomSheetChild2(),
+        RatingBottomSheetChild1(
+          sId: sId,
+        ),
+        RatingBottomSheetChild2(
+          sId: sId,
+        ),
       ],
     );
   }
 }
 
 class RatingBottomSheetChild1 extends StatelessWidget {
-  RatingBottomSheetChild1({Key? key}) : super(key: key);
+  RatingBottomSheetChild1({Key? key, required this.sId}) : super(key: key);
+
+  final String sId;
+
   final ChatController chatController = Get.find();
+  final ChatAnonController chatAnonController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -601,19 +625,29 @@ class RatingBottomSheetChild1 extends StatelessWidget {
               SizedBox(
                 height: 10.h,
               ),
-              RatingStars(),
+              RatingStars(sId: sId),
               SizedBox(
                 height: 10.h,
               ),
-              InkWell(
-                onTap: () => chatController.pageController.animateToPage(1,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeIn),
-                child: Text(
-                  'Skip',
-                  style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-                ),
-              )
+              Obx(() {
+                return chatAnonController.isPostingFeedback.value
+                    ? ButtonLoadingAnimation(
+                        ballColor: SolhColors.white,
+                        ballSizeLowerBound: 3,
+                        ballSizeUpperBound: 8,
+                      )
+                    : InkWell(
+                        onTap: () => chatController.pageController
+                            .animateToPage(1,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeIn),
+                        child: Text(
+                          'Skip',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        ),
+                      );
+              })
             ],
           ),
         ]),
@@ -623,9 +657,12 @@ class RatingBottomSheetChild1 extends StatelessWidget {
 }
 
 class RatingStars extends StatelessWidget {
-  RatingStars({Key? key}) : super(key: key);
+  RatingStars({Key? key, required String this.sId}) : super(key: key);
+
+  final String sId;
 
   final ChatController chatController = Get.find();
+  final ChatAnonController chatAnonController = Get.find();
 
   final List<int> starValue = [1, 2, 3, 4, 5];
 
@@ -641,11 +678,24 @@ class RatingStars extends StatelessWidget {
                         width: 3.w,
                       ),
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           chatController.selectedStar.value = e;
-                          chatController.pageController.animateToPage(2,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeIn);
+                          bool response = await chatAnonController
+                              .postFeedbackController({
+                            "volunteerId": sId,
+                            "ratings":
+                                chatController.selectedStar.value.toString()
+                          });
+
+                          if (response) {
+                            SolhSnackbar.success(
+                                '', 'Thank you. Rating recorded successfully');
+                            chatController.pageController.animateToPage(2,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeIn);
+                          } else {
+                            SolhSnackbar.error('Error', 'Something went wrong');
+                          }
                         },
                         child: getStart(
                             starvalue: e, chatController: chatController),
@@ -672,7 +722,10 @@ Widget getStart(
 }
 
 class RatingBottomSheetChild2 extends StatelessWidget {
-  const RatingBottomSheetChild2({Key? key}) : super(key: key);
+  RatingBottomSheetChild2({Key? key, required this.sId}) : super(key: key);
+
+  final String sId;
+  final ChatAnonController chatAnonController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -716,6 +769,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                 height: 3.h,
               ),
               TextField(
+                controller: chatAnonController.feedbackTextField,
                 maxLines: 5,
                 minLines: 2,
                 decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
@@ -733,13 +787,32 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                 height: 4.h,
               ),
               SolhGreenButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.master);
+                onPressed: () async {
+                  bool response =
+                      await chatAnonController.postFeedbackController({
+                    "volunteerId": sId,
+                    "reviewBody": chatAnonController.feedbackTextField.text,
+                  });
 
-                    // SolhSnackbar.success('', 'Feedback sent',
-                    //     icon: Icon(Icons.check));
-                  },
-                  child: Text('Submit')),
+                  if (response) {
+                    SolhSnackbar.success(
+                        '', 'Thank you. feedback recorded successfully');
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, AppRoutes.master, (route) => false);
+                  } else {
+                    SolhSnackbar.error('Error', 'Something went wrong');
+                  }
+                },
+                child: Obx(() {
+                  return chatAnonController.isPostingFeedback.value
+                      ? ButtonLoadingAnimation(
+                          ballColor: SolhColors.white,
+                          ballSizeLowerBound: 3,
+                          ballSizeUpperBound: 8,
+                        )
+                      : Text('Submit');
+                }),
+              ),
               SizedBox(
                 height: 2.h,
               ),
@@ -750,4 +823,47 @@ class RatingBottomSheetChild2 extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<bool> _onWillPop(context, sId) async {
+  return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          actionsPadding: EdgeInsets.all(8.0),
+          content: Text(
+            'Do you really want to end chat ?',
+            style: SolhTextStyles.JournalingDescriptionText,
+          ),
+          actions: [
+            TextButton(
+                child: Text(
+                  'Cancel',
+                  style: SolhTextStyles.CTA,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+                child: Text(
+                  'Leave',
+                  style:
+                      SolhTextStyles.CTA.copyWith(color: SolhColors.primaryRed),
+                ),
+                onPressed: () async {
+                  print('model sheet shown');
+                  Navigator.of(context).pop();
+                  await showModalBottomSheet(
+                      enableDrag: false,
+                      isDismissible: false,
+                      context: context,
+                      builder: (context) {
+                        return RatingBottomSheet(sId: sId);
+                      });
+                  // Navigator.pushNamedAndRemoveUntil(
+                  //     context, AppRoutes.master, (route) => false);
+                }),
+          ],
+        );
+      });
 }

@@ -273,6 +273,7 @@ class OtherIssueList extends StatelessWidget {
 /* import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
@@ -310,7 +311,7 @@ class EditNeedSupportOn extends StatelessWidget {
           });
 
           if (response) {
-            Navigator.of(context).pop();
+            Navigator.pushNamed(context, AppRoutes.partOfOrg, arguments: {});
           }
         }),
       ),
@@ -425,10 +426,13 @@ class IssueChips extends StatefulWidget {
 
 class _IssueChipsState extends State<IssueChips> {
   UserTypeController userTypeController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
+    userTypeController.selectedIsses.value =
+        profileController.myProfileModel.value.body!.user!.issueList!;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       userTypeController.getNeedSupportOnIssues();
     });
@@ -446,24 +450,34 @@ class _IssueChipsState extends State<IssueChips> {
               spacing: 5,
               children: userTypeController
                   .needSupportOnModel.value.specialization!
-                  .map((e) => FilterChip(
+                  .map(
+                    (e) => FilterChip(
                       onSelected: (value) {
                         print(userTypeController.selectedIsses.toString());
                         value
-                            ? userTypeController.selectedIsses.value.add(e.sId)
+                            ? userTypeController.selectedIsses.value.add(e.sId!)
                             : userTypeController.selectedIsses.value
                                 .remove(e.sId);
                         setState(() {});
                       },
                       selected:
-                          userTypeController.selectedIsses.contains(e.sId),
+                          userTypeController.selectedIsses.contains(e.sId) ||
+                              profileController
+                                  .myProfileModel.value.body!.user!.issueList!
+                                  .contains(e.sId),
                       selectedColor: SolhColors.primary_green,
                       backgroundColor: SolhColors.grey239,
                       checkmarkColor:
-                          userTypeController.selectedIsses.contains(e.sId)
+                          userTypeController.selectedIsses.contains(e.sId) ||
+                                  profileController.myProfileModel.value.body!
+                                      .user!.issueList!
+                                      .contains(e.sId)
                               ? SolhColors.white
                               : SolhColors.black,
-                      label: userTypeController.selectedIsses.contains(e.sId)
+                      label: userTypeController.selectedIsses.contains(e.sId) ||
+                              profileController
+                                  .myProfileModel.value.body!.user!.issueList!
+                                  .contains(e.sId)
                           ? Text(
                               e.slug!,
                               style: Theme.of(context)
@@ -474,7 +488,9 @@ class _IssueChipsState extends State<IssueChips> {
                           : Text(
                               e.slug!,
                               style: Theme.of(context).textTheme.headline1,
-                            )))
+                            ),
+                    ),
+                  )
                   .toList());
     });
   }

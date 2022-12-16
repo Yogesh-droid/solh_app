@@ -15,7 +15,7 @@ class UserTypeController extends GetxController {
   NeedSupportOnService needSupportOnService = NeedSupportOnService();
   var isUpdatingField = false.obs;
   var selectedOtherIssues = [].obs;
-  var selectedIsses = [].obs;
+  var selectedIsses = <String>[].obs;
   var showOtherissueField = false.obs;
   var isLoadingIssues = false.obs;
 

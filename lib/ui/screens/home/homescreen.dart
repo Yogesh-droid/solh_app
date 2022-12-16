@@ -12,14 +12,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -65,6 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
+
+  ChatListController chatListController = Get.put(ChatListController());
 
   BottomNavigatorController bottomNavigatorController = Get.find();
 
@@ -147,6 +152,7 @@ class _HomePageState extends State<HomePage> {
   BookAppointmentController bookAppointmentController = Get.find();
   GoalSettingController goalSettingController = Get.find();
   ConnectionController connectionController = Get.find();
+  ChatAnonController chatAnonController = Get.put(ChatAnonController());
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -1518,10 +1524,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 4.w,
-            vertical: 2.h,
-          ),
+          padding:
+              EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
           child: Column(
             children: [
               Row(
@@ -1582,8 +1586,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
               ),
               Text(
                 'Start chatting for free right away, with a Sohl Certified Volunteer. ',
-                style:
-                    SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+                style: SolhTextStyles.QS_caption.copyWith(
+                    color: SolhColors.white, fontSize: 10.sp),
                 textAlign: TextAlign.center,
               )
             ],

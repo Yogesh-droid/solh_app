@@ -1,56 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/controllers/profile/anon_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
-import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButton.dart';
-import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class ChatAnonIssues extends StatelessWidget {
   ChatAnonIssues({Key? key}) : super(key: key);
 
   final ChatAnonController chatAnonController = Get.put(ChatAnonController());
+  final ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
-      floatingActionButton:
-          ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
-        child: const Icon(
-          Icons.chevron_right_rounded,
-          size: 40,
-        ),
-        onPressed: (() async {
-          showGeneralDialog(
-              context: context,
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(
-                    body: MoodMeter(
-                  args: {
-                    "continueAction": () {
-                      Navigator.pushNamed(context, AppRoutes.chatUser,
-                          arguments: {
-                            "imageUrl": "https://picsum.photos/200",
-                            "name": "MUNEET",
-                            "sId": "6284caa1077c63c27f63342d",
-                            "isAnonChat": true
-                          });
-                    }
-                  },
-                ));
-              });
-        }),
-      ),
+      floatingActionButton: Obx(() {
+        return chatAnonController.isFeatchingUser.value
+            ? ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
+                child: SolhSmallButtonLoader(), onPressed: (() => null))
+            : ProfileSetupFloatingActionButton.profileSetupFloatingActionButton(
+                child: const Icon(
+                  Icons.chevron_right_rounded,
+                  size: 40,
+                ),
+                onPressed: (() async {
+                  bool response =
+                      await chatAnonController.getVolunteerController();
+                  if (response) {
+                    showGeneralDialog(
+                        context: context,
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return Scaffold(
+                              body: MoodMeter(
+                            args: {
+                              "continueAction": () {
+                                if (profileController.myProfileModel.value.body!
+                                        .user!.anonymous ==
+                                    null) {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.anonymousProfile,
+                                      arguments: {
+                                        "indexOfpage": 0,
+                                        "formAnonChat": true,
+                                      });
+                                } else {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.chatUser,
+                                      arguments: {
+                                        "imageUrl": chatAnonController
+                                            .chatAnonModel
+                                            .value
+                                            .sosChatSupport!
+                                            .first
+                                            .profilePicture,
+                                        "name": chatAnonController.chatAnonModel
+                                            .value.sosChatSupport!.first.name,
+                                        "sId": chatAnonController.chatAnonModel
+                                            .value.sosChatSupport!.first.sId,
+                                        "isAnonChat": true
+                                      });
+                                }
+                              }
+                            },
+                          ));
+                        });
+                  } else {
+                    SolhSnackbar.error('Error', 'Something went wrong');
+                  }
+                }),
+              );
+      }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
