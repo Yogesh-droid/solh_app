@@ -68,8 +68,22 @@ class _ChatScreenState extends State<ChatScreen> {
             '')
         : SocketService.setUserName(
             profileController.myProfileModel.value.body!.user!.name ?? '');
-
+    sendFirstAnonChat();
     super.initState();
+  }
+
+  sendFirstAnonChat() {
+    _controller.sendMessageController(
+        message: "issues -${chatAnonController.selectedIsses.value.toString()}",
+        conversationType: "cc",
+        sId: widget._sId,
+        autherType: "users",
+        ct: "cc",
+        mediaUrl: "",
+        appointmentId: null,
+        mediaType: '',
+        authorId: profileController.myProfileModel.value.body!.user!.sId!,
+        fileName: "");
   }
 
   @override

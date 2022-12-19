@@ -177,7 +177,7 @@ class ChatController extends GetxController {
       required autherType,
       required ct,
       required mediaUrl,
-      required appointmentId,
+      required String? appointmentId,
       required mediaType,
       required authorId,
       required fileName}) {
@@ -187,7 +187,7 @@ class ChatController extends GetxController {
         autherType: autherType,
         ct: ct,
         mediaUrl: mediaUrl,
-        appointmentId: appointmentId,
+        appointmentId: appointmentId ?? "",
         mediaType: mediaType,
         fileName: fileName,
         conversationType: conversationType,
