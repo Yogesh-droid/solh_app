@@ -208,9 +208,8 @@ class _IssueChipsState extends State<IssueChips> {
                       onSelected: (value) {
                         print(chatAnonController.selectedIsses.toString());
                         value
-                            ? chatAnonController.selectedIsses.value.add(e.sId)
-                            : chatAnonController.selectedIsses.value
-                                .remove(e.sId);
+                            ? addIssues(chatAnonController, e)
+                            : removeIssues(chatAnonController, e);
                         setState(() {});
                       },
                       selected:
@@ -280,4 +279,15 @@ class OtherIssueList extends StatelessWidget {
       );
     });
   }
+}
+
+addIssues(chatAnonController, e) {
+  chatAnonController.selectedIsses.value.add(e.sId);
+  chatAnonController.selectedIssuesName.value =
+      chatAnonController.selectedIssuesName.value + '${e.name}, ';
+}
+
+removeIssues(chatAnonController, e) {
+  chatAnonController.selectedIsses.value.remove(e.sId);
+  chatAnonController.selectedIssuesName.value.replaceAll('${e.name}', '');
 }

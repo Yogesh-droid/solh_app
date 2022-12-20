@@ -16,7 +16,7 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import 'package:solh/widgets_constants/solh_snackBar.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 import 'package:solh/widgets_constants/text_field_styles.dart';
 import 'package:solh/widgets_constants/typing_indicator.dart';
@@ -54,8 +54,10 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     if (widget._isAnonChat == false) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => _controller.getChatController(widget._sId));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.getChatController(widget._sId);
+        sendFirstAnonChat();
+      });
     }
     if (widget._isAnonChat) {
       chatAnonController.anonSId.value = widget._sId;
@@ -68,13 +70,14 @@ class _ChatScreenState extends State<ChatScreen> {
             '')
         : SocketService.setUserName(
             profileController.myProfileModel.value.body!.user!.name ?? '');
-    sendFirstAnonChat();
+
     super.initState();
   }
 
   sendFirstAnonChat() {
     _controller.sendMessageController(
-        message: "issues -${chatAnonController.selectedIsses.value.toString()}",
+        message:
+            "issues -${chatAnonController.selectedIssuesName.value.toString()}",
         conversationType: "cc",
         sId: widget._sId,
         autherType: "users",
@@ -169,6 +172,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: MessageBox(
                       sId: widget._sId,
                       chatType: 'cc',
+                      isAnon: widget._isAnonChat,
                     ),
                   ),
                 ),
@@ -332,12 +336,13 @@ class ChatAppbar extends StatelessWidget {
 }
 
 class MessageBox extends StatelessWidget {
-  MessageBox({Key? key, required String sId, this.chatType})
+  MessageBox({Key? key, required String sId, this.chatType, this.isAnon})
       : _sId = sId,
         super(key: key);
 
   final String _sId;
   final String? chatType;
+  final bool? isAnon;
 
   ChatController _controller = Get.put(ChatController());
   SocketService service = SocketService();
@@ -394,7 +399,9 @@ class MessageBox extends StatelessWidget {
                       message: _controller.messageEditingController.text,
                       sId: _sId,
                       autherType: 'users',
-                      ct: chatType == 'sc' ? 'sc' : 'cc',
+                      ct: isAnon == true
+                          ? 'sosChat'
+                          : (chatType == 'sc' ? 'sc' : 'cc'),
                       mediaType: '',
                       mediaUrl: '',
                       fileName: '',
