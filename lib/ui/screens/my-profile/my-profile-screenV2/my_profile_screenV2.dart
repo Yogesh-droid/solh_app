@@ -33,121 +33,129 @@ class MyProfileScreenV2 extends StatelessWidget {
               ? Center(
                   child: MyLoader(),
                 )
-              : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView(
-                    children: [
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      Center(
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              right: 0,
-                              child: EditAndSettingOption(),
-                            ),
-                            Container(
-                              width: double.maxFinite,
-                              child: Column(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      if (profileController
-                                          .myProfileModel
-                                          .value
-                                          .body!
-                                          .userMoveEmptyScreenEmpty!
-                                          .isNotEmpty) {
-                                        profileCompletionController
-                                                .uncompleteFields =
-                                            profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .userMoveEmptyScreenEmpty!;
-                                        Navigator.pushNamed(
-                                            context,
-                                            profileCompletionController
-                                                .getAppRoute(
-                                                    profileCompletionController
-                                                        .uncompleteFields
-                                                        .first),
-                                            arguments: {"indexOfpage": 0});
-                                      }
-                                    },
-                                    child: ImageWithProgressBarAndBadge(
-                                        imageRadius: Size(30.w, 30.w),
-                                        percent: profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .percentProfile ??
-                                            0,
-                                        imageUrl: profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .user!
-                                                .profilePicture ??
-                                            ''),
+              : profileController.myProfileModel.value.body == null
+                  ? Container()
+                  : Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          Center(
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  right: 0,
+                                  child: EditAndSettingOption(),
+                                ),
+                                Container(
+                                  width: double.maxFinite,
+                                  child: Column(
+                                    children: [
+                                      profileController
+                                                  .myProfileModel.value.body !=
+                                              null
+                                          ? InkWell(
+                                              onTap: () {
+                                                if (profileController
+                                                    .myProfileModel
+                                                    .value
+                                                    .body!
+                                                    .userMoveEmptyScreenEmpty!
+                                                    .isNotEmpty) {
+                                                  profileCompletionController
+                                                          .uncompleteFields =
+                                                      profileController
+                                                          .myProfileModel
+                                                          .value
+                                                          .body!
+                                                          .userMoveEmptyScreenEmpty!;
+                                                  Navigator.pushNamed(
+                                                      context,
+                                                      profileCompletionController.getAppRoute(profileCompletionController
+                                                          .uncompleteFields
+                                                          .first),
+                                                      arguments: {
+                                                        "indexOfpage": 0
+                                                      });
+                                                }
+                                              },
+                                              child:
+                                                  ImageWithProgressBarAndBadge(
+                                                      imageRadius:
+                                                          Size(30.w, 30.w),
+                                                      percent: profileController
+                                                              .myProfileModel
+                                                              .value
+                                                              .body!
+                                                              .percentProfile ??
+                                                          0,
+                                                      imageUrl: profileController
+                                                              .myProfileModel
+                                                              .value
+                                                              .body!
+                                                              .user!
+                                                              .profilePicture ??
+                                                          ''),
+                                            )
+                                          : Container(),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          NameUsertypeBio(
+                            name: profileController
+                                    .myProfileModel.value.body!.user!.name ??
+                                '',
+                            bio: profileController
+                                    .myProfileModel.value.body!.user!.bio ??
+                                '',
+                            userType: profileController.myProfileModel.value
+                                    .body!.user!.userType ??
+                                '',
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          StatsRow(
+                            like: profileController
+                                    .myProfileModel.value.body!.user!.likes ??
+                                0,
+                            connections: profileController.myProfileModel.value
+                                .body!.user!.connectionsList!.length,
+                            posts: profileController
+                                    .myProfileModel.value.body!.user!.posts ??
+                                0,
+                            reviews: profileController
+                                    .myProfileModel.value.body!.user!.reviews ??
+                                0,
+                          ),
+                          SizedBox(
+                            height: 1.h,
+                          ),
+                          Obx(() {
+                            return profileController.myProfileModel.value.body!
+                                        .percentProfile ==
+                                    100
+                                ? Container()
+                                : YouAreAlmostThere();
+                          }),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          SizedBox(
+                            height: 2.h,
+                          ),
+                          OptionsColumn()
+                        ],
                       ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      NameUsertypeBio(
-                        name: profileController
-                                .myProfileModel.value.body!.user!.name ??
-                            '',
-                        bio: profileController
-                                .myProfileModel.value.body!.user!.bio ??
-                            '',
-                        userType: profileController
-                                .myProfileModel.value.body!.user!.userType ??
-                            '',
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      StatsRow(
-                        like: profileController
-                                .myProfileModel.value.body!.user!.likes ??
-                            0,
-                        connections: profileController.myProfileModel.value
-                            .body!.user!.connectionsList!.length,
-                        posts: profileController
-                                .myProfileModel.value.body!.user!.posts ??
-                            0,
-                        reviews: profileController
-                                .myProfileModel.value.body!.user!.reviews ??
-                            0,
-                      ),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      Obx(() {
-                        return profileController.myProfileModel.value.body!
-                                    .percentProfile ==
-                                100
-                            ? Container()
-                            : YouAreAlmostThere();
-                      }),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      SizedBox(
-                        height: 2.h,
-                      ),
-                      OptionsColumn()
-                    ],
-                  ),
-                );
+                    );
         }),
       ),
     );

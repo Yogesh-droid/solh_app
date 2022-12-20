@@ -11,6 +11,8 @@ import '../../services/network/network.dart';
 class GetHelpController extends GetxController {
   var getIssueResponseModel = GetIssueResponseModel().obs;
   var issueList = [].obs;
+  var issueList1 = [].obs;
+  var issueList2 = [].obs;
   var topConsultantList = SearchMarketModel().obs;
   var solhVolunteerList = SolhVolunteerModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
@@ -26,11 +28,27 @@ class GetHelpController extends GetxController {
       print('issues $map');
 
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
-      issueList.value = getIssueResponseModel.value.specializationList != null
+      issueList.value = getSpecializationModel.value.specializationList != null
+          ? getIssueResponseModel.value.specializationList!
+          : [];
+      /* issueList.value = getIssueResponseModel.value.specializationList != null
           ? getIssueResponseModel.value.specializationList!.length > 8
               ? getIssueResponseModel.value.specializationList!.sublist(0, 8)
               : getIssueResponseModel.value.specializationList!
-          : [];
+          : []; */
+      /*  if (getIssueResponseModel.value.specializationList != null) {
+        int val = getIssueResponseModel.value.specializationList!.length ~/ 3;
+        issueList.value =
+            getIssueResponseModel.value.specializationList!.take(val).toList();
+        issueList1.value = getIssueResponseModel.value.specializationList!
+            .skip(val)
+            .take(val)
+            .toList();
+        issueList2.value = getIssueResponseModel.value.specializationList!
+            .skip(val + val)
+            .take(val * 3)
+            .toList();
+      } */
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }

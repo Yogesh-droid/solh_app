@@ -494,10 +494,6 @@ getpopUpMenu(context, String sId, journalCommentController) {
           child: Text('Report this person'),
           value: 1,
         ),
-        // PopupMenuItem(
-        //   child: Text('Block'),
-        //   value: 2,
-        // ),
       ];
     },
     onSelected: (value) {
@@ -584,6 +580,14 @@ ReportUserDialog(BuildContext context,
                       journalId: userId,
                       reason: reasonController.text,
                       type: 'user');
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text('Successfully Reported User'),
+                    backgroundColor: SolhColors.primary_green,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20))),
+                  ));
                   Navigator.pop(context);
                 },
         ),

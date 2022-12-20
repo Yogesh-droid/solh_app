@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -614,7 +615,11 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: CachedNetworkImageProvider(journal.mediaUrl ?? '')),
+                  image: journal.mediaUrl != null
+                      ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                      : AssetImage(
+                          'assets/images/backgroundScaffold.png',
+                        ) as ImageProvider),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -655,7 +660,11 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(10),
           image: DecorationImage(
               fit: BoxFit.fill,
-              image: CachedNetworkImageProvider(journal.mediaUrl ?? '')),
+              image: journal.mediaUrl != null
+                  ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                  : AssetImage(
+                      'assets/images/backgroundScaffold.png',
+                    ) as ImageProvider),
           border: Border.all(color: Colors.grey[200]!),
           color: Colors.white),
       child: getPostContent(journal, 10),
@@ -666,15 +675,16 @@ class _HomePageState extends State<HomePage> {
     return Container(
       // height: MediaQuery.of(context).size.height * 0.3,
       height: 200,
-
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey[200]!),
           image: DecorationImage(
               fit: BoxFit.fill,
-              image: CachedNetworkImageProvider(
-                journal.mediaUrl ?? '',
-              )),
+              image: journal.mediaUrl != null
+                  ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                  : AssetImage(
+                      'assets/images/backgroundScaffold.png',
+                    ) as ImageProvider),
           color: Colors.white),
       child: getPostContent(journal, 7),
     );
@@ -703,7 +713,6 @@ class _HomePageState extends State<HomePage> {
 
   Widget getPostContent(Journals journal, int maxLine) {
     return Container(
-      decoration: BoxDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1326,7 +1335,7 @@ class _HomePageState extends State<HomePage> {
                               imageUrl: connectionController
                                       .bloglist.value[index].image ??
                                   '',
-                              height: 100,
+                              height: 98,
                               width: 180,
                               fit: BoxFit.fitWidth,
                               placeholder: (context, url) => Container(
@@ -1427,7 +1436,7 @@ class _HomePageState extends State<HomePage> {
                 Text(
                   !journal.anonymousJournal!
                       ? journal.postedBy!.name ?? ''
-                      : 'Anonymous',
+                      : journal.postedBy!.anonymous!.userName ?? 'Anonymous',
                   style: SolhTextStyles.QS_caption_bold,
                 ),
                 Row(
@@ -1471,24 +1480,132 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget getIssueUI(bookAppointmentController, getHelpController, context) {
-  return Container(
-      margin: EdgeInsets.only(bottom: 1.5.h),
-      child: Obx(() {
-        return Wrap(
-          runSpacing: 5,
-          children: getHelpController.issueList.value.map<Widget>((issue) {
-            return IssuesTile(
-              title: issue.name ?? '',
-              onPressed: () {
-                bookAppointmentController.query = issue.name;
-                // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                //     slug: issue.slug ?? '', type: 'issue'));
-                Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                    arguments: {"slug": issue.slug ?? '', "type": 'issue'});
-              },
-            );
-          }).toList(),
+Widget getIssueUI(
+    bookAppointmentController, GetHelpController getHelpController, context) {
+  return Obx(() {
+    /*   return Container(
+      height: 300,
+      child: GridView.count(
+        mainAxisSpacing: 25,
+        crossAxisSpacing: 25,
+        scrollDirection: Axis.horizontal,
+        crossAxisCount: 3,
+        children: getHelpController.issueList.value.map<Widget>((issue) {
+          return IssuesTile(
+            title: issue.name ?? '',
+            onPressed: () {
+              bookAppointmentController.query = issue.name;
+              // AutoRouter.of(context).push(ConsultantsScreenRouter(
+              //     slug: issue.slug ?? '', type: 'issue'));
+              Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                  arguments: {"slug": issue.slug ?? '', "type": 'issue'});
+            },
+          );
+        }).toList(),
+      ),
+    ); */
+
+    /* return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: getHelpController.issueList.length * 100.0,
+            height: 130,
+            color: Colors.transparent,
+            child: Stack(
+              children: getHelpController.issueList.value.map<Widget>((issue) {
+                return Positioned(
+                  left: getHelpController.issueList.indexOf(issue) * 90.0,
+                  top: Random().nextInt(40) + 15.0,
+                  child: IssuesTile(
+                    title: issue.name ?? '',
+                    onPressed: () {
+                      bookAppointmentController.query = issue.name;
+                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
+                      //     slug: issue.slug ?? '', type: 'issue'));
+                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                          arguments: {
+                            "slug": issue.slug ?? '',
+                            "type": 'issue'
+                          });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          Container(
+            width: getHelpController.issueList1.length * 100.0,
+            height: 120,
+            color: Colors.transparent,
+            child: Stack(
+              children: getHelpController.issueList1.value.map<Widget>((issue) {
+                return Positioned(
+                  left: getHelpController.issueList1.indexOf(issue) * 100.0,
+                  top: Random().nextInt(35) + 15.0,
+                  child: IssuesTile(
+                    title: issue.name ?? '',
+                    onPressed: () {
+                      bookAppointmentController.query = issue.name;
+                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
+                      //     slug: issue.slug ?? '', type: 'issue'));
+                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                          arguments: {
+                            "slug": issue.slug ?? '',
+                            "type": 'issue'
+                          });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          Container(
+            width: getHelpController.issueList2.length * 100.0,
+            height: 120,
+            color: Colors.transparent,
+            child: Stack(
+              children: getHelpController.issueList2.value.map<Widget>((issue) {
+                return Positioned(
+                  left: getHelpController.issueList2.indexOf(issue) * 100.0,
+                  top: Random().nextInt(45) + 15.0,
+                  child: IssuesTile(
+                    title: issue.name ?? '',
+                    onPressed: () {
+                      bookAppointmentController.query = issue.name;
+                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
+                      //     slug: issue.slug ?? '', type: 'issue'));
+                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                          arguments: {
+                            "slug": issue.slug ?? '',
+                            "type": 'issue'
+                          });
+                    },
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    ); */
+
+    return Wrap(
+      runSpacing: 20,
+      children: getHelpController.issueList.value.map<Widget>((issue) {
+        return IssuesTile(
+          title: issue.name ?? '',
+          onPressed: () {
+            bookAppointmentController.query = issue.name;
+            // AutoRouter.of(context).push(ConsultantsScreenRouter(
+            //     slug: issue.slug ?? '', type: 'issue'));
+            Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                arguments: {"slug": issue.slug ?? '', "type": 'issue'});
+          },
         );
-      }));
+      }).toList(),
+    );
+  });
 }

@@ -92,4 +92,5 @@ dependencies {
     // implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "androidx.browser:browser:1.4.0"
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
     }

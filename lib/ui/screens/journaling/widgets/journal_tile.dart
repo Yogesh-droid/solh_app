@@ -53,6 +53,7 @@ class _JournalTileState extends State<JournalTile> {
   ConnectionController connectionController = Get.find();
   JournalPageController journalPageController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
+  final TextEditingController reasonController = TextEditingController();
   bool isGroupJoined = false;
 
   @override
@@ -1077,6 +1078,7 @@ class PostMenuButton extends StatelessWidget {
   final JournalCommentController journalCommentController = Get.find();
   final JournalPageController journalPageController = Get.find();
   final TextEditingController reasonController = TextEditingController();
+  final FocusNode reasonFieldFocus = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -1105,15 +1107,18 @@ class PostMenuButton extends StatelessWidget {
                 ),
                 onTap: _deletePost != null
                     ? _deletePost
-                    : () async {
+                    : () {
                         journalCommentController.isReportingPost.value = false;
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ReportPostDialog(context,
-                                journalId: _journalId, type: 'post');
-                          },
-                        );
+                        Future.delayed(Duration(microseconds: 200), () {
+                          reasonFieldFocus.requestFocus();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ReportPostDialog(context,
+                                  journalId: _journalId, type: 'post');
+                            },
+                          );
+                        });
                       },
                 value: 1,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
@@ -1141,11 +1146,14 @@ class PostMenuButton extends StatelessWidget {
                     ? null
                     : () {
                         journalCommentController.isReportingPost.value = false;
-                        showDialog(
-                          context: context,
-                          builder: (context) => ReportPostDialog(context,
-                              journalId: _userId, type: 'user'),
-                        );
+                        Future.delayed(Duration(milliseconds: 200), () {
+                          reasonFieldFocus.requestFocus();
+                          showDialog(
+                            context: context,
+                            builder: (context) => ReportPostDialog(context,
+                                journalId: _userId, type: 'user'),
+                          );
+                        });
                       },
                 value: 2,
                 textStyle: SolhTextStyles.JournalingPostMenuText,
@@ -1178,6 +1186,15 @@ class PostMenuButton extends StatelessWidget {
                         journalPageController.hidePost(
                           journalId: _journalId,
                         );
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content:
+                              Text('Post Successfully Removed From Your Feed '),
+                          backgroundColor: SolhColors.primary_green,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20))),
+                        ));
                       }
                     : null,
                 value: 3,
@@ -1227,6 +1244,7 @@ class PostMenuButton extends StatelessWidget {
             label: 'Reason',
             maxLine: 4,
             textEditingController: reasonController,
+            focusNode: reasonFieldFocus,
           ),
           SizedBox(
             height: MediaQuery.of(context).size.height / 40,
@@ -1249,10 +1267,20 @@ class PostMenuButton extends StatelessWidget {
             onPressed: journalCommentController.isReportingPost.value
                 ? null
                 : () async {
+                    reasonFieldFocus.unfocus();
                     await journalCommentController.reportPost(
                         journalId: journalId,
                         reason: reasonController.text,
                         type: type);
+                    reasonController.clear();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Successfully Reported'),
+                      backgroundColor: SolhColors.primary_green,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20))),
+                    ));
                     Navigator.pop(context);
                   },
           ),

@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -377,7 +378,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   }
 }
 
-class IssuesTile extends StatelessWidget {
+class IssuesTile extends StatefulWidget {
   const IssuesTile({
     Key? key,
     required String title,
@@ -390,9 +391,59 @@ class IssuesTile extends StatelessWidget {
   final VoidCallback _onPressed;
 
   @override
+  State<IssuesTile> createState() => _IssuesTileState();
+}
+
+class _IssuesTileState extends State<IssuesTile>
+    with SingleTickerProviderStateMixin {
+  late Animation<Offset> animation;
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    animationController = AnimationController(
+        vsync: this, duration: Duration(seconds: Random().nextInt(3) + 2))
+      ..forward();
+
+    animationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        animationController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        animationController.forward();
+      }
+    });
+
+    animation = Tween<Offset>(
+            begin: Offset(Random().nextDouble() * -0.3, 0),
+            end: Offset(0, Random().nextDouble() * -0.3))
+        .animate(animationController);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    /* return SlideTransition(
+      position: animation,
+      child: Container(
+        padding: EdgeInsets.all(8.0),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: SolhColors.tertiary_green,
+        ),
+        height: 80,
+        width: 80,
+        child: Center(
+          child: Text(
+            widget._title,
+            style: SolhTextStyles.QS_cap_2_semi,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    ); */
     return GestureDetector(
-      onTap: _onPressed,
+      onTap: widget._onPressed,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
         padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
@@ -404,7 +455,7 @@ class IssuesTile extends StatelessWidget {
           color: Color(0xFFFBFBFB),
         ),
         child: Text(
-          _title,
+          widget._title,
           style: SolhTextStyles.QS_cap_semi,
         ),
       ),

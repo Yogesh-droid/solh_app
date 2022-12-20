@@ -489,14 +489,17 @@ class TextFieldB extends StatelessWidget {
     required String label,
     TextEditingController? textEditingController,
     int? maxLine,
+    FocusNode? focusNode
   })  : _maxLine = maxLine,
         _label = label,
         _textEditingController = textEditingController,
+        _focusNode = focusNode,
         super(key: key);
 
   final String _label;
   final int? _maxLine;
   final TextEditingController? _textEditingController;
+  final FocusNode? _focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -515,6 +518,7 @@ class TextFieldB extends StatelessWidget {
               decoration: TextFieldStyles.greenF_noBorderUF_4R(),
               maxLines: _maxLine,
               style: TextStyle(),
+              focusNode: _focusNode,
             ),
           ),
         ],
