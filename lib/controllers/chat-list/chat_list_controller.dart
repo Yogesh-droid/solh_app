@@ -29,7 +29,7 @@ class ChatListController extends GetxController {
 
   Future getAllChat() async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/chatList')
+            APIConstants.api + '/api/chat/v1/chatList')
         .onError((error, stackTrace) {
       print(error);
       return {};

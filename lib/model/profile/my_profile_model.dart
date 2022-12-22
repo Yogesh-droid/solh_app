@@ -82,6 +82,8 @@ class User {
   String? chatSocketId;
   bool? featured;
   bool? isProvider;
+  bool? sosChatSupport;
+
   String? deviceId;
   List<String>? hiddenPosts;
   List<String>? issueList;
@@ -97,6 +99,7 @@ class User {
 
   User(
       {this.sId,
+      this.sosChatSupport,
       this.gender,
       this.reviews,
       this.status,
@@ -151,6 +154,7 @@ class User {
         issueList!.add(v);
       });
     }
+    sosChatSupport = json['sosChatSupport'];
     status = json['status'];
     connectionsList = json['connectionsList'].cast<String>();
     profilePicture = json['profilePicture'];

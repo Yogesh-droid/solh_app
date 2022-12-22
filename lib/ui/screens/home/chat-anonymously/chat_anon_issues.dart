@@ -210,6 +210,7 @@ class _IssueChipsState extends State<IssueChips> {
                         value
                             ? addIssues(chatAnonController, e)
                             : removeIssues(chatAnonController, e);
+
                         setState(() {});
                       },
                       selected:

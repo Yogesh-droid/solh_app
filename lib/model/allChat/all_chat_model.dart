@@ -76,11 +76,21 @@ class User {
   String? profilePicture;
   String? sId;
   String? uid;
+  String? nameAnonymous;
+  String? profilePictureAnonymous;
 
-  User({this.name, this.profilePicture, this.sId, this.uid});
+  User(
+      {this.name,
+      this.profilePicture,
+      this.sId,
+      this.uid,
+      this.nameAnonymous,
+      this.profilePictureAnonymous});
 
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
+    nameAnonymous = json['nameAnonymous'];
+    profilePictureAnonymous = json['profilePictureAnonymous'];
     profilePicture = json['profilePicture'];
     sId = json['_id'];
     uid = json['uid'];

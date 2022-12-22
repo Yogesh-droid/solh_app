@@ -187,7 +187,7 @@ class ChatController extends GetxController {
         autherType: autherType,
         ct: ct,
         mediaUrl: mediaUrl,
-        appointmentId: appointmentId ?? "",
+        appointmentId: appointmentId ?? "s",
         mediaType: mediaType,
         fileName: fileName,
         conversationType: conversationType,

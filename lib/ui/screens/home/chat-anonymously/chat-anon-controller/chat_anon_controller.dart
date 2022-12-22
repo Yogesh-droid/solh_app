@@ -15,6 +15,7 @@ class ChatAnonController extends GetxController {
   NeedSupportOnService needSupportOnService = NeedSupportOnService();
   var chatAnonModel = ChatAnonModel().obs;
   var selectedOtherIssues = [].obs;
+
   var anonSId = ''.obs;
   var selectedIsses = [].obs;
   var selectedIssuesName = ''.obs;

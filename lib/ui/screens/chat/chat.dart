@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
@@ -48,6 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
   SocketService _service = SocketService();
   ProfileController profileController = Get.find();
   ChatAnonController chatAnonController = Get.put(ChatAnonController());
+  MoodMeterController moodMeterController = Get.find();
   var _controller = Get.put(ChatController());
   @override
   void initState() {
@@ -56,9 +58,15 @@ class _ChatScreenState extends State<ChatScreen> {
     if (widget._isAnonChat == false) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.getChatController(widget._sId);
+      });
+    }
+
+    if (widget._isAnonChat == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         sendFirstAnonChat();
       });
     }
+
     if (widget._isAnonChat) {
       chatAnonController.anonSId.value = widget._sId;
     }
@@ -77,11 +85,11 @@ class _ChatScreenState extends State<ChatScreen> {
   sendFirstAnonChat() {
     _controller.sendMessageController(
         message:
-            "issues -${chatAnonController.selectedIssuesName.value.toString()}",
-        conversationType: "cc",
+            "issues -${chatAnonController.selectedIssuesName} mood - ${moodMeterController.selectedMood.value}",
+        conversationType: "text",
         sId: widget._sId,
         autherType: "users",
-        ct: "cc",
+        ct: "sosChat",
         mediaUrl: "",
         appointmentId: null,
         mediaType: '',
@@ -814,7 +822,8 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                     "volunteerId": sId,
                     "reviewBody": chatAnonController.feedbackTextField.text,
                   });
-
+                  chatAnonController.selectedIsses.value = [];
+                  chatAnonController.selectedIssuesName.value = '';
                   if (response) {
                     SolhSnackbar.success(
                         '', 'Thank you. feedback recorded successfully');
@@ -837,7 +846,14 @@ class RatingBottomSheetChild2 extends StatelessWidget {
               SizedBox(
                 height: 2.h,
               ),
-              SkipButton()
+              SkipButton(
+                onPressed: () {
+                  chatAnonController.selectedIsses.value = [];
+                  chatAnonController.selectedIssuesName.value = '';
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, AppRoutes.master, (route) => false);
+                },
+              )
             ],
           ),
         ),

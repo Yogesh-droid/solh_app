@@ -10,6 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
@@ -35,6 +36,8 @@ class _ConnectionsState extends State<Connections> {
   final DiscoverGroupController groupController = Get.find();
 
   final ChatListController chatListController = Get.find();
+
+  final ProfileController profileController = Get.find();
 
   @override
   void initState() {
@@ -184,12 +187,28 @@ class _ConnectionsState extends State<Connections> {
                         //             )));
                         Navigator.pushNamed(context, AppRoutes.chatUser,
                             arguments: {
-                              "name": chatListController
-                                      .chatList.value[index].user!.name ??
-                                  '',
-                              "imageUrl": chatListController.chatList
-                                      .value[index].user!.profilePicture ??
-                                  '',
+                              "name": profileController.myProfileModel.value
+                                              .body!.user!.sosChatSupport ==
+                                          true &&
+                                      chatListController.chatList.value[index]
+                                              .user!.nameAnonymous !=
+                                          ""
+                                  ? chatListController
+                                      .chatList.value[index].user!.nameAnonymous
+                                  : chatListController
+                                          .chatList.value[index].user!.name ??
+                                      '',
+                              "imageUrl": profileController.myProfileModel.value
+                                              .body!.user!.sosChatSupport ==
+                                          true &&
+                                      chatListController.chatList.value[index]
+                                              .user!.profilePictureAnonymous !=
+                                          ""
+                                  ? chatListController.chatList.value[index]
+                                      .user!.profilePictureAnonymous
+                                  : chatListController.chatList.value[index]
+                                          .user!.profilePicture ??
+                                      '',
                               "sId": chatListController
                                       .chatList.value[index].user!.sId ??
                                   '',
@@ -204,19 +223,46 @@ class _ConnectionsState extends State<Connections> {
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                getUserImg(
-                                    img: chatListController
+                                CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius:
+                                      MediaQuery.of(context).size.width * 0.06,
+                                  backgroundImage: CachedNetworkImageProvider(
+                                    profileController.myProfileModel.value.body!
+                                                    .user!.sosChatSupport ==
+                                                true &&
+                                            chatListController
+                                                    .chatList
+                                                    .value[index]
+                                                    .user!
+                                                    .profilePictureAnonymous !=
+                                                ""
+                                        ? chatListController
                                             .chatList
                                             .value[index]
                                             .user!
-                                            .profilePicture ??
-                                        '',
-                                    context: context,
-                                    sId: chatListController
-                                            .chatList.value[index].user!.sId ??
-                                        '',
-                                    uid: chatListController
-                                        .chatList.value[index].user!.uid),
+                                            .profilePictureAnonymous!
+                                        : chatListController
+                                                .chatList
+                                                .value[index]
+                                                .user!
+                                                .profilePicture ??
+                                            '',
+                                  ),
+                                ),
+                                // getUserImg(
+                                //     img: chatListController
+                                //             .chatList
+                                //             .value[index]
+                                //             .user!
+                                //             .profilePicture ??
+                                //         '',
+                                //     context: context,
+                                //     sId: chatListController
+                                //             .chatList.value[index].user!.sId ??
+                                //         '',
+                                //     uid: chatListController
+                                //         .chatList.value[index].user!.uid),
                                 SizedBox(
                                   width: 10,
                                 ),
@@ -227,9 +273,30 @@ class _ConnectionsState extends State<Connections> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          chatListController.chatList
-                                                  .value[index].user!.name ??
-                                              '',
+                                          profileController
+                                                          .myProfileModel
+                                                          .value
+                                                          .body!
+                                                          .user!
+                                                          .sosChatSupport ==
+                                                      true &&
+                                                  chatListController
+                                                          .chatList
+                                                          .value[index]
+                                                          .user!
+                                                          .nameAnonymous !=
+                                                      ""
+                                              ? chatListController
+                                                  .chatList
+                                                  .value[index]
+                                                  .user!
+                                                  .nameAnonymous!
+                                              : chatListController
+                                                      .chatList
+                                                      .value[index]
+                                                      .user!
+                                                      .name ??
+                                                  '',
                                           style: GoogleFonts.signika(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16)),
