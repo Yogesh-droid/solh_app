@@ -10,9 +10,10 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/ui/screens/my-profile/connections/blocked_users.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
 
@@ -60,14 +61,35 @@ class _ConnectionsState extends State<Connections> {
 
   getAppBar() {
     return SolhAppBar(
-      isLandingScreen: false,
-      title: Text(
-        'connection',
-        style: TextStyle(
-            color: SolhColors.black34,
-            fontSize: 20,
-            fontWeight: FontWeight.w600),
+        isLandingScreen: false,
+        title: Text(
+          'Connection',
+          style: SolhTextStyles.QS_body_1_bold,
+        ),
+        menuButton: getMenuBtn());
+  }
+
+  PopupMenuButton getMenuBtn() {
+    return PopupMenuButton(
+      icon: Icon(
+        Icons.more_vert,
+        color: SolhColors.primary_green,
       ),
+      itemBuilder: (context) {
+        return [
+          PopupMenuItem(
+            child: Text(
+              'Blocked Uers',
+              style: SolhTextStyles.QS_body_2_semi,
+            ),
+            value: 1,
+          )
+        ];
+      },
+      onSelected: (value) async {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => BlockedUsers()));
+      },
     );
   }
 

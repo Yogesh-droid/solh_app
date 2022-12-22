@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -1593,7 +1592,7 @@ Widget getIssueUI(
     ); */
 
     return Wrap(
-      runSpacing: 20,
+      runSpacing: 5,
       children: getHelpController.issueList.value.map<Widget>((issue) {
         return IssuesTile(
           title: issue.name ?? '',

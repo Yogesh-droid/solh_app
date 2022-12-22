@@ -1173,6 +1173,37 @@ class PostMenuButton extends StatelessWidget {
                           bottom: BorderSide(color: SolhColors.grey239),
                         )),
                         child: Text(
+                          "Block this person",
+                        ),
+                      )
+                    : Container(),
+                onTap: _deletePost != null
+                    ? null
+                    : () async {
+                        Map<String, dynamic> map =
+                            await Get.find<ConnectionController>()
+                                .blockUser(sId: _userId);
+
+                        print(map);
+                      },
+                value: 2,
+                textStyle: SolhTextStyles.JournalingPostMenuText,
+                padding: EdgeInsets.zero,
+              ),
+              PopupMenuItem(
+                height: _deletePost != null ? 0 : 48,
+                child: _deletePost == null
+                    ? Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 20,
+                          vertical: MediaQuery.of(context).size.height / 80,
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                          bottom: BorderSide(color: SolhColors.grey239),
+                        )),
+                        child: Text(
                           "Don't show this post again",
                         ),
                       )

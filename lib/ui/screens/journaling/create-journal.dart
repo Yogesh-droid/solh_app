@@ -253,7 +253,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       } else {
         journalPageController.journalsList.clear();
         journalPageController.pageNo = 1;
-        journalPageController.endPageLimit = 1;
+        journalPageController.nextPage = 2;
         journalPageController.selectedGroupId.value != ''
             ? await journalPageController.getAllJournals(1,
                 groupId: journalPageController.selectedGroupId.value)
@@ -291,7 +291,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       } else {
         journalPageController.journalsList.clear();
         journalPageController.pageNo = 1;
-        journalPageController.endPageLimit = 1;
+        journalPageController.nextPage = 2;
         //await journalPageController.getAllJournals(1);
         journalPageController.selectedGroupId.value != ''
             ? await journalPageController.getAllJournals(1,

@@ -54,10 +54,6 @@ class _MyJournalTileState extends State<MyJournalTile> {
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
                         ),
-                        Text(
-                          widget.journalModel!.postedBy!.email ?? '',
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
                       ],
                     ),
                   ),

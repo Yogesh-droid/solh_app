@@ -59,14 +59,15 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = true;
         });
-        //await journalsBloc.getNextPageJournalsSnapshot();
+        print("Reached at end");
+
         await _journalPageController.getAllJournals(
             ++_journalPageController.pageNo,
             groupId: _journalPageController.selectedGroupId.value != ''
                 ? _journalPageController.selectedGroupId.value
                 : null);
         _journalPageController.journalsList.refresh();
-        print("Reached at end");
+
         setState(() {
           _fetchingMore = false;
         });
@@ -74,7 +75,6 @@ class _JournalingState extends State<Journaling> {
 
       if (_journalsScrollController.position.pixels ==
           _journalsScrollController.position.maxScrollExtent) {
-        print("refreshing");
         _journalPageController.isScrollingStarted.value = false;
       }
     });
@@ -94,7 +94,7 @@ class _JournalingState extends State<Journaling> {
     //await journalsBloc.getJournalsSnapshot();
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
-    _journalPageController.endPageLimit = 1;
+    _journalPageController.nextPage = 2;
     _journalPageController.selectedGroupId.value.length > 0
         ? await _journalPageController.getAllJournals(1,
             groupId: _journalPageController.selectedGroupId.value)
@@ -320,7 +320,7 @@ class _JournalingState extends State<Journaling> {
                           group.sId ?? '';
                       _journalPageController.journalsList.clear();
                       _journalPageController.pageNo = 1;
-                      _journalPageController.endPageLimit = 1;
+                      _journalPageController.nextPage = 2;
                       await _journalPageController.getAllJournals(1,
                           groupId: group.sId);
                       _journalPageController.journalsList.refresh();
@@ -408,7 +408,7 @@ class _JournalingState extends State<Journaling> {
                 _journalPageController.selectedGroupId.value = '';
                 _journalPageController.journalsList.clear();
                 _journalPageController.pageNo = 1;
-                _journalPageController.endPageLimit = 1;
+                _journalPageController.nextPage = 2;
                 await _journalPageController.getAllJournals(1);
                 _journalPageController.journalsList.refresh();
               },
@@ -493,7 +493,7 @@ class _JournalingState extends State<Journaling> {
     //     .refresh();
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
-    _journalPageController.endPageLimit = 1;
+    _journalPageController.nextPage = 2;
     await _journalPageController.getAllJournals(1,
         groupId: _journalPageController.selectedGroupId.value.length > 0
             ? _journalPageController.selectedGroupId.value

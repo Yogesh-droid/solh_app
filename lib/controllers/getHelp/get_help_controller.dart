@@ -28,14 +28,14 @@ class GetHelpController extends GetxController {
       print('issues $map');
 
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
-      issueList.value = getSpecializationModel.value.specializationList != null
-          ? getIssueResponseModel.value.specializationList!
-          : [];
-      /* issueList.value = getIssueResponseModel.value.specializationList != null
+      // issueList.value = getSpecializationModel.value.specializationList != null
+      //     ? getIssueResponseModel.value.specializationList!
+      //     : [];
+      issueList.value = getIssueResponseModel.value.specializationList != null
           ? getIssueResponseModel.value.specializationList!.length > 8
               ? getIssueResponseModel.value.specializationList!.sublist(0, 8)
               : getIssueResponseModel.value.specializationList!
-          : []; */
+          : [];
       /*  if (getIssueResponseModel.value.specializationList != null) {
         int val = getIssueResponseModel.value.specializationList!.length ~/ 3;
         issueList.value =

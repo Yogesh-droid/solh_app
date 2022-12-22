@@ -1,28 +1,333 @@
-// class JournalsResponseModel {
-//   bool? success;
-//   int? code;
-//   Body? body;
+class JournalsResponseModel {
+  int? totalPosts;
+  Previous? previous;
+  Previous? next;
+  int? rowsPerPage;
+  List<Journals>? journals;
 
-//   JournalsResponseModel({this.success, this.code, this.body});
+  JournalsResponseModel(
+      {this.totalPosts,
+      this.previous,
+      this.next,
+      this.rowsPerPage,
+      this.journals});
 
-//   JournalsResponseModel.fromJson(Map<String, dynamic> json) {
-//     success = json['success'];
-//     code = json['code'];
-//     body = json['body'] != null ? new Body.fromJson(json['body']) : null;
-//   }
+  JournalsResponseModel.fromJson(Map<String, dynamic> json) {
+    totalPosts = json['totalPosts'];
+    previous = json['previous'] != null
+        ? new Previous.fromJson(json['previous'])
+        : null;
+    next = json['next'] != null ? new Previous.fromJson(json['next']) : null;
+    rowsPerPage = json['rowsPerPage'];
+    if (json['data'] != null) {
+      journals = <Journals>[];
+      json['data'].forEach((v) {
+        journals!.add(new Journals.fromJson(v));
+      });
+    }
+  }
 
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['success'] = this.success;
-//     data['code'] = this.code;
-//     if (this.body != null) {
-//       data['body'] = this.body!.toJson();
-//     }
-//     return data;
-//   }
-// }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['totalPosts'] = this.totalPosts;
+    if (this.previous != null) {
+      data['previous'] = this.previous!.toJson();
+    }
+    if (this.next != null) {
+      data['next'] = this.next!.toJson();
+    }
+    data['rowsPerPage'] = this.rowsPerPage;
+    if (this.journals != null) {
+      data['data'] = this.journals!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 
-import 'package:solh/model/journals/get_jouranal_comment_model.dart';
+class Previous {
+  int? pageNumber;
+  int? limit;
+
+  Previous({this.pageNumber, this.limit});
+
+  Previous.fromJson(Map<String, dynamic> json) {
+    pageNumber = json['pageNumber'];
+    limit = json['limit'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['pageNumber'] = this.pageNumber;
+    data['limit'] = this.limit;
+    return data;
+  }
+}
+
+class Journals {
+  String? id;
+  bool? official;
+  String? description;
+  String? mediaUrl;
+  String? mediaType;
+  String? aspectRatio;
+  int? likes;
+  int? comments;
+  bool? isLiked;
+  List<String>? likedBy;
+  List<Feelings>? feelings;
+  String? createdAt;
+  String? updatedAt;
+  int? length;
+  String? d;
+  Null? bestComment;
+  Group? group;
+  bool? anonymousJournal;
+  PostedBy? postedBy;
+
+  Journals(
+      {this.id,
+      this.official,
+      this.description,
+      this.aspectRatio,
+      this.mediaUrl,
+      this.mediaType,
+      this.likes,
+      this.comments,
+      this.isLiked,
+      this.likedBy,
+      this.feelings,
+      this.createdAt,
+      this.updatedAt,
+      this.length,
+      this.d,
+      this.bestComment,
+      this.group,
+      this.anonymousJournal,
+      this.postedBy});
+
+  Journals.fromJson(Map<String, dynamic> json) {
+    id = json['_id'];
+    official = json['official'];
+    description = json['description'];
+    aspectRatio = json['aspectRatio'];
+    mediaUrl = json['mediaUrl'];
+    mediaType = json['mediaType'];
+    likes = json['likes'];
+    comments = json['comments'];
+    isLiked = json['isLiked'];
+    likedBy = json['likedBy'].cast<String>();
+    if (json['feelings'] != null) {
+      feelings = <Feelings>[];
+      json['feelings'].forEach((v) {
+        feelings!.add(new Feelings.fromJson(v));
+      });
+    }
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    length = json['length'];
+    d = json['d'];
+    bestComment = json['bestComment'];
+    group = json['group'] != null ? new Group.fromJson(json['group']) : null;
+    anonymousJournal = json['anonymousJournal'];
+    postedBy = json['postedBy'] != null
+        ? new PostedBy.fromJson(json['postedBy'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.id;
+    data['official'] = this.official;
+    data['description'] = this.description;
+    data['mediaUrl'] = this.mediaUrl;
+    data['aspectRatio'] = this.aspectRatio;
+    data['mediaType'] = this.mediaType;
+    data['likes'] = this.likes;
+    data['comments'] = this.comments;
+    data['isLiked'] = this.isLiked;
+    data['likedBy'] = this.likedBy;
+    if (this.feelings != null) {
+      data['feelings'] = this.feelings!.map((v) => v.toJson()).toList();
+    }
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['length'] = this.length;
+    data['d'] = this.d;
+    data['bestComment'] = this.bestComment;
+    if (this.group != null) {
+      data['group'] = this.group!.toJson();
+    }
+    data['anonymousJournal'] = this.anonymousJournal;
+    if (this.postedBy != null) {
+      data['postedBy'] = this.postedBy!.toJson();
+    }
+    return data;
+  }
+}
+
+class Feelings {
+  String? sId;
+  String? feelingName;
+  String? createdBy;
+  int? iV;
+  String? feelingType;
+
+  Feelings(
+      {this.sId, this.feelingName, this.createdBy, this.iV, this.feelingType});
+
+  Feelings.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    feelingName = json['feelingName'];
+    createdBy = json['createdBy'];
+    iV = json['__v'];
+    feelingType = json['feelingType'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['feelingName'] = this.feelingName;
+    data['createdBy'] = this.createdBy;
+    data['__v'] = this.iV;
+    data['feelingType'] = this.feelingType;
+    return data;
+  }
+}
+
+class Group {
+  String? groupName;
+  String? groupImage;
+  String? sId;
+
+  Group({this.groupName, this.groupImage, this.sId});
+
+  Group.fromJson(Map<String, dynamic> json) {
+    groupName = json['groupName'];
+    groupImage = json['groupMediaUrl'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['groupName'] = this.groupName;
+    data['groupMediaUrl'] = this.groupImage;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class PostedBy {
+  String? sId;
+  String? status;
+  String? profilePicture;
+  String? profilePictureType;
+  String? userType;
+  String? uid;
+  String? userName;
+  String? name;
+  Anonymous? anonymous;
+  bool? isProvider;
+  String? id;
+
+  PostedBy(
+      {this.sId,
+      this.status,
+      this.profilePicture,
+      this.profilePictureType,
+      this.userType,
+      this.uid,
+      this.userName,
+      this.name,
+      this.anonymous,
+      this.isProvider,
+      this.id});
+
+  PostedBy.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    status = json['status'];
+    profilePicture = json['profilePicture'];
+    profilePictureType = json['profilePictureType'];
+    userType = json['userType'];
+    uid = json['uid'];
+    userName = json['userName'];
+    name = json['name'];
+    anonymous = json['anonymous'] != null
+        ? new Anonymous.fromJson(json['anonymous'])
+        : null;
+    isProvider = json['isProvider'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['status'] = this.status;
+    data['profilePicture'] = this.profilePicture;
+    data['profilePictureType'] = this.profilePictureType;
+    data['userType'] = this.userType;
+    data['uid'] = this.uid;
+    data['userName'] = this.userName;
+    data['name'] = this.name;
+    if (this.anonymous != null) {
+      data['anonymous'] = this.anonymous!.toJson();
+    }
+    data['isProvider'] = this.isProvider;
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+class Anonymous {
+  String? sId;
+  String? profilePicture;
+  String? profilePictureType;
+  String? userName;
+  String? primaryAccount;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? gender;
+
+  Anonymous(
+      {this.sId,
+      this.profilePicture,
+      this.profilePictureType,
+      this.userName,
+      this.primaryAccount,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.gender});
+
+  Anonymous.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+
+    profilePicture = json['profilePicture'];
+    profilePictureType = json['profilePictureType'];
+    userName = json['userName'];
+    primaryAccount = json['primaryAccount'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    gender = json['gender'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['profilePicture'] = this.profilePicture;
+    data['profilePictureType'] = this.profilePictureType;
+    data['userName'] = this.userName;
+    data['primaryAccount'] = this.primaryAccount;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    data['gender'] = this.gender;
+    return data;
+  }
+}
+
+/* import 'package:solh/model/journals/get_jouranal_comment_model.dart';
 
 class JournalsResponseModel {
   List<Journals>? journals;
@@ -391,4 +696,4 @@ class Feelings {
     data['feelingType'] = this.feelingType;
     return data;
   }
-}
+} */

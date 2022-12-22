@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/model/blocked_user_model.dart';
 import 'package:solh/model/blog/blog_details.dart';
 import 'package:solh/model/blog/blog_list_model.dart';
 import 'package:solh/model/get_all_connection_model.dart';
@@ -35,7 +37,9 @@ class ConnectionController extends GetxController {
   var blogDetails = BlogDetails().obs;
   var isBlogDetailsLoading = false.obs;
   var isSendingConnectionRequest = false.obs;
+  var isGettingBlockedUsers = false.obs;
   var currentSendingRequest = '';
+  var blockedUsers = BlockedUserModel().obs;
 
   /// for canceling connection
   var canceledConnectionId = ''.obs;
@@ -198,6 +202,28 @@ class ConnectionController extends GetxController {
     }
   }
 
+  Future<Map<String, dynamic>> blockUser({required String sId}) async {
+    Map<String, dynamic> map = await Network.makePostRequestWithToken(
+        url: APIConstants.api + '/api/block/v1/user',
+        body: {"blockedUser": sId}).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    getPeopleBlocked();
+    return map;
+  }
+
+  Future<Map<String, dynamic>> unBlockUser({required String sId}) async {
+    Map<String, dynamic> map = await Network.makeDeleteRequestWithToken(
+        url: APIConstants.api + '/api/block/v1/user',
+        body: {"blockedUser": sId}).onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    getPeopleBlocked();
+    return map;
+  }
+
   Future getUserprofileData(String user) async {
     isLoading(true);
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
@@ -241,6 +267,31 @@ class ConnectionController extends GetxController {
           peopleYouMayKnow.value.reccomendation!.length.toString());
     }
     isRecommnedationLoading.value = false;
+  }
+
+  Future<void> getPeopleBlocked() async {
+    isGettingBlockedUsers.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+            APIConstants.api + '/api/block/v1/user')
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    if (map.isNotEmpty) {
+      blockedUsers.value = BlockedUserModel.fromJson(map);
+    }
+    isGettingBlockedUsers.value = false;
+    JournalPageController _journalPageController = Get.find();
+    _journalPageController.journalsList.clear();
+    _journalPageController.pageNo = 1;
+    _journalPageController.nextPage = 2;
+    _journalPageController.selectedGroupId.value.length > 0
+        ? await _journalPageController.getAllJournals(1,
+            groupId: _journalPageController.selectedGroupId.value)
+        : await _journalPageController.getAllJournals(
+            1,
+          );
+    _journalPageController.journalsList.refresh();
   }
 
   Future<void> getPeopleYouMayKnowHome(String limit) async {

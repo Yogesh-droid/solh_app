@@ -17,13 +17,12 @@ class JournalPageController extends GetxController {
   var isAnonymousSelected = false.obs;
   var anonymousProfileRadius = 3.5.w.obs;
   var nomalProfileRadius = 6.w.obs;
-
   var journalsList = <Journals>[].obs;
   var trendingJournalsList = <Journals>[].obs;
   var outputPath = "".obs;
   var selectedDiary = Journals().obs;
   var isLoading = false.obs;
-  int endPageLimit = 1;
+  int? nextPage = 2;
   int pageNo = 1;
   int videoIndex = 0;
   int myVideoIndex = 0;
@@ -47,19 +46,22 @@ class JournalPageController extends GetxController {
       if (pageNo == 1) {
         isLoading.value = true;
       }
-      if (pageNo <= endPageLimit) {
+      if (nextPage != null) {
         print('trying to get all journals');
         Map<String, dynamic> map = groupId != null
-            ? await await Network.makeHttpGetRequestWithToken(
-                "${APIConstants.api}/api/get-group-journal?page=$pageNo&group=${groupId}")
-            : await Network.makeHttpGetRequestWithToken(
-                "${APIConstants.api}/api/get-journals?page=$pageNo");
+            ? await await Network.makeGetRequestWithToken(
+                "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}")
+            : await Network.makeGetRequestWithToken(
+                "${APIConstants.api}/api/v1/posts?pageNumber=$pageNo");
 
         print('map: ' + map.toString());
 
-        journalsResponseModel.value = JournalsResponseModel.fromJson(map);
+        journalsResponseModel.value =
+            JournalsResponseModel.fromJson(map['data']);
         journalsList.value.addAll(journalsResponseModel.value.journals ?? []);
-        endPageLimit = journalsResponseModel.value.totalPages!;
+        nextPage = journalsResponseModel.value.next != null
+            ? journalsResponseModel.value.next!.pageNumber
+            : null;
         this.pageNo = pageNo;
         videoPlayerController.value.forEach((element) {
           if (element != null) {
@@ -132,13 +134,13 @@ class JournalPageController extends GetxController {
     isPlayingTrendingPostVideo = false;
     if (videoPlayerController.value[index] != null) {
       if (videoIndex != index) {
-        videoPlayerController.value[index]![index]!.pause();
+        videoPlayerController.value[index][index]!.pause();
       }
-      if (videoPlayerController.value[index]![index]!.value.isPlaying) {
-        videoPlayerController.value[index]![index]!.pause();
+      if (videoPlayerController.value[index][index]!.value.isPlaying) {
+        videoPlayerController.value[index][index]!.pause();
       } else {
         if (!isPlayingMyPostVideo && !isPlayingTrendingPostVideo) {
-          videoPlayerController.value[index]![index]!.play();
+          videoPlayerController.value[index][index]!.play();
           videoIndex = index;
         }
       }

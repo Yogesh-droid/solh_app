@@ -412,7 +412,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           groupList.sId ?? '';
                       journalPageController.journalsList.clear();
                       journalPageController.pageNo = 1;
-                      journalPageController.endPageLimit = 1;
+                      journalPageController.nextPage = 2;
                       journalPageController.getAllJournals(1,
                           groupId: groupList.sId ?? '');
                       journalPageController.journalsList.refresh();
