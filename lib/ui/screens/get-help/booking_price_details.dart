@@ -297,7 +297,7 @@ class BookingPriceDetails extends StatelessWidget {
                     await bookAppointmentController.bookAppointment({
                   'provider': consultantController
                               .consultantModelController.value.provder!.type ==
-                          'provider'
+                          'provder'
                       ? consultantController
                           .consultantModelController.value.provder!.sId
                       : '',

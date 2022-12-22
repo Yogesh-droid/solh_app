@@ -3,7 +3,9 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/blocked_user_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 
@@ -39,10 +41,13 @@ class _BlockedUsersState extends State<BlockedUsers> {
       ),
       body: Column(
         children: [
-          Text(
-            "Users you've blocked are listed below; tap any of them to unblock them.",
-            style: SolhTextStyles.QS_cap_semi,
-            textAlign: TextAlign.center,
+          Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Text(
+              "Users you've blocked are listed below; tap any of them to unblock them.",
+              style: SolhTextStyles.QS_cap_semi,
+              textAlign: TextAlign.center,
+            ),
           ),
           Expanded(
             child: Obx(() => connectionController.isGettingBlockedUsers.value
@@ -55,6 +60,9 @@ class _BlockedUsersState extends State<BlockedUsers> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          contentPadding: EdgeInsets.all(8.0),
                           tileColor: SolhColors.light_Bg,
                           leading: SizedBox(
                             width: 50,
@@ -98,6 +106,8 @@ class _BlockedUsersState extends State<BlockedUsers> {
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20), topRight: Radius.circular(20))),
         builder: (context) => Container(
+              height: 250,
+              padding: EdgeInsets.all(20.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -105,7 +115,10 @@ class _BlockedUsersState extends State<BlockedUsers> {
                     'Unblock',
                     style: SolhTextStyles.QS_body_1_bold,
                   ),
-                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Divider(),
+                  ),
                   ListTile(
                     leading: SizedBox(
                       width: 50,
@@ -120,6 +133,21 @@ class _BlockedUsersState extends State<BlockedUsers> {
                       style: SolhTextStyles.QS_body_semi_1,
                     ),
                   ),
+                  Expanded(
+                      child: Align(
+                    alignment: Alignment.center,
+                    child: SolhGreenButton(
+                      height: 48,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        'Unblock',
+                        style: SolhTextStyles.CTA.copyWith(color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        await connectionController.unBlockUser(sId: user.sId!);
+                      },
+                    ),
+                  ))
                 ],
               ),
             ));

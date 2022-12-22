@@ -14,7 +14,6 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import '../../../bloc/user-bloc.dart';
-import '../../../services/controllers/otp_verification_controller.dart';
 import '../../../services/firebase/auth.dart';
 import '../../../services/user/session-cookie.dart';
 import '../../../widgets_constants/constants/colors.dart';

@@ -220,6 +220,7 @@ class ConnectionController extends GetxController {
       print(error);
       return {};
     });
+    print("These are unblocked $map");
     getPeopleBlocked();
     return map;
   }
@@ -278,6 +279,7 @@ class ConnectionController extends GetxController {
       return {};
     });
     if (map.isNotEmpty) {
+      print('These are blocked users $map');
       blockedUsers.value = BlockedUserModel.fromJson(map);
     }
     isGettingBlockedUsers.value = false;
