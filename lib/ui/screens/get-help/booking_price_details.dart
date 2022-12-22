@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
@@ -293,11 +292,13 @@ class BookingPriceDetails extends StatelessWidget {
                 ],
               ),
               onPressed: () async {
+                print(consultantController
+                    .consultantModelController.value.provder!.type);
                 Map<String, dynamic> map =
                     await bookAppointmentController.bookAppointment({
                   'provider': consultantController
                               .consultantModelController.value.provder!.type ==
-                          'provder'
+                          'provider'
                       ? consultantController
                           .consultantModelController.value.provder!.sId
                       : '',

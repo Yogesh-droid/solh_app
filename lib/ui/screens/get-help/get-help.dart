@@ -17,6 +17,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
+import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -88,35 +89,32 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           GetHelpDivider(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GetHelpCategory(title: 'Search for support'),
-                InkWell(
-                  onTap: () {
-                    getHelpController.isAllIssueShown.value
-                        ? getHelpController.showLessIssues()
-                        : getHelpController.showAllIssues();
-                    getHelpController.isAllIssueShown.value =
-                        !getHelpController.isAllIssueShown.value;
-                  },
-                  child: Padding(
-                      padding: const EdgeInsets.only(
-                          right: 11.0, bottom: 11, top: 11, left: 11),
-                      child: Obx(() {
-                        return Text(
-                          !getHelpController.isAllIssueShown.value
-                              ? "Show More"
-                              : "Show less",
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: SolhColors.primary_green,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        );
-                      })),
-                ),
-              ],
+            child: GetHelpCategory(
+              title: 'Search for support',
+              trailing: InkWell(
+                onTap: () {
+                  getHelpController.isAllIssueShown.value
+                      ? getHelpController.showLessIssues()
+                      : getHelpController.showAllIssues();
+                  getHelpController.isAllIssueShown.value =
+                      !getHelpController.isAllIssueShown.value;
+                },
+                child: Padding(
+                    padding: const EdgeInsets.only(
+                        right: 11.0, bottom: 11, top: 11, left: 11),
+                    child: Obx(() {
+                      return Text(
+                        !getHelpController.isAllIssueShown.value
+                            ? "Show More"
+                            : "Show less",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: SolhColors.primary_green,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      );
+                    })),
+              ),
             ),
           ),
           Container(
@@ -536,8 +534,8 @@ class TopConsultantsTile extends StatelessWidget {
                     ),
                     Center(
                       child: SolhGreenButton(
-                        height: 6.h,
-                        width: 44.w,
+                        height: 40,
+                        width: 30.w,
                         child: Text(
                           "Book Appointment",
                           style: SolhTextStyles.QS_cap_semi.copyWith(
@@ -562,37 +560,59 @@ class TopConsultantsTile extends StatelessWidget {
 }
 
 class GetHelpCategory extends StatelessWidget {
-  const GetHelpCategory({
+  GetHelpCategory({
     Key? key,
     required String title,
     VoidCallback? onPressed,
+    this.trailing,
   })  : _title = title,
         _onPressed = onPressed,
         super(key: key);
 
   final String _title;
   final VoidCallback? _onPressed;
+  final Widget? trailing;
+  final HomeController homeController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 2.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Obx(
+      () => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            _title,
-            style: TextStyle(fontSize: 20, color: Color(0xFF666666)),
+          homeController.line.value.isNotEmpty
+              ? Container(
+                  width: double.infinity,
+                  child: CachedNetworkImage(
+                    imageUrl: homeController.line.value,
+                    fit: BoxFit.fill,
+                  ),
+                )
+              : SizedBox(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 2.h, vertical: 2.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _title,
+                  style: TextStyle(fontSize: 20, color: Color(0xFF666666)),
+                ),
+                trailing == null
+                    ? _onPressed != null
+                        ? InkWell(
+                            onTap: _onPressed,
+                            child: Text(
+                              "View All",
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.primary_green),
+                            ),
+                          )
+                        : Container()
+                    : trailing!
+              ],
+            ),
           ),
-          if (_onPressed != null)
-            InkWell(
-              onTap: _onPressed,
-              child: Text(
-                "View All",
-                style: SolhTextStyles.CTA
-                    .copyWith(color: SolhColors.primary_green),
-              ),
-            )
         ],
       ),
     );

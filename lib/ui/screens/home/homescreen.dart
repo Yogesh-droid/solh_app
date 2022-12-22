@@ -20,6 +20,7 @@ import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
+import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -75,6 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(GoalSettingController());
 
   final MoodMeterController moodMeterController = Get.find();
+  final HomeController homeController = Get.put(HomeController());
 
   late bool isMoodMeterShown;
 
@@ -86,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (FirebaseAuth.instance.currentUser != null) {
       debugPrint('mood meter shown');
       openMoodMeter();
+      getTrendingDecoration();
     }
     ;
   }
@@ -125,6 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
       prefs.setBool('moodMeterShown', true);
       prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
     }
+  }
+
+  void getTrendingDecoration() {
+    homeController.getTrendingDecoration();
   }
 }
 
@@ -170,36 +177,31 @@ class _HomePageState extends State<HomePage> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GetHelpCategory(
-                title: 'Trending Posts',
-              ),
-              InkWell(
-                onTap: () {
-                  _bottomNavigatorController.activeIndex.value = 1;
-                },
+          GetHelpCategory(
+            title: 'Trending Posts',
+            trailing: InkWell(
+              onTap: () {
+                _bottomNavigatorController.activeIndex.value = 1;
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Row(
-                      children: [
-                        Text('Journaling',
-                            style: SolhTextStyles.CTA
-                                .copyWith(color: SolhColors.primary_green)),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: SolhColors.primary_green,
-                          size: 14,
-                        )
-                      ],
-                    ),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Row(
+                    children: [
+                      Text('Journaling',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primary_green)),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: SolhColors.primary_green,
+                        size: 14,
+                      )
+                    ],
                   ),
                 ),
-              )
-            ],
+              ),
+            ),
           ),
           Obx(() {
             return _journalPageController.isTrendingLoading.value
@@ -248,37 +250,32 @@ class _HomePageState extends State<HomePage> {
                     : Container()
                 : Container();
           }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GetHelpCategory(
-                title: 'Goals',
-              ),
-              InkWell(
-                onTap: () {
-                  _bottomNavigatorController.activeIndex.value = 3;
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Goal Setting',
-                        style: GoogleFonts.signika(
-                          color: SolhColors.primary_green,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
+          GetHelpCategory(
+            title: 'Goals',
+            trailing: InkWell(
+              onTap: () {
+                _bottomNavigatorController.activeIndex.value = 3;
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Goal Setting',
+                      style: GoogleFonts.signika(
                         color: SolhColors.primary_green,
-                        size: 14,
-                      )
-                    ],
-                  ),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: SolhColors.primary_green,
+                      size: 14,
+                    )
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
           getGoalSettingUI(goalSettingController),
           Padding(
@@ -320,37 +317,32 @@ class _HomePageState extends State<HomePage> {
                 : Container();
           }),
           GetHelpDivider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GetHelpCategory(
-                title: 'Search for Support',
-              ),
-              InkWell(
-                onTap: () {
-                  _bottomNavigatorController.activeIndex.value = 2;
-                },
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Get Help',
-                        style: GoogleFonts.signika(
-                          color: SolhColors.primary_green,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward,
+          GetHelpCategory(
+            title: 'Search for Support',
+            trailing: InkWell(
+              onTap: () {
+                _bottomNavigatorController.activeIndex.value = 2;
+              },
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Get Help',
+                      style: GoogleFonts.signika(
                         color: SolhColors.primary_green,
-                        size: 14,
-                      )
-                    ],
-                  ),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: SolhColors.primary_green,
+                      size: 14,
+                    )
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
           getIssueUI(bookAppointmentController, getHelpController, context),
           SizedBox(
@@ -359,14 +351,9 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           GetHelpCategory(
               title: "Top Consultants",
-              onPressed: () =>
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (_) => ConsultantsScreen(
-                  //           slug: '',
-                  //           type: 'topconsultant',
-                  //         ))),
-                  Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                      arguments: {"slug": '', "type": 'topconsultant'})),
+              onPressed: () => Navigator.pushNamed(
+                  context, AppRoutes.viewAllConsultant,
+                  arguments: {"slug": '', "type": 'topconsultant'})),
           Container(
             height: 17.h,
             margin: EdgeInsets.only(bottom: 2.h),
@@ -608,7 +595,8 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Container(
-          height: MediaQuery.of(context).size.height * 0.5,
+          // height: MediaQuery.of(context).size.height * 0.5,
+          height: 300,
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
               color: Colors.white,
@@ -702,7 +690,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.5,
+        // height: MediaQuery.of(context).size.height * 0.5,
+        height: 300,
         width: MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey[200]!), color: Colors.white),
