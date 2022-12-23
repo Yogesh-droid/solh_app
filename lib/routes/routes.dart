@@ -10,7 +10,6 @@ import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
-
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type.dart';
@@ -24,7 +23,6 @@ import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
 import 'package:solh/ui/screens/my-profile/settings/account-privacy.dart';
-import 'package:solh/ui/screens/phone-auth/otp-screen.dart';
 import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/loginSignup/login_signup.dart';
@@ -125,8 +123,10 @@ class AppRoutes {
 }
 
 class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings routeSettings) {
+  static Route<dynamic>? generateRoute(RouteSettings routeSettings) {
     final Object? args = routeSettings.arguments;
+
+    print('Current Route is ${routeSettings.name}');
 
     switch (routeSettings.name) {
       case AppRoutes.master:
@@ -138,9 +138,7 @@ class RouteGenerator {
       case AppRoutes.phoneAuthScreen:
         print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => PhoneAuthScreen()));
-      case AppRoutes.otpScreen:
-        return MaterialPageRoute(
-            builder: ((context) => OTPScreen(args: args as Map)));
+
       case AppRoutes.psychologyTest:
         return MaterialPageRoute(builder: ((context) => PsychologyTestPage()));
       case AppRoutes.userProfile:

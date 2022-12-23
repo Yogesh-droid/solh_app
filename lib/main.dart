@@ -1,6 +1,7 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -66,9 +67,14 @@ class SolhApp extends StatefulWidget {
 }
 
 class _SolhAppState extends State<SolhApp> {
+  String? utm_medium;
+
+  String? utm_source;
+
+  String? utm_name;
   @override
   void initState() {
-    // initDynamicLinks();
+    // initDynamic();
     initControllers();
     super.initState();
   }
@@ -76,13 +82,14 @@ class _SolhAppState extends State<SolhApp> {
   @override
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
+      print('This is First route ${widget._isProfileCreated}');
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
-        //initialRoute: AppRoutes.introScreen,
+        // initialRoute: AppRoutes.master,
         onGenerateRoute: RouteGenerator.generateRoute,
         theme: ThemeData(
           //using textTheme only for rich text ,else use constant text Styles
@@ -137,5 +144,45 @@ class _SolhAppState extends State<SolhApp> {
     }
     Get.put(AnonController());
     Get.put(AgeController());
+  }
+
+  Future<void> initDynamic() async {
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    if (data != null) {
+      print(data.toString() + '   This is data');
+      print(data.link.data.toString() + '   This is data');
+      print(data.link.query.toString() + '   This is data');
+      print(data.link.queryParameters.toString() + '   This is data');
+      print(data.utmParameters.toString() + '   This is data');
+      print('${data.utmParameters}' + '   This is UTM');
+      utm_name = data.utmParameters['utm_campaign'];
+      utm_source = data.utmParameters['utm_source'];
+      utm_medium = data.utmParameters['utm_medium'];
+
+      final Uri? deepLink = data.link;
+
+      if (deepLink != null) {
+        print(deepLink.path);
+        print(deepLink);
+        print(deepLink.data);
+        // Utility.showToast(data!.link.query);
+        // Navigator.pushNamed(context, deepLink.path);
+      }
+
+      FirebaseDynamicLinks.instance.onLink.listen((event) {
+        // Utility.showToast(data!.link.query);
+        if (deepLink != null) {
+          print(deepLink.toString() + ' This is link');
+          print(deepLink.path + ' This is link');
+          print(deepLink.data.toString() + ' This is link');
+          print(event.utmParameters.toString() + ' This is link');
+        }
+
+        // Navigator.pushNamed(context, event.link.path);
+      }).onError((error) {
+        print(error.message);
+      });
+    }
   }
 }
