@@ -36,6 +36,12 @@ class ChatController extends GetxController {
 
   var isTypingEpochTime = 0.obs;
 
+  //anon chat
+
+  var selectedStar = 0.obs;
+  final PageController pageController = PageController();
+  //anon chat
+
   var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();
@@ -171,12 +177,21 @@ class ChatController extends GetxController {
       required autherType,
       required ct,
       required mediaUrl,
-      required appointmentId,
+      required String? appointmentId,
       required mediaType,
       required authorId,
       required fileName}) {
-    SocketService.sendMessage(message, sId, autherType, ct, mediaUrl,
-        appointmentId, mediaType, fileName, conversationType, authorId);
+    SocketService.sendMessage(
+        message: message,
+        sId: sId,
+        autherType: autherType,
+        ct: ct,
+        mediaUrl: mediaUrl,
+        appointmentId: appointmentId ?? "s",
+        mediaType: mediaType,
+        fileName: fileName,
+        conversationType: conversationType,
+        authorId: authorId);
 
     messageEditingController.text = '';
     convo.add(Conversation(

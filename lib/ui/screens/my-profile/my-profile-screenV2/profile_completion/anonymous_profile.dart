@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/profile_completion_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -22,10 +23,13 @@ import '../../../../../widgets_constants/solh_snackbar.dart';
 class AnonymousProfile extends StatelessWidget {
   AnonymousProfile({Key? key, required Map<String, dynamic> args})
       : indexOfpage = args['indexOfpage'],
+        formAnonChat = args['formAnonChat'],
         super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   final ProfileController profileController = Get.find();
+  final ChatAnonController chatAnonController = Get.find();
   final int indexOfpage;
+  final bool? formAnonChat;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -55,7 +59,7 @@ class AnonymousProfile extends StatelessWidget {
                                 "file",
                                 "anonymous");
 
-                    var response = await profileCompletionController
+                    bool response = await profileCompletionController
                         .updateUserAnonProfile({
                       "profilePicture": url,
                       "userName": profileCompletionController
@@ -63,22 +67,38 @@ class AnonymousProfile extends StatelessWidget {
                     });
                     if (response) {
                       SolhSnackbar.success(
-                          "Success", "Anonymous profile updated");
-                      if (profileCompletionController.uncompleteFields.last !=
-                          profileCompletionController
-                              .uncompleteFields[indexOfpage]) {
-                        Navigator.pushNamed(
-                            context,
-                            profileCompletionController.getAppRoute(
-                                profileCompletionController
-                                    .uncompleteFields[indexOfpage + 1]),
-                            arguments: {"indexOfpage": indexOfpage + 1});
+                        "Success",
+                        "Anonymous profile updated",
+                      );
+
+                      if (formAnonChat == true) {
+                        Navigator.pushNamed(context, AppRoutes.chatUser,
+                            arguments: {
+                              "imageUrl": chatAnonController.chatAnonModel.value
+                                  .sosChatSupport!.first.profilePicture,
+                              "name": chatAnonController.chatAnonModel.value
+                                  .sosChatSupport!.first.name,
+                              "sId": chatAnonController.chatAnonModel.value
+                                  .sosChatSupport!.first.sId,
+                              "isAnonChat": true
+                            });
                       } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.master,
-                          (route) => false,
-                        );
+                        if (profileCompletionController.uncompleteFields.last !=
+                            profileCompletionController
+                                .uncompleteFields[indexOfpage]) {
+                          Navigator.pushNamed(
+                              context,
+                              profileCompletionController.getAppRoute(
+                                  profileCompletionController
+                                      .uncompleteFields[indexOfpage + 1]),
+                              arguments: {"indexOfpage": indexOfpage + 1});
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            AppRoutes.master,
+                            (route) => false,
+                          );
+                        }
                       }
                     } else {
                       SolhSnackbar.error('Error', 'Opps, Something went wrong');
@@ -91,33 +111,41 @@ class AnonymousProfile extends StatelessWidget {
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         onSkip: (() {
-          if (profileCompletionController.uncompleteFields.last !=
-              profileCompletionController.uncompleteFields[indexOfpage]) {
-            Navigator.pushNamed(
-                context,
-                profileCompletionController.getAppRoute(
-                    profileCompletionController
-                        .uncompleteFields[indexOfpage + 1]),
-                arguments: {"indexOfpage": indexOfpage + 1});
+          if (formAnonChat == true) {
           } else {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.master,
-              (route) => false,
-            );
+            if (profileCompletionController.uncompleteFields.last !=
+                profileCompletionController.uncompleteFields[indexOfpage]) {
+              Navigator.pushNamed(
+                  context,
+                  profileCompletionController.getAppRoute(
+                      profileCompletionController
+                          .uncompleteFields[indexOfpage + 1]),
+                  arguments: {"indexOfpage": indexOfpage + 1});
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.master,
+                (route) => false,
+              );
+            }
           }
         }),
         backButtonColor: SolhColors.white,
         onBackButton: (() {
           Navigator.of(context).pop();
         }),
-        skipButtonStyle: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+        skipButtonStyle: SolhTextStyles.CTA.copyWith(
+            color: formAnonChat == null
+                ? SolhColors.white
+                : SolhColors.primary_green),
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.w),
         child: Column(
           children: [
-            StepsProgressbar(stepNumber: 3),
+            formAnonChat == null
+                ? StepsProgressbar(stepNumber: 3)
+                : Container(),
             SizedBox(
               height: 3.h,
             ),

@@ -10,6 +10,7 @@ import '../../../../constants/api.dart';
 
 class SocketService {
   static late StreamController<Conversation> _socketResponse;
+
   static late StreamController<List<String>> _userResponse;
   // final ChatController _chatController = Get.find();
 
@@ -43,18 +44,33 @@ class SocketService {
   }
 
   static void sendMessage(
-    String message,
-    String sId,
-    String autherType,
-    String ct,
-    String mediaUrl,
-    String appointmentId,
-    String mediaType,
-    String fileName,
-    String conversationType,
-    String authorId,
-  ) {
-    print('message emmited' + ct);
+      {required String message,
+      required String sId,
+      required String autherType,
+      required String ct,
+      required String mediaUrl,
+      required String appointmentId,
+      required String mediaType,
+      required String fileName,
+      required String conversationType,
+      required String authorId}) {
+    print('message emmited' +
+        {
+          'socketId': socket.id,
+          'author': _userName,
+          'authorId': authorId,
+          'authorType': autherType,
+          'body': message,
+          'connection': sId,
+          'chatType': ct,
+          'media': {
+            'mediaUrl': mediaUrl,
+            'mediaType': mediaType,
+          },
+          'appointmentId': null,
+          'fileName': fileName,
+          'conversationType': conversationType,
+        }.toString());
     socket.emit('message', {
       'socketId': socket.id,
       'author': _userName,
@@ -73,28 +89,28 @@ class SocketService {
     });
   }
 
-  static void userLeft() {
+  void userLeft() {
     socket.emit('userLeft', {
       'socketId': socket.id,
-      'authorId': userBlocNetwork.id,
+      'authorId': profileController.myProfileModel.value.body!.user!.sId!,
       'connection': currentSId,
     });
   }
 
-  static void typing(sId, chatType, userType) {
+  void typing(sId, chatType, userType) {
     socket.emit('typing', {
       'socketId': socket.id,
-      'authorId': userBlocNetwork.id,
+      'authorId': profileController.myProfileModel.value.body!.user!.sId!,
       'connection': currentSId,
       'chatType': chatType,
       'authorType': userType
     });
   }
 
-  static void notTyping(sId, chatType, userType) {
+  void notTyping(sId, chatType, userType) {
     socket.emit('notTyping', {
       'socketId': socket.id,
-      'authorId': userBlocNetwork.id,
+      'authorId': profileController.myProfileModel.value.body!.user!.sId!,
       'connection': currentSId,
       'chatType': chatType,
       'authorType': userType
@@ -114,12 +130,12 @@ class SocketService {
 
       socket.emit('uconnect', {
         'socketId': socket.id,
-        'userId': userBlocNetwork.id,
+        'userId': profileController.myProfileModel.value.body!.user!.sId!,
         'connection': currentSId,
       });
       socket.emit('sendOnlineStatus', {
         'socketId': socket.id,
-        'userId': userBlocNetwork.id,
+        'userId': profileController.myProfileModel.value.body!.user!.sId!,
         'connection': currentSId,
       });
     });
@@ -130,11 +146,11 @@ class SocketService {
         print(data);
       },
     );
-
+    print(profileController.myProfileModel.value.body.toString());
     print(socket.connected);
     socket.emit('uconnect', {
       'socketId': socket.id,
-      'userId': userBlocNetwork.id,
+      'userId': profileController.myProfileModel.value.body!.user!.sId!,
       'connection': currentSId,
     });
     print(socket.id);

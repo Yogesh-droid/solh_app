@@ -67,6 +67,18 @@ class Setting extends StatelessWidget {
               'Seeker, Volunteer, Provider',
             ),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
+            child: getSettingOptions(
+              SvgPicture.asset('assets/images/other_detail.svg'),
+              'Other detail,',
+              'Issues, Organisation',
+            ),
+          ),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
           SizedBox(

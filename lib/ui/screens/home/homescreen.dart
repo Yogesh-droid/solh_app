@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
@@ -21,6 +22,7 @@ import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -67,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
 
+  ChatListController chatListController = Get.put(ChatListController());
+
   BottomNavigatorController bottomNavigatorController = Get.find();
 
   PsychologyTestController psychologyTestController =
@@ -110,7 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
           showGeneralDialog(
               context: context,
               pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(body: MoodMeter());
+                return Scaffold(
+                    body: MoodMeter(
+                  args: {},
+                ));
               });
         }
 
@@ -151,6 +158,7 @@ class _HomePageState extends State<HomePage> {
   BookAppointmentController bookAppointmentController = Get.find();
   GoalSettingController goalSettingController = Get.find();
   ConnectionController connectionController = Get.find();
+  ChatAnonController chatAnonController = Get.put(ChatAnonController());
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -176,6 +184,10 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           SizedBox(
             height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: ChatAnonymouslyCard(),
           ),
           GetHelpCategory(
             title: 'Trending Posts',
@@ -1596,4 +1608,112 @@ Widget getIssueUI(
       }).toList(),
     );
   });
+}
+
+class ChatAnonymouslyCard extends StatelessWidget {
+  const ChatAnonymouslyCard({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, AppRoutes.chatAnonIssues),
+      child: Container(
+        width: double.maxFinite,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
+          ),
+        ),
+        child: Padding(
+          padding:
+              EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 60.w,
+                    child: Text(
+                      'Chat anonymously and get support on a range of issues',
+                      style: SolhTextStyles.QS_body_1_bold.copyWith(
+                          color: SolhColors.white),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(2.w),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: SolhColors.primary_green,
+                        border: Border.all(color: SolhColors.white, width: 1)),
+                    child: Center(
+                        child: Icon(
+                      CupertinoIcons.arrow_right,
+                      color: SolhColors.white,
+                    )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 2.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/anxiety.png')),
+                      'Anxiety'),
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/depression.png')),
+                      'Depression'),
+                  getIssuesRowItem(
+                      Image(image: AssetImage('assets/images/addiction.png')),
+                      'Addiction'),
+                  getIssuesRowItem(
+                      Container(
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: SolhColors.white),
+                        child: Center(child: Text('50+')),
+                      ),
+                      'More')
+                ],
+              ),
+              SizedBox(
+                height: 1.h,
+              ),
+              Divider(
+                color: SolhColors.white,
+                thickness: 1,
+              ),
+              Text(
+                'Start chatting for free right away, with a Solh Certified Volunteer. ',
+                style: SolhTextStyles.QS_caption.copyWith(
+                    color: SolhColors.white, fontSize: 10.sp),
+                textAlign: TextAlign.center,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+getIssuesRowItem(Widget widget, String subtext) {
+  return Column(
+    children: [
+      Container(
+        height: 15.w,
+        width: 15.w,
+        decoration: BoxDecoration(shape: BoxShape.circle),
+        child: widget,
+      ),
+      Text(
+        subtext,
+        style: SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+      )
+    ],
+  );
 }

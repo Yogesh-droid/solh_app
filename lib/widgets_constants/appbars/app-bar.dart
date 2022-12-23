@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/ui/screens/sos/sos.dart';
@@ -162,15 +163,15 @@ class SOSButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        print("sos");
-        showDialog(context: context, builder: (_) => SOSDialog());
-        //AutoRouter.of(context).push(SOSScreenRouter());
+        // print("sos");
+        // showDialog(context: context, builder: (_) => SOSDialog());
+        Navigator.pushNamed(context, AppRoutes.chatAnonIssues);
       },
       icon: CircleAvatar(
         radius: 28,
         backgroundColor: SolhColors.pink224,
         child: Text(
-          "SOS",
+          "Now",
           style: TextStyle(
             color: SolhColors.white,
             fontSize: 10,

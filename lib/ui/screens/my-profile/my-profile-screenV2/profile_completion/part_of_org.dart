@@ -290,6 +290,12 @@ class PartOfOrg extends StatelessWidget {
                   );
                 }
               }
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRoutes.master,
+                  (route) => false,
+                );
+              }
             } else {
               SolhSnackbar.error(
                   'Error', 'Please select a Organistion or Skip for above');

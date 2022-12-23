@@ -6,6 +6,7 @@ import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
@@ -118,6 +119,9 @@ class AppRoutes {
   static const String emergencyContact = '/emergencyContact';
   static const String partOfOrg = '/partOfOrg';
   static const String editNeedSupportOn = '/editNeedSupportOn';
+
+  /// Chat anonymously///
+  static const String chatAnonIssues = '/chatAnonIssues';
 }
 
 class RouteGenerator {
@@ -229,6 +233,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => PartOfOrg()));
       case AppRoutes.needSupportOn:
         return MaterialPageRoute(builder: ((context) => NeedSupportOn()));
+      case AppRoutes.editNeedSupportOn:
+        return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
+      case AppRoutes.chatAnonIssues:
+        return MaterialPageRoute(builder: ((context) => ChatAnonIssues()));
       case AppRoutes.editNeedSupportOn:
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
 
