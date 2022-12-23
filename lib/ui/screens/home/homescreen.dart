@@ -1585,7 +1585,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 thickness: 1,
               ),
               Text(
-                'Start chatting for free right away, with a Sohl Certified Volunteer. ',
+                'Start chatting for free right away, with a Solh Certified Volunteer. ',
                 style: SolhTextStyles.QS_caption.copyWith(
                     color: SolhColors.white, fontSize: 10.sp),
                 textAlign: TextAlign.center,

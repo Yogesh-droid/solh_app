@@ -83,9 +83,12 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   sendFirstAnonChat() {
+    var otherIssues = chatAnonController.selectedOtherIssuesName == ''
+        ? ''
+        : 'Other Issues-${chatAnonController.selectedOtherIssuesName}';
     _controller.sendMessageController(
         message:
-            "issues -${chatAnonController.selectedIssuesName} mood - ${moodMeterController.selectedMood.value}",
+            "Issues -${chatAnonController.selectedIssuesName} ${otherIssues.toString()} Mood - ${moodMeterController.selectedMood.value}",
         conversationType: "text",
         sId: widget._sId,
         autherType: "users",

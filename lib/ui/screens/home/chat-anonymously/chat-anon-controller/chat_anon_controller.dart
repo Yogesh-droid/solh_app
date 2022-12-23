@@ -19,6 +19,7 @@ class ChatAnonController extends GetxController {
   var anonSId = ''.obs;
   var selectedIsses = [].obs;
   var selectedIssuesName = ''.obs;
+  var selectedOtherIssuesName = ''.obs;
   var showOtherissueField = false.obs;
   TextEditingController otherIssueTextField = TextEditingController();
   TextEditingController feedbackTextField = TextEditingController();

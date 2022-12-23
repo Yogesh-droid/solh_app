@@ -128,7 +128,8 @@ class ChatAnonIssues extends StatelessWidget {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  chatAnonController.selectedOtherIssues.add(
+                                  addOtherIssues(
+                                      chatAnonController,
                                       chatAnonController
                                           .otherIssueTextField.text);
                                   chatAnonController.otherIssueTextField.text =
@@ -291,4 +292,15 @@ addIssues(chatAnonController, e) {
 removeIssues(chatAnonController, e) {
   chatAnonController.selectedIsses.value.remove(e.sId);
   chatAnonController.selectedIssuesName.value.replaceAll('${e.name}', '');
+}
+
+addOtherIssues(ChatAnonController chatAnonController, e) {
+  chatAnonController.selectedOtherIssues.add(e);
+  chatAnonController.selectedOtherIssuesName.value =
+      chatAnonController.selectedOtherIssuesName.value + '${e}, ';
+}
+
+removeOtherIssues(ChatAnonController chatAnonController, e) {
+  chatAnonController.selectedOtherIssues.value.remove(e);
+  chatAnonController.selectedOtherIssuesName.value.replaceAll('${e}', '');
 }
