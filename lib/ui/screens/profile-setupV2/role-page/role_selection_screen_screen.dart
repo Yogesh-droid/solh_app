@@ -200,7 +200,7 @@ class BottomNote extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'First Name',
+                    'Email',
                     style: SolhTextStyles.SmallTextWhiteS12W7,
                   ),
                   SizedBox(
@@ -208,8 +208,8 @@ class BottomNote extends StatelessWidget {
                   ),
                   TextField(
                     controller: profileSetupController.providerEmailController,
-                    decoration:
-                        TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
+                    decoration: TextFieldStyles.greenF_greenBroadUF_4R(
+                        hintText: 'john@email.com'),
                   ),
                 ],
               )

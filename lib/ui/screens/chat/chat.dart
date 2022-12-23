@@ -56,15 +56,11 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     if (widget._isAnonChat == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller.getChatController(widget._sId);
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
     }
 
     if (widget._isAnonChat == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        sendFirstAnonChat();
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
     }
 
     if (widget._isAnonChat) {
@@ -78,8 +74,15 @@ class _ChatScreenState extends State<ChatScreen> {
             '')
         : SocketService.setUserName(
             profileController.myProfileModel.value.body!.user!.name ?? '');
+    delayedAnonChat();
 
     super.initState();
+  }
+
+  delayedAnonChat() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      sendFirstAnonChat();
+    });
   }
 
   sendFirstAnonChat() {
@@ -758,6 +761,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
 
   final String sId;
   final ChatAnonController chatAnonController = Get.find();
+  final ChatController chatController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -827,6 +831,8 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   });
                   chatAnonController.selectedIsses.value = [];
                   chatAnonController.selectedIssuesName.value = '';
+                  chatController.convo.value = [];
+
                   if (response) {
                     SolhSnackbar.success(
                         '', 'Thank you. feedback recorded successfully');
@@ -853,6 +859,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                 onPressed: () {
                   chatAnonController.selectedIsses.value = [];
                   chatAnonController.selectedIssuesName.value = '';
+                  chatController.convo.value = [];
                   Navigator.pushNamedAndRemoveUntil(
                       context, AppRoutes.master, (route) => false);
                 },

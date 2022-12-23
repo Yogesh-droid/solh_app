@@ -15,11 +15,27 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
-class ChatAnonIssues extends StatelessWidget {
+class ChatAnonIssues extends StatefulWidget {
   ChatAnonIssues({Key? key}) : super(key: key);
 
+  @override
+  State<ChatAnonIssues> createState() => _ChatAnonIssuesState();
+}
+
+class _ChatAnonIssuesState extends State<ChatAnonIssues> {
   final ChatAnonController chatAnonController = Get.put(ChatAnonController());
+
   final ProfileController profileController = Get.find();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      initialDialog(context);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +206,9 @@ class _IssueChipsState extends State<IssueChips> {
   @override
   void initState() {
     // TODO: implement initState
+
     chatAnonController.getNeedSupportOnIssues();
+
     super.initState();
   }
 
@@ -303,4 +321,35 @@ addOtherIssues(ChatAnonController chatAnonController, e) {
 removeOtherIssues(ChatAnonController chatAnonController, e) {
   chatAnonController.selectedOtherIssues.value.remove(e);
   chatAnonController.selectedOtherIssuesName.value.replaceAll('${e}', '');
+}
+
+Future<void> initialDialog(BuildContext context) {
+  return showGeneralDialog<void>(
+    context: context,
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return AlertDialog(
+        title: Text('Disclaimer',
+            style: SolhTextStyles.QS_body_1_bold.copyWith(
+                color: SolhColors.primaryRed)),
+        content: Text(
+            'We are not a medical emergency service provider or a suicide prevention helpline. If you are suicidal, or having any similar thoughts, we suggest you immediately reach out to a suicide prevention helpline. National Suicide Prevention Lifeline @ 1-800-273-8255 or Vandrevala Foundation Helpline @ 1-860-266-2345 or Aasra @ +91-22-22754-6669.',
+            style: SolhTextStyles.QS_body_2),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: Text(
+              'Continue',
+              style:
+                  SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

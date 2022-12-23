@@ -127,6 +127,8 @@ class LocalNotification {
                               .additionalData!['data'])['profilePicture'],
                           "sId": jsonDecode(result
                               .notification.additionalData!['data'])['_id'],
+                          "isAnonChat": jsonDecode(result.notification
+                              .additionalData!['data'])['isAnonChat'],
                         },
                         // name: jsonDecode(result
                         //     .notification.additionalData!['data'])['author'],

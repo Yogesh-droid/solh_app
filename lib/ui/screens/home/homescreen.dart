@@ -1637,7 +1637,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                   SizedBox(
                     width: 60.w,
                     child: Text(
-                      'Chat anonymously and get support on a range of issues',
+                      'Overwhelmed with emotions: Talk to a Solh counselor NOW',
                       style: SolhTextStyles.QS_body_1_bold.copyWith(
                           color: SolhColors.white),
                     ),
@@ -1688,9 +1688,9 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 thickness: 1,
               ),
               Text(
-                'Start chatting for free right away, with a Solh Certified Volunteer. ',
+                'Start chatting for free right away, with a Solh Counselor. ',
                 style: SolhTextStyles.QS_caption.copyWith(
-                    color: SolhColors.white, fontSize: 10.sp),
+                    color: SolhColors.white, fontSize: 9.sp),
                 textAlign: TextAlign.center,
               )
             ],
