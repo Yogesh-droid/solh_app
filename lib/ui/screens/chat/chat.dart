@@ -56,15 +56,11 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     if (widget._isAnonChat == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _controller.getChatController(widget._sId);
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
     }
 
     if (widget._isAnonChat == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        sendFirstAnonChat();
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {});
     }
 
     if (widget._isAnonChat) {
@@ -78,8 +74,15 @@ class _ChatScreenState extends State<ChatScreen> {
             '')
         : SocketService.setUserName(
             profileController.myProfileModel.value.body!.user!.name ?? '');
+    delayedAnonChat();
 
     super.initState();
+  }
+
+  delayedAnonChat() {
+    Future.delayed(Duration(milliseconds: 500), () {
+      sendFirstAnonChat();
+    });
   }
 
   sendFirstAnonChat() {
