@@ -55,13 +55,15 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
-    if (widget._isAnonChat == false) {
+    if (widget._isAnonChat == false ||
+        profileController.myProfileModel.value.body!.user!.sosChatSupport ==
+            true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _controller.getChatController(widget._sId);
       });
     }
 
-    if (widget._isAnonChat == true ||
+    if (widget._isAnonChat == true &&
         profileController.myProfileModel.value.body!.user!.sosChatSupport !=
             true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {});
@@ -144,7 +146,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                widget._isAnonChat
+                widget._isAnonChat &&
+                        profileController.myProfileModel.value.body!.user!
+                                .sosChatSupport !=
+                            true
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
@@ -154,7 +159,19 @@ class _ChatScreenState extends State<ChatScreen> {
                           textAlign: TextAlign.center,
                         ),
                       )
-                    : Container(),
+                    : (profileController.myProfileModel.value.body!.user!
+                                .sosChatSupport ==
+                            true
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Text(
+                              'Please take this conversation further. The seeker is waiting for you. ',
+                              style: SolhTextStyles.QS_cap_semi.copyWith(
+                                  color: SolhColors.Grey_1),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        : Container()),
                 SizedBox(
                   height: 10,
                 ),
@@ -250,7 +267,7 @@ class ChatAppbar extends StatelessWidget {
                 //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
                   onTap: (() async {
-                    if (_isAnonChat == true ||
+                    if (_isAnonChat == true &&
                         profileController.myProfileModel.value.body!.user!
                                 .sosChatSupport !=
                             true) {
@@ -320,11 +337,13 @@ class ChatAppbar extends StatelessWidget {
                             "tokentype": "uid",
                             "expiry": "",
                             "role": "publisher",
-                            "sender": userBlocNetwork.id.toString(),
+                            "sender": profileController
+                                .myProfileModel.value.body!.user!.sId!,
                             "senderType": "seeker",
                             "receiver": _sId,
                             "receiverType": "seeker",
-                            "channel": (userBlocNetwork.id.toString() +
+                            "channel": (profileController
+                                    .myProfileModel.value.body!.user!.sId! +
                                 '_' +
                                 _sId.toString()),
                             "appointmentId": "",
@@ -685,10 +704,14 @@ class RatingBottomSheetChild1 extends StatelessWidget {
                             .animateToPage(1,
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeIn),
-                        child: Text(
-                          'Skip',
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.white),
+                        child: Container(
+                          height: 20,
+                          width: 40,
+                          child: Text(
+                            'Skip',
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.white),
+                          ),
                         ),
                       );
               })
@@ -836,24 +859,29 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                 ),
                 SolhGreenButton(
                   onPressed: () async {
-                    bool response =
-                        await chatAnonController.postFeedbackController({
-                      "volunteerId": sId,
-                      "reviewBody": chatAnonController.feedbackTextField.text,
-                    });
-                    chatAnonController.selectedIsses.value = [];
-                    chatAnonController.selectedIssuesName.value = '';
-                    chatAnonController.selectedOtherIssues.value = [];
-                    chatAnonController.selectedOtherIssuesName.value = '';
-                    chatController.convo.value = [];
+                    if (chatAnonController.feedbackTextField.text.trim() !=
+                        '') {
+                      bool response =
+                          await chatAnonController.postFeedbackController({
+                        "volunteerId": sId,
+                        "reviewBody": chatAnonController.feedbackTextField.text,
+                      });
+                      chatAnonController.selectedIsses.value = [];
+                      chatAnonController.selectedIssuesName.value = '';
+                      chatAnonController.selectedOtherIssues.value = [];
+                      chatAnonController.selectedOtherIssuesName.value = '';
+                      chatController.convo.value = [];
 
-                    if (response) {
-                      SolhSnackbar.success(
-                          '', 'Thank you. feedback recorded successfully');
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, AppRoutes.master, (route) => false);
+                      if (response) {
+                        SolhSnackbar.success(
+                            '', 'Thank you. feedback recorded successfully');
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, AppRoutes.master, (route) => false);
+                      } else {
+                        SolhSnackbar.error('Error', 'Something went wrong');
+                      }
                     } else {
-                      SolhSnackbar.error('Error', 'Something went wrong');
+                      SolhSnackbar.error('Opps!', "It can't be empty");
                     }
                   },
                   child: Obx(() {
@@ -867,19 +895,35 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   }),
                 ),
                 SizedBox(
-                  height: 2.h,
+                  height: 6.h,
                 ),
-                SkipButton(
-                  onPressed: () {
-                    chatAnonController.selectedIsses.value = [];
-                    chatAnonController.selectedIssuesName.value = '';
-                    chatAnonController.selectedOtherIssues.value = [];
-                    chatAnonController.selectedOtherIssuesName.value = '';
-                    chatController.convo.value = [];
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, AppRoutes.master, (route) => false);
-                  },
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        chatAnonController.selectedIsses.value = [];
+                        chatAnonController.selectedIssuesName.value = '';
+                        chatAnonController.selectedOtherIssues.value = [];
+                        chatAnonController.selectedOtherIssuesName.value = '';
+                        chatController.convo.value = [];
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, AppRoutes.master, (route) => false);
+                      },
+                      child: Container(
+                        height: 20,
+                        width: 40,
+                        child: Center(
+                          child: Text(
+                            'Skip',
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primary_green),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -896,7 +940,7 @@ Future<bool> _onWillPop(context, sId) async {
         return AlertDialog(
           actionsPadding: EdgeInsets.all(8.0),
           content: Text(
-            'Do you really want to end chat ?',
+            'Do you really want to end the chat?',
             style: SolhTextStyles.JournalingDescriptionText,
           ),
           actions: [

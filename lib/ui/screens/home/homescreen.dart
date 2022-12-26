@@ -1676,7 +1676,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: SolhColors.white),
-                        child: Center(child: Text('50+')),
+                        child: Center(child: Text('20+')),
                       ),
                       'More')
                 ],

@@ -178,24 +178,30 @@ class _MasterScreen2State extends State<MasterScreen2>
             return AlertDialog(
               actionsPadding: EdgeInsets.all(8.0),
               content: Text(
-                'Do you really want to exit app ?',
+                'Do you really want to exit app?',
                 style: SolhTextStyles.JournalingDescriptionText,
               ),
               actions: [
                 InkWell(
-                    child: Text(
-                      'No',
-                      style: SolhTextStyles.CTA
-                          .copyWith(color: SolhColors.primary_green),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        'No',
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.primary_green),
+                      ),
                     ),
                     onTap: () {
                       Navigator.of(context).pop(false);
                     }),
                 InkWell(
-                    child: Text(
-                      'Yes',
-                      style: SolhTextStyles.CTA
-                          .copyWith(color: SolhColors.primaryRed),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      child: Text(
+                        'Yes',
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.primaryRed),
+                      ),
                     ),
                     onTap: () {
                       exit(0);

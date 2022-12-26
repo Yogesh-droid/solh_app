@@ -8,7 +8,7 @@ class ProfileController extends GetxController {
   var isProfileLoading = false.obs;
   var isEditProfilePicUploading = false.obs;
 
-  Future<void> getMyProfile() async {
+  Future<bool> getMyProfile() async {
     print('gettting My profile');
 
     try {
@@ -18,8 +18,11 @@ class ProfileController extends GetxController {
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
       print('This is profile   $map');
+      isProfileLoading.value = false;
+      return true;
     } on Exception catch (e) {}
     isProfileLoading.value = false;
+    return false;
   }
 
   @override

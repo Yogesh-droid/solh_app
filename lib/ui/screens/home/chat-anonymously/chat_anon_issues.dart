@@ -144,10 +144,16 @@ class _ChatAnonIssuesState extends State<ChatAnonIssues> {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  addOtherIssues(
-                                      chatAnonController,
-                                      chatAnonController
-                                          .otherIssueTextField.text);
+                                  if (chatAnonController
+                                          .otherIssueTextField.text
+                                          .trim() !=
+                                      '') {
+                                    addOtherIssues(
+                                        chatAnonController,
+                                        chatAnonController
+                                            .otherIssueTextField.text);
+                                  }
+
                                   chatAnonController.otherIssueTextField.text =
                                       '';
                                   chatAnonController.showOtherissueField.value =
