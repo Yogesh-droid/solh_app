@@ -189,7 +189,7 @@ class ProfielTextField extends StatelessWidget {
       autovalidateMode: _autovalidateMode,
       onChanged: _onChanged,
       decoration: TextFieldStyles.greenF_noBorderUF_4R(
-          hintText: 'Enter Anonymous name'),
+          hintText: _hintText ?? 'Enter Anonymous name'),
     );
   }
 }

@@ -22,6 +22,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+import '../../../../connections/blocked_users.dart';
+
 class Setting extends StatelessWidget {
   Setting({Key? key}) : super(key: key);
 
@@ -70,14 +72,25 @@ class Setting extends StatelessWidget {
           SizedBox(
             height: 15,
           ),
+          // InkWell(
+          //   onTap: () =>
+          //       Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
+          //   child: getSettingOptions(
+          //     SvgPicture.asset('assets/images/other_detail.svg'),
+          //     'Other detail,',
+          //     'Issues, Organisation',
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 15,
+          // ),
           InkWell(
-            onTap: () =>
-                Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BlockedUsers())),
             child: getSettingOptions(
-              SvgPicture.asset('assets/images/other_detail.svg'),
-              'Other detail,',
-              'Issues, Organisation',
-            ),
+                SvgPicture.asset('assets/images/blocked.svg'),
+                'Blocked Users',
+                null),
           ),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
@@ -93,7 +106,7 @@ class Setting extends StatelessWidget {
 Widget getSettingOptions(
   Widget icon,
   String option,
-  String subText,
+  String? subText,
 ) {
   return InkWell(
     child: Container(
@@ -114,14 +127,21 @@ Widget getSettingOptions(
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    option,
-                    style: SolhTextStyles.QS_body_2_bold,
+                  Padding(
+                    padding: subText == null
+                        ? const EdgeInsets.all(6.0)
+                        : const EdgeInsets.all(0.0),
+                    child: Text(
+                      option,
+                      style: SolhTextStyles.QS_body_2_bold,
+                    ),
                   ),
-                  Text(
-                    subText,
-                    style: SolhTextStyles.QS_cap_2,
-                  )
+                  subText != null
+                      ? Text(
+                          subText,
+                          style: SolhTextStyles.QS_cap_2,
+                        )
+                      : const SizedBox()
                 ],
               )
             ],

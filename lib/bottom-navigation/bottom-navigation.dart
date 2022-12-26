@@ -184,21 +184,22 @@ class _MasterScreen2State extends State<MasterScreen2>
               actions: [
                 InkWell(
                     child: Text(
-                      'No',
-                      style: SolhTextStyles.CTA
-                          .copyWith(color: SolhColors.primary_green),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop(false);
-                    }),
-                InkWell(
-                    child: Text(
                       'Yes',
                       style: SolhTextStyles.CTA
                           .copyWith(color: SolhColors.primaryRed),
                     ),
                     onTap: () {
                       exit(0);
+                    }),
+                SizedBox(width: 30),
+                InkWell(
+                    child: Text(
+                      'No',
+                      style: SolhTextStyles.CTA
+                          .copyWith(color: SolhColors.primary_green),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop(false);
                     }),
               ],
             );

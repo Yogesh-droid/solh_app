@@ -83,83 +83,99 @@ class _PostScreenState extends State<PostScreen> {
               }
               return Container(
                 height: MediaQuery.of(context).size.height,
-                child: ListView.builder(
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    itemCount: journalsSnapshot.requireData.length,
-                    itemBuilder: (_, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CommentScreen(
-                                  journalModel: journalsSnapshot.data![index],
-                                  index: index)));
-                        },
-                        child: Column(
-                          children: [
-                            JournalTile(
-                              journalModel: journalsSnapshot.data![index],
-                              index: index,
-                              deletePost: () async {
-                                await deletePost(index, _journalPageController,
-                                    myJournalsBloc);
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          itemCount: journalsSnapshot.requireData.length,
+                          itemBuilder: (_, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CommentScreen(
+                                        journalModel:
+                                            journalsSnapshot.data![index],
+                                        index: index)));
                               },
-                              isMyJournal: true,
-                            ),
-                            Container(
-                              height: 24,
-                              color: Colors.white,
-                              width: 100.w,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                              child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.favorite,
-                                        color: SolhColors.primary_green,
-                                        size: 18,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        journalsSnapshot.data![index]!.likes
-                                            .toString(),
-                                        style: SolhTextStyles
-                                            .GreenBorderButtonText,
-                                      )
-                                    ],
+                                  JournalTile(
+                                    journalModel: journalsSnapshot.data![index],
+                                    index: index,
+                                    deletePost: () async {
+                                      await deletePost(
+                                          index,
+                                          _journalPageController,
+                                          myJournalsBloc);
+                                    },
+                                    isMyJournal: true,
                                   ),
-                                  Row(
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/icons/journaling/post-comment.svg",
-                                        width: 17,
-                                        height: 17,
-                                        color: SolhColors.primary_green,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        journalsSnapshot.data![index]!.comments
-                                            .toString(),
-                                        style: SolhTextStyles
-                                            .GreenBorderButtonText,
-                                      )
-                                    ],
-                                  )
+                                  Container(
+                                    height: 24,
+                                    color: Colors.white,
+                                    width: 100.w,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.favorite,
+                                              color: SolhColors.primary_green,
+                                              size: 18,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              journalsSnapshot
+                                                  .data![index]!.likes
+                                                  .toString(),
+                                              style: SolhTextStyles
+                                                  .GreenBorderButtonText,
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            SvgPicture.asset(
+                                              "assets/icons/journaling/post-comment.svg",
+                                              width: 17,
+                                              height: 17,
+                                              color: SolhColors.primary_green,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              journalsSnapshot
+                                                  .data![index]!.comments
+                                                  .toString(),
+                                              style: SolhTextStyles
+                                                  .GreenBorderButtonText,
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  GetHelpDivider()
                                 ],
                               ),
-                            ),
-                            GetHelpDivider()
-                          ],
-                        ),
-                      );
-                    }),
+                            );
+                          }),
+                    ),
+                    // Container(
+                    //   height: 50,
+                    //   child: MyLoader(),
+                    // )
+                  ],
+                ),
               );
             } else {
               return Center(child: MyLoader());
@@ -169,6 +185,7 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Future<void> getMyJournals(String? sId) async {
+    print('fetching my posts');
     await myJournalsBloc.getJournalsSnapshot(sId);
   }
 

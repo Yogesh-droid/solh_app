@@ -585,6 +585,7 @@ class BookAppointmentPopup extends StatelessWidget {
                       1,
                       _controller.selectedDate.value),
                   'seekerEmail': _controller.emailTextEditingController.text,
+                  // 'seekerMobile': _controller.mobileNotextEditingController.text,
                   'from': _controller.selectedTimeSlot.split('-')[0],
                   'to': _controller.selectedTimeSlot.split('-')[1],
                   "type": "app",

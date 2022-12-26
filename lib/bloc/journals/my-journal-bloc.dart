@@ -9,13 +9,13 @@ import 'package:video_player/video_player.dart';
 class MyJournalsBloc {
   final _myJournalController = PublishSubject<List<Journals?>>();
   JournalPageController _journalPageController = Get.find();
-
+  int? nextPage = 1;
   List<Journals?> _journalsList = <Journals?>[];
   int _currentPage = 1;
-  int _endPageLimit = 1;
+  // int _endPageLimit = 1;
   int _numberOfPosts = 0;
-
   bool isFetchingPost = false;
+  var isFetchingMore = false.obs;
 
   int numberOfPosts() {
     return _numberOfPosts;
@@ -29,25 +29,84 @@ class MyJournalsBloc {
 
     _currentPage = 1;
     // try {
-    isFetchingPost = true;
-    Map<String, dynamic> apiResponse =
-        // await Network.makeHttpGetRequestWithToken(
-        //     "${APIConstants.api}/api/get-my-journal");
-        await Network.makeHttpGetRequestWithToken(
-            "${APIConstants.api}/api/user-journal/${sId}?page=$_currentPage");
+    if (nextPage == 1) {
+      isFetchingPost = true;
+    }
+    Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
 
     List<Journals> _journals = <Journals>[];
-
-    _numberOfPosts = apiResponse["totalJournals"];
-
-    _endPageLimit = apiResponse["totalPages"];
-
+    nextPage = apiResponse['data']["next"] != null
+        ? apiResponse['data']["next"]['pageNumber']
+        : _currentPage;
     JournalsResponseModel _journalsResponseModel =
-        JournalsResponseModel.fromJson(apiResponse);
+        JournalsResponseModel.fromJson(apiResponse['data']);
+
+    print('Journals no null ${_journalsResponseModel.journals!.length}');
 
     if (_journalsResponseModel.journals != null) {
+      print('Journals no null ${_journalsResponseModel.journals!.length}');
       _journals = _journalsResponseModel.journals!;
       isFetchingPost = false;
+      _myJournalController.sink.add(_journals);
+    }
+
+    _journalPageController.myVideoPlayerControllers.value.forEach((element) {
+      if (element != null) {
+        element.forEach((key, value) {
+          value.dispose();
+        });
+      }
+    });
+    _journalPageController.myVideoPlayerControllers.value.clear();
+    for (int i = 0; i < _journals.length; i++) {
+      if (_journals[i].mediaType == "video/mp4") {
+        //   if (_journalPageController.myVideoPlayerControllers.value.isEmpty) {
+        //     _journalPageController.myVideoIndex = i;
+        //   }
+        //   VideoPlayerController vc =
+        //       VideoPlayerController.network(_journals[i].mediaUrl!);
+        //   _journalPageController.myVideoPlayerControllers.value
+        //       .add({i: vc..initialize()});
+        _journals.removeAt(i);
+      } else {
+        _journalPageController.myVideoPlayerControllers.value.add({});
+      }
+    }
+    print('length of video player controller: ' +
+        _journalPageController.myVideoPlayerControllers.value.length
+            .toString());
+
+    return _journals;
+    // } catch (error) {
+    //   throw error;
+    // }
+  }
+
+  /* Future<List<Journals?>> _fetchDetailsNextPage(String? sId) async {
+    print("getting my journals for the first time...");
+
+    _currentPage = 1;
+    // try {
+    isFetchingMore.value = true;
+    Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
+
+    List<Journals> _journals = <Journals>[];
+    nextPage = apiResponse['data']["next"] != null
+        ? apiResponse['data']["next"]['pageNumber']
+        : _currentPage;
+    print(apiResponse['data']);
+
+    JournalsResponseModel _journalsResponseModel =
+        JournalsResponseModel.fromJson(apiResponse['data']);
+
+    print('Journals no null ${_journalsResponseModel.journals!.length}');
+
+    if (_journalsResponseModel.journals != null) {
+      print('Journals no null ${_journalsResponseModel.journals!.length}');
+      _journals = _journalsResponseModel.journals!;
+      isFetchingMore.value = false;
       _myJournalController.sink.add(_journals);
     }
 
@@ -81,25 +140,24 @@ class MyJournalsBloc {
     // } catch (error) {
     //   throw error;
     // }
-  }
+  } */
 
-  Future<List<Journals?>> _fetchDetailsNextPage(String? sId) async {
-    print("getting journals for the next page...");
-    try {
-      Map<String, dynamic> apiResponse =
-          await Network.makeHttpGetRequestWithToken(
-              "${APIConstants.api}/api/user-journal/${sId}?page=$_currentPage");
+  // Future<List<Journals?>> _fetchDetailsNextPage(String? sId) async {
+  //   print("getting journals for the next page...");
+  //   try {
+  //     Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
+  //         "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
 
-      List<Journals> _journals = <Journals>[];
-      for (var journal in apiResponse["journals"]) {
-        _journals.add(Journals.fromJson(journal));
-      }
-      return _journals;
-    } catch (error) {
-      _currentPage--;
-      throw error;
-    }
-  }
+  //     List<Journals> _journals = <Journals>[];
+  //     for (var journal in apiResponse["journals"]) {
+  //       _journals.add(Journals.fromJson(journal['data']));
+  //     }
+  //     return _journals;
+  //   } catch (error) {
+  //     _currentPage--;
+  //     throw error;
+  //   }
+  // }
 
   Future getJournalsSnapshot(String? sId) async {
     _journalsList = [];
@@ -116,9 +174,10 @@ class MyJournalsBloc {
 
   Future getNextPageJournalsSnapshot(String? sId) async {
     print("fetching next page journals.............");
-    _currentPage++;
-    if (_currentPage <= _endPageLimit) {
-      await _fetchDetailsNextPage(sId).then((journals) {
+    // _currentPage++;
+    print(nextPage);
+    if (_currentPage <= nextPage!) {
+      await fetchDetailsFirstTime(sId).then((journals) {
         _journalsList.addAll(journals);
         return _myJournalController.add(_journalsList);
       }).onError((error, stackTrace) =>

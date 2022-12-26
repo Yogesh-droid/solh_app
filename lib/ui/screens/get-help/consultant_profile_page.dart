@@ -398,14 +398,11 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         builder: (context) {
           print(
               "This is user's email ID   ${Get.find<ProfileController>().myProfileModel.value.body!.user!.email ?? ''}");
+          ProfileController profileController = Get.find();
           bookAppointmentController.emailTextEditingController.text =
-              Get.find<ProfileController>()
-                      .myProfileModel
-                      .value
-                      .body!
-                      .user!
-                      .email ??
-                  '';
+              profileController.myProfileModel.value.body!.user!.email ?? '';
+          bookAppointmentController.mobileNotextEditingController.text =
+              profileController.myProfileModel.value.body!.user!.mobile ?? '';
           return BookAppoinmentSheet(
             onContinueBtnPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

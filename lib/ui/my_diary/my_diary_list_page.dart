@@ -29,6 +29,10 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
+      // if (_scrollController.position.pixels ==
+      //     _scrollController.position.maxScrollExtent) {
+      //   myDiaryController.getMyJournals(myDiaryController.pageNo);
+      // }
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
         myDiaryController.movingUp.value = true;

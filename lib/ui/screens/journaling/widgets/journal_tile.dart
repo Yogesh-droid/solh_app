@@ -865,88 +865,99 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                             : journalPageController.videoPlayerController
                                 .refresh();
                       },
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          AspectRatio(
-                            aspectRatio: double.parse(
-                                widget.journalModel.aspectRatio ??
-                                    (16 / 9).toString()),
-                            child: VideoPlayer(
-                              widget.isMyJournal
-                                  ? journalPageController
-                                      .myVideoPlayerControllers
-                                      .value[widget.index][widget.index]!
-                                  : journalPageController.videoPlayerController
-                                      .value[widget.index][widget.index]!,
+                      //////   we need to remove widget.isMyJournal  ? Container():  to play my post in //////
+                      child: widget.isMyJournal
+                          ? Container()
+                          : Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: double.parse(
+                                      widget.journalModel.aspectRatio ??
+                                          (16 / 9).toString()),
+                                  child: VideoPlayer(
+                                    widget.isMyJournal
+                                        ? journalPageController
+                                            .myVideoPlayerControllers
+                                            .value[widget.index][widget.index]!
+                                        : journalPageController
+                                            .videoPlayerController
+                                            .value[widget.index][widget.index]!,
+                                  ),
+                                ),
+                                Obx(() {
+                                  return !widget.isMyJournal &&
+                                              !journalPageController
+                                                  .videoPlayerController
+                                                  .value[widget.index]
+                                                      [widget.index]!
+                                                  .value
+                                                  .isPlaying ||
+                                          widget.isMyJournal &&
+                                              !journalPageController
+                                                  .myVideoPlayerControllers
+                                                  .value[widget.index]
+                                                      [widget.index]!
+                                                  .value
+                                                  .isPlaying
+                                      ? getBlackOverlay(
+                                          context,
+                                          aspectRatio: double.parse(
+                                              widget.journalModel.aspectRatio ??
+                                                  (16 / 9).toString()),
+                                        )
+                                      : Container();
+                                }),
+                                Obx(() {
+                                  return !widget.isMyJournal &&
+                                              !journalPageController
+                                                  .videoPlayerController
+                                                  .value[widget.index]
+                                                      [widget.index]!
+                                                  .value
+                                                  .isPlaying ||
+                                          widget.isMyJournal &&
+                                              !journalPageController
+                                                  .myVideoPlayerControllers
+                                                  .value[widget.index]
+                                                      [widget.index]!
+                                                  .value
+                                                  .isPlaying
+                                      ? Positioned(
+                                          child: IconButton(
+                                            onPressed: () async {
+                                              widget.isMyJournal
+                                                  ? journalPageController
+                                                      .playMyPostVideo(
+                                                      widget.index,
+                                                    )
+                                                  : journalPageController
+                                                      .playVideo(
+                                                      widget.index,
+                                                    );
+                                              widget.isMyJournal
+                                                  ? journalPageController
+                                                      .myVideoPlayerControllers
+                                                      .refresh()
+                                                  : journalPageController
+                                                      .videoPlayerController
+                                                      .refresh();
+                                            },
+                                            icon: Image.asset(
+                                              'assets/images/play_icon.png',
+                                              fit: BoxFit.fill,
+                                            ),
+                                            iconSize: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                8,
+                                            color: SolhColors.primary_green,
+                                          ),
+                                        )
+                                      : Container();
+                                }),
+                              ],
                             ),
-                          ),
-                          Obx(() {
-                            return !widget.isMyJournal &&
-                                        !journalPageController
-                                            .videoPlayerController
-                                            .value[widget.index][widget.index]!
-                                            .value
-                                            .isPlaying ||
-                                    widget.isMyJournal &&
-                                        !journalPageController
-                                            .myVideoPlayerControllers
-                                            .value[widget.index][widget.index]!
-                                            .value
-                                            .isPlaying
-                                ? getBlackOverlay(
-                                    context,
-                                    aspectRatio: double.parse(
-                                        widget.journalModel.aspectRatio ??
-                                            (16 / 9).toString()),
-                                  )
-                                : Container();
-                          }),
-                          Obx(() {
-                            return !widget.isMyJournal &&
-                                        !journalPageController
-                                            .videoPlayerController
-                                            .value[widget.index][widget.index]!
-                                            .value
-                                            .isPlaying ||
-                                    widget.isMyJournal &&
-                                        !journalPageController
-                                            .myVideoPlayerControllers
-                                            .value[widget.index][widget.index]!
-                                            .value
-                                            .isPlaying
-                                ? Positioned(
-                                    child: IconButton(
-                                      onPressed: () async {
-                                        widget.isMyJournal
-                                            ? journalPageController
-                                                .playMyPostVideo(
-                                                widget.index,
-                                              )
-                                            : journalPageController.playVideo(
-                                                widget.index,
-                                              );
-                                        widget.isMyJournal
-                                            ? journalPageController
-                                                .myVideoPlayerControllers
-                                                .refresh()
-                                            : journalPageController
-                                                .videoPlayerController
-                                                .refresh();
-                                      },
-                                      icon: Image.asset(
-                                        'assets/images/play_icon.png',
-                                        fit: BoxFit.fill,
-                                      ),
-                                      iconSize:
-                                          MediaQuery.of(context).size.width / 8,
-                                      color: SolhColors.primary_green,
-                                    ),
-                                  )
-                                : Container();
-                          }),
-                        ],
-                      ),
                     )
                   ///// Below for image only
                   : Container(
@@ -1185,6 +1196,25 @@ class PostMenuButton extends StatelessWidget {
                                 .blockUser(sId: _userId);
 
                         print(map);
+                        if (map['success']) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Person Successfully Blocked'),
+                            backgroundColor: SolhColors.primary_green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20))),
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Oops !! Something Went Wrong'),
+                            backgroundColor: SolhColors.primary_green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20))),
+                          ));
+                        }
                       },
                 value: 2,
                 textStyle: SolhTextStyles.JournalingPostMenuText,

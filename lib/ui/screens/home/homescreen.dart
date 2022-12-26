@@ -42,7 +42,6 @@ import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
-import '../chat/chat.dart';
 import '../get-help/get-help.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
@@ -524,23 +523,15 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   _journalPageController.trendingJournalsList.length > 2
                       ? Positioned(
-                          // right: 15,
-                          // top: 70,
-                          // left: 30,
                           child: getPostCard2(
                               _journalPageController.trendingJournalsList[2]))
                       : Container(),
                   _journalPageController.trendingJournalsList.length > 1
                       ? Positioned(
-                          // right: 30,
-                          // top: 40,
-                          // left: 30,
                           child: getPostCard(
                               _journalPageController.trendingJournalsList[1]))
                       : Container(),
                   Positioned(
-                      // left: 2.h,
-                      // top: 10,
                       child: getDraggable(
                           _journalPageController.trendingJournalsList[0]))
                 ],
@@ -719,59 +710,63 @@ class _HomePageState extends State<HomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           getUserTile(journal),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Color.fromRGBO(255, 255, 255, 0.85)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  journal.feelings!.length > 0
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Wrap(
-                            children: journal.feelings!.length > 3
-                                ? journal.feelings!
-                                    .sublist(0, 3)
-                                    .map((e) => Text(
-                                          '${e.feelingName}',
-                                          style: SolhTextStyles
-                                              .JournalingHashtagText,
-                                        ))
-                                    .toList()
-                                : journal.feelings!
-                                    .map((e) => Text(
-                                          '${e.feelingName}',
-                                          style: SolhTextStyles
-                                              .JournalingHashtagText,
-                                        ))
-                                    .toList(),
-                          ),
-                        )
-                      : Container(),
+          journal.feelings!.isEmpty &&
+                  journal.description != null &&
                   journal.description!.trim().isEmpty
-                      ? SizedBox(
-                          height: 0,
-                        )
-                      : Container(
-                          width: double.infinity,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              journal.description ?? '',
-                              style: SolhTextStyles.QS_cap_semi,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                ],
-              ),
-            ),
-          ),
+              ? Container()
+              : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Color.fromRGBO(255, 255, 255, 0.85)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        journal.feelings!.length > 0
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Wrap(
+                                  children: journal.feelings!.length > 3
+                                      ? journal.feelings!
+                                          .sublist(0, 3)
+                                          .map((e) => Text(
+                                                '${e.feelingName}',
+                                                style: SolhTextStyles
+                                                    .JournalingHashtagText,
+                                              ))
+                                          .toList()
+                                      : journal.feelings!
+                                          .map((e) => Text(
+                                                '${e.feelingName}',
+                                                style: SolhTextStyles
+                                                    .JournalingHashtagText,
+                                              ))
+                                          .toList(),
+                                ),
+                              )
+                            : Container(),
+                        journal.description!.trim().isEmpty
+                            ? SizedBox(
+                                height: 0,
+                              )
+                            : Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    journal.description ?? '',
+                                    style: SolhTextStyles.QS_cap_semi,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                ),
         ],
       ),
     );

@@ -3,7 +3,6 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/blocked_user_model.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -145,6 +144,7 @@ class _BlockedUsersState extends State<BlockedUsers> {
                       ),
                       onPressed: () async {
                         await connectionController.unBlockUser(sId: user.sId!);
+                        Navigator.pop(context);
                       },
                     ),
                   ))

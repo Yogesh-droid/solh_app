@@ -10,6 +10,7 @@ class MyDiaryController extends GetxController {
   var myJournalsList = <Journals>[].obs;
   var selectedElement = 'My Diary'.obs;
   var isPosting = false.obs;
+  var pageNo = 1;
 
   Future<void> getMyJournals(int pageNo) async {
     myJournalsList.clear();

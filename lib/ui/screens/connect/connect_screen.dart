@@ -500,13 +500,37 @@ getpopUpMenu(context, String sId, journalCommentController) {
         ),
       ];
     },
-    onSelected: (value) {
+    onSelected: (value) async {
       if (value == 1) {
         showDialog(
           context: context,
           builder: (context) => ReportUserDialog(context,
               userId: sId, journalCommentController: journalCommentController),
         );
+      } else if (value == 2) {
+        Map<String, dynamic> map =
+            await Get.find<ConnectionController>().blockUser(sId: sId);
+
+        print(map);
+        if (map['success']) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Person Successfully Blocked'),
+            backgroundColor: SolhColors.primary_green,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+          ));
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Oops !! Something Went Wrong'),
+            backgroundColor: SolhColors.primary_green,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20))),
+          ));
+        }
       } else {
         print('Block');
       }

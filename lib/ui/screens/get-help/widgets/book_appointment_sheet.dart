@@ -209,6 +209,34 @@ class BookAppoinmentSheet extends StatelessWidget {
             height: 20,
           ),
           Text(
+            'Mobile no',
+            style: SolhTextStyles.QS_caption_bold,
+          ),
+          Container(
+            color: SolhColors.light_Bg,
+            height: 48,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: TextFieldStyles.greenF_greenBroadUF_4R(hintText: '')
+                  .copyWith(
+                      enabledBorder:
+                          OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: SolhColors.primary_green)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: SolhColors.primary_green)),
+                      fillColor: SolhColors.light_Bg,
+                      hintStyle: SolhTextStyles.QS_body_2.copyWith(
+                          color: SolhColors.grey_2)),
+              controller:
+                  bookAppointmentController.mobileNotextEditingController,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
             'How Can we help ? (optional)',
             style: SolhTextStyles.QS_caption_bold,
           ),

@@ -233,9 +233,8 @@ class Network {
       http.Response apiResponse = await http.get(_uri, headers: {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
       });
-
-      print(apiResponse.body);
-
+      print(jsonDecode(apiResponse.body));
+      print(apiResponse.statusCode);
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);
