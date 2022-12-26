@@ -42,6 +42,7 @@ import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import '../chat/chat.dart';
 import '../get-help/get-help.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
@@ -192,7 +193,7 @@ class _HomePageState extends State<HomePage> {
           GetHelpCategory(
             title: 'Trending Posts',
             trailing: InkWell(
-              onTap: () {
+              onTap: () async {
                 _bottomNavigatorController.activeIndex.value = 1;
               },
               child: Padding(

@@ -582,6 +582,7 @@ class GetHelpCategory extends StatelessWidget {
         children: [
           homeController.line.value.isNotEmpty
               ? Container(
+                  padding: EdgeInsets.only(top: 8.0),
                   width: double.infinity,
                   child: CachedNetworkImage(
                     imageUrl: homeController.line.value,

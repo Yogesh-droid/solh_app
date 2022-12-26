@@ -141,10 +141,10 @@ class RouteGenerator {
 
       case AppRoutes.psychologyTest:
         return MaterialPageRoute(builder: ((context) => PsychologyTestPage()));
-      case AppRoutes.userProfile:
-        print('Routing to ${routeSettings.name}');
-        return MaterialPageRoute(
-            builder: ((context) => ConnectProfileScreen(args: args as Map)));
+      // case AppRoutes.userProfile:
+      //   print('Routing to ${routeSettings.name}');
+      //   return MaterialPageRoute(
+      //       builder: ((context) => ConnectProfileScreen(args: args as Map)));
       case AppRoutes.userPostScreen:
         return MaterialPageRoute(
             builder: ((context) => PostScreen(args: args as Map)));

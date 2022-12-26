@@ -494,6 +494,10 @@ getpopUpMenu(context, String sId, journalCommentController) {
           child: Text('Report this person'),
           value: 1,
         ),
+        PopupMenuItem(
+          child: Text('Block this person'),
+          value: 2,
+        ),
       ];
     },
     onSelected: (value) {

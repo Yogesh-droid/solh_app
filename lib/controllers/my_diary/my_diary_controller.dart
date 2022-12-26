@@ -16,10 +16,11 @@ class MyDiaryController extends GetxController {
     //pageNo == 1 ? isLoading.value = true : false;
     try {
       //if (pageNo <= _endPageLimit) {
-      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/get-my-diary");
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/v1/get-my-diary?pageNumber=$pageNo");
 
-      myJournalResponseModel.value = JournalsResponseModel.fromJson(map);
+      myJournalResponseModel.value =
+          JournalsResponseModel.fromJson(map['data']);
       myJournalsList.value.addAll(myJournalResponseModel.value.journals ?? []);
       // _endPageLimit = myJournalResponseModel.value.totalPages!;
       //this.pageNo = pageNo;

@@ -56,11 +56,16 @@ class _ChatScreenState extends State<ChatScreen> {
     _service.connectAndListen();
     SocketService.setCurrentSId(widget._sId);
     if (widget._isAnonChat == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {});
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _controller.getChatController(widget._sId);
+      });
     }
 
-    if (widget._isAnonChat == true) {
+    if (widget._isAnonChat == true ||
+        profileController.myProfileModel.value.body!.user!.sosChatSupport !=
+            true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {});
+      delayedAnonChat();
     }
 
     if (widget._isAnonChat) {
@@ -74,7 +79,6 @@ class _ChatScreenState extends State<ChatScreen> {
             '')
         : SocketService.setUserName(
             profileController.myProfileModel.value.body!.user!.name ?? '');
-    delayedAnonChat();
 
     super.initState();
   }
@@ -144,8 +148,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
-                          'You are connected to solh certified volunteer, its not a bot ',
-                          style: SolhTextStyles.QS_cap_2,
+                          'Please wait a moment while we connect you to one of our Solh certified professionals. ',
+                          style: SolhTextStyles.QS_cap_semi.copyWith(
+                              color: SolhColors.Grey_1),
                           textAlign: TextAlign.center,
                         ),
                       )
@@ -218,6 +223,7 @@ class ChatAppbar extends StatelessWidget {
   final bool _isAnonChat;
 
   ChatController _controller = Get.put(ChatController());
+  ProfileController profileController = Get.find();
   SocketService service = SocketService();
   @override
   Widget build(BuildContext context) {
@@ -244,7 +250,10 @@ class ChatAppbar extends StatelessWidget {
                 //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
                   onTap: (() async {
-                    if (_isAnonChat) {
+                    if (_isAnonChat == true ||
+                        profileController.myProfileModel.value.body!.user!
+                                .sosChatSupport !=
+                            true) {
                       await _onWillPop(context, _sId);
                       service.userLeft();
                     } else {
@@ -588,6 +597,7 @@ class RatingBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PageView(
+      physics: NeverScrollableScrollPhysics(),
       controller: chatController.pageController,
       children: [
         RatingBottomSheetChild1(
@@ -612,7 +622,6 @@ class RatingBottomSheetChild1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 100.w,
-      height: 60.h,
       child: DecoratedBox(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -765,109 +774,117 @@ class RatingBottomSheetChild2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 2.h,
-        ),
-        Container(
-          height: 5,
-          width: 10.w,
-          decoration: BoxDecoration(
-            color: SolhColors.grey_3,
-            borderRadius: BorderRadius.circular(4),
+    return Container(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 2.h,
           ),
-        ),
-        SizedBox(
-          height: 2.h,
-        ),
-        Divider(
-          color: SolhColors.grey_3,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
-          child: ListView(
-            shrinkWrap: true,
-            children: [
-              SizedBox(
-                height: 3.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Please write your feedfack here',
-                    style: SolhTextStyles.QS_body_2,
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 3.h,
-              ),
-              TextField(
-                controller: chatAnonController.feedbackTextField,
-                maxLines: 5,
-                minLines: 2,
-                decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
-                  hintText: 'Write here',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(
-                      color: SolhColors.grey_3,
-                      width: 1.0,
+          Container(
+            height: 5,
+            width: 10.w,
+            decoration: BoxDecoration(
+              color: SolhColors.grey_3,
+              borderRadius: BorderRadius.circular(4),
+            ),
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          Divider(
+            color: SolhColors.grey_3,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.w),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                SizedBox(
+                  height: 3.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Please write your feedfack here',
+                      style: SolhTextStyles.QS_body_2,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 3.h,
+                ),
+                TextField(
+                  controller: chatAnonController.feedbackTextField,
+                  maxLines: 5,
+                  minLines: 2,
+                  decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
+                    hintText: 'Write here',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: SolhColors.grey_3,
+                        width: 1.0,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 4.h,
-              ),
-              SolhGreenButton(
-                onPressed: () async {
-                  bool response =
-                      await chatAnonController.postFeedbackController({
-                    "volunteerId": sId,
-                    "reviewBody": chatAnonController.feedbackTextField.text,
-                  });
-                  chatAnonController.selectedIsses.value = [];
-                  chatAnonController.selectedIssuesName.value = '';
-                  chatController.convo.value = [];
+                SizedBox(
+                  height: 4.h,
+                ),
+                SolhGreenButton(
+                  onPressed: () async {
+                    bool response =
+                        await chatAnonController.postFeedbackController({
+                      "volunteerId": sId,
+                      "reviewBody": chatAnonController.feedbackTextField.text,
+                    });
+                    chatAnonController.selectedIsses.value = [];
+                    chatAnonController.selectedIssuesName.value = '';
+                    chatAnonController.selectedOtherIssues.value = [];
+                    chatAnonController.selectedOtherIssuesName.value = '';
+                    chatController.convo.value = [];
 
-                  if (response) {
-                    SolhSnackbar.success(
-                        '', 'Thank you. feedback recorded successfully');
+                    if (response) {
+                      SolhSnackbar.success(
+                          '', 'Thank you. feedback recorded successfully');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, AppRoutes.master, (route) => false);
+                    } else {
+                      SolhSnackbar.error('Error', 'Something went wrong');
+                    }
+                  },
+                  child: Obx(() {
+                    return chatAnonController.isPostingFeedback.value
+                        ? ButtonLoadingAnimation(
+                            ballColor: SolhColors.white,
+                            ballSizeLowerBound: 3,
+                            ballSizeUpperBound: 8,
+                          )
+                        : Text('Submit');
+                  }),
+                ),
+                SizedBox(
+                  height: 2.h,
+                ),
+                SkipButton(
+                  onPressed: () {
+                    chatAnonController.selectedIsses.value = [];
+                    chatAnonController.selectedIssuesName.value = '';
+                    chatAnonController.selectedOtherIssues.value = [];
+                    chatAnonController.selectedOtherIssuesName.value = '';
+                    chatController.convo.value = [];
                     Navigator.pushNamedAndRemoveUntil(
                         context, AppRoutes.master, (route) => false);
-                  } else {
-                    SolhSnackbar.error('Error', 'Something went wrong');
-                  }
-                },
-                child: Obx(() {
-                  return chatAnonController.isPostingFeedback.value
-                      ? ButtonLoadingAnimation(
-                          ballColor: SolhColors.white,
-                          ballSizeLowerBound: 3,
-                          ballSizeUpperBound: 8,
-                        )
-                      : Text('Submit');
-                }),
-              ),
-              SizedBox(
-                height: 2.h,
-              ),
-              SkipButton(
-                onPressed: () {
-                  chatAnonController.selectedIsses.value = [];
-                  chatAnonController.selectedIssuesName.value = '';
-                  chatController.convo.value = [];
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, AppRoutes.master, (route) => false);
-                },
-              )
-            ],
+                  },
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -901,11 +918,16 @@ Future<bool> _onWillPop(context, sId) async {
                   print('model sheet shown');
                   Navigator.of(context).pop();
                   await showModalBottomSheet(
-                      enableDrag: false,
-                      isDismissible: false,
+                      isScrollControlled: true,
+                      constraints: BoxConstraints(maxHeight: 85.h),
                       context: context,
                       builder: (context) {
-                        return RatingBottomSheet(sId: sId);
+                        return Container(
+                            // padding: EdgeInsets.only(
+                            //     bottom:
+                            //         MediaQuery.of(context).viewInsets.bottom),
+                            // height: 60.h,
+                            child: RatingBottomSheet(sId: sId));
                       });
                   // Navigator.pushNamedAndRemoveUntil(
                   //     context, AppRoutes.master, (route) => false);
