@@ -42,6 +42,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
           print('appbar is expanded');
         }
       });
+    bookAppointmentController.assignEmailAndMobField();
     super.initState();
   }
 
@@ -396,13 +397,6 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          print(
-              "This is user's email ID   ${Get.find<ProfileController>().myProfileModel.value.body!.user!.email ?? ''}");
-          ProfileController profileController = Get.find();
-          bookAppointmentController.emailTextEditingController.text =
-              profileController.myProfileModel.value.body!.user!.email ?? '';
-          bookAppointmentController.mobileNotextEditingController.text =
-              profileController.myProfileModel.value.body!.user!.mobile ?? '';
           return BookAppoinmentSheet(
             onContinueBtnPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {

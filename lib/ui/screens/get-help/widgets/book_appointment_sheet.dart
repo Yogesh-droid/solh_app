@@ -4,6 +4,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/widgets/solh_week_cal.dart';
 import 'package:solh/ui/screens/get-help/widgets/time_slot_box.dart';
@@ -18,6 +19,7 @@ class BookAppoinmentSheet extends StatelessWidget {
       : super(key: key);
   final Function() onContinueBtnPressed;
   final BookAppointmentController bookAppointmentController = Get.find();
+  final ProfileController profileController = Get.find();
   final ConsultantController _controller = Get.find();
   final PageController pageController = PageController();
 
@@ -176,8 +178,7 @@ class BookAppoinmentSheet extends StatelessWidget {
   Widget getBookingInputWidget(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
           Text(
             'Email-Id',
@@ -203,6 +204,10 @@ class BookAppoinmentSheet extends StatelessWidget {
                       hintStyle: SolhTextStyles.QS_body_2.copyWith(
                           color: SolhColors.grey_2)),
               controller: bookAppointmentController.emailTextEditingController,
+              // ..selection = TextSelection.collapsed(
+              //     offset: bookAppointmentController
+              //         .emailTextEditingController.text.length),
+              onChanged: (value) {},
             ),
           ),
           SizedBox(
@@ -247,6 +252,7 @@ class BookAppoinmentSheet extends StatelessWidget {
             height: 100,
             color: SolhColors.light_Bg,
             child: TextField(
+              scrollPadding: EdgeInsets.only(bottom: 200),
               controller: bookAppointmentController.descTextEditingController,
               maxLengthEnforcement: MaxLengthEnforcement.none,
               maxLines: 4,
@@ -304,7 +310,10 @@ class BookAppoinmentSheet extends StatelessWidget {
               child: Text(
                 'Continue',
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-              ))
+              )),
+          SizedBox(
+            height: 280,
+          )
         ],
       ),
     );

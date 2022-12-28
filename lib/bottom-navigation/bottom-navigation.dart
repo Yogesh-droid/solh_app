@@ -178,7 +178,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             return AlertDialog(
               actionsPadding: EdgeInsets.all(8.0),
               content: Text(
-                'Do you really want to exit app ?',
+                'Do you really want to exit app?',
                 style: SolhTextStyles.JournalingDescriptionText,
               ),
               actions: [

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -116,7 +118,8 @@ class LocalNotification {
           });
           break;
         case "chat":
-          Future.delayed(Duration(seconds: 2), () {
+          var response = await Get.find<ProfileController>().getMyProfile();
+          if (response) {
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(
                   builder: (context) => ChatScreen(
@@ -138,7 +141,30 @@ class LocalNotification {
                         //     result.notification.additionalData!['data'])['_id'],
                       )),
             );
-          });
+          }
+          // Future.delayed(Duration(seconds: 2), () {
+          //   globalNavigatorKey.currentState!.push(
+          //     MaterialPageRoute(
+          //         builder: (context) => ChatScreen(
+          //               args: {
+          //                 "name": jsonDecode(result
+          //                     .notification.additionalData!['data'])['author'],
+          //                 "imageUrl": jsonDecode(result.notification
+          //                     .additionalData!['data'])['profilePicture'],
+          //                 "sId": jsonDecode(result
+          //                     .notification.additionalData!['data'])['_id'],
+          //                 "isAnonChat": jsonDecode(result.notification
+          //                     .additionalData!['data'])['isAnonChat'],
+          //               },
+          //               // name: jsonDecode(result
+          //               //     .notification.additionalData!['data'])['author'],
+          //               // imageUrl: jsonDecode(result.notification
+          //               //     .additionalData!['data'])['profilePicture'],
+          //               // sId: jsonDecode(
+          //               //     result.notification.additionalData!['data'])['_id'],
+          //             )),
+          //   );
+          // });
           break;
 
         default:

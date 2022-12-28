@@ -56,6 +56,7 @@ dependencies:
   onesignal_flutter: ^3.4.2
   proste_indexed_stack: ^0.2.4
   facebook_app_events: ^0.18.1
+  carousel_slider: ^4.2.1
   #alt_sms_autofill: ^1.0.0
 
 dev_dependencies:

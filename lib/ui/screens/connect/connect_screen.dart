@@ -521,6 +521,8 @@ getpopUpMenu(context, String sId, journalCommentController) {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20))),
           ));
+          await Get.find<ConnectionController>().getAllConnection();
+          Navigator.pop(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Oops !! Something Went Wrong'),

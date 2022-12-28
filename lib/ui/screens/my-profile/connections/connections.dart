@@ -82,7 +82,7 @@ class _ConnectionsState extends State<Connections> {
         return [
           PopupMenuItem(
             child: Text(
-              'Blocked Uers',
+              'Blocked Users',
               style: SolhTextStyles.QS_body_2_semi,
             ),
             value: 1,

@@ -96,9 +96,14 @@ class EditNeedSupportOn extends StatelessWidget {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  userTypeController.selectedOtherIssues.add(
-                                      userTypeController
-                                          .otherIssueTextField.text);
+                                  if (userTypeController
+                                          .otherIssueTextField.text
+                                          .trim() !=
+                                      '') {
+                                    userTypeController.selectedOtherIssues.add(
+                                        userTypeController
+                                            .otherIssueTextField.text);
+                                  }
                                   userTypeController.otherIssueTextField.text =
                                       '';
                                   userTypeController.showOtherissueField.value =

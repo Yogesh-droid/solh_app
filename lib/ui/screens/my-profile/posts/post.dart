@@ -170,10 +170,18 @@ class _PostScreenState extends State<PostScreen> {
                             );
                           }),
                     ),
-                    // Container(
-                    //   height: 50,
-                    //   child: MyLoader(),
-                    // )
+                    StreamBuilder<bool>(
+                        stream: myJournalsBloc.moreLoaderStream,
+                        builder: (context, snapshot) {
+                          return snapshot.hasData
+                              ? snapshot.requireData
+                                  ? Container(
+                                      height: 50,
+                                      child: MyLoader(),
+                                    )
+                                  : Container()
+                              : Container();
+                        })
                   ],
                 ),
               );

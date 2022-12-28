@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
   var selectedDayForTimeSlot = DateTime.now().day.obs;
+  ProfileController profileController = Get.find();
 
   var selectedDay = DateFormat('EEEE').format(DateTime.now()).obs;
 
@@ -84,5 +86,16 @@ class BookAppointmentController extends GetxController {
     print(timeSlotList.length);
     timeSlotList.refresh();
     loadingTimeSlots.value = false;
+  }
+
+  void assignEmailAndMobField() {
+    emailTextEditingController.text =
+        profileController.myProfileModel.value.body!.user != null
+            ? profileController.myProfileModel.value.body!.user!.email ?? ''
+            : '';
+    mobileNotextEditingController.text =
+        profileController.myProfileModel.value.body!.user != null
+            ? profileController.myProfileModel.value.body!.user!.mobile ?? ''
+            : '';
   }
 }

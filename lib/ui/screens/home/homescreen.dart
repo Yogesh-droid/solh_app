@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -579,13 +580,9 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: SolhColors.grey_3,
-                  offset: const Offset(
-                    5.0,
-                    0.0,
-                  ),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
                   blurRadius: 5.0,
-                  spreadRadius: 0,
+                  spreadRadius: 2,
                 )
               ],
               border: Border.all(
@@ -614,13 +611,9 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: SolhColors.grey_3,
-                  offset: const Offset(
-                    5.0,
-                    0.0,
-                  ),
+                  color: Color.fromRGBO(0, 0, 0, 0.1),
                   blurRadius: 5.0,
-                  spreadRadius: 0,
+                  spreadRadius: 2,
                 )
               ],
               border: Border.all(
@@ -642,13 +635,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  getPostCard(Journals journal) {
+  Widget getPostCard(Journals journal) {
     return Container(
       // height: MediaQuery.of(context).size.height * 0.4,
       height: 240,
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.1),
+              blurRadius: 5.0,
+              spreadRadius: 2,
+            )
+          ],
           image: DecorationImage(
               fit: BoxFit.fill,
               image: journal.mediaUrl != null
@@ -669,6 +669,13 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey[200]!),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.1),
+              blurRadius: 5.0,
+              spreadRadius: 2,
+            )
+          ],
           image: DecorationImage(
               fit: BoxFit.fill,
               image: journal.mediaUrl != null
@@ -1671,7 +1678,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: SolhColors.white),
-                        child: Center(child: Text('50+')),
+                        child: Center(child: Text('20+')),
                       ),
                       'More')
                 ],

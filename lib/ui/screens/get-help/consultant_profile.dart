@@ -359,10 +359,10 @@ class _ModalSheetContentState extends State<ModalSheetContent> {
   ConsultantController _consultantController = Get.find();
 
   void initState() {
-    _bookingController.mobileNotextEditingController.text =
-        userBlocNetwork.userMobileNo;
-    _bookingController.emailTextEditingController.text =
-        userBlocNetwork.userEmail;
+    // _bookingController.mobileNotextEditingController.text =
+    //     userBlocNetwork.userMobileNo;
+    // _bookingController.emailTextEditingController.text =
+    //     userBlocNetwork.userEmail;
 
     _bookingController.isSlotAdded(
         providerId: _consultantController

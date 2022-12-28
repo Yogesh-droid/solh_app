@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 class MyJournalsBloc {
   final _myJournalController = PublishSubject<List<Journals?>>();
+  final _moreLoader = PublishSubject<bool>();
   JournalPageController _journalPageController = Get.find();
   int? nextPage = 1;
   List<Journals?> _journalsList = <Journals?>[];
@@ -15,7 +16,7 @@ class MyJournalsBloc {
   // int _endPageLimit = 1;
   int _numberOfPosts = 0;
   bool isFetchingPost = false;
-  var isFetchingMore = false.obs;
+  bool isFetchingMore = false;
 
   int numberOfPosts() {
     return _numberOfPosts;
@@ -24,6 +25,8 @@ class MyJournalsBloc {
   Stream<List<Journals?>> get journalsStateStream =>
       _myJournalController.stream;
 
+  Stream<bool>? get moreLoaderStream => _moreLoader.stream;
+
   Future<List<Journals?>> fetchDetailsFirstTime(String? sId) async {
     print("getting my journals for the first time...");
 
@@ -31,6 +34,9 @@ class MyJournalsBloc {
     // try {
     if (nextPage == 1) {
       isFetchingPost = true;
+    } else {
+      isFetchingMore = true;
+      _moreLoader.sink.add(true);
     }
     Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
@@ -48,6 +54,7 @@ class MyJournalsBloc {
       print('Journals no null ${_journalsResponseModel.journals!.length}');
       _journals = _journalsResponseModel.journals!;
       isFetchingPost = false;
+      _moreLoader.sink.add(false);
       _myJournalController.sink.add(_journals);
     }
 
@@ -61,14 +68,13 @@ class MyJournalsBloc {
     _journalPageController.myVideoPlayerControllers.value.clear();
     for (int i = 0; i < _journals.length; i++) {
       if (_journals[i].mediaType == "video/mp4") {
-        //   if (_journalPageController.myVideoPlayerControllers.value.isEmpty) {
-        //     _journalPageController.myVideoIndex = i;
-        //   }
-        //   VideoPlayerController vc =
-        //       VideoPlayerController.network(_journals[i].mediaUrl!);
-        //   _journalPageController.myVideoPlayerControllers.value
-        //       .add({i: vc..initialize()});
-        _journals.removeAt(i);
+        if (_journalPageController.myVideoPlayerControllers.value.isEmpty) {
+          _journalPageController.myVideoIndex = i;
+        }
+        VideoPlayerController vc =
+            VideoPlayerController.network(_journals[i].mediaUrl!);
+        _journalPageController.myVideoPlayerControllers.value
+            .add({i: vc..initialize()});
       } else {
         _journalPageController.myVideoPlayerControllers.value.add({});
       }
@@ -174,7 +180,7 @@ class MyJournalsBloc {
 
   Future getNextPageJournalsSnapshot(String? sId) async {
     print("fetching next page journals.............");
-    // _currentPage++;
+    _currentPage++;
     print(nextPage);
     if (_currentPage <= nextPage!) {
       await fetchDetailsFirstTime(sId).then((journals) {

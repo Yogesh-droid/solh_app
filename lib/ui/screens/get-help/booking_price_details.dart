@@ -320,8 +320,6 @@ class BookingPriceDetails extends StatelessWidget {
                       bookAppointmentController.selectedDate.value),
                   'seekerEmail':
                       bookAppointmentController.emailTextEditingController.text,
-                  'seekerPhone': bookAppointmentController
-                      .mobileNotextEditingController.text,
                   'from':
                       bookAppointmentController.selectedTimeSlotN.split('-')[0],
                   'to':

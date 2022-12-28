@@ -97,9 +97,14 @@ class NeedSupportOn extends StatelessWidget {
                               ),
                               SolhGreenMiniButton(
                                 onPressed: (() {
-                                  profileSetupController.selectedOtherIssues
-                                      .add(profileSetupController
-                                          .otherIssueTextField.text);
+                                  if (profileSetupController
+                                          .otherIssueTextField.text
+                                          .trim() !=
+                                      '') {
+                                    profileSetupController.selectedOtherIssues
+                                        .add(profileSetupController
+                                            .otherIssueTextField.text);
+                                  }
                                   profileSetupController
                                       .otherIssueTextField.text = '';
                                   profileSetupController
