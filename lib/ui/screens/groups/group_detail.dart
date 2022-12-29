@@ -11,6 +11,7 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
@@ -42,9 +43,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   JournalPageController journalPageController = Get.find();
   ConnectionController connectionController = Get.find();
   CreateGroupController createGroupController = Get.find();
-
   DiscoverGroupController discoverGroupController = Get.find();
   BottomNavigatorController _bottomNavigatorController = Get.find();
+  ProfileController profileController = Get.find();
 
   @override
   void initState() {
@@ -53,14 +54,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     if (groupList.groupMembers == null) {
       getGroupDetails();
     }
-    // isDefaultAdmin = groupList.defaultAdmin != null
-    //     ? groupList.defaultAdmin!.id == userBlocNetwork.id
-    //     : false; //// this is for the admin
-
     groupList.defaultAdmin?.forEach((element) {
-      print(element.id);
-      print(userBlocNetwork.id);
-      if (element.id == userBlocNetwork.id) {
+      if (element.id ==
+          profileController.myProfileModel.value.body!.user!.sId!) {
         isDefaultAdmin = true;
       }
       if (userBlocNetwork.id == '62e125176a858283a925d15c') {
@@ -640,7 +636,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     if (!isDefaultAdmin) {
       //isDefaultAdmin = groupList.defaultAdmin!.sId == userBlocNetwork.id;
       groupList.defaultAdmin?.forEach((element) {
-        if (element.sId == userBlocNetwork.id) {
+        if (element.sId ==
+            profileController.myProfileModel.value.body!.user!.sId!) {
           isDefaultAdmin = true;
         }
       });
@@ -655,26 +652,23 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         color: SolhColors.primary_green,
       ),
       itemBuilder: (context) {
-        return [
-          isDefaultAdmin
-              ? PopupMenuItem(
+        return isDefaultAdmin
+            ? [
+                PopupMenuItem(
                   child: Text('Edit'),
                   value: 1,
-                )
-              : PopupMenuItem(height: 0, child: Container()),
-          isDefaultAdmin
-              ? PopupMenuItem(
+                ),
+                PopupMenuItem(
                   child: Text('Delete'),
                   value: 2,
                 )
-              : PopupMenuItem(height: 0, child: Container()),
-          !isDefaultAdmin
-              ? PopupMenuItem(
+              ]
+            : [
+                PopupMenuItem(
                   child: Text('Exit group'),
                   value: 3,
                 )
-              : PopupMenuItem(height: 0, child: Container()),
-        ];
+              ];
       },
       onSelected: (value) async {
         if (value == 1) {
