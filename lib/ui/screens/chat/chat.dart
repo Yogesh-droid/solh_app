@@ -6,14 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
-import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/main.dart';
-import 'package:solh/model/user/user.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
-import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
+import 'package:solh/widgets_constants/animated_refresh_container.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -22,7 +19,6 @@ import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 import 'package:solh/widgets_constants/text_field_styles.dart';
 import 'package:solh/widgets_constants/typing_indicator.dart';
-import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
@@ -322,7 +318,9 @@ class ChatAppbar extends StatelessWidget {
                 ),
               ],
             ),
-            _isAnonChat
+            _isAnonChat ||
+                    ifMinor(
+                        profileController.myProfileModel.value.body!.user!.dob!)
                 ? Container()
                 : Obx(() => _controller.isVideoConnecting.value
                     ? Padding(
@@ -491,7 +489,9 @@ class _MessageListState extends State<MessageList> {
       return _controller.isLoading == true
           ? Column(
               children: [
-                MyLoader(),
+                AnimatedRefreshContainer(
+                  text: 'Loading...',
+                )
               ],
             )
           : Align(
@@ -982,4 +982,19 @@ Future<bool> _onWillPop(context, sId) async {
           ],
         );
       });
+}
+
+bool ifMinor(String dob) {
+  DateTime birthDate = DateTime.parse(dob);
+
+  if (DateTime.now().year - birthDate.year < 18) {
+    return true;
+  } else if (DateTime.now().year - birthDate.year == 18) {
+    if (DateTime.now().month < birthDate.month) {
+      return DateTime.now().month < birthDate.month;
+    } else if (DateTime.now().month == birthDate.month) {
+      return DateTime.now().day <= birthDate.day;
+    }
+  }
+  return false;
 }

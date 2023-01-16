@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
+import 'package:solh/widgets_constants/animated_refresh_container.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/image_container.dart';
@@ -467,44 +468,5 @@ class _NotificationScreenState extends State<NotificationScreen> {
     // } else {
     //   return Container();
     // }
-  }
-}
-
-class AnimatedRefreshContainer extends StatelessWidget {
-  const AnimatedRefreshContainer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-        child: RefreshContainer(),
-        tween: Tween<double>(begin: 0, end: 20),
-        duration: Duration(milliseconds: 300),
-        builder: (BuildContext context, double _val, Widget? child) {
-          return Container(
-            padding: EdgeInsets.only(top: _val),
-            child: child,
-          );
-        });
-  }
-}
-
-class RefreshContainer extends StatelessWidget {
-  const RefreshContainer({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      width: 100,
-      decoration: BoxDecoration(
-          color: SolhColors.primary_green,
-          borderRadius: BorderRadius.circular(24)),
-      child: Center(
-        child: Text('Refreshing...',
-            style: GoogleFonts.signika(
-              color: Colors.white,
-            )),
-      ),
-    );
   }
 }

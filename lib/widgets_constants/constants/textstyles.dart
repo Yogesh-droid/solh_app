@@ -357,4 +357,10 @@ class SolhTextStyles {
     color: SolhColors.dark_grey,
     fontWeight: FontWeight.w700,
   );
+
+  static const TextStyle QS_big_body_med_20 = TextStyle(
+    fontSize: 20,
+    color: SolhColors.dark_grey,
+    fontWeight: FontWeight.w500,
+  );
 }

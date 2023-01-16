@@ -33,6 +33,7 @@ class GroupList {
   String? groupName;
   String? groupDescription;
   List<GroupMembers>? defaultAdmin;
+  List<AnonymousMembers>? anonymousMembers;
   int? journalCount;
   String? createdAt;
   String? updatedAt;
@@ -56,6 +57,7 @@ class GroupList {
       this.id,
       this.groupMediaUrl,
       this.groupMediaType,
+      this.anonymousMembers,
       this.groupTags});
 
   GroupList.fromJson(Map<String, dynamic> json) {
@@ -64,6 +66,13 @@ class GroupList {
       groupMembers = <GroupMembers>[];
       json['groupMembers'].forEach((v) {
         groupMembers!.add(new GroupMembers.fromJson(v));
+      });
+    }
+
+    if (json['anonymousMembers'] != null) {
+      anonymousMembers = <AnonymousMembers>[];
+      json['anonymousMembers'].forEach((v) {
+        anonymousMembers!.add(new AnonymousMembers.fromJson((v)));
       });
     }
     groupType = json['groupType'];
@@ -148,5 +157,19 @@ class GroupMembers {
     data['bio'] = this.bio;
     data['id'] = this.id;
     return data;
+  }
+}
+
+class AnonymousMembers {
+  String? userName;
+  String? sId;
+  String? profilePicture;
+
+  AnonymousMembers(this.sId, this.profilePicture, this.userName);
+
+  AnonymousMembers.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    profilePicture = json['profilePicture'];
+    userName = json['userName'];
   }
 }

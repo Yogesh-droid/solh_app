@@ -96,6 +96,7 @@ class User {
   String? onesignalDeviceId;
   String? userCountry;
   String? id;
+  int? psychologicalCapital;
 
   User(
       {this.sId,
@@ -143,6 +144,7 @@ class User {
       this.onesignalDeviceId,
       this.userCountry,
       this.issueList,
+      this.psychologicalCapital,
       this.id});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -155,6 +157,7 @@ class User {
       });
     }
     sosChatSupport = json['sosChatSupport'];
+    psychologicalCapital = json['psychologicalCapital'];
     status = json['status'];
     connectionsList = json['connectionsList'].cast<String>();
     profilePicture = json['profilePicture'];
