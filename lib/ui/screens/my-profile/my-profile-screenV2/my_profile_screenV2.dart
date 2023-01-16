@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -135,6 +136,13 @@ class MyProfileScreenV2 extends StatelessWidget {
                             reviews: profileController
                                     .myProfileModel.value.body!.user!.reviews ??
                                 0,
+                            psychlogicalCapital: profileController
+                                    .myProfileModel
+                                    .value
+                                    .body!
+                                    .user!
+                                    .psychologicalCapital ??
+                                0,
                           ),
                           SizedBox(
                             height: 1.h,
@@ -198,12 +206,14 @@ class StatsRow extends StatelessWidget {
       required this.like,
       required this.connections,
       required this.posts,
+      required this.psychlogicalCapital,
       this.reviews})
       : super(key: key);
   final int like;
   final int connections;
   final int posts;
   final int? reviews;
+  final int? psychlogicalCapital;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -229,6 +239,18 @@ class StatsRow extends StatelessWidget {
             ),
             posts.toString(),
             'Posts'),
+        InkWell(
+          onTap: () =>
+              Navigator.pushNamed(context, AppRoutes.activityBadgeParent),
+          child: getCapitalItem(
+              Icon(
+                CupertinoIcons.money_dollar,
+                size: 16,
+                color: SolhColors.primary_green,
+              ),
+              psychlogicalCapital.toString(),
+              'Capital'),
+        )
         // reviews != null
         //     ? getStatsItem(
         //         Icon(
@@ -272,6 +294,64 @@ Container getStatsItem(Widget icon, String statNumber, String stat) {
         )
       ],
     ),
+  );
+}
+
+Widget getCapitalItem(icon, statNumber, stat) {
+  return Stack(
+    children: [
+      Positioned(
+        child: Shimmer.fromColors(
+          baseColor: Color(0xffC29535),
+          highlightColor: Colors.grey[100]!,
+          child: Positioned.fill(
+            child: Container(
+              height: 50,
+              width: 70,
+              decoration: BoxDecoration(
+                  color: Color(0xffC29535),
+                  borderRadius: BorderRadius.circular(4)),
+            ),
+          ),
+        ),
+      ),
+      Positioned.fill(
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        child: Padding(
+            padding: EdgeInsets.all(2),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 2.w),
+              decoration: BoxDecoration(
+                  color: SolhColors.light_Bg,
+                  borderRadius: BorderRadius.circular(4)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      icon,
+                      Text(
+                        statNumber,
+                        style: SolhTextStyles.QS_body_2,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 1.h,
+                  ),
+                  Text(
+                    stat,
+                    style: SolhTextStyles.QS_caption,
+                  )
+                ],
+              ),
+            )),
+      )
+    ],
   );
 }
 
@@ -389,7 +469,20 @@ class OptionsColumn extends StatelessWidget {
         ),
         SizedBox(
           height: 8,
-        )
+        ),
+        InkWell(
+          onTap: () {
+            Get.find<MoodMeterController>().getMoodAnalytics(7);
+            Navigator.pushNamed(context, AppRoutes.activityBadgeParent,
+                arguments: {});
+          },
+          child: getOption(
+              SvgPicture.asset(
+                'assets/images/activity_log.svg',
+                height: 20,
+              ),
+              'Activity  Log'),
+        ),
       ],
     );
   }

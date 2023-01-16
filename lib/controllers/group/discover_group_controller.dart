@@ -68,7 +68,7 @@ class DiscoverGroupController extends GetxController {
         '${APIConstants.api}/api/group/$groupId');
 
     if (map['success']) {
-      groupDetail.value = GroupList.fromJson(map['groupList'][0]);
+      groupDetail.value = GroupList.fromJson(map);
     }
     isLoading.value = false;
   }

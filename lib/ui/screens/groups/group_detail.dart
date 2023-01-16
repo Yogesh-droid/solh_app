@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
@@ -16,10 +18,12 @@ import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bottom-navigation/bottom_navigator_controller.dart';
 import '../journaling/create-journal.dart';
@@ -356,21 +360,32 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           );
                   }),
                   onPressed: () async {
-                    Utility.showLoader(context1);
-                    String success = await createGroupController.joinGroup(
-                        groupId: groupList.sId ?? '');
-                    discoverGroupController.joinedGroupModel.value.groupList!
-                        .add(groupList);
-                    discoverGroupController
-                        .discoveredGroupModel.value.groupList!
-                        .remove(groupList);
-                    discoverGroupController.discoveredGroupModel.refresh();
-                    discoverGroupController.joinedGroupModel.refresh();
-                    discoverGroupController.groupsShownOnHome
-                        .add(groupList.sId!);
-                    Navigator.of(context).pop();
-                    Navigator.of(context, rootNavigator: true).pop();
-                    Utility.showToast(success);
+                    showModalBottomSheet(
+                        enableDrag: true,
+                        context: context,
+                        builder: (context) {
+                          return getGroupJoinOption(
+                              context: context,
+                              createGroupController: createGroupController,
+                              profileController: profileController,
+                              discoverGroupController: discoverGroupController,
+                              groupList: groupList);
+                        });
+                    // Utility.showLoader(context1);
+                    // String success = await createGroupController.joinGroup(
+                    //     groupId: groupList.sId ?? '');
+                    // discoverGroupController.joinedGroupModel.value.groupList!
+                    //     .add(groupList);
+                    // discoverGroupController
+                    //     .discoveredGroupModel.value.groupList!
+                    //     .remove(groupList);
+                    // discoverGroupController.discoveredGroupModel.refresh();
+                    // discoverGroupController.joinedGroupModel.refresh();
+                    // discoverGroupController.groupsShownOnHome
+                    //     .add(groupList.sId!);
+                    // Navigator.of(context).pop();
+                    // Navigator.of(context, rootNavigator: true).pop();
+                    // Utility.showToast(success);
 
                     // Navigator.of(context).pop();
                   }),
@@ -465,11 +480,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.userProfile,
-                      arguments: {
-                        "uid": groupList.groupMembers![index].uid!,
-                        "sId": groupList.groupMembers![index].sId!
-                      });
+                  Navigator.pushNamed(context, AppRoutes.connectScreen,
+                      arguments: {"sId": groupList.groupMembers![index].sId!});
                   // Navigator.push(
                   //     context,
                   //     MaterialPageRoute(
@@ -513,6 +525,76 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               );
             },
           ),
+          getAnonymousUserList(context)
+        ],
+      ),
+    );
+  }
+
+  getAnonymousUserList(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 10,
+          ),
+          ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(
+              height: 10,
+            ),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: groupList.anonymousMembers!.length,
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => ConnectProfileScreen(
+                  //             uid: groupList.groupMembers![index].uid!,
+                  //             sId: groupList.groupMembers![index].sId!)));
+                },
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      // backgroundImage: AssetImage(
+                      //   'assets/images/group_placeholder.png',
+                      // ),
+                      backgroundImage: CachedNetworkImageProvider(
+                          groupList.anonymousMembers![index].profilePicture ??
+                              ''),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(
+                              groupList.anonymousMembers![index].userName ?? '',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w600)),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text('',
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 14, color: SolhColors.grey)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -532,10 +614,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               //     MaterialPageRoute(
               //         builder: (context) => ConnectProfileScreen(
               //             uid: defaultAdmin.uid!, sId: defaultAdmin.sId!)));
-              Navigator.pushNamed(context, AppRoutes.userProfile, arguments: {
-                "uid": defaultAdmin.uid!,
-                "sId": defaultAdmin.sId!
-              });
+              Navigator.pushNamed(context, AppRoutes.connectScreen,
+                  arguments: {"sId": defaultAdmin.sId!});
             },
             child: Column(
               children: [
@@ -796,4 +876,141 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       },
     );
   }
+}
+
+getGroupJoinOption(
+    {context,
+    required CreateGroupController createGroupController,
+    required ProfileController profileController,
+    required DiscoverGroupController discoverGroupController,
+    groupList}) {
+  return ListView(
+    shrinkWrap: true,
+    children: [
+      SizedBox(
+        height: 1.h,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Join As',
+              style: SolhTextStyles.QS_body_1_bold,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: SolhColors.grey_3,
+              ),
+              height: 2.w,
+              width: 12.w,
+            ),
+            InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                child:
+                    SvgPicture.asset('assets/images/canclewithbackgroung.svg'))
+          ],
+        ),
+      ),
+      Divider(),
+      Obx(() {
+        print(createGroupController.joinAsAnon.value);
+
+        return InkWell(
+          onTap: () => createGroupController.joinAsAnon.value = false,
+          child: getUsersTile(
+            name: profileController.myProfileModel.value.body!.user!.name!,
+            badge: profileController.myProfileModel.value.body!.user!.userType!,
+            image: profileController
+                .myProfileModel.value.body!.user!.profilePicture,
+            selected: createGroupController.joinAsAnon.value ? false : true,
+          ),
+        );
+      }),
+      Obx(() {
+        return InkWell(
+          onTap: () => createGroupController.joinAsAnon.value = true,
+          child: getUsersTile(
+            name: profileController
+                .myProfileModel.value.body!.user!.anonymous!.userName!,
+            badge: "",
+            image: profileController
+                .myProfileModel.value.body!.user!.anonymous!.profilePicture!,
+            selected: createGroupController.joinAsAnon.value ? true : false,
+          ),
+        );
+      }),
+      Column(
+        children: [
+          SolhGreenButton(
+              onPressed: () async {
+                Utility.showLoader(context);
+                String success = await createGroupController.joinGroup(
+                    groupId: groupList.sId ?? '',
+                    isAnon: createGroupController.joinAsAnon.value);
+                discoverGroupController.joinedGroupModel.value.groupList!
+                    .add(groupList);
+                discoverGroupController.discoveredGroupModel.value.groupList!
+                    .remove(groupList);
+                discoverGroupController.discoveredGroupModel.refresh();
+                discoverGroupController.joinedGroupModel.refresh();
+                discoverGroupController.groupsShownOnHome.add(groupList.sId!);
+                Navigator.of(context).pop();
+                Navigator.of(context, rootNavigator: true).pop();
+                Utility.showToast(success);
+
+                Navigator.of(context).pop();
+              },
+              width: 90.w,
+              child: Text(
+                'Join',
+                style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+              )),
+        ],
+      ),
+      SizedBox(
+        height: 2.h,
+      ),
+    ],
+  );
+}
+
+Widget getUsersTile({name, image, badge, selected}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: selected
+              ? Border.all(width: 1, color: SolhColors.primary_green)
+              : null),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Row(
+          children: [
+            SimpleImageContainer(
+              imageUrl: image,
+              radius: 50,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: SolhTextStyles.QS_body_2_semi,
+                ),
+                GetBadge(userType: badge),
+              ],
+            ),
+          ],
+        ),
+        selected ? Image.asset('assets/images/circularCheck.png') : Container()
+      ]),
+    ),
+  );
 }

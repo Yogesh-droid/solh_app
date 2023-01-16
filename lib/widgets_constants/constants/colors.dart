@@ -58,6 +58,7 @@ class SolhColors {
   static const Color grey_3 = Color.fromRGBO(217, 217, 217, 1); //Figma #D9D9D9
   static const Color grey239 = Color.fromRGBO(239, 239, 239, 1);
   static const Color light_Bg = Color.fromRGBO(246, 246, 248, 1);
+  static const Color light_Bg_2 = Color.fromRGBO(246, 246, 236, 1);
   static const Color grey7E = Color(0xff7E7E7E);
   //Figma #EFEFEF
   static const Color greyS200 =

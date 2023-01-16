@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
+import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
+import 'package:solh/ui/screens/activity-log-and-badge/psychological_points.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
@@ -117,6 +120,9 @@ class AppRoutes {
   static const String emergencyContact = '/emergencyContact';
   static const String partOfOrg = '/partOfOrg';
   static const String editNeedSupportOn = '/editNeedSupportOn';
+  static const String activityLog = '/activityLog';
+  static const String activityBadgeParent = '/activityBadgeParent';
+  static const String psychologicalCapital = '/psychologicalCapital';
 
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
@@ -258,6 +264,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => ChatAnonIssues()));
       case AppRoutes.editNeedSupportOn:
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
+      case AppRoutes.activityLog:
+        return MaterialPageRoute(builder: ((context) => ActivityLogScreen()));
+      case AppRoutes.activityBadgeParent:
+        return MaterialPageRoute(builder: ((context) => ActivityBadgeParent()));
+      case AppRoutes.psychologicalCapital:
+        return MaterialPageRoute(
+            builder: ((context) => PsychologicalCapital()));
 
       default:
         return MaterialPageRoute(

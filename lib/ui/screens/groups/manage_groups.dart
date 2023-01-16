@@ -214,7 +214,8 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                         groupName: groupList[index].groupName,
                         id: groupList[index].sId,
                         journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!.length,
+                        membersCount: groupList[index].groupMembers!.length +
+                            groupList[index].anonymousMembers!.length,
                       );
                     },
                   )

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import '../../bloc/user-bloc.dart';
 import '../../constants/api.dart';
 import '../../services/network/network.dart';
@@ -12,6 +14,9 @@ class CreateGroupController extends GetxController {
   var selectedMembersIndex = [].obs;
   var selectedMembers = [];
   var isLoading = false.obs;
+  var joinAsAnon = false.obs;
+
+  ProfileController profileController = Get.find();
 
   Future<Map<String, dynamic>> createGroup(
       {required String groupName,
@@ -52,6 +57,7 @@ class CreateGroupController extends GetxController {
             print(error);
             return {};
           });
+
     isLoading.value = false;
     return map;
     return {};
@@ -112,13 +118,16 @@ class CreateGroupController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<String> joinGroup({required String groupId}) async {
+  Future<String> joinGroup({required String groupId, required isAnon}) async {
     isLoading.value = true;
     String success = '';
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
-            url: APIConstants.api + '/api/join-group',
-            body: {'groupId': groupId, 'userId': userBlocNetwork.id})
-        .onError((error, stackTrace) {
+        url: APIConstants.api + '/api/join-group',
+        body: {
+          'groupId': groupId,
+          'userId': profileController.myProfileModel.value.body!.user!.id!,
+          'anonymous': isAnon.toString()
+        }).onError((error, stackTrace) {
       print(error);
       success = 'error joining group';
       return {};
