@@ -1,3 +1,5 @@
+import 'package:solh/model/journals/get_jouranal_comment_model.dart';
+
 class JournalsResponseModel {
   int? totalPosts;
   Previous? previous;
@@ -79,7 +81,7 @@ class Journals {
   String? updatedAt;
   int? length;
   String? d;
-  Null? bestComment;
+  BestComment? bestComment;
   Group? group;
   bool? anonymousJournal;
   PostedBy? postedBy;
@@ -126,7 +128,9 @@ class Journals {
     updatedAt = json['updatedAt'];
     length = json['length'];
     d = json['d'];
-    bestComment = json['bestComment'];
+    bestComment = json['bestComment'] != null
+        ? BestComment.fromJson(json['bestComment'])
+        : null;
     group = json['group'] != null ? new Group.fromJson(json['group']) : null;
     anonymousJournal = json['anonymousJournal'];
     postedBy = json['postedBy'] != null

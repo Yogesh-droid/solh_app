@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -215,7 +216,33 @@ class _MasterScreen2State extends State<MasterScreen2>
           selectedItemColor: SolhColors.primary_green,
           unselectedItemColor: SolhColors.dark_grey,
           selectedLabelStyle: SolhTextStyles.QS_cap_semi,
-          onTap: (index) => bottomNavigatorController.activeIndex.value = index,
+          onTap: (index) {
+            bottomNavigatorController.activeIndex.value = index;
+            switch (index) {
+              case 0:
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'HomePageOpen', parameters: {'Page': 'HomeScreen'});
+                break;
+              case 1:
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'JournalingOpened',
+                    parameters: {'Page': 'Journaling'});
+                break;
+              case 2:
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'GetHelpOpened', parameters: {'Page': 'GetHelp'});
+                break;
+              case 3:
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'MyGoalPageOpened', parameters: {'Page': 'My Goal'});
+                break;
+              case 4:
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'MyProfileOpened', parameters: {'Page': 'MyProfile'});
+                break;
+              default:
+            }
+          },
           items: [
             BottomNavigationBarItem(
               icon: Obx(

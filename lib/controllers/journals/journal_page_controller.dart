@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/model/journals/liked_users_list.dart';
 import 'package:solh/services/network/error_handling.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:video_player/video_player.dart';
@@ -9,6 +10,8 @@ import '../../constants/api.dart';
 
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;
+  var likedUserList = LikedUsersListModel().obs;
+  var isLikedUserListLoading = false.obs;
   TextEditingController descriptionController = TextEditingController();
   var anonymousProfilePositionL = 4.0.obs;
   var anonymousProfilePositionT = 15.0.obs;
@@ -34,10 +37,13 @@ class JournalPageController extends GetxController {
   var myVideoPlayerControllers = <Map<int, VideoPlayerController>>[].obs;
   var selectedGroupId = "".obs;
   int selectedGroupIndex = 0;
+  var selectedGroupName = "".obs;
+  var selectedGroupImg = "".obs;
   var isScrollingStarted = false.obs;
   var isImageUploading = false.obs;
   var isTrendingLoading = false.obs;
   var announcementData = ''.obs;
+  var dropdownValue = 'Publicaly'.obs;
   ScrollController customeScrollController = ScrollController();
 
   Future<void> getAllJournals(int pageNo, {String? groupId}) async {
@@ -199,6 +205,19 @@ class JournalPageController extends GetxController {
           ? ''
           : value['announcementList'][0]['announcementMedia'];
     });
+  }
+
+  Future<void> getUsersLikedPost(String postId, int pageNo) async {
+    isLikedUserListLoading.value = true;
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/like?id=${postId}&pageNumber=$pageNo");
+
+      likedUserList.value = LikedUsersListModel.fromJson(map);
+    } on Exception catch (e) {
+      print(e);
+    }
+    isLikedUserListLoading.value = false;
   }
 
   @override

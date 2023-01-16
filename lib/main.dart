@@ -30,7 +30,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
-  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   await FirebaseAnalytics.instance.logBeginCheckout();
   final SearchMarketController searchMarketController =
       Get.put(SearchMarketController());
@@ -72,9 +72,10 @@ class _SolhAppState extends State<SolhApp> {
   String? utm_source;
 
   String? utm_name;
+  FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // initDynamic();
+    initDynamic();
     initControllers();
     super.initState();
   }
@@ -87,10 +88,12 @@ class _SolhAppState extends State<SolhApp> {
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
+
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
         // initialRoute: AppRoutes.master,
         onGenerateRoute: RouteGenerator.generateRoute,
+        navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
         theme: ThemeData(
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
@@ -164,6 +167,8 @@ class _SolhAppState extends State<SolhApp> {
 
       if (deepLink != null) {
         print(deepLink.path);
+        print(deepLink.query);
+        print(deepLink.queryParameters);
         print(deepLink);
         print(deepLink.data);
         // Utility.showToast(data!.link.query);

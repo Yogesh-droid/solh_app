@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
@@ -14,14 +15,55 @@ import '../../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
 
-class BookAppoinmentSheet extends StatelessWidget {
+class BookAppoinmentSheet extends StatefulWidget {
   BookAppoinmentSheet({Key? key, required this.onContinueBtnPressed})
       : super(key: key);
   final Function() onContinueBtnPressed;
+
+  @override
+  State<BookAppoinmentSheet> createState() => _BookAppoinmentSheetState();
+}
+
+class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
   final BookAppointmentController bookAppointmentController = Get.find();
   final ProfileController profileController = Get.find();
   final ConsultantController _controller = Get.find();
-  final PageController pageController = PageController();
+  late PageController pageController;
+
+  @override
+  void initState() {
+    pageController = PageController(
+        initialPage: profileController
+                .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty
+            ? 1
+            : 0);
+    bookAppointmentController.selectedDayForTimeSlot.value = DateTime.now().day;
+    bookAppointmentController.selectedDate.value = DateTime.now();
+    bookAppointmentController.getTimeSlot(
+        providerId: _controller.consultantModelController.value.provder!.sId,
+        date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+
+    if (profileController
+        .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty) {
+      if (bookAppointmentController.selectedTimeZone.value.isEmpty) {
+        bookAppointmentController.selectedTimeZone.value =
+            profileController.myProfileModel.value.body!.user!.userTimezone ??
+                '';
+        bookAppointmentController.selectedOffset.value = profileController
+                .myProfileModel.value.body!.user!.userTimezoneOffset ??
+            '';
+        bookAppointmentController.selectedDayForTimeSlot.value =
+            DateTime.now().day;
+        bookAppointmentController.selectedDate.value = DateTime.now();
+        bookAppointmentController.getTimeSlot(
+            providerId:
+                _controller.consultantModelController.value.provder!.sId,
+            date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      }
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +104,7 @@ class BookAppoinmentSheet extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               controller: pageController,
               children: [
+                getTimeZoneWidget(context),
                 getBookcalenderWidget(context),
                 getBookingInputWidget(context)
               ],
@@ -102,6 +145,7 @@ class BookAppoinmentSheet extends StatelessWidget {
                 ),
                 Obx(() => Switch(
                     value: _controller.isAnonymousBookingEnabled.value,
+                    inactiveThumbColor: SolhColors.grey_2,
                     onChanged: (value) {
                       _controller.isAnonymousBookingEnabled.value =
                           !_controller.isAnonymousBookingEnabled.value;
@@ -137,9 +181,49 @@ class BookAppoinmentSheet extends StatelessWidget {
                   SizedBox(
                     height: 30,
                   ),
-                  Text(
-                    'Select Time',
-                    style: SolhTextStyles.QS_body_2_bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Select Time',
+                        style: SolhTextStyles.QS_body_2_bold,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          pageController.previousPage(
+                              duration: Duration(seconds: 1),
+                              curve: Curves.ease);
+                        },
+                        child: Container(
+                          height: 32,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: SolhColors.primary_green),
+                              borderRadius: BorderRadius.circular(16)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Obx(() => Text(
+                                    bookAppointmentController
+                                        .selectedTimeZone.value
+                                        .split('/')[1],
+                                    style: SolhTextStyles.QS_body_2,
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(
+                                Icons.edit,
+                                color: SolhColors.primary_green,
+                                size: 14,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 10,
@@ -162,7 +246,7 @@ class BookAppoinmentSheet extends StatelessWidget {
                     Utility.showToast('Please choose a time slot');
                     return;
                   }
-                  pageController.animateToPage(1,
+                  pageController.animateToPage(2,
                       duration: Duration(seconds: 1), curve: Curves.decelerate);
                 },
                 child: Text(
@@ -306,13 +390,141 @@ class BookAppoinmentSheet extends StatelessWidget {
           SolhGreenButton(
               height: 48,
               width: MediaQuery.of(context).size.width,
-              onPressed: onContinueBtnPressed,
+              onPressed: widget.onContinueBtnPressed,
               child: Text(
                 'Continue',
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
           SizedBox(
             height: 280,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget getTimeZoneWidget(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(18.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Time zone',
+            style: SolhTextStyles.QS_body_2_bold,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'Please select your current time zone',
+            style:
+                SolhTextStyles.QS_cap_semi.copyWith(color: SolhColors.Grey_1),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: profileController.myProfileModel.value.body!
+                    .userCountryAvailableTimezones!.length,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: () {
+                      bookAppointmentController.selectedTimeZone.value =
+                          profileController.myProfileModel.value.body!
+                                  .userCountryAvailableTimezones![index].zone ??
+                              '';
+                      bookAppointmentController.selectedOffset.value =
+                          profileController
+                                  .myProfileModel
+                                  .value
+                                  .body!
+                                  .userCountryAvailableTimezones![index]
+                                  .offset ??
+                              '';
+                    },
+                    child: Obx(() => Container(
+                          padding: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                              color: bookAppointmentController
+                                          .selectedTimeZone.value ==
+                                      profileController
+                                          .myProfileModel
+                                          .value
+                                          .body!
+                                          .userCountryAvailableTimezones![index]
+                                          .zone
+                                  ? SolhColors.light_Bg
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(12)),
+                          height: 50,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  child: Text(
+                                    profileController
+                                        .myProfileModel
+                                        .value
+                                        .body!
+                                        .userCountryAvailableTimezones![index]
+                                        .zone!
+                                        .split('/')[1],
+                                    style: SolhTextStyles.QS_cap_semi.copyWith(
+                                        fontSize: 16),
+                                  ),
+                                ),
+                                Text(
+                                    "UTC ${profileController.myProfileModel.value.body!.userCountryAvailableTimezones![index].offset ?? ''}"),
+                                bookAppointmentController
+                                            .selectedTimeZone.value ==
+                                        profileController
+                                            .myProfileModel
+                                            .value
+                                            .body!
+                                            .userCountryAvailableTimezones![
+                                                index]
+                                            .zone
+                                    ? SvgPicture.asset(
+                                        'assets/images/check.svg')
+                                    : Container(
+                                        width: 5,
+                                      )
+                              ]),
+                        )),
+                  );
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: SolhGreenButton(
+                height: 48,
+                width: MediaQuery.of(context).size.width,
+                onPressed: () {
+                  bookAppointmentController.selectedDayForTimeSlot.value =
+                      DateTime.now().day;
+                  bookAppointmentController.selectedDate.value = DateTime.now();
+                  bookAppointmentController.getTimeSlot(
+                      providerId: _controller
+                          .consultantModelController.value.provder!.sId,
+                      date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+
+                  /////////////
+                  if (bookAppointmentController
+                      .selectedTimeZone.value.isEmpty) {
+                    Utility.showToast('Please choose a time zone');
+                    return;
+                  }
+                  pageController.animateToPage(1,
+                      duration: Duration(seconds: 1), curve: Curves.decelerate);
+                },
+                child: Text(
+                  'Next',
+                  style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+                )),
           )
         ],
       ),

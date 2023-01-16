@@ -1,7 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
@@ -13,7 +11,6 @@ import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButto
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../../widgets_constants/solh_snackbar.dart';
 
 class GenderField extends StatelessWidget {
@@ -38,6 +35,9 @@ class GenderField extends StatelessWidget {
 
               if (response) {
                 Navigator.pushNamed(context, AppRoutes.roleField);
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'OnBoardingGenderDone',
+                    parameters: {'Page': 'OnBoarding'});
               }
             } else {
               SolhSnackbar.error('Error', 'Please select a gender');

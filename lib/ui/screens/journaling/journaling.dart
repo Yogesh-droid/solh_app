@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -52,6 +53,8 @@ class _JournalingState extends State<Journaling> {
       }
       if (_journalsScrollController.position.pixels > 600) {
         _journalPageController.isScrollingStarted.value = true;
+        FirebaseAnalytics.instance.logEvent(
+            name: 'JournalingScrolled', parameters: {'Page': 'Journaling'});
       }
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&

@@ -1,37 +1,304 @@
-// class GetJouranalsCommentModel {
-//   bool? success;
-//   int? code;
-//   Body? body;
-
-//   GetJouranalsCommentModel({this.success, this.code, this.body});
-
-//   GetJouranalsCommentModel.fromJson(Map<String, dynamic> json) {
-//     success = json['success'];
-//     code = json['code'];
-//     body = json['body'] != null ? new Body.fromJson(json['body']) : null;
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['success'] = this.success;
-//     data['code'] = this.code;
-//     if (this.body != null) {
-//       data['body'] = this.body!.toJson();
-//     }
-//     return data;
-//   }
-// }
-
 class GetJouranalsCommentModel {
+  bool? success;
+  Body? body;
+
+  GetJouranalsCommentModel({this.success, this.body});
+
+  GetJouranalsCommentModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    body = json['result'] != null ? new Body.fromJson(json['result']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+    if (this.body != null) {
+      data['result'] = this.body!.toJson();
+    }
+    return data;
+  }
+}
+
+class Body {
+  int? totalComments;
+  List<Comments>? comments;
+  BestComment? bestComment;
+  Body({this.totalComments, this.comments, this.bestComment});
+
+  Body.fromJson(Map<String, dynamic> json) {
+    totalComments = json['totalComments'];
+    if (json['comments'] != null) {
+      comments = <Comments>[];
+      json['comments'].forEach((v) {
+        comments!.add(new Comments.fromJson(v));
+      });
+    }
+    bestComment = json['bestComment'] != null
+        ? new BestComment.fromJson(json['bestComment'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['totalComments'] = this.totalComments;
+    if (this.comments != null) {
+      data['comments'] = this.comments!.map((v) => v.toJson()).toList();
+    }
+    data['bestComment'] = this.bestComment;
+    return data;
+  }
+}
+
+class Comments {
+  String? sId;
+  String? commentBody;
+  String? commentOn;
+  String? commentUser;
+  String? commentBy;
+  int? likes;
+  List<int>? likedBy;
+  int? replyNum;
+  String? commentDate;
+  String? commentTime;
+  String? parentId;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  User? user;
+  ReplyTo? replyTo;
+
+  Comments(
+      {this.sId,
+      this.commentBody,
+      this.commentOn,
+      this.commentUser,
+      this.commentBy,
+      this.likes,
+      this.likedBy,
+      this.replyNum,
+      this.parentId,
+      this.createdAt,
+      this.commentDate,
+      this.commentTime,
+      this.updatedAt,
+      this.replyTo,
+      this.iV,
+      this.user});
+
+  Comments.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    commentBody = json['commentBody'];
+    commentOn = json['commentOn'];
+    commentUser = json['commentUser'];
+    commentBy = json['commentBy'];
+    commentDate = json['commentDate'] != null ? json['commentDate'] : null;
+    commentTime = json['commentTime'] != null ? json['commentTime'] : null;
+    likes = json['likes'];
+    if (json['likedBy'] != null) {
+      likedBy = <int>[];
+      json['likedBy'].forEach((v) {
+        likedBy!.add(v);
+      });
+    }
+    replyNum = json['replyNum'];
+    replyTo =
+        json['replyTo'] != null ? new ReplyTo.fromJson(json['replyTo']) : null;
+    parentId = json['parentId'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['commentBody'] = this.commentBody;
+    data['commentOn'] = this.commentOn;
+    data['commentUser'] = this.commentUser;
+    data['commentBy'] = this.commentBy;
+    data['likes'] = this.likes;
+    // if (this.likedBy != null) {
+    //   data['likedBy'] = this.likedBy!.map((v) => v.toJson()).toList();
+    // }
+    data['replyNum'] = this.replyNum;
+    data['parentId'] = this.parentId;
+    if (this.replyTo != null) {
+      data['replyTo'] = this.replyTo!.toJson();
+    }
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    return data;
+  }
+}
+
+class BestComment {
+  String? sId;
+  String? commentBody;
+  String? commentOn;
+  String? commentUser;
+  String? commentBy;
+  String? commentDate;
+  String? commentTime;
+  int? likes;
+  List<int>? likedBy;
+  String? parentId;
+  int? replyNum;
+  String? createdAt;
+  String? updatedAt;
+  User? user;
+
+  BestComment(
+      {this.sId,
+      this.commentBody,
+      this.commentOn,
+      this.commentUser,
+      this.commentBy,
+      this.commentDate,
+      this.commentTime,
+      this.likes,
+      this.likedBy,
+      this.parentId,
+      this.replyNum,
+      this.createdAt,
+      this.updatedAt,
+      this.user});
+
+  BestComment.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    commentBody = json['commentBody'];
+    commentOn = json['commentOn'];
+    commentUser = json['commentUser'];
+    commentBy = json['commentBy'];
+    commentDate = json['commentDate'];
+    commentTime = json['commentTime'];
+    likes = json['likes'];
+    if (json['likedBy'] != null) {
+      likedBy = <int>[];
+      json['likedBy'].forEach((v) {
+        likedBy!.add(v);
+      });
+    }
+    parentId = json['parentId'];
+    replyNum = json['replyNum'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['commentBody'] = this.commentBody;
+    data['commentOn'] = this.commentOn;
+    data['commentUser'] = this.commentUser;
+    data['commentBy'] = this.commentBy;
+    data['commentDate'] = this.commentDate;
+    data['commentTime'] = this.commentTime;
+    data['likes'] = this.likes;
+    if (this.likedBy != null) {
+      data['likedBy'] = this.likedBy!.map((v) => v).toList();
+    }
+    data['parentId'] = this.parentId;
+    data['replyNum'] = this.replyNum;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
+    }
+    return data;
+  }
+}
+
+class User {
+  String? id;
+  String? uid;
+  String? name;
+  String? profilePicture;
+
+  User({this.id, this.uid, this.name, this.profilePicture});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    uid = json['uid'];
+    name = json['name'];
+    profilePicture = json['profilePicture'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['uid'] = this.uid;
+    data['name'] = this.name;
+    data['profilePicture'] = this.profilePicture;
+    return data;
+  }
+}
+
+class ReplyTo {
+  String? sId;
+  String? uid;
+  String? name;
+  String? id;
+
+  ReplyTo({this.sId, this.uid, this.name, this.id});
+
+  ReplyTo.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    uid = json['uid'];
+    name = json['name'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['uid'] = this.uid;
+    data['name'] = this.name;
+    data['id'] = this.id;
+    return data;
+  }
+}
+
+
+
+/* class GetJouranalsCommentModel {
+  bool? success;
+
+  Body? body;
+
+  GetJouranalsCommentModel({this.success, this.body});
+
+  GetJouranalsCommentModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+
+    body = json['result'] != null ? new Body.fromJson(json['result']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['success'] = this.success;
+
+    if (this.body != null) {
+      data['result'] = this.body!.toJson();
+    }
+    return data;
+  }
+}
+
+class Body {
   List<Comments>? comments;
   BestComment? bestComment;
   int? totalComments;
   int? totalPages;
 
-  GetJouranalsCommentModel(
-      {this.comments, this.bestComment, this.totalComments, this.totalPages});
+  Body({this.comments, this.bestComment, this.totalComments, this.totalPages});
 
-  GetJouranalsCommentModel.fromJson(Map<String, dynamic> json) {
+  Body.fromJson(Map<String, dynamic> json) {
     bestComment = json['bestComment'] != null
         ? new BestComment.fromJson(json['bestComment'])
         : null;
@@ -381,3 +648,4 @@ class User {
     return data;
   }
 }
+ */

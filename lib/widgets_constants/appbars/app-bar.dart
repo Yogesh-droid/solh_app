@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,7 +11,6 @@ import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
-import 'package:solh/ui/screens/sos/sos.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../ui/my_diary/my_diary_list_page.dart';
@@ -128,6 +128,8 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => GlobalSearchPage()));
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'SearchTapped', parameters: {'Page': 'AppBar'});
                   },
                   icon: Icon(
                     Icons.search,
@@ -163,9 +165,9 @@ class SOSButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-        // print("sos");
-        // showDialog(context: context, builder: (_) => SOSDialog());
         Navigator.pushNamed(context, AppRoutes.chatAnonIssues);
+        FirebaseAnalytics.instance
+            .logEvent(name: 'SOSTapped', parameters: {'Page': 'AppBar'});
       },
       icon: CircleAvatar(
         radius: 28,

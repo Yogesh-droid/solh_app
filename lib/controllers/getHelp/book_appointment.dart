@@ -6,6 +6,8 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/services/network/network.dart';
 
 class BookAppointmentController extends GetxController {
+  var selectedTimeZone = ''.obs;
+  var selectedOffset = ''.obs;
   var selectedDayForTimeSlot = DateTime.now().day.obs;
   ProfileController profileController = Get.find();
 
@@ -71,8 +73,12 @@ class BookAppointmentController extends GetxController {
         DateFormat('HH:00').format(DateTime.now().add(Duration(hours: 1)));
     print(currentTimeSlot);
     loadingTimeSlots.value = true;
-    var response = await Network.makeGetRequest(APIConstants.api +
-        '/api/provider-schedule?provider=$providerId&date=$date');
+    // var response = await Network.makeGetRequestWithToken(APIConstants.api +
+    //     '/api/app/provider-schedule?provider=$providerId&date=$date&zone=$selectedTimeZone&offset=$selectedOffset');
+    var response = await Network.makePostRequestWithToken(
+        url: APIConstants.api +
+            '/api/app/provider-schedule?provider=$providerId&date=$date',
+        body: {"offset": selectedOffset.value, "zone": selectedTimeZone.value});
     timeSlotList.value = response['slot'];
     response['bookedSlots'] != null
         ? bookedTimeSlots.value = response['bookedSlots']

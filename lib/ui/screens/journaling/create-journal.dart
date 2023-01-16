@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +15,7 @@ import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/connections/tag_controller.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/feelings_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
@@ -37,10 +38,6 @@ import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
-
-// Map selectedItems = {};
-
-// List<bool> isSelected = [];
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen(
@@ -99,7 +96,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
     });
 
-    // userBlocNetwork.getMyProfileSnapshot();
+    FirebaseAnalytics.instance.logEvent(
+        name: 'CreateJournalOpened', parameters: {'Page': 'CreateJournalPage'});
   }
 
   @override
@@ -126,8 +124,35 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     UsernameHeader(
                       //userModel: userBlocNetwork.myData,
                       onTypeChanged: (value) {
+                        journalPageController.dropdownValue.value = value;
                         print("Changed to $value");
-                        _journalType = value;
+                        if (value == "Group") {
+                          showModalBottomSheet(
+                              context: context,
+                              enableDrag: false,
+                              isScrollControlled: false,
+                              isDismissible: false,
+                              builder: (context) {
+                                return Container(
+                                  child: GroupModalSheet(
+                                    onGroupSelected: () {
+                                      _journalType = value;
+                                    },
+                                  ),
+                                );
+                              });
+                          if (journalPageController
+                              .selectedGroupId.value.isEmpty) {
+                            //_journalType = 'Publicaly';
+                            journalPageController.dropdownValue.value =
+                                'Publicaly';
+                          }
+                        } else {
+                          journalPageController.selectedGroupId.value = "";
+                          journalPageController.selectedGroupName.value = '';
+                          journalPageController.selectedGroupImg.value = '';
+                          _journalType = value;
+                        }
                       },
                     ),
                     SizedBox(height: 2.h),
@@ -1062,7 +1087,7 @@ class UsernameHeader extends StatefulWidget {
 
 class _UsernameHeaderState extends State<UsernameHeader> {
   JournalPageController journalPageController = Get.find();
-  String _dropdownValue = "Publicaly";
+  // String _dropdownValue = "Publicaly";
   AnonController _anonController = Get.find();
   ProfileController profileController = Get.find();
 
@@ -1138,67 +1163,82 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       SizedBox(
                         height: 1.h,
                       ),
-                      // Obx(() =>
-                      //     profileController.myProfileModel.value.body != null
-                      //         ? GetBadge(
-                      //             userType: profileController.myProfileModel
-                      //                     .value.body!.user!.userType ??
-                      //                 '')
-                      //         : Container()),
                       SizedBox(
                         height: 4.h,
                       ),
                     ],
                   ),
-                  // Text(
-                  //   "Happiness Maker",
-                  //   style: SolhTextStyles.JournalingBadgeText.copyWith(
-                  //       fontSize: 12),
-                  // )
                 ],
               ),
             ],
           ),
-          journalPageController.selectedGroupId.value == ''
-              ? Container(
-                  height: 4.5.h,
-                  width: 35.w,
-                  padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      border: Border.all(
-                        color: SolhColors.primary_green,
-                      )),
-                  child: DropdownButton(
-                      isExpanded: true,
-                      icon: Icon(CupertinoIcons.chevron_down),
-                      iconSize: 18,
-                      iconEnabledColor: SolhColors.primary_green,
-                      underline: SizedBox(),
-                      value: _dropdownValue,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _dropdownValue = newValue!;
-                        });
-                        widget._onTypeChanged.call(_dropdownValue);
-                      },
-                      style: TextStyle(color: SolhColors.primary_green),
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("Publically"),
-                          value: "Publicaly",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("My Diary"),
-                          value: "My_Diary",
-                        ),
-                        DropdownMenuItem(
-                          child: Text("Connections"),
-                          value: "Connections",
-                        ),
-                      ]),
-                )
-              : Container()
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Container(
+                height: 4.5.h,
+                width: 35.w,
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    border: Border.all(
+                      color: SolhColors.primary_green,
+                    )),
+                child: DropdownButton(
+                    isExpanded: true,
+                    icon: Icon(CupertinoIcons.chevron_down),
+                    iconSize: 18,
+                    iconEnabledColor: SolhColors.primary_green,
+                    underline: SizedBox(),
+                    value: journalPageController.selectedGroupId.value == ''
+                        ? journalPageController.dropdownValue.value
+                        : "Group",
+                    onChanged: (String? newValue) {
+                      widget._onTypeChanged.call(newValue!);
+                    },
+                    style: TextStyle(color: SolhColors.primary_green),
+                    items: [
+                      DropdownMenuItem(
+                        child: Text("Publically"),
+                        value: "Publicaly",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("My Diary"),
+                        value: "My_Diary",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Connections"),
+                        value: "Connections",
+                      ),
+                      DropdownMenuItem(
+                        child: Text("Group"),
+                        value: "Group",
+                      ),
+                    ]),
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  journalPageController.selectedGroupImg.value.isNotEmpty
+                      ? GetCircleImg(
+                          top: 0,
+                          left: 0,
+                          radius: 12,
+                          imgUrl: journalPageController.selectedGroupImg.value,
+                        )
+                      : SizedBox(),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    journalPageController.selectedGroupName.value,
+                    style: SolhTextStyles.QS_cap_semi,
+                  ),
+                ],
+              )
+            ],
+          ),
         ],
       );
     });
@@ -1209,28 +1249,33 @@ class _UsernameHeaderState extends State<UsernameHeader> {
       () => profileController.myProfileModel.value.body != null
           ? GestureDetector(
               onTap: () {
-                if (profileController
-                        .myProfileModel.value.body!.user!.anonymous !=
-                    null) {
-                  journalPageController.isAnonymousSelected.value =
-                      !journalPageController.isAnonymousSelected.value;
-                } else {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => PickUsernameScreen()));\
-                  openCreateAnonymousBottomSheet();
-                }
+                onSwapProfile();
               },
               child: Container(
                   height: 10.h,
                   width: 20.w,
                   child: Obx(() {
-                    return journalPageController.isAnonymousSelected.value
-
-                        /// if anonymous is selected
-                        ? getAnonymousStack(
-                            profileController.myProfileModel.value.body!.user)
-                        : getNormalStack(
-                            profileController.myProfileModel.value.body!.user);
+                    return GetNormalStack(
+                      isAnonymousSelected:
+                          journalPageController.isAnonymousSelected.value,
+                      userModel:
+                          profileController.myProfileModel.value.body!.user,
+                      onTapped: () {
+                        onSwapProfile();
+                      },
+                      normalRadius:
+                          journalPageController.nomalProfileRadius.value,
+                      anonRadius:
+                          journalPageController.anonymousProfileRadius.value,
+                      anonTop:
+                          journalPageController.anonymousProfilePositionT.value,
+                      anonLeft:
+                          journalPageController.anonymousProfilePositionL.value,
+                      normalTop:
+                          journalPageController.nomalProfilePositionT.value,
+                      normalLeft:
+                          journalPageController.nomalProfilePositionL.value,
+                    );
                   })))
           : CircleAvatar(
               radius: journalPageController.anonymousProfileRadius.value,
@@ -1241,39 +1286,114 @@ class _UsernameHeaderState extends State<UsernameHeader> {
     );
   }
 
-  Widget getNormalStack(User? userModel) {
+  void openCreateAnonymousBottomSheet() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => AnonymousBottomSheet(onTap: () async {
+              await _anonController.createAnonProfile();
+              await Get.find<ProfileController>().getMyProfile();
+              Navigator.pop(context);
+            }));
+  }
+
+  void onSwapProfile() {
+    if (profileController.myProfileModel.value.body!.user!.anonymous != null) {
+      journalPageController.isAnonymousSelected.value =
+          !journalPageController.isAnonymousSelected.value;
+      if (journalPageController.isAnonymousSelected.value) {
+        // if anonymous selected then bring anonymous to front and make it bigger radius,
+        // Simply swap values of position and radius
+        journalPageController.nomalProfileRadius.value = 3.5.w;
+        journalPageController.anonymousProfileRadius.value = 6.w;
+        journalPageController.anonymousProfilePositionT.value = 2.0;
+        journalPageController.nomalProfilePositionT.value = 15.0;
+        journalPageController.anonymousProfilePositionL.value = 24.0;
+        journalPageController.nomalProfilePositionL.value = 4.0;
+      } else {
+        journalPageController.nomalProfileRadius.value = 6.w;
+        journalPageController.anonymousProfileRadius.value = 3.5.w;
+        journalPageController.anonymousProfilePositionT.value = 15.0;
+        journalPageController.anonymousProfilePositionL.value = 4.0;
+        journalPageController.nomalProfilePositionT.value = 2.0;
+        journalPageController.nomalProfilePositionL.value = 24.0;
+      }
+    } else {
+      openCreateAnonymousBottomSheet();
+    }
+  }
+}
+
+class GetNormalStack extends StatelessWidget {
+  final User? userModel;
+  final bool isAnonymousSelected;
+  final double anonTop;
+  final double anonLeft;
+  final double normalTop;
+  final double normalLeft;
+  final double normalRadius;
+  final double anonRadius;
+  final String? imgUrl;
+  final Function() onTapped;
+  const GetNormalStack(
+      {Key? key,
+      this.userModel,
+      required this.isAnonymousSelected,
+      required this.onTapped,
+      this.imgUrl,
+      required this.normalRadius,
+      required this.anonRadius,
+      required this.anonTop,
+      required this.anonLeft,
+      required this.normalTop,
+      required this.normalLeft})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        getCircleImg(
-          radius: journalPageController.anonymousProfileRadius.value,
+        // isAnonymousSelected
+        //     ? GetCircleImg(
+        //         radius: normalRadius,
+        //         imgUrl: userModel!.profilePicture ??
+        //             "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+        //         top: normalTop,
+        //         left: normalLeft,
+        //       )
+        //     :
+        GetCircleImg(
+          radius: anonRadius,
           imgUrl: userModel!.anonymous != null
-              ? userModel.anonymous!.profilePicture ??
+              ? userModel!.anonymous!.profilePicture ??
                   "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
               : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
-          top: journalPageController.anonymousProfilePositionT.value,
-          left: journalPageController.anonymousProfilePositionL.value,
+          top: anonTop,
+          left: anonLeft,
         ),
-        getCircleImg(
-          radius: journalPageController.nomalProfileRadius.value,
-          imgUrl: userModel.profilePicture ??
+        // isAnonymousSelected
+        //     ? GetCircleImg(
+        //         radius: anonRadius,
+        //         imgUrl: userModel!.anonymous != null
+        //             ? userModel!.anonymous!.profilePicture ??
+        //                 "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
+        //             : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
+        //         top: anonTop,
+        //         left: anonLeft,
+        //       )
+        //     :
+        GetCircleImg(
+          radius: normalRadius,
+          imgUrl: userModel!.profilePicture ??
               "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-          top: journalPageController.nomalProfilePositionT.value,
-          left: journalPageController.nomalProfilePositionL.value,
+          top: normalTop,
+          left: normalLeft,
         ),
         Positioned(
           left: 0,
           top: -5,
           child: InkWell(
-            onTap: () {
-              /// if Anon user is true anonymous, then show anonymous profile picture
-
-              if (userModel.anonymous != null) {
-                journalPageController.isAnonymousSelected.value =
-                    !journalPageController.isAnonymousSelected.value;
-              } else {
-                openCreateAnonymousBottomSheet();
-              }
-            },
+            onTap: onTapped,
             child: Icon(
               Icons.swap_horiz,
               color: SolhColors.primary_green,
@@ -1283,51 +1403,23 @@ class _UsernameHeaderState extends State<UsernameHeader> {
       ],
     );
   }
+}
 
-  Widget getAnonymousStack(User? userModel) {
-    return Stack(
-      children: [
-        getCircleImg(
-          radius: journalPageController.anonymousProfileRadius.value,
-          imgUrl: userModel!.profilePicture,
-          top: journalPageController.anonymousProfilePositionT.value,
-          left: journalPageController.anonymousProfilePositionL.value,
-        ),
-        userModel.anonymous != null
-            ? getCircleImg(
-                radius: journalPageController.nomalProfileRadius.value,
-                imgUrl: userModel.anonymous!.profilePicture ??
-                    "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-                top: journalPageController.nomalProfilePositionT.value,
-                left: journalPageController.nomalProfilePositionL.value,
-              )
-            : Container(),
-        userModel.anonymous != null
-            ? Positioned(
-                left: 0,
-                top: -5,
-                child: InkWell(
-                  onTap: () {
-                    journalPageController.isAnonymousSelected.value =
-                        !journalPageController.isAnonymousSelected.value;
-                    print(journalPageController.isAnonymousSelected.value);
-                  },
-                  child: Icon(
-                    Icons.swap_horiz,
-                    color: SolhColors.primary_green,
-                  ),
-                ),
-              )
-            : Container(),
-      ],
-    );
-  }
+class GetCircleImg extends StatelessWidget {
+  const GetCircleImg(
+      {Key? key,
+      required this.top,
+      required this.left,
+      required this.radius,
+      this.imgUrl})
+      : super(key: key);
+  final double top;
+  final double left;
+  final double radius;
+  final String? imgUrl;
 
-  Widget getCircleImg(
-      {required double radius,
-      String? imgUrl,
-      required double top,
-      required double left}) {
+  @override
+  Widget build(BuildContext context) {
     return AnimatedPositioned(
       duration: Duration(milliseconds: 500),
       top: top,
@@ -1340,20 +1432,6 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
           )),
     );
-  }
-
-  void openCreateAnonymousBottomSheet() {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) => AnonymousBottomSheet(onTap: () async {
-              await _anonController.createAnonProfile();
-              await Get.find<ProfileController>().getMyProfile();
-              Navigator.pop(context);
-              // setState(() {
-              //   widget._userModel = userBlocNetwork.myData;
-              // });
-            }));
   }
 }
 
@@ -1630,10 +1708,6 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                               print('ran if 2');
                               _tagsController.selectedTags[index] = true;
                             }
-                            // if (_tagsController.selectedTags[index]) {
-                            //   print('ran if 2');
-                            //   _tagsController.selectedTags[index] = true;
-                            // }
                             print(_tagsController.selectedTags.toString() +
                                 index.toString());
                             if (_tagsController.selectedTags[index]) {
@@ -1751,6 +1825,233 @@ class _ModalBottomSheetContentState extends State<ModalBottomSheetContent> {
                                           .toString());
                                       setState(() {});
                                     },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                )
+        ],
+      ),
+    );
+  }
+}
+
+class GroupModalSheet extends StatelessWidget {
+  final DiscoverGroupController discoverGroupController = Get.find();
+  final JournalPageController journalPageController = Get.find();
+  final Function() onGroupSelected;
+
+  GroupModalSheet({Key? key, required this.onGroupSelected}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+            child: Column(
+              children: [
+                Container(
+                  height: 5,
+                  width: 30,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Select Group',
+                        style: GoogleFonts.signika(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: SolhColors.grey_3, shape: BoxShape.circle),
+                        child: InkWell(
+                          onTap: (() => Navigator.of(context).pop()),
+                          child: Padding(
+                            padding: const EdgeInsets.all(3.0),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Divider(
+                  thickness: 1,
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 6,
+          ),
+          discoverGroupController.joinedGroupModel.value.groupList!.isEmpty
+              ? Container()
+              : Expanded(
+                  child: ListView.builder(
+                      itemCount: discoverGroupController
+                          .joinedGroupModel.value.groupList!.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            journalPageController.selectedGroupId.value =
+                                discoverGroupController.joinedGroupModel.value
+                                        .groupList![index].sId ??
+                                    '';
+                            journalPageController.selectedGroupName.value =
+                                discoverGroupController.joinedGroupModel.value
+                                        .groupList![index].groupName ??
+                                    '';
+                            journalPageController.selectedGroupImg.value =
+                                discoverGroupController.joinedGroupModel.value
+                                        .groupList![index].groupMediaUrl ??
+                                    '';
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage: NetworkImage(
+                                        discoverGroupController
+                                                .joinedGroupModel
+                                                .value
+                                                .groupList![index]
+                                                .groupMediaUrl ??
+                                            ''),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8, 0, 30, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            discoverGroupController
+                                                    .joinedGroupModel
+                                                    .value
+                                                    .groupList![index]
+                                                    .groupName ??
+                                                '',
+                                            style: GoogleFonts.signika(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            discoverGroupController
+                                                    .joinedGroupModel
+                                                    .value
+                                                    .groupList![index]
+                                                    .groupDescription ??
+                                                '',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                ),
+          discoverGroupController.createdGroupModel.value.groupList!.isEmpty
+              ? Container()
+              : Expanded(
+                  child: ListView.builder(
+                      itemCount: discoverGroupController
+                          .createdGroupModel.value.groupList!.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            journalPageController.selectedGroupId.value =
+                                discoverGroupController.createdGroupModel.value
+                                        .groupList![index].sId ??
+                                    '';
+                            journalPageController.selectedGroupName.value =
+                                discoverGroupController.createdGroupModel.value
+                                        .groupList![index].groupName ??
+                                    '';
+                            journalPageController.selectedGroupImg.value =
+                                discoverGroupController.createdGroupModel.value
+                                        .groupList![index].groupMediaUrl ??
+                                    '';
+                          },
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 5),
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage: NetworkImage(
+                                        discoverGroupController
+                                                .createdGroupModel
+                                                .value
+                                                .groupList![index]
+                                                .groupMediaUrl ??
+                                            ''),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8, 0, 30, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            discoverGroupController
+                                                    .createdGroupModel
+                                                    .value
+                                                    .groupList![index]
+                                                    .groupName ??
+                                                '',
+                                            style: GoogleFonts.signika(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          Text(
+                                            discoverGroupController
+                                                    .createdGroupModel
+                                                    .value
+                                                    .groupList![index]
+                                                    .groupDescription ??
+                                                '',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

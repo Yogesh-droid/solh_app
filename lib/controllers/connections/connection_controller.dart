@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
@@ -173,6 +174,8 @@ class ConnectionController extends GetxController {
     isSendingConnectionRequest(false);
     getMyConnection();
     getAllConnection();
+    FirebaseAnalytics.instance.logEvent(
+        name: 'connectRequested', parameters: {'Page': 'connectPage'});
   }
 
   Future<void> deleteConnection(String uid) async {

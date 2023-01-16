@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -44,6 +45,9 @@ class NameField extends StatelessWidget {
 
               if (response) {
                 Navigator.pushNamed(context, AppRoutes.dobField);
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'OnBoardingNameDone',
+                    parameters: {'Page': 'OnBoarding'});
               }
             } else {
               SolhSnackbar.error('Error', 'Enter a valid name');

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -132,6 +133,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           "slug": issue.slug ?? '',
                           "type": 'issue'
                         });
+                        FirebaseAnalytics.instance.logEvent(
+                            name: 'IssueSearchTapped',
+                            parameters: {'Page': 'GetHelp'});
                       },
                     );
                   }).toList(),
@@ -176,6 +180,9 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                     '',
                                 "type": 'specialization'
                               });
+                          FirebaseAnalytics.instance.logEvent(
+                              name: 'SearhSpecialityTapped',
+                              parameters: {'Page': 'GetHelp'});
                         },
                         child: Container(
                           height: 1.h,
@@ -239,14 +246,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           GetHelpDivider(),
           GetHelpCategory(
               title: "Top Consultants",
-              onPressed: () =>
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (_) => ConsultantsScreen(
-                  //           slug: '',
-                  //           type: 'topconsultant',
-                  //         ))),
-                  Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                      arguments: {"slug": '', "type": 'topconsultant'})),
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                    arguments: {"slug": '', "type": 'topconsultant'});
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'viewAllConsultanttapped',
+                    parameters: {'Page': 'GetHelp'});
+              }),
           Container(
             height: 17.h,
             margin: EdgeInsets.only(bottom: 2.h),
@@ -490,6 +496,9 @@ class TopConsultantsTile extends StatelessWidget {
         consultantController.getConsultantDataController(_sId);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => ConsultantProfilePage()));
+        FirebaseAnalytics.instance.logEvent(
+            name: 'OpenConsultantProfileTaped',
+            parameters: {'Page': 'GetHelp'});
       },
       child: Container(
         //width: 70.w,

@@ -1,6 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -167,6 +167,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getAnnouncement();
+    FirebaseAnalytics.instance
+        .logEvent(name: 'HomePageOpen', parameters: {'Page': 'HomeScreen'});
   }
 
   @override
@@ -195,6 +197,8 @@ class _HomePageState extends State<HomePage> {
             trailing: InkWell(
               onTap: () async {
                 _bottomNavigatorController.activeIndex.value = 1;
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'TrendingTapped', parameters: {'Page': 'HomePage'});
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -728,7 +732,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
-                        color: Color.fromRGBO(255, 255, 255, 0.85)),
+                        color: Color.fromRGBO(255, 255, 255, 0.9)),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1420,7 +1424,7 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Color.fromRGBO(255, 255, 255, 0.85)),
+            color: Color.fromRGBO(255, 255, 255, 0.90)),
         child: Row(
           children: [
             CircleAvatar(
@@ -1619,7 +1623,11 @@ class ChatAnonymouslyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, AppRoutes.chatAnonIssues),
+      onTap: () {
+        Navigator.pushNamed(context, AppRoutes.chatAnonIssues);
+        FirebaseAnalytics.instance.logEvent(
+            name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
+      },
       child: Container(
         width: double.maxFinite,
         decoration: BoxDecoration(

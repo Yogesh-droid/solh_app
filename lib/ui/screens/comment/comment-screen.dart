@@ -12,6 +12,7 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/comment.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
@@ -19,14 +20,14 @@ import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/errors/not_found.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
-
+import '../../../controllers/profile/anon_controller.dart';
 import '../../../routes/routes.dart';
+import '../journaling/create-journal.dart';
 import '../journaling/widgets/comment_menu_btn.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 
@@ -44,21 +45,21 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  JournalPageController _journalPageController = Get.find();
+  final JournalPageController _journalPageController = Get.find();
   bool? _isLoginedUserJournal;
 
-  JournalCommentController journalCommentController = Get.find();
+  final JournalCommentController journalCommentController = Get.find();
+  final AnonController _anonController = Get.find();
+  final ProfileController profileController = Get.find();
   final FocusNode _commentFocusnode = FocusNode();
   final TextEditingController _commentEditingController =
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    //commentsBloc.getcommentsSnapshot(widget._journalModel!.id ?? '');
     getComments();
     if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
       _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
@@ -100,84 +101,101 @@ class _CommentScreenState extends State<CommentScreen> {
                                     child: PostForComment(
                                       journalModel: widget._journalModel,
                                       index: widget.index,
-                                      //bestComment: commentsBloc.getBestComment,
                                     ),
                                   ),
                                   journalCommentController
                                               .getJouranalsCommentModel
                                               .value
+                                              .body!
                                               .bestComment !=
                                           null
-                                      ? SliverToBoxAdapter(
-                                          child: CommentBoxWidget(
+                                      ? SliverToBoxAdapter(child: Obx(() {
+                                          return CommentBoxWidget(
                                             journalModel: widget._journalModel!,
                                             isUserPost: _isLoginedUserJournal!,
+                                            // commentModel: Comments.fromJson(
+                                            //     journalCommentController
+                                            //         .getJouranalsCommentModel
+                                            //         .value
+                                            //         .toJson()),
                                             commentModel: Comments(
                                               commentBody:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentBody,
                                               commentBy:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentBy,
                                               commentDate:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentDate,
                                               commentOn:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentOn,
                                               commentTime:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentTime,
                                               commentUser:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .commentUser,
                                               createdAt:
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .createdAt,
                                               likes: journalCommentController
                                                   .getJouranalsCommentModel
                                                   .value
+                                                  .body!
                                                   .bestComment!
                                                   .likes,
                                               parentId: journalCommentController
                                                   .getJouranalsCommentModel
                                                   .value
+                                                  .body!
                                                   .bestComment!
                                                   .parentId,
                                               replyNum: journalCommentController
                                                   .getJouranalsCommentModel
                                                   .value
+                                                  .body!
                                                   .bestComment!
                                                   .replyNum,
                                               sId: journalCommentController
                                                   .getJouranalsCommentModel
                                                   .value
+                                                  .body!
                                                   .bestComment!
                                                   .sId,
                                               user: journalCommentController
                                                   .getJouranalsCommentModel
                                                   .value
+                                                  .body!
                                                   .bestComment!
                                                   .user,
                                             ),
@@ -192,6 +210,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           journalCommentController
                                                                   .getJouranalsCommentModel
                                                                   .value
+                                                                  .body!
                                                                   .bestComment!
                                                                   .sId ??
                                                               '',
@@ -216,6 +235,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 journalCommentController
                                                     .getJouranalsCommentModel
                                                     .value
+                                                    .body!
                                                     .bestComment,
                                             onReplyTapped: (id, name, sId) {
                                               journalCommentController
@@ -225,6 +245,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .bestComment!
                                                       .sId!;
                                               journalCommentController
@@ -258,12 +279,13 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   .refresh();
                                               print("deleted");
                                             },
-                                          ),
-                                        )
+                                          );
+                                        }))
                                       : SliverToBoxAdapter(),
                                   journalCommentController
                                           .getJouranalsCommentModel
                                           .value
+                                          .body!
                                           .comments!
                                           .isNotEmpty
                                       ? SliverList(
@@ -279,6 +301,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               journalCommentController
                                                                       .getJouranalsCommentModel
                                                                       .value
+                                                                      .body!
                                                                       .comments![
                                                                           index]
                                                                       .sId ??
@@ -313,6 +336,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               commentId: journalCommentController
                                                                       .getJouranalsCommentModel
                                                                       .value
+                                                                      .body!
                                                                       .comments![
                                                                           index]
                                                                       .sId ??
@@ -322,7 +346,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                         widget._journalModel!,
                                                     onReplyTapped:
                                                         (id, name, sId) {
-                                                      print(id);
                                                       print(
                                                           journalCommentController
                                                               .isReplying
@@ -335,6 +358,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           journalCommentController
                                                               .getJouranalsCommentModel
                                                               .value
+                                                              .body!
                                                               .comments![index]
                                                               .sId!;
                                                       journalCommentController
@@ -342,11 +366,14 @@ class _CommentScreenState extends State<CommentScreen> {
                                                           .value = name;
                                                       journalCommentController
                                                           .parentId = sId;
+                                                      _commentFocusnode
+                                                          .requestFocus();
                                                     },
                                                     commentModel:
                                                         journalCommentController
                                                             .getJouranalsCommentModel
                                                             .value
+                                                            .body!
                                                             .comments![index],
                                                     isUserPost:
                                                         _isLoginedUserJournal ??
@@ -373,6 +400,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                 postId: journalCommentController
                                                                     .getJouranalsCommentModel
                                                                     .value
+                                                                    .body!
                                                                     .comments![
                                                                         index]
                                                                     .sId!,
@@ -406,6 +434,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   journalCommentController
                                                       .getJouranalsCommentModel
                                                       .value
+                                                      .body!
                                                       .comments!
                                                       .length))
                                       : SliverToBoxAdapter(),
@@ -420,139 +449,114 @@ class _CommentScreenState extends State<CommentScreen> {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: SolhColors.primary_green)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      /////  this is the comment for mention user in reply //////////////
-                      // Obx(() =>
-                      //     journalCommentController.repliedTo.value.isNotEmpty
-                      //         ? Align(
-                      //             alignment: Alignment.topLeft,
-                      //             // child: MaterialButton(
-                      //             //   onPressed: () {},
-                      //             //   child: Text(
-                      //             //     journalCommentController.repliedTo.value,
-                      //             //     style: TextStyle(color: Colors.blueAccent),
-                      //             //   ),
-                      //             // ),
-                      //             child: RichText(
-                      //               text: TextSpan(),
-                      //             ),
-                      //           )
-                      //         : SizedBox()),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: Obx(() => TextField(
-                                  controller: _commentEditingController,
-                                  focusNode: _commentFocusnode,
-                                  // autofocus: true,
-                                  decoration: InputDecoration(
-                                    hintText: journalCommentController
-                                            .isReplying.value
+                      getAnonymousIcon(),
+                      Container(height: 40, child: VerticalDivider()),
+                      Expanded(
+                        child: Obx(() => TextField(
+                              controller: _commentEditingController,
+                              focusNode: _commentFocusnode,
+                              // autofocus: true,
+                              decoration: InputDecoration(
+                                hintText:
+                                    journalCommentController.isReplying.value
                                         ? 'Reply ...'
                                         : "Comment",
-                                    border: InputBorder.none,
-                                  ),
-                                  minLines: 1,
-                                  maxLines: 6,
-                                )),
-                          ),
-                          Obx((() => journalCommentController.isReplying.value
-                              ? IconButton(
-                                  onPressed: () {
-                                    journalCommentController.isReplying.value =
-                                        false;
-                                    journalCommentController.repliedTo.value =
-                                        '';
-                                  },
-                                  icon: Icon(Icons.close))
-                              : Container())),
-                          _isLoading
-                              ? Container(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 9, 12),
-                                  height: 8.w,
-                                  width: 8.w,
-                                  child: MyLoader(
-                                    strokeWidth: 2.5,
-                                  ))
-                              : Padding(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: MaterialButton(
-                                    //padding: EdgeInsets.all(2),
-                                    highlightElevation: 0,
-                                    minWidth: 0,
-                                    height: 45,
-                                    focusElevation: 0,
-                                    elevation: 0,
-                                    shape: CircleBorder(),
-                                    color: Color(0xFF0F4F4F4),
-                                    highlightColor: Colors.grey[400],
-
-                                    onPressed: () async {
-                                      if (_commentEditingController.text !=
-                                          '') {
-                                        setState(() {
-                                          _isLoading = true;
-                                        });
-                                        journalCommentController.isReplying.value
-                                            ? await journalCommentController
-                                                .addReply(
-                                                    parentId:
-                                                        journalCommentController
-                                                            .commentId,
-                                                    journalId: widget
-                                                        ._journalModel!.id!,
-                                                    commentBody:
-                                                        _commentEditingController
-                                                            .text,
-                                                    userId:
-                                                        journalCommentController
-                                                            .parentId,
-                                                    index: journalCommentController
-                                                        .hiddenReplyList
-                                                        .indexWhere((element) =>
-                                                            element == true))
-                                            : await journalCommentController
-                                                .addComment(
-                                                    journalId: widget
-                                                        ._journalModel!.id!,
-                                                    commentBody:
-                                                        _commentEditingController
-                                                            .text);
-                                        _commentEditingController.clear();
-                                        _scrollController.jumpTo(
-                                            _scrollController
-                                                .position.maxScrollExtent);
-
-                                        getComments();
-                                        _journalPageController
-                                            .journalsList.value
-                                            .forEach((element) {
-                                          if (element.id ==
-                                              widget._journalModel!.id) {
-                                            element.comments =
-                                                element.comments! + 1;
-                                          }
-                                        });
-                                        _journalPageController.journalsList
-                                            .refresh();
-                                        setState(() {
-                                          _isLoading = false;
-                                        });
-                                      }
-                                    },
-
-                                    child: Icon(
-                                      Icons.send,
-                                      size: 20,
-                                      color: SolhColors.primary_green,
-                                    ),
-                                  ),
-                                )
-                        ],
+                                border: InputBorder.none,
+                              ),
+                              minLines: 1,
+                              maxLines: 6,
+                            )),
                       ),
+                      Obx((() => journalCommentController.isReplying.value
+                          ? IconButton(
+                              onPressed: () {
+                                journalCommentController.isReplying.value =
+                                    false;
+                                journalCommentController.repliedTo.value = '';
+                              },
+                              icon: Icon(Icons.close))
+                          : Container())),
+                      _isLoading
+                          ? Container(
+                              padding: EdgeInsets.fromLTRB(0, 0, 9, 12),
+                              height: 8.w,
+                              width: 8.w,
+                              child: MyLoader(
+                                strokeWidth: 2.5,
+                              ))
+                          : Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: MaterialButton(
+                                //padding: EdgeInsets.all(2),
+                                highlightElevation: 0,
+                                minWidth: 0,
+                                height: 45,
+                                focusElevation: 0,
+                                elevation: 0,
+                                shape: CircleBorder(),
+                                color: Color(0xFF0F4F4F4),
+                                highlightColor: Colors.grey[400],
+
+                                onPressed: () async {
+                                  if (_commentEditingController.text != '') {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    journalCommentController.isReplying.value
+                                        ? await journalCommentController
+                                            .addReply(
+                                                parentId:
+                                                    journalCommentController
+                                                        .commentId,
+                                                journalId: widget
+                                                    ._journalModel!.id!,
+                                                commentBody:
+                                                    _commentEditingController
+                                                        .text,
+                                                userId: journalCommentController
+                                                    .parentId,
+                                                index: journalCommentController
+                                                    .hiddenReplyList
+                                                    .indexWhere((element) =>
+                                                        element == true))
+                                        : await journalCommentController
+                                            .addComment(
+                                                journalId:
+                                                    widget._journalModel!.id!,
+                                                commentBody:
+                                                    _commentEditingController
+                                                        .text);
+                                    _commentEditingController.clear();
+                                    _scrollController.jumpTo(_scrollController
+                                        .position.maxScrollExtent);
+
+                                    getComments();
+                                    _journalPageController.journalsList.value
+                                        .forEach((element) {
+                                      if (element.id ==
+                                          widget._journalModel!.id) {
+                                        element.comments =
+                                            element.comments! + 1;
+                                      }
+                                    });
+                                    _journalPageController.journalsList
+                                        .refresh();
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+                                },
+
+                                child: Icon(
+                                  Icons.send,
+                                  size: 20,
+                                  color: SolhColors.primary_green,
+                                ),
+                              ),
+                            )
                     ],
                   ),
                 )
@@ -839,6 +843,133 @@ class _CommentScreenState extends State<CommentScreen> {
         return Container();
     }
   }
+
+  Widget getAnonymousIcon() {
+    return Obx(
+      () => profileController.myProfileModel.value.body != null
+          ? GestureDetector(
+              onTap: () {
+                onSwapProfile();
+              },
+              child: Container(
+                  height: 5.h,
+                  width: 12.w,
+                  child: Obx(() {
+                    return GetNormalStack(
+                      isAnonymousSelected:
+                          journalCommentController.isAnonymousSelected.value,
+                      userModel:
+                          profileController.myProfileModel.value.body!.user,
+                      onTapped: () {
+                        onSwapProfile();
+                      },
+                      normalRadius:
+                          journalCommentController.nomalProfileRadius.value,
+                      anonRadius:
+                          journalCommentController.anonymousProfileRadius.value,
+                      anonTop: journalCommentController
+                          .anonymousProfilePositionT.value,
+                      anonLeft: journalCommentController
+                          .anonymousProfilePositionL.value,
+                      normalTop:
+                          journalCommentController.nomalProfilePositionT.value,
+                      normalLeft:
+                          journalCommentController.nomalProfilePositionL.value,
+                    );
+                  })))
+          : CircleAvatar(
+              radius: journalCommentController.anonymousProfileRadius.value,
+              backgroundColor: Colors.grey,
+              backgroundImage: CachedNetworkImageProvider(
+                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+              )),
+    );
+  }
+
+  void onSwapProfile() {
+    if (profileController.myProfileModel.value.body!.user!.anonymous != null) {
+      journalCommentController.isAnonymousSelected.value =
+          !journalCommentController.isAnonymousSelected.value;
+      if (journalCommentController.isAnonymousSelected.value) {
+        // if anonymous selected then bring anonymous to front and make it bigger radius,
+        // Simply swap values of position and radius
+        journalCommentController.nomalProfileRadius.value = 2.0.w;
+        journalCommentController.anonymousProfileRadius.value = 4.w;
+        journalCommentController.anonymousProfilePositionT.value = 2.0;
+        journalCommentController.nomalProfilePositionT.value = 15.0;
+        journalCommentController.anonymousProfilePositionL.value = 10.0;
+        journalCommentController.nomalProfilePositionL.value = 2.0;
+      } else {
+        journalCommentController.nomalProfileRadius.value = 4.w;
+        journalCommentController.anonymousProfileRadius.value = 2.0.w;
+        journalCommentController.anonymousProfilePositionT.value = 15.0;
+        journalCommentController.anonymousProfilePositionL.value = 2.0;
+        journalCommentController.nomalProfilePositionT.value = 2.0;
+        journalCommentController.nomalProfilePositionL.value = 10.0;
+      }
+    } else {
+      openCreateAnonymousBottomSheet();
+    }
+  }
+
+  void openCreateAnonymousBottomSheet() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (context) => AnonymousBottomSheet(onTap: () async {
+              await _anonController.createAnonProfile();
+              await Get.find<ProfileController>().getMyProfile();
+              Navigator.pop(context);
+            }));
+  }
+
+  /* Widget getAnonymousIcon() {
+    return Container(
+      height: 50,
+      width: 50,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 15,
+            left: 0,
+            child: Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(profileController
+                              .myProfileModel
+                              .value
+                              .body!
+                              .user!
+                              .profilePicture ??
+                          ''))),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            left: 20,
+            child: Container(
+              height: 30,
+              width: 30,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(profileController
+                              .myProfileModel
+                              .value
+                              .body!
+                              .user!
+                              .anonymous!
+                              .profilePicture ??
+                          ''))),
+            ),
+          ),
+        ],
+      ),
+    );
+  } */
 }
 
 class CommentBoxWidget extends StatelessWidget {
@@ -881,7 +1012,7 @@ class CommentBoxWidget extends StatelessWidget {
         children: [
           getCommentBody(_commentModel!, _bestComment, context, false),
           getCommentFooter(_bestComment != null ? _bestComment : _commentModel!,
-              onReplyTapped),
+              onReplyTapped, index),
           _bestComment != null
               ? _bestComment!.replyNum == 0
                   ? Container()
@@ -924,7 +1055,9 @@ class CommentBoxWidget extends StatelessWidget {
         CircleAvatar(
           backgroundColor: Colors.grey[300],
           backgroundImage: CachedNetworkImageProvider(
-            commentModel.user![0].profilePicture!,
+            commentModel.user != null
+                ? commentModel.user!.profilePicture!
+                : bestComment!.user!.profilePicture!,
           ),
         ),
         Expanded(
@@ -1020,7 +1153,9 @@ class CommentBoxWidget extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                commentModel.user![0].name!,
+                                commentModel.user != null
+                                    ? commentModel.user!.name!
+                                    : bestComment!.user!.name ?? '',
                                 style: TextStyle(
                                     color: Color(0xFF666666),
                                     fontSize: 12,
@@ -1033,8 +1168,10 @@ class CommentBoxWidget extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            timeago.format(
-                                DateTime.parse(commentModel.createdAt!)),
+                            timeago.format(DateTime.parse(
+                                commentModel.createdAt != null
+                                    ? commentModel.createdAt!
+                                    : bestComment!.createdAt ?? '')),
                             style: TextStyle(color: Color(0xFF666666)),
                           ),
                         ],
@@ -1061,7 +1198,7 @@ class CommentBoxWidget extends StatelessWidget {
                                   ))
                               : SizedBox()
                           : SizedBox(),
-                      if (commentModel.user![0].uid ==
+                      if (commentModel.user!.uid ==
                               FirebaseAuth.instance.currentUser!.uid ||
                           _journalModel.postedBy != null &&
                               _journalModel.postedBy!.uid ==
@@ -1124,6 +1261,7 @@ class CommentBoxWidget extends StatelessWidget {
   Widget getCommentFooter(
     dynamic commentModel,
     Function(String id, String userName, String userId) onReplyTapped,
+    int index,
   ) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -1133,7 +1271,21 @@ class CommentBoxWidget extends StatelessWidget {
           Row(
             children: [
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  bool isTrue = await journalCommentController.likeComment(
+                      commentId: commentModel.sId ?? '');
+                  if (isTrue) {
+                    journalCommentController.getJouranalsCommentModel.value
+                        .body!.comments![index].likes = journalCommentController
+                            .getJouranalsCommentModel
+                            .value
+                            .body!
+                            .comments![index]
+                            .likes! +
+                        1;
+                    journalCommentController.getJouranalsCommentModel.refresh();
+                  }
+                },
                 child: Icon(
                   Icons.thumb_up_outlined,
                   color: SolhColors.primary_green,
@@ -1158,10 +1310,9 @@ class CommentBoxWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.reply_outlined),
                 onPressed: () {
-                  onReplyTapped(
-                      commentModel!.sId!,
-                      commentModel!.user![0].name!,
-                      commentModel!.user![0].sId!);
+                  print(commentModel!.user!.id!);
+                  onReplyTapped(commentModel!.sId!, commentModel!.user!.name!,
+                      commentModel!.user!.id!);
                 },
                 color: SolhColors.primary_green,
               ),
@@ -1261,7 +1412,7 @@ class CommentBoxWidget extends StatelessWidget {
                   .map((element) => Column(
                         children: [
                           getCommentBody(element, null, context, true),
-                          getCommentFooter(element, onReplyTapped),
+                          getCommentFooter(element, onReplyTapped, index),
                           SizedBox(
                             height: 10,
                           ),

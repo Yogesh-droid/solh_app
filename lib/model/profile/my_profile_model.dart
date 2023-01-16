@@ -29,13 +29,25 @@ class Body {
   User? user;
   int? percentProfile;
   List? userMoveEmptyScreenEmpty;
+  List<UserCountryAvailableTimezones>? userCountryAvailableTimezones;
 
-  Body({this.user, this.percentProfile, this.userMoveEmptyScreenEmpty});
+  Body(
+      {this.user,
+      this.percentProfile,
+      this.userMoveEmptyScreenEmpty,
+      this.userCountryAvailableTimezones});
 
   Body.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
     percentProfile = json['percentProfile'];
     userMoveEmptyScreenEmpty = json['userMoveEmptyScreenEmpty'];
+    if (json['userCountryAvailableTimezones'] != null) {
+      userCountryAvailableTimezones = <UserCountryAvailableTimezones>[];
+      json['userCountryAvailableTimezones'].forEach((v) {
+        userCountryAvailableTimezones!
+            .add(new UserCountryAvailableTimezones.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +56,17 @@ class Body {
       data['user'] = this.user!.toJson();
     }
     return data;
+  }
+}
+
+class UserCountryAvailableTimezones {
+  String? zone;
+  String? offset;
+
+  UserCountryAvailableTimezones({this.zone, this.offset});
+  UserCountryAvailableTimezones.fromJson(Map<String, dynamic> json) {
+    zone = json['zone'] != null ? json['zone'] : null;
+    offset = json['offset'] != null ? json['offset'] : null;
   }
 }
 
@@ -95,6 +118,8 @@ class User {
   String? deviceType;
   String? onesignalDeviceId;
   String? userCountry;
+  String? userTimezone;
+  String? userTimezoneOffset;
   String? id;
 
   User(
@@ -142,6 +167,8 @@ class User {
       this.deviceType,
       this.onesignalDeviceId,
       this.userCountry,
+      this.userTimezone,
+      this.userTimezoneOffset,
       this.issueList,
       this.id});
 
@@ -202,6 +229,8 @@ class User {
     deviceType = json['deviceType'];
     onesignalDeviceId = json['onesignal_device_id'];
     userCountry = json['user_country'];
+    userTimezone = json['userTimezone'];
+    userTimezoneOffset = json['userTimezoneOffset'];
     id = json['id'];
   }
 
@@ -253,6 +282,8 @@ class User {
     data['deviceType'] = this.deviceType;
     data['onesignal_device_id'] = this.onesignalDeviceId;
     data['user_country'] = this.userCountry;
+    data['userTimezone'] = this.userTimezone;
+    data['userTimezoneOffset'] = this.userTimezoneOffset;
     data['id'] = this.id;
     return data;
   }

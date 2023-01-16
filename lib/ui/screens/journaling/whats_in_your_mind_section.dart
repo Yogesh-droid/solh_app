@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
-import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../../constants/api.dart';
@@ -29,24 +29,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
   final BottomNavigatorController bottomNavigatorController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return
-        // Obx(() {
-        // return AnimatedContainer(
-        //   duration: Duration(milliseconds: 300),
-        //   decoration: BoxDecoration(
-        //     color: Colors.white,
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: _journalPageController.isScrollingStarted.value
-        //         ? Colors.black.withOpacity(0.1)
-        //         : Colors.white,
-        //     blurRadius: 2,
-        //     spreadRadius: 2,
-        //   ),
-        // ],
-        // ),
-        // child:
-        Column(
+    return Column(
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
@@ -61,6 +44,9 @@ class WhatsOnYourMindSection extends StatelessWidget {
                   onTap: () async {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => MoodMeter()));
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'MoodMeterOpenTapped',
+                        parameters: {'Page': 'MoodMeter'});
                   },
                   child:
                       SvgPicture.asset('assets/icons/app-bar/mood-meter.svg')),

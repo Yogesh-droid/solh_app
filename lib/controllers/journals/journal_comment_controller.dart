@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
+import 'package:solh/model/journals/reaction_list_model.dart';
 import 'package:solh/services/network/exceptions.dart';
 import '../../constants/api.dart';
 import '../../services/network/error_handling.dart';
@@ -9,6 +11,7 @@ class JournalCommentController extends GetxController {
   var repliesList = [].obs;
   var bestCommentReplyList = [].obs;
   var getJouranalsCommentModel = GetJouranalsCommentModel().obs;
+  var reactionlistModel = ReactionListModel().obs;
   var isReplying = false.obs;
   String commentId = '';
   String parentId = '';
@@ -21,13 +24,20 @@ class JournalCommentController extends GetxController {
   int endPage = 1;
   var isReportingPost = false.obs;
   var getJournalcommentStatus = 0;
+  var anonymousProfilePositionL = 2.0.obs;
+  var anonymousProfilePositionT = 15.0.obs;
+  var nomalProfilePositionL = 10.0.obs;
+  var nomalProfilePositionT = 2.0.obs;
+  var isAnonymousSelected = false.obs;
+  var anonymousProfileRadius = 2.0.w.obs;
+  var nomalProfileRadius = 4.w.obs;
 
   Future<void> getJournalComment(
       {required String postId, required int pageNo}) async {
     isLoading.value = true;
     try {
-      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/get-parent?journal=$postId&page=$pageNo");
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/v1/get-parent?journal=$postId");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
       getJournalcommentStatus = 0;
     } on Exceptions catch (e) {
@@ -40,10 +50,12 @@ class JournalCommentController extends GetxController {
 
     repliesList.clear();
 
-    getJouranalsCommentModel.value.comments!.forEach((element) {
-      repliesList.value.add([]);
-      hiddenReplyList.value.add(false);
-    });
+    if (getJouranalsCommentModel.value.body!.comments != null) {
+      getJouranalsCommentModel.value.body!.comments!.forEach((element) {
+        repliesList.value.add([]);
+        hiddenReplyList.value.add(false);
+      });
+    }
 
     isLoading.value = false;
   }
@@ -51,11 +63,13 @@ class JournalCommentController extends GetxController {
   Future<bool> addComment(
       {required String journalId, required String commentBody}) async {
     reactingToComment.value = true;
-    var response = await Network.makeHttpPostRequestWithToken(
+    var response = await Network.makePostRequestWithToken(
+        isEncoded: true,
         url: "${APIConstants.api}/api/comment-on-journal",
         body: {
           "commentBody": commentBody,
           "journal": journalId,
+          "anonymousComment": isAnonymousSelected.value
         });
     reactingToComment.value = false;
     print(response);
@@ -116,17 +130,17 @@ class JournalCommentController extends GetxController {
   Future<void> getReply(
       {required String postId, required int pageNo, int? index}) async {
     try {
-      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
-          "${APIConstants.api}/api/get-children?parent=$postId&page=$pageNo");
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/v1/get-children?parent=$postId");
       print('index: ' + index.toString());
       if (index != null) {
         print('index: ' + index.toString());
         print('repliesList: ' + repliesList.value.toString());
-        if (GetJouranalsCommentModel.fromJson(map).comments != null &&
-            GetJouranalsCommentModel.fromJson(map).comments!.length > 0) {
+        if (GetJouranalsCommentModel.fromJson(map).body!.comments != null &&
+            GetJouranalsCommentModel.fromJson(map).body!.comments!.length > 0) {
           repliesList.value.removeAt(index);
-          repliesList.value
-              .insert(index, GetJouranalsCommentModel.fromJson(map).comments);
+          repliesList.value.insert(
+              index, GetJouranalsCommentModel.fromJson(map).body!.comments);
           repliesList.refresh();
         } else {
           repliesList.value.removeAt(index);
@@ -135,7 +149,7 @@ class JournalCommentController extends GetxController {
         }
       } else {
         bestCommentReplyList.value =
-            GetJouranalsCommentModel.fromJson(map).comments!;
+            GetJouranalsCommentModel.fromJson(map).body!.comments!;
       }
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
@@ -159,8 +173,44 @@ class JournalCommentController extends GetxController {
     return false;
   }
 
+  Future<void> getReactionList() async {
+    Map<String, dynamic> map = await Network.makeGetRequest(
+        '${APIConstants.api}/api/custom/reaction/list');
+    reactionlistModel.value = ReactionListModel.fromJson(map);
+  }
+
+  Future<bool> likePost(
+      {required String journalId, required String reaction}) async {
+    var response = await Network.makePostRequestWithToken(
+        url: "${APIConstants.api}/api/like-journal",
+        body: {"post": journalId, "reaction": reaction});
+    print(response);
+    return false;
+  }
+
+  Future<bool> unLikePost({required String journalId}) async {
+    var response = await Network.makeHttpDeleteRequestWithToken(
+        url: "${APIConstants.api}/api/unlike-journal",
+        body: {
+          "postId": journalId,
+        });
+    print(response);
+    return false;
+  }
+
+  Future<bool> likeComment({required String commentId}) async {
+    var response = await Network.makePostRequestWithToken(
+        url: "${APIConstants.api}/api/like-comment",
+        body: {
+          "comment": commentId,
+        });
+    print(response);
+    return response['success'];
+  }
+
   @override
   void onInit() {
     super.onInit();
+    getReactionList();
   }
 }

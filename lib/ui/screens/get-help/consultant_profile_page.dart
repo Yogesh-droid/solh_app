@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -378,14 +379,17 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
           onPressed: () {
-            bookAppointmentController.selectedDayForTimeSlot.value =
-                DateTime.now().day;
-            bookAppointmentController.selectedDate.value = DateTime.now();
-            bookAppointmentController.getTimeSlot(
-                providerId:
-                    _controller.consultantModelController.value.provder!.sId,
-                date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+            // bookAppointmentController.selectedDayForTimeSlot.value =
+            //     DateTime.now().day;
+            // bookAppointmentController.selectedDate.value = DateTime.now();
+            // bookAppointmentController.getTimeSlot(
+            //     providerId:
+            //         _controller.consultantModelController.value.provder!.sId,
+            //     date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
             openBookingSheet();
+            FirebaseAnalytics.instance.logEvent(
+                name: 'BookAppontmentTapped',
+                parameters: {'Page': 'ConsultantProfile'});
           },
         )
       ],

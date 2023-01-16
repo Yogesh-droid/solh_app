@@ -1,7 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type_controller.dart';
@@ -159,6 +157,9 @@ class SaveChangesButton extends StatelessWidget {
                     if (response) {
                       SolhSnackbar.success(
                           'Sucess', 'User type updated sucessfully');
+                      FirebaseAnalytics.instance.logEvent(
+                          name: 'OnBoardingUserTypeDone',
+                          parameters: {'Page': 'OnBoarding'});
                     }
                   },
                   child: Text('Save chanages',

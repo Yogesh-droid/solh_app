@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.dart';
@@ -213,6 +215,8 @@ class _JournalTileState extends State<JournalTile> {
         url: "${APIConstants.api}/api/like-journal",
         body: {"post": widget._journalModel!.id});
     if (response["status"] == false) setState(() {});
+    FirebaseAnalytics.instance
+        .logEvent(name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
     return (response["status"]);
   }
 
@@ -576,7 +580,7 @@ class _JournalTileState extends State<JournalTile> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
-            onTap: () async {
+            /* onTap: () async {
               if (journalPageController.journalsList[widget.index].isLiked!) {
                 journalPageController.journalsList[widget.index].isLiked =
                     false;
@@ -592,6 +596,29 @@ class _JournalTileState extends State<JournalTile> {
                 journalPageController.journalsList.refresh();
                 await _likeJournal();
               }
+            }, */
+            onTap: () {
+              journalPageController.getUsersLikedPost(
+                  widget._journalModel!.id ?? '', 1);
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      child: LikesModalSheet(
+                        onTap: (value) {
+                          journalCommentController.likePost(
+                              journalId: widget._journalModel!.id ?? '',
+                              reaction: value);
+                          journalPageController.journalsList[widget.index]
+                              .likes = journalPageController
+                                  .journalsList[widget.index].likes! +
+                              1;
+                          journalPageController.journalsList.refresh();
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    );
+                  });
             },
             child: Container(
               width: MediaQuery.of(context).size.width / 3.5,
@@ -601,17 +628,7 @@ class _JournalTileState extends State<JournalTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Obx(() {
-                      return Icon(
-                        journalPageController
-                                    .journalsList[widget.index].isLiked ==
-                                true
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: SolhColors.primary_green,
-                        size: 20,
-                      );
-                    }),
+                    SvgPicture.asset('assets/images/reactions.svg'),
                     Padding(
                       padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width / 40,
@@ -630,11 +647,15 @@ class _JournalTileState extends State<JournalTile> {
             ),
           ),
           InkWell(
-            onTap: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return CommentScreen(
-                  journalModel: widget._journalModel, index: widget.index);
-            })),
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return CommentScreen(
+                    journalModel: widget._journalModel, index: widget.index);
+              }));
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'CommentIconTapped',
+                  parameters: {'Page': 'journaling'});
+            },
             child: Container(
                 width: MediaQuery.of(context).size.width / 3.5,
                 height: MediaQuery.of(context).size.height / 20,
@@ -740,6 +761,184 @@ class _JournalTileState extends State<JournalTile> {
               : SizedBox(),
         ],
       ),
+    );
+  }
+}
+
+class LikesModalSheet extends StatelessWidget {
+  final JournalPageController journalPageController = Get.find();
+  final JournalCommentController journalCommentController = Get.find();
+
+  LikesModalSheet({required this.onTap});
+  final Function(String) onTap;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Obx(() => journalPageController.isLikedUserListLoading.value
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Post Liked By',
+                              style: GoogleFonts.signika(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Divider(
+                        thickness: 1,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 6,
+                ),
+                journalCommentController.reactionlistModel.value.data != null
+                    ? Wrap(
+                        alignment: WrapAlignment.start,
+                        children: journalCommentController
+                            .reactionlistModel.value.data!
+                            .map((e) => GestureDetector(
+                                  onTap: () {
+                                    onTap(e.sId ?? '');
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 2.w, vertical: 0.5.h),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 4.w, vertical: 1.h),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: SolhColors.primary_green),
+                                      borderRadius: BorderRadius.circular(18),
+                                      color: Color(0xFFFBFBFB),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          e.reactionName ?? '',
+                                          style: SolhTextStyles.QS_cap_semi,
+                                        ),
+                                        SizedBox(width: 3),
+                                        SvgPicture.network(
+                                            e.reactionImage ?? '')
+                                      ],
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                      )
+                    : Container(),
+                Divider(),
+                journalPageController.likedUserList.value.result == null
+                    ? Container()
+                    : journalPageController
+                            .likedUserList.value.result!.data!.isEmpty
+                        ? Container()
+                        : Expanded(
+                            child: ListView.builder(
+                                itemCount: journalPageController
+                                    .likedUserList.value.result!.data!.length,
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        child: Row(
+                                          children: [
+                                            CircleAvatar(
+                                              backgroundColor: Colors.grey,
+                                              backgroundImage: NetworkImage(
+                                                  journalPageController
+                                                          .likedUserList
+                                                          .value
+                                                          .result!
+                                                          .data![index]
+                                                          .user!
+                                                          .profilePicture ??
+                                                      ''),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      8, 0, 30, 0),
+                                              child: Text(
+                                                journalPageController
+                                                            .likedUserList
+                                                            .value
+                                                            .result!
+                                                            .data![index]
+                                                            .user!
+                                                            .sId ==
+                                                        Get.find<
+                                                                ProfileController>()
+                                                            .myProfileModel
+                                                            .value
+                                                            .body!
+                                                            .user!
+                                                            .sId
+                                                    ? "You"
+                                                    : journalPageController
+                                                            .likedUserList
+                                                            .value
+                                                            .result!
+                                                            .data![index]
+                                                            .user!
+                                                            .name ??
+                                                        '',
+                                                style: GoogleFonts.signika(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                            Spacer(),
+                                            SvgPicture.network(
+                                                journalPageController
+                                                        .likedUserList
+                                                        .value
+                                                        .result!
+                                                        .data![index]
+                                                        .reaction!
+                                                        .reactionImage ??
+                                                    '')
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          )
+              ],
+            )),
     );
   }
 }
@@ -942,6 +1141,12 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                                   : journalPageController
                                                       .videoPlayerController
                                                       .refresh();
+                                              FirebaseAnalytics.instance
+                                                  .logEvent(
+                                                      name: 'playVideoTapped',
+                                                      parameters: {
+                                                    'Page': 'Journaling'
+                                                  });
                                             },
                                             icon: Image.asset(
                                               'assets/images/play_icon.png',
@@ -1197,6 +1402,9 @@ class PostMenuButton extends StatelessWidget {
 
                         print(map);
                         if (map['success']) {
+                          FirebaseAnalytics.instance.logEvent(
+                              name: 'UserBlockTapped',
+                              parameters: {'Page': 'JournalTile'});
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('Person Successfully Blocked'),
                             backgroundColor: SolhColors.primary_green,

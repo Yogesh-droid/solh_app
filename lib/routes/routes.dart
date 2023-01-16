@@ -131,56 +131,73 @@ class RouteGenerator {
     switch (routeSettings.name) {
       case AppRoutes.master:
         print('Routing to ${routeSettings.name}');
-        return MaterialPageRoute(builder: ((context) => MasterScreen()));
+        return MaterialPageRoute(
+            builder: ((context) => MasterScreen()),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.introScreen:
         print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => IntroCrousel()));
       case AppRoutes.phoneAuthScreen:
         print('Routing to ${routeSettings.name}');
-        return MaterialPageRoute(builder: ((context) => PhoneAuthScreen()));
+        return MaterialPageRoute(
+            builder: ((context) => PhoneAuthScreen()),
+            settings: RouteSettings(name: routeSettings.name));
 
       case AppRoutes.psychologyTest:
-        return MaterialPageRoute(builder: ((context) => PsychologyTestPage()));
+        return MaterialPageRoute(
+            builder: ((context) => PsychologyTestPage()),
+            settings: RouteSettings(name: routeSettings.name));
       // case AppRoutes.userProfile:
       //   print('Routing to ${routeSettings.name}');
       //   return MaterialPageRoute(
       //       builder: ((context) => ConnectProfileScreen(args: args as Map)));
       case AppRoutes.userPostScreen:
         return MaterialPageRoute(
-            builder: ((context) => PostScreen(args: args as Map)));
+            builder: ((context) => PostScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.viewAllConsultant:
         return MaterialPageRoute(
-            builder: ((context) => ConsultantsScreen(args: args as Map)));
+            builder: ((context) => ConsultantsScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.inviteGroupMemberPage:
         return MaterialPageRoute(
             builder: ((context) => InviteMembersUI(args: args as Map)));
       case AppRoutes.createProfile:
-        return MaterialPageRoute(builder: ((context) => CreateProfileScreen()));
+        return MaterialPageRoute(
+            builder: ((context) => CreateProfileScreen()),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.chatUser:
         return MaterialPageRoute(
-            builder: ((context) => ChatScreen(args: args as Map)));
+            builder: ((context) => ChatScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.connectScreen:
         return MaterialPageRoute(
-            builder: ((context) => ConnectScreen2(args: args as Map)));
+            builder: ((context) => ConnectScreen2(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.accountPrivacy:
         return MaterialPageRoute(
-            builder: ((context) => AccountPrivacyScreen(args: args as Map)));
+            builder: ((context) => AccountPrivacyScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.appointmentPage:
         return MaterialPageRoute(
-            builder: ((context) => AppointmentScreen(args: args as Map)));
+            builder: ((context) => AppointmentScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
 
       case AppRoutes.getStarted:
         return MaterialPageRoute(builder: ((context) => GetStartedScreen()));
       case AppRoutes.loginSignup:
         return MaterialPageRoute(
-            builder: ((context) => LoginSignup(args: args as Map)));
+            builder: ((context) => LoginSignup(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.otpVerification:
         return MaterialPageRoute(
-            builder: ((context) => OtpVerificationScreen(args: args as Map)));
+            builder: ((context) => OtpVerificationScreen(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
 
       case AppRoutes.groupDetails:
         return MaterialPageRoute(
-            builder: ((context) => GroupDetailsPage(args: args as Map)));
+            builder: ((context) => GroupDetailsPage(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.letsCreateYourProfile:
         return MaterialPageRoute(
             builder: ((context) => LetsCreateYourProfile()));
@@ -202,10 +219,13 @@ class RouteGenerator {
       case AppRoutes.editProfileOption:
         return MaterialPageRoute(builder: ((context) => EditProfileOptions()));
       case AppRoutes.editProfilePage:
-        return MaterialPageRoute(builder: ((context) => EditMyProfileScreen()));
+        return MaterialPageRoute(
+            builder: ((context) => EditMyProfileScreen()),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.editAnonymousProfile:
         return MaterialPageRoute(
-            builder: ((context) => EditAnonymousProfile()));
+            builder: ((context) => EditAnonymousProfile()),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.userType:
         return MaterialPageRoute(builder: ((context) => UserType()));
       case AppRoutes.addAvatar:
@@ -226,7 +246,8 @@ class RouteGenerator {
       case AppRoutes.emergencyContact:
         return MaterialPageRoute(
             builder: ((context) =>
-                EmergencyContacts(args: args as Map<String, dynamic>)));
+                EmergencyContacts(args: args as Map<String, dynamic>)),
+            settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.partOfOrg:
         return MaterialPageRoute(builder: ((context) => PartOfOrg()));
       case AppRoutes.needSupportOn:
