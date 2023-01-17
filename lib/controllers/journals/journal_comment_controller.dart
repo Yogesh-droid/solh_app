@@ -179,13 +179,13 @@ class JournalCommentController extends GetxController {
     reactionlistModel.value = ReactionListModel.fromJson(map);
   }
 
-  Future<bool> likePost(
+  Future<String> likePost(
       {required String journalId, required String reaction}) async {
     var response = await Network.makePostRequestWithToken(
         url: "${APIConstants.api}/api/like-journal",
         body: {"post": journalId, "reaction": reaction});
     print(response);
-    return false;
+    return response['body']['message'];
   }
 
   Future<bool> unLikePost({required String journalId}) async {
@@ -198,14 +198,14 @@ class JournalCommentController extends GetxController {
     return false;
   }
 
-  Future<bool> likeComment({required String commentId}) async {
+  Future<String> likeComment(
+      {required String commentId, required String reaction}) async {
+    print(reaction);
     var response = await Network.makePostRequestWithToken(
         url: "${APIConstants.api}/api/like-comment",
-        body: {
-          "comment": commentId,
-        });
+        body: {"comment": commentId, "reaction": reaction});
     print(response);
-    return response['success'];
+    return response['message'];
   }
 
   @override

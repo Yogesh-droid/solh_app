@@ -20,6 +20,7 @@ import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/errors/not_found.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -29,6 +30,7 @@ import '../../../controllers/profile/anon_controller.dart';
 import '../../../routes/routes.dart';
 import '../journaling/create-journal.dart';
 import '../journaling/widgets/comment_menu_btn.dart';
+import '../journaling/widgets/journal_tile.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 
 class CommentScreen extends StatefulWidget {
@@ -1012,14 +1014,14 @@ class CommentBoxWidget extends StatelessWidget {
         children: [
           getCommentBody(_commentModel!, _bestComment, context, false),
           getCommentFooter(_bestComment != null ? _bestComment : _commentModel!,
-              onReplyTapped, index),
+              onReplyTapped, index, context),
           _bestComment != null
               ? _bestComment!.replyNum == 0
                   ? Container()
-                  : getViewReplyBtn(index, _bestComment)
+                  : getViewReplyBtn(index, _bestComment, context)
               : _commentModel!.replyNum == 0
                   ? Container()
-                  : getViewReplyBtn(index, _bestComment),
+                  : getViewReplyBtn(index, _bestComment, context),
           _bestComment != null
               ? Obx(() {
                   return journalCommentController.bestCommentReplyList.length >
@@ -1262,48 +1264,102 @@ class CommentBoxWidget extends StatelessWidget {
     dynamic commentModel,
     Function(String id, String userName, String userId) onReplyTapped,
     int index,
+    BuildContext context,
   ) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 18.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              InkWell(
-                onTap: () async {
-                  bool isTrue = await journalCommentController.likeComment(
-                      commentId: commentModel.sId ?? '');
-                  if (isTrue) {
-                    journalCommentController.getJouranalsCommentModel.value
-                        .body!.comments![index].likes = journalCommentController
-                            .getJouranalsCommentModel
-                            .value
-                            .body!
-                            .comments![index]
-                            .likes! +
-                        1;
-                    journalCommentController.getJouranalsCommentModel.refresh();
-                  }
-                },
-                child: Icon(
-                  Icons.thumb_up_outlined,
-                  color: SolhColors.primary_green,
-                  size: 17,
+          InkWell(
+            onTap: () {
+              Get.find<JournalPageController>()
+                  .getUsersLikedPost(commentModel.sId ?? '', 1);
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      child: LikesModalSheet(
+                        onTap: (value) async {
+                          String message =
+                              await journalCommentController.likeComment(
+                                  commentId: commentModel.sId ?? '',
+                                  reaction: value);
+                          if (message == 'Liked comment successfully') {
+                            journalCommentController
+                                .getJouranalsCommentModel
+                                .value
+                                .body!
+                                .comments![index]
+                                .likes = journalCommentController
+                                    .getJouranalsCommentModel
+                                    .value
+                                    .body!
+                                    .comments![index]
+                                    .likes! +
+                                1;
+                            journalCommentController.getJouranalsCommentModel
+                                .refresh();
+                          } else {
+                            Utility.showToast(message);
+                          }
+                          Navigator.of(context).pop();
+                          // journalCommentController.likePost(
+                          //     journalId: widget._journalModel!.id ?? '',
+                          //     reaction: value);
+                          // journalPageController.journalsList[widget.index]
+                          //     .likes = journalPageController
+                          //         .journalsList[widget.index].likes! +
+                          //     1;
+                          // journalPageController.journalsList.refresh();
+                          // Navigator.of(context).pop();
+                        },
+                      ),
+                    );
+                  });
+            },
+            /* onTap: () async {
+              bool isTrue = await journalCommentController.likeComment(
+                  commentId: commentModel.sId ?? '');
+              if (isTrue) {
+                journalCommentController.getJouranalsCommentModel.value
+                    .body!.comments![index].likes = journalCommentController
+                        .getJouranalsCommentModel
+                        .value
+                        .body!
+                        .comments![index]
+                        .likes! +
+                    1;
+                journalCommentController.getJouranalsCommentModel.refresh();
+              }
+            }, */
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset('assets/images/reactions.svg'),
+                SizedBox(
+                  width: 1.w,
                 ),
-              ),
-              SizedBox(
-                width: 1.w,
-              ),
-              Text(
-                commentModel.likes != null
-                    ? commentModel.likes!.toString()
-                    : '0',
-                style: TextStyle(
-                  color: SolhColors.primary_green,
+                Text(
+                  commentModel.likes != null
+                      ? commentModel.likes!.toString()
+                      : '0',
+                  style: TextStyle(
+                    color: SolhColors.primary_green,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            // child: Row(
+            //   children: [
+            //     Icon(
+            //       Icons.thumb_up_outlined,
+            //       color: SolhColors.primary_green,
+            //       size: 17,
+            //     ),
+
+            //   ],
+            // ),
           ),
           Row(
             children: [
@@ -1348,53 +1404,102 @@ class CommentBoxWidget extends StatelessWidget {
     );
   }
 
-  Widget getViewReplyBtn(int index, BestComment? bestComment) {
-    // if (_commentModel!.replies!.length == 0) {
-    //   return SizedBox();
-    // }
-
-    return InkWell(
-      onTap: () {
-        if (bestComment == null) {
-          journalCommentController.hiddenReplyList[index] =
-              !journalCommentController.hiddenReplyList[index];
-          journalCommentController.hiddenReplyList.refresh();
-        } else {
-          journalCommentController.hiddenBestCommentReply.value =
-              !journalCommentController.hiddenBestCommentReply.value;
-        }
-        journalCommentController.getReply(
-            postId: _commentModel!.sId!,
-            pageNo: 1,
-            index: _bestComment != null ? null : index);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Obx(() => Text(
-                bestComment != null
-                    ? !journalCommentController.hiddenBestCommentReply.value
-                        ? 'View replies'
-                        : 'Hide replies'
-                    : !journalCommentController.hiddenReplyList[index]
-                        ? 'View replies'
-                        : 'Hide replies',
-                style: TextStyle(
-                  color: SolhColors.primary_green,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-              )),
-          SizedBox(
-            width: 1.w,
+  Widget getViewReplyBtn(
+      int index, BestComment? bestComment, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        InkWell(
+          onTap: () {
+            if (bestComment == null) {
+              journalCommentController.hiddenReplyList[index] =
+                  !journalCommentController.hiddenReplyList[index];
+              journalCommentController.hiddenReplyList.refresh();
+            } else {
+              journalCommentController.hiddenBestCommentReply.value =
+                  !journalCommentController.hiddenBestCommentReply.value;
+            }
+            journalCommentController.getReply(
+                postId: _commentModel!.sId!,
+                pageNo: 1,
+                index: _bestComment != null ? null : index);
+          },
+          child: Row(
+            children: [
+              Obx(() => Text(
+                    bestComment != null
+                        ? !journalCommentController.hiddenBestCommentReply.value
+                            ? 'Replies'
+                            : 'Replies'
+                        : !journalCommentController.hiddenReplyList[index]
+                            ? 'Replies'
+                            : 'Replies',
+                    style: TextStyle(
+                      color: SolhColors.primary_green,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )),
+              SizedBox(
+                width: 1.w,
+              ),
+              Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: SolhColors.primary_green,
+                size: 17,
+              ),
+            ],
           ),
-          Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: SolhColors.primary_green,
-            size: 17,
-          ),
-        ],
-      ),
+        ),
+        // SizedBox(
+        //   width: 5.w,
+        // ),
+        // InkWell(
+        //   onTap: () {
+        //     Get.find<JournalPageController>()
+        //         .getUsersLikedPost(_commentModel!.sId ?? '', 1);
+        //     showModalBottomSheet(
+        //         context: context,
+        //         builder: (context) {
+        //           return Container(
+        //             child: LikesModalSheet(
+        //               onTap: (value) {
+        //                 journalCommentController.likePost(
+        //                     journalId: widget._journalModel!.id ?? '',
+        //                     reaction: value);
+        //                 journalPageController.journalsList[widget.index].likes =
+        //                     journalPageController
+        //                             .journalsList[widget.index].likes! +
+        //                         1;
+        //                 journalPageController.journalsList.refresh();
+        //                 Navigator.of(context).pop();
+        //               },
+        //             ),
+        //           );
+        //         });
+        //   },
+        //   child: Row(
+        //     children: [
+        //       Text(
+        //         'Likes',
+        //         style: TextStyle(
+        //           color: SolhColors.primary_green,
+        //           fontSize: 12,
+        //           fontWeight: FontWeight.w600,
+        //         ),
+        //       ),
+        //       SizedBox(
+        //         width: 1.w,
+        //       ),
+        //       Icon(
+        //         Icons.keyboard_arrow_down_rounded,
+        //         color: SolhColors.primary_green,
+        //         size: 17,
+        //       ),
+        //     ],
+        //   ),
+        // )
+      ],
     );
   }
 
@@ -1412,7 +1517,8 @@ class CommentBoxWidget extends StatelessWidget {
                   .map((element) => Column(
                         children: [
                           getCommentBody(element, null, context, true),
-                          getCommentFooter(element, onReplyTapped, index),
+                          getCommentFooter(
+                              element, onReplyTapped, index, context),
                           SizedBox(
                             height: 10,
                           ),
@@ -1422,6 +1528,23 @@ class CommentBoxWidget extends StatelessWidget {
             ),
           )
         : SizedBox();
+  }
+
+  Widget viewLikesBtn() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text('Likes'),
+        SizedBox(
+          width: 1.w,
+        ),
+        Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: SolhColors.primary_green,
+          size: 17,
+        ),
+      ],
+    );
   }
 }
 
@@ -1444,6 +1567,7 @@ class PostForComment extends StatefulWidget {
 class _PostForCommentState extends State<PostForComment> {
   final JournalPageController _journalPageController = Get.find();
   final ConnectionController connectionController = ConnectionController();
+  JournalCommentController journalCommentController = Get.find();
   bool _isLiked = false;
 
   @override
@@ -1510,7 +1634,78 @@ class _PostForCommentState extends State<PostForComment> {
   }
 
   Widget getLikeBtn() {
-    return Row(
+    return InkWell(
+      /* onTap: () async {
+              if (journalPageController.journalsList[widget.index].isLiked!) {
+                journalPageController.journalsList[widget.index].isLiked =
+                    false;
+                journalPageController.journalsList[widget.index].likes =
+                    journalPageController.journalsList[widget.index].likes! - 1;
+                journalPageController.journalsList.refresh();
+                await _unlikeJournal();
+                setState(() {});
+              } else {
+                journalPageController.journalsList[widget.index].isLiked = true;
+                journalPageController.journalsList[widget.index].likes =
+                    journalPageController.journalsList[widget.index].likes! + 1;
+                journalPageController.journalsList.refresh();
+                await _likeJournal();
+              }
+            }, */
+      onTap: () {
+        _journalPageController.getUsersLikedPost(
+            widget._journalModel!.id ?? '', 1);
+        showModalBottomSheet(
+            context: context,
+            builder: (context) {
+              return Container(
+                child: LikesModalSheet(
+                  onTap: (value) async {
+                    String message = await journalCommentController.likePost(
+                        journalId: widget._journalModel!.id ?? '',
+                        reaction: value);
+                    if (message == 'journal liked successfully') {
+                      _journalPageController.journalsList[widget.index].likes =
+                          _journalPageController
+                                  .journalsList[widget.index].likes! +
+                              1;
+                      _journalPageController.journalsList.refresh();
+                    } else {
+                      Utility.showToast(message);
+                    }
+                    Navigator.of(context).pop();
+                  },
+                ),
+              );
+            });
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width / 3.5,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 3.5,
+          height: MediaQuery.of(context).size.height / 20,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset('assets/images/reactions.svg'),
+              Padding(
+                padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width / 40,
+                ),
+                child: Obx(() {
+                  return Text(
+                    _journalPageController.journalsList[widget.index].likes
+                        .toString(),
+                    style: SolhTextStyles.GreenBorderButtonText,
+                  );
+                }),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    /* return Row(
       children: [
         IconButton(onPressed: () {
           //// this is for doing like or unlike
@@ -1548,7 +1743,7 @@ class _PostForCommentState extends State<PostForComment> {
           );
         })
       ],
-    );
+    ); */
   }
 
   Widget getCommentsBtn() {

@@ -13,7 +13,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../controllers/getHelp/book_appointment.dart';
 import '../../../routes/routes.dart';
 import '../../../services/utility.dart';
@@ -331,7 +330,9 @@ class BookingPriceDetails extends StatelessWidget {
                   "concern": bookAppointmentController.query ?? '',
                   "anonymousSession": consultantController
                       .isAnonymousBookingEnabled.value
-                      .toString()
+                      .toString(),
+                  "offset": bookAppointmentController.selectedOffset.value,
+                  "zone": bookAppointmentController.selectedTimeZone.value
                 });
 
                 if (map['success']) {
