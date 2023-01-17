@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,8 +9,6 @@ import 'package:solh/widgets_constants/animated_refresh_container.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -24,8 +21,7 @@ class ActivityLogScreen extends StatefulWidget {
   State<ActivityLogScreen> createState() => _ActivityLogScreenState();
 }
 
-class _ActivityLogScreenState extends State<ActivityLogScreen>
-    with AutomaticKeepAliveClientMixin {
+class _ActivityLogScreenState extends State<ActivityLogScreen> {
   final ActivityLogContoller activityLogContoller = Get.find();
   final ProfileController profileController = Get.find();
   ScrollController scrollController = ScrollController();
@@ -64,65 +60,73 @@ class _ActivityLogScreenState extends State<ActivityLogScreen>
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWithLightBg2BackgroundArt(
-      body: Obx(() {
-        return activityLogContoller.isActivityLogLoading.value &&
-                activityLogContoller.firstLoadDone.value == false
-            ? Center(
-                child: MyLoader(),
-              )
-            : SingleChildScrollView(
-                controller: scrollController,
-                child: Column(
-                  children: [
-                    Obx(() {
-                      lastDate = '';
-                      return activityLogContoller.firstLoadDone.value == true &&
-                              activityLogContoller.isActivityLogLoading.value
-                          ? AnimatedRefreshContainer()
-                          : Container();
-                    }),
-                    ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(top: 10),
-                      itemCount: activityLogContoller
-                          .activityLogModel.value.result!.activityLog!.length,
-                      itemBuilder: (context, index) {
-                        return getListItem(
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].createdAt,
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].content,
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].subContent,
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].activityType,
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].anonymously,
-                          profileController,
-                          activityLogContoller.activityLogModel.value.result!
-                              .activityLog![index].activityPoints,
-                        );
-                      },
-                    ),
-                    Obx(() {
-                      return activityLogContoller.isFeatchingMoreLog.value
-                          ? SizedBox(
-                              height: 20,
-                              child: ButtonLoadingAnimation(
-                                ballColor: SolhColors.primary_green,
-                                ballSizeLowerBound: 3,
-                                ballSizeUpperBound: 8,
-                              ),
-                            )
-                          : Container();
-                    })
-                  ],
+    return Obx(() {
+      return activityLogContoller.isActivityLogLoading.value &&
+              activityLogContoller.firstLoadDone.value == false
+          ? Center(
+              child: MyLoader(),
+            )
+          : Stack(
+              children: [
+                Container(
+                  width: 100.w,
+                  child: Image.asset('assets/images/ScaffoldBackgroundArt.png',
+                      fit: BoxFit.fitWidth),
                 ),
-              );
-      }),
-    );
+                SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        lastDate = '';
+                        return activityLogContoller.firstLoadDone.value ==
+                                    true &&
+                                activityLogContoller.isActivityLogLoading.value
+                            ? AnimatedRefreshContainer()
+                            : Container();
+                      }),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(top: 10),
+                        itemCount: activityLogContoller
+                            .activityLogModel.value.result!.activityLog!.length,
+                        itemBuilder: (context, index) {
+                          return getListItem(
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].createdAt,
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].content,
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].subContent,
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].activityType,
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].anonymously,
+                            profileController,
+                            activityLogContoller.activityLogModel.value.result!
+                                .activityLog![index].activityPoints,
+                          );
+                        },
+                      ),
+                      Obx(() {
+                        return activityLogContoller.isFeatchingMoreLog.value
+                            ? SizedBox(
+                                height: 20,
+                                child: ButtonLoadingAnimation(
+                                  ballColor: SolhColors.primary_green,
+                                  ballSizeLowerBound: 3,
+                                  ballSizeUpperBound: 8,
+                                ),
+                              )
+                            : Container();
+                      })
+                    ],
+                  ),
+                ),
+              ],
+            );
+    });
   }
 
   @override
@@ -439,7 +443,10 @@ Widget getContainerIcon(String activityType) {
       height: 6.w,
     );
   } else if (activityType == "group") {
-    return Icon(CupertinoIcons.group);
+    return Icon(
+      CupertinoIcons.group,
+      color: SolhColors.white,
+    );
   } else if (activityType == "appointment") {
     return SvgPicture.asset(
       'assets/images/person_square.svg',

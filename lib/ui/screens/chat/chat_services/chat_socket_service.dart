@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:solh/bloc/user-bloc.dart';
+
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 
@@ -125,7 +125,7 @@ class SocketService {
 
     socket.onConnect((data) {
       print('Connected to server');
-      print('connected');
+      print(data.runtimeType);
       print(socket.id);
 
       socket.emit('uconnect', {

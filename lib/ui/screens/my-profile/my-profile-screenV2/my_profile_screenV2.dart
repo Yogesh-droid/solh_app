@@ -300,22 +300,17 @@ Container getStatsItem(Widget icon, String statNumber, String stat) {
 Widget getCapitalItem(icon, statNumber, stat) {
   return Stack(
     children: [
-      Positioned(
-        child: Shimmer.fromColors(
-          baseColor: Color(0xffC29535),
-          highlightColor: Colors.grey[100]!,
-          child: Positioned.fill(
-            child: Container(
-              height: 50,
-              width: 70,
-              decoration: BoxDecoration(
-                  color: Color(0xffC29535),
-                  borderRadius: BorderRadius.circular(4)),
-            ),
-          ),
+      Shimmer.fromColors(
+        baseColor: Color(0xffC29535),
+        highlightColor: Colors.grey[100]!,
+        child: Container(
+          height: 50,
+          width: 70,
+          decoration: BoxDecoration(
+              color: Color(0xffC29535), borderRadius: BorderRadius.circular(4)),
         ),
       ),
-      Positioned.fill(
+      Positioned(
         left: 0,
         right: 0,
         top: 0,
