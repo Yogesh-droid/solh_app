@@ -160,7 +160,15 @@ class AppointmentScreen extends StatelessWidget {
                                                     .JournalingUsernameText,
                                               ),
                                             ),
-                                            Text(
+                                            Container(
+                                              width: 150,
+                                              child: Text(
+                                                  scheduldAppointments[index]
+                                                          .seekerTime!
+                                                          .time ??
+                                                      ''),
+                                            )
+                                            /* Text(
                                                 scheduldAppointments[index]
                                                         .scheduledOn! +
                                                     ', ' +
@@ -176,7 +184,7 @@ class AppointmentScreen extends StatelessWidget {
                                                         .scheduleTime ??
                                                     '',
                                                 style: GoogleFonts.signika(
-                                                    color: Color(0xffA6A6A6))),
+                                                    color: Color(0xffA6A6A6))), */
                                           ],
                                         ),
                                       ],
@@ -306,7 +314,7 @@ class AppointmentScreen extends StatelessWidget {
   }
 
   Widget getCompletedAppointments(
-      List<CompletedAppointments>? completedAppointments) {
+      List<ScheduldAppointments>? completedAppointments) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -389,16 +397,19 @@ class AppointmentScreen extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  completedAppointments[index]
-                                                          .doctor!
-                                                          .name ??
-                                                      '',
-                                                  style: SolhTextStyles
-                                                      .JournalingUsernameText,
+                                                Container(
+                                                  width: 150,
+                                                  child: Text(
+                                                    completedAppointments[index]
+                                                            .doctor!
+                                                            .name ??
+                                                        '',
+                                                    style: SolhTextStyles
+                                                        .JournalingUsernameText,
+                                                  ),
                                                 ),
                                                 Text(
-                                                  '${completedAppointments[index].scheduledOn ?? ''}',
+                                                  '${completedAppointments[index].seekerTime!.time ?? ''}',
                                                   style: GoogleFonts.signika(
                                                       color: Color(0xffA6A6A6)),
                                                 ),

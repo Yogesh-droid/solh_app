@@ -19,7 +19,6 @@ import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
 import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
-import 'invite_member_ui.dart';
 
 class CreateGroup extends StatefulWidget {
   final GroupList? group;

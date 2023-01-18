@@ -20,6 +20,7 @@ import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -209,7 +210,7 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  Future<bool> _likeJournal() async {
+  /*  Future<bool> _likeJournal() async {
     setState(() {});
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/like-journal",
@@ -227,7 +228,7 @@ class _JournalTileState extends State<JournalTile> {
     );
     print(response);
     return true;
-  }
+  } */
 
   Widget getUserImageAndName() {
     return Container(
@@ -605,15 +606,22 @@ class _JournalTileState extends State<JournalTile> {
                   builder: (context) {
                     return Container(
                       child: LikesModalSheet(
-                        onTap: (value) {
-                          journalCommentController.likePost(
-                              journalId: widget._journalModel!.id ?? '',
-                              reaction: value);
-                          journalPageController.journalsList[widget.index]
-                              .likes = journalPageController
-                                  .journalsList[widget.index].likes! +
-                              1;
-                          journalPageController.journalsList.refresh();
+                        onTap: (value) async {
+                          String message =
+                              await journalCommentController.likePost(
+                                  journalId: widget._journalModel!.id ?? '',
+                                  reaction: value);
+                          if (message == 'journal liked successfully') {
+                            journalPageController.journalsList[widget.index]
+                                .likes = journalPageController
+                                    .journalsList[widget.index].likes! +
+                                1;
+                            journalPageController
+                                .journalsList[widget.index].isLiked = true;
+                            journalPageController.journalsList.refresh();
+                          } else {
+                            Utility.showToast(message);
+                          }
                           Navigator.of(context).pop();
                         },
                       ),
@@ -628,7 +636,12 @@ class _JournalTileState extends State<JournalTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset('assets/images/reactions.svg'),
+                    Obx(() => SvgPicture.asset(
+                          journalPageController
+                                  .journalsList[widget.index].isLiked!
+                              ? 'assets/images/reactions_liked.svg'
+                              : 'assets/images/reactions.svg',
+                        )),
                     Padding(
                       padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width / 40,
@@ -984,66 +997,99 @@ class _PostContentWidgetState extends State<PostContentWidget> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 35,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                widget.journalModel.feelings != null &&
-                        widget.journalModel.feelings!.isNotEmpty
-                    ? Text(
-                        feelingList
-                            .toString()
-                            .replaceAll("[", "")
-                            .replaceAll("]", ""),
-                        style: SolhTextStyles.PinkBorderButtonText)
-                    : Container(),
-                descriptionTexts.length == 1
-                    ? ReadMoreText(
-                        descriptionTexts[0],
-                        trimLines: 5,
-                        style: GoogleFonts.signika(
-                            color: Color(0xff666666), fontSize: 14),
-                      )
-                    : Wrap(children: [
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.end,
-                          children: widget.journalModel.description!.length == 0
-                              ? []
-                              : showMoreBtn
-                                  ? isExpanded
-                                      ? descriptionTexts.map((item) {
-                                          return getDescriptionText(item);
-                                        }).toList()
-                                      : descriptionTexts
-                                          .sublist(0, 30)
-                                          .map((item) {
-                                          return getDescriptionText(item);
-                                        }).toList()
-                                  : descriptionTexts.map((item) {
-                                      return getDescriptionText(item);
-                                    }).toList(),
-                        ),
-                        showMoreBtn
-                            ? InkWell(
-                                child: Text(
-                                  !isExpanded ? '...show more' : '...show less',
-                                  style: GoogleFonts.signika(
-                                      color: SolhColors.primary_green),
-                                ),
-                                onTap: () {
-                                  setState(() {
-                                    isExpanded = !isExpanded;
-                                  });
-                                },
-                              )
-                            : Container()
-                      ])
-              ],
-            ),
-          ),
+          widget.journalModel.feelings != null &&
+                  widget.journalModel.feelings!.isNotEmpty &&
+                  widget.journalModel.description!.length == 0
+              ? SizedBox()
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    widget.journalModel.feelings != null &&
+                            widget.journalModel.feelings!.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, top: 8.0),
+                            child: Text(
+                              feelingList
+                                  .toString()
+                                  .replaceAll("[", "")
+                                  .replaceAll("]", ""),
+                              style: SolhTextStyles.PinkBorderButtonText,
+                            ),
+                          )
+                        : Container(),
+                    descriptionTexts[0].trim().isEmpty
+                        ? SizedBox()
+                        : widget.journalModel.description!.length != 0
+                            ? descriptionTexts.length == 1
+                                ? Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0,
+                                        right: 15.0,
+                                        top: 8.0,
+                                        bottom: 8.0),
+                                    child: ReadMoreText(
+                                      descriptionTexts[0].trim(),
+                                      trimLines: 5,
+                                      style: GoogleFonts.signika(
+                                          color: Color(0xff666666),
+                                          fontSize: 14),
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0,
+                                        right: 15.0,
+                                        top: 8.0,
+                                        bottom: 8.0),
+                                    child: Wrap(children: [
+                                      Wrap(
+                                        crossAxisAlignment:
+                                            WrapCrossAlignment.end,
+                                        children: widget.journalModel
+                                                    .description!.length ==
+                                                0
+                                            ? []
+                                            : showMoreBtn
+                                                ? isExpanded
+                                                    ? descriptionTexts
+                                                        .map((item) {
+                                                        return getDescriptionText(
+                                                            item);
+                                                      }).toList()
+                                                    : descriptionTexts
+                                                        .sublist(0, 30)
+                                                        .map((item) {
+                                                        return getDescriptionText(
+                                                            item);
+                                                      }).toList()
+                                                : descriptionTexts.map((item) {
+                                                    return getDescriptionText(
+                                                        item);
+                                                  }).toList(),
+                                      ),
+                                      showMoreBtn
+                                          ? InkWell(
+                                              child: Text(
+                                                !isExpanded
+                                                    ? '...show more'
+                                                    : '...show less',
+                                                style: GoogleFonts.signika(
+                                                    color: SolhColors
+                                                        .primary_green),
+                                              ),
+                                              onTap: () {
+                                                setState(() {
+                                                  isExpanded = !isExpanded;
+                                                });
+                                              },
+                                            )
+                                          : Container()
+                                    ]),
+                                  )
+                            : SizedBox(),
+                  ],
+                ),
           widget.journalModel.mediaUrl != null &&
                   widget.journalModel.mediaUrl != ''
               ?
@@ -1170,16 +1216,17 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                       decoration: BoxDecoration(
                           border: Border.all(
                               width: 0.5, color: Colors.grey.shade300)),
-                      margin: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height / 80,
-                      ),
+                      // margin: EdgeInsets.symmetric(
+                      //   vertical: MediaQuery.of(context).size.height / 80,
+                      // ),
                       child: CachedNetworkImage(
                         imageUrl: widget.journalModel.mediaUrl.toString(),
                         fit: BoxFit.fitWidth,
                         placeholder: (context, url) => getShimmer(context),
                         errorWidget: (context, url, error) => Center(
                           child: Image.asset(
-                              'assets/images/no-image-available.png'),
+                            'assets/images/no-image-available.png',
+                          ),
                         ),
                       ),
                     )
@@ -1192,7 +1239,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
   }
 
   List getTexts() {
-    String desc = widget.journalModel.description!;
+    String desc = widget.journalModel.description!.trim();
     List<String> textList = desc.split(' ');
     var regx = RegExp(r'@');
     // if (textList.length > 30) {

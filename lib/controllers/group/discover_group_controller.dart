@@ -64,11 +64,14 @@ class DiscoverGroupController extends GetxController {
 
   Future<void> getGroupDetail(String groupId) async {
     isLoading.value = true;
+
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         '${APIConstants.api}/api/group/$groupId');
 
     if (map['success']) {
-      groupDetail.value = GroupList.fromJson(map);
+      print('This is map $map');
+      groupDetail.value = GroupList.fromJson(map['groupList'][0]);
+      print(groupDetail.value.groupMembers!.length);
     }
     isLoading.value = false;
   }

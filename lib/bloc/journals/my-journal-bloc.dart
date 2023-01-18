@@ -38,8 +38,10 @@ class MyJournalsBloc {
       isFetchingMore = true;
       _moreLoader.sink.add(true);
     }
+    // Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
+    //     "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
     Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
-        "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
+        "${APIConstants.api}/api/v1/user-journal/$sId?pageNumber=$nextPage");
 
     List<Journals> _journals = <Journals>[];
     nextPage = apiResponse['data']["next"] != null
@@ -167,6 +169,7 @@ class MyJournalsBloc {
 
   Future getJournalsSnapshot(String? sId) async {
     _journalsList = [];
+    nextPage = 1;
     await fetchDetailsFirstTime(sId).then((journals) {
       _journalsList.addAll(journals);
       print("journals fetched: " + journals.length.toString());

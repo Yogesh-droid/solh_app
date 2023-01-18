@@ -562,11 +562,12 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: journal.mediaUrl != null
-                      ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                      : AssetImage(
-                          'assets/images/backgroundScaffold.png',
-                        ) as ImageProvider),
+                  // image: journal.mediaUrl != null
+                  //     ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                  //     : AssetImage(
+                  //         'assets/images/backgroundScaffold.png',
+                  //       ) as ImageProvider),
+                  image: AssetImage('assets/images/backgroundScaffold.png')),
               gradient: journal.postedBy!.userType == 'Official'
                   ? LinearGradient(
                       stops: [0.1, 0.9],
@@ -607,11 +608,12 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: journal.mediaUrl != null
-                      ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                      : AssetImage(
-                          'assets/images/backgroundScaffold.png',
-                        ) as ImageProvider),
+                  // image: journal.mediaUrl != null
+                  //     ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
+                  //     : AssetImage(
+                  //         'assets/images/backgroundScaffold.png',
+                  //       ) as ImageProvider),
+                  image: AssetImage('assets/images/backgroundScaffold.png')),
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
@@ -715,71 +717,96 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getPostContent(Journals journal, int maxLine) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          getUserTile(journal),
-          journal.feelings!.isEmpty &&
-                  journal.description != null &&
-                  journal.description!.trim().isEmpty
-              ? Container()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Color.fromRGBO(255, 255, 255, 0.9)),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        journal.feelings!.length > 0
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Wrap(
-                                  children: journal.feelings!.length > 3
-                                      ? journal.feelings!
-                                          .sublist(0, 3)
-                                          .map((e) => Text(
-                                                '${e.feelingName}',
-                                                style: SolhTextStyles
-                                                    .JournalingHashtagText,
-                                              ))
-                                          .toList()
-                                      : journal.feelings!
-                                          .map((e) => Text(
-                                                '${e.feelingName}',
-                                                style: SolhTextStyles
-                                                    .JournalingHashtagText,
-                                              ))
-                                          .toList(),
-                                ),
-                              )
-                            : Container(),
-                        journal.description!.trim().isEmpty
-                            ? SizedBox(
-                                height: 0,
-                              )
-                            : Container(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    journal.description ?? '',
-                                    style: SolhTextStyles.QS_cap_semi,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                ),
-        ],
-      ),
+    /*
+     Container(
+                        height: 120,
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12),
+                              bottomRight: Radius.circular(12)),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.fitWidth,
+                              imageUrl: journal.mediaUrl ?? ''),
+                        ),
+                      )
+     */
+    return Column(
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        getUserTile(journal),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Color.fromRGBO(255, 255, 255, 0.9)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                journal.feelings!.length > 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                          left: 8.0,
+                          right: 8.0,
+                        ),
+                        child: Wrap(
+                          children: journal.feelings!.length > 3
+                              ? journal.feelings!
+                                  .sublist(0, 3)
+                                  .map((e) => Text(
+                                        '${e.feelingName}',
+                                        style: SolhTextStyles
+                                            .JournalingHashtagText,
+                                      ))
+                                  .toList()
+                              : journal.feelings!
+                                  .map((e) => Text(
+                                        '${e.feelingName}',
+                                        style: SolhTextStyles
+                                            .JournalingHashtagText,
+                                      ))
+                                  .toList(),
+                        ),
+                      )
+                    : Container(),
+                journal.description!.trim().isEmpty
+                    ? SizedBox(
+                        height: 0,
+                      )
+                    : Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            journal.description ?? '',
+                            style: SolhTextStyles.QS_cap_semi,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                journal.mediaUrl == null
+                    ? SizedBox()
+                    : journal.mediaUrl!.trim().isEmpty
+                        ? SizedBox()
+                        : Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: CachedNetworkImage(
+                                  width: double.infinity,
+                                  fit: BoxFit.fitWidth,
+                                  imageUrl: journal.mediaUrl ?? ''),
+                            ),
+                          )
+              ],
+            ),
+          ),
+        ))
+      ],
     );
   }
 

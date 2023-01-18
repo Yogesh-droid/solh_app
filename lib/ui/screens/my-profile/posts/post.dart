@@ -34,6 +34,7 @@ class _PostScreenState extends State<PostScreen> {
   @override
   void initState() {
     super.initState();
+
     getMyJournals(widget.sId);
     _refreshController = RefreshController();
     _scrollController.addListener(() {

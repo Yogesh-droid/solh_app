@@ -1299,6 +1299,14 @@ class CommentBoxWidget extends StatelessWidget {
                                     .likes! +
                                 1;
                             journalCommentController.getJouranalsCommentModel
+                                .value.body!.comments![index].likedBy!
+                                .add(int.parse(Get.find<ProfileController>()
+                                    .myProfileModel
+                                    .value
+                                    .body!
+                                    .user!
+                                    .sId!));
+                            journalCommentController.getJouranalsCommentModel
                                 .refresh();
                           } else {
                             Utility.showToast(message);
@@ -1336,7 +1344,15 @@ class CommentBoxWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset('assets/images/reactions.svg'),
+                Obx(() => SvgPicture.asset(commentModel.likedBy.contains(
+                        Get.find<ProfileController>()
+                            .myProfileModel
+                            .value
+                            .body!
+                            .user!
+                            .sId!)
+                    ? 'assets/images/reactions_liked.svg'
+                    : 'assets/images/reactions.svg')),
                 SizedBox(
                   width: 1.w,
                 ),
@@ -1669,6 +1685,8 @@ class _PostForCommentState extends State<PostForComment> {
                           _journalPageController
                                   .journalsList[widget.index].likes! +
                               1;
+                      _journalPageController
+                          .journalsList[widget.index].isLiked = true;
                       _journalPageController.journalsList.refresh();
                     } else {
                       Utility.showToast(message);
@@ -1687,7 +1705,10 @@ class _PostForCommentState extends State<PostForComment> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/images/reactions.svg'),
+              Obx(() => SvgPicture.asset(
+                  _journalPageController.journalsList[widget.index].isLiked!
+                      ? 'assets/images/reactions_liked.svg'
+                      : 'assets/images/reactions.svg')),
               Padding(
                 padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width / 40,

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
@@ -13,8 +14,10 @@ import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/ui/screens/my-profile/connections/blocked_users.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
 
@@ -608,7 +611,7 @@ class _ConnectionsState extends State<Connections> {
                           //             sId: connectionController.sentConnections
                           //                     .value[index].sId ??
                           //                 '')));
-                          Navigator.pushNamed(context, AppRoutes.userProfile,
+                          Navigator.pushNamed(context, AppRoutes.connectScreen,
                               arguments: {
                                 "uid": connectionController
                                         .sentConnections.value[index].uId ??
@@ -718,7 +721,7 @@ class _ConnectionsState extends State<Connections> {
                                                 .value[index].sId ??
                                             '');
                                     Navigator.pushNamed(
-                                        context, AppRoutes.userProfile,
+                                        context, AppRoutes.connectScreen,
                                         arguments: {
                                           "uid": connectionController
                                                   .sentConnections
@@ -808,7 +811,7 @@ class _ConnectionsState extends State<Connections> {
                           //                     .value[index]
                           //                     .sId ??
                           //                 '')));
-                          Navigator.pushNamed(context, AppRoutes.userProfile,
+                          Navigator.pushNamed(context, AppRoutes.connectScreen,
                               arguments: {
                                 "uid": connectionController
                                         .sentConnections.value[index].uId ??
@@ -896,20 +899,37 @@ class _ConnectionsState extends State<Connections> {
                               Spacer(),
                               inviteButton(
                                   callback: () async {
-                                    connectionController
-                                        .isAddingConnection.value = true;
-                                    connectionController.addingConnectionId
-                                        .value = connectionController
-                                            .receivedConnections
-                                            .value[index]
-                                            .connectionId ??
-                                        '';
-                                    await connectionController.acceptConnection(
-                                        connectionController.receivedConnections
-                                            .value[index].connectionId!,
-                                        '1');
-                                    connectionController
-                                        .isAddingConnection.value = false;
+                                    if (ifMinor(profileController.myProfileModel
+                                            .value.body!.user!.dob ??
+                                        '')) {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return cancelAcceptAlertDialog(
+                                                connectionController:
+                                                    connectionController,
+                                                index: index,
+                                                context: context);
+                                          });
+                                    } else {
+                                      connectionController
+                                          .isAddingConnection.value = true;
+                                      connectionController.addingConnectionId
+                                          .value = connectionController
+                                              .receivedConnections
+                                              .value[index]
+                                              .connectionId ??
+                                          '';
+                                      await connectionController
+                                          .acceptConnection(
+                                              connectionController
+                                                  .receivedConnections
+                                                  .value[index]
+                                                  .connectionId!,
+                                              '1');
+                                      connectionController
+                                          .isAddingConnection.value = false;
+                                    }
                                   },
                                   flag: 'received',
                                   id: connectionController.receivedConnections
@@ -930,7 +950,7 @@ class _ConnectionsState extends State<Connections> {
                                 onSelected: (value) async {
                                   if (value == '1') {
                                     Navigator.pushNamed(
-                                        context, AppRoutes.userProfile,
+                                        context, AppRoutes.connectScreen,
                                         arguments: {
                                           "uid": connectionController
                                                   .receivedConnections
@@ -1109,7 +1129,7 @@ class _ConnectionsState extends State<Connections> {
                                 onSelected: (value) {
                                   if (value == '1') {
                                     Navigator.pushNamed(
-                                        context, AppRoutes.userProfile,
+                                        context, AppRoutes.connectScreen,
                                         arguments: {
                                           "uid": connectionController
                                                   .receivedConnections
@@ -1314,4 +1334,103 @@ class _ConnectionsState extends State<Connections> {
       ],
     );
   }
+}
+
+bool ifMinor(String dob) {
+  DateTime birthDate = DateTime.parse(dob);
+
+  if (DateTime.now().year - birthDate.year < 18) {
+    return true;
+  } else if (DateTime.now().year - birthDate.year == 18) {
+    if (DateTime.now().month < birthDate.month) {
+      return DateTime.now().month < birthDate.month;
+    } else if (DateTime.now().month == birthDate.month) {
+      return DateTime.now().day <= birthDate.day;
+    }
+  }
+  return false;
+}
+
+AlertDialog cancelAcceptAlertDialog(
+    {context, required ConnectionController connectionController, index}) {
+  return AlertDialog(
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 2.h,
+        ),
+        Icon(
+          CupertinoIcons.exclamationmark_triangle_fill,
+          color: Color(0xffFFA0A4),
+          size: 41,
+        ),
+        SizedBox(
+          height: 2.h,
+        ),
+        RichText(
+            text: TextSpan(
+                text: 'Disclaimer : ',
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      decoration: TextDecoration.none,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                children: <TextSpan>[
+              TextSpan(
+                text: 'Please accept connection requests of known persons only',
+                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                    decoration: TextDecoration.none,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: SolhColors.grey),
+              )
+            ])),
+        SizedBox(
+          height: 4.h,
+        ),
+        Row(
+          children: [
+            SolhGreenBorderMiniButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(
+                'Cancel',
+                style: SolhTextStyles.CTA.copyWith(color: SolhColors.black),
+              ),
+            ),
+            SizedBox(
+              width: 2.w,
+            ),
+            SolhGreenMiniButton(
+              onPressed: () async {
+                connectionController.isAddingConnection.value = true;
+                connectionController.addingConnectionId.value =
+                    connectionController
+                            .receivedConnections.value[index].connectionId ??
+                        '';
+                await connectionController.acceptConnection(
+                    connectionController
+                        .receivedConnections.value[index].connectionId!,
+                    '1');
+                connectionController.isAddingConnection.value = false;
+                Navigator.of(context).pop();
+              },
+              child: Obx(() {
+                return connectionController.isAddingConnection.value
+                    ? Padding(
+                        padding: EdgeInsets.all(1.w),
+                        child: MyLoader(),
+                      )
+                    : Text(
+                        'Accept',
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.white),
+                      );
+              }),
+            )
+          ],
+        )
+      ],
+    ),
+  );
 }

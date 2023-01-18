@@ -19,13 +19,13 @@ class ActivityBadgeParent extends StatefulWidget {
 class _ActivityBadgeParentState extends State<ActivityBadgeParent>
     with TickerProviderStateMixin {
   ActivityLogContoller activityLogContoller = Get.put(ActivityLogContoller());
-  late TabController _tabController;
+  // late TabController _tabController;
   @override
   void initState() {
     // TODO: implement initState
     activityLogContoller.getActivityLogController();
 
-    _tabController = TabController(length: 2, vsync: this);
+    // _tabController = TabController(length: 2, vsync: this);
 
     super.initState();
   }
@@ -37,104 +37,111 @@ class _ActivityBadgeParentState extends State<ActivityBadgeParent>
         isLandingScreen: false,
         title: Text(''),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 4.h,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 60.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Psychological Capital',
-                        style: SolhTextStyles.QS_big_body.copyWith(
-                          color: SolhColors.dark_grey,
-                        ),
-                      ),
-                      Text(
-                        '''This is a grand total based on your Engagement on the app''',
-                        textAlign: TextAlign.start,
-                        style: SolhTextStyles.QS_caption,
-                      )
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Obx(() {
-                      return activityLogContoller.isActivityLogLoading.value
-                          ? ButtonLoadingAnimation(
-                              ballColor: SolhColors.primary_green,
-                              ballSizeLowerBound: 3,
-                              ballSizeUpperBound: 8,
-                            )
-                          : Text(
-                              activityLogContoller.activityLogModel.value
-                                  .result!.psychologicalCapital
-                                  .toString(),
-                              style: SolhTextStyles.QS_head_4,
-                            );
-                    }),
-                    Text(
-                      'Your Capital',
-                      style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                          color: SolhColors.Grey_1),
-                    ),
-                  ],
-                )
-              ],
+      body: SizedBox(
+        height: 100.h,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 4.h,
             ),
-          ),
-          SizedBox(
-            height: 2.h,
-          ),
-          Column(
-            children: [
-              Divider(),
-              TabBar(
-                  indicatorColor: SolhColors.primary_green,
-                  controller: _tabController,
-                  onTap: ((value) {
-                    setState(() {});
-                  }),
-                  tabs: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'Activity',
-                        style: SolhTextStyles.QS_body_1_bold.copyWith(
-                            color: _tabController.index == 0
-                                ? SolhColors.primary_green
-                                : SolhColors.Grey_1),
-                      ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 60.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Psychological Capital',
+                          style: SolhTextStyles.QS_big_body.copyWith(
+                            color: SolhColors.dark_grey,
+                          ),
+                        ),
+                        Text(
+                          '''This is a grand total based on your Engagement on the app''',
+                          textAlign: TextAlign.start,
+                          style: SolhTextStyles.QS_caption,
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: Text(
-                        'Badges',
-                        style: SolhTextStyles.QS_body_1_bold.copyWith(
-                            color: _tabController.index == 1
-                                ? SolhColors.primary_green
-                                : SolhColors.Grey_1),
+                  ),
+                  Column(
+                    children: [
+                      Obx(() {
+                        return activityLogContoller.isActivityLogLoading.value
+                            ? ButtonLoadingAnimation(
+                                ballColor: SolhColors.primary_green,
+                                ballSizeLowerBound: 3,
+                                ballSizeUpperBound: 8,
+                              )
+                            : Text(
+                                activityLogContoller.activityLogModel.value
+                                    .result!.psychologicalCapital
+                                    .toString(),
+                                style: SolhTextStyles.QS_head_4,
+                              );
+                      }),
+                      Text(
+                        'Your Capital',
+                        style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                            color: SolhColors.Grey_1),
                       ),
-                    )
-                  ]),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(controller: _tabController, children: [
-              ActivityLogScreen(),
-              BadgesScreen(),
-            ]),
-          )
-        ],
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 2.h,
+            ),
+            Expanded(child: ActivityLogScreen()),
+
+            // Column(
+            //   children: [
+            //     Divider(),
+
+            //     // TabBar(
+            //     //     indicatorColor: SolhColors.primary_green,
+            //     //     controller: _tabController,
+            //     //     onTap: ((value) {
+            //     //       setState(() {});
+            //     //     }),
+            //     //     tabs: [
+            //     //       Padding(
+            //     //         padding: const EdgeInsets.symmetric(vertical: 8),
+            //     //         child: Text(
+            //     //           'Activity',
+            //     //           style: SolhTextStyles.QS_body_1_bold.copyWith(
+            //     //               color: _tabController.index == 0
+            //     //                   ? SolhColors.primary_green
+            //     //                   : SolhColors.Grey_1),
+            //     //         ),
+            //     //       ),
+            //     //       Padding(
+            //     //         padding: const EdgeInsets.symmetric(vertical: 8),
+            //     //         child: Text(
+            //     //           'Badges',
+            //     //           style: SolhTextStyles.QS_body_1_bold.copyWith(
+            //     //               color: _tabController.index == 1
+            //     //                   ? SolhColors.primary_green
+            //     //                   : SolhColors.Grey_1),
+            //     //         ),
+            //     //       )
+            //     //     ]),
+            //   ],
+            // ),
+
+            // Expanded(
+            //   child: TabBarView(controller: _tabController, children: [
+            //     ActivityLogScreen(),
+            //     BadgesScreen(),
+            //   ]),
+            // )
+          ],
+        ),
       ),
     );
   }
