@@ -453,6 +453,16 @@ Widget getContainerIcon(String activityType) {
       color: SolhColors.white,
       height: 6.w,
     );
+  } else if (activityType == "connection") {
+    return Icon(
+      CupertinoIcons.arrow_down,
+      color: SolhColors.white,
+    );
+  } else if (activityType == "psychometricTest") {
+    return Icon(
+      CupertinoIcons.doc_text_search,
+      color: SolhColors.white,
+    );
   } else {
     return Container();
   }

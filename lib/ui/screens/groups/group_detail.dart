@@ -370,6 +370,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         enableDrag: true,
                         context: context,
                         builder: (context) {
+                          profileController.myProfileModel.value.body!.user!
+                                      .anonymous ==
+                                  null
+                              ? Utility.showToast(
+                                  'Your anonymous profile dosen\'t exist')
+                              : null;
                           return getGroupJoinOption(
                               context: context,
                               createGroupController: createGroupController,
@@ -937,19 +943,22 @@ getGroupJoinOption(
           ),
         );
       }),
-      Obx(() {
-        return InkWell(
-          onTap: () => createGroupController.joinAsAnon.value = true,
-          child: getUsersTile(
-            name: profileController
-                .myProfileModel.value.body!.user!.anonymous!.userName!,
-            badge: "",
-            image: profileController
-                .myProfileModel.value.body!.user!.anonymous!.profilePicture!,
-            selected: createGroupController.joinAsAnon.value ? true : false,
-          ),
-        );
-      }),
+      profileController.myProfileModel.value.body!.user!.anonymous != null
+          ? Obx(() {
+              return InkWell(
+                onTap: () => createGroupController.joinAsAnon.value = true,
+                child: getUsersTile(
+                  name: profileController
+                      .myProfileModel.value.body!.user!.anonymous!.userName!,
+                  badge: "",
+                  image: profileController.myProfileModel.value.body!.user!
+                      .anonymous!.profilePicture!,
+                  selected:
+                      createGroupController.joinAsAnon.value ? true : false,
+                ),
+              );
+            })
+          : Container(),
       Column(
         children: [
           SolhGreenButton(

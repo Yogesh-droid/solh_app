@@ -25,6 +25,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../../../../controllers/profile/anon_controller.dart';
@@ -333,58 +334,63 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
             child: SolhGreenButton(
               onPressed: () async {
-                print(_lastNameTextEditingController.text);
-                print(_firstNameTextEditingController.text);
-                print(_bioTextEditingController.text);
-                if (_croppedFile != null) uploadImage();
-                print(_dob);
+                if (emailVarification(
+                    _emailTextEditingController.text.trim())) {
+                  print(_lastNameTextEditingController.text);
+                  print(_firstNameTextEditingController.text);
+                  print(_bioTextEditingController.text);
+                  if (_croppedFile != null) uploadImage();
+                  print(_dob);
 
-                SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-                String? coutry = sharedPreferences.getString('userCountry');
-                print(jsonEncode({
-                  "first_name": _firstNameTextEditingController.text,
-                  "last_name": _lastNameTextEditingController.text,
-                  "gender": _gender,
-                  "bio": _bioTextEditingController.text,
-                  "dob": _ageController.DOB.value,
-                  "isProvider": _ageController.isProvider.value,
-                  "userCountry": coutry,
-                  'username': _userNameController
-                      .text ////// ==> To be implemented for username
-                }));
-                var response = await http
-                    .put(Uri.parse("${APIConstants.api}/api/edit-user-details"),
-                        body: jsonEncode({
-                          "first_name": _firstNameTextEditingController.text,
-                          "last_name": _lastNameTextEditingController.text,
-                          "gender": _gender,
-                          "bio": _bioTextEditingController.text,
-                          "dob": _ageController.DOB.value,
-                          "isProvider": _ageController.isProvider.value,
-                          "userCountry": coutry,
-                          "email": _emailTextEditingController.text,
-                          'username': _userNameController
-                              .text ////// ==> To be implemented for username
-                        }),
-                        headers: {
-                      "Content-Type": "application/json",
-                      "Authorization":
-                          "Bearer ${userBlocNetwork.getSessionCookie}"
-                    }).then((value) {
-                  print(value.body);
-                }).onError((error, stackTrace) {
-                  print(error);
-                  print(stackTrace);
-                });
-                if (response != null) {
-                  Utility.showToast('Profile is edited');
+                  SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  String? coutry = sharedPreferences.getString('userCountry');
+                  print(jsonEncode({
+                    "first_name": _firstNameTextEditingController.text,
+                    "last_name": _lastNameTextEditingController.text,
+                    "gender": _gender,
+                    "bio": _bioTextEditingController.text,
+                    "dob": _ageController.DOB.value,
+                    "isProvider": _ageController.isProvider.value,
+                    "userCountry": coutry,
+                    'username': _userNameController
+                        .text ////// ==> To be implemented for username
+                  }));
+                  var response = await http.put(
+                      Uri.parse("${APIConstants.api}/api/edit-user-details"),
+                      body: jsonEncode({
+                        "first_name": _firstNameTextEditingController.text,
+                        "last_name": _lastNameTextEditingController.text,
+                        "gender": _gender,
+                        "bio": _bioTextEditingController.text,
+                        "dob": _ageController.DOB.value,
+                        "isProvider": _ageController.isProvider.value,
+                        "userCountry": coutry,
+                        "email": _emailTextEditingController.text,
+                        'username': _userNameController
+                            .text ////// ==> To be implemented for username
+                      }),
+                      headers: {
+                        "Content-Type": "application/json",
+                        "Authorization":
+                            "Bearer ${userBlocNetwork.getSessionCookie}"
+                      }).then((value) {
+                    print(value.body);
+                  }).onError((error, stackTrace) {
+                    print(error);
+                    print(stackTrace);
+                  });
+                  if (response != null) {
+                    Utility.showToast('Profile is edited');
+                  }
+
+                  await profileController.getMyProfile();
+                  Get.find<GetHelpController>().getTopConsultant();
+
+                  Navigator.pop(context);
+                } else {
+                  SolhSnackbar.error('Opps!', 'enter a correct email');
                 }
-
-                await profileController.getMyProfile();
-                Get.find<GetHelpController>().getTopConsultant();
-
-                Navigator.pop(context);
               },
               child: Text("Save Changes"),
               height: 6.5.h,
@@ -484,13 +490,13 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
 }
 
 class TextFieldB extends StatelessWidget {
-  const TextFieldB({
-    Key? key,
-    required String label,
-    TextEditingController? textEditingController,
-    int? maxLine,
-    FocusNode? focusNode
-  })  : _maxLine = maxLine,
+  const TextFieldB(
+      {Key? key,
+      required String label,
+      TextEditingController? textEditingController,
+      int? maxLine,
+      FocusNode? focusNode})
+      : _maxLine = maxLine,
         _label = label,
         _textEditingController = textEditingController,
         _focusNode = focusNode,
@@ -524,5 +530,15 @@ class TextFieldB extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+bool emailVarification(email) {
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email)) {
+    return false;
+  } else {
+    return true;
   }
 }
