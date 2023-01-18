@@ -44,7 +44,12 @@ class RoleSection extends StatelessWidget {
                 });
 
                 if (response) {
-                  Navigator.pushNamed(context, AppRoutes.needSupportOn);
+                  if (profileSetupController.selectedRoleType.value ==
+                      RoleType.Provider) {
+                    Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation);
+                  } else {
+                    Navigator.pushNamed(context, AppRoutes.needSupportOn);
+                  }
                 }
               } else {
                 SolhSnackbar.error('Error', 'Choose a valid option');
