@@ -26,11 +26,30 @@
   <script src="splash/splash.js"></script>
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
   <link rel="stylesheet" type="text/css" href="splash/style.css">
+  import { authStateChanges } from "https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js";
 </head>
 <body>
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-storage.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBwI02bU60dkDODYLTd5TThwNM_0VnVFnc",
+      authDomain: "solh-flutter.firebaseapp.com",
+      projectId: "solh-flutter",
+      storageBucket: "solh-flutter.appspot.com",
+      messagingSenderId: "729100578162",
+      appId: "1:729100578162:web:ae0bca42aca7e4a216c1eb",
+      measurementId: "G-579BVF9KM5"
+    };
+    // Initialize Firebase
+    
+    const app = initializeApp(firebaseConfig);
+    
+    const analytics = getAnalytics(app);
+    </script>
   <script>
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
