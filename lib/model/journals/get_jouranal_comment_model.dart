@@ -56,7 +56,7 @@ class Comments {
   String? commentUser;
   String? commentBy;
   int? likes;
-  List<int>? likedBy;
+  List<String>? likedBy;
   int? replyNum;
   String? commentDate;
   String? commentTime;
@@ -66,6 +66,7 @@ class Comments {
   int? iV;
   User? user;
   ReplyTo? replyTo;
+  bool? isLiked;
 
   Comments(
       {this.sId,
@@ -82,6 +83,7 @@ class Comments {
       this.commentTime,
       this.updatedAt,
       this.replyTo,
+      this.isLiked,
       this.iV,
       this.user});
 
@@ -91,11 +93,12 @@ class Comments {
     commentOn = json['commentOn'];
     commentUser = json['commentUser'];
     commentBy = json['commentBy'];
+    isLiked = json['isLiked'];
     commentDate = json['commentDate'] != null ? json['commentDate'] : null;
     commentTime = json['commentTime'] != null ? json['commentTime'] : null;
     likes = json['likes'];
     if (json['likedBy'] != null) {
-      likedBy = <int>[];
+      likedBy = <String>[];
       json['likedBy'].forEach((v) {
         likedBy!.add(v);
       });

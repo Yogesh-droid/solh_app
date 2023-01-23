@@ -33,7 +33,9 @@ class SearchMarketController extends GetxController {
         APIConstants.api + '/api/get-suggestion?text=$searchText');
     suggestionList.clear();
 
-    suggestionList.value.addAll(map['suggestions']);
+    if (map['suggestions'] != null) {
+      suggestionList.value.addAll(map['suggestions']);
+    }
     suggestionList.refresh();
     isLoading.value = false;
   }

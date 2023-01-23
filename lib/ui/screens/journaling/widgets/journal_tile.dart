@@ -329,8 +329,10 @@ class _JournalTileState extends State<JournalTile> {
                                     width:
                                         MediaQuery.of(context).size.width / 1.8,
                                     child: Text(
-                                      widget._journalModel!.anonymousJournal != null &&
-                                              widget._journalModel!.postedBy!.anonymous !=
+                                      widget._journalModel!.anonymousJournal !=
+                                                  null &&
+                                              widget._journalModel!.postedBy!
+                                                      .anonymous !=
                                                   null &&
                                               widget._journalModel!
                                                   .anonymousJournal!
@@ -340,31 +342,39 @@ class _JournalTileState extends State<JournalTile> {
                                                           .value
                                                           .length ==
                                                       0
-                                              ? widget._journalModel!.group!.groupName ??
+                                              ? widget._journalModel!.group!
+                                                      .groupName ??
                                                   ''
                                               : widget._journalModel!.postedBy!
-                                                      .anonymous!.userName ??
-                                                  ''
+                                                          .sId ==
+                                                      Get.find<ProfileController>()
+                                                          .myProfileModel
+                                                          .value
+                                                          .body!
+                                                          .user!
+                                                          .sId
+                                                  ? 'You'
+                                                  : widget
+                                                          ._journalModel!
+                                                          .postedBy!
+                                                          .anonymous!
+                                                          .userName ??
+                                                      ''
                                           : widget._journalModel!.group != null &&
                                                   journalPageController
                                                           .selectedGroupId
                                                           .value
                                                           .length ==
                                                       0
-                                              ? widget._journalModel!.group!.groupName ??
-                                                  ''
-                                              : widget._journalModel!.postedBy !=
-                                                      null
-                                                  ? widget._journalModel!.postedBy!.anonymous != null &&
-                                                          widget._journalModel!
-                                                              .anonymousJournal!
-                                                      ? widget
-                                                              ._journalModel!
-                                                              .postedBy!
-                                                              .anonymous!
-                                                              .userName ??
-                                                          ''
-                                                      : widget._journalModel!.postedBy!.name ?? ''
+                                              ? widget._journalModel!.group!.groupName ?? ''
+                                              : widget._journalModel!.postedBy != null
+                                                  ? widget._journalModel!.postedBy!.anonymous != null && widget._journalModel!.anonymousJournal!
+                                                      ? widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
+                                                          ? 'You'
+                                                          : widget._journalModel!.postedBy!.anonymous!.userName ?? ''
+                                                      : widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
+                                                          ? 'You'
+                                                          : widget._journalModel!.postedBy!.name ?? ''
                                                   : '',
                                       style:
                                           SolhTextStyles.JournalingUsernameText,
@@ -581,23 +591,6 @@ class _JournalTileState extends State<JournalTile> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
-            /* onTap: () async {
-              if (journalPageController.journalsList[widget.index].isLiked!) {
-                journalPageController.journalsList[widget.index].isLiked =
-                    false;
-                journalPageController.journalsList[widget.index].likes =
-                    journalPageController.journalsList[widget.index].likes! - 1;
-                journalPageController.journalsList.refresh();
-                await _unlikeJournal();
-                setState(() {});
-              } else {
-                journalPageController.journalsList[widget.index].isLiked = true;
-                journalPageController.journalsList[widget.index].likes =
-                    journalPageController.journalsList[widget.index].likes! + 1;
-                journalPageController.journalsList.refresh();
-                await _likeJournal();
-              }
-            }, */
             onTap: () {
               journalPageController.getUsersLikedPost(
                   widget._journalModel!.id ?? '', 1);
@@ -607,6 +600,7 @@ class _JournalTileState extends State<JournalTile> {
                     return Container(
                       child: LikesModalSheet(
                         onTap: (value) async {
+                          Navigator.of(context).pop();
                           String message =
                               await journalCommentController.likePost(
                                   journalId: widget._journalModel!.id ?? '',
@@ -622,7 +616,6 @@ class _JournalTileState extends State<JournalTile> {
                           } else {
                             Utility.showToast(message);
                           }
-                          Navigator.of(context).pop();
                         },
                       ),
                     );
@@ -738,11 +731,7 @@ class _JournalTileState extends State<JournalTile> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(
-                                      "assets/icons/journaling/post-connect.svg",
-                                      width: 17,
-                                      height: 17,
-                                      color: SolhColors.primary_green,
-                                    ),
+                                        'assets/images/connect.svg'),
                                     Padding(
                                       padding: EdgeInsets.only(
                                         left:
@@ -1014,7 +1003,8 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                   .toString()
                                   .replaceAll("[", "")
                                   .replaceAll("]", ""),
-                              style: SolhTextStyles.PinkBorderButtonText,
+                              style: SolhTextStyles.QS_body_2_bold.copyWith(
+                                  color: SolhColors.primaryRed),
                             ),
                           )
                         : Container(),
@@ -1026,15 +1016,12 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                     padding: const EdgeInsets.only(
                                         left: 15.0,
                                         right: 15.0,
-                                        top: 8.0,
+                                        top: 2.0,
                                         bottom: 8.0),
                                     child: ReadMoreText(
-                                      descriptionTexts[0].trim(),
-                                      trimLines: 5,
-                                      style: GoogleFonts.signika(
-                                          color: Color(0xff666666),
-                                          fontSize: 14),
-                                    ),
+                                        descriptionTexts[0].trim(),
+                                        trimLines: 5,
+                                        style: SolhTextStyles.QS_body_2_semi),
                                   )
                                 : Padding(
                                     padding: const EdgeInsets.only(
@@ -1113,119 +1100,127 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                       //////   we need to remove widget.isMyJournal  ? Container():  to play my post in //////
                       child: widget.isMyJournal
                           ? Container()
-                          : Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                AspectRatio(
-                                  aspectRatio: double.parse(
-                                      widget.journalModel.aspectRatio ??
-                                          (16 / 9).toString()),
-                                  child: VideoPlayer(
-                                    widget.isMyJournal
-                                        ? journalPageController
-                                            .myVideoPlayerControllers
-                                            .value[widget.index][widget.index]!
-                                        : journalPageController
-                                            .videoPlayerController
-                                            .value[widget.index][widget.index]!,
+                          : Padding(
+                              padding: const EdgeInsets.only(bottom: 12.0),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  AspectRatio(
+                                    aspectRatio: double.parse(
+                                        widget.journalModel.aspectRatio ??
+                                            (16 / 9).toString()),
+                                    child: VideoPlayer(
+                                      widget.isMyJournal
+                                          ? journalPageController
+                                                  .myVideoPlayerControllers
+                                                  .value[widget.index]
+                                              [widget.index]!
+                                          : journalPageController
+                                                  .videoPlayerController
+                                                  .value[widget.index]
+                                              [widget.index]!,
+                                    ),
                                   ),
-                                ),
-                                Obx(() {
-                                  return !widget.isMyJournal &&
-                                              !journalPageController
-                                                  .videoPlayerController
-                                                  .value[widget.index]
-                                                      [widget.index]!
-                                                  .value
-                                                  .isPlaying ||
-                                          widget.isMyJournal &&
-                                              !journalPageController
-                                                  .myVideoPlayerControllers
-                                                  .value[widget.index]
-                                                      [widget.index]!
-                                                  .value
-                                                  .isPlaying
-                                      ? getBlackOverlay(
-                                          context,
-                                          aspectRatio: double.parse(
-                                              widget.journalModel.aspectRatio ??
-                                                  (16 / 9).toString()),
-                                        )
-                                      : Container();
-                                }),
-                                Obx(() {
-                                  return !widget.isMyJournal &&
-                                              !journalPageController
-                                                  .videoPlayerController
-                                                  .value[widget.index]
-                                                      [widget.index]!
-                                                  .value
-                                                  .isPlaying ||
-                                          widget.isMyJournal &&
-                                              !journalPageController
-                                                  .myVideoPlayerControllers
-                                                  .value[widget.index]
-                                                      [widget.index]!
-                                                  .value
-                                                  .isPlaying
-                                      ? Positioned(
-                                          child: IconButton(
-                                            onPressed: () async {
-                                              widget.isMyJournal
-                                                  ? journalPageController
-                                                      .playMyPostVideo(
-                                                      widget.index,
-                                                    )
-                                                  : journalPageController
-                                                      .playVideo(
-                                                      widget.index,
-                                                    );
-                                              widget.isMyJournal
-                                                  ? journalPageController
-                                                      .myVideoPlayerControllers
-                                                      .refresh()
-                                                  : journalPageController
-                                                      .videoPlayerController
-                                                      .refresh();
-                                              FirebaseAnalytics.instance
-                                                  .logEvent(
-                                                      name: 'playVideoTapped',
-                                                      parameters: {
-                                                    'Page': 'Journaling'
-                                                  });
-                                            },
-                                            icon: Image.asset(
-                                              'assets/images/play_icon.png',
-                                              fit: BoxFit.fill,
+                                  Obx(() {
+                                    return !widget.isMyJournal &&
+                                                !journalPageController
+                                                    .videoPlayerController
+                                                    .value[widget.index]
+                                                        [widget.index]!
+                                                    .value
+                                                    .isPlaying ||
+                                            widget.isMyJournal &&
+                                                !journalPageController
+                                                    .myVideoPlayerControllers
+                                                    .value[widget.index]
+                                                        [widget.index]!
+                                                    .value
+                                                    .isPlaying
+                                        ? getBlackOverlay(
+                                            context,
+                                            aspectRatio: double.parse(widget
+                                                    .journalModel.aspectRatio ??
+                                                (16 / 9).toString()),
+                                          )
+                                        : Container();
+                                  }),
+                                  Obx(() {
+                                    return !widget.isMyJournal &&
+                                                !journalPageController
+                                                    .videoPlayerController
+                                                    .value[widget.index]
+                                                        [widget.index]!
+                                                    .value
+                                                    .isPlaying ||
+                                            widget.isMyJournal &&
+                                                !journalPageController
+                                                    .myVideoPlayerControllers
+                                                    .value[widget.index]
+                                                        [widget.index]!
+                                                    .value
+                                                    .isPlaying
+                                        ? Positioned(
+                                            child: IconButton(
+                                              onPressed: () async {
+                                                widget.isMyJournal
+                                                    ? journalPageController
+                                                        .playMyPostVideo(
+                                                        widget.index,
+                                                      )
+                                                    : journalPageController
+                                                        .playVideo(
+                                                        widget.index,
+                                                      );
+                                                widget.isMyJournal
+                                                    ? journalPageController
+                                                        .myVideoPlayerControllers
+                                                        .refresh()
+                                                    : journalPageController
+                                                        .videoPlayerController
+                                                        .refresh();
+                                                FirebaseAnalytics.instance
+                                                    .logEvent(
+                                                        name: 'playVideoTapped',
+                                                        parameters: {
+                                                      'Page': 'Journaling'
+                                                    });
+                                              },
+                                              icon: Image.asset(
+                                                'assets/images/play_icon.png',
+                                                fit: BoxFit.fill,
+                                              ),
+                                              iconSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  8,
+                                              color: SolhColors.primary_green,
                                             ),
-                                            iconSize: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                8,
-                                            color: SolhColors.primary_green,
-                                          ),
-                                        )
-                                      : Container();
-                                }),
-                              ],
+                                          )
+                                        : Container();
+                                  }),
+                                ],
+                              ),
                             ),
                     )
                   ///// Below for image only
-                  : Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 0.5, color: Colors.grey.shade300)),
-                      // margin: EdgeInsets.symmetric(
-                      //   vertical: MediaQuery.of(context).size.height / 80,
-                      // ),
-                      child: CachedNetworkImage(
-                        imageUrl: widget.journalModel.mediaUrl.toString(),
-                        fit: BoxFit.fitWidth,
-                        placeholder: (context, url) => getShimmer(context),
-                        errorWidget: (context, url, error) => Center(
-                          child: Image.asset(
-                            'assets/images/no-image-available.png',
+                  : Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 0.5, color: Colors.grey.shade300)),
+                        // margin: EdgeInsets.symmetric(
+                        //   vertical: MediaQuery.of(context).size.height / 80,
+                        // ),
+                        child: CachedNetworkImage(
+                          imageUrl: widget.journalModel.mediaUrl.toString(),
+                          fit: BoxFit.fitWidth,
+                          placeholder: (context, url) => getShimmer(context),
+                          errorWidget: (context, url, error) => Center(
+                            child: Image.asset(
+                              'assets/images/no-image-available.png',
+                            ),
                           ),
                         ),
                       ),

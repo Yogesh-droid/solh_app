@@ -39,27 +39,25 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             : 0);
     bookAppointmentController.selectedDayForTimeSlot.value = DateTime.now().day;
     bookAppointmentController.selectedDate.value = DateTime.now();
-    bookAppointmentController.getTimeSlot(
-        providerId: _controller.consultantModelController.value.provder!.sId,
-        date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    // bookAppointmentController.getTimeSlot(
+    //     providerId: _controller.consultantModelController.value.provder!.sId,
+    //     date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
 
     if (profileController
         .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty) {
-      if (bookAppointmentController.selectedTimeZone.value.isEmpty) {
-        bookAppointmentController.selectedTimeZone.value =
-            profileController.myProfileModel.value.body!.user!.userTimezone ??
-                '';
-        bookAppointmentController.selectedOffset.value = profileController
-                .myProfileModel.value.body!.user!.userTimezoneOffset ??
-            '';
-        bookAppointmentController.selectedDayForTimeSlot.value =
-            DateTime.now().day;
-        bookAppointmentController.selectedDate.value = DateTime.now();
-        bookAppointmentController.getTimeSlot(
-            providerId:
-                _controller.consultantModelController.value.provder!.sId,
-            date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-      }
+      print(profileController.myProfileModel.value.body!.user!.userTimezone!);
+      // if (bookAppointmentController.selectedTimeZone.value.isEmpty) {
+      bookAppointmentController.selectedTimeZone.value =
+          profileController.myProfileModel.value.body!.user!.userTimezone ?? '';
+      bookAppointmentController.selectedOffset.value = profileController
+              .myProfileModel.value.body!.user!.userTimezoneOffset ??
+          '';
+      bookAppointmentController.selectedDayForTimeSlot.value =
+          DateTime.now().day;
+      bookAppointmentController.selectedDate.value = DateTime.now();
+      bookAppointmentController.getTimeSlot(
+          providerId: _controller.consultantModelController.value.provder!.sId,
+          date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
     }
 
     super.initState();
@@ -136,7 +134,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                             color: SolhColors.dark_grey),
                       ),
                       Text(
-                        'Your Identity will not be revealed to your Counselor',
+                        'Your Identity will not be revealed to our Professionals',
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.Grey_1),
                       ),

@@ -37,7 +37,6 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     activityLogContoller.firstLoadDone.value = true;
     activityLogContoller.pageNumber = 1;
     super.dispose();
@@ -111,13 +110,17 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
                       ),
                       Obx(() {
                         return activityLogContoller.isFeatchingMoreLog.value
-                            ? SizedBox(
-                                height: 20,
-                                child: ButtonLoadingAnimation(
-                                  ballColor: SolhColors.primary_green,
-                                  ballSizeLowerBound: 3,
-                                  ballSizeUpperBound: 8,
-                                ),
+                            ? Column(
+                                children: [
+                                  ButtonLoadingAnimation(
+                                    ballColor: SolhColors.primary_green,
+                                    ballSizeLowerBound: 3,
+                                    ballSizeUpperBound: 10,
+                                  ),
+                                  SizedBox(
+                                    height: 24,
+                                  )
+                                ],
                               )
                             : Container();
                       })
@@ -368,9 +371,12 @@ Widget getLogItem(var time, content, subContent, activityType, isAnon,
                       content,
                       style: SolhTextStyles.QS_caption_bold,
                     ),
-                    Text(
-                      subContent,
-                      style: SolhTextStyles.QS_caption,
+                    SizedBox(
+                      width: 60.w,
+                      child: Text(
+                        subContent,
+                        style: SolhTextStyles.QS_caption,
+                      ),
                     ),
                     Text(
                       '${timeago.format(date).toString()} ',

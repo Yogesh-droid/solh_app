@@ -143,7 +143,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               })),
           GetHelpDivider(),
           GetHelpCategory(
-            title: "Search by speciality",
+            title: "Search by Profession",
           ),
           Obx(() {
             return getHelpController
@@ -178,7 +178,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                         .specializationList![index]
                                         .slug ??
                                     '',
-                                "type": 'specialization'
+                                "type": 'specialization',
+                                "name": getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .name ??
+                                    ''
                               });
                           FirebaseAnalytics.instance.logEvent(
                               name: 'SearhSpecialityTapped',

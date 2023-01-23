@@ -179,8 +179,7 @@ class ImageWithProgressBarAndBadge extends StatelessWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                              image: imageProvider,
-                            ),
+                                image: imageProvider, fit: BoxFit.cover),
                           ),
                         ),
                       ),

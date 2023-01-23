@@ -122,7 +122,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     UsernameHeader(
-                      //userModel: userBlocNetwork.myData,
                       onTypeChanged: (value) {
                         journalPageController.dropdownValue.value = value;
                         print("Changed to $value");
@@ -156,6 +155,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                       },
                     ),
                     SizedBox(height: 2.h),
+
                     JournalTextField(),
                     SizedBox(height: 1.h),
                     getFeelingTitle(),
@@ -1100,76 +1100,27 @@ class _UsernameHeaderState extends State<UsernameHeader> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               getUserImg(),
               SizedBox(
                 width: 2.w,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 1.h,
-                  ),
-                  Column(
-                    children: [
-                      Obx(() => profileController.myProfileModel.value.body !=
-                              null
-                          ? Row(
-                              children: [
-                                Text(
-                                  journalPageController.isAnonymousSelected ==
-                                          true
-                                      ? (profileController
-                                              .myProfileModel
-                                              .value
-                                              .body!
-                                              .user!
-                                              .anonymous!
-                                              .userName!
-                                              .isNotEmpty
-                                          ? profileController
-                                              .myProfileModel
-                                              .value
-                                              .body!
-                                              .user!
-                                              .anonymous!
-                                              .userName!
-                                          : 'Anonymous')
-                                      : profileController.myProfileModel.value
-                                              .body!.user!.name ??
-                                          "",
-                                  style: SolhTextStyles.JournalingUsernameText
-                                      .copyWith(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 14),
-                                ),
-                                journalPageController.isAnonymousSelected ==
-                                        false
-                                    ? profileController.myProfileModel.value
-                                                .body!.user!.isSolhExpert !=
-                                            null
-                                        ? Text(profileController.myProfileModel
-                                                .value.body!.user!.isSolhExpert!
-                                            ? ''
-                                            : '')
-                                        : Container()
-                                    : Container()
-                              ],
-                            )
-                          : Container()),
-                      SizedBox(
-                        height: 1.h,
-                      ),
-                      SizedBox(
-                        height: 4.h,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              Obx(() => profileController.myProfileModel.value.body != null
+                  ? Text(
+                      journalPageController.isAnonymousSelected == true
+                          ? (profileController.myProfileModel.value.body!.user!
+                                  .anonymous!.userName!.isNotEmpty
+                              ? profileController.myProfileModel.value.body!
+                                  .user!.anonymous!.userName!
+                              : 'Anonymous')
+                          : profileController
+                                  .myProfileModel.value.body!.user!.name ??
+                              "",
+                      style: SolhTextStyles.JournalingUsernameText.copyWith(
+                          fontWeight: FontWeight.normal, fontSize: 14),
+                    )
+                  : Container()),
             ],
           ),
           Column(
@@ -1217,15 +1168,16 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                       ),
                     ]),
               ),
-              SizedBox(height: 10),
+              SizedBox(
+                height: 10,
+              ),
               Row(
                 children: [
                   journalPageController.selectedGroupImg.value.isNotEmpty
-                      ? GetCircleImg(
-                          top: 0,
-                          left: 0,
+                      ? CircleAvatar(
                           radius: 12,
-                          imgUrl: journalPageController.selectedGroupImg.value,
+                          backgroundImage: CachedNetworkImageProvider(
+                              journalPageController.selectedGroupImg.value),
                         )
                       : SizedBox(),
                   SizedBox(
@@ -1475,51 +1427,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
 
                     if (journalPageController
                             .descriptionController.text[cursorPos - 1] ==
-                        '@') {
-                      // await showMenu(
-                      //     context: context,
-                      //     constraints: BoxConstraints.expand(
-                      //         height: _connectionController.myConnectionModel
-                      //                     .value.myConnections!.length >
-                      //                 4
-                      //             ? 200
-                      //             : _connectionController.myConnectionModel
-                      //                     .value.myConnections!.length *
-                      //                 50,
-                      //         width: 150),
-                      //     position: RelativeRect.fromLTRB(0, 320, 0, 0),
-                      //     items: _connectionController
-                      //         .myConnectionModel.value.myConnections!
-                      //         .map((e) => PopupMenuItem(
-                      //             onTap: () {
-                      //               if (cursorPos == 1 ||
-                      //                   cursorPos ==
-                      //                       journalPageController
-                      //                           .descriptionController
-                      //                           .text
-                      //                           .length) {
-                      //                 journalPageController
-                      //                     .descriptionController
-                      //                     .text = journalPageController
-                      //                         .descriptionController.text +
-                      //                     e.userName.toString() +
-                      //                     ' ';
-                      //               } else {
-                      //                 journalPageController
-                      //                     .descriptionController
-                      //                     .text = journalPageController
-                      //                         .descriptionController.text
-                      //                         .substring(0, cursorPos + 1) +
-                      //                     e.userName.toString() +
-                      //                     ' ' +
-                      //                     journalPageController
-                      //                         .descriptionController.text
-                      //                         .substring(cursorPos + 1);
-                      //               }
-                      //             },
-                      //             child: Text(e.userName!)))
-                      //         .toList());
-                    }
+                        '@') {}
                   },
                   controller: journalPageController.descriptionController,
                   maxLines: 6,
@@ -1530,12 +1438,6 @@ class _JournalTextFieldState extends State<JournalTextField> {
                     fillColor: SolhColors.grey239,
                     hintText: "What's on your mind?",
                     hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
-                    // enabledBorder: OutlineInputBorder(
-                    //     borderSide: BorderSide(color: SolhColors.green)),
-                    // focusedBorder: OutlineInputBorder(
-                    //     borderSide: BorderSide(color: SolhColors.green)),
-                    // border: OutlineInputBorder(
-                    //     borderSide: BorderSide(color: SolhColors.green))
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,

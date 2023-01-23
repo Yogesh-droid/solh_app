@@ -1299,13 +1299,7 @@ class CommentBoxWidget extends StatelessWidget {
                                     .likes! +
                                 1;
                             journalCommentController.getJouranalsCommentModel
-                                .value.body!.comments![index].likedBy!
-                                .add(int.parse(Get.find<ProfileController>()
-                                    .myProfileModel
-                                    .value
-                                    .body!
-                                    .user!
-                                    .sId!));
+                                .value.body!.comments![index].isLiked = true;
                             journalCommentController.getJouranalsCommentModel
                                 .refresh();
                           } else {
@@ -1344,15 +1338,9 @@ class CommentBoxWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Obx(() => SvgPicture.asset(commentModel.likedBy.contains(
-                        Get.find<ProfileController>()
-                            .myProfileModel
-                            .value
-                            .body!
-                            .user!
-                            .sId!)
+                SvgPicture.asset(commentModel.isLiked
                     ? 'assets/images/reactions_liked.svg'
-                    : 'assets/images/reactions.svg')),
+                    : 'assets/images/reactions.svg'),
                 SizedBox(
                   width: 1.w,
                 ),
@@ -1405,14 +1393,8 @@ class CommentBoxWidget extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
-                icon: SvgPicture.asset(
-                  "assets/icons/journaling/post-connect.svg",
-                  width: 17,
-                  height: 17,
-                  color: SolhColors.primary_green,
-                ),
-              ),
+                  onPressed: () {},
+                  icon: SvgPicture.asset('assets/images/connect.svg')),
             ],
           )
         ],
@@ -1677,6 +1659,7 @@ class _PostForCommentState extends State<PostForComment> {
               return Container(
                 child: LikesModalSheet(
                   onTap: (value) async {
+                    Navigator.of(context).pop();
                     String message = await journalCommentController.likePost(
                         journalId: widget._journalModel!.id ?? '',
                         reaction: value);
@@ -1691,7 +1674,6 @@ class _PostForCommentState extends State<PostForComment> {
                     } else {
                       Utility.showToast(message);
                     }
-                    Navigator.of(context).pop();
                   },
                 ),
               );
@@ -1792,14 +1774,8 @@ class _PostForCommentState extends State<PostForComment> {
     return Row(
       children: [
         IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset(
-            "assets/icons/journaling/post-connect.svg",
-            width: 17,
-            height: 17,
-            color: SolhColors.primary_green,
-          ),
-        ),
+            onPressed: () {},
+            icon: SvgPicture.asset('assets/images/connect.svg')),
         InkWell(
           onTap: () async {
             widget._journalModel!.group != null

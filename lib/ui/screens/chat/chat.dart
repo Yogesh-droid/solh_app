@@ -708,12 +708,14 @@ class RatingBottomSheetChild1 extends StatelessWidget {
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeIn),
                         child: Container(
-                          height: 20,
-                          width: 40,
-                          child: Text(
-                            'Skip',
-                            style: SolhTextStyles.CTA
-                                .copyWith(color: SolhColors.white),
+                          height: 48,
+                          width: 120,
+                          child: Center(
+                            child: Text(
+                              'Skip',
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.white),
+                            ),
                           ),
                         ),
                       );
@@ -914,8 +916,8 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                             context, AppRoutes.master, (route) => false);
                       },
                       child: Container(
-                        height: 20,
-                        width: 40,
+                        height: 40,
+                        width: 120,
                         child: Center(
                           child: Text(
                             'Skip',

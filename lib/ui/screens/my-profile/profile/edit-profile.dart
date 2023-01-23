@@ -17,7 +17,6 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
 import 'package:solh/ui/screens/profile-setup/gender-age.dart';
 import 'package:solh/ui/screens/widgets/dropdowns/gender-selection.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
@@ -272,7 +271,24 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                 SizedBox(
                   height: 1.h,
                 ),
-                CountryCodePicker(
+                Container(
+                  height: MediaQuery.of(context).size.height / 15,
+                  decoration: BoxDecoration(
+                      color: SolhColors.light_Bg,
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.height / 60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '${country}',
+                        style: TextStyle(color: SolhColors.primary_green),
+                      ),
+                    ],
+                  ),
+                ),
+                /* CountryCodePicker(
                   favorite: ['IN', 'US', 'AU'],
                   comparator: (a, b) => b.name!.compareTo(a.name!),
                   builder: (CountryCode? countryCode) {
@@ -303,15 +319,15 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   showFlagMain: false,
                   dialogSize: Size(double.infinity, 600),
 
-                  onChanged: (value) async {
-                    print(value.code);
-                    country = value.name;
-                    SharedPreferences sharedPreferences =
-                        await SharedPreferences.getInstance();
-                    await sharedPreferences.setString(
-                        'userCountry', value.code ?? '');
-                    country = value.name;
-                  },
+                  // onChanged: (value) async {
+                  //   print(value.code);
+                  //   country = value.name;
+                  //   SharedPreferences sharedPreferences =
+                  //       await SharedPreferences.getInstance();
+                  //   await sharedPreferences.setString(
+                  //       'userCountry', value.code ?? '');
+                  //   country = value.name;
+                  // },
                   // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
                   initialSelection: "IN",
                   // optional. Shows only country name and flag when popup is closed.
@@ -320,7 +336,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   showCountryOnly: true,
                   // optional. aligns the flag and the Text left
                   alignLeft: true,
-                ),
+                ), */
                 SizedBox(
                   height: 2.25.h,
                 ),

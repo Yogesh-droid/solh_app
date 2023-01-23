@@ -325,15 +325,9 @@ Widget getCapitalItem(icon, statNumber, stat) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      icon,
-                      Text(
-                        statNumber,
-                        style: SolhTextStyles.QS_body_2,
-                      ),
-                    ],
+                  Text(
+                    statNumber,
+                    style: SolhTextStyles.QS_body_2,
                   ),
                   SizedBox(
                     width: 1.h,
@@ -472,9 +466,12 @@ class OptionsColumn extends StatelessWidget {
                 arguments: {});
           },
           child: getOption(
-              SvgPicture.asset(
-                'assets/images/activity_log.svg',
-                height: 20,
+              Container(
+                height: 13,
+                child: SvgPicture.asset(
+                  'assets/images/activity_log.svg',
+                  height: 20,
+                ),
               ),
               'Activity  Log'),
         ),

@@ -409,6 +409,8 @@ class _JournalingState extends State<Journaling> {
               borderRadius: BorderRadius.circular(50),
               onTap: () async {
                 _journalPageController.selectedGroupId.value = '';
+                _journalPageController.selectedGroupName.value = '';
+                _journalPageController.selectedGroupImg.value = '';
                 _journalPageController.journalsList.clear();
                 _journalPageController.pageNo = 1;
                 _journalPageController.nextPage = 2;

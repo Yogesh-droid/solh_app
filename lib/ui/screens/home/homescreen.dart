@@ -299,7 +299,8 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SolhGreenButton(
               child: Text('Add Goals +'),
-              height: 50,
+              height: 32,
+              width: 100,
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SelectGoal()));
@@ -567,7 +568,7 @@ class _HomePageState extends State<HomePage> {
                   //     : AssetImage(
                   //         'assets/images/backgroundScaffold.png',
                   //       ) as ImageProvider),
-                  image: AssetImage('assets/images/backgroundScaffold.png')),
+                  image: AssetImage('assets/images/trending_bg.png')),
               gradient: journal.postedBy!.userType == 'Official'
                   ? LinearGradient(
                       stops: [0.1, 0.9],
@@ -657,11 +658,9 @@ class _HomePageState extends State<HomePage> {
           ],
           image: DecorationImage(
               fit: BoxFit.fill,
-              image: journal.mediaUrl != null
-                  ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                  : AssetImage(
-                      'assets/images/backgroundScaffold.png',
-                    ) as ImageProvider),
+              image: AssetImage(
+                'assets/images/trending_bg.png',
+              )),
           border: Border.all(color: Colors.grey[200]!),
           color: Colors.white),
       child: getPostContent(journal, 10),
@@ -684,11 +683,9 @@ class _HomePageState extends State<HomePage> {
           ],
           image: DecorationImage(
               fit: BoxFit.fill,
-              image: journal.mediaUrl != null
-                  ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                  : AssetImage(
-                      'assets/images/backgroundScaffold.png',
-                    ) as ImageProvider),
+              image: AssetImage(
+                'assets/images/trending_bg.png',
+              )),
           color: Colors.white),
       child: getPostContent(journal, 7),
     );
@@ -717,22 +714,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getPostContent(Journals journal, int maxLine) {
-    /*
-     Container(
-                        height: 120,
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12)),
-                          child: CachedNetworkImage(
-                              fit: BoxFit.fitWidth,
-                              imageUrl: journal.mediaUrl ?? ''),
-                        ),
-                      )
-     */
     return Column(
-      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         getUserTile(journal),
@@ -751,6 +733,7 @@ class _HomePageState extends State<HomePage> {
                 journal.feelings!.length > 0
                     ? Padding(
                         padding: const EdgeInsets.only(
+                          top: 8.0,
                           left: 8.0,
                           right: 8.0,
                         ),
@@ -760,15 +743,17 @@ class _HomePageState extends State<HomePage> {
                                   .sublist(0, 3)
                                   .map((e) => Text(
                                         '${e.feelingName}',
-                                        style: SolhTextStyles
-                                            .JournalingHashtagText,
+                                        style: SolhTextStyles.QS_caption_bold
+                                            .copyWith(
+                                                color: SolhColors.primaryRed),
                                       ))
                                   .toList()
                               : journal.feelings!
                                   .map((e) => Text(
                                         '${e.feelingName}',
-                                        style: SolhTextStyles
-                                            .JournalingHashtagText,
+                                        style: SolhTextStyles.QS_caption_bold
+                                            .copyWith(
+                                                color: SolhColors.primaryRed),
                                       ))
                                   .toList(),
                         ),
@@ -780,7 +765,8 @@ class _HomePageState extends State<HomePage> {
                       )
                     : Container(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.only(
+                              left: 8.0, right: 8.0, bottom: 8.0),
                           child: Text(
                             journal.description ?? '',
                             style: SolhTextStyles.QS_cap_semi,

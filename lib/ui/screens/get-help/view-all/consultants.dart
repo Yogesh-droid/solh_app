@@ -18,10 +18,12 @@ class ConsultantsScreen extends StatefulWidget {
   ConsultantsScreen({Key? key, Map<dynamic, dynamic>? args})
       : type = args!['type'],
         slug = args['slug'],
+        name = args['name'],
         super(key: key);
 
   final String slug;
   final String? type;
+  final String? name;
   @override
   State<ConsultantsScreen> createState() => _ConsultantsScreenState();
 }
@@ -65,14 +67,18 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Consultants",
+                widget.name == null
+                    ? "Consultants"
+                    : widget.name!.isEmpty
+                        ? "Consultants"
+                        : widget.name!,
                 style: TextStyle(fontSize: 16, color: Colors.black),
               ),
               Obx(() => searchMarketController.issueModel.value.doctors !=
                           null &&
                       searchMarketController.issueModel.value.provider != null
                   ? Text(
-                      "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} Consultants",
+                      "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
                       style: TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
                     )
                   : SizedBox())
