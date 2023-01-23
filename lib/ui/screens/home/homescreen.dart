@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,6 +29,7 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
@@ -183,7 +185,7 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
         child: Column(children: [
           GetHelpDivider(),
-          WhatsOnYourMindSection(),
+          FindHelpBar(),
           GetHelpDivider(),
           SizedBox(
             height: 10,
@@ -226,47 +228,49 @@ class _HomePageState extends State<HomePage> {
                 : getTrendingPostUI();
           }),
           GetHelpDivider(),
-          Obx(() {
-            return !connectionController.isRecommnedationLoadingHome.value
-                ? connectionController
-                                .peopleYouMayKnowHome.value.reccomendation !=
-                            null &&
-                        connectionController.peopleYouMayKnowHome.value
-                            .reccomendation!.isNotEmpty
-                    ? GetHelpCategory(
-                        title: 'Solh Mates',
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ViewAllVolunteers();
-                          }));
-                        },
-                      )
-                    : Container()
-                : Container();
-          }),
-          Obx(() {
-            return !connectionController.isRecommnedationLoadingHome.value
-                ? connectionController
-                                .peopleYouMayKnowHome.value.reccomendation !=
-                            null &&
-                        connectionController.peopleYouMayKnowHome.value
-                            .reccomendation!.isNotEmpty
-                    ? getPeopleYouMayKnowUI()
-                    : Container()
-                : getRecommnededShimmer();
-          }),
-          Obx(() {
-            return !connectionController.isRecommnedationLoadingHome.value
-                ? connectionController
-                                .peopleYouMayKnowHome.value.reccomendation !=
-                            null &&
-                        connectionController.peopleYouMayKnowHome.value
-                            .reccomendation!.isNotEmpty
-                    ? GetHelpDivider()
-                    : Container()
-                : Container();
-          }),
+          WhatsOnYourMindSection(),
+          GetHelpDivider(),
+          // Obx(() {
+          //   return !connectionController.isRecommnedationLoadingHome.value
+          //       ? connectionController
+          //                       .peopleYouMayKnowHome.value.reccomendation !=
+          //                   null &&
+          //               connectionController.peopleYouMayKnowHome.value
+          //                   .reccomendation!.isNotEmpty
+          //           ? GetHelpCategory(
+          //               title: 'Solh Mates',
+          //               onPressed: () {
+          //                 Navigator.push(context,
+          //                     MaterialPageRoute(builder: (context) {
+          //                   return ViewAllVolunteers();
+          //                 }));
+          //               },
+          //             )
+          //           : Container()
+          //       : Container();
+          // }),
+          // Obx(() {
+          //   return !connectionController.isRecommnedationLoadingHome.value
+          //       ? connectionController
+          //                       .peopleYouMayKnowHome.value.reccomendation !=
+          //                   null &&
+          //               connectionController.peopleYouMayKnowHome.value
+          //                   .reccomendation!.isNotEmpty
+          //           ? getPeopleYouMayKnowUI()
+          //           : Container()
+          //       : getRecommnededShimmer();
+          // }),
+          // Obx(() {
+          //   return !connectionController.isRecommnedationLoadingHome.value
+          //       ? connectionController
+          //                       .peopleYouMayKnowHome.value.reccomendation !=
+          //                   null &&
+          //               connectionController.peopleYouMayKnowHome.value
+          //                   .reccomendation!.isNotEmpty
+          //           ? GetHelpDivider()
+          //           : Container()
+          //       : Container();
+          // }),
           GetHelpCategory(
             title: 'Goals',
             trailing: InkWell(
@@ -363,12 +367,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           getIssueUI(bookAppointmentController, getHelpController, context),
+          GetHelpDivider(),
+          AlliedExperts(),
+          GetHelpDivider(),
+          AlliedCarousel(),
           SizedBox(
             height: 10,
           ),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "Top Consultants",
+              title: "Leading solh experts",
               onPressed: () => Navigator.pushNamed(
                   context, AppRoutes.viewAllConsultant,
                   arguments: {"slug": '', "type": 'topconsultant'})),
@@ -398,19 +406,21 @@ class _HomePageState extends State<HomePage> {
                               //     .doctors![index]
                               //     .profilePicture);
                               return TopConsultantsTile(
-                                bio: getHelpController.topConsultantList.value
-                                        .doctors![index].bio ??
-                                    '',
-                                name: getHelpController.topConsultantList.value
-                                        .doctors![index].name ??
-                                    '',
-                                mobile: getHelpController.topConsultantList
-                                        .value.doctors![index].contactNumber ??
-                                    '',
-                                imgUrl: getHelpController.topConsultantList
-                                    .value.doctors![index].profilePicture,
-                                sId: getHelpController.topConsultantList.value
-                                    .doctors![index].sId,
+                                doctors: getHelpController
+                                    .topConsultantList.value.doctors![index],
+                                // bio: getHelpController.topConsultantList.value
+                                //         .doctors![index].bio ??
+                                //     '',
+                                // name: getHelpController.topConsultantList.value
+                                //         .doctors![index].name ??
+                                //     '',
+                                // mobile: getHelpController.topConsultantList
+                                //         .value.doctors![index].contactNumber ??
+                                //     '',
+                                // imgUrl: getHelpController.topConsultantList
+                                //     .value.doctors![index].profilePicture,
+                                // sId: getHelpController.topConsultantList.value
+                                //     .doctors![index].sId,
                               );
                             })
                     : Container())),
@@ -1741,3 +1751,151 @@ getIssuesRowItem(Widget widget, String subtext) {
     ],
   );
 }
+
+class AlliedExperts extends StatelessWidget {
+  const AlliedExperts({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: ListView(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: 2.h,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Allied Experts',
+                style: SolhTextStyles.QS_body_semi_1,
+              ),
+              Text(
+                'Show more',
+                style: SolhTextStyles.CTA
+                    .copyWith(color: SolhColors.primary_green),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 2.h,
+          ),
+          GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 4.0,
+                mainAxisSpacing: 4.0,
+                childAspectRatio: 2 / 3),
+            shrinkWrap: true,
+            itemCount: 6,
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: SolhColors.grey_3,
+                  ),
+                  borderRadius: BorderRadius.circular(9),
+                ),
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    child: Image.network('https://picsum.photos/200'),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 2.h),
+                    child: Text(
+                      'Yoga Therapies',
+                      style: SolhTextStyles.QS_cap_semi,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ]),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AlliedCarousel extends StatefulWidget {
+  AlliedCarousel({super.key});
+
+  @override
+  State<AlliedCarousel> createState() => _AlliedCarouselState();
+}
+
+class _AlliedCarouselState extends State<AlliedCarousel> {
+  int _current = 0;
+
+  CarouselController carouselController = CarouselController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        CarouselSlider.builder(
+          carouselController: carouselController,
+          itemCount: 5,
+          itemBuilder: ((context, index, realIndex) {
+            return Container(
+                height: 20.h,
+                width: 100.w,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network('https://picsum.photos/400/200')),
+                ));
+          }),
+          options: CarouselOptions(
+              autoPlay: false,
+              padEnds: true,
+              viewportFraction: 0.75,
+              enlargeCenterPage: true,
+              onPageChanged: ((index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              })),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: list
+              .asMap()
+              .entries
+              .map((e) => Container(
+                    height: e.key == _current ? 6 : 5,
+                    width: e.key == _current ? 6 : 5,
+                    margin: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: e.key == _current
+                          ? SolhColors.dark_grey
+                          : SolhColors.grey_3,
+                    ),
+                  ))
+              .toList(),
+        )
+      ],
+    );
+  }
+}
+
+List list = [
+  0,
+  1,
+  2,
+  3,
+  4,
+];

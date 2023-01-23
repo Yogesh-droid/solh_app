@@ -278,19 +278,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                             debugPrint(getHelpController.topConsultantList.value
                                 .doctors![index].profilePicture);
                             return TopConsultantsTile(
-                              bio: getHelpController.topConsultantList.value
-                                      .doctors![index].bio ??
-                                  '',
-                              name: getHelpController.topConsultantList.value
-                                      .doctors![index].name ??
-                                  '',
-                              mobile: getHelpController.topConsultantList.value
-                                      .doctors![index].contactNumber ??
-                                  '',
-                              imgUrl: getHelpController.topConsultantList.value
-                                  .doctors![index].profilePicture,
-                              sId: getHelpController
-                                  .topConsultantList.value.doctors![index].sId,
+                              doctors: getHelpController
+                                  .topConsultantList.value.doctors![index],
+                              //   bio: getHelpController.topConsultantList.value
+                              //           .doctors![index].bio ??
+                              //       '',
+                              //   name: getHelpController.topConsultantList.value
+                              //           .doctors![index].name ??
+                              //       '',
+                              //   mobile: getHelpController.topConsultantList.value
+                              //           .doctors![index].contactNumber ??
+                              //       '',
+                              //   imgUrl: getHelpController.topConsultantList.value
+                              //       .doctors![index].profilePicture,
+                              //   sId: getHelpController
+                              //       .topConsultantList.value.doctors![index].sId,
                             );
                           })
                   : Container(
@@ -475,31 +477,19 @@ class _IssuesTileState extends State<IssuesTile>
 
 class TopConsultantsTile extends StatelessWidget {
   TopConsultantsTile({
-    required String name,
-    required String bio,
-    required String mobile,
-    String? imgUrl,
-    String? sId,
+    required Doctors doctors,
     Key? key,
-  })  : _name = name,
-        _bio = bio,
-        _mobile = mobile,
-        _imgUrl = imgUrl,
-        _sId = sId,
+  })  : _doctors = doctors,
         super(key: key);
-
-  final String _mobile;
-  final String _name;
-  final String _bio;
-  final String? _imgUrl;
-  final String? _sId;
+  final Doctors _doctors;
   ConsultantController consultantController = Get.put(ConsultantController());
   @override
   Widget build(BuildContext context) {
-    debugPrint(_imgUrl ?? '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
+    debugPrint(_doctors.profilePicture ??
+        '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
-        consultantController.getConsultantDataController(_sId);
+        consultantController.getConsultantDataController(_doctors.sId ?? '');
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => ConsultantProfilePage()));
         FirebaseAnalytics.instance.logEvent(
@@ -508,65 +498,78 @@ class TopConsultantsTile extends StatelessWidget {
       },
       child: Container(
         //width: 70.w,
-        //height: 25.h,
+        // height: 25.h,
         margin: EdgeInsets.symmetric(horizontal: 2.5.w),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+            // borderRadius: BorderRadius.circular(8),
             border: Border.all(color: SolhColors.grey_2.withOpacity(0.4))),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
               child: CachedNetworkImage(
-                imageUrl: _imgUrl ??
+                imageUrl: _doctors.profilePicture ??
                     'https://solh.s3.amazonaws.com/user/profile/1651493729337',
                 width: 30.w,
-                height: double.maxFinite,
+                height: 70,
                 fit: BoxFit.fill,
               ),
             ),
-            SizedBox(width: 2.w),
-            Container(
-                width: 42.w,
-                // height: 15.h,
-                padding: EdgeInsets.symmetric(vertical: 1.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(_name),
-                    // Text(_qualification),
-                    Text(
-                      _bio,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF666666),
-                          fontWeight: FontWeight.w300),
-                    ),
-                    Center(
-                      child: SolhGreenButton(
-                        height: 40,
-                        width: 30.w,
-                        child: Text(
-                          "Book Appointment",
-                          style: SolhTextStyles.QS_cap_semi.copyWith(
-                              fontSize: 10, color: SolhColors.white),
-                        ),
-                        onPressed: () {
-                          //launch("tel://$_mobile");
-                          consultantController
-                              .getConsultantDataController(_sId);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ConsultantProfilePage()));
-                        },
-                      ),
-                    )
-                  ],
-                )),
+
+            Text(_doctors.name ?? ''),
+            // Text(_qualification),
+            // Text(
+            //   _doctors.bio ?? '',
+            //   maxLines: 3,
+            //   overflow: TextOverflow.ellipsis,
+            //   style: TextStyle(
+            //       fontSize: 12,
+            //       color: Color(0xFF666666),
+            //       fontWeight: FontWeight.w300),
+            // ),
+            // Container(
+            //     width: 42.w,
+            //     // height: 15.h,
+            //     padding: EdgeInsets.symmetric(vertical: 1.h),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //       children: [
+            //         Text(_doctors.name ?? ''),
+            //         // Text(_qualification),
+            //         Text(
+            //           _doctors.bio ?? '',
+            //           maxLines: 3,
+            //           overflow: TextOverflow.ellipsis,
+            //           style: TextStyle(
+            //               fontSize: 12,
+            //               color: Color(0xFF666666),
+            //               fontWeight: FontWeight.w300),
+            //         ),
+            //         Center(
+            //           child: SolhGreenButton(
+            //             height: 40,
+            //             width: 30.w,
+            //             child: Text(
+            //               "Book Appointment",
+            //               style: SolhTextStyles.QS_cap_semi.copyWith(
+            //                   fontSize: 10, color: SolhColors.white),
+            //             ),
+            //             onPressed: () {
+            //               //launch("tel://$_mobile");
+            //               consultantController
+            //                   .getConsultantDataController(_doctors.sId ?? '');
+            //               Navigator.of(context).push(MaterialPageRoute(
+            //                   builder: (context) => ConsultantProfilePage()));
+            //             },
+            //           ),
+            //         )
+            //       ],
+            //     )),
           ],
         ),
       ),
