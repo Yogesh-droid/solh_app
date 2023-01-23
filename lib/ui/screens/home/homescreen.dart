@@ -1856,31 +1856,30 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          child: CarouselSlider.builder(
-            carouselController: carouselController,
-            itemCount: 5,
-            itemBuilder: ((context, index, realIndex) {
-              return Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  child: FittedBox(
-                      fit: BoxFit.fill,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child:
-                              Image.network('https://picsum.photos/400/200'))));
-            }),
-            options: CarouselOptions(
-                autoPlay: false,
-                padEnds: true,
-                viewportFraction: 0.75,
-                enlargeCenterPage: true,
-                onPageChanged: ((index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                })),
-          ),
+        CarouselSlider.builder(
+          carouselController: carouselController,
+          itemCount: 5,
+          itemBuilder: ((context, index, realIndex) {
+            return Container(
+                height: 20.h,
+                width: 100.w,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network('https://picsum.photos/400/200')),
+                ));
+          }),
+          options: CarouselOptions(
+              autoPlay: false,
+              padEnds: true,
+              viewportFraction: 0.75,
+              enlargeCenterPage: true,
+              onPageChanged: ((index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              })),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
