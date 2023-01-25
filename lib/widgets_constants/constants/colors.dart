@@ -64,4 +64,7 @@ class SolhColors {
   static const Color greyS200 =
       Color.fromRGBO(238, 238, 238, 1); //Colors.grey.shade200
 
+  // blue shades
+
+  static const Color blue_light = Color(0xffEEF9FF);
 }

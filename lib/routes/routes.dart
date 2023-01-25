@@ -6,6 +6,7 @@ import 'package:solh/ui/screens/activity-log-and-badge/psychological_points.dart
 import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
+import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
@@ -69,6 +70,7 @@ class AppRoutes {
   static const String getHelpPage = '/getHelpPage';
   static const String appointmentPage = '/appointmentPage';
   static const String viewAllConsultant = '/viewAllConsultant';
+  static const String consultantAlliedParent = '/consultantAlliedParent';
 
   /// Goal related  ////
   static const String myGoalScreen = '/myGoalScreen';
@@ -271,6 +273,10 @@ class RouteGenerator {
       case AppRoutes.psychologicalCapital:
         return MaterialPageRoute(
             builder: ((context) => PsychologicalCapital()));
+      case AppRoutes.consultantAlliedParent:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                ConsultantAlliedParent(args: args as Map<String, dynamic>)));
 
       default:
         return MaterialPageRoute(

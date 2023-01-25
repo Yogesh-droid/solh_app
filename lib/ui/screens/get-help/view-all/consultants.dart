@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +10,6 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../../controllers/connections/connection_controller.dart';
 import '../../../../controllers/getHelp/get_help_controller.dart';
 import '../consultant_tile.dart';
@@ -19,16 +19,19 @@ class ConsultantsScreen extends StatefulWidget {
       : type = args!['type'],
         slug = args['slug'],
         name = args['name'],
+        enableAppbar = args['enableAppbar'] ?? true,
         super(key: key);
 
   final String slug;
   final String? type;
   final String? name;
+  final bool enableAppbar;
   @override
   State<ConsultantsScreen> createState() => _ConsultantsScreenState();
 }
 
-class _ConsultantsScreenState extends State<ConsultantsScreen> {
+class _ConsultantsScreenState extends State<ConsultantsScreen>
+    with KeepAliveParentDataMixin {
   bool _fetchingMore = false;
   SearchMarketController searchMarketController = Get.find();
   ConnectionController connectionController = Get.find();
@@ -62,30 +65,34 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F8),
-        appBar: SolhAppBar(
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.name == null
-                    ? "Consultants"
-                    : widget.name!.isEmpty
-                        ? "Consultants"
-                        : widget.name!,
-                style: TextStyle(fontSize: 16, color: Colors.black),
-              ),
-              Obx(() => searchMarketController.issueModel.value.doctors !=
-                          null &&
-                      searchMarketController.issueModel.value.provider != null
-                  ? Text(
-                      "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
-                      style: TextStyle(fontSize: 15, color: Color(0xFFA6A6A6)),
-                    )
-                  : SizedBox())
-            ],
-          ),
-          isLandingScreen: false,
-        ),
+        appBar: widget.enableAppbar && widget.enableAppbar != null
+            ? SolhAppBar(
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.name == null
+                          ? "Consultants"
+                          : widget.name!.isEmpty
+                              ? "Consultants"
+                              : widget.name!,
+                      style: SolhTextStyles.QS_body_1_bold,
+                    ),
+                    Obx(() => searchMarketController.issueModel.value.doctors !=
+                                null &&
+                            searchMarketController.issueModel.value.provider !=
+                                null
+                        ? Text(
+                            "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
+                            style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                                color: SolhColors.Grey_1),
+                          )
+                        : SizedBox())
+                  ],
+                ),
+                isLandingScreen: false,
+              )
+            : null,
         floatingActionButton: FloatingActionButton(
           child: Icon(
             Icons.filter_alt_outlined,
@@ -403,4 +410,13 @@ class _ConsultantsScreenState extends State<ConsultantsScreen> {
             : searchMarketController.getIssueList(widget.slug,
                 c: defaultCountry);
   }
+
+  @override
+  void detach() {
+    // TODO: implement detach
+  }
+
+  @override
+  // TODO: implement keptAlive
+  bool get keptAlive => true;
 }
