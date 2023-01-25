@@ -51,7 +51,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
         userBlocNetwork.getMyProfileSnapshot();
         _service.connectAndListen();
         _controller.getChatController(widget._sId);
-        super.initState();
+
         SocketService.setUserName(userBlocNetwork.myData.name!);
         print('author ${userBlocNetwork.myData.userName!}');
       });

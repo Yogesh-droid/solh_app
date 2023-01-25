@@ -129,10 +129,12 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                       onPressed: () {
                         bookAppointmentController.query = issue.name;
                         Navigator.pushNamed(
-                            context, AppRoutes.viewAllConsultant, arguments: {
-                          "slug": issue.slug ?? '',
-                          "type": 'issue'
-                        });
+                            context, AppRoutes.consultantAlliedParent,
+                            arguments: {
+                              "slug": issue.slug ?? '',
+                              "type": 'issue',
+                              "enableAppbar": false
+                            });
                         FirebaseAnalytics.instance.logEvent(
                             name: 'IssueSearchTapped',
                             parameters: {'Page': 'GetHelp'});
@@ -247,8 +249,12 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           GetHelpCategory(
               title: "Top Consultants",
               onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                    arguments: {"slug": '', "type": 'topconsultant'});
+                Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
+                    arguments: {
+                      "slug": '',
+                      "type": 'topconsultant',
+                      "enableAppbar": false
+                    });
                 FirebaseAnalytics.instance.logEvent(
                     name: 'viewAllConsultanttapped',
                     parameters: {'Page': 'GetHelp'});

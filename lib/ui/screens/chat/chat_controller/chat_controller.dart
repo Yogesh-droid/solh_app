@@ -181,6 +181,7 @@ class ChatController extends GetxController {
       required mediaType,
       required authorId,
       required fileName}) {
+    debugPrint("message $message");
     SocketService.sendMessage(
         message: message,
         sId: sId,

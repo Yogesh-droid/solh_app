@@ -377,8 +377,11 @@ class _HomePageState extends State<HomePage> {
           GetHelpCategory(
               title: "Top Consultants",
               onPressed: () => Navigator.pushNamed(
-                  context, AppRoutes.viewAllConsultant,
-                  arguments: {"slug": '', "type": 'topconsultant'})),
+                      context, AppRoutes.consultantAlliedParent, arguments: {
+                    "slug": '',
+                    "type": 'topconsultant',
+                    "enableAppbar": false
+                  })),
           Container(
             height: 17.h,
             margin: EdgeInsets.only(bottom: 2.h),
@@ -1643,8 +1646,12 @@ Widget getIssueUI(
             bookAppointmentController.query = issue.name;
             // AutoRouter.of(context).push(ConsultantsScreenRouter(
             //     slug: issue.slug ?? '', type: 'issue'));
-            Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                arguments: {"slug": issue.slug ?? '', "type": 'issue'});
+            Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
+                arguments: {
+                  "slug": issue.slug ?? '',
+                  "type": 'issue',
+                  "enableAppbar": false
+                });
           },
         );
       }).toList(),

@@ -19,13 +19,20 @@ class SimpleImageContainer extends StatelessWidget {
       this.zoomEnabled = false,
       this.borderWidth = 2.0,
       this.boxFit = BoxFit.contain,
+      this.enableGradientBorder = false,
+      this.gradientColorList = const [
+        SolhColors.primary_green,
+        SolhColors.primaryRed
+      ],
       this.borderColor = SolhColors.primary_green,
-      this.enableborder})
+      this.enableborder = false})
       : super(key: key);
   final String imageUrl;
   final double radius;
   final VoidCallback? onClick;
-  final bool? enableborder;
+  final bool enableborder;
+  final bool enableGradientBorder;
+  final List<Color> gradientColorList;
   final bool zoomEnabled;
   final double borderWidth;
   final Color borderColor;
@@ -41,6 +48,10 @@ class SimpleImageContainer extends StatelessWidget {
         padding: EdgeInsets.all(borderWidth),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
+          //to enable gradient border ,enable both border and gradient border
+          gradient: enableGradientBorder
+              ? LinearGradient(colors: gradientColorList)
+              : null,
           color: enableborder == true ? borderColor : Colors.transparent,
         ),
         child: CachedNetworkImage(
