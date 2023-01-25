@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
@@ -119,7 +118,7 @@ class _TrimmerViewState extends State<TrimmerView> {
                         trimmer: _trimmer,
                         viewerHeight: 50.0,
                         viewerWidth: MediaQuery.of(context).size.width,
-                        maxVideoLength: Duration(seconds: 30),
+                        //maxVideoLength: Duration(seconds: 30),
                         onChangeStart: (value) {
                           _startValue = value;
                         },

@@ -16,11 +16,11 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
-import 'package:solh/ui/screens/get-help/view-all/view_all_volunteers.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -368,7 +368,9 @@ class _HomePageState extends State<HomePage> {
           ),
           getIssueUI(bookAppointmentController, getHelpController, context),
           GetHelpDivider(),
-          AlliedExperts(),
+          AlliedExperts(onTap: (value) {
+            Get.find<SearchMarketController>().getSpecializationList(value);
+          }),
           GetHelpDivider(),
           AlliedCarousel(),
           SizedBox(
@@ -381,7 +383,7 @@ class _HomePageState extends State<HomePage> {
                   context, AppRoutes.viewAllConsultant,
                   arguments: {"slug": '', "type": 'topconsultant'})),
           Container(
-            height: 17.h,
+            height: 30.h,
             margin: EdgeInsets.only(bottom: 2.h),
             child: Obx(() => Container(
                 child: getHelpController.topConsultantList.value.doctors != null
@@ -1753,7 +1755,9 @@ getIssuesRowItem(Widget widget, String subtext) {
 }
 
 class AlliedExperts extends StatelessWidget {
-  const AlliedExperts({super.key});
+  AlliedExperts({super.key, required this.onTap});
+  final GetHelpController getHelpController = Get.find();
+  final Function(String slug) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -1783,44 +1787,71 @@ class AlliedExperts extends StatelessWidget {
           SizedBox(
             height: 2.h,
           ),
-          GridView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 4.0,
-                childAspectRatio: 2 / 3),
-            shrinkWrap: true,
-            itemCount: 6,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: SolhColors.grey_3,
-                  ),
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      topRight: Radius.circular(8),
-                    ),
-                    child: Image.network('https://picsum.photos/200'),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 2.h),
-                    child: Text(
-                      'Yoga Therapies',
-                      style: SolhTextStyles.QS_cap_semi,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ]),
-              );
-            },
-          ),
+          Obx(() => getHelpController
+                      .getAlliedTherapyModel.value.specializationList ==
+                  null
+              ? Container()
+              : GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 4.0,
+                      childAspectRatio: 2 / 3),
+                  shrinkWrap: true,
+                  itemCount: getHelpController.getAlliedTherapyModel.value
+                              .specializationList!.length >
+                          6
+                      ? 6
+                      : getHelpController.getAlliedTherapyModel.value
+                          .specializationList!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        onTap(getHelpController.getAlliedTherapyModel.value
+                                .specializationList![index].slug ??
+                            '');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: SolhColors.grey_3,
+                          ),
+                          borderRadius: BorderRadius.circular(9),
+                        ),
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8),
+                            ),
+                            child: CachedNetworkImage(
+                              imageUrl: getHelpController
+                                      .getAlliedTherapyModel
+                                      .value
+                                      .specializationList![index]
+                                      .displayImage ??
+                                  '',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 2.h),
+                            child: Text(
+                              getHelpController.getAlliedTherapyModel.value
+                                      .specializationList![index].name ??
+                                  '',
+                              style: SolhTextStyles.QS_cap_semi,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          )
+                        ]),
+                      ),
+                    );
+                  },
+                )),
         ],
       ),
     );

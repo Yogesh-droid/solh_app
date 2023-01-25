@@ -260,7 +260,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     parameters: {'Page': 'GetHelp'});
               }),
           Container(
-            height: 17.h,
+            height: 30.h,
             margin: EdgeInsets.only(bottom: 2.h),
             child: Container(child: Obx(() {
               return getHelpController.topConsultantList.value.doctors != null
@@ -497,7 +497,7 @@ class TopConsultantsTile extends StatelessWidget {
             parameters: {'Page': 'GetHelp'});
       },
       child: Container(
-        //width: 70.w,
+        width: 40.w,
         // height: 25.h,
         margin: EdgeInsets.symmetric(horizontal: 2.5.w),
         decoration: BoxDecoration(
@@ -510,18 +510,43 @@ class TopConsultantsTile extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(8), bottomLeft: Radius.circular(8)),
+                  topLeft: Radius.circular(8), topRight: Radius.circular(8)),
               child: CachedNetworkImage(
                 imageUrl: _doctors.profilePicture ??
                     'https://solh.s3.amazonaws.com/user/profile/1651493729337',
-                width: 30.w,
-                height: 70,
-                fit: BoxFit.fill,
+                width: 40.w,
+                height: 130,
+                fit: BoxFit.cover,
               ),
             ),
 
-            Text(_doctors.name ?? ''),
-            // Text(_qualification),
+            Text(
+              _doctors.name ?? '',
+              style: SolhTextStyles.QS_caption_bold.copyWith(height: 2),
+            ),
+            SizedBox(
+              width: 30.w,
+              child: Text(
+                _doctors.specialization ?? '',
+                style: SolhTextStyles.QS_cap_2_semi,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Spacer(),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: SolhColors.greenShade5,
+                  borderRadius: BorderRadius.circular(12)),
+              child: Text(
+                "${_doctors.feeCurrency ?? 'Rs'}  ${_doctors.fee_amount ?? 0}",
+                style: SolhTextStyles.QS_caption_bold,
+              ),
+            ),
+
             // Text(
             //   _doctors.bio ?? '',
             //   maxLines: 3,

@@ -369,12 +369,16 @@ class _JournalTileState extends State<JournalTile> {
                                               ? widget._journalModel!.group!.groupName ?? ''
                                               : widget._journalModel!.postedBy != null
                                                   ? widget._journalModel!.postedBy!.anonymous != null && widget._journalModel!.anonymousJournal!
-                                                      ? widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
-                                                          ? 'You'
-                                                          : widget._journalModel!.postedBy!.anonymous!.userName ?? ''
-                                                      : widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
-                                                          ? 'You'
-                                                          : widget._journalModel!.postedBy!.name ?? ''
+                                                      ? Get.find<ProfileController>().myProfileModel.value.body == null
+                                                          ? widget._journalModel!.postedBy!.anonymous!.userName ?? ''
+                                                          : widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
+                                                              ? 'You'
+                                                              : widget._journalModel!.postedBy!.anonymous!.userName ?? ''
+                                                      : Get.find<ProfileController>().myProfileModel.value.body == null
+                                                          ? widget._journalModel!.postedBy!.anonymous!.userName ?? ''
+                                                          : widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
+                                                              ? 'You'
+                                                              : widget._journalModel!.postedBy!.name ?? ''
                                                   : '',
                                       style:
                                           SolhTextStyles.JournalingUsernameText,
@@ -613,6 +617,9 @@ class _JournalTileState extends State<JournalTile> {
                             journalPageController
                                 .journalsList[widget.index].isLiked = true;
                             journalPageController.journalsList.refresh();
+                            FirebaseAnalytics.instance.logEvent(
+                                name: 'LikeTapped',
+                                parameters: {'Page': 'JournalTile'});
                           } else {
                             Utility.showToast(message);
                           }

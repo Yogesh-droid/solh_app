@@ -16,6 +16,7 @@ class GetHelpController extends GetxController {
   var topConsultantList = SearchMarketModel().obs;
   var solhVolunteerList = SolhVolunteerModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
+  var getAlliedTherapyModel = GetIssueResponseModel().obs;
   var isAllIssueShown = false.obs;
   var counsellorsCountryModel = CounsellorsCountryModel().obs;
   var isCountryLoading = false.obs;
@@ -26,7 +27,6 @@ class GetHelpController extends GetxController {
           await Network.makeGetRequest("${APIConstants.api}/api/issue");
 
       print('issues $map');
-
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
       // issueList.value = getSpecializationModel.value.specializationList != null
       //     ? getIssueResponseModel.value.specializationList!
@@ -71,10 +71,23 @@ class GetHelpController extends GetxController {
 
   void getSpecializationList() async {
     try {
+      ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
       Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/get-app-specialization");
+          "${APIConstants.api}/api/get-app-specialization?parent=111");
 
       getSpecializationModel.value = GetIssueResponseModel.fromJson(map);
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+  }
+
+  void getAlliedTherapyList() async {
+    try {
+      ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
+      Map<String, dynamic> map = await Network.makeGetRequest(
+          "${APIConstants.api}/api/get-app-specialization?parent=222");
+
+      getAlliedTherapyModel.value = GetIssueResponseModel.fromJson(map);
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }
@@ -110,6 +123,7 @@ class GetHelpController extends GetxController {
     super.onInit();
     getIssueList();
     getSpecializationList();
+    getAlliedTherapyList();
     getTopConsultant();
     getSolhVolunteerList();
     getCountryList();

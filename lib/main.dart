@@ -88,7 +88,6 @@ class _SolhAppState extends State<SolhApp> {
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
         title: 'Solh Wellness',
-
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
         // initialRoute: AppRoutes.master,

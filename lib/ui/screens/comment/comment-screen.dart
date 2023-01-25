@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -1302,6 +1303,9 @@ class CommentBoxWidget extends StatelessWidget {
                                 .value.body!.comments![index].isLiked = true;
                             journalCommentController.getJouranalsCommentModel
                                 .refresh();
+                            FirebaseAnalytics.instance.logEvent(
+                                name: 'LikeTapped',
+                                parameters: {'Page': 'JournalTile'});
                           } else {
                             Utility.showToast(message);
                           }

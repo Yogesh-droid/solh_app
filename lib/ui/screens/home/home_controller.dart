@@ -12,6 +12,7 @@ class HomeController extends GetxController {
       if (map['success']) {
         hat.value = map['data']['hat'];
         line.value = map['data']['line'];
+        print('The line is ${line.value}');
       }
     } on Exception catch (e) {
       // TODO
