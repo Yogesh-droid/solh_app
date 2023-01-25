@@ -205,9 +205,12 @@ Widget getListItem(var time, content, subContent, activityType, isAnon,
                             content,
                             style: SolhTextStyles.QS_caption_bold,
                           ),
-                          Text(
-                            subContent,
-                            style: SolhTextStyles.QS_caption,
+                          Container(
+                            width: 50.w,
+                            child: Text(
+                              subContent,
+                              style: SolhTextStyles.QS_caption,
+                            ),
                           ),
                           Text(
                             '${timeago.format(date).toString()} ',
@@ -368,9 +371,12 @@ Widget getLogItem(var time, content, subContent, activityType, isAnon,
                       content,
                       style: SolhTextStyles.QS_caption_bold,
                     ),
-                    Text(
-                      subContent,
-                      style: SolhTextStyles.QS_caption,
+                    Container(
+                      width: 50.w,
+                      child: Text(
+                        subContent,
+                        style: SolhTextStyles.QS_caption,
+                      ),
                     ),
                     Text(
                       '${timeago.format(date).toString()} ',
