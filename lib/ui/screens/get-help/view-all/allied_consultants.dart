@@ -357,8 +357,7 @@ class _SolhVideoPlayerState extends State<SolhVideoPlayer> {
           !_controller.value.isPlaying &&
           _controller.value.isInitialized) {
         _isVideoEnded = true;
-        print(_controller.value.position);
-        print('listener ran');
+
         setState(() {});
       }
     });
@@ -439,20 +438,45 @@ Widget videoPlayerIconController(VideoPlayerController videoController) {
   }
 }
 
-class AnimatedVideoPlayerIcon extends StatelessWidget {
-  const AnimatedVideoPlayerIcon({super.key, required this.iconChild});
-  final iconChild;
+class AnimatedVideoPlayerIcon extends StatefulWidget {
+  AnimatedVideoPlayerIcon({super.key, required this.iconChild});
+  final IconData iconChild;
+
+  @override
+  State<AnimatedVideoPlayerIcon> createState() =>
+      _AnimatedVideoPlayerIconState();
+}
+
+class _AnimatedVideoPlayerIconState extends State<AnimatedVideoPlayerIcon>
+    with SingleTickerProviderStateMixin {
+  final ColorTween colorTween =
+      ColorTween(begin: SolhColors.primary_green, end: Colors.transparent);
+  late Animation<Color?> colorAnimation;
+  late AnimationController animationController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    colorAnimation = colorTween.animate(animationController);
+    print(AnimationStatus);
+    animationController.addStatusListener((value) {
+      print('value' + value.toString());
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TweenAnimationBuilder(
-        tween: ColorTween(
-            begin: SolhColors.primary_green, end: Colors.transparent),
-        duration: Duration(milliseconds: 500),
-        builder: ((context, Color? value, child) {
-          return Icon(
-            iconChild,
-            color: value,
-          );
-        }));
+    return AnimatedBuilder(
+      animation: colorAnimation,
+      builder: (context, child) {
+        return Icon(
+          widget.iconChild,
+          color: colorAnimation.value,
+        );
+      },
+    );
   }
 }
