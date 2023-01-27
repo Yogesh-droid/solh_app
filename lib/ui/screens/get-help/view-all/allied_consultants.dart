@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -34,20 +35,24 @@ class AlliedConsultantTile extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Container(
-              height: 24.h,
-              width: 100.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color:
-                          Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
-              child: getProfileDetails(
-                  context: context,
-                  imageUrl: "https://picsum.photos/200",
-                  startingPrice: '499',
-                  previewUrl:
-                      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'),
+            InkWell(
+              onTap: () => Navigator.pushNamed(
+                  context, AppRoutes.alliedConsultantScreen),
+              child: Container(
+                height: 24.h,
+                width: 100.w,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                        color:
+                            Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
+                child: getProfileDetails(
+                    context: context,
+                    imageUrl: "https://picsum.photos/200",
+                    startingPrice: '499',
+                    previewUrl:
+                        'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'),
+              ),
             ),
             SvgPicture.asset('assets/images/demo.svg')
           ],
@@ -66,6 +71,8 @@ getProfileDetails(
     profession,
     experience,
     noOfPlans,
+    isDemoAvailable,
+    isPreviewAvailable,
     previewUrl}) {
   return Padding(
     padding: const EdgeInsets.only(left: 12, top: 4),
@@ -203,7 +210,7 @@ getProfileImg(String? profilePicture, previewUrl, context) {
         child: SimpleImageContainer(
             // zoomEnabled: true,
             enableborder: true,
-            enableGradientBorder: false,
+            enableGradientBorder: true,
             boxFit: BoxFit.cover,
             radius: 100,
             imageUrl: profilePicture!.isNotEmpty

@@ -24,6 +24,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
       bool? isNotificationPage,
+      Color this.backgroundColor = Colors.white,
       PreferredSize? bottom,
       Widget? menuButton,
       Callback? callback})
@@ -45,6 +46,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? _height;
   final bool? _isNotificationPage;
   final bool? _isDiaryBtnShown;
+  final Color backgroundColor;
   final PreferredSize? _bottom;
   final Widget? _menuButton;
   final JournalPageController _journalPageController = Get.find();
@@ -53,6 +55,9 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         automaticallyImplyLeading: false,
+        shadowColor: backgroundColor == Colors.transparent
+            ? Colors.transparent
+            : Colors.black,
         title: Row(
           children: [
             _title,
@@ -85,14 +90,16 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Container(
                   child: Icon(
                     Icons.arrow_back_ios_new_rounded,
-                    color: SolhColors.black,
+                    color: backgroundColor == Colors.transparent
+                        ? Colors.white
+                        : SolhColors.black,
                     size: 24,
                   ),
                 ),
               )
             : null,
         elevation: 0.5,
-        backgroundColor: SolhColors.white,
+        backgroundColor: backgroundColor,
         actions: [
           _isDiaryBtnShown != null
               ? IconButton(
