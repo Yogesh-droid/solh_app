@@ -4,7 +4,6 @@ import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/psychological_points.dart';
 import 'package:solh/ui/screens/chat/chat.dart';
-import 'package:solh/ui/screens/connect/connect-screen.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';

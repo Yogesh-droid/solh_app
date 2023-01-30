@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/get-help/consultant_tile.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';

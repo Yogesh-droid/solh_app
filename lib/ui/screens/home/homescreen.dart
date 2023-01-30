@@ -371,6 +371,12 @@ class _HomePageState extends State<HomePage> {
           AlliedExperts(onTap: (value) {
             Get.find<SearchMarketController>()
                 .getSpecializationList(value.trim());
+            Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
+                arguments: {
+                  "slug": value,
+                  "type": 'issue',
+                  "enableAppbar": true
+                });
           }),
           GetHelpDivider(),
           AlliedCarousel(),
