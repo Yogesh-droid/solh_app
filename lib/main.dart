@@ -8,6 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
@@ -32,8 +33,8 @@ void main() async {
   LocalNotification.initOneSignal();
 
   await FirebaseAnalytics.instance.logBeginCheckout();
-  final SearchMarketController searchMarketController =
-      Get.put(SearchMarketController());
+  Get.put(SearchMarketController());
+  Get.put(AlliedController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
@@ -137,10 +138,8 @@ class _SolhAppState extends State<SolhApp> {
 
   Future<void> initControllers() async {
     if (widget._isProfileCreated) {
-      ProfileController profileController = Get.put(ProfileController());
-      ProfileSetupController profileSetupController =
-          Get.put(ProfileSetupController());
-
+      Get.put(ProfileController());
+      Get.put(ProfileSetupController());
       // await profileController.getMyProfile();
       Get.put(ChatListController());
     }

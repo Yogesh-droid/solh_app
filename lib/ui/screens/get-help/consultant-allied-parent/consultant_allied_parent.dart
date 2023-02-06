@@ -58,7 +58,13 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
                 "enableAppbar": widget.enableAppbar,
               },
             ),
-            AlliedConsultant()
+            AlliedConsultant(
+              args: {
+                "type": widget.type,
+                "slug": widget.slug,
+                "enableAppbar": widget.enableAppbar,
+              },
+            )
           ]),
         )
       ]),

@@ -369,21 +369,22 @@ class _HomePageState extends State<HomePage> {
           getIssueUI(bookAppointmentController, getHelpController, context),
           GetHelpDivider(),
           AlliedExperts(onTap: (value) {
-            Get.find<SearchMarketController>()
-                .getSpecializationList(value.trim());
-            Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
+            // Get.find<SearchMarketController>()
+            //     .getSpecializationList(value.trim());
+            Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
                 arguments: {
                   "slug": value,
-                  "type": 'issue',
+                  "name": value,
+                  "type": 'specialization',
                   "enableAppbar": true
                 });
           }),
           GetHelpDivider(),
-          AlliedCarousel(),
-          SizedBox(
-            height: 10,
-          ),
-          GetHelpDivider(),
+          // AlliedCarousel(),
+          // SizedBox(
+          //   height: 10,
+          // ),
+          // GetHelpDivider(),
           GetHelpCategory(
               title: "Leading solh experts",
               onPressed: () => Navigator.pushNamed(

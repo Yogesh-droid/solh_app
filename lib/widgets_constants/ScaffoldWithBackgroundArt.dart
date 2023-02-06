@@ -81,11 +81,13 @@ class ScaffoldGreenWithBackgroundArt extends StatelessWidget {
     this.appBar,
     this.body,
     this.floatingActionButton,
+    this.bottomNavBar,
   }) : super(key: key);
 
   final PreferredSizeWidget? appBar;
   final Widget? body;
   final Widget? floatingActionButton;
+  final Widget? bottomNavBar;
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +108,7 @@ class ScaffoldGreenWithBackgroundArt extends StatelessWidget {
           appBar: appBar,
           body: body,
           floatingActionButton: floatingActionButton,
+          bottomNavigationBar: bottomNavBar,
         )
       ],
     );

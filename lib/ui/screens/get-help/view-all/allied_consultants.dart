@@ -1,32 +1,146 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/search_market_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
-import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
-import 'package:video_player/video_player.dart';
+import 'package:solh/widgets_constants/solh_video_player.dart';
 
-class AlliedConsultant extends StatelessWidget {
-  const AlliedConsultant({super.key});
+import '../../../../model/get-help/search_market_model.dart';
+import '../../../../widgets_constants/appbars/app-bar.dart';
+import '../../../../widgets_constants/loader/my-loader.dart';
+import '../../comment/comment-screen.dart';
+
+class AlliedConsultant extends StatefulWidget {
+  AlliedConsultant({Key? key, Map<dynamic, dynamic>? args})
+      : type = args!['type'],
+        slug = args['slug'],
+        name = args['name'],
+        enableAppbar = args['enableAppbar'] ?? true,
+        super(key: key);
+
+  final String? slug;
+  final String? type;
+  final String? name;
+  final bool enableAppbar;
+
+  @override
+  State<AlliedConsultant> createState() => _AlliedConsultantState();
+}
+
+class _AlliedConsultantState extends State<AlliedConsultant> {
+  String? defaultCountry;
+  SearchMarketController searchMarketController = Get.find();
+  @override
+  void initState() {
+    super.initState();
+    getResultByCountry();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-          shrinkWrap: true,
-          itemCount: 6,
-          itemBuilder: ((context, index) {
-            return AlliedConsultantTile();
-          })),
+      backgroundColor: Color(0xFFF6F6F8),
+      appBar: widget.enableAppbar && widget.enableAppbar != null
+          ? SolhAppBar(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.name == null
+                        ? "Consultants"
+                        : widget.name!.isEmpty
+                            ? "Consultants"
+                            : widget.name!,
+                    style: SolhTextStyles.QS_body_1_bold,
+                  ),
+                  Obx(() => searchMarketController.issueModel.value.doctors !=
+                              null &&
+                          searchMarketController.issueModel.value.provider !=
+                              null
+                      ? Text(
+                          "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
+                          style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                              color: SolhColors.Grey_1),
+                        )
+                      : SizedBox())
+                ],
+              ),
+              isLandingScreen: false,
+            )
+          : null,
+      body: Obx(() => searchMarketController.isSearchingDoctors.value
+          ? getShimmer(context)
+          : searchMarketController.issueModel.value.doctors != null ||
+                  searchMarketController.issueModel.value.provider != null
+              ? CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 10,
+                      ),
+                    ),
+                    if (searchMarketController
+                            .issueModel.value.doctors!.isEmpty &&
+                        searchMarketController
+                            .issueModel.value.provider!.isEmpty)
+                      SliverToBoxAdapter(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text('No results found'),
+                        ),
+                      ),
+                    // searchMarketController.issueModel.value.doctors != null
+                    //     ? SliverList(
+                    //         delegate: SliverChildBuilderDelegate(
+                    //           (context, index) => AlliedConsultantTile(provider: ),
+                    //           childCount: searchMarketController
+                    //               .issueModel.value.doctors!.length,
+                    //         ),
+                    //       )
+                    //     : SizedBox(),
+                    searchMarketController.issueModel.value.provider != null
+                        ? SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) => AlliedConsultantTile(
+                                  provider: searchMarketController
+                                      .issueModel.value.provider![index]),
+                              childCount: searchMarketController
+                                  .issueModel.value.provider!.length,
+                            ),
+                          )
+                        : SliverToBoxAdapter(),
+                  ],
+                )
+              : Center(
+                  child: MyLoader(),
+                )),
     );
+  }
+
+  Future<void> getResultByCountry() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    defaultCountry = sharedPreferences.getString('userCountry');
+    widget.type == 'specialization'
+        ? searchMarketController.getSpecializationList(widget.slug ?? '',
+            c: defaultCountry)
+        : widget.type == 'topconsultant'
+            ? searchMarketController.getTopConsultants(c: defaultCountry)
+            : searchMarketController.getIssueList(widget.slug ?? '',
+                c: defaultCountry);
   }
 }
 
 class AlliedConsultantTile extends StatelessWidget {
-  const AlliedConsultantTile({super.key});
+  const AlliedConsultantTile({super.key, required this.provider});
+  final Provider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -34,20 +148,20 @@ class AlliedConsultantTile extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Container(
-              height: 24.h,
-              width: 100.w,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(
-                      color:
-                          Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
-              child: getProfileDetails(
-                  context: context,
-                  imageUrl: "https://picsum.photos/200",
-                  startingPrice: '499',
-                  previewUrl:
-                      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'),
+            InkWell(
+              onTap: () => Navigator.pushNamed(
+                  context, AppRoutes.alliedConsultantScreen,
+                  arguments: {"id": provider.sId}),
+              child: Container(
+                height: 24.h,
+                width: 100.w,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                        color:
+                            Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
+                child: getProfileDetails(context: context, provider: provider),
+              ),
             ),
             SvgPicture.asset('assets/images/demo.svg')
           ],
@@ -58,15 +172,10 @@ class AlliedConsultantTile extends StatelessWidget {
   }
 }
 
-getProfileDetails(
-    {context,
-    imageUrl,
-    startingPrice,
-    prefix,
-    profession,
-    experience,
-    noOfPlans,
-    previewUrl}) {
+getProfileDetails({
+  context,
+  required Provider provider,
+}) {
   return Padding(
     padding: const EdgeInsets.only(left: 12, top: 4),
     child: Column(
@@ -99,7 +208,10 @@ getProfileDetails(
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            getProfileImg('https://picsum.photos/200', previewUrl, context),
+            getProfileImg(
+                provider.profilePicture ?? '',
+                'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                context),
             SizedBox(width: 3.w),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,11 +224,11 @@ getProfileDetails(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'prefix ',
+                      provider.prefix ?? '',
                       style: SolhTextStyles.QS_body_2_semi,
                     ),
                     Text(
-                      'name',
+                      provider.name ?? '',
                       style: SolhTextStyles.QS_body_2_semi,
                     ),
                   ],
@@ -124,14 +236,14 @@ getProfileDetails(
                 Row(
                   children: [
                     Text(
-                      'bio/spelization ',
+                      provider.profession ?? '',
                       style: SolhTextStyles.QS_cap_semi,
                     ),
                     Row(
                       children: [
                         SolhDot(),
                         Text(
-                          ' 8 years ',
+                          ' ${provider.experience} years ',
                           style: SolhTextStyles.QS_cap_semi,
                         ),
                       ],
@@ -179,7 +291,7 @@ getProfileDetails(
                             'Starting @',
                             style: SolhTextStyles.QS_cap_semi,
                           ),
-                          Text(startingPrice,
+                          Text(provider.fee_amount.toString(),
                               style: SolhTextStyles.QS_cap_semi),
                         ],
                       ),
@@ -203,7 +315,7 @@ getProfileImg(String? profilePicture, previewUrl, context) {
         child: SimpleImageContainer(
             // zoomEnabled: true,
             enableborder: true,
-            enableGradientBorder: false,
+            enableGradientBorder: true,
             boxFit: BoxFit.cover,
             radius: 100,
             imageUrl: profilePicture!.isNotEmpty
@@ -328,166 +440,5 @@ class PreViewVideo extends StatelessWidget {
         content: SolhVideoPlayer(
           videoUrl: videoUrl,
         ));
-  }
-}
-
-class SolhVideoPlayer extends StatefulWidget {
-  const SolhVideoPlayer({super.key, required this.videoUrl});
-
-  final String videoUrl;
-
-  @override
-  State<SolhVideoPlayer> createState() => _SolhVideoPlayerState();
-}
-
-class _SolhVideoPlayerState extends State<SolhVideoPlayer> {
-  late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
-  bool _isPlaying = true;
-  bool _isVideoEnded = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = VideoPlayerController.network(widget.videoUrl);
-    _controller.play();
-    _controller.addListener(() {
-      if (_controller.value.duration == _controller.value.position &&
-          !_controller.value.isPlaying &&
-          _controller.value.isInitialized) {
-        _isVideoEnded = true;
-
-        setState(() {});
-      }
-    });
-
-    _initializeVideoPlayerFuture = _controller.initialize();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: AspectRatio(
-        aspectRatio: 4 / 2.5,
-        child: Stack(
-          children: [
-            VideoPlayer(_controller),
-            Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: 0,
-                child: InkWell(
-                    onTap: () async {
-                      await videoController(_controller);
-                      setState(() {});
-                    },
-                    child: videoPlayerIconController(_controller)))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-Future<void> videoController(VideoPlayerController videoController) async {
-  if (videoController.value.isPlaying) {
-    await videoController.pause();
-  } else if (videoController.value.duration == videoController.value.position &&
-      !videoController.value.isPlaying &&
-      videoController.value.isInitialized) {
-    await videoController.seekTo(Duration.zero);
-    await videoController.play();
-  } else if (!videoController.value.isPlaying) {
-    videoController.play();
-  }
-}
-
-Widget videoPlayerIconController(VideoPlayerController videoController) {
-  if (videoController.value.isPlaying) {
-    return AnimatedVideoPlayerIcon(iconChild: Icons.pause);
-  } else if (videoController.value.isBuffering) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ButtonLoadingAnimation(
-          ballColor: SolhColors.primary_green,
-          ballSizeLowerBound: 3,
-          ballSizeUpperBound: 8,
-        ),
-      ],
-    );
-  } else if (videoController.value.duration == videoController.value.position &&
-      !videoController.value.isPlaying &&
-      videoController.value.isInitialized) {
-    return AnimatedVideoPlayerIcon(iconChild: Icons.replay);
-  } else if (!videoController.value.isPlaying &&
-      videoController.value.isInitialized) {
-    return AnimatedVideoPlayerIcon(iconChild: Icons.play_arrow);
-  } else {
-    return Container();
-  }
-}
-
-class AnimatedVideoPlayerIcon extends StatefulWidget {
-  AnimatedVideoPlayerIcon({super.key, required this.iconChild});
-  final IconData iconChild;
-
-  @override
-  State<AnimatedVideoPlayerIcon> createState() =>
-      _AnimatedVideoPlayerIconState();
-}
-
-class _AnimatedVideoPlayerIconState extends State<AnimatedVideoPlayerIcon>
-    with SingleTickerProviderStateMixin {
-  final ColorTween colorTween =
-      ColorTween(begin: SolhColors.primary_green, end: Colors.transparent);
-  late Animation<Color?> colorAnimation;
-  late AnimationController animationController;
-
-  @override
-  void initState() {
-    print('Init');
-    animationController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 3000));
-    animationController.forward();
-    colorAnimation = colorTween.animate(animationController);
-    print(AnimationStatus);
-    animationController.addListener(() {
-      print(animationController.status);
-      if (animationController.isCompleted) {
-        animationController.dispose();
-        print(animationController.isCompleted);
-        setState(() {});
-      }
-    });
-    animationController.addStatusListener((value) {
-      print('value is something' + value.toString());
-      if (value == AnimationStatus.completed) {
-        //animationController.reset();
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: colorAnimation,
-      builder: (context, child) {
-        return Icon(
-          widget.iconChild,
-          color: colorAnimation.value,
-        );
-      },
-    );
   }
 }

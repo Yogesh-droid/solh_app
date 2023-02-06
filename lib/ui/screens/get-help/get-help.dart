@@ -19,7 +19,6 @@ import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen
 import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
@@ -207,13 +206,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                   child: CircleAvatar(
                                     radius: 7.8.w,
                                     backgroundColor: Colors.white,
-                                    child: CachedNetworkImage(
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        getHelpController
+                                                .getSpecializationModel
+                                                .value
+                                                .specializationList![index]
+                                                .displayImage ??
+                                            ''),
+                                    /* child: CachedNetworkImage(
                                       imageUrl: getHelpController
                                               .getSpecializationModel
                                               .value
                                               .specializationList![index]
                                               .displayImage ??
                                           '',
+                                      fit: BoxFit.fill,
                                       placeholder: (context, url) =>
                                           Shimmer.fromColors(
                                               child: Container(
@@ -229,7 +236,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                         size: 50,
                                         color: Colors.grey,
                                       ),
-                                    ),
+                                    ), */
                                   ),
                                 ),
                               ),

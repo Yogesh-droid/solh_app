@@ -42,59 +42,37 @@ class BookingPriceDetails extends StatelessWidget {
   Widget detailsWidget(BuildContext context) {
     return Container(
       child: ListView(children: [
-        getDoctorDetails(),
+        DoctorNameAndImage(
+            img: consultantController
+                    .consultantModelController.value.provder!.profilePicture ??
+                'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
+            name: consultantController
+                    .consultantModelController.value.provder!.name ??
+                '',
+            profession: 'Profession(Doctor)'),
         GetHelpDivider(),
         getSelectedDateTimeWidget(context),
         GetHelpDivider(),
-        couponAndBillwidget(),
+        BillAndCoupon(
+          billAmt: consultantController
+                      .consultantModelController.value.provder!.fee_amount! ==
+                  0
+              ? 'Paid'
+              : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${consultantController.consultantModelController.value.provder!.fee_amount ?? ''}",
+          total: consultantController
+                      .consultantModelController.value.provder!.fee_amount! ==
+                  0
+              ? 'Paid'
+              : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+        ),
         SizedBox(
           height: 30,
         ),
-        declarationWidget(),
+        SolhDeclarationWidget(),
         SizedBox(
           height: 100,
         )
       ]),
-    );
-  }
-
-  Widget getDoctorDetails() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20),
-      child: Container(
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          SimpleImageContainer(
-              radius: 40,
-              borderColor: SolhColors.primary_green,
-              borderWidth: 1,
-              imageUrl: consultantController.consultantModelController.value
-                      .provder!.profilePicture ??
-                  "'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'"),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                consultantController
-                        .consultantModelController.value.provder!.name ??
-                    '',
-                style: SolhTextStyles.QS_body_2_bold,
-              ),
-              Text(
-                'Profession(Doctor)',
-                style: SolhTextStyles.QS_caption,
-              ),
-            ],
-          )
-        ]),
-      ),
     );
   }
 
@@ -128,7 +106,7 @@ class BookingPriceDetails extends StatelessWidget {
     );
   }
 
-  Widget couponAndBillwidget() {
+  /* Widget couponAndBillwidget() {
     return Container(
         padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15),
         child: Column(
@@ -230,10 +208,117 @@ class BookingPriceDetails extends StatelessWidget {
             )
           ],
         ));
-  }
+  } */
 
   Widget continueWidget(BuildContext context) {
-    return Container(
+    return ContinueBookingWidget(
+        btnChild: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() => bookAppointmentController.isLoading.value
+                ? MyLoader(
+                    radius: 8,
+                    strokeWidth: 2,
+                  )
+                : Text(
+                    'Book Now & Pay Later',
+                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+                  ))
+          ],
+        ),
+        totalPayble: consultantController
+                    .consultantModelController.value.provder!.fee_amount! ==
+                0
+            ? 'Paid'
+            : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+        onContinuePressed: () async {
+          print(consultantController
+              .consultantModelController.value.provder!.type);
+          Map<String, dynamic> map =
+              await bookAppointmentController.bookAppointment({
+            'provider': consultantController
+                        .consultantModelController.value.provder!.type ==
+                    'provider'
+                ? consultantController
+                    .consultantModelController.value.provder!.sId
+                : '',
+            'doctor': consultantController
+                        .consultantModelController.value.provder!.type ==
+                    'doctor'
+                ? consultantController
+                    .consultantModelController.value.provder!.sId
+                : '',
+            'start': getdateTime(
+                bookAppointmentController.selectedDay,
+                bookAppointmentController.selectedTimeSlotN,
+                0,
+                bookAppointmentController.selectedDate.value),
+            'end': getdateTime(
+                bookAppointmentController.selectedDay,
+                bookAppointmentController.selectedTimeSlotN,
+                1,
+                bookAppointmentController.selectedDate.value),
+            'seekerEmail':
+                bookAppointmentController.emailTextEditingController.text,
+            'from': bookAppointmentController.selectedTimeSlotN.split('-')[0],
+            'to': bookAppointmentController.selectedTimeSlotN.split('-')[1],
+            "type": "app",
+            "duration": "30",
+            "label":
+                bookAppointmentController.catTextEditingController.value.text,
+            "concern": bookAppointmentController.query ?? '',
+            "anonymousSession":
+                consultantController.isAnonymousBookingEnabled.value.toString(),
+            "offset": bookAppointmentController.selectedOffset.value,
+            "zone": bookAppointmentController.selectedTimeZone.value
+          });
+
+          if (map['success']) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Card(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage(
+                                  'assets/images/ScaffoldBackgroundGreen.png'))),
+                      child: Column(children: [
+                        Image.asset('assets/images/thankripple.png'),
+                        Text(
+                          'Thank You',
+                          style: SolhTextStyles.QS_head_4.copyWith(
+                              color: SolhColors.white),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: Text(
+                            "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
+                            style: SolhTextStyles.QS_cap_semi.copyWith(
+                                color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ]),
+                    ),
+                  );
+                });
+
+            Get.find<AppointmentController>().getUserAppointments();
+            await Future.delayed(Duration(seconds: 2), () {});
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+
+            Navigator.pushNamed(context, AppRoutes.appointmentPage,
+                arguments: {});
+          } else {
+            Utility.showToast(map['message']);
+          }
+        });
+    /* return Container(
       height: 90,
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -409,10 +494,261 @@ class BookingPriceDetails extends StatelessWidget {
           ],
         )
       ]),
+    ); */
+  }
+}
+
+class BillAndCoupon extends StatelessWidget {
+  const BillAndCoupon({Key? key, required this.billAmt, required this.total})
+      : super(key: key);
+  final String billAmt;
+  final String total;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.only(left: 20.0, right: 20, top: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /* Container(
+              height: 90,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                  border: Border.all(color: SolhColors.grey_3),
+                  borderRadius: BorderRadius.circular(8)),
+              child: Row(children: [
+                SvgPicture.asset('assets/images/offer.svg'),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Apply Coupon code',
+                  style: SolhTextStyles.QS_body_semi_1,
+                ),
+                Spacer(),
+                TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Apply',
+                      style: SolhTextStyles.QS_cap_semi.copyWith(
+                          color: SolhColors.primary_green),
+                    ))
+              ]),
+            ),
+            SizedBox(
+              height: 30,
+            ), */
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Billing Details',
+                  style: SolhTextStyles.QS_body_2_bold.copyWith(
+                      color: SolhColors.black),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Row(
+                  children: [
+                    Text('Consultaion Fee',
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.Grey_1)),
+                    Spacer(),
+                    Text(billAmt,
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.Grey_1)),
+                  ],
+                ),
+                /*  SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Text('Service Fee & Taxes',
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.Grey_1)),
+                    Spacer(),
+                    Text(
+                        "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} 49 ",
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.Grey_1)),
+                  ],
+                ), */
+                Divider(
+                  color: SolhColors.Grey_1,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Text('Total Payable',
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.black)),
+                    Spacer(),
+                    Text(total,
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.black)),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ));
+  }
+}
+
+class DoctorNameAndImage extends StatelessWidget {
+  const DoctorNameAndImage(
+      {Key? key,
+      required this.img,
+      required this.name,
+      required this.profession})
+      : super(key: key);
+  final String img;
+  final String name;
+  final String profession;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20),
+      child: Container(
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          SimpleImageContainer(
+            radius: 40,
+            borderColor: SolhColors.primary_green,
+            borderWidth: 1,
+            imageUrl: img,
+            // imageUrl: consultantController.consultantModelController.value
+            //         .provder!.profilePicture ??
+            //     "'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'"
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                // consultantController
+                //         .consultantModelController.value.provder!.name ??
+                //     '',
+                style: SolhTextStyles.QS_body_2_bold,
+              ),
+              Text(
+                //'Profession(Doctor)',
+                profession,
+                style: SolhTextStyles.QS_caption,
+              ),
+            ],
+          )
+        ]),
+      ),
     );
   }
+}
 
-  Widget declarationWidget() {
+class ContinueBookingWidget extends StatelessWidget {
+  const ContinueBookingWidget(
+      {Key? key,
+      required this.btnChild,
+      required this.totalPayble,
+      required this.onContinuePressed})
+      : super(key: key);
+  final Widget btnChild;
+  final String totalPayble;
+  final Function() onContinuePressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 90,
+      padding: const EdgeInsets.only(
+        left: 20.0,
+        right: 20,
+      ),
+      decoration: BoxDecoration(color: SolhColors.card, boxShadow: [
+        BoxShadow(
+            offset: Offset(-2.0, -2.0),
+            color: SolhColors.grey_3,
+            spreadRadius: 3,
+            blurRadius: 5)
+      ]),
+      child: Row(children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(totalPayble,
+                style: SolhTextStyles.QS_body_semi_1.copyWith(
+                    color: SolhColors.black)),
+            SizedBox(
+              height: 5,
+            ),
+            Text('Total Payable',
+                style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                    color: SolhColors.dark_grey)),
+          ],
+        ),
+        Spacer(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SolhGreenButton(
+              backgroundColor: SolhColors.primary_green,
+              width: 200,
+              height: 48,
+              child: btnChild,
+              onPressed: () async {
+                onContinuePressed();
+              },
+            ),
+            RichText(
+              text: TextSpan(
+                  text: 'By confirming you agree',
+                  style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                      color: SolhColors.Grey_1),
+                  children: [
+                    TextSpan(
+                        text: '  Terms & Conditions',
+                        style: SolhTextStyles.QS_cap_semi.copyWith(
+                            color: SolhColors.Grey_1,
+                            decoration: TextDecoration.underline),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PrivacyWeb(
+                                    url:
+                                        'https://solhapp.com/termsandcondition.html',
+                                    title: 'Terms and Conditions'),
+                              ),
+                            );
+                          })
+                  ]),
+            )
+          ],
+        )
+      ]),
+    );
+  }
+}
+
+class SolhDeclarationWidget extends StatelessWidget {
+  const SolhDeclarationWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20),
       child: Container(

@@ -202,7 +202,7 @@ class Provider {
     name = json['name'];
     bio = json['bio'];
     experience = json['experience'];
-    profession = json['profession'];
+    profession = json['profession']['name'];
     score = json['score'];
     id = json['id'];
     prefix = json['prefix'];
