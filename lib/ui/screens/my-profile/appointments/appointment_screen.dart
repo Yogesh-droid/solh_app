@@ -1,37 +1,53 @@
-import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/model/profile/allied_appoinment_list.dart';
 import 'package:solh/model/user/user_appointments_model.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/loader/my-loader.dart';
-import '../../chat/chat.dart';
 
-class AppointmentScreen extends StatelessWidget {
+class AppointmentScreen extends StatefulWidget {
   AppointmentScreen({Key? key, Map<dynamic, dynamic>? args}) : super(key: key);
+
+  @override
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
+}
+
+class _AppointmentScreenState extends State<AppointmentScreen>
+    with SingleTickerProviderStateMixin {
   final AppointmentController appointmentController = Get.find();
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    appointmentController.getAlliedBooking();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
-          isLandingScreen: false,
-          title: Text(
-            'Appointments',
-            style: SolhTextStyles.AppBarText,
-          )),
-      body: SingleChildScrollView(child: Obx(() {
+        height: 100,
+        isLandingScreen: false,
+        title: Text(
+          'Appointments',
+          style: SolhTextStyles.AppBarText,
+        ),
+        bottom: getTab(),
+      ),
+      /*  body: SingleChildScrollView(child: Obx(() {
         return appointmentController.isAppointmentLoading.value
             ? Center(
                 child: MyLoader(),
@@ -48,7 +64,37 @@ class AppointmentScreen extends StatelessWidget {
                       .userAppointmentModel.value.completedAppointments),
                 ],
               );
-      })),
+      })), */
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          SingleChildScrollView(child: Obx(() {
+            return appointmentController.isAppointmentLoading.value
+                ? Center(
+                    child: MyLoader(),
+                  )
+                : Column(
+                    children: [
+                      SizedBox(
+                        height: 3.h,
+                      ),
+                      getScheduledAppointments(appointmentController
+                          .userAppointmentModel.value.scheduldAppointments),
+                      GetHelpDivider(),
+                      getCompletedAppointments(appointmentController
+                          .userAppointmentModel.value.completedAppointments),
+                    ],
+                  );
+          })),
+          Obx(() => appointmentController.isAlliedLoading.value
+              ? Center(
+                  child: MyLoader(),
+                )
+              : AlliedAppointmentList(
+                  alliedAppoinmentModel:
+                      appointmentController.alliedAppoinmentModel.value))
+        ],
+      ),
     );
   }
 
@@ -480,45 +526,147 @@ class AppointmentScreen extends StatelessWidget {
       ),
     );
   }
+
+  PreferredSize getTab() {
+    return PreferredSize(
+      preferredSize: Size(double.infinity, 60),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: SolhColors.grey_3.withOpacity(0.5),
+                blurRadius: 5,
+                offset: Offset(-10, 5))
+          ],
+          color: Colors.white,
+        ),
+        child: TabBar(
+          controller: _tabController,
+          tabs: [
+            Text(
+              'Counselling',
+            ),
+            Text(
+              'Allied',
+            ),
+          ],
+          labelStyle:
+              SolhTextStyles.QS_body_1_med.copyWith(color: SolhColors.Grey_1),
+          labelColor: SolhColors.primary_green,
+          unselectedLabelStyle:
+              SolhTextStyles.QS_body_1_med.copyWith(color: SolhColors.Grey_1),
+          unselectedLabelColor: SolhColors.Grey_1,
+          labelPadding: EdgeInsets.all(8),
+        ),
+      ),
+    );
+  }
 }
 
-class Countdown extends StatefulWidget {
-  const Countdown({Key? key}) : super(key: key);
-
-  @override
-  State<Countdown> createState() => _CountdownState();
-}
-
-class _CountdownState extends State<Countdown> {
-  int second = 300;
-
-  timeManager() {
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      second--;
-      if (second == 0) {
-        timer.cancel();
-      }
-
-      if (mounted) setState(() {});
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    timeManager();
-    super.initState();
-  }
+class AlliedAppointmentList extends StatelessWidget {
+  const AlliedAppointmentList({Key? key, required this.alliedAppoinmentModel})
+      : super(key: key);
+  final AlliedAppoinmentModel alliedAppoinmentModel;
 
   @override
   Widget build(BuildContext context) {
-    return Text('${(second / 60).floor()}:${60 - (60 - (second % 60))}',
-        style: GoogleFonts.signika(color: SolhColors.pink224, fontSize: 16));
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(height: 50),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Column(
+                children: alliedAppoinmentModel.userPackageOrders!
+                    .map((e) => getAlliedOrderCard(e))
+                    .toList()),
+          ),
+        ],
+      ),
+    );
   }
-}
 
-String getDayFromDate(String date) {
-  DateTime dateTime = DateTime.parse(date + " 00:00:00.0");
-
-  return DateFormat('EEEE').format(dateTime);
+  Widget getAlliedOrderCard(UserPackageOrders e) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: SolhColors.grey_3)),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  Container(
+                      width: 60.w,
+                      child: Text(
+                        e.packageName ?? '',
+                        style: SolhTextStyles.QS_body_2_bold,
+                      )),
+                  e.provider!.isNotEmpty
+                      ? Container(
+                          width: 60.w,
+                          child: Text(
+                            e.provider![0].name ?? 'Owners name',
+                            style: SolhTextStyles.QS_caption.copyWith(
+                                color: SolhColors.dark_grey),
+                          ))
+                      : SizedBox(),
+                ],
+              ),
+              Column(
+                children: [
+                  e.provider!.isNotEmpty
+                      ? SimpleImageContainer(
+                          imageUrl: e.provider![0].profilePicture ??
+                              "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                          boxFit: BoxFit.cover,
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        height: 5,
+                        width: 5,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: e.status == 'Inprocess'
+                                ? Colors.orange
+                                : e.status == 'Confirmed'
+                                    ? Colors.green
+                                    : e.status == 'Cancelled'
+                                        ? Colors.red
+                                        : Colors.yellow),
+                      ),
+                      SizedBox(width: 5),
+                      Text(
+                        e.status ?? '',
+                        style: SolhTextStyles.QS_cap_2_semi,
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+          Divider(height: 25),
+          Text(
+            "Services are in process and we'll be delivering them soon. Please keep an eye on your emails.",
+            style: SolhTextStyles.QS_caption.copyWith(color: SolhColors.angry),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(
+            height: 10,
+          )
+        ],
+      ),
+    );
+  }
 }
