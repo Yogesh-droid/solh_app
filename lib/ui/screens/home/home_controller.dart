@@ -2,9 +2,15 @@ import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
 
+import '../../../model/home/home_carousel.dart';
+
 class HomeController extends GetxController {
+  var homePageCarouselModel = HomePageCarouselModel().obs;
+  var isBannerLoading = false.obs;
+  var dotList = [].obs;
   var hat = ''.obs;
   var line = ''.obs;
+
   Future<void> getTrendingDecoration() async {
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
@@ -17,5 +23,37 @@ class HomeController extends GetxController {
     } on Exception catch (e) {
       // TODO
     }
+  }
+
+  Future<Map<String, dynamic>> getHomeCarousel() async {
+    isBannerLoading.value = true;
+    Map<String, dynamic> map;
+    try {
+      print("Getting HomeBaner");
+      map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/allied/therapies/home/package/getBanners");
+      if (map["success"]) {
+        homePageCarouselModel.value = HomePageCarouselModel.fromJson(map);
+        for (int i = 0;
+            i < homePageCarouselModel.value.finalResult!.length;
+            i++) {
+          dotList.value.add(i);
+        }
+        isBannerLoading.value = false;
+        return {"success": true};
+      } else {
+        isBannerLoading.value = false;
+        return {"success": false};
+      }
+    } catch (e) {
+      print(e);
+      isBannerLoading.value = false;
+      return {"success": false, "message": "Something went wrong"};
+    }
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
   }
 }

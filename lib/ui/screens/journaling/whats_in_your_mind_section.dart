@@ -1,23 +1,18 @@
 import 'dart:io';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
-import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../../constants/api.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../services/network/network.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
-import '../mood-meter/mood_meter.dart';
 
 class WhatsOnYourMindSection extends StatelessWidget {
   WhatsOnYourMindSection({

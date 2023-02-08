@@ -14,6 +14,7 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
@@ -35,6 +36,7 @@ void main() async {
   await FirebaseAnalytics.instance.logBeginCheckout();
   Get.put(SearchMarketController());
   Get.put(AlliedController());
+  Get.put(HomeController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();

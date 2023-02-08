@@ -27,6 +27,7 @@ import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/find_help_bar.dart';
@@ -43,9 +44,11 @@ import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
+import '../../../model/get-help/search_market_model.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../get-help/get-help.dart';
+import '../get-help/search_screen.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
@@ -83,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(GoalSettingController());
 
   final MoodMeterController moodMeterController = Get.find();
-  final HomeController homeController = Get.put(HomeController());
+  final HomeController homeController = Get.find();
 
   late bool isMoodMeterShown;
 
@@ -162,6 +165,8 @@ class _HomePageState extends State<HomePage> {
   GoalSettingController goalSettingController = Get.find();
   ConnectionController connectionController = Get.find();
   ChatAnonController chatAnonController = Get.put(ChatAnonController());
+  SearchMarketController searchMarketController = Get.find();
+
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
 
@@ -185,7 +190,30 @@ class _HomePageState extends State<HomePage> {
       child: SingleChildScrollView(
         child: Column(children: [
           GetHelpDivider(),
-          FindHelpBar(),
+          FindHelpBar(
+            onConnectionTapped: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Connections()));
+            },
+            onMoodMeterTapped: () {
+              print("Hello");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => MoodMeter()));
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'MoodMeterOpenTapped',
+                  parameters: {'Page': 'MoodMeter'});
+            },
+            onTapped: () {
+              searchMarketController.searchMarketModel.value =
+                  SearchMarketModel();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ),
+              );
+            },
+          ),
           GetHelpDivider(),
           SizedBox(
             height: 10,
@@ -369,8 +397,6 @@ class _HomePageState extends State<HomePage> {
           getIssueUI(bookAppointmentController, getHelpController, context),
           GetHelpDivider(),
           AlliedExperts(onTap: (value) {
-            // Get.find<SearchMarketController>()
-            //     .getSpecializationList(value.trim());
             Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
                 arguments: {
                   "slug": value,
@@ -380,11 +406,11 @@ class _HomePageState extends State<HomePage> {
                 });
           }),
           GetHelpDivider(),
-          // AlliedCarousel(),
-          // SizedBox(
-          //   height: 10,
-          // ),
-          // GetHelpDivider(),
+          AlliedCarousel(),
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpDivider(),
           GetHelpCategory(
               title: "Leading solh experts",
               onPressed: () => Navigator.pushNamed(
@@ -1772,6 +1798,7 @@ getIssuesRowItem(Widget widget, String subtext) {
 class AlliedExperts extends StatelessWidget {
   AlliedExperts({super.key, required this.onTap});
   final GetHelpController getHelpController = Get.find();
+
   final Function(String slug) onTap;
 
   @override
@@ -1884,57 +1911,100 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
   int _current = 0;
 
   CarouselController carouselController = CarouselController();
+  HomeController homeController = Get.find();
+
+  @override
+  void initState() {
+    homeController.getHomeCarousel();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        CarouselSlider.builder(
-          carouselController: carouselController,
-          itemCount: 5,
-          itemBuilder: ((context, index, realIndex) {
-            return Container(
-                height: 20.h,
-                width: 100.w,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network('https://picsum.photos/400/200')),
-                ));
-          }),
-          options: CarouselOptions(
-              autoPlay: false,
-              padEnds: true,
-              viewportFraction: 0.75,
-              enlargeCenterPage: true,
-              onPageChanged: ((index, reason) {
-                setState(() {
-                  _current = index;
-                });
-              })),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: list
-              .asMap()
-              .entries
-              .map((e) => Container(
-                    height: e.key == _current ? 6 : 5,
-                    width: e.key == _current ? 6 : 5,
-                    margin: EdgeInsets.all(3),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: e.key == _current
-                          ? SolhColors.dark_grey
-                          : SolhColors.grey_3,
-                    ),
-                  ))
-              .toList(),
-        )
-      ],
-    );
+    return Obx(() => homeController.isBannerLoading.value
+        ? Container()
+        : Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CarouselSlider.builder(
+                carouselController: carouselController,
+                itemCount: homeController
+                    .homePageCarouselModel.value.finalResult!.length,
+                itemBuilder: ((context, index, realIndex) {
+                  return InkWell(
+                    onTap: () {
+                      // Navigator.pushNamed(
+                      //     context, AppRoutes.viewAllAlliedExpert, arguments: {
+                      //   "slug": value,
+                      //   "name": value,
+                      //   "type": 'specialization',
+                      //   "enableAppbar": true
+                      // });
+                    },
+                    child: Container(
+                        height: 20.h,
+                        width: 100.w,
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(homeController
+                                      .homePageCarouselModel
+                                      .value
+                                      .finalResult![index]
+                                      .bannerImageUrl ??
+                                  '')),
+                        )),
+                  );
+                }),
+                options: CarouselOptions(
+                    autoPlay: false,
+                    padEnds: true,
+                    viewportFraction: 0.75,
+                    enlargeCenterPage: true,
+                    onPageChanged: ((index, reason) {
+                      setState(() {
+                        _current = index;
+                      });
+                    })),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: homeController.dotList.value
+                    .map((e) => Container(
+                          height: e == _current ? 6 : 5,
+                          width: e == _current ? 6 : 5,
+                          margin: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: e == _current
+                                ? SolhColors.dark_grey
+                                : SolhColors.grey_3,
+                          ),
+                        ))
+                    .toList(),
+              )
+
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: list
+              //       .asMap()
+              //       .entries
+              //       .map((e) => Container(
+              //             height: e.key == _current ? 6 : 5,
+              //             width: e.key == _current ? 6 : 5,
+              //             margin: EdgeInsets.all(3),
+              //             decoration: BoxDecoration(
+              //               shape: BoxShape.circle,
+              //               color: e.key == _current
+              //                   ? SolhColors.dark_grey
+              //                   : SolhColors.grey_3,
+              //             ),
+              //           ))
+              //       .toList(),
+              // )
+            ],
+          ));
   }
 }
 
