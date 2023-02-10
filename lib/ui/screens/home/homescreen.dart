@@ -18,6 +18,7 @@ import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
@@ -1658,13 +1659,23 @@ Widget getIssueUI(
 }
 
 class ChatAnonymouslyCard extends StatelessWidget {
-  const ChatAnonymouslyCard({Key? key}) : super(key: key);
+  ChatAnonymouslyCard({Key? key}) : super(key: key);
+  final ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.chatAnonIssues);
+        profileController.myProfileModel.value.body!.user!.anonymous == null
+            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+                arguments: {
+                    "formAnonChat": true,
+                    "indexOfpage": 0,
+                  })
+            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
+                "formAnonChat": true,
+                "indexOfpage": 0,
+              });
         FirebaseAnalytics.instance.logEvent(
             name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
       },

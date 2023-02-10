@@ -51,7 +51,13 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     _service.connectAndListen();
+    _controller.currentSid = widget._sId;
     SocketService.setCurrentSId(widget._sId);
+    SocketService.isSosChatSupport =
+        profileController.myProfileModel.value.body!.user!.sosChatSupport!;
+    if (widget._isAnonChat) {
+      SocketService.isAnon = widget._isAnonChat;
+    }
     if (widget._isAnonChat == false ||
         profileController.myProfileModel.value.body!.user!.sosChatSupport ==
             true) {
@@ -60,6 +66,14 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     }
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget._isAnonChat) {
+        _controller.getSosChatController(widget._sId);
+      }
+    });
+
+    print(
+        'my profile id ${profileController.myProfileModel.value.body!.user!.sId}');
     if (widget._isAnonChat == true &&
         profileController.myProfileModel.value.body!.user!.sosChatSupport !=
             true) {
@@ -113,6 +127,8 @@ class _ChatScreenState extends State<ChatScreen> {
     // TODO: implement dispose
     _controller.isVideoConnecting.value = false;
     _service.userLeft();
+    SocketService.isAnon = false;
+
     SocketService.dispose();
     super.dispose();
   }
@@ -508,6 +524,7 @@ class _MessageListState extends State<MessageList> {
 
                       return MessageTile(
                         message: _controller.convo.value[reversedIndex].body,
+                        author: _controller.convo.value[reversedIndex].author,
                         dateTime:
                             _controller.convo.value[reversedIndex].dateTime,
                         authorId:
@@ -522,39 +539,47 @@ class _MessageListState extends State<MessageList> {
 }
 
 class MessageTile extends StatelessWidget {
-  const MessageTile(
+  MessageTile(
       {Key? key,
       required message,
       required authorId,
+      required author,
       required sId,
       String? dateTime})
       : _message = message,
         _authorId = authorId,
         _sId = sId,
+        _author = author,
         _dateTime = dateTime ?? '',
         super(key: key);
 
   final String _message;
   final String _authorId;
+  final String _author;
   final String _sId;
   final String _dateTime;
 
+  ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
+    print(
+        '_author ${profileController.myProfileModel.value.body!.user!.sId!} ${_authorId} ${_message}');
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.7,
         child: Row(
-          mainAxisAlignment: _authorId == _sId
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.end,
+          mainAxisAlignment: _authorId ==
+                  profileController.myProfileModel.value.body!.user!.sId!
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: _authorId == _sId
+                color: _authorId ==
+                        profileController.myProfileModel.value.body!.user!.sId!
                     ? Colors.grey.shade200
                     : Color(0xFFEFF9F6),
               ),
@@ -565,10 +590,19 @@ class MessageTile extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    // Text(
-                    //   _authorId,
-                    //   style: GoogleFonts.signika(color: Colors.lightGreen),
-                    // ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        profileController.myProfileModel.value.body!.user!
+                                .sosChatSupport!
+                            ? Text(
+                                _author,
+                                style: SolhTextStyles.SmallTextGreen1S12W5,
+                              )
+                            : Container(),
+                      ],
+                    ),
                     ReadMoreText(
                       _message,
                       style: GoogleFonts.signika(color: Color(0xff666666)),
@@ -609,12 +643,24 @@ class MessageTile extends StatelessWidget {
   }
 }
 
-class RatingBottomSheet extends StatelessWidget {
+class RatingBottomSheet extends StatefulWidget {
   RatingBottomSheet({Key? key, required this.sId}) : super(key: key);
   final String sId;
+
+  @override
+  State<RatingBottomSheet> createState() => _RatingBottomSheetState();
+}
+
+class _RatingBottomSheetState extends State<RatingBottomSheet> {
   final PageController pageController = PageController();
 
   final ChatController chatController = Get.find();
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -623,10 +669,10 @@ class RatingBottomSheet extends StatelessWidget {
       controller: chatController.pageController,
       children: [
         RatingBottomSheetChild1(
-          sId: sId,
+          sId: widget.sId,
         ),
         RatingBottomSheetChild2(
-          sId: sId,
+          sId: widget.sId,
         ),
       ],
     );

@@ -53,13 +53,15 @@ class Conversation {
   String? body;
   int? dateTime;
   String? author;
+  String? chatType;
 
-  Conversation({this.body, this.dateTime, this.author});
+  Conversation({this.body, this.dateTime, this.author, this.chatType});
 
   Conversation.fromJson(Map<String, dynamic> json) {
     body = json['body'];
     dateTime = json['dateTime'];
     author = json['author'];
+    chatType = json['chatType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +80,7 @@ class User {
   String? uid;
   String? nameAnonymous;
   String? profilePictureAnonymous;
+  bool? sosChatSupportGroup;
 
   User(
       {this.name,
@@ -85,12 +88,14 @@ class User {
       this.sId,
       this.uid,
       this.nameAnonymous,
+      this.sosChatSupportGroup,
       this.profilePictureAnonymous});
 
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     nameAnonymous = json['nameAnonymous'];
     profilePictureAnonymous = json['profilePictureAnonymous'];
+    sosChatSupportGroup = json['sosChatSupportGroup'];
     profilePicture = json['profilePicture'];
     sId = json['_id'];
     uid = json['uid'];

@@ -80,14 +80,18 @@ class Conversation {
   String? body;
   String? dateTime;
   String? conversationType;
+  String? connection;
   String? fileName;
   String? sId;
+  List? supportUsers;
 
   Conversation(
       {this.media,
       this.author,
       this.authorType,
+      this.supportUsers,
       this.authorId,
+      this.connection,
       this.body,
       this.dateTime,
       this.conversationType,
@@ -98,7 +102,9 @@ class Conversation {
     media = json['media'] != null ? new Media.fromJson(json['media']) : null;
     author = json['author'] ?? '';
     authorType = json['authorType'] ?? '';
+    supportUsers = json['supportUsers'] ?? [];
     authorId = json['authorId'] ?? '';
+    connection = json['connection'] ?? '';
     body = json['body'] ?? '';
     dateTime = json['dateTime'];
     conversationType = json['conversationType'] ?? '';
