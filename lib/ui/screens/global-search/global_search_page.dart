@@ -4,7 +4,9 @@ import 'package:get/instance_manager.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/search/global_search_controller.dart';
 import 'package:solh/model/search/global_search_model.dart';
+import 'package:solh/ui/screens/get-help/consultant_tile.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/global-search/view_all_search_results.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/group_card.dart';
@@ -98,6 +100,30 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                       )
                     : ListView(shrinkWrap: false, children: [
                         globalSearchController
+                                    .globalSearchModel.value.providers !=
+                                null
+                            ? getConsultantView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.providers)
+                            : Container(),
+                        globalSearchController
+                                    .globalSearchModel.value.allideProviders !=
+                                null
+                            ? getAlliedView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.allideProviders)
+                            : Container(),
+                        globalSearchController
+                                    .globalSearchModel.value.connection !=
+                                null
+                            ? getPeopleView(
+                                context,
+                                globalSearchController
+                                    .globalSearchModel.value.connection)
+                            : Container(),
+                        globalSearchController
                                     .globalSearchModel.value.connection !=
                                 null
                             ? getPeopleView(
@@ -173,6 +199,98 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                   ],
                 )),
       ),
+    );
+  }
+
+  Widget getAlliedView(BuildContext context, List<Providers>? alliedProviders) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          padding: EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: SolhColors.white),
+          child: Column(children: [
+            GetHelpCategory(
+              title: 'Allied Therapist',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewAllSearchResults(
+                              title: 'Counselors',
+                              alliedProviders: alliedProviders,
+                            )));
+              },
+            ),
+            Column(
+              children: List.generate(
+                  alliedProviders!.length >= 2 ? 2 : alliedProviders.length,
+                  (index) => AlliedConsultantTile(
+                        id: alliedProviders[index].sId ?? '',
+                        profilePic: alliedProviders[index].profilePicture ??
+                            "https://solhapp-live.s3.amazonaws.com/provider/1669034569095.png",
+                        feeAmount: alliedProviders[index].feeAmount ?? 0,
+                        prefix: "Mr.",
+                        name: alliedProviders[index].name ?? '',
+                        experience:
+                            alliedProviders[index].experience.toString(),
+                        profession:
+                            alliedProviders[index].profession!.name ?? '',
+                        preview: alliedProviders[index].preview ?? '',
+                      )),
+            )
+          ]),
+        ),
+      ],
+    );
+  }
+
+  Widget getConsultantView(BuildContext context, List<Providers>? providers) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          padding: EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5), color: SolhColors.white),
+          child: Column(children: [
+            GetHelpCategory(
+              title: 'Counselors',
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewAllSearchResults(
+                              title: 'Counselors',
+                              providers: providers,
+                            )));
+              },
+            ),
+            Column(
+              children: List.generate(
+                  providers!.length >= 2 ? 2 : providers.length,
+                  (index) => ConsultantsTile(
+                        onTap: () {},
+                        id: providers[index].sId ?? '',
+                        profilePic: providers[index].profilePicture ??
+                            "https://solhapp-live.s3.amazonaws.com/provider/1669034569095.png",
+                        feeAmount: providers[index].feeAmount ?? 0,
+                        currency: providers[index].feeCurrency ?? "Rs. ",
+                        prefix: "Mr.",
+                        name: providers[index].name ?? '',
+                        specialization: '',
+                        bio: providers[index].bio ?? "",
+                        fee: providers[index].fee ?? "Paid",
+                      )),
+            )
+          ]),
+        ),
+      ],
     );
   }
 

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/model/search/global_search_model.dart';
+import 'package:solh/ui/screens/get-help/consultant_tile.dart';
+import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -17,16 +20,22 @@ class ViewAllSearchResults extends StatefulWidget {
       List<PostCount>? postCount,
       List<GroupCount>? groupCount,
       List<Connection>? connection,
+      List<Providers>? providers,
+      List<Providers>? alliedProviders,
       Key? key})
       : _title = title,
         _connection = connection,
         _groupCount = groupCount,
         _postCount = postCount,
+        _providers = providers,
+        _alliedProviders = alliedProviders,
         super(key: key);
   final String _title;
   final List<PostCount>? _postCount;
   final List<GroupCount>? _groupCount;
   final List<Connection>? _connection;
+  final List<Providers>? _providers;
+  final List<Providers>? _alliedProviders;
 
   @override
   State<ViewAllSearchResults> createState() => _ViewAllSearchResultsState();
@@ -52,7 +61,11 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
               ? getGroupView(widget._groupCount)
               : widget._connection != null
                   ? getPeopleView(widget._connection)
-                  : Container(),
+                  : widget._providers != null
+                      ? getConsultantView(widget._providers)
+                      : widget._alliedProviders != null
+                          ? getAlliedView(widget._alliedProviders)
+                          : Container(),
     );
   }
 
@@ -95,6 +108,76 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
               id: groupCount[index].sId,
               journalCount: groupCount[index].journalCount,
               membersCount: groupCount[index].groupMembers!.length,
+            ));
+  }
+
+  Widget getConsultantView(List<Providers>? providers) {
+    return ListView.builder(
+        itemCount: providers!.length,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: ConsultantsTile(
+                currency: providers[index].feeCurrency ?? '',
+                feeAmount: providers[index].feeAmount ?? 0,
+                id: providers[index].sId ?? '',
+                name: providers[index].name ?? '',
+                onTap: () {},
+                prefix: providers[index].prefix ?? '',
+                profilePic: providers[index].profilePicture ?? '',
+                specialization: '',
+                bio: providers[index].bio ?? '',
+                fee: providers[index].fee ?? '',
+              ),
+              // child: PeopleTile(
+              //   connection: providers[index],
+              //   onTapped: () {
+              //     // Navigator.push(
+              //     //     context,
+              //     //     MaterialPageRoute(
+              //     //         builder: (context) => ConnectProfileScreen(
+              //     //             uid: connection[index].uid ?? '',
+              //     //             sId: connection[index].sId ?? '')));
+              //     Navigator.pushNamed(context, AppRoutes.connectScreen,
+              //         arguments: {
+              //           "sId": connection[index].sId!,
+              //           "uid": connection[index].uid!
+              //         });
+              //   },
+              // )
+            ));
+  }
+
+  Widget getAlliedView(List<Providers>? allied) {
+    return ListView.builder(
+        itemCount: allied!.length,
+        itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: AlliedConsultantTile(
+                profilePic: allied[index].profilePicture ?? '',
+                prefix: allied[index].prefix ?? '',
+                name: allied[index].name ?? '',
+                profession: allied[index].profession!.name ?? '',
+                experience: allied[index].experience.toString(),
+                feeAmount: allied[index].feeAmount ?? 0,
+                id: allied[index].sId ?? '',
+                preview: allied[index].preview,
+              ),
+              // child: PeopleTile(
+              //   connection: allied[index],
+              //   onTapped: () {
+              //     // Navigator.push(
+              //     //     context,
+              //     //     MaterialPageRoute(
+              //     //         builder: (context) => ConnectProfileScreen(
+              //     //             uid: connection[index].uid ?? '',
+              //     //             sId: connection[index].sId ?? '')));
+              //     Navigator.pushNamed(context, AppRoutes.connectScreen,
+              //         arguments: {
+              //           "sId": connection[index].sId!,
+              //           "uid": connection[index].uid!
+              //         });
+              //   },
+              // )
             ));
   }
 

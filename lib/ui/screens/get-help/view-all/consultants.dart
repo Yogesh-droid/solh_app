@@ -128,7 +128,37 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) => ConsultantsTile(
-                                  doctorModel: DoctorModel(
+                                  id: searchMarketController.issueModel.value
+                                          .doctors![index].sId ??
+                                      '',
+                                  name: searchMarketController.issueModel.value
+                                          .doctors![index].name ??
+                                      '',
+                                  currency: searchMarketController.issueModel
+                                          .value.doctors![index].feeCurrency ??
+                                      '',
+                                  feeAmount: searchMarketController.issueModel
+                                          .value.doctors![index].fee_amount ??
+                                      0,
+                                  fee: searchMarketController
+                                      .issueModel.value.doctors![index].fee,
+                                  prefix: searchMarketController
+                                      .issueModel.value.doctors![index].prefix,
+                                  profilePic: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .doctors![index]
+                                          .profilePicture ??
+                                      '',
+                                  specialization: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .doctors![index]
+                                          .specialization ??
+                                      '',
+                                  bio: searchMarketController
+                                      .issueModel.value.doctors![index].bio,
+                                  /* doctorModel: DoctorModel(
                                       specialization: searchMarketController
                                               .issueModel
                                               .value
@@ -163,7 +193,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                       city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
                                       bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
                                       abbrevations: '',
-                                      profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''),
+                                      profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''), */
                                   onTap: () {
                                     //                     connectionController
                                     //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
@@ -183,7 +213,33 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
                                 (context, index) => ConsultantsTile(
-                                  doctorModel: DoctorModel(
+                                  currency: searchMarketController.issueModel
+                                          .value.provider![index].feeCurrency ??
+                                      '',
+                                  feeAmount: searchMarketController.issueModel
+                                      .value.provider![index].fee_amount,
+                                  id: searchMarketController.issueModel.value
+                                          .provider![index].sId ??
+                                      '',
+                                  name: searchMarketController.issueModel.value
+                                          .provider![index].name ??
+                                      '',
+                                  prefix: searchMarketController
+                                      .issueModel.value.provider![index].prefix,
+                                  profilePic: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .profilePicture ??
+                                      '',
+                                  specialization: '',
+                                  bio: searchMarketController.issueModel.value
+                                          .provider![index].bio ??
+                                      '',
+                                  fee: searchMarketController
+                                      .issueModel.value.provider![index].fee,
+
+                                  /*  doctorModel: DoctorModel(
                                       specialization: '',
                                       organisation: '',
                                       name: searchMarketController.issueModel
@@ -211,7 +267,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                       city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
                                       bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
                                       abbrevations: '',
-                                      profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''),
+                                      profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''), */
                                   onTap: () {},
                                 ),
                                 childCount: searchMarketController

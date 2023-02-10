@@ -14,11 +14,30 @@ import 'consultant_profile_page.dart';
 
 class ConsultantsTile extends StatelessWidget {
   ConsultantsTile(
-      {Key? key, required DoctorModel doctorModel, required this.onTap})
-      : _doctorModel = doctorModel,
-        super(key: key);
+      {Key? key,
+      required this.onTap,
+      required this.id,
+      required this.profilePic,
+      required this.feeAmount,
+      required this.currency,
+      required this.prefix,
+      required this.name,
+      required this.specialization,
+      this.bio,
+      this.fee})
+      // : _doctorModel = doctorModel,
+      : super(key: key);
 
-  final DoctorModel _doctorModel;
+  // final DoctorModel _doctorModel;
+  final String id;
+  final String profilePic;
+  final int? feeAmount;
+  final String? fee;
+  final String currency;
+  final String? prefix;
+  final String name;
+  final String specialization;
+  final String? bio;
   final ConsultantController _controller = Get.put(ConsultantController());
   final Callback onTap;
 
@@ -28,7 +47,7 @@ class ConsultantsTile extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            _controller.getConsultantDataController(_doctorModel.id);
+            _controller.getConsultantDataController(id);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ConsultantProfilePage();
             }));
@@ -61,11 +80,9 @@ class ConsultantsTile extends StatelessWidget {
                           style: SolhTextStyles.QS_cap_semi,
                         ),
                         Text(
-                            _doctorModel.fee_amount! > 0
-                                ? '${_doctorModel.feeCurrency} ${_doctorModel.fee_amount}'
-                                : (_doctorModel.fee == null ||
-                                        _doctorModel.fee == 'Paid' ||
-                                        _doctorModel.fee == ''
+                            feeAmount! > 0
+                                ? '${currency} ${feeAmount}'
+                                : (fee == null || fee == 'Paid' || fee == ''
                                     ? 'Paid'
                                     : ''),
                             style: SolhTextStyles.QS_cap_semi),
@@ -86,7 +103,7 @@ class ConsultantsTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          getProfileImg(_doctorModel.profilePicture),
+          getProfileImg(profilePic),
           SizedBox(width: 3.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,15 +115,15 @@ class ConsultantsTile extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _doctorModel.prefix != null
+                  prefix != null
                       ? Text(
-                          "${_doctorModel.prefix}",
+                          "${prefix}",
                           style: SolhTextStyles.QS_body_1_bold,
                           overflow: TextOverflow.ellipsis,
                         )
                       : Container(),
-                  _doctorModel.prefix != null
-                      ? _doctorModel.prefix!.isNotEmpty
+                  prefix != null
+                      ? prefix!.isNotEmpty
                           ? SizedBox(
                               width: 5,
                             )
@@ -115,7 +132,7 @@ class ConsultantsTile extends StatelessWidget {
                   Container(
                     width: 40.w,
                     child: Text(
-                      "${_doctorModel.name}",
+                      "${name}",
                       style: SolhTextStyles.QS_body_1_bold,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -125,9 +142,7 @@ class ConsultantsTile extends StatelessWidget {
               Container(
                 width: 50.w,
                 child: Text(
-                  _doctorModel.specialization != ''
-                      ? "${_doctorModel.specialization}"
-                      : "${_doctorModel.bio}",
+                  specialization != '' ? "${specialization}" : "${bio}",
                   style: SolhTextStyles.QS_cap_semi,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
@@ -267,7 +282,7 @@ class ConsultantsTile extends StatelessWidget {
             //     builder: (context) => ConsultantProfile(
             //           id: _doctorModel.id,
             //         )));
-            _controller.getConsultantDataController(_doctorModel.id);
+            _controller.getConsultantDataController(id);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ConsultantProfilePage();
             }));

@@ -12,8 +12,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/solh_video_player.dart';
-
-import '../../../../model/get-help/search_market_model.dart';
 import '../../../../widgets_constants/appbars/app-bar.dart';
 import '../../../../widgets_constants/loader/my-loader.dart';
 import '../../comment/comment-screen.dart';
@@ -110,8 +108,26 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                         ? SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) => AlliedConsultantTile(
-                                  provider: searchMarketController
-                                      .issueModel.value.provider![index]),
+                                experience: searchMarketController.issueModel
+                                    .value.provider![index].experience
+                                    .toString(),
+                                feeAmount: searchMarketController.issueModel
+                                        .value.provider![index].fee_amount ??
+                                    0,
+                                id: searchMarketController.issueModel.value
+                                        .provider![index].sId ??
+                                    '',
+                                name: searchMarketController
+                                    .issueModel.value.provider![index].name,
+                                prefix: searchMarketController
+                                    .issueModel.value.provider![index].prefix,
+                                profession: searchMarketController.issueModel
+                                    .value.provider![index].profession,
+                                profilePic: searchMarketController.issueModel
+                                    .value.provider![index].profilePicture,
+                                preview: searchMarketController
+                                    .issueModel.value.provider![index].preview,
+                              ),
                               childCount: searchMarketController
                                   .issueModel.value.provider!.length,
                             ),
@@ -139,8 +155,25 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
 }
 
 class AlliedConsultantTile extends StatelessWidget {
-  const AlliedConsultantTile({super.key, required this.provider});
-  final Provider provider;
+  const AlliedConsultantTile(
+      {super.key,
+      required this.profilePic,
+      required this.prefix,
+      required this.name,
+      required this.profession,
+      required this.experience,
+      required this.feeAmount,
+      required this.id,
+      required this.preview});
+
+  final String? profilePic;
+  final String id;
+  final String? prefix;
+  final String? name;
+  final String? profession;
+  final String experience;
+  final int feeAmount;
+  final String? preview;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +184,7 @@ class AlliedConsultantTile extends StatelessWidget {
             InkWell(
               onTap: () => Navigator.pushNamed(
                   context, AppRoutes.alliedConsultantScreen,
-                  arguments: {"id": provider.sId}),
+                  arguments: {"id": id}),
               child: Container(
                 height: 24.h,
                 width: 100.w,
@@ -160,257 +193,256 @@ class AlliedConsultantTile extends StatelessWidget {
                     border: Border.all(
                         color:
                             Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
-                child: getProfileDetails(context: context, provider: provider),
+                child: getProfileDetails(context: context),
               ),
             ),
-            SvgPicture.asset('assets/images/demo.svg')
+            // SvgPicture.asset('assets/images/demo.svg')
           ],
         ),
         GetHelpDivider(),
       ],
     );
   }
-}
 
-getProfileDetails({
-  context,
-  required Provider provider,
-}) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 12, top: 4),
-    child: Column(
-      children: [
-        SizedBox(
-          height: 1.h,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                'Recorded',
-                style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                    color: SolhColors.primaryRed),
-              ),
-              Text(
-                ' + ',
-                style: SolhTextStyles.QS_cap_2_semi,
-              ),
-              Text(
-                'Live',
-                style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                    color: SolhColors.primary_green),
-              )
-            ],
+  getProfileDetails({
+    context,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, top: 4),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 1.h,
           ),
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            getProfileImg(
-                provider.profilePicture ?? '',
-                'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-                context),
-            SizedBox(width: 3.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 3.h,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      provider.prefix ?? '',
-                      style: SolhTextStyles.QS_body_2_semi,
-                    ),
-                    Text(
-                      provider.name ?? '',
-                      style: SolhTextStyles.QS_body_2_semi,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      provider.profession ?? '',
-                      style: SolhTextStyles.QS_cap_semi,
-                    ),
-                    Row(
-                      children: [
-                        SolhDot(),
-                        Text(
-                          ' ${provider.experience} years ',
-                          style: SolhTextStyles.QS_cap_semi,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SolhDot(),
-                        Text(
-                          ' 2 plans',
-                          style: SolhTextStyles.QS_cap_semi,
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 1.h),
-                getInteractionDetailsAllied()
-              ],
-            ),
-          ],
-        ),
-        Expanded(
-          child: Container(
-            width: 100.w,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  height: 13.w,
-                  width: 25.w,
-                  decoration: BoxDecoration(
-                    color: SolhColors.blue_light,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(8),
-                    ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 12),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       Text(
+          //         'Recorded',
+          //         style: SolhTextStyles.QS_cap_2_semi.copyWith(
+          //             color: SolhColors.primaryRed),
+          //       ),
+          //       Text(
+          //         ' + ',
+          //         style: SolhTextStyles.QS_cap_2_semi,
+          //       ),
+          //       Text(
+          //         'Live',
+          //         style: SolhTextStyles.QS_cap_2_semi.copyWith(
+          //             color: SolhColors.primary_green),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              getProfileImg(
+                  profilePic ?? '',
+                  'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                  context),
+              SizedBox(width: 3.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: 3.h,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
+                      Text(
+                        prefix ?? '',
+                        style: SolhTextStyles.QS_body_2_semi,
+                      ),
+                      Text(
+                        name ?? '',
+                        style: SolhTextStyles.QS_body_2_semi,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        profession ?? '',
+                        style: SolhTextStyles.QS_cap_semi,
+                      ),
+                      Row(
                         children: [
+                          SolhDot(),
                           Text(
-                            'Starting @',
+                            ' ${experience} years ',
                             style: SolhTextStyles.QS_cap_semi,
                           ),
-                          Text(provider.fee_amount.toString(),
-                              style: SolhTextStyles.QS_cap_semi),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          SolhDot(),
+                          Text(
+                            ' 2 plans',
+                            style: SolhTextStyles.QS_cap_semi,
+                          )
                         ],
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
+                  SizedBox(height: 1.h),
+                  getInteractionDetailsAllied()
+                ],
+              ),
+            ],
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-getProfileImg(String? profilePicture, previewUrl, context) {
-  return Stack(
-    children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: SimpleImageContainer(
-            // zoomEnabled: true,
-            enableborder: true,
-            enableGradientBorder: true,
-            boxFit: BoxFit.cover,
-            radius: 100,
-            imageUrl: profilePicture!.isNotEmpty
-                ? profilePicture
-                : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
-      ),
-      Positioned(
-        bottom: 0,
-        right: 0,
-        left: 0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: ((context) {
-                      return PreViewVideo(
-                        videoUrl: previewUrl,
-                      );
-                    }));
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                    color: SolhColors.light_Bg_2,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        color: Colors.black26,
-                      )
-                    ]),
-                child: Center(
-                    child: Row(
-                  children: [
-                    Icon(
-                      CupertinoIcons.play_rectangle,
-                      size: 12,
-                      color: SolhColors.primaryRed,
+          Expanded(
+            child: Container(
+              width: 100.w,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 13.w,
+                    width: 25.w,
+                    decoration: BoxDecoration(
+                      color: SolhColors.blue_light,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        bottomRight: Radius.circular(8),
+                      ),
                     ),
-                    Text(
-                      ' Preview',
-                      style: SolhTextStyles.QS_cap_2_semi,
-                    )
-                  ],
-                )),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              'Starting @',
+                              style: SolhTextStyles.QS_cap_semi,
+                            ),
+                            Text(feeAmount.toString(),
+                                style: SolhTextStyles.QS_cap_semi),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  getProfileImg(String? profilePicture, previewUrl, context) {
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: SimpleImageContainer(
+              // zoomEnabled: true,
+              enableborder: true,
+              enableGradientBorder: true,
+              boxFit: BoxFit.cover,
+              radius: 100,
+              imageUrl: profilePicture!.isNotEmpty
+                  ? profilePicture
+                  : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return PreViewVideo(
+                          videoUrl: previewUrl,
+                        );
+                      }));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                      color: SolhColors.light_Bg_2,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          color: Colors.black26,
+                        )
+                      ]),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.play_rectangle,
+                        size: 12,
+                        color: SolhColors.primaryRed,
+                      ),
+                      Text(
+                        ' Preview',
+                        style: SolhTextStyles.QS_cap_2_semi,
+                      )
+                    ],
+                  )),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget getInteractionDetailsAllied() {
+    return Row(
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.star_half,
+              color: SolhColors.primary_green,
+              size: 15,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text('0',
+                style: SolhTextStyles.QS_cap_semi.copyWith(
+                    color: SolhColors.dark_grey))
           ],
         ),
-      )
-    ],
-  );
-}
-
-Widget getInteractionDetailsAllied() {
-  return Row(
-    children: [
-      Row(
-        children: [
-          Icon(
-            Icons.star_half,
-            color: SolhColors.primary_green,
-            size: 15,
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Text('0',
-              style: SolhTextStyles.QS_cap_semi.copyWith(
-                  color: SolhColors.dark_grey))
-        ],
-      ),
-      SizedBox(width: 3.w),
-      Row(
-        children: [
-          Icon(
-            CupertinoIcons.rectangle_stack_person_crop,
-            size: 12,
-            color: SolhColors.primary_green,
-          ),
-          SizedBox(
-            width: 5,
-          ),
-          Text('0',
-              style: SolhTextStyles.QS_cap_semi.copyWith(
-                color: SolhColors.dark_grey,
-              )),
-        ],
-      ),
-    ],
-  );
+        SizedBox(width: 3.w),
+        Row(
+          children: [
+            Icon(
+              CupertinoIcons.rectangle_stack_person_crop,
+              size: 12,
+              color: SolhColors.primary_green,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text('0',
+                style: SolhTextStyles.QS_cap_semi.copyWith(
+                  color: SolhColors.dark_grey,
+                )),
+          ],
+        ),
+      ],
+    );
+  }
 }
 
 class SolhDot extends StatelessWidget {

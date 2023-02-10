@@ -44,11 +44,10 @@ import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
-import '../../../model/get-help/search_market_model.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../get-help/get-help.dart';
-import '../get-help/search_screen.dart';
+import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
@@ -62,29 +61,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController _controller = Get.put(CreateGroupController());
-
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
-
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
-
   FeelingsController feelingsController = Get.put(FeelingsController());
-
   BookAppointmentController bookAppointmentController = Get.find();
-
   JournalCommentController journalCommentController =
       Get.put(JournalCommentController());
-
   ChatListController chatListController = Get.put(ChatListController());
-
   BottomNavigatorController bottomNavigatorController = Get.find();
-
   PsychologyTestController psychologyTestController =
       Get.put(PsychologyTestController());
-
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
-
   final MoodMeterController moodMeterController = Get.find();
   final HomeController homeController = Get.find();
 
@@ -204,14 +193,16 @@ class _HomePageState extends State<HomePage> {
                   parameters: {'Page': 'MoodMeter'});
             },
             onTapped: () {
-              searchMarketController.searchMarketModel.value =
-                  SearchMarketModel();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SearchScreen(),
-                ),
-              );
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => GlobalSearchPage()));
+              // searchMarketController.searchMarketModel.value =
+              //     SearchMarketModel();
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => SearchScreen(),
+              //   ),
+              // );
             },
           ),
           GetHelpDivider(),

@@ -309,7 +309,61 @@ class _SearchScreenState extends State<SearchScreen> {
                                       SliverList(
                                         delegate: SliverChildBuilderDelegate(
                                           (context, index) => ConsultantsTile(
-                                            doctorModel: DoctorModel(
+                                            currency: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .feeCurrency ??
+                                                '',
+                                            feeAmount: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .fee_amount ??
+                                                0,
+                                            id: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .sId ??
+                                                '',
+                                            name: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .name ??
+                                                '',
+                                            prefix: searchMarketController
+                                                .searchMarketModel
+                                                .value
+                                                .doctors![index]
+                                                .prefix,
+                                            profilePic: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .profilePicture ??
+                                                '',
+                                            specialization:
+                                                searchMarketController
+                                                        .searchMarketModel
+                                                        .value
+                                                        .doctors![index]
+                                                        .specialization ??
+                                                    '',
+                                            bio: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .bio ??
+                                                '',
+                                            fee: searchMarketController
+                                                .searchMarketModel
+                                                .value
+                                                .doctors![index]
+                                                .fee,
+
+                                            /* doctorModel: DoctorModel(
                                                 organisation: searchMarketController
                                                         .searchMarketModel
                                                         .value
@@ -350,7 +404,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 abbrevations: '',
                                                 profilePicture: searchMarketController.searchMarketModel.value.doctors![index].profilePicture ?? '',
                                                 id: searchMarketController.searchMarketModel.value.doctors![index].sId ?? '',
-                                                specialization: searchMarketController.searchMarketModel.value.doctors![index].specialization ?? ''),
+                                                specialization: searchMarketController.searchMarketModel.value.doctors![index].specialization ?? ''), */
                                             onTap: () {},
                                           ),
                                           childCount: searchMarketController
@@ -363,7 +417,55 @@ class _SearchScreenState extends State<SearchScreen> {
                                       SliverList(
                                         delegate: SliverChildBuilderDelegate(
                                           (context, index) => ConsultantsTile(
-                                            doctorModel: DoctorModel(
+                                            specialization: '',
+                                            fee: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .fee ??
+                                                '',
+                                            prefix: searchMarketController
+                                                .searchMarketModel
+                                                .value
+                                                .provider![index]
+                                                .prefix,
+                                            currency: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .feeCurrency ??
+                                                '',
+                                            feeAmount: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .fee_amount ??
+                                                0,
+                                            name: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .name ??
+                                                '',
+                                            id: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .sId ??
+                                                '',
+                                            bio: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .bio ??
+                                                '',
+                                            profilePic: searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .provider![index]
+                                                    .profilePicture ??
+                                                '',
+                                            /* doctorModel: DoctorModel(
                                               specialization: '',
                                               organisation: '',
                                               fee: searchMarketController
@@ -442,7 +544,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                                           .provider![index]
                                                           .profilePicture ??
                                                       '',
-                                            ),
+                                            ), */
                                             onTap: () async {},
                                           ),
                                           childCount: searchMarketController

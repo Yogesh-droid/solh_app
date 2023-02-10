@@ -23,8 +23,11 @@ class AlliedController extends GetxController {
       if (map['success']) {
         try {
           packagesListModel.value = PackagesResponseModel.fromJson(map);
-          print(
-              "this is ${packagesListModel.value.finalResult!.packages![1].packageCategory}");
+          // print(
+          //     "this is ${packagesListModel.value.finalResult!.packages![1].packageCategory}");
+          print("this is ${packagesListModel.value.finalResult!.name}");
+
+          print("this is ${map["finalResult"]["name"]}");
         } on Exception catch (e) {
           debugPrint(e.toString());
           throw Exceptions(

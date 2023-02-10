@@ -51,7 +51,7 @@ class FinalResult {
 
   FinalResult.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    name = json['ownerId'];
+    id = json['ownerId'];
     profession = json['profession'];
     experience = json['experience'];
     numberOfConsultations = json['numberOfConsultations'];
