@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
@@ -45,6 +46,7 @@ class ChatController extends GetxController {
   var currentSid;
   TextEditingController messageEditingController = TextEditingController();
   ChatListController chatListController = Get.find();
+  ProfileController profileController = Get.find();
 
   ChatServices services = ChatServices();
 
@@ -57,10 +59,17 @@ class ChatController extends GetxController {
     SocketService.socket.on('message:received', (data) {
       debugPrint('message:received $data');
 
-      if (currentSid == data['authorId']) {
+      // if (data['supportUsers'].contains(data['authorId'])) {
+      //   print('it ran');
+      //   data['authorId'] =
+      //       profileController.myProfileModel.value.body!.user!.sId!;
+      // }
+      if (currentSid == data['authorId'] ||
+          data['supportUsers'].contains(data['authorId'])) {
         convo.add(Conversation.fromJson(data));
       }
 
+      print(Conversation.fromJson(data));
       chatListController.chatListController();
     });
     SocketService.socket.on("seenStatus", (data) {
@@ -90,6 +99,22 @@ class ChatController extends GetxController {
     isLoading(true);
 
     MessageModel response = await services.getChat(sId);
+    isLoading(false);
+
+    debugPrint(response.toString());
+
+    if (response.chatLog != null) {
+      convo.value = response.chatLog!.conversation!;
+      debugPrint(convo.value.toString());
+    } else {
+      convo.value = [];
+    }
+  }
+
+  Future getSosChatController(String sId) async {
+    isLoading(true);
+
+    MessageModel response = await services.getSosChat(sId);
     isLoading(false);
 
     debugPrint(response.toString());
@@ -195,9 +220,10 @@ class ChatController extends GetxController {
         authorId: authorId);
 
     messageEditingController.text = '';
-    convo.add(Conversation(
+    convo.add(
+      Conversation(
         author: '',
-        authorId: userBlocNetwork.id,
+        authorId: profileController.myProfileModel.value.body!.user!.sId!,
         authorType: autherType,
         body: message,
         conversationType: conversationType,
@@ -207,7 +233,9 @@ class ChatController extends GetxController {
         media: Media(
           mediaType: mediaType,
           mediaUrl: mediaUrl,
-        )));
+        ),
+      ),
+    );
     chatListController.chatListController();
   }
 

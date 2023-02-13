@@ -18,6 +18,7 @@ import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
@@ -1675,13 +1676,23 @@ Widget getIssueUI(
 }
 
 class ChatAnonymouslyCard extends StatelessWidget {
-  const ChatAnonymouslyCard({Key? key}) : super(key: key);
+  ChatAnonymouslyCard({Key? key}) : super(key: key);
+  final ProfileController profileController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, AppRoutes.chatAnonIssues);
+        profileController.myProfileModel.value.body!.user!.anonymous == null
+            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+                arguments: {
+                    "formAnonChat": true,
+                    "indexOfpage": 0,
+                  })
+            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
+                "formAnonChat": true,
+                "indexOfpage": 0,
+              });
         FirebaseAnalytics.instance.logEvent(
             name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
       },
@@ -1914,88 +1925,90 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
   Widget build(BuildContext context) {
     return Obx(() => homeController.isBannerLoading.value
         ? Container()
-        : Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              CarouselSlider.builder(
-                carouselController: carouselController,
-                itemCount: homeController
-                    .homePageCarouselModel.value.finalResult!.length,
-                itemBuilder: ((context, index, realIndex) {
-                  return InkWell(
-                    onTap: () {
-                      // Navigator.pushNamed(
-                      //     context, AppRoutes.viewAllAlliedExpert, arguments: {
-                      //   "slug": value,
-                      //   "name": value,
-                      //   "type": 'specialization',
-                      //   "enableAppbar": true
-                      // });
-                    },
-                    child: Container(
-                        height: 20.h,
-                        width: 100.w,
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.network(homeController
-                                      .homePageCarouselModel
-                                      .value
-                                      .finalResult![index]
-                                      .bannerImageUrl ??
-                                  '')),
-                        )),
-                  );
-                }),
-                options: CarouselOptions(
-                    autoPlay: false,
-                    padEnds: true,
-                    viewportFraction: 0.75,
-                    enlargeCenterPage: true,
-                    onPageChanged: ((index, reason) {
-                      setState(() {
-                        _current = index;
-                      });
-                    })),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: homeController.dotList.value
-                    .map((e) => Container(
-                          height: e == _current ? 6 : 5,
-                          width: e == _current ? 6 : 5,
-                          margin: EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: e == _current
-                                ? SolhColors.dark_grey
-                                : SolhColors.grey_3,
-                          ),
-                        ))
-                    .toList(),
-              )
+        : homeController.homePageCarouselModel.value.finalResult == null
+            ? Container()
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CarouselSlider.builder(
+                    carouselController: carouselController,
+                    itemCount: homeController
+                        .homePageCarouselModel.value.finalResult!.length,
+                    itemBuilder: ((context, index, realIndex) {
+                      return InkWell(
+                        onTap: () {
+                          // Navigator.pushNamed(
+                          //     context, AppRoutes.viewAllAlliedExpert, arguments: {
+                          //   "slug": value,
+                          //   "name": value,
+                          //   "type": 'specialization',
+                          //   "enableAppbar": true
+                          // });
+                        },
+                        child: Container(
+                            height: 20.h,
+                            width: 100.w,
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.network(homeController
+                                          .homePageCarouselModel
+                                          .value
+                                          .finalResult![index]
+                                          .bannerImageUrl ??
+                                      '')),
+                            )),
+                      );
+                    }),
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        padEnds: true,
+                        viewportFraction: 0.75,
+                        enlargeCenterPage: true,
+                        onPageChanged: ((index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        })),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: homeController.dotList.value
+                        .map((e) => Container(
+                              height: e == _current ? 6 : 5,
+                              width: e == _current ? 6 : 5,
+                              margin: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: e == _current
+                                    ? SolhColors.dark_grey
+                                    : SolhColors.grey_3,
+                              ),
+                            ))
+                        .toList(),
+                  )
 
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: list
-              //       .asMap()
-              //       .entries
-              //       .map((e) => Container(
-              //             height: e.key == _current ? 6 : 5,
-              //             width: e.key == _current ? 6 : 5,
-              //             margin: EdgeInsets.all(3),
-              //             decoration: BoxDecoration(
-              //               shape: BoxShape.circle,
-              //               color: e.key == _current
-              //                   ? SolhColors.dark_grey
-              //                   : SolhColors.grey_3,
-              //             ),
-              //           ))
-              //       .toList(),
-              // )
-            ],
-          ));
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: list
+                  //       .asMap()
+                  //       .entries
+                  //       .map((e) => Container(
+                  //             height: e.key == _current ? 6 : 5,
+                  //             width: e.key == _current ? 6 : 5,
+                  //             margin: EdgeInsets.all(3),
+                  //             decoration: BoxDecoration(
+                  //               shape: BoxShape.circle,
+                  //               color: e.key == _current
+                  //                   ? SolhColors.dark_grey
+                  //                   : SolhColors.grey_3,
+                  //             ),
+                  //           ))
+                  //       .toList(),
+                  // )
+                ],
+              ));
   }
 }
 

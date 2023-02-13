@@ -72,16 +72,10 @@ class AnonymousProfile extends StatelessWidget {
                       );
 
                       if (formAnonChat == true) {
-                        Navigator.pushNamed(context, AppRoutes.chatUser,
-                            arguments: {
-                              "imageUrl": chatAnonController.chatAnonModel.value
-                                  .sosChatSupport!.first.profilePicture,
-                              "name": chatAnonController.chatAnonModel.value
-                                  .sosChatSupport!.first.name,
-                              "sId": chatAnonController.chatAnonModel.value
-                                  .sosChatSupport!.first.sId,
-                              "isAnonChat": true
-                            });
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.waitingScreen,
+                        );
                       } else {
                         if (profileCompletionController.uncompleteFields.last !=
                             profileCompletionController

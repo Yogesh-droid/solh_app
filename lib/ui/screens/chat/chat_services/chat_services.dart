@@ -18,6 +18,20 @@ class ChatServices {
     }
   }
 
+  Future getSosChat(userId) async {
+    Map<String, dynamic> map = await NetworkV2.makeHttpGetRequestWithTokenV2(
+            APIConstants.api + '/api/sosChat?connection=' + userId)
+        .onError((error, stackTrace) {
+      print(error);
+      return {};
+    });
+    print('message' + map.toString());
+    if (map.isNotEmpty) {
+      print('it ran');
+      return MessageModel.fromJson(map);
+    }
+  }
+
   Future postChat(userId) async {
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
         url: APIConstants.api + 'chat?connection=' + userId,

@@ -27,8 +27,11 @@ class SocketService {
   static String _userName = '';
 
   static String currentSId = '';
+  static bool isAnon = false;
 
   static String? get userId => socket.id;
+
+  static bool isSosChatSupport = false;
 
   static Stream<Conversation> get getResponse =>
       _socketResponse.stream.asBroadcastStream();
@@ -37,6 +40,10 @@ class SocketService {
 
   static void setUserName(String name) {
     _userName = name;
+  }
+
+  static void setIsAnon(bool isAnon) {
+    isAnon = isAnon;
   }
 
   static void setCurrentSId(String sId) {
@@ -79,6 +86,8 @@ class SocketService {
       'body': message,
       'connection': sId,
       'chatType': ct,
+      'isAnon': isAnon,
+      'isSosChatSupport': isSosChatSupport,
       'media': {
         'mediaUrl': mediaUrl,
         'mediaType': mediaType,
@@ -132,6 +141,9 @@ class SocketService {
         'socketId': socket.id,
         'userId': profileController.myProfileModel.value.body!.user!.sId!,
         'connection': currentSId,
+        'isAnon': isAnon,
+        'isSosSupport':
+            profileController.myProfileModel.value.body!.user!.sosChatSupport!,
       });
       socket.emit('sendOnlineStatus', {
         'socketId': socket.id,
@@ -152,6 +164,9 @@ class SocketService {
       'socketId': socket.id,
       'userId': profileController.myProfileModel.value.body!.user!.sId!,
       'connection': currentSId,
+      'isAnon': isAnon,
+      'isSosSupport':
+          profileController.myProfileModel.value.body!.user!.sosChatSupport!,
     });
     print(socket.id);
 

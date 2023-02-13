@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/psychological_points.dart';
@@ -11,6 +12,7 @@ import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
@@ -42,6 +44,7 @@ import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
 import 'package:solh/ui/screens/psychology-test/psychology_test_page.dart';
 
 import '../ui/screens/get-help/view-all/allied_consultants.dart';
+import '../ui/screens/my-profile/connections/connections.dart';
 
 class AppRoutes {
   ////  user profile related  /////
@@ -53,6 +56,7 @@ class AppRoutes {
   static const String editAnonymousProfile = '/editAnonProfilePage';
   static const String createProfile = '/createProfile';
   static const String accountPrivacy = '/accountPrivacy';
+  static const String connections = '/Connections';
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
@@ -132,6 +136,7 @@ class AppRoutes {
 
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
+  static const String waitingScreen = '/waitingScreen';
 }
 
 class RouteGenerator {
@@ -278,6 +283,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => ActivityLogScreen()));
       case AppRoutes.activityBadgeParent:
         return MaterialPageRoute(builder: ((context) => ActivityBadgeParent()));
+      case AppRoutes.connections:
+        return MaterialPageRoute(builder: ((context) => Connections()));
       case AppRoutes.psychologicalCapital:
         return MaterialPageRoute(
             builder: ((context) => PsychologicalCapital()));
@@ -289,6 +296,8 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) =>
                 ConsultantAlliedParent(args: args as Map<String, dynamic>)));
+      case AppRoutes.waitingScreen:
+        return MaterialPageRoute(builder: ((context) => WaitingScreen()));
 
       default:
         return MaterialPageRoute(
