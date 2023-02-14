@@ -50,6 +50,7 @@ class _ChatScreenState extends State<ChatScreen> {
   var _controller = Get.put(ChatController());
   @override
   void initState() {
+    debugPrint('anon ${widget._isAnonChat}');
     _service.connectAndListen();
     _controller.currentSid = widget._sId;
     SocketService.setCurrentSId(widget._sId);
@@ -78,7 +79,8 @@ class _ChatScreenState extends State<ChatScreen> {
         profileController.myProfileModel.value.body!.user!.sosChatSupport !=
             true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {});
-      if (chatAnonController.selectedIsses.value.isNotEmpty) {
+      if (profileController.myProfileModel.value.body!.user!.sosChatSupport==false) {
+        debugPrint("first msg sent3");
         delayedAnonChat();
       }
     }
@@ -105,12 +107,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   sendFirstAnonChat() {
-    var otherIssues = chatAnonController.selectedOtherIssuesName == ''
-        ? ''
-        : 'Other Issues-${chatAnonController.selectedOtherIssuesName}';
+   
     _controller.sendMessageController(
         message:
-            "Issues -${chatAnonController.selectedIssuesName} ${otherIssues.toString()} Mood - ${moodMeterController.selectedMood.value}",
+            "Hi, is anyone their ?",
         conversationType: "text",
         sId: widget._sId,
         autherType: "users",
