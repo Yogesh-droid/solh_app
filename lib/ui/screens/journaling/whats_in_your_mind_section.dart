@@ -15,10 +15,9 @@ import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
 
 class WhatsOnYourMindSection extends StatelessWidget {
-  WhatsOnYourMindSection({
-    Key? key,
-  }) : super(key: key);
+  WhatsOnYourMindSection({Key? key, this.w}) : super(key: key);
   XFile? _xFile;
+  double? w;
   File? _croppedFile;
   final JournalPageController _journalPageController = Get.find();
   final MoodMeterController moodMeterController = Get.find();
@@ -51,7 +50,7 @@ class WhatsOnYourMindSection extends StatelessWidget {
               // ),
               SolhGreenBorderMiniButton(
                   height: 50,
-                  width: 90.w,
+                  width: w ?? 90.w,
                   alignment: Alignment.centerLeft,
                   onPressed: () async {
                     await Navigator.push(

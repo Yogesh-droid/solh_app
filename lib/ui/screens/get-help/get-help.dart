@@ -314,7 +314,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     ));
             })),
           ),
-          GetHelpDivider(),
+          /*  GetHelpDivider(),
           GetHelpCategory(
             title: "Solh Volunteer",
             // onPressed: () =>
@@ -379,7 +379,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                       ),
                     );
             })),
-          ),
+          ), */
         ],
       ),
     );
@@ -532,7 +532,7 @@ class TopConsultantsTile extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-
+            Spacer(),
             Text(
               _doctors.name ?? '',
               style: SolhTextStyles.QS_caption_bold.copyWith(height: 2),

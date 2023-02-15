@@ -11,6 +11,7 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/chat/chat_model/chat_model.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_services.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
+import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../../services/network/network.dart';
@@ -59,7 +60,6 @@ class ChatController extends GetxController {
     SocketService.socket.on('message:received', (data) {
       debugPrint('message:received $data');
 
-    
       if (currentSid == data['authorId'] ||
           data['supportUsers'].contains(data['authorId'])) {
         convo.add(Conversation.fromJson(data));

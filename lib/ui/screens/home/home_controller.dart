@@ -7,6 +7,7 @@ import '../../../model/home/home_carousel.dart';
 class HomeController extends GetxController {
   var homePageCarouselModel = HomePageCarouselModel().obs;
   var isBannerLoading = false.obs;
+  var isCorouselShown = false.obs;
   var dotList = [].obs;
   var hat = ''.obs;
   var line = ''.obs;
@@ -33,6 +34,7 @@ class HomeController extends GetxController {
       map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/allied/therapies/home/package/getBanners");
       if (map["success"]) {
+        isCorouselShown.value = true;
         homePageCarouselModel.value = HomePageCarouselModel.fromJson(map);
         for (int i = 0;
             i < homePageCarouselModel.value.finalResult!.length;

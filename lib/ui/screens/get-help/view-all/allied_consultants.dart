@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,11 +62,15 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                               null &&
                           searchMarketController.issueModel.value.provider !=
                               null
-                      ? Text(
-                          "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
-                          style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                              color: SolhColors.Grey_1),
-                        )
+                      ? searchMarketController
+                                  .issueModel.value.alliedProviders !=
+                              null
+                          ? Text(
+                              "${searchMarketController.issueModel.value.alliedProviders!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
+                              style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                                  color: SolhColors.Grey_1),
+                            )
+                          : const SizedBox()
                       : SizedBox())
                 ],
               ),
@@ -76,8 +79,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
           : null,
       body: Obx(() => searchMarketController.isSearchingDoctors.value
           ? getShimmer(context)
-          : searchMarketController.issueModel.value.doctors != null ||
-                  searchMarketController.issueModel.value.provider != null
+          : searchMarketController.issueModel.value.alliedProviders != null
               ? CustomScrollView(
                   slivers: [
                     SliverToBoxAdapter(
@@ -86,9 +88,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                       ),
                     ),
                     if (searchMarketController
-                            .issueModel.value.doctors!.isEmpty &&
-                        searchMarketController
-                            .issueModel.value.provider!.isEmpty)
+                        .issueModel.value.alliedProviders!.isEmpty)
                       SliverToBoxAdapter(
                         child: Align(
                           alignment: Alignment.center,
@@ -109,34 +109,40 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                             delegate: SliverChildBuilderDelegate(
                               (context, index) => AlliedConsultantTile(
                                 experience: searchMarketController.issueModel
-                                    .value.provider![index].experience
+                                    .value.alliedProviders![index].experience
                                     .toString(),
-                                feeAmount: searchMarketController.issueModel
-                                        .value.provider![index].fee_amount ??
+                                feeAmount: searchMarketController
+                                        .issueModel
+                                        .value
+                                        .alliedProviders![index]
+                                        .fee_amount ??
                                     0,
                                 id: searchMarketController.issueModel.value
-                                        .provider![index].sId ??
+                                        .alliedProviders![index].sId ??
                                     '',
-                                name: searchMarketController
-                                    .issueModel.value.provider![index].name,
-                                prefix: searchMarketController
-                                    .issueModel.value.provider![index].prefix,
+                                name: searchMarketController.issueModel.value
+                                    .alliedProviders![index].name,
+                                prefix: searchMarketController.issueModel.value
+                                    .alliedProviders![index].prefix,
                                 profession: searchMarketController.issueModel
-                                    .value.provider![index].profession,
-                                profilePic: searchMarketController.issueModel
-                                    .value.provider![index].profilePicture,
-                                preview: searchMarketController
-                                    .issueModel.value.provider![index].preview,
+                                    .value.alliedProviders![index].profession,
+                                profilePic: searchMarketController
+                                    .issueModel
+                                    .value
+                                    .alliedProviders![index]
+                                    .profilePicture,
+                                preview: searchMarketController.issueModel.value
+                                    .alliedProviders![index].preview,
                               ),
                               childCount: searchMarketController
-                                  .issueModel.value.provider!.length,
+                                  .issueModel.value.alliedProviders!.length,
                             ),
                           )
                         : SliverToBoxAdapter(),
                   ],
                 )
-              : Center(
-                  child: MyLoader(),
+              : Container(
+                  child: Center(child: Text('No Result Found')),
                 )),
     );
   }
@@ -177,6 +183,7 @@ class AlliedConsultantTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("The preview is $preview");
     return Column(
       children: [
         Stack(
@@ -239,10 +246,7 @@ class AlliedConsultantTile extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              getProfileImg(
-                  profilePic ?? '',
-                  'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-                  context),
+              getProfileImg(profilePic ?? '', preview, context),
               SizedBox(width: 3.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,15 +283,15 @@ class AlliedConsultantTile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          SolhDot(),
-                          Text(
-                            ' 2 plans',
-                            style: SolhTextStyles.QS_cap_semi,
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   children: [
+                      //     SolhDot(),
+                      //     Text(
+                      //       ' 2 plans',
+                      //       style: SolhTextStyles.QS_cap_semi,
+                      //     )
+                      //   ],
+                      // ),
                     ],
                   ),
                   SizedBox(height: 1.h),
@@ -353,54 +357,59 @@ class AlliedConsultantTile extends StatelessWidget {
                   ? profilePicture
                   : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: ((context) {
-                        return PreViewVideo(
-                          videoUrl: previewUrl,
-                        );
-                      }));
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(
-                      color: SolhColors.light_Bg_2,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          spreadRadius: 2,
-                          blurRadius: 2,
-                          color: Colors.black26,
-                        )
-                      ]),
-                  child: Center(
-                      child: Row(
-                    children: [
-                      Icon(
-                        CupertinoIcons.play_rectangle,
-                        size: 12,
-                        color: SolhColors.primaryRed,
-                      ),
-                      Text(
-                        ' Preview',
-                        style: SolhTextStyles.QS_cap_2_semi,
-                      )
-                    ],
-                  )),
-                ),
-              ),
-            ],
-          ),
-        )
+        preview != null
+            ? preview!.isNotEmpty
+                ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: ((context) {
+                                  return PreViewVideo(
+                                    videoUrl: previewUrl,
+                                  );
+                                }));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                                color: SolhColors.light_Bg_2,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: <BoxShadow>[
+                                  BoxShadow(
+                                    spreadRadius: 2,
+                                    blurRadius: 2,
+                                    color: Colors.black26,
+                                  )
+                                ]),
+                            child: Center(
+                                child: Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.play_rectangle,
+                                  size: 12,
+                                  color: SolhColors.primaryRed,
+                                ),
+                                Text(
+                                  ' Preview',
+                                  style: SolhTextStyles.QS_cap_2_semi,
+                                )
+                              ],
+                            )),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : const SizedBox()
+            : const SizedBox()
       ],
     );
   }

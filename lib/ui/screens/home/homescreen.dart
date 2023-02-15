@@ -89,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('mood meter shown');
       openMoodMeter();
       getTrendingDecoration();
+      homeController.getHomeCarousel();
     }
     ;
   }
@@ -156,6 +157,7 @@ class _HomePageState extends State<HomePage> {
   ConnectionController connectionController = Get.find();
   ChatAnonController chatAnonController = Get.put(ChatAnonController());
   SearchMarketController searchMarketController = Get.find();
+  HomeController homeController = Get.find();
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
@@ -247,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                 ? getTrendingPostShimmer()
                 : getTrendingPostUI();
           }),
-          GetHelpDivider(),
+
           WhatsOnYourMindSection(),
           GetHelpDivider(),
           // Obx(() {
@@ -388,20 +390,28 @@ class _HomePageState extends State<HomePage> {
           ),
           getIssueUI(bookAppointmentController, getHelpController, context),
           GetHelpDivider(),
-          AlliedExperts(onTap: (value) {
-            Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
-                arguments: {
-                  "slug": value,
-                  "name": value,
-                  "type": 'specialization',
-                  "enableAppbar": true
-                });
-          }),
-          GetHelpDivider(),
-          AlliedCarousel(),
-          SizedBox(
-            height: 10,
-          ),
+          Obx((() => getHelpController.isAlliedShown.value
+              ? AlliedExperts(onTap: (value) {
+                  Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
+                      arguments: {
+                        "slug": value,
+                        "name": value,
+                        "type": 'specialization',
+                        "enableAppbar": true
+                      });
+                })
+              : const SizedBox())),
+          Obx(() => getHelpController.isAlliedShown.value
+              ? GetHelpDivider()
+              : const SizedBox()),
+          Obx((() => homeController.isCorouselShown.value
+              ? AlliedCarousel()
+              : const SizedBox())),
+          Obx((() => homeController.isCorouselShown.value
+              ? SizedBox(
+                  height: 10,
+                )
+              : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
               title: "Leading solh experts",
@@ -457,11 +467,11 @@ class _HomePageState extends State<HomePage> {
                     : Container())),
           ),
           GetHelpDivider(),
-          GetHelpCategory(
+          /* GetHelpCategory(
             title: 'Solh Buddies to Talk',
           ),
-          getSolhBuddiesUI(),
-          GetHelpDivider(),
+          getSolhBuddiesUI(), */
+          // GetHelpDivider(),
           GetHelpCategory(
             title: 'Recommended reads',
           ),
@@ -1917,7 +1927,6 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
 
   @override
   void initState() {
-    homeController.getHomeCarousel();
     super.initState();
   }
 

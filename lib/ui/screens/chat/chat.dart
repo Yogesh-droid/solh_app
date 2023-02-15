@@ -79,7 +79,8 @@ class _ChatScreenState extends State<ChatScreen> {
         profileController.myProfileModel.value.body!.user!.sosChatSupport !=
             true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {});
-      if (profileController.myProfileModel.value.body!.user!.sosChatSupport==false) {
+      if (profileController.myProfileModel.value.body!.user!.sosChatSupport ==
+          false) {
         debugPrint("first msg sent3");
         delayedAnonChat();
       }
@@ -107,10 +108,8 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   sendFirstAnonChat() {
-   
     _controller.sendMessageController(
-        message:
-            "Hi, is anyone their ?",
+        message: "Hi, is anyone their ?",
         conversationType: "text",
         sId: widget._sId,
         autherType: "users",
@@ -128,6 +127,9 @@ class _ChatScreenState extends State<ChatScreen> {
     _controller.isVideoConnecting.value = false;
     _service.userLeft();
     SocketService.isAnon = false;
+    _controller.pageController.dispose();
+    _controller.selectedStar.value = 0;
+    chatAnonController.feedbackTextField.text = '';
 
     SocketService.dispose();
     super.dispose();
@@ -659,6 +661,8 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   void dispose() {
     // TODO: implement dispose
     pageController.dispose();
+    chatController.dispose();
+
     super.dispose();
   }
 

@@ -85,15 +85,19 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
               height: 50,
               child: Text("Done"),
               onPressed: () async {
-                try {
-                  meterController.saveReason(_reasonController.text);
-                  myDiaryController.getMyJournals(1);
-                  Utility.showToast('Successfully Saved to Diary');
-                  _focusNode.unfocus();
-                } on Exception catch (e) {
-                  // TODO
+                if (_reasonController.text.isNotEmpty) {
+                  try {
+                    meterController.saveReason(_reasonController.text);
+                    myDiaryController.getMyJournals(1);
+                    Utility.showToast('Successfully Saved to Diary');
+                    _focusNode.unfocus();
+                  } on Exception catch (e) {
+                    // TODO
+                  }
+                  Navigator.pop(context);
+                } else {
+                  Utility.showToast("please write some reaseon");
                 }
-                Navigator.pop(context);
               }),
         ]),
       ),

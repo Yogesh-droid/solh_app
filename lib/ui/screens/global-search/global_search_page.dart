@@ -102,26 +102,24 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                         globalSearchController
                                     .globalSearchModel.value.providers !=
                                 null
-                            ? getConsultantView(
-                                context,
-                                globalSearchController
-                                    .globalSearchModel.value.providers)
+                            ? globalSearchController.globalSearchModel.value
+                                    .providers!.isNotEmpty
+                                ? getConsultantView(
+                                    context,
+                                    globalSearchController
+                                        .globalSearchModel.value.providers)
+                                : Container()
                             : Container(),
                         globalSearchController
                                     .globalSearchModel.value.allideProviders !=
                                 null
-                            ? getAlliedView(
-                                context,
-                                globalSearchController
-                                    .globalSearchModel.value.allideProviders)
-                            : Container(),
-                        globalSearchController
-                                    .globalSearchModel.value.connection !=
-                                null
-                            ? getPeopleView(
-                                context,
-                                globalSearchController
-                                    .globalSearchModel.value.connection)
+                            ? globalSearchController.globalSearchModel.value
+                                    .allideProviders!.isNotEmpty
+                                ? getAlliedView(
+                                    context,
+                                    globalSearchController.globalSearchModel
+                                        .value.allideProviders)
+                                : Container()
                             : Container(),
                         globalSearchController
                                     .globalSearchModel.value.connection !=

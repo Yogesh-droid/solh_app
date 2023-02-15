@@ -38,8 +38,6 @@ class MyJournalsBloc {
       isFetchingMore = true;
       _moreLoader.sink.add(true);
     }
-    // Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
-    //     "${APIConstants.api}/api/v1/get-my-journal?pageNumber=$nextPage");
     Map<String, dynamic> apiResponse = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/v1/user-journal/$sId?pageNumber=$nextPage");
 
@@ -50,12 +48,13 @@ class MyJournalsBloc {
     JournalsResponseModel _journalsResponseModel =
         JournalsResponseModel.fromJson(apiResponse['data']);
 
-    print('Journals no null ${_journalsResponseModel.journals!.length}');
+    print('Journals no ${_journalsResponseModel.journals!.length}');
 
     if (_journalsResponseModel.journals != null) {
       print('Journals no null ${_journalsResponseModel.journals!.length}');
       _journals = _journalsResponseModel.journals!;
       isFetchingPost = false;
+      isFetchingMore = false;
       _moreLoader.sink.add(false);
       _myJournalController.sink.add(_journals);
     }
@@ -185,14 +184,16 @@ class MyJournalsBloc {
     print("fetching next page journals.............");
     _currentPage++;
     print(nextPage);
-    if (_currentPage <= nextPage!) {
-      await fetchDetailsFirstTime(sId).then((journals) {
-        _journalsList.addAll(journals);
-        return _myJournalController.add(_journalsList);
-      }).onError((error, stackTrace) =>
-          _myJournalController.sink.addError(error.toString()));
-    } else {
-      print(" end of Page  DB");
+    if (!isFetchingMore) {
+      if (_currentPage <= nextPage!) {
+        await fetchDetailsFirstTime(sId).then((journals) {
+          _journalsList.addAll(journals);
+          return _myJournalController.add(_journalsList);
+        }).onError((error, stackTrace) =>
+            _myJournalController.sink.addError(error.toString()));
+      } else {
+        print(" end of Page  DB");
+      }
     }
   }
 }

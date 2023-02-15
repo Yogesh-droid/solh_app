@@ -15,12 +15,14 @@ import 'package:solh/services/journal/delete-journal.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/journaling/whats_in_your_mind_section.dart';
 import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
+import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
+import '../mood-meter/mood_meter.dart';
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
@@ -120,7 +122,43 @@ class _JournalingState extends State<Journaling> {
           children: [
             Column(
               children: [
-                WhatsOnYourMindSection(),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                          onTap: () async {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MoodMeter()));
+                            FirebaseAnalytics.instance.logEvent(
+                                name: 'MoodMeterOpenTapped',
+                                parameters: {'Page': 'MoodMeter'});
+                          },
+                          child: SvgPicture.asset(
+                              'assets/icons/app-bar/mood-meter.svg')),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      WhatsOnYourMindSection(w: 65.w),
+                      IconButton(
+                        iconSize: 24,
+                        splashRadius: 20,
+                        padding: EdgeInsets.zero,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Connections()));
+                        },
+                        icon: SvgPicture.asset("assets/images/connections.svg"),
+                        color: SolhColors.primary_green,
+                      ),
+                    ],
+                  ),
+                ),
                 groupRow(),
                 Obx(() {
                   return !_journalPageController.isLoading.value

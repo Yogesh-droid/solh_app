@@ -4,6 +4,7 @@ import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../../../../services/utility.dart';
 
@@ -14,11 +15,17 @@ class TimeSlotBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Wrap(
-          children: bookAppointmentController.timeSlotList.value
-              .map((element) => getTimeSlotcontainer(element))
-              .toList(),
-        ));
+    return Obx(() => bookAppointmentController.loadingTimeSlots.value
+        ? Center(
+            child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: MyLoader(),
+          ))
+        : Wrap(
+            children: bookAppointmentController.timeSlotList.value
+                .map((element) => getTimeSlotcontainer(element))
+                .toList(),
+          ));
   }
 
   Widget getTimeSlotcontainer(element) {

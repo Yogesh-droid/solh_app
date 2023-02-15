@@ -193,6 +193,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                               curve: Curves.ease);
                         },
                         child: Container(
+                          /// this is to edit timezone
                           height: 32,
                           padding:
                               EdgeInsets.symmetric(vertical: 7, horizontal: 12),
@@ -233,24 +234,28 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                   ),
                 ],
               )),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SolhGreenButton(
-                height: 48,
-                width: MediaQuery.of(context).size.width,
-                onPressed: () {
-                  if (bookAppointmentController
-                      .selectedTimeSlotN.value.isEmpty) {
-                    Utility.showToast('Please choose a time slot');
-                    return;
-                  }
-                  pageController.animateToPage(2,
-                      duration: Duration(seconds: 1), curve: Curves.decelerate);
-                },
-                child: Text(
-                  'Next',
-                  style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-                )),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SolhGreenButton(
+                  height: 48,
+                  width: MediaQuery.of(context).size.width,
+                  onPressed: () {
+                    if (bookAppointmentController
+                        .selectedTimeSlotN.value.isEmpty) {
+                      Utility.showToast('Please choose a time slot');
+                      return;
+                    }
+                    pageController.animateToPage(2,
+                        duration: Duration(seconds: 1),
+                        curve: Curves.decelerate);
+                  },
+                  child: Text(
+                    'Next',
+                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+                  )),
+            ),
           )
         ],
       ),
