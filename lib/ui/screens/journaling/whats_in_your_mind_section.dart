@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
@@ -73,15 +74,67 @@ class WhatsOnYourMindSection extends StatelessWidget {
                             style: SolhTextStyles.QS_cap_semi,
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SolhColors.primary_green),
-                          child: Center(
-                            child: Icon(
-                              CupertinoIcons.camera,
-                              color: SolhColors.white,
+                        InkWell(
+                          onTap: () async {
+                            final ImagePicker _picker = ImagePicker();
+                            _xFile = await _picker.pickImage(
+                              source: ImageSource.camera,
+                              maxWidth: 640,
+                              maxHeight: 640,
+                              imageQuality: 50,
+                            );
+                            if (_xFile != null) {
+                              final croppedFile = await ImageCropper()
+                                  .cropImage(
+                                      sourcePath: _xFile!.path,
+                                      aspectRatioPresets: [
+                                        CropAspectRatioPreset.square,
+                                        // CropAspectRatioPreset.ratio3x2,
+                                        // CropAspectRatioPreset.original,
+                                        // CropAspectRatioPreset.ratio4x3,
+                                        // CropAspectRatioPreset.ratio16x9
+                                      ],
+                                      // compressQuality:
+                                      //     File(_xFile!.path).lengthSync() > 600000
+                                      //         ? 20
+                                      //         : 100,
+                                      compressQuality: compression(
+                                          File(_xFile!.path).lengthSync()),
+                                      uiSettings: [
+                                        AndroidUiSettings(
+                                            toolbarTitle: 'Edit',
+                                            toolbarColor: SolhColors.white,
+                                            toolbarWidgetColor: Colors.black,
+                                            activeControlsWidgetColor:
+                                                SolhColors.primary_green,
+                                            initAspectRatio:
+                                                CropAspectRatioPreset.square,
+                                            lockAspectRatio: true),
+                                        IOSUiSettings(
+                                          minimumAspectRatio: 1.0,
+                                        )
+                                      ]);
+                              _croppedFile = File(croppedFile!.path);
+                            }
+                            Map<String, dynamic> map =
+                                await _uploadImage(isVideo: false);
+                            // _xFileAsUnit8List = await _croppedFile!.readAsBytes();
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => CreatePostScreen(
+                                      croppedFile: _croppedFile,
+                                      map: map,
+                                    )));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: SolhColors.primary_green),
+                            child: Center(
+                              child: Icon(
+                                CupertinoIcons.camera,
+                                color: SolhColors.white,
+                              ),
                             ),
                           ),
                         )
