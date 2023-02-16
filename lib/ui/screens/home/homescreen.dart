@@ -414,7 +414,7 @@ class _HomePageState extends State<HomePage> {
               : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "Leading solh experts",
+              title: "Leading Solh Experts",
               onPressed: () => Navigator.pushNamed(
                       context, AppRoutes.consultantAlliedParent, arguments: {
                     "slug": '',

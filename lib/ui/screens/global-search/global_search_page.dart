@@ -279,7 +279,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                             "https://solhapp-live.s3.amazonaws.com/provider/1669034569095.png",
                         feeAmount: providers[index].feeAmount ?? 0,
                         currency: providers[index].feeCurrency ?? "Rs. ",
-                        prefix: "Mr.",
+                        prefix: providers[index].prefix ?? '',
                         name: providers[index].name ?? '',
                         specialization: '',
                         bio: providers[index].bio ?? "",

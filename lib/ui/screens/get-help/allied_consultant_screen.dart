@@ -362,7 +362,7 @@ class ProfileDetails extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
                 imageUrl: profile!.profilePicture ?? '',
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
                 height: 150,
               ),
             ),
@@ -613,25 +613,28 @@ class PackageCard extends StatelessWidget {
 
   Widget packageDetails() {
     return Column(children: [
-      aboutPackage(package!.aboutPackage ?? ''),
-      aboutPackage("Duration: ${package!.duration} ${package!.unitDuration}")
+      aboutPackage(package!.aboutPackage ?? '', true),
+      aboutPackage(
+          "Duration: ${package!.duration} ${package!.unitDuration}", false)
     ]);
   }
 
-  Widget aboutPackage(String s) {
+  Widget aboutPackage(String s, bool isHtml) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        SvgPicture.asset("assets/images/check.svg"),
+        isHtml ? const SizedBox() : SvgPicture.asset("assets/images/check.svg"),
         SizedBox(
           width: 10,
         ),
         Container(
           width: 75.w,
-          child: Text(
-            s,
-            style: SolhTextStyles.QS_cap_semi,
-          ),
+          child: isHtml
+              ? Html(data: s)
+              : Text(
+                  s,
+                  style: SolhTextStyles.QS_cap_semi,
+                ),
         )
       ]),
     );
