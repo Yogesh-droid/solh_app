@@ -1693,16 +1693,11 @@ class ChatAnonymouslyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        profileController.myProfileModel.value.body!.user!.anonymous == null
-            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
-                arguments: {
-                    "formAnonChat": true,
-                    "indexOfpage": 0,
-                  })
-            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
-                "formAnonChat": true,
-                "indexOfpage": 0,
-              });
+
+        showDialog(context: context, builder: (context) {
+          return AnonymousDialog();
+        },);
+     
         FirebaseAnalytics.instance.logEvent(
             name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
       },
@@ -2018,6 +2013,64 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                   // )
                 ],
               ));
+  }
+}
+
+class AnonymousDialog extends StatelessWidget {
+   AnonymousDialog({super.key});
+  final ProfileController profileController =Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      insetPadding: EdgeInsets.zero,
+    
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+
+          children: [
+            InkWell
+            (onTap: (() => Navigator.of(context).pop()),
+              child: Icon(CupertinoIcons.xmark,)),
+          ],
+        ),
+          SizedBox(
+          height: 3.w,
+          ),
+        Text('Talk Now',style: SolhTextStyles.QS_big_body.copyWith(color: SolhColors.pink224),),
+          SizedBox(
+          height: 3.w,
+          ),
+        Text('You will be connected to solh counsellor',style: SolhTextStyles.QS_body_semi_1,),
+          SizedBox(
+          height: 15.w,
+          ),
+        Row(children: [
+          SolhGreenBorderMiniButton(
+            onPressed: (() => Navigator.of(context).pop()),
+            child: Text('Cancel',style: SolhTextStyles.CTA,),),
+          SizedBox(
+            width: 6.w,
+          ),
+          SolhGreenMiniButton(
+            onPressed: () {
+                 profileController.myProfileModel.value.body!.user!.anonymous == null
+            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+                arguments: {
+                    "formAnonChat": true,
+                    "indexOfpage": 0,
+                  })
+            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
+                "formAnonChat": true,
+                "indexOfpage": 0,
+              });
+            },
+            child: Text('Connect',style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),),),
+        ],)
+      ]),
+    );
   }
 }
 
