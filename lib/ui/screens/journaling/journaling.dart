@@ -55,8 +55,6 @@ class _JournalingState extends State<Journaling> {
       }
       if (_journalsScrollController.position.pixels > 600) {
         _journalPageController.isScrollingStarted.value = true;
-        FirebaseAnalytics.instance.logEvent(
-            name: 'JournalingScrolled', parameters: {'Page': 'Journaling'});
       }
       if (_journalsScrollController.position.pixels ==
               _journalsScrollController.position.maxScrollExtent &&
@@ -117,105 +115,121 @@ class _JournalingState extends State<Journaling> {
       body: SmartRefresher(
         controller: _refreshController,
         onRefresh: _onRefresh,
-        child: ListView(
-          controller: _journalsScrollController,
-          children: [
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                          onTap: () async {
+        child: NotificationListener<ScrollStartNotification>(
+          onNotification: (scrollNotification) {
+            print('inside the onNotification');
+            print(scrollNotification.metrics);
+            if (scrollNotification.metrics.axisDirection ==
+                AxisDirection.down) {
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'JournalingScrolled2',
+                  parameters: {'Page': 'Journaling'});
+            }
+            return true;
+          },
+          child: ListView(
+            controller: _journalsScrollController,
+            children: [
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        InkWell(
+                            onTap: () async {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => MoodMeter()));
+                              FirebaseAnalytics.instance.logEvent(
+                                  name: 'MoodMeterOpenTapped',
+                                  parameters: {'Page': 'MoodMeter'});
+                            },
+                            child: SvgPicture.asset(
+                                'assets/icons/app-bar/mood-meter.svg')),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        WhatsOnYourMindSection(w: 65.w),
+                        IconButton(
+                          iconSize: 24,
+                          splashRadius: 20,
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => MoodMeter()));
-                            FirebaseAnalytics.instance.logEvent(
-                                name: 'MoodMeterOpenTapped',
-                                parameters: {'Page': 'MoodMeter'});
+                                    builder: (context) => Connections()));
                           },
-                          child: SvgPicture.asset(
-                              'assets/icons/app-bar/mood-meter.svg')),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      WhatsOnYourMindSection(w: 65.w),
-                      IconButton(
-                        iconSize: 24,
-                        splashRadius: 20,
-                        padding: EdgeInsets.zero,
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Connections()));
-                        },
-                        icon: SvgPicture.asset("assets/images/connections.svg"),
-                        color: SolhColors.primary_green,
-                      ),
-                    ],
+                          icon:
+                              SvgPicture.asset("assets/images/connections.svg"),
+                          color: SolhColors.primary_green,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                groupRow(),
-                Obx(() {
-                  return !_journalPageController.isLoading.value
-                      ? Obx(() {
-                          return _journalPageController
-                                  .journalsList.value.isNotEmpty
-                              ? ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: _journalPageController
-                                      .journalsList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return _journalPageController.journalsList
-                                                    .value[index].id !=
-                                                null &&
-                                            !userBlocNetwork.hiddenPosts
-                                                .contains(_journalPageController
-                                                    .journalsList
-                                                    .value[index]
-                                                    .id)
-                                        ? getJournalTile(index)
-                                        : Container();
-                                  })
-                              : Center(
-                                  child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 25.h,
-                                      ),
-                                      Obx(() {
-                                        return Text(
-                                          _journalPageController
-                                                      .selectedGroupId.value ==
-                                                  ''
-                                              ? "No Journals"
-                                              : 'No Post',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w500,
-                                              color: Color(0xFFD9D9D9)),
-                                        );
-                                      })
-                                    ],
-                                  ),
-                                );
-                        })
-                      : getShimmer(context);
-                }),
-              ],
-            ),
-            if (_fetchingMore) Center(child: MyLoader()),
-            SizedBox(height: Platform.isIOS ? 80 : 50),
-            SizedBox(
-              height: 200,
-            ),
-          ],
+                  groupRow(),
+                  Obx(() {
+                    return !_journalPageController.isLoading.value
+                        ? Obx(() {
+                            return _journalPageController
+                                    .journalsList.value.isNotEmpty
+                                ? ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: _journalPageController
+                                        .journalsList.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return _journalPageController.journalsList
+                                                      .value[index].id !=
+                                                  null &&
+                                              !userBlocNetwork.hiddenPosts
+                                                  .contains(
+                                                      _journalPageController
+                                                          .journalsList
+                                                          .value[index]
+                                                          .id)
+                                          ? getJournalTile(index)
+                                          : Container();
+                                    })
+                                : Center(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 25.h,
+                                        ),
+                                        Obx(() {
+                                          return Text(
+                                            _journalPageController
+                                                        .selectedGroupId
+                                                        .value ==
+                                                    ''
+                                                ? "No Journals"
+                                                : 'No Post',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xFFD9D9D9)),
+                                          );
+                                        })
+                                      ],
+                                    ),
+                                  );
+                          })
+                        : getShimmer(context);
+                  }),
+                ],
+              ),
+              if (_fetchingMore) Center(child: MyLoader()),
+              SizedBox(height: Platform.isIOS ? 80 : 50),
+              SizedBox(
+                height: 200,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton:

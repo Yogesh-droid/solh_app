@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -44,6 +45,9 @@ class RoleSection extends StatelessWidget {
                 });
 
                 if (response) {
+                  FirebaseAnalytics.instance.logEvent(
+                      name: 'OnBoardingUserTypeDone',
+                      parameters: {'Page': 'OnBoarding'});
                   if (profileSetupController.selectedRoleType.value ==
                       RoleType.Provider) {
                     Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation);

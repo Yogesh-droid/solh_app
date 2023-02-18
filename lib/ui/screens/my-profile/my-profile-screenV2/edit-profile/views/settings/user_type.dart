@@ -158,7 +158,7 @@ class SaveChangesButton extends StatelessWidget {
                       SolhSnackbar.success(
                           'Sucess', 'User type updated sucessfully');
                       FirebaseAnalytics.instance.logEvent(
-                          name: 'OnBoardingUserTypeDone',
+                          name: 'EditUserType',
                           parameters: {'Page': 'OnBoarding'});
                     }
                   },
