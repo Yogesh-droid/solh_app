@@ -122,7 +122,7 @@ class _JournalingState extends State<Journaling> {
             if (scrollNotification.metrics.axisDirection ==
                 AxisDirection.down) {
               FirebaseAnalytics.instance.logEvent(
-                  name: 'JournalingScrolled',
+                  name: 'JournalingScrolled2',
                   parameters: {'Page': 'Journaling'});
             }
             return true;
