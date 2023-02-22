@@ -16,6 +16,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../ui/my_diary/my_diary_list_page.dart';
 import '../../ui/screens/global-search/global_search_page.dart';
+import '../../ui/screens/home/homescreen.dart';
 
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
@@ -167,24 +168,25 @@ class AssistanceButton extends StatelessWidget {
 }
 
 class SOSButton extends StatelessWidget {
-   SOSButton({Key? key}) : super(key: key);
-  ProfileController profileController =Get.find();
+  SOSButton({Key? key}) : super(key: key);
+  ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {
-          profileController.myProfileModel.value.body!.user!.anonymous == null
-            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
-                arguments: {
-                    "formAnonChat": true,
-                    "indexOfpage": 0,
-                  })
-            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
-                "formAnonChat": true,
-                "indexOfpage": 0,
-              });
-        FirebaseAnalytics.instance.logEvent(
-            name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
+        showDialog(context: context, builder: (context) => AnonymousDialog());
+        //   profileController.myProfileModel.value.body!.user!.anonymous == null
+        //     ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+        //         arguments: {
+        //             "formAnonChat": true,
+        //             "indexOfpage": 0,
+        //           })
+        //     : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
+        //         "formAnonChat": true,
+        //         "indexOfpage": 0,
+        //       });
+        // FirebaseAnalytics.instance.logEvent(
+        //     name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
         FirebaseAnalytics.instance
             .logEvent(name: 'SOSTapped', parameters: {'Page': 'AppBar'});
       },

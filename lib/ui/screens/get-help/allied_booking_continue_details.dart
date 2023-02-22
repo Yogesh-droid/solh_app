@@ -20,7 +20,10 @@ class AlliedBookingContinueDetail extends StatelessWidget {
       : super(key: key);
   final FinalResult finalResult;
   final Packages packages;
+  bool detailHidden = true;
+
   final AlliedController _alliedController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,6 +135,18 @@ class AlliedBookingContinueDetail extends StatelessWidget {
   }
 
   Widget packageDetails() {
-    return PackageCard(package: packages, onPackageSelect: (s, i) {});
+    return PackageCard(
+        package: packages,
+        onPackageSelect: (String id, int price) {
+          if (!(_alliedController.selectedPackage.value == id)) {
+            _alliedController.selectedPackage.value = id;
+            _alliedController.selectedPackagePrice.value = price;
+            // _alliedController.selectedPackageIndex =
+            //     user!.packages!.indexOf(e);
+          } else {
+            _alliedController.selectedPackage.value = "";
+            _alliedController.selectedPackagePrice.value = -1;
+          }
+        });
   }
 }

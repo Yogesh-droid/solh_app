@@ -110,10 +110,10 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                       ],
                     ),
                     Spacer(),
-                    SolhGreenBorderButton(
-                        width: 80,
-                        height: 40,
-                        child: SvgPicture.asset("assets/images/query.svg")),
+                    // SolhGreenBorderButton(
+                    //     width: 80,
+                    //     height: 40,
+                    //     child: SvgPicture.asset("assets/images/query.svg")),
                     SizedBox(
                       width: 10,
                     ),
@@ -280,15 +280,23 @@ class ProfileDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              profile!.name ?? '',
-              style:
-                  SolhTextStyles.QS_body_1_bold.copyWith(color: Colors.white),
+            SizedBox(
+              width: 180,
+              child: Text(
+                profile!.name ?? '',
+                style:
+                    SolhTextStyles.QS_body_1_bold.copyWith(color: Colors.white),
+              ),
             ),
             Text(profile!.profession ?? '',
                 style: SolhTextStyles.QS_caption.copyWith(color: Colors.white)),
-            Text("${profile!.experience ?? 0} Years",
-                style: SolhTextStyles.QS_caption.copyWith(color: Colors.white)),
+            profile!.experience != null
+                ? profile!.experience! > 0
+                    ? Text("${profile!.experience ?? 0} Years",
+                        style: SolhTextStyles.QS_caption.copyWith(
+                            color: Colors.white))
+                    : SizedBox()
+                : SizedBox(),
             SizedBox(
               height: 10,
             ),
@@ -298,16 +306,24 @@ class ProfileDetails extends StatelessWidget {
                     icon: Icon(
                       CupertinoIcons.person_crop_rectangle,
                       color: Colors.white,
+                      size: 20,
                     ),
                     no: profile!.numberOfConsultations,
                     title: 'Consultations'),
                 getAnalyticsBox(
-                    icon: Icon(CupertinoIcons.star, color: Colors.white),
+                    icon: Icon(
+                      CupertinoIcons.star,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     no: profile!.rating,
                     title: 'Rating'),
                 getAnalyticsBox(
-                    icon: Icon(CupertinoIcons.person_crop_rectangle,
-                        color: Colors.white),
+                    icon: Icon(
+                      CupertinoIcons.person_crop_rectangle,
+                      color: Colors.white,
+                      size: 20,
+                    ),
                     no: profile!.posts,
                     title: 'Posts')
               ],
@@ -321,7 +337,8 @@ class ProfileDetails extends StatelessWidget {
   Widget getAnalyticsBox(
       {required Widget icon, required no, required String title}) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(4),
+      margin: EdgeInsets.all(4),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: SolhColors.greenShade1),
@@ -341,7 +358,8 @@ class ProfileDetails extends StatelessWidget {
           ),
           Text(
             title,
-            style: SolhTextStyles.SmallTextWhiteS12W7,
+            style:
+                SolhTextStyles.QS_cap_2_semi.copyWith(color: SolhColors.white),
           )
         ],
       ),
@@ -614,8 +632,8 @@ class PackageCard extends StatelessWidget {
   Widget packageDetails() {
     return Column(children: [
       aboutPackage(package!.aboutPackage ?? '', true),
-      aboutPackage(
-          "Duration: ${package!.duration} ${package!.unitDuration}", false)
+      // aboutPackage(
+      //     "Duration: ${package!.duration} ${package!.unitDuration}", false)
     ]);
   }
 
@@ -649,10 +667,12 @@ class PackageCard extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Benefits ",
-                        style: SolhTextStyles.QS_body_2_bold,
-                      ),
+                      package.benefits!.isNotEmpty
+                          ? Text(
+                              "Benefits ",
+                              style: SolhTextStyles.QS_body_2_bold,
+                            )
+                          : SizedBox(),
                       SizedBox(height: 15),
                       Container(
                         child: Html(data: package.benefits ?? ''),

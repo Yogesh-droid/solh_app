@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -22,8 +21,10 @@ import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
+import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
+import '../home/homescreen.dart';
 
 class GetHelpScreen extends StatefulWidget {
   @override
@@ -40,6 +41,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   ConnectionController connectionController = Get.find();
 
   ProfileController profileController = Get.find();
+  HomeController homeController = Get.find();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -259,6 +261,24 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 : Container();
           }),
           GetHelpDivider(),
+          Obx((() => getHelpController.isAlliedShown.value
+              ? AlliedExperts(onTap: (value, name) {
+                  Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
+                      arguments: {
+                        "slug": value,
+                        "name": name,
+                        "type": 'specialization',
+                        "enableAppbar": true
+                      });
+                })
+              : const SizedBox())),
+          Obx(() => getHelpController.isAlliedShown.value
+              ? GetHelpDivider()
+              : const SizedBox()),
+          Obx((() => homeController.isCorouselShown.value
+              ? AlliedCarousel()
+              : const SizedBox())),
+          GetHelpDivider(),
           GetHelpCategory(
               title: "Top Consultants",
               onPressed: () {
@@ -273,7 +293,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     parameters: {'Page': 'GetHelp'});
               }),
           Container(
-            height: 30.h,
+            height: 35.h,
             margin: EdgeInsets.only(bottom: 2.h),
             child: Container(child: Obx(() {
               return getHelpController.topConsultantList.value.doctors != null
@@ -548,17 +568,17 @@ class TopConsultantsTile extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: SolhColors.greenShade5,
-                  borderRadius: BorderRadius.circular(12)),
-              child: Text(
-                "${_doctors.feeCurrency ?? 'Rs'}  ${_doctors.fee_amount ?? 0}",
-                style: SolhTextStyles.QS_caption_bold,
-              ),
-            ),
+            // Container(
+            //   margin: EdgeInsets.only(bottom: 10),
+            //   padding: EdgeInsets.all(8.0),
+            //   decoration: BoxDecoration(
+            //       color: SolhColors.greenShade5,
+            //       borderRadius: BorderRadius.circular(12)),
+            //   child: Text(
+            //     "${_doctors.feeCurrency ?? 'Rs'}  ${_doctors.fee_amount ?? 0}",
+            //     style: SolhTextStyles.QS_caption_bold,
+            //   ),
+            // ),
 
             // Text(
             //   _doctors.bio ?? '',
@@ -588,24 +608,26 @@ class TopConsultantsTile extends StatelessWidget {
             //               color: Color(0xFF666666),
             //               fontWeight: FontWeight.w300),
             //         ),
-            //         Center(
-            //           child: SolhGreenButton(
-            //             height: 40,
-            //             width: 30.w,
-            //             child: Text(
-            //               "Book Appointment",
-            //               style: SolhTextStyles.QS_cap_semi.copyWith(
-            //                   fontSize: 10, color: SolhColors.white),
-            //             ),
-            //             onPressed: () {
-            //               //launch("tel://$_mobile");
-            //               consultantController
-            //                   .getConsultantDataController(_doctors.sId ?? '');
-            //               Navigator.of(context).push(MaterialPageRoute(
-            //                   builder: (context) => ConsultantProfilePage()));
-            //             },
-            //           ),
-            //         )
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: SolhGreenButton(
+                  height: 28,
+                  child: Text(
+                    "Book Appointment",
+                    style: SolhTextStyles.QS_cap_semi.copyWith(
+                        fontSize: 10, color: SolhColors.white),
+                  ),
+                  onPressed: () {
+                    //launch("tel://$_mobile");
+                    consultantController
+                        .getConsultantDataController(_doctors.sId ?? '');
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ConsultantProfilePage()));
+                  },
+                ),
+              ),
+            )
             //       ],
             //     )),
           ],

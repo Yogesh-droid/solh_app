@@ -101,6 +101,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> openMoodMeter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (moodMeterController.moodList.isEmpty) {
+      await moodMeterController.getMoodList();
+    }
+    print("Opening Mood Meter" +
+        (moodMeterController.moodList.length).toString());
     if (prefs.getInt('lastDateShown') != null) {
       if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
               .day ==
@@ -391,11 +396,11 @@ class _HomePageState extends State<HomePage> {
           getIssueUI(bookAppointmentController, getHelpController, context),
           GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
-              ? AlliedExperts(onTap: (value) {
+              ? AlliedExperts(onTap: (value, name) {
                   Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
                       arguments: {
                         "slug": value,
-                        "name": value,
+                        "name": name,
                         "type": 'specialization',
                         "enableAppbar": true
                       });
@@ -407,11 +412,6 @@ class _HomePageState extends State<HomePage> {
           Obx((() => homeController.isCorouselShown.value
               ? AlliedCarousel()
               : const SizedBox())),
-          Obx((() => homeController.isCorouselShown.value
-              ? SizedBox(
-                  height: 10,
-                )
-              : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
               title: "Leading Solh Experts",
@@ -422,7 +422,7 @@ class _HomePageState extends State<HomePage> {
                     "enableAppbar": false
                   })),
           Container(
-            height: 30.h,
+            height: 35.h,
             margin: EdgeInsets.only(bottom: 2.h),
             child: Obx(() => Container(
                 child: getHelpController.topConsultantList.value.doctors != null
@@ -1693,18 +1693,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        profileController.myProfileModel.value.body!.user!.anonymous == null
-            ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
-                arguments: {
-                    "formAnonChat": true,
-                    "indexOfpage": 0,
-                  })
-            : Navigator.pushNamed(context, AppRoutes.waitingScreen, arguments: {
-                "formAnonChat": true,
-                "indexOfpage": 0,
-              });
-        FirebaseAnalytics.instance.logEvent(
-            name: 'AnonymousChatCardTapped', parameters: {'Page': 'HomePage'});
+        showDialog(context: context, builder: (context) => AnonymousDialog());
       },
       child: Container(
         width: double.maxFinite,
@@ -1811,7 +1800,7 @@ class AlliedExperts extends StatelessWidget {
   AlliedExperts({super.key, required this.onTap});
   final GetHelpController getHelpController = Get.find();
 
-  final Function(String slug) onTap;
+  final Function(String slug, String name) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -1831,11 +1820,11 @@ class AlliedExperts extends StatelessWidget {
                 'Allied Experts',
                 style: SolhTextStyles.QS_body_semi_1,
               ),
-              Text(
-                'Show more',
-                style: SolhTextStyles.CTA
-                    .copyWith(color: SolhColors.primary_green),
-              )
+              // Text(
+              //   'Show more',
+              //   style: SolhTextStyles.CTA
+              //       .copyWith(color: SolhColors.primary_green),
+              // )
             ],
           ),
           SizedBox(
@@ -1851,7 +1840,7 @@ class AlliedExperts extends StatelessWidget {
                       crossAxisCount: 3,
                       crossAxisSpacing: 4.0,
                       mainAxisSpacing: 4.0,
-                      childAspectRatio: 2 / 3),
+                      childAspectRatio: 2 / 2.6),
                   shrinkWrap: true,
                   itemCount: getHelpController.getAlliedTherapyModel.value
                               .specializationList!.length >
@@ -1862,9 +1851,13 @@ class AlliedExperts extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
-                        onTap(getHelpController.getAlliedTherapyModel.value
-                                .specializationList![index].slug ??
-                            '');
+                        onTap(
+                            getHelpController.getAlliedTherapyModel.value
+                                    .specializationList![index].slug ??
+                                '',
+                            getHelpController.getAlliedTherapyModel.value
+                                    .specializationList![index].name ??
+                                '');
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -1926,11 +1919,6 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
   HomeController homeController = Get.find();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Obx(() => homeController.isBannerLoading.value
         ? Container()
@@ -1946,13 +1934,42 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                     itemBuilder: ((context, index, realIndex) {
                       return InkWell(
                         onTap: () {
-                          // Navigator.pushNamed(
-                          //     context, AppRoutes.viewAllAlliedExpert, arguments: {
-                          //   "slug": value,
-                          //   "name": value,
-                          //   "type": 'specialization',
-                          //   "enableAppbar": true
-                          // });
+                          if (homeController.homePageCarouselModel.value
+                                  .finalResult![index].bannerRouteName ==
+                              "alliedproviderlist") {
+                            Navigator.pushNamed(
+                                context, AppRoutes.viewAllAlliedExpert,
+                                arguments: {
+                                  "slug": homeController
+                                          .homePageCarouselModel
+                                          .value
+                                          .finalResult![index]
+                                          .bannerRouteKey ??
+                                      '',
+                                  "name": homeController
+                                          .homePageCarouselModel
+                                          .value
+                                          .finalResult![index]
+                                          .bannerRouteKey ??
+                                      '',
+                                  "type": 'specialization',
+                                  "enableAppbar": true
+                                });
+                            //       Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
+                            // arguments: {
+                            //   "slug": value,
+                            //   "name": value,
+                            //   "type": 'specialization',
+                            //   "enableAppbar": true
+                            // });
+                          } else {
+                            Navigator.pushNamed(
+                                context, AppRoutes.alliedConsultantScreen,
+                                arguments: {
+                                  "id": homeController.homePageCarouselModel
+                                      .value.finalResult![index].bannerRouteKey
+                                });
+                          }
                         },
                         child: Container(
                             height: 20.h,
@@ -2028,3 +2045,110 @@ List list = [
   3,
   4,
 ];
+
+class AnonymousDialog extends StatelessWidget {
+  AnonymousDialog({super.key});
+  final ProfileController profileController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      insetPadding: EdgeInsets.zero,
+      content: Column(mainAxisSize: MainAxisSize.min, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            InkWell(
+                onTap: (() => Navigator.of(context).pop()),
+                child: Icon(
+                  CupertinoIcons.xmark,
+                )),
+          ],
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        Text(
+          'Talk Now',
+          style: SolhTextStyles.QS_big_body.copyWith(color: SolhColors.pink224),
+        ),
+        SizedBox(
+          height: 3.w,
+        ),
+        Text(
+          'You will be connected to solh counsellor',
+          style: SolhTextStyles.QS_body_semi_1,
+        ),
+        SizedBox(
+          height: 5.w,
+        ),
+        RichText(
+            text: TextSpan(
+                text: "DISCLAMER",
+                style: SolhTextStyles.QS_body_semi_1,
+                children: [
+              TextSpan(
+                  text:
+                      ' : We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.',
+                  style: SolhTextStyles.QS_body_2_semi)
+            ])),
+        // Text(
+        //   ,
+        //   ,
+        // ),
+        SizedBox(
+          height: 15.w,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SolhGreenBorderMiniButton(
+              onPressed: (() => Navigator.of(context).pop()),
+              child: Text(
+                'Cancel',
+                style: SolhTextStyles.CTA,
+              ),
+            ),
+            SizedBox(
+              width: 6.w,
+            ),
+            SolhGreenMiniButton(
+              onPressed: () {
+                // profileController.myProfileModel.value.body!.user!.anonymous ==
+                //         null
+                //     ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+                //         arguments: {
+                //             "formAnonChat": true,
+                //             "indexOfpage": 0,
+                //           })
+                //     : Navigator.pushNamed(context, AppRoutes.waitingScreen,
+                //         arguments: {
+                //             "formAnonChat": true,
+                //             "indexOfpage": 0,
+                //           });
+                profileController.myProfileModel.value.body!.user!.anonymous ==
+                        null
+                    ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,
+                        arguments: {
+                            "formAnonChat": true,
+                            "indexOfpage": 0,
+                          })
+                    : Navigator.pushNamed(context, AppRoutes.waitingScreen,
+                        arguments: {
+                            "formAnonChat": true,
+                            "indexOfpage": 0,
+                          });
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'AnonymousChatCardTapped',
+                    parameters: {'Page': 'HomePage'});
+              },
+              child: Text(
+                'Connect',
+                style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+              ),
+            ),
+          ],
+        )
+      ]),
+    );
+  }
+}

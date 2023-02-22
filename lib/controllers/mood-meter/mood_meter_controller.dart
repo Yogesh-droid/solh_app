@@ -27,7 +27,7 @@ class MoodMeterController extends GetxController {
   void changeImg(double value) {
     print(value.toInt().toString() + 'this is value');
 
-    print(gifList.length.toString() + ' this is the length of the list');
+    // print(gifList.length.toString() + ' this is the length of the list');
     selectedGif.value = gifList[value.toInt()];
     selectedMood.value = moodList[value.toInt()];
   }
@@ -50,8 +50,9 @@ class MoodMeterController extends GetxController {
       selectedMood.value = moodList[0];
     }
     print(moodList.length.toString() + ' this is the length of the list');
-    print(
-        colorList.value.length.toString() + ' this is the length of the list');
+    print(gifList.length.toString() + ' this is the length of the list');
+    // print(
+    //     colorList.value.length.toString() + ' this is the length of the list');
     isLoading.value = false;
   }
 
@@ -94,6 +95,8 @@ class MoodMeterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getMoodList();
+    if (moodList.isEmpty) {
+      getMoodList();
+    }
   }
 }

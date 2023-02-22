@@ -383,7 +383,7 @@ class YouAreAlmostThere extends StatelessWidget {
                     SizedBox(
                       width: 40.w,
                       child: Text(
-                        "Let's take your profile from good to greate. The details matter",
+                        "Let's take your profile from good to great. The details matter",
                         style: SolhTextStyles.QS_cap_2_semi,
                       ),
                     ),

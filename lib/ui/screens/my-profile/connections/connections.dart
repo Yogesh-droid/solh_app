@@ -1657,7 +1657,7 @@ Widget getSosSupportView(
 }
 
 List<Tab> gettabs(ProfileController profileController) {
-  List tabsString = ['Chats', 'All', 'Invites', 'SOS'];
+  List tabsString = ['Chats', 'All', 'Invites', 'Now'];
   List<Tab> tabs = <Tab>[];
   int getTabNumber() {
     return profileController.myProfileModel.value.body!.user!.sosChatSupport!
