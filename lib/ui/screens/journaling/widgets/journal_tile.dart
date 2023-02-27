@@ -23,6 +23,7 @@ import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -783,11 +784,7 @@ class LikesModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Obx(() => journalPageController.isLikedUserListLoading.value
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
+      child: Column(
               children: [
                 Padding(
                   padding:
@@ -827,7 +824,8 @@ class LikesModalSheet extends StatelessWidget {
                 SizedBox(
                   height: 6,
                 ),
-                journalCommentController.reactionlistModel.value.data != null
+                Obx((){
+                  return journalCommentController.isReactionLoading.value?ButtonLoadingAnimation() :  ( journalCommentController.reactionlistModel.value.data != null
                     ? Wrap(
                         alignment: WrapAlignment.start,
                         children: journalCommentController
@@ -863,9 +861,15 @@ class LikesModalSheet extends StatelessWidget {
                                 ))
                             .toList(),
                       )
-                    : Container(),
+                    : Container());
+                }),
+            
                 Divider(),
-                journalPageController.likedUserList.value.result == null
+              Obx(() => journalPageController.isLikedUserListLoading.value
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          :   (journalPageController.likedUserList.value.result == null
                     ? Container()
                     : journalPageController
                             .likedUserList.value.result!.data!.isEmpty
@@ -945,9 +949,9 @@ class LikesModalSheet extends StatelessWidget {
                                     ),
                                   );
                                 }),
-                          )
-              ],
-            )),
+                          ))
+      )],
+            )
     );
   }
 }

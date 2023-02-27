@@ -1,12 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/issue_and_specialization_filter_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -36,14 +41,21 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   SearchMarketController searchMarketController = Get.find();
   ConnectionController connectionController = Get.find();
   GetHelpController getHelpController = Get.find();
-  String? defaultCountry;
+  IssueAndSpecializationFilterController
+      issueAndSpecializationFilterController =
+      Get.put(IssueAndSpecializationFilterController());
 
   void initState() {
     print('Running init state of Consultant');
     super.initState();
     getResultByCountry();
+    print(
+        "defaultCountry2 " + searchMarketController.defaultCountry.toString());
     _doctorsScrollController = ScrollController();
-    _refreshController = RefreshController();
+    issueAndSpecializationFilterController
+        .getIssueAndSpecializationFilter(widget.slug);
+    issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
+
     _doctorsScrollController.addListener(() async {
       if (_doctorsScrollController.position.pixels ==
               _doctorsScrollController.position.maxScrollExtent &&
@@ -59,7 +71,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   }
 
   late ScrollController _doctorsScrollController;
-  late RefreshController _refreshController;
 
   @override
   Widget build(BuildContext context) {
@@ -284,108 +295,341 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
 
   void openBottomSheet(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: ((context) =>
-            Obx(() => getHelpController.isCountryLoading.value
-                ? LinearProgressIndicator()
-                : Container(
-                    padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Filter counsellors',
-                            style: SolhTextStyles.JournalingUsernameText,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Divider(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Country',
-                            style: SolhTextStyles.JournalingUsernameText,
-                          ),
-                        ),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: getHelpController.counsellorsCountryModel
-                                .value.providerCountry!.length,
-                            itemBuilder: (context, index) => ListTile(
-                                  title: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        getHelpController
-                                                .counsellorsCountryModel
-                                                .value
-                                                .providerCountry![index]
-                                                .name ??
-                                            '',
-                                        style:
-                                            SolhTextStyles.JournalingHintText,
-                                      ),
-                                      getHelpController
-                                                  .counsellorsCountryModel
-                                                  .value
-                                                  .providerCountry![index]
-                                                  .code !=
-                                              defaultCountry
-                                          ? Container()
-                                          : Icon(Icons.check),
-                                    ],
+      isScrollControlled: true,
+      context: context,
+      builder: ((context) => Stack(
+            children: [
+              Obx(
+                () => getHelpController.isCountryLoading.value
+                    ? LinearProgressIndicator()
+                    : Container(
+                        height: 100.h,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 18, vertical: 18),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      'Filter counsellors',
+                                      style:
+                                          SolhTextStyles.JournalingUsernameText,
+                                    ),
                                   ),
-                                  onTap: () {
-                                    defaultCountry = getHelpController
-                                            .counsellorsCountryModel
-                                            .value
-                                            .providerCountry![index]
-                                            .code ??
-                                        '';
-                                    // setState(() {});
-                                    widget.type == 'specialization'
-                                        ? searchMarketController
-                                            .getSpecializationList(widget.slug,
-                                                c: getHelpController
+                                  IconButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    icon: Icon(
+                                      CupertinoIcons.clear_thick_circled,
+                                      color: SolhColors.dark_grey,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Divider(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Issues',
+                                  style: SolhTextStyles.JournalingUsernameText,
+                                ),
+                              ),
+                              Obx(() {
+                                return issueAndSpecializationFilterController
+                                        .isFiltersLoading.value
+                                    ? CircularProgressIndicator()
+                                    : Obx(() {
+                                        return Wrap(
+                                            spacing: 5,
+                                            children: issueAndSpecializationFilterController
+                                                .issueAndSpecializationFilterModel
+                                                .value
+                                                .issueList!
+                                                .map((e) => FilterChip(
+                                                    checkmarkColor:
+                                                        SolhColors.white,
+                                                    selected:
+                                                        issueAndSpecializationFilterController
+                                                                .selectedIssue
+                                                                .value ==
+                                                            e.name!,
+                                                    onSelected: (value) {
+                                                      issueAndSpecializationFilterController
+                                                          .selectedIssue
+                                                          .value = e.name!;
+                                                    },
+                                                    selectedColor: SolhColors
+                                                        .primary_green,
+                                                    backgroundColor:
+                                                        SolhColors.grey239,
+                                                    label: Text(
+                                                      e.name!,
+                                                      style: SolhTextStyles
+                                                              .QS_cap_semi
+                                                          .copyWith(
+                                                              color: issueAndSpecializationFilterController
+                                                                          .selectedIssue
+                                                                          .value ==
+                                                                      e.name!
+                                                                  ? SolhColors
+                                                                      .white
+                                                                  : SolhColors
+                                                                      .dark_grey),
+                                                    )))
+                                                .toList());
+                                      });
+                              }),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Speciality',
+                                  style: SolhTextStyles.JournalingUsernameText,
+                                ),
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    issueAndSpecializationFilterController
+                                        .issueAndSpecializationFilterModel
+                                        .value
+                                        .splList!
+                                        .length,
+                                itemBuilder: (context, index) {
+                                  return Obx(() {
+                                    return InkWell(
+                                      onTap: () =>
+                                          issueAndSpecializationFilterController
+                                                  .selectedSpeciality.value =
+                                              issueAndSpecializationFilterController
+                                                  .issueAndSpecializationFilterModel
+                                                  .value
+                                                  .splList![index]
+                                                  .name!,
+                                      child: ListTile(
+                                        title: InkWell(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                issueAndSpecializationFilterController
+                                                    .issueAndSpecializationFilterModel
+                                                    .value
+                                                    .splList![index]
+                                                    .name
+                                                    .toString(),
+                                                style:
+                                                    SolhTextStyles.QS_cap_semi,
+                                              ),
+                                              issueAndSpecializationFilterController
+                                                          .selectedSpeciality
+                                                          .value ==
+                                                      issueAndSpecializationFilterController
+                                                          .issueAndSpecializationFilterModel
+                                                          .value
+                                                          .splList![index]
+                                                          .name
+                                                  ? Icon(
+                                                      CupertinoIcons
+                                                          .check_mark_circled_solid,
+                                                      color: SolhColors
+                                                          .primary_green,
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Country',
+                                  style: SolhTextStyles.JournalingUsernameText,
+                                ),
+                              ),
+                              ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: getHelpController
+                                      .counsellorsCountryModel
+                                      .value
+                                      .providerCountry!
+                                      .length,
+                                  itemBuilder: (context, index) => Obx(() {
+                                        return ListTile(
+                                          title: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  getHelpController
+                                                          .counsellorsCountryModel
+                                                          .value
+                                                          .providerCountry![
+                                                              index]
+                                                          .name ??
+                                                      '',
+                                                  style: SolhTextStyles
+                                                      .QS_cap_semi,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                              getHelpController
+                                                          .counsellorsCountryModel
+                                                          .value
+                                                          .providerCountry![
+                                                              index]
+                                                          .code !=
+                                                      issueAndSpecializationFilterController
+                                                          .selectedCountry.value
+                                                  ? Container()
+                                                  : Icon(
+                                                      CupertinoIcons
+                                                          .check_mark_circled_solid,
+                                                      color: SolhColors
+                                                          .primary_green,
+                                                    ),
+                                            ],
+                                          ),
+                                          onTap: () {
+                                            // searchMarketController
+                                            //         .defaultCountry =
+                                            //     getHelpController
+                                            //             .counsellorsCountryModel
+                                            //             .value
+                                            //             .providerCountry![index]
+                                            //             .code ??
+                                            //         '';
+
+                                            issueAndSpecializationFilterController
+                                                .selectedCountry
+                                                .value = getHelpController
                                                     .counsellorsCountryModel
                                                     .value
                                                     .providerCountry![index]
-                                                    .code)
-                                        : widget.type == 'topconsultant'
-                                            ? searchMarketController
-                                                .getTopConsultants(
-                                                    c: defaultCountry)
-                                            : searchMarketController
-                                                .getIssueList(widget.slug,
-                                                    c: getHelpController
-                                                        .counsellorsCountryModel
-                                                        .value
-                                                        .providerCountry![index]
-                                                        .code);
-                                    Navigator.pop(context);
-                                  },
-                                ))
-                      ],
+                                                    .code ??
+                                                '';
+                                            // setState(() {});
+                                          },
+                                        );
+                                      }))
+                            ],
+                          ),
+                        ),
+                      ),
+              ),
+              Positioned(
+                  bottom: 0,
+                  child: Container(
+                    decoration:
+                        BoxDecoration(color: SolhColors.white, boxShadow: [
+                      BoxShadow(
+                          blurRadius: 2,
+                          spreadRadius: 2,
+                          color: Colors.black12),
+                    ]),
+                    width: 100.w,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SolhGreenBorderMiniButton(
+                            onPressed: () {
+                              issueAndSpecializationFilterController
+                                  .selectedIssue.value = '';
+                              issueAndSpecializationFilterController
+                                  .selectedSpeciality.value = widget.slug;
+                              getResultByCountry();
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Clear all',
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.primary_green),
+                            ),
+                          ),
+                          SolhGreenMiniButton(
+                            onPressed: () {
+                              widget.type == 'specialization'
+                                  ? searchMarketController.getSpecializationList(
+                                      issueAndSpecializationFilterController
+                                          .selectedSpeciality.value,
+                                      c: issueAndSpecializationFilterController
+                                          .selectedCountry.value,
+                                      issue:
+                                          issueAndSpecializationFilterController
+                                              .selectedIssue.value)
+                                  : widget.type == 'topconsultant'
+                                      ? searchMarketController.getTopConsultants(
+                                          issue:
+                                              issueAndSpecializationFilterController
+                                                  .selectedIssue.value,
+                                          c: searchMarketController
+                                              .defaultCountry)
+                                      : searchMarketController.getIssueList(
+                                          issueAndSpecializationFilterController
+                                              .selectedSpeciality.value,
+                                          issue:
+                                              issueAndSpecializationFilterController
+                                                  .selectedIssue.value,
+                                          c: issueAndSpecializationFilterController
+                                              .selectedCountry.value,
+                                        );
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Apply',
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.white),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ))));
+                  )),
+            ],
+          )),
+    );
   }
 
   Future<void> getResultByCountry() async {
+    print("defaultCountry " + searchMarketController.defaultCountry.toString());
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    defaultCountry = sharedPreferences.getString('userCountry');
-    print('@' * 30 + 'default country is $defaultCountry' + ' &' * 30);
+    issueAndSpecializationFilterController.selectedCountry.value =
+        await sharedPreferences.getString('userCountry')!;
+    searchMarketController.defaultCountry =
+        searchMarketController.defaultCountry == null ||
+                searchMarketController.defaultCountry == ''
+            ? sharedPreferences.getString('userCountry')
+            : searchMarketController.defaultCountry;
+    print('@' * 30 +
+        'default country is ${searchMarketController.defaultCountry}' +
+        ' &' * 30);
     widget.type == 'specialization'
         ? searchMarketController.getSpecializationList(widget.slug,
-            c: defaultCountry)
+            c: searchMarketController.defaultCountry)
         : widget.type == 'topconsultant'
-            ? searchMarketController.getTopConsultants(c: defaultCountry)
+            ? searchMarketController.getTopConsultants(
+                c: searchMarketController.defaultCountry)
             : searchMarketController.getIssueList(widget.slug,
-                c: defaultCountry);
+                c: searchMarketController.defaultCountry);
   }
 
   @override

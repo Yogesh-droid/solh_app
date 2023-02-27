@@ -54,14 +54,22 @@ class Conversation {
   int? dateTime;
   String? author;
   String? chatType;
+  String? authorId;
 
-  Conversation({this.body, this.dateTime, this.author, this.chatType});
+  Conversation({
+    this.body,
+    this.dateTime,
+    this.author,
+    this.chatType,
+    this.authorId,
+  });
 
   Conversation.fromJson(Map<String, dynamic> json) {
     body = json['body'];
     dateTime = json['dateTime'];
     author = json['author'];
     chatType = json['chatType'];
+    authorId = json['authorId'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

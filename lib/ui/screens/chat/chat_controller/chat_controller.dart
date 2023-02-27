@@ -233,6 +233,7 @@ class ChatController extends GetxController {
       ),
     );
     chatListController.chatListController();
+    chatListController.sosChatListController();
   }
 
   Future<void> getLocalPath() async {

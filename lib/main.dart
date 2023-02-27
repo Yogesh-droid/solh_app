@@ -115,10 +115,10 @@ class _SolhAppState extends State<SolhApp> {
               fontWeight: FontWeight.w600,
             ),
             bodyText1: TextStyle(
-                color: SolhColors.black666,
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-                decoration: TextDecoration.underline),
+              color: SolhColors.black666,
+              fontSize: 14,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           switchTheme: SwitchThemeData(
             thumbColor:

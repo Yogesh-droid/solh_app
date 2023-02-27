@@ -49,6 +49,10 @@ class ProfileCompletionController extends GetxController {
         return AppRoutes.emergencyContact;
       case 5:
         return AppRoutes.partOfOrg;
+      case 6:
+        return AppRoutes.needSupportOn; 
+      case 7:
+        return AppRoutes.genderField;
       default:
         return AppRoutes.myProfile;
     }

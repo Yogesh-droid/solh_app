@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
@@ -120,6 +121,8 @@ class LocalNotification {
         case "chat":
           var response = await Get.find<ProfileController>().getMyProfile();
           if (response) {
+            Get.find<ChatListController>().sosChatListController();
+            Get.find<ChatListController>().chatListController();
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(
                   builder: (context) => ChatScreen(

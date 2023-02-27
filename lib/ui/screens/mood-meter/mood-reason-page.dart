@@ -76,7 +76,7 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
                 borderSide: BorderSide(color: SolhColors.primary_green),
               ),
             ),
-            maxLines: 4,
+           
           ),
           SizedBox(
             height: 30,

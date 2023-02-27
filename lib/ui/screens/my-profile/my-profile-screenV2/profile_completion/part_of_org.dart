@@ -21,9 +21,11 @@ import 'package:solh/widgets_constants/text_field_styles.dart';
 import '../../../../../widgets_constants/solh_snackbar.dart';
 
 class PartOfOrg extends StatelessWidget {
-  PartOfOrg({Key? key}) : super(key: key);
+  PartOfOrg({Key? key, required Map<String, dynamic> args}) : indexOfpage = args['indexOfpage'],
+        super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   ProfileController profileController = Get.find();
+  final int indexOfpage;
   @override
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
@@ -47,11 +49,22 @@ class PartOfOrg extends StatelessWidget {
               });
 
               if (response) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoutes.master,
-                  (route) => false,
-                );
+               if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
+                        Navigator.pushNamed(
+                            context,
+                            profileCompletionController.getAppRoute(
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.master,
+                          (route) => false,
+                        );
+                      }
               }
             } else {
               SolhSnackbar.error(
@@ -64,11 +77,22 @@ class PartOfOrg extends StatelessWidget {
           backButtonColor: SolhColors.white,
           skipButtonStyle: SolhTextStyles.NormalTextWhiteS14W6,
           onSkip: (() {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              AppRoutes.master,
-              (route) => false,
-            );
+      if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
+                        Navigator.pushNamed(
+                            context,
+                            profileCompletionController.getAppRoute(
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.master,
+                          (route) => false,
+                        );
+                      }
           }),
           onBackButton: () => Navigator.of(context).pop()),
       body: Padding(

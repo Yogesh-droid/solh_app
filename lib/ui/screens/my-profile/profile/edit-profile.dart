@@ -210,8 +210,9 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   _gender = newValue!;
                 },
                 initialDropdownValue:
-                    profileController.myProfileModel.value.body!.user!.gender ??
-                        '',
+                    profileController.myProfileModel.value.body!.user!.gender ==null || 
+                     profileController.myProfileModel.value.body!.user!.gender== "N/A"?"N/A"
+                        :profileController.myProfileModel.value.body!.user!.gender,
               ),
             ],
           ),

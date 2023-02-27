@@ -51,7 +51,8 @@ class _ChatScreenState extends State<ChatScreen> {
   var _controller = Get.put(ChatController());
   @override
   void initState() {
-    debugPrint('anon ${widget._isAnonChat}');
+    debugPrint(
+        'anon ${profileController.myProfileModel.value.body!.user!.sId}');
     _service.connectAndListen();
     _controller.currentSid = widget._sId;
     SocketService.setCurrentSId(widget._sId);
@@ -140,7 +141,9 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (widget._isAnonChat) {
+        if (widget._isAnonChat &&
+            profileController.myProfileModel.value.body!.user!.sosChatSupport !=
+                true) {
           return _onWillPop(context, widget._sId);
         }
         return true;
@@ -1036,8 +1039,6 @@ Future<bool> _onWillPop(context, sId) async {
         );
       });
 }
-
-
 
 bool ifMinor(String dob) {
   DateTime birthDate = DateTime.parse(dob);

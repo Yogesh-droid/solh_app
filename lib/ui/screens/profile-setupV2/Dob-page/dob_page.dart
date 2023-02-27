@@ -43,7 +43,7 @@ class DobField extends StatelessWidget {
               });
 
               if (response) {
-                Navigator.pushNamed(context, AppRoutes.genderField);
+                Navigator.pushNamed(context, AppRoutes.master);
                 FirebaseAnalytics.instance.logEvent(
                     name: 'OnBoardingDobDone',
                     parameters: {'Page': 'OnBoarding'});

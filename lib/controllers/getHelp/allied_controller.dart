@@ -23,11 +23,14 @@ class AlliedController extends GetxController {
       if (map['success']) {
         try {
           packagesListModel.value = PackagesResponseModel.fromJson(map);
-          // print(
-          //     "this is ${packagesListModel.value.finalResult!.packages![1].packageCategory}");
-          print("this is ${packagesListModel.value.finalResult!.name}");
-
-          print("this is ${map["finalResult"]["name"]}");
+          if (packagesListModel.value.finalResult != null) {
+            if (packagesListModel.value.finalResult!.packages!.isNotEmpty) {
+              selectedPackage.value =
+                  packagesListModel.value.finalResult!.packages![0].sId ?? '';
+              selectedPackagePrice.value =
+                  packagesListModel.value.finalResult!.packages![0].amount ?? 0;
+            }
+          }
         } on Exception catch (e) {
           debugPrint(e.toString());
           throw Exceptions(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-model/chat_anon_model.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-service/chat_anon_service.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-model/need_support_on_model.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-service/need_support_on_service.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need-support-on-model/need_support_on_model.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need-support-on-service/need_support_on_service.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class ChatAnonController extends GetxController {

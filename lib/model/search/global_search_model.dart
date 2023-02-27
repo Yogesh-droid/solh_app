@@ -468,9 +468,9 @@ class GroupCount {
 }
 
 class PostCount {
-  double? aspectRatio;
-  double? mediaHeight;
-  double? mediaWidth;
+  String? aspectRatio;
+  String? mediaHeight;
+  String? mediaWidth;
   int? featuredOrder;
   String? sId;
   String? description;

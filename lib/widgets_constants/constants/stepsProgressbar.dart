@@ -28,7 +28,7 @@ class StepsProgressbar extends StatelessWidget {
         LayoutBuilder(
             builder: ((BuildContext context, BoxConstraints constraints) {
           return Container(
-            width: (constraints.maxWidth / 6) * stepNumber,
+            width: (constraints.maxWidth / 8) * stepNumber,
             height: 0.7.h,
             decoration: BoxDecoration(
               color: upperBarcolor,

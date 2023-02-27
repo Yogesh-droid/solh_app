@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/profile_completion_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -11,11 +12,13 @@ import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButto
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-import '../../../../widgets_constants/solh_snackbar.dart';
+import '../../../../../../widgets_constants/solh_snackbar.dart';
 
 class GenderField extends StatelessWidget {
-  GenderField({Key? key}) : super(key: key);
+  GenderField({Key? key,required Map<String, dynamic> args}) : indexOfpage = args['indexOfpage'],super(key: key);
   ProfileSetupController profileSetupController = Get.find();
+   final ProfileCompletionController profileCompletionController =Get.find();
+   final int indexOfpage;
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
       floatingActionButton: Obx(() {
@@ -34,7 +37,22 @@ class GenderField extends StatelessWidget {
               });
 
               if (response) {
-                Navigator.pushNamed(context, AppRoutes.roleField);
+                    if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
+                        Navigator.pushNamed(
+                            context,
+                            profileCompletionController.getAppRoute(
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.master,
+                          (route) => false,
+                        );
+                      }
                 FirebaseAnalytics.instance.logEvent(
                     name: 'OnBoardingGenderDone',
                     parameters: {'Page': 'OnBoarding'});
@@ -46,6 +64,26 @@ class GenderField extends StatelessWidget {
         );
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
+        onSkip: () {
+            if (profileCompletionController.uncompleteFields.last !=
+                          profileCompletionController
+                              .uncompleteFields[indexOfpage]) {
+                        Navigator.pushNamed(
+                            context,
+                            profileCompletionController.getAppRoute(
+                                profileCompletionController
+                                    .uncompleteFields[indexOfpage + 1]),
+                            arguments: {"indexOfpage": indexOfpage + 1});
+                      } else {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          AppRoutes.master,
+                          (route) => false,
+                        );
+                      }
+                
+        },
+        skipButtonStyle: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
         backButtonColor: SolhColors.white,
         onBackButton: () => Navigator.of(context).pop(),
       ),
@@ -58,7 +96,7 @@ class GenderField extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            StepsProgressbar(stepNumber: 3),
+            StepsProgressbar(stepNumber: 8),
             SizedBox(
               height: 3.h,
             ),

@@ -9,6 +9,7 @@ import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
+import 'package:solh/ui/screens/get-help/view-all/view_all_allied_categories.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
@@ -35,9 +36,9 @@ import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/login
 import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
 import 'package:solh/ui/screens/profile-setupV2/Dob-page/dob_page.dart';
 import 'package:solh/ui/screens/profile-setupV2/LetsCreateYourprofile/lets_create_your_profile.dart';
-import 'package:solh/ui/screens/profile-setupV2/gender-page/gender_field.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
 import 'package:solh/ui/screens/profile-setupV2/name-page/name_field.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need_support_on.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need_support_on.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/part_of_an_organisation.dart';
 import 'package:solh/ui/screens/profile-setupV2/role-page/role_selection_screen_screen.dart';
 import 'package:solh/ui/screens/profile-setup/profile-setup.dart';
@@ -79,6 +80,7 @@ class AppRoutes {
   static const String viewAllAlliedExpert = '/viewAllAlliedExpert';
   static const String consultantAlliedParent = '/consultantAlliedParent';
   static const String alliedConsultantScreen = '/alliedConsluntantScreen';
+  static const String viewAllAlliedCategories = '/viewAllAlliedCategories';
 
   /// Goal related  ////
   static const String myGoalScreen = '/myGoalScreen';
@@ -227,11 +229,11 @@ class RouteGenerator {
       case AppRoutes.dobField:
         return MaterialPageRoute(builder: ((context) => DobField()));
       case AppRoutes.genderField:
-        return MaterialPageRoute(builder: ((context) => GenderField()));
+        return MaterialPageRoute(builder: ((context) => GenderField(args: args as Map<String, dynamic>)));
       case AppRoutes.roleField:
         return MaterialPageRoute(builder: ((context) => RoleSection()));
       case AppRoutes.needSupportOn:
-        return MaterialPageRoute(builder: ((context) => NeedSupportOn()));
+        return MaterialPageRoute(builder: ((context) => NeedSupportOn(args: args as Map<String, dynamic>)));
       case AppRoutes.moodAnalytics:
         return MaterialPageRoute(builder: ((context) => MoodAnalyticPage()));
       case AppRoutes.partOfAnOrgnisation:
@@ -270,9 +272,9 @@ class RouteGenerator {
                 EmergencyContacts(args: args as Map<String, dynamic>)),
             settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.partOfOrg:
-        return MaterialPageRoute(builder: ((context) => PartOfOrg()));
+        return MaterialPageRoute(builder: ((context) => PartOfOrg(args: args as Map<String, dynamic>)));
       case AppRoutes.needSupportOn:
-        return MaterialPageRoute(builder: ((context) => NeedSupportOn()));
+        return MaterialPageRoute(builder: ((context) => NeedSupportOn(args: args as Map<String, dynamic>)));
       case AppRoutes.editNeedSupportOn:
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
       case AppRoutes.chatAnonIssues:
@@ -298,6 +300,8 @@ class RouteGenerator {
                 ConsultantAlliedParent(args: args as Map<String, dynamic>)));
       case AppRoutes.waitingScreen:
         return MaterialPageRoute(builder: ((context) => WaitingScreen()));
+      case AppRoutes.viewAllAlliedCategories:
+        return MaterialPageRoute(builder: ((context) => ViewAlAlliedCategories(args: args as Map<String, dynamic>)));
 
       default:
         return MaterialPageRoute(

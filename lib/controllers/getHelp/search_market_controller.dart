@@ -11,6 +11,7 @@ class SearchMarketController extends GetxController {
   var issueModel = SearchMarketModel().obs;
   var isSearchingDoctors = false.obs;
   String country = "IN";
+  String? defaultCountry;
 
   Future<void> getSearchResults(String searchText, {String? c}) async {
     isLoading.value = true;
@@ -40,12 +41,13 @@ class SearchMarketController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> getSpecializationList(String slug, {String? c}) async {
+  Future<void> getSpecializationList(String slug,
+      {String? c, String issue = ''}) async {
     isSearchingDoctors.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
-      url =
-          APIConstants.api + '/api/v1/get-help?specialization=$slug&country=$c';
+      url = APIConstants.api +
+          '/api/v1/get-help?specialization=$slug&country=$c&issue=$issue';
     } else {
       url = APIConstants.api +
           '/api/v1/get-help?specialization=$slug&country=$country';
@@ -56,11 +58,11 @@ class SearchMarketController extends GetxController {
     isSearchingDoctors.value = false;
   }
 
-  Future<void> getTopConsultants({String? c}) async {
+  Future<void> getTopConsultants({String? c, String issue = ''}) async {
     isSearchingDoctors.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
-      url = APIConstants.api + '/api/top-consultants?country=$c';
+      url = APIConstants.api + '/api/top-consultants?country=$c&issue=$issue';
     } else {
       url = APIConstants.api + '/api/top-consultants?country=$country';
     }
@@ -70,12 +72,12 @@ class SearchMarketController extends GetxController {
     isSearchingDoctors.value = false;
   }
 
-  Future<void> getIssueList(String slug, {String? c}) async {
+  Future<void> getIssueList(String slug, {String? c, String issue = ''}) async {
     isSearchingDoctors.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
-      url =
-          APIConstants.api + '/api/v1/get-help?specialization=$slug&country=$c';
+      url = APIConstants.api +
+          '/api/v1/get-help?specialization=$slug&country=$c&issue=$issue';
     } else {
       url = APIConstants.api +
           '/api/v1/get-help?specialization=$slug&country=$country';

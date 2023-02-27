@@ -4,8 +4,8 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-model/need_support_on_model.dart';
-import 'package:solh/ui/screens/profile-setupV2/need-support-on/need-support-on-service/need_support_on_service.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need-support-on-model/need_support_on_model.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need-support-on-service/need_support_on_service.dart';
 import 'package:solh/ui/screens/profile-setupV2/role-page/role_selection_screen_screen.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 

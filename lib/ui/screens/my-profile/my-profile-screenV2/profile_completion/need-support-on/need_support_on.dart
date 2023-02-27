@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/profile_completion_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -14,9 +15,12 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 class NeedSupportOn extends StatelessWidget {
-  NeedSupportOn({Key? key}) : super(key: key);
-
+  NeedSupportOn({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
+  final int indexOfpage;
   final ProfileSetupController profileSetupController = Get.find();
+  final ProfileCompletionController profileCompletionController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -37,22 +41,51 @@ class NeedSupportOn extends StatelessWidget {
           });
 
           if (response) {
-            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation);
+            if (profileCompletionController.uncompleteFields.last !=
+                profileCompletionController.uncompleteFields[indexOfpage]) {
+              Navigator.pushNamed(
+                  context,
+                  profileCompletionController.getAppRoute(
+                      profileCompletionController
+                          .uncompleteFields[indexOfpage + 1]),
+                  arguments: {"indexOfpage": indexOfpage + 1});
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.master,
+                (route) => false,
+              );
+            }
           }
         }),
       ),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
-        onSkip: (() =>
-            Navigator.pushNamed(context, AppRoutes.partOfAnOrgnisation)),
+        onSkip: (() {
+          if (profileCompletionController.uncompleteFields.last !=
+              profileCompletionController.uncompleteFields[indexOfpage]) {
+            Navigator.pushNamed(
+                context,
+                profileCompletionController.getAppRoute(
+                    profileCompletionController
+                        .uncompleteFields[indexOfpage + 1]),
+                arguments: {"indexOfpage": indexOfpage + 1});
+          } else {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.master,
+              (route) => false,
+            );
+          }
+        }),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             StepsProgressbar(
-              stepNumber: 5,
+              stepNumber: 7,
               bottomBarcolor: SolhColors.grey239,
               upperBarcolor: SolhColors.primary_green,
             ),
@@ -199,16 +232,10 @@ class _IssueChipsState extends State<IssueChips> {
                               : SolhColors.black,
                       label:
                           profileSetupController.selectedIsses.contains(e.sId)
-                              ? Text(
-                                  e.slug!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline1!
-                                      .copyWith(color: SolhColors.white),
-                                )
+                              ? Text(e.slug!, style: SolhTextStyles.QS_cap_semi)
                               : Text(
                                   e.slug!,
-                                  style: Theme.of(context).textTheme.headline1,
+                                  style: SolhTextStyles.QS_cap_semi,
                                 )))
                   .toList());
     });

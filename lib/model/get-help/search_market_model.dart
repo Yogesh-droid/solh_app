@@ -89,22 +89,22 @@ class Doctors {
 
   Doctors.fromJson(Map<String, dynamic> json) {
     offlineSession = json['offlineSession'];
-    fee = json['fee'];
-    fee_amount = json['fee_amount'];
-    feeCurrency = json['feeCurrency'];
-    name = json['name'];
-    organisation = json['organisation'];
-    addressLineOne = json['addressLineOne'];
-    addressLineTwo = json['addressLineTwo'];
-    addressLineThree = json['addressLineThree'];
+    fee = json['fee'] ??'';
+    fee_amount = json['fee_amount'] ;
+    feeCurrency = json['feeCurrency']??'';
+    name = json['name']??'';
+    organisation = json['organisation']??'';
+    addressLineOne = json['addressLineOne']??'';
+    addressLineTwo = json['addressLineTwo']??'';
+    addressLineThree = json['addressLineThree']??'';
     addressLineFour = json['addressLineFour'];
-    bio = json['bio'];
-    contactNumber = json['contactNumber'];
-    email = json['email'];
-    sId = json['_id'];
-    profilePicture = json['profilePicture'];
-    specialization = json['specialization'];
-    prefix = json['prefix'];
+    bio = json['bio']??'';
+    contactNumber = json['contactNumber']??'';
+    email = json['email']??'';
+    sId = json['_id']??'';
+    profilePicture = json['profilePicture']??'';
+    specialization = json['specialization']??'';
+    prefix = json['prefix']??'';
   }
 
   Map<String, dynamic> toJson() {
@@ -197,9 +197,9 @@ class Provider {
     fee = json['fee'];
     fee_amount = json['fee_amount'];
     feeCurrency = json['fee_currency'];
-    language = json['language'].cast<String>();
+    language = json['language'] !=null? json['language'].cast<String>():[] ;
     offlineSession = json['offlineSession'];
-    education = json['education'].cast<String>();
+    education = json['education'] !=null? json['education'].cast<String>():[];
     specialization = json['specialization'].cast<String>();
     contactNumber = json['contactNumber'];
     country = json['country'];

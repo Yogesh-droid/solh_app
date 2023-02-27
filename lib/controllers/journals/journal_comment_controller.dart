@@ -12,6 +12,7 @@ class JournalCommentController extends GetxController {
   var bestCommentReplyList = [].obs;
   var getJouranalsCommentModel = GetJouranalsCommentModel().obs;
   var reactionlistModel = ReactionListModel().obs;
+  var isReactionLoading = false.obs;
   var isReplying = false.obs;
   String commentId = '';
   String parentId = '';
@@ -174,9 +175,11 @@ class JournalCommentController extends GetxController {
   }
 
   Future<void> getReactionList() async {
+    isReactionLoading(true);
     Map<String, dynamic> map = await Network.makeGetRequest(
         '${APIConstants.api}/api/custom/reaction/list');
     reactionlistModel.value = ReactionListModel.fromJson(map);
+    isReactionLoading(false);
   }
 
   Future<String> likePost(
