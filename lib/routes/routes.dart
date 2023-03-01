@@ -8,6 +8,7 @@ import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
+import 'package:solh/ui/screens/get-help/inhouse_package_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_allied_categories.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
@@ -81,6 +82,7 @@ class AppRoutes {
   static const String consultantAlliedParent = '/consultantAlliedParent';
   static const String alliedConsultantScreen = '/alliedConsluntantScreen';
   static const String viewAllAlliedCategories = '/viewAllAlliedCategories';
+  static const String inhousePackage = '/inhousePackage';
 
   /// Goal related  ////
   static const String myGoalScreen = '/myGoalScreen';
@@ -229,11 +231,15 @@ class RouteGenerator {
       case AppRoutes.dobField:
         return MaterialPageRoute(builder: ((context) => DobField()));
       case AppRoutes.genderField:
-        return MaterialPageRoute(builder: ((context) => GenderField(args: args as Map<String, dynamic>)));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                GenderField(args: args as Map<String, dynamic>)));
       case AppRoutes.roleField:
         return MaterialPageRoute(builder: ((context) => RoleSection()));
       case AppRoutes.needSupportOn:
-        return MaterialPageRoute(builder: ((context) => NeedSupportOn(args: args as Map<String, dynamic>)));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                NeedSupportOn(args: args as Map<String, dynamic>)));
       case AppRoutes.moodAnalytics:
         return MaterialPageRoute(builder: ((context) => MoodAnalyticPage()));
       case AppRoutes.partOfAnOrgnisation:
@@ -272,9 +278,13 @@ class RouteGenerator {
                 EmergencyContacts(args: args as Map<String, dynamic>)),
             settings: RouteSettings(name: routeSettings.name));
       case AppRoutes.partOfOrg:
-        return MaterialPageRoute(builder: ((context) => PartOfOrg(args: args as Map<String, dynamic>)));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                PartOfOrg(args: args as Map<String, dynamic>)));
       case AppRoutes.needSupportOn:
-        return MaterialPageRoute(builder: ((context) => NeedSupportOn(args: args as Map<String, dynamic>)));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                NeedSupportOn(args: args as Map<String, dynamic>)));
       case AppRoutes.editNeedSupportOn:
         return MaterialPageRoute(builder: ((context) => EditNeedSupportOn()));
       case AppRoutes.chatAnonIssues:
@@ -301,7 +311,13 @@ class RouteGenerator {
       case AppRoutes.waitingScreen:
         return MaterialPageRoute(builder: ((context) => WaitingScreen()));
       case AppRoutes.viewAllAlliedCategories:
-        return MaterialPageRoute(builder: ((context) => ViewAlAlliedCategories(args: args as Map<String, dynamic>)));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                ViewAlAlliedCategories(args: args as Map<String, dynamic>)));
+      case AppRoutes.inhousePackage:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                InhousePackageScreen(args: args as Map<String, dynamic>)));
 
       default:
         return MaterialPageRoute(

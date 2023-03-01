@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
+import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/utility.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class AlliedController extends GetxController {
   var packagesListModel = PackagesResponseModel().obs;
+  var inhousePackageModel = InhousePackageModel().obs;
+  var inhousePackageFetching = false.obs;
   var isPackageListFetching = false.obs;
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
@@ -83,6 +89,66 @@ class AlliedController extends GetxController {
     } catch (e) {
       //isPackageListFetching.value = false;
       return {"success": false, "message": "Something went wrong"};
+    }
+  }
+
+  Future<Map<String, dynamic>> createInhousePackageOrder(
+      PackageList package) async {
+    Map<String, dynamic> map;
+
+    List<Map<String, dynamic>> videoSession = [];
+
+    // package.videoSessions!.forEach((element) {
+    //   videoSession.add({
+    //     "vName": element.vName,
+    //     "duration": element.vDescription,
+    //     "vDescription": element.vDescription
+    //   });
+    // });
+
+    Map<String, dynamic> body = {
+      "packageName": package.name,
+      "packageSlug": package.slug,
+      "packageDuration": package.duration,
+      "packageUnitDuration": package.unitDuration,
+      "packageAboutPackage": package.aboutPackage,
+      "packageBenefits": package.benefits,
+      "packageEquipment": package.equipment,
+      "packageCurrency": package.currency,
+      "packageAmount": package.amount,
+      "packageOwner": package.packageOwner,
+      "packageType": package.packageType!.sId,
+      "createdBy":
+          Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,
+      "status": "Inprocess",
+    };
+    try {
+      map = {"success": true, "message": "Something went wrong"};
+      await Network.makePostRequestWithToken(
+          url: "${APIConstants.api}/api/allied/therapies/place-inhouse-order",
+          body: body,
+          isEncoded: true);
+      //isPackageListFetching.value = false;
+      return map;
+    } catch (e) {
+      //isPackageListFetching.value = false;
+      return {"success": false, "message": "Something went wrong"};
+    }
+  }
+
+  Future<void> getInhousePackage(String packageId) async {
+    try {
+      inhousePackageFetching(true);
+      var map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/allied/therapies/inhouse-package-carousel-details/$packageId");
+
+      if (map["success"]) {
+        inhousePackageModel.value = InhousePackageModel.fromJson(map);
+        inhousePackageFetching(false);
+      }
+    } catch (e) {
+      inhousePackageFetching(false);
+      SolhSnackbar.error('Opps', 'Something went wrong');
     }
   }
 }

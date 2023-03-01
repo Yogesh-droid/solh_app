@@ -779,6 +779,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           );
                           if (_xFile != null) {
                             print("image picked");
+
                             print(
                                 'Size Original is ${File(_xFile!.path).lengthSync()}');
                             final croppedFile = await ImageCropper().cropImage(
@@ -2119,8 +2120,10 @@ class _AnonymousBottomSheetState extends State<AnonymousBottomSheet> {
       // maxHeight: 640,
       // imageQuality: 50,
     );
+
     print(_xFile!.path.toString());
     if (_xFile != null) {
+      print("mimeType ${_xFile!.mimeType}");
       final croppedFile = await ImageCropper().cropImage(
           sourcePath: _xFile!.path,
           aspectRatioPresets: [

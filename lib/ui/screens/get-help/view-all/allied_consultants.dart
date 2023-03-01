@@ -390,19 +390,20 @@ class AlliedConsultantTile extends StatelessWidget {
                                   )
                                 ]),
                             child: Center(
-                                child: Row(
-                              children: [
-                                Icon(
-                                  CupertinoIcons.play_rectangle,
-                                  size: 12,
-                                  color: SolhColors.primaryRed,
-                                ),
-                                Text(
-                                  ' Preview',
-                                  style: SolhTextStyles.QS_cap_2_semi,
-                                )
-                              ],
-                            )),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    CupertinoIcons.play_rectangle,
+                                    size: 12,
+                                    color: SolhColors.primaryRed,
+                                  ),
+                                  Text(
+                                    ' Preview',
+                                    style: SolhTextStyles.QS_cap_2_semi,
+                                  )
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],

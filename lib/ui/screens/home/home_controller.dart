@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/model/get-help/inhouse_packages_carousel_model.dart';
 import 'package:solh/services/network/network.dart';
 
 import '../../../model/home/home_carousel.dart';
 
 class HomeController extends GetxController {
-  var homePageCarouselModel = HomePageCarouselModel().obs;
+  var homePageCarouselModel = InhousePackagesCarouselModel().obs;
   var isBannerLoading = false.obs;
   var isCorouselShown = false.obs;
   var dotList = [].obs;
@@ -32,12 +33,13 @@ class HomeController extends GetxController {
     try {
       print("Getting HomeBaner");
       map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/allied/therapies/home/package/getBanners");
+          "${APIConstants.api}/api/allied/therapies/inhouse-package-carousel-list");
       if (map["success"]) {
         isCorouselShown.value = true;
-        homePageCarouselModel.value = HomePageCarouselModel.fromJson(map);
+        homePageCarouselModel.value =
+            InhousePackagesCarouselModel.fromJson(map);
         for (int i = 0;
-            i < homePageCarouselModel.value.finalResult!.length;
+            i < homePageCarouselModel.value.packageCarouselList!.length;
             i++) {
           dotList.value.add(i);
         }

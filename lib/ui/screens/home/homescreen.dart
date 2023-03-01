@@ -1821,17 +1821,20 @@ class AlliedExperts extends StatelessWidget {
                 'Allied Experts',
                 style: SolhTextStyles.QS_body_semi_1,
               ),
-              InkWell
-              (
-                onTap: () => Navigator.pushNamed(context, AppRoutes.viewAllAlliedCategories,arguments: {"onTap":(value) {
-                  Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
-                      arguments: {
-                        "slug": value,
-                        "name": value,
-                        "type": 'specialization',
-                        "enableAppbar": true
-                      });
-                }}),
+              InkWell(
+                onTap: () => Navigator.pushNamed(
+                    context, AppRoutes.viewAllAlliedCategories,
+                    arguments: {
+                      "onTap": (value) {
+                        Navigator.pushNamed(
+                            context, AppRoutes.viewAllAlliedExpert, arguments: {
+                          "slug": value,
+                          "name": value,
+                          "type": 'specialization',
+                          "enableAppbar": true
+                        });
+                      }
+                    }),
                 child: Text(
                   'Show more',
                   style: SolhTextStyles.CTA
@@ -1935,35 +1938,35 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
   Widget build(BuildContext context) {
     return Obx(() => homeController.isBannerLoading.value
         ? Container()
-        : homeController.homePageCarouselModel.value.finalResult == null
+        : homeController.homePageCarouselModel.value.packageCarouselList == null
             ? Container()
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CarouselSlider.builder(
                     carouselController: carouselController,
-                    itemCount: homeController
-                        .homePageCarouselModel.value.finalResult!.length,
+                    itemCount: homeController.homePageCarouselModel.value
+                        .packageCarouselList!.length,
                     itemBuilder: ((context, index, realIndex) {
                       return InkWell(
                         onTap: () {
                           if (homeController.homePageCarouselModel.value
-                                  .finalResult![index].bannerRouteName ==
-                              "alliedproviderlist") {
+                                  .packageCarouselList![index].routeName ==
+                              "providerList") {
                             Navigator.pushNamed(
                                 context, AppRoutes.viewAllAlliedExpert,
                                 arguments: {
                                   "slug": homeController
                                           .homePageCarouselModel
                                           .value
-                                          .finalResult![index]
-                                          .bannerRouteKey ??
+                                          .packageCarouselList![index]
+                                          .routeKey ??
                                       '',
                                   "name": homeController
                                           .homePageCarouselModel
                                           .value
-                                          .finalResult![index]
-                                          .bannerRouteKey ??
+                                          .packageCarouselList![index]
+                                          .routeKey ??
                                       '',
                                   "type": 'specialization',
                                   "enableAppbar": true
@@ -1977,10 +1980,13 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                             // });
                           } else {
                             Navigator.pushNamed(
-                                context, AppRoutes.alliedConsultantScreen,
+                                context, AppRoutes.inhousePackage,
                                 arguments: {
-                                  "id": homeController.homePageCarouselModel
-                                      .value.finalResult![index].bannerRouteKey
+                                  "id": homeController
+                                      .homePageCarouselModel
+                                      .value
+                                      .packageCarouselList![index]
+                                      .routeKey
                                 });
                           }
                         },
@@ -1994,8 +2000,8 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                                   child: Image.network(homeController
                                           .homePageCarouselModel
                                           .value
-                                          .finalResult![index]
-                                          .bannerImageUrl ??
+                                          .packageCarouselList![index]
+                                          .image ??
                                       '')),
                             )),
                       );
@@ -2050,8 +2056,6 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
               ));
   }
 }
-
-
 
 List list = [
   0,
