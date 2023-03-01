@@ -112,21 +112,18 @@ class _JournalingState extends State<Journaling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SmartRefresher(
-        controller: _refreshController,
-        onRefresh: _onRefresh,
-        child: NotificationListener<ScrollStartNotification>(
-          onNotification: (scrollNotification) {
-            print('inside the onNotification');
-            print(scrollNotification.metrics);
-            if (scrollNotification.metrics.axisDirection ==
-                AxisDirection.down) {
-              FirebaseAnalytics.instance.logEvent(
-                  name: 'JournalingScrolled2',
-                  parameters: {'Page': 'Journaling'});
-            }
-            return true;
-          },
+      body: NotificationListener<ScrollStartNotification>(
+        onNotification: (scrollNotification) {
+          if (scrollNotification.metrics.axisDirection == AxisDirection.down) {
+            FirebaseAnalytics.instance.logEvent(
+                name: 'JournalingScrolled2',
+                parameters: {'Page': 'Journaling'});
+          }
+          return true;
+        },
+        child: SmartRefresher(
+          controller: _refreshController,
+          onRefresh: _onRefresh,
           child: ListView(
             controller: _journalsScrollController,
             children: [

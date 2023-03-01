@@ -270,9 +270,13 @@ class MoodAnalyticPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.4,
               width: MediaQuery.of(context).size.width * 0.4,
               decoration: BoxDecoration(
-                color: Color(int.parse((moodMeterController
-                    .moodAnlyticsModel.value.avgFeeling!.hexCode!
-                    .replaceAll('#', '0xFF')))),
+                color: moodMeterController
+                            .moodAnlyticsModel.value.avgFeeling!.hexCode !=
+                        null
+                    ? Color(int.parse((moodMeterController
+                        .moodAnlyticsModel.value.avgFeeling!.hexCode!
+                        .replaceAll('#', '0xFF'))))
+                    : Colors.white,
                 shape: BoxShape.circle,
               ),
             ),
@@ -454,12 +458,16 @@ class MoodAnalyticPage extends StatelessWidget {
               height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                color:
-                    moodMeterController.moodAnlyticsModel.value.avgMood != null
+                color: moodMeterController
+                            .moodAnlyticsModel.value.avgFeeling!.hexCode !=
+                        null
+                    ? moodMeterController.moodAnlyticsModel.value.avgMood !=
+                            null
                         ? Color(int.parse((moodMeterController
                             .moodAnlyticsModel.value.avgFeeling!.hexCode!
                             .replaceAll('#', '0xFF'))))
-                        : Colors.grey,
+                        : Colors.grey
+                    : Colors.grey,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),

@@ -474,7 +474,7 @@ class _HomePageState extends State<HomePage> {
           getSolhBuddiesUI(), */
           // GetHelpDivider(),
           GetHelpCategory(
-            title: 'Recommended reads',
+            title: 'Latest Reads',
           ),
           getRecommendedReadsUI(),
           SizedBox(

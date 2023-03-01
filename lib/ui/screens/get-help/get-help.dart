@@ -280,7 +280,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "Top Consultants",
+              title: "Leading Solh Experts",
               onPressed: () {
                 Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                     arguments: {
