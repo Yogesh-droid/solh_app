@@ -7,7 +7,6 @@ import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import '../../../controllers/getHelp/consultant_controller.dart';
-import '../../../model/doctor.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import 'consultant_profile_page.dart';
@@ -177,36 +176,36 @@ class ConsultantsTile extends StatelessWidget {
                   ? profilePicture
                   : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 6.w,
-                width: 12.w,
-                decoration: BoxDecoration(
-                    color: SolhColors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        color: Colors.black26,
-                      )
-                    ]),
-                child: Center(
-                    child: SvgPicture.asset(
-                  'assets/images/verified_consultant.svg',
-                  color: SolhColors.primary_green,
-                  height: 15,
-                )),
-              ),
-            ],
-          ),
-        )
+        // Positioned(
+        //   bottom: 0,
+        //   right: 0,
+        //   left: 0,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: [
+        //       Container(
+        //         height: 6.w,
+        //         width: 12.w,
+        //         decoration: BoxDecoration(
+        //             color: SolhColors.white,
+        //             borderRadius: BorderRadius.circular(10),
+        //             boxShadow: <BoxShadow>[
+        //               BoxShadow(
+        //                 spreadRadius: 2,
+        //                 blurRadius: 2,
+        //                 color: Colors.black26,
+        //               )
+        //             ]),
+        //         child: Center(
+        //             child: SvgPicture.asset(
+        //           'assets/images/verified_consultant.svg',
+        //           color: SolhColors.primary_green,
+        //           height: 15,
+        //         )),
+        //       ),
+        //     ],
+        //   ),
+        // )
       ],
     );
   }

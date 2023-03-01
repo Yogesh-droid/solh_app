@@ -2,7 +2,7 @@ name: solh
 description: Solh App by OMLogic
 
 
-version: 1.0.22+66
+version: 1.0.23+67
 
 
 environment:
@@ -62,7 +62,8 @@ dev_dependencies:
   build_runner:
   flutter_test:
     sdk: flutter
-
+dependency_overrides:
+  firebase_core_platform_interface: 4.5.1
 flutter:
   uses-material-design: true
   

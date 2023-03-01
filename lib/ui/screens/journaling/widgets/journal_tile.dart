@@ -329,10 +329,8 @@ class _JournalTileState extends State<JournalTile> {
                                     width:
                                         MediaQuery.of(context).size.width / 1.8,
                                     child: Text(
-                                      widget._journalModel!.anonymousJournal !=
-                                                  null &&
-                                              widget._journalModel!.postedBy!
-                                                      .anonymous !=
+                                      widget._journalModel!.anonymousJournal != null &&
+                                              widget._journalModel!.postedBy!.anonymous !=
                                                   null &&
                                               widget._journalModel!
                                                   .anonymousJournal!
@@ -342,18 +340,28 @@ class _JournalTileState extends State<JournalTile> {
                                                           .value
                                                           .length ==
                                                       0
-                                              ? widget._journalModel!.group!
-                                                      .groupName ??
+                                              ? widget._journalModel!.group!.groupName ??
                                                   ''
-                                              : widget._journalModel!.postedBy!
-                                                          .sId ==
-                                                      Get.find<ProfileController>()
+                                              : Get.find<ProfileController>()
                                                           .myProfileModel
                                                           .value
-                                                          .body!
-                                                          .user!
-                                                          .sId
-                                                  ? 'You'
+                                                          .body !=
+                                                      null
+                                                  ? widget._journalModel!
+                                                              .postedBy!.sId ==
+                                                          Get.find<ProfileController>()
+                                                              .myProfileModel
+                                                              .value
+                                                              .body!
+                                                              .user!
+                                                              .sId
+                                                      ? 'You'
+                                                      : widget
+                                                              ._journalModel!
+                                                              .postedBy!
+                                                              .anonymous!
+                                                              .userName ??
+                                                          ''
                                                   : widget
                                                           ._journalModel!
                                                           .postedBy!
@@ -361,11 +369,7 @@ class _JournalTileState extends State<JournalTile> {
                                                           .userName ??
                                                       ''
                                           : widget._journalModel!.group != null &&
-                                                  journalPageController
-                                                          .selectedGroupId
-                                                          .value
-                                                          .length ==
-                                                      0
+                                                  journalPageController.selectedGroupId.value.length == 0
                                               ? widget._journalModel!.group!.groupName ?? ''
                                               : widget._journalModel!.postedBy != null
                                                   ? widget._journalModel!.postedBy!.anonymous != null && widget._journalModel!.anonymousJournal!
@@ -375,7 +379,9 @@ class _JournalTileState extends State<JournalTile> {
                                                               ? 'You'
                                                               : widget._journalModel!.postedBy!.anonymous!.userName ?? ''
                                                       : Get.find<ProfileController>().myProfileModel.value.body == null
-                                                          ? widget._journalModel!.postedBy!.anonymous!.userName ?? ''
+                                                          ? widget._journalModel!.postedBy!.anonymous == null
+                                                              ? widget._journalModel!.postedBy!.name ?? ''
+                                                              : widget._journalModel!.postedBy!.anonymous!.userName ?? ''
                                                           : widget._journalModel!.postedBy!.sId == Get.find<ProfileController>().myProfileModel.value.body!.user!.sId
                                                               ? 'You'
                                                               : widget._journalModel!.postedBy!.name ?? ''

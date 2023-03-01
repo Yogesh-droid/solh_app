@@ -67,7 +67,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
         searchController.clear();
       },
       onSubmitted: (value) {
-        globalSearchController.getTexSearch(value);
+        globalSearchController.getTexSearch(value.trim());
       },
     );
   }
@@ -231,7 +231,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                         profilePic: alliedProviders[index].profilePicture ??
                             "https://solhapp-live.s3.amazonaws.com/provider/1669034569095.png",
                         feeAmount: alliedProviders[index].feeAmount ?? 0,
-                        prefix: "Mr.",
+                        prefix: alliedProviders[index].prefix ?? '',
                         name: alliedProviders[index].name ?? '',
                         experience:
                             alliedProviders[index].experience.toString(),
