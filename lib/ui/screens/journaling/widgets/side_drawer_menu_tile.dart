@@ -79,9 +79,10 @@ getIcon(title) {
   if (title == "Appointments") {
     return SvgPicture.asset('assets/images/appointment.svg');
   }
-  if (title == "Explore Thyself") {
+  if (title == "Self Assessments") {
     return SvgPicture.asset('assets/images/psycotests.svg');
   }
+
   if (title == "Know Us More") {
     return SvgPicture.asset('assets/images/tutorial.svg');
   } else {

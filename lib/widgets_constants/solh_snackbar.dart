@@ -7,6 +7,7 @@ class SolhSnackbar {
       {Icon? icon = null}) {
     return Get.snackbar(title, message,
         backgroundColor: SolhColors.greenShade1,
+        duration: Duration(milliseconds: 900),
         snackPosition: SnackPosition.BOTTOM);
   }
 
@@ -16,6 +17,7 @@ class SolhSnackbar {
   ) {
     return Get.snackbar(title, message,
         backgroundColor: SolhColors.primaryRed,
+        duration: Duration(milliseconds: 900),
         snackPosition: SnackPosition.BOTTOM);
   }
 }

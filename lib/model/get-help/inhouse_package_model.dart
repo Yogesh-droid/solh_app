@@ -38,6 +38,7 @@ class Carousel {
   String? image;
   int? totalPackage;
   String? routeName;
+  String? mainCategory;
 
   Carousel(
       {this.sId,
@@ -45,11 +46,13 @@ class Carousel {
       this.description,
       this.image,
       this.totalPackage,
+      this.mainCategory,
       this.routeName});
 
   Carousel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
+    mainCategory = json['mainCategory'];
     description = json['description'];
     image = json['image'];
     totalPackage = json['totalPackage'];
@@ -81,6 +84,8 @@ class PackageList {
   String? currency;
   int? amount;
   PackageType? packageType;
+  MainCategory? mainCategory;
+  PackageCarouselId? packageCarouselId;
 
   PackageList(
       {this.sId,
@@ -90,6 +95,7 @@ class PackageList {
       this.unitDuration,
       this.equipment,
       this.aboutPackage,
+      this.packageCarouselId,
       this.benefits,
       this.packageOwner,
       this.currency,
@@ -110,6 +116,12 @@ class PackageList {
     amount = json['amount'];
     packageType = json['packageType'] != null
         ? new PackageType.fromJson(json['packageType'])
+        : null;
+    mainCategory = json['mainCategory'] != null
+        ? new MainCategory.fromJson(json['mainCategory'])
+        : null;
+    packageCarouselId = json['packageCarouselId'] != null
+        ? new PackageCarouselId.fromJson(json['packageCarouselId'])
         : null;
   }
 
@@ -137,6 +149,44 @@ class PackageType {
   PackageType({this.sId, this.name});
 
   PackageType.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class MainCategory {
+  String? sId;
+  String? name;
+
+  MainCategory({this.sId, this.name});
+
+  MainCategory.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
+class PackageCarouselId {
+  String? sId;
+  String? name;
+
+  PackageCarouselId({this.sId, this.name});
+
+  PackageCarouselId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     name = json['name'];
   }

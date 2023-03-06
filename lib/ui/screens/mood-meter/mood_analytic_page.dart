@@ -315,6 +315,7 @@ class MoodAnalyticPage extends StatelessWidget {
   }
 
   Widget getMoodCountListWidget(BuildContext context) {
+    print("mood number ${moodMeterController.moodList.length}");
     return Wrap(
       direction: Axis.horizontal,
       children: [

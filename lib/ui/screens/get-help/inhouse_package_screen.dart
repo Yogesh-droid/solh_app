@@ -36,6 +36,7 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
   FocusNode _emailFocusNode = FocusNode();
   @override
   void initState() {
+    print('id ${widget.args["id"]}');
     _alliedController.selectedPackage.value = '';
     _alliedController.selectedPackagePrice.value = -1;
     _scrollController = ScrollController();
@@ -48,7 +49,6 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
     return ScaffoldGreenWithBackgroundArt(
         appBar: SolhAppBar(
           isLandingScreen: false,
-          backgroundColor: Colors.transparent,
           title: Text(''),
         ),
         body: Obx(() => _alliedController.inhousePackageFetching.value
@@ -378,11 +378,11 @@ class AboutAndPlans extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: SolhColors.bg,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(8),
-          topRight: Radius.circular(8),
-        ),
+        color: SolhColors.white,
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(8),
+        //   topRight: Radius.circular(8),
+        // ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

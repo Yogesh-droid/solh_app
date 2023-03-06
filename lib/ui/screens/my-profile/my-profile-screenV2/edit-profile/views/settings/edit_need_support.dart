@@ -38,7 +38,7 @@ class EditNeedSupportOn extends StatelessWidget {
           });
 
           if (response) {
-            Navigator.pushNamed(context, AppRoutes.partOfOrg, arguments: {});
+            Navigator.of(context).pop();
           }
         }),
       ),

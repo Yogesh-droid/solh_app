@@ -232,7 +232,9 @@ class _IssueChipsState extends State<IssueChips> {
                               : SolhColors.black,
                       label:
                           profileSetupController.selectedIsses.contains(e.sId)
-                              ? Text(e.slug!, style: SolhTextStyles.QS_cap_semi)
+                              ? Text(e.slug!,
+                                  style: SolhTextStyles.QS_cap_semi.copyWith(
+                                      color: SolhColors.white))
                               : Text(
                                   e.slug!,
                                   style: SolhTextStyles.QS_cap_semi,

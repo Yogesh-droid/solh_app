@@ -85,7 +85,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                 ? Container(
                     child: Center(
                         child: Text(
-                      'Search for People, Posts or groups ...',
+                      'Search for People, consultants, Posts or groups ...',
                       style: TextStyle(color: Colors.grey),
                     )),
                   )

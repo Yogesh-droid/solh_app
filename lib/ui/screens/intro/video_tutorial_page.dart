@@ -116,29 +116,32 @@ class VideoTile extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 250,
-                    child: Text(
-                      e.title ?? '',
-                      style: SolhTextStyles.GreenBorderButtonText,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 250,
+                      child: Text(
+                        e.title ?? '',
+                        style: SolhTextStyles.QS_body_2_bold.copyWith(
+                            color: SolhColors.primary_green),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 250,
-                    child: Text(
-                      e.description ?? '',
-                      style: SolhTextStyles.JournalingDescriptionText,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ],
+                    Container(
+                      width: 250,
+                      child: Text(
+                        e.description ?? '',
+                        style: SolhTextStyles.QS_cap_semi,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    )
+                  ],
+                ),
               )
             ]),
           ),

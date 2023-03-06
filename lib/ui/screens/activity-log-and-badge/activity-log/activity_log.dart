@@ -455,6 +455,7 @@ Widget getContainerIcon(String activityType) {
     return Icon(
       CupertinoIcons.group,
       color: SolhColors.white,
+      size: 16,
     );
   } else if (activityType == "appointment") {
     return SvgPicture.asset(
@@ -466,11 +467,13 @@ Widget getContainerIcon(String activityType) {
     return Icon(
       CupertinoIcons.arrow_down,
       color: SolhColors.white,
+      size: 16,
     );
   } else if (activityType == "psychometricTest") {
     return Icon(
       CupertinoIcons.doc_text_search,
       color: SolhColors.white,
+      size: 16,
     );
   } else {
     return Container();

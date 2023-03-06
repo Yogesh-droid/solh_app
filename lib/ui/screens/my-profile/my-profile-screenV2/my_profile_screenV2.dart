@@ -11,6 +11,7 @@ import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/profile_completion_controller.dart';
+import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -23,6 +24,8 @@ class MyProfileScreenV2 extends StatelessWidget {
   final ProfileController profileController = Get.find();
   final ProfileCompletionController profileCompletionController =
       Get.put(ProfileCompletionController());
+  final ProfileSetupController profileSetupController =
+      Get.put(ProfileSetupController());
 
   @override
   Widget build(BuildContext context) {
@@ -214,6 +217,8 @@ class StatsRow extends StatelessWidget {
   final int posts;
   final int? reviews;
   final int? psychlogicalCapital;
+
+  final ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -227,18 +232,30 @@ class StatsRow extends StatelessWidget {
             ),
             like.toString(),
             'Likes'),
-        getStatsItem(
-            SvgPicture.asset(
-              'assets/images/connect.svg',
-            ),
-            connections.toString(),
-            'Connections'),
-        getStatsItem(
-            SvgPicture.asset(
-              'assets/images/post.svg',
-            ),
-            posts.toString(),
-            'Posts'),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.connections);
+          },
+          child: getStatsItem(
+              SvgPicture.asset(
+                'assets/images/connect.svg',
+              ),
+              connections.toString(),
+              'Connections'),
+        ),
+        InkWell(
+          onTap: (() {
+            Navigator.pushNamed(context, AppRoutes.userPostScreen, arguments: {
+              "sId": profileController.myProfileModel.value.body!.user!.sId!
+            });
+          }),
+          child: getStatsItem(
+              SvgPicture.asset(
+                'assets/images/post.svg',
+              ),
+              posts.toString(),
+              'Posts'),
+        ),
         InkWell(
           onTap: () =>
               Navigator.pushNamed(context, AppRoutes.activityBadgeParent),
@@ -438,7 +455,7 @@ class OptionsColumn extends StatelessWidget {
                 color: SolhColors.primary_green,
                 size: 20,
               ),
-              'My Appointments'),
+              'Sessions & Packages'),
         ),
         SizedBox(
           height: 8,

@@ -72,7 +72,10 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Hero(
-          tag: widget.videoTutorialModel.title ?? '',
+          tag: Text(
+            widget.videoTutorialModel.title ?? '',
+            style: SolhTextStyles.QS_body_1_bold,
+          ),
           child: Container(
               height: 200,
               width: double.infinity,
@@ -81,46 +84,55 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(
-            left: 18.0,
-            right: 18.0,
-            top: 8.0,
-          ),
+              left: 18.0, right: 18.0, top: 8.0, bottom: 8.0),
           child: Obx(() => Text(
                 videoTutorialController.currentVideo.value.title ?? '',
-                style: SolhTextStyles.GreenBorderButtonText,
+                style: SolhTextStyles.QS_body_1_bold.copyWith(
+                    color: SolhColors.primary_green),
               )),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 18.0, right: 18.0, bottom: 8.0),
-          child: Obx(() => ReadMoreText(
-                videoTutorialController.currentVideo.value.description ?? '',
-                style: SolhTextStyles.JournalingDescriptionText,
-                trimLines: 2,
-                trimMode: TrimMode.Line,
-              )),
-        ),
-        Divider(
-          color: SolhColors.grey,
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-            child: Obx(() => ListView.builder(
-                shrinkWrap: true,
-                itemCount: videoTutorialController.remainingVideos.length,
-                itemBuilder: (context, index) {
-                  return VideoTile(
-                    e: videoTutorialController.remainingVideos[index],
-                    onTap: () {
-                      controller.loadVideo(videoTutorialController
-                              .remainingVideos[index].videoUrl ??
-                          '');
-                      videoTutorialController.getRemainingVideos(
-                          videoTutorialController.remainingVideos[index],
-                          videoTutorialController.currentVideo.value);
-                    },
-                  );
-                })),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 18.0, right: 18.0, bottom: 8.0),
+                  child: Obx(() => ReadMoreText(
+                        videoTutorialController
+                                .currentVideo.value.description ??
+                            '',
+                        style: SolhTextStyles.QS_body_2_semi,
+                        trimLines: 2,
+                        trimMode: TrimMode.Line,
+                      )),
+                ),
+                Divider(
+                  color: SolhColors.grey,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                  child: Obx(() => ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: videoTutorialController.remainingVideos.length,
+                      itemBuilder: (context, index) {
+                        return VideoTile(
+                          e: videoTutorialController.remainingVideos[index],
+                          onTap: () {
+                            controller.loadVideo(videoTutorialController
+                                    .remainingVideos[index].videoUrl ??
+                                '');
+                            videoTutorialController.getRemainingVideos(
+                                videoTutorialController.remainingVideos[index],
+                                videoTutorialController.currentVideo.value);
+                          },
+                        );
+                      })),
+                ),
+              ],
+            ),
           ),
         )
       ],

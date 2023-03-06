@@ -121,6 +121,8 @@ class AlliedController extends GetxController {
       "createdBy":
           Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,
       "status": "Inprocess",
+      "mainCategory": package.mainCategory!.sId,
+      "carouselName": package.packageCarouselId!.name,
     };
     try {
       map = {"success": true, "message": "Something went wrong"};

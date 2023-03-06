@@ -42,6 +42,7 @@ class ChatController extends GetxController {
 
   var selectedStar = 0.obs;
   final PageController pageController = PageController();
+  var isfirstmsgSent = false;
   //anon chat
 
   var currentSid;

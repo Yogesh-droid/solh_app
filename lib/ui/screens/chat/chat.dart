@@ -104,9 +104,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   delayedAnonChat() {
-    Future.delayed(Duration(milliseconds: 1000), () {
-      sendFirstAnonChat();
-    });
+    if (_controller.isfirstmsgSent == false) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        sendFirstAnonChat();
+      });
+    }
   }
 
   sendFirstAnonChat() {
@@ -121,6 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
         mediaType: '',
         authorId: profileController.myProfileModel.value.body!.user!.sId!,
         fileName: "");
+    _controller.isfirstmsgSent = true;
   }
 
   @override

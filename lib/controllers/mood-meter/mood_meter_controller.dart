@@ -40,6 +40,7 @@ class MoodMeterController extends GetxController {
     if (map['success']) {
       moodMeterModel.value = MoodMeterModel.fromJson(map);
       colorList.value.clear();
+      moodList = [];
       moodMeterModel.value.moodList!.forEach((element) {
         moodList.add(element.name ?? '');
         gifList.add(element.media ?? '');

@@ -192,7 +192,13 @@ class JournalPageController extends GetxController {
         //"mediaType": value['announcementList']['mediaType'],
         "media": value['announcementList'].isEmpty
             ? ''
-            : value['announcementList'][0]['announcementMedia']
+            : value['announcementList'][0]['announcementMedia'],
+        "redirectTo": value['announcementList'].isEmpty
+            ? ""
+            : value['announcementList'][0]['redirectTo'],
+        "redirectKey": value['announcementList'].isEmpty
+            ? ""
+            : value['announcementList'][0]['redirectKey'],
       };
     });
     return map;

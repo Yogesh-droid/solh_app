@@ -16,6 +16,7 @@ import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
+import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
@@ -297,6 +298,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => ActivityBadgeParent()));
       case AppRoutes.connections:
         return MaterialPageRoute(builder: ((context) => Connections()));
+      case AppRoutes.createJournal:
+        return MaterialPageRoute(builder: ((context) => CreatePostScreen()));
       case AppRoutes.psychologicalCapital:
         return MaterialPageRoute(
             builder: ((context) => PsychologicalCapital()));

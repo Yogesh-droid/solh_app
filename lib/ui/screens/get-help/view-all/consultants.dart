@@ -296,6 +296,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   void openBottomSheet(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
+      constraints: BoxConstraints(maxHeight: 85.h),
       context: context,
       builder: ((context) => Stack(
             children: [
@@ -388,6 +389,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                 .toList());
                                       });
                               }),
+                              SizedBox(
+                                height: 28,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
@@ -453,6 +457,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                     );
                                   });
                                 },
+                              ),
+                              SizedBox(
+                                height: 28,
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),

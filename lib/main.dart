@@ -8,6 +8,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart' as sizer;
+import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
@@ -142,6 +143,7 @@ class _SolhAppState extends State<SolhApp> {
     if (widget._isProfileCreated) {
       Get.put(ProfileController());
       Get.put(ProfileSetupController());
+      Get.put(BottomNavigatorController());
       // await profileController.getMyProfile();
       Get.put(ChatListController());
     }

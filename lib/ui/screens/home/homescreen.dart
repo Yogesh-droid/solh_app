@@ -20,12 +20,14 @@ import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
+import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -500,6 +502,76 @@ class _HomePageState extends State<HomePage> {
             context: context,
             builder: (context) {
               return Dialog(
+                child: InkWell(
+                  onTap: () async {
+                    print('it tapped 1');
+                    if (value["redirectTo"] == "gethelp") {
+                      Get.find<BottomNavigatorController>().activeIndex.value =
+                          2;
+                    } else if (value["redirectTo"] == "createpost") {
+                      Navigator.of(context).pop();
+                      await Navigator.pushNamed(
+                          context, AppRoutes.createJournal);
+                      Get.find<BottomNavigatorController>().activeIndex.value =
+                          1;
+                    } else if (value["redirectTo"] == "explorethyself") {
+                      Navigator.of(context).pop();
+                      await Navigator.pushNamed(
+                          context, AppRoutes.psychologyTest);
+                    } else if (value["redirectTo"] == "inhousepackages") {
+                      Navigator.of(context).pop();
+                      await Navigator.pushNamed(
+                          context, AppRoutes.inhousePackage,
+                          arguments: {"id": value["redirectKey"]});
+                    }
+                  },
+                  child: Container(
+                    height: 595,
+                    width: 375,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Align(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                icon: Icon(Icons.close),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )),
+                          Expanded(child: announcementMedia(value))
+                        ]),
+                  ),
+                ),
+              );
+            });
+        prefs.setInt(
+            'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
+      }
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: InkWell(
+                onTap: () async {
+                  if (value["redirectTo"] == "gethelp") {
+                    Get.find<BottomNavigatorController>().activeIndex.value = 2;
+                  } else if (value["redirectTo"] == "createpost") {
+                    Navigator.of(context).pop();
+                    await Navigator.pushNamed(context, AppRoutes.createJournal);
+                    Get.find<BottomNavigatorController>().activeIndex.value = 1;
+                  } else if (value["redirectTo"] == "explorethyself") {
+                    Navigator.of(context).pop();
+                    await Navigator.pushNamed(
+                        context, AppRoutes.psychologyTest);
+                  } else if (value["redirectTo"] == "inhousepackages") {
+                    Navigator.of(context).pop();
+                    await Navigator.pushNamed(context, AppRoutes.inhousePackage,
+                        arguments: {"id": value["redirectKey"]});
+                  }
+                },
                 child: Container(
                   height: 595,
                   width: 375,
@@ -518,33 +590,6 @@ class _HomePageState extends State<HomePage> {
                         Expanded(child: announcementMedia(value))
                       ]),
                 ),
-              );
-            });
-        prefs.setInt(
-            'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
-      }
-    } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Dialog(
-              child: Container(
-                height: 595,
-                width: 375,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          )),
-                      Expanded(child: announcementMedia(value))
-                    ]),
               ),
             );
           });
@@ -560,14 +605,34 @@ class _HomePageState extends State<HomePage> {
   }
 
   announcementMedia(Map<String, dynamic> value) {
-    return CachedNetworkImage(
-      imageUrl: value['media'],
-      fit: BoxFit.fill,
-      placeholder: (context, url) {
-        return Center(
-          child: MyLoader(),
-        );
+    return InkWell(
+      onTap: () async {
+        print('it tapped 3');
+        print(value["redirectKey"]);
+        if (value["redirectTo"] == "gethelp") {
+          Get.find<BottomNavigatorController>().activeIndex.value = 2;
+        } else if (value["redirectTo"] == "createpost") {
+          Navigator.of(context).pop();
+          await Navigator.pushNamed(context, AppRoutes.createJournal);
+          Get.find<BottomNavigatorController>().activeIndex.value = 1;
+        } else if (value["redirectTo"] == "explorethyself") {
+          Navigator.of(context).pop();
+          await Navigator.pushNamed(context, AppRoutes.psychologyTest);
+        } else if (value["redirectTo"] == "inhousepackages") {
+          Navigator.of(context).pop();
+          await Navigator.pushNamed(context, AppRoutes.inhousePackage,
+              arguments: {"id": value["redirectKey"]});
+        }
       },
+      child: CachedNetworkImage(
+        imageUrl: value['media'],
+        fit: BoxFit.fill,
+        placeholder: (context, url) {
+          return Center(
+            child: MyLoader(),
+          );
+        },
+      ),
     );
   }
 
@@ -1821,26 +1886,26 @@ class AlliedExperts extends StatelessWidget {
                 'Allied Experts',
                 style: SolhTextStyles.QS_body_semi_1,
               ),
-              InkWell(
-                onTap: () => Navigator.pushNamed(
-                    context, AppRoutes.viewAllAlliedCategories,
-                    arguments: {
-                      "onTap": (value) {
-                        Navigator.pushNamed(
-                            context, AppRoutes.viewAllAlliedExpert, arguments: {
-                          "slug": value,
-                          "name": value,
-                          "type": 'specialization',
-                          "enableAppbar": true
-                        });
-                      }
-                    }),
-                child: Text(
-                  'Show more',
-                  style: SolhTextStyles.CTA
-                      .copyWith(color: SolhColors.primary_green),
-                ),
-              )
+              // InkWell(
+              //   onTap: () => Navigator.pushNamed(
+              //       context, AppRoutes.viewAllAlliedCategories,
+              //       arguments: {
+              //         "onTap": (value) {
+              //           Navigator.pushNamed(
+              //               context, AppRoutes.viewAllAlliedExpert, arguments: {
+              //             "slug": value,
+              //             "name": value,
+              //             "type": 'specialization',
+              //             "enableAppbar": true
+              //           });
+              //         }
+              //       }),
+              //   child: Text(
+              //     'Show more',
+              //     style: SolhTextStyles.CTA
+              //         .copyWith(color: SolhColors.primary_green),
+              //   ),
+              // )
             ],
           ),
           SizedBox(
@@ -1979,6 +2044,8 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                             //   "enableAppbar": true
                             // });
                           } else {
+                            print(
+                                'routekey ${homeController.homePageCarouselModel.value.packageCarouselList![index].routeKey}');
                             Navigator.pushNamed(
                                 context, AppRoutes.inhousePackage,
                                 arguments: {

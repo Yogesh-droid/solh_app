@@ -777,7 +777,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             // maxHeight: 640,
                             imageQuality: 100,
                           );
-                          if (_xFile != null) {
+                          if (_xFile != null &&
+                              _xFile!.path.endsWith('gif') == false) {
                             print("image picked");
 
                             print(
@@ -818,6 +819,19 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             setState(() {
                               print(
                                   'Size Cropped is ${_croppedFile!.lengthSync()}');
+                              if (_croppedFile != null) _isImageAdded = true;
+                            });
+                            Navigator.pop(context);
+                            imgUploadResponse =
+                                await _uploadImage(isVideo: false);
+                          } else if (_xFile != null &&
+                              _xFile!.path.endsWith('gif')) {
+                            _croppedFile = File(_xFile!.path);
+
+                            print(
+                                'THis is after cropping ${_croppedFile!.lengthSync().toString()}');
+
+                            setState(() {
                               if (_croppedFile != null) _isImageAdded = true;
                             });
                             Navigator.pop(context);
