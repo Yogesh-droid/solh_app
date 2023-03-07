@@ -2008,82 +2008,88 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
             : Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CarouselSlider.builder(
-                    carouselController: carouselController,
-                    itemCount: homeController.homePageCarouselModel.value
-                        .packageCarouselList!.length,
-                    itemBuilder: ((context, index, realIndex) {
-                      return InkWell(
-                        onTap: () {
-                          if (homeController.homePageCarouselModel.value
-                                  .packageCarouselList![index].routeName ==
-                              "providerList") {
-                            Navigator.pushNamed(
-                                context, AppRoutes.viewAllAlliedExpert,
-                                arguments: {
-                                  "slug": homeController
-                                          .homePageCarouselModel
-                                          .value
-                                          .packageCarouselList![index]
-                                          .routeKey ??
-                                      '',
-                                  "name": homeController
-                                          .homePageCarouselModel
-                                          .value
-                                          .packageCarouselList![index]
-                                          .routeKey ??
-                                      '',
-                                  "type": 'specialization',
-                                  "enableAppbar": true
+                  homeController.homePageCarouselModel.value
+                          .packageCarouselList!.isEmpty
+                      ? Container()
+                      : CarouselSlider.builder(
+                          carouselController: carouselController,
+                          itemCount: homeController.homePageCarouselModel.value
+                              .packageCarouselList!.length,
+                          itemBuilder: ((context, index, realIndex) {
+                            return InkWell(
+                              onTap: () {
+                                if (homeController
+                                        .homePageCarouselModel
+                                        .value
+                                        .packageCarouselList![index]
+                                        .routeName ==
+                                    "providerList") {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.viewAllAlliedExpert,
+                                      arguments: {
+                                        "slug": homeController
+                                                .homePageCarouselModel
+                                                .value
+                                                .packageCarouselList![index]
+                                                .routeKey ??
+                                            '',
+                                        "name": homeController
+                                                .homePageCarouselModel
+                                                .value
+                                                .packageCarouselList![index]
+                                                .routeKey ??
+                                            '',
+                                        "type": 'specialization',
+                                        "enableAppbar": true
+                                      });
+                                  //       Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
+                                  // arguments: {
+                                  //   "slug": value,
+                                  //   "name": value,
+                                  //   "type": 'specialization',
+                                  //   "enableAppbar": true
+                                  // });
+                                } else {
+                                  print(
+                                      'routekey ${homeController.homePageCarouselModel.value.packageCarouselList![index].routeKey}');
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.inhousePackage,
+                                      arguments: {
+                                        "id": homeController
+                                            .homePageCarouselModel
+                                            .value
+                                            .packageCarouselList![index]
+                                            .routeKey
+                                      });
+                                }
+                              },
+                              child: Container(
+                                  height: 20.h,
+                                  width: 100.w,
+                                  child: FittedBox(
+                                    fit: BoxFit.contain,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(homeController
+                                                .homePageCarouselModel
+                                                .value
+                                                .packageCarouselList![index]
+                                                .image ??
+                                            '')),
+                                  )),
+                            );
+                          }),
+                          options: CarouselOptions(
+                              autoPlay: false,
+                              padEnds: true,
+                              viewportFraction: 0.75,
+                              enlargeCenterPage: true,
+                              onPageChanged: ((index, reason) {
+                                setState(() {
+                                  _current = index;
                                 });
-                            //       Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
-                            // arguments: {
-                            //   "slug": value,
-                            //   "name": value,
-                            //   "type": 'specialization',
-                            //   "enableAppbar": true
-                            // });
-                          } else {
-                            print(
-                                'routekey ${homeController.homePageCarouselModel.value.packageCarouselList![index].routeKey}');
-                            Navigator.pushNamed(
-                                context, AppRoutes.inhousePackage,
-                                arguments: {
-                                  "id": homeController
-                                      .homePageCarouselModel
-                                      .value
-                                      .packageCarouselList![index]
-                                      .routeKey
-                                });
-                          }
-                        },
-                        child: Container(
-                            height: 20.h,
-                            width: 100.w,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(homeController
-                                          .homePageCarouselModel
-                                          .value
-                                          .packageCarouselList![index]
-                                          .image ??
-                                      '')),
-                            )),
-                      );
-                    }),
-                    options: CarouselOptions(
-                        autoPlay: false,
-                        padEnds: true,
-                        viewportFraction: 0.75,
-                        enlargeCenterPage: true,
-                        onPageChanged: ((index, reason) {
-                          setState(() {
-                            _current = index;
-                          });
-                        })),
-                  ),
+                              })),
+                        ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: homeController.dotList.value
