@@ -18,7 +18,8 @@ import '../../../../widgets_constants/solh_snackbar.dart';
 class NameField extends StatelessWidget {
   NameField({Key? key}) : super(key: key);
 
-  ProfileSetupController profileSetupController = Get.find();
+  final ProfileSetupController profileSetupController =
+      Get.put(ProfileSetupController());
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class NameField extends StatelessWidget {
               });
 
               if (response) {
-                Navigator.pushNamed(context, AppRoutes.nameField);
+                Navigator.pushNamed(context, AppRoutes.dobField);
                 FirebaseAnalytics.instance.logEvent(
                     name: 'OnBoardingNameDone',
                     parameters: {'Page': 'OnBoarding'});

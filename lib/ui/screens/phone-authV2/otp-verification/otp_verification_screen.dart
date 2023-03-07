@@ -204,7 +204,7 @@ class _OtpFieldState extends State<OtpField> {
             );
             //// .  Firebase Signup event //////
             FirebaseAnalytics.instance.logSignUp(signUpMethod: 'PhoneAuth');
-            Navigator.pushNamed(context, AppRoutes.letsCreateYourProfile);
+            Navigator.pushNamed(context, AppRoutes.nameField);
 
             ////////////////////
           }
