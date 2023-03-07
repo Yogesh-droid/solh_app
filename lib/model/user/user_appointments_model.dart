@@ -208,9 +208,10 @@ class InHousePackageOrders {
   String? packageCurrency;
   int? packageAmount;
   String? userId;
-  Null? packageOwner;
+  PackageOwner? packageOwner;
   String? packageType;
   String? mainCategory;
+  String? carouselName;
   String? createdBy;
   String? createdAt;
   String? updatedAt;
@@ -224,6 +225,7 @@ class InHousePackageOrders {
       this.packageSlug,
       this.packageDuration,
       this.packageUnitDuration,
+      this.carouselName,
       this.packageAboutPackage,
       this.packageBenefits,
       this.packageEquipment,
@@ -246,13 +248,16 @@ class InHousePackageOrders {
     packageSlug = json['packageSlug'];
     packageDuration = json['packageDuration'];
     packageUnitDuration = json['packageUnitDuration'];
+    carouselName = json['carouselName'];
     packageAboutPackage = json['packageAboutPackage'];
     packageBenefits = json['packageBenefits'];
     packageEquipment = json['packageEquipment'];
     packageCurrency = json['packageCurrency'];
     packageAmount = json['packageAmount'];
     userId = json['userId'];
-    packageOwner = json['packageOwner'];
+    if (this.packageOwner != null) {
+      json['packageOwner'] = this.packageOwner!.toJson();
+    }
     packageType = json['packageType'];
     mainCategory = json['mainCategory'];
     createdBy = json['createdBy'];
@@ -283,6 +288,25 @@ class InHousePackageOrders {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class PackageOwner {
+  String? sId;
+  String? name;
+
+  PackageOwner({this.sId, this.name});
+
+  PackageOwner.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
     return data;
   }
 }

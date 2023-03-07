@@ -104,11 +104,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   delayedAnonChat() {
-    if (_controller.isfirstmsgSent == false) {
-      Future.delayed(Duration(milliseconds: 1000), () {
-        sendFirstAnonChat();
-      });
-    }
+    // if (_controller.isfirstmsgSent == false) {
+    //   Future.delayed(Duration(milliseconds: 1000), () {
+    //     sendFirstAnonChat();
+    //   });
+    // }
   }
 
   sendFirstAnonChat() {

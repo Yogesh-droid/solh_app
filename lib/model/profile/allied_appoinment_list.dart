@@ -245,6 +245,7 @@ class InHousePackageOrders {
   PackageOwner? packageOwner;
   String? packageType;
   String? mainCategory;
+  String? carouselName;
   String? createdBy;
   String? createdAt;
   String? updatedAt;
@@ -267,6 +268,7 @@ class InHousePackageOrders {
       this.packageOwner,
       this.packageType,
       this.mainCategory,
+      this.carouselName,
       this.createdBy,
       this.createdAt,
       this.updatedAt,
@@ -281,6 +283,7 @@ class InHousePackageOrders {
     packageDuration = json['packageDuration'];
     packageUnitDuration = json['packageUnitDuration'];
     packageAboutPackage = json['packageAboutPackage'];
+    carouselName = json['carouselName'];
     packageBenefits = json['packageBenefits'];
     packageEquipment = json['packageEquipment'];
     packageCurrency = json['packageCurrency'];

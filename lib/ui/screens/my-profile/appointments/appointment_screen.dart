@@ -121,15 +121,21 @@ class _AppointmentScreenState extends State<AppointmentScreen>
           SizedBox(
             height: 1.h,
           ),
-          ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: appointmentController
-                  .alliedAppoinmentModel.value.inHousePackageOrders!.length,
-              itemBuilder: ((context, index) {
-                return getAlliedInHousePackageCard(appointmentController
-                    .alliedAppoinmentModel.value.inHousePackageOrders![index]);
-              })),
+          appointmentController
+                      .alliedAppoinmentModel.value.inHousePackageOrders ==
+                  null
+              ? Container()
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: appointmentController
+                      .userAppointmentModel.value.inHousePackageOrders!.length,
+                  itemBuilder: ((context, index) {
+                    return getAlliedInHousePackageCard(appointmentController
+                        .userAppointmentModel
+                        .value
+                        .inHousePackageOrders![index]);
+                  })),
           scheduldAppointments != null
               ? ListView.builder(
                   itemCount: scheduldAppointments.length,
@@ -539,16 +545,30 @@ class AlliedAppointmentList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
-                children: alliedAppoinmentModel.userPackageOrders!
-                    .map((e) => getAlliedOrderCard(e))
-                    .toList()),
+              children: [
+                Column(
+                    children: alliedAppoinmentModel.userPackageOrders!
+                        .map((e) => getAlliedOrderCard(e))
+                        .toList()),
+                SizedBox(
+                  height: 8,
+                )
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
-              children: alliedAppoinmentModel.inHousePackageOrders!
-                  .map((e) => getAlliedInHousePackageCard(e))
-                  .toList(),
+              children: [
+                Column(
+                  children: alliedAppoinmentModel.inHousePackageOrders!
+                      .map((e) => getAlliedInHousePackageCard(e))
+                      .toList(),
+                ),
+                SizedBox(
+                  height: 8,
+                )
+              ],
             ),
           )
         ],
@@ -647,10 +667,13 @@ Widget getAlliedInHousePackageCard(e) {
     padding: EdgeInsets.all(16),
     decoration: BoxDecoration(
         border: Border.all(color: SolhColors.grey_3),
-        color: SolhColors.light_Bg_2,
+        // color: SolhColors.light_Bg_2,
         borderRadius: BorderRadius.circular(8)),
     child: Column(
       children: [
+        SizedBox(
+          height: 8,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -660,6 +683,16 @@ Widget getAlliedInHousePackageCard(e) {
                 Text(
                   e.packageName ?? '',
                   style: SolhTextStyles.QS_body_2_bold,
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  e.carouselName ?? '',
+                  style: SolhTextStyles.QS_cap_semi,
+                ),
+                SizedBox(
+                  height: 2,
                 ),
                 Row(
                   children: [
@@ -719,6 +752,9 @@ Widget getAlliedInHousePackageCard(e) {
               ],
             )
           ],
+        ),
+        SizedBox(
+          height: 12,
         ),
         Html(
           data: e.packageAboutPackage!,

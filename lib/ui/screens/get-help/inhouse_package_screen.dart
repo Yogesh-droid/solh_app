@@ -369,11 +369,29 @@ class ProfileDetails extends StatelessWidget {
   }
 }
 
-class AboutAndPlans extends StatelessWidget {
+class AboutAndPlans extends StatefulWidget {
   AboutAndPlans({super.key, this.user, this.packageList});
   final Carousel? user;
   final List<PackageList>? packageList;
+
+  @override
+  State<AboutAndPlans> createState() => _AboutAndPlansState();
+}
+
+class _AboutAndPlansState extends State<AboutAndPlans> {
   final AlliedController _alliedController = Get.find();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _alliedController.selectedPackage.value = widget.packageList!.first.sId!;
+      _alliedController.selectedPackagePrice.value =
+          widget.packageList!.first.amount!;
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -396,14 +414,14 @@ class AboutAndPlans extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  user!.name ?? '',
+                  widget.user!.name ?? '',
                   style: SolhTextStyles.QS_big_body,
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  user!.description ?? '',
+                  widget.user!.description ?? '',
                   style: SolhTextStyles.QS_body_2,
                 ),
                 const SizedBox(
@@ -413,7 +431,7 @@ class AboutAndPlans extends StatelessWidget {
             ),
           ),
           Column(
-              children: packageList!
+              children: widget.packageList!
                   .map((e) => PackageCard(
                         package: e,
                         onPackageSelect: (String id, int price) {
@@ -423,7 +441,7 @@ class AboutAndPlans extends StatelessWidget {
                             _alliedController.selectedPackagePrice.value =
                                 price;
                             _alliedController.selectedPackageIndex =
-                                packageList!.indexOf(e);
+                                widget.packageList!.indexOf(e);
                           } else {
                             _alliedController.selectedPackage.value = "";
                             _alliedController.selectedPackagePrice.value = -1;
@@ -486,7 +504,7 @@ class PackageCard extends StatelessWidget {
                             alignment: Alignment.topRight,
                             child: SolhGreenButton(
                               height: 40,
-                              width: 50,
+                              width: 70,
                               child: AnimatedSwitcher(
                                 duration: Duration(seconds: 5),
                                 child:
@@ -498,7 +516,7 @@ class PackageCard extends StatelessWidget {
                                                 .copyWith(color: Colors.white),
                                           )
                                         : Text(
-                                            'View',
+                                            'Select',
                                             style: SolhTextStyles.CTA
                                                 .copyWith(color: Colors.white),
                                           ),

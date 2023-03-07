@@ -980,7 +980,7 @@ class _HomePageState extends State<HomePage> {
     return Obx(() {
       return goalSettingController.pesonalGoalModel.value.goalList != null
           ? (goalSettingController.pesonalGoalModel.value.goalList!.length == 0
-              ? Text('No Goals found',
+              ? Text('Take the first step',
                   style: GoogleFonts.signika(
                     color: Colors.grey,
                     fontSize: 16,
@@ -1781,7 +1781,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                   SizedBox(
                     width: 60.w,
                     child: Text(
-                      'Overwhelmed with emotions: Talk to a Solh counselor NOW',
+                      'Overwhelmed with emotions: Talk to a Solh counsellor NOW',
                       style: SolhTextStyles.QS_body_1_bold.copyWith(
                           color: SolhColors.white),
                     ),

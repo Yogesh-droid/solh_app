@@ -38,7 +38,7 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
         TabBar(controller: _tabController, tabs: [
           Tab(
             child: Text(
-              'Consultant',
+              'Clinician',
               style: SolhTextStyles.CTA,
             ),
           ),
