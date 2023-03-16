@@ -119,7 +119,15 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                       itemCount: videoTutorialController.remainingVideos.length,
                       itemBuilder: (context, index) {
                         return VideoTile(
-                          e: videoTutorialController.remainingVideos[index],
+                          title: videoTutorialController
+                                  .remainingVideos[index].title ??
+                              '',
+                          description: videoTutorialController
+                                  .remainingVideos[index].description ??
+                              '',
+                          videoThumb: videoTutorialController
+                                  .remainingVideos[index].videoThumbnail ??
+                              '',
                           onTap: () {
                             controller.loadVideo(videoTutorialController
                                     .remainingVideos[index].videoUrl ??

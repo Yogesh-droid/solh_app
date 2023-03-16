@@ -4,16 +4,21 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/model/video_tutorial.dart';
 import 'package:solh/services/network/network.dart';
 
+import '../../model/video_playlist_model.dart';
+
 class VideoTutorialController extends GetxController {
   var videoList = <TutorialList>[].obs;
+  var videoPlaylist = <TutorialCategoryList>[].obs;
   var remainingVideos = <TutorialList>[].obs;
   var currentVideo = TutorialList().obs;
 
   var isLoading = false.obs;
-  Future<void> getVideolist() async {
+  var isLoadingPlaylist = false.obs;
+
+  Future<void> getVideolist(String id) async {
     isLoading.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        "${APIConstants.api}/api/custom/get-tutorial-list");
+        "${APIConstants.api}/api/custom/app/get-tutorial-list/$id");
     VideoTutorialModel videoTutorialModel = VideoTutorialModel.fromJson(map);
     videoList.value = videoTutorialModel.tutorialList ?? [];
     isLoading.value = false;
@@ -27,9 +32,18 @@ class VideoTutorialController extends GetxController {
     remainingVideos.refresh();
   }
 
+  Future<void> getVideoPlaylist() async {
+    isLoadingPlaylist.value = true;
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/custom/app/get-tutorial-category");
+    VideoPlaylistModel videoPlaylistModel = VideoPlaylistModel.fromJson(map);
+    videoPlaylist.value = videoPlaylistModel.tutorialCategoryList ?? [];
+    isLoadingPlaylist.value = false;
+  }
+
   @override
   void onInit() {
-    getVideolist();
+    getVideoPlaylist();
     super.onInit();
   }
 }
