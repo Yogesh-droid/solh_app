@@ -622,7 +622,7 @@ class GoalName extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'Are you sure you want to delete this goal ?',
+            'Do you sure you want to delete this goal ?',
             style: goalFontStyle(
               18.0,
               Color(0xff666666),

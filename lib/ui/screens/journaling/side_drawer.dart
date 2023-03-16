@@ -215,52 +215,55 @@ class SideDrawer extends StatelessWidget {
               Expanded(
                 child: Container(),
               ),
-              Column(children: [
-                SideDrawerMenuTile(
-                  title: "Contact Us",
-                  isBottomMenu: true,
-                  onPressed: () {
-                    Navigator.push(
+              Column(
+                children: [
+                  SideDrawerMenuTile(
+                    title: "Contact Us",
+                    isBottomMenu: true,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrivacyWeb(
+                                    title: "Contact Us",
+                                    url: "https://solhapp.com/contact-us.html",
+                                  )));
+                    },
+                  ),
+                  SideDrawerMenuTile(
+                    title: "Privacy Policy",
+                    isBottomMenu: true,
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PrivacyWeb(
+                                    title: 'Privacy Policy',
+                                    url:
+                                        "https://solhapp.com/privacypolicy.html",
+                                  )));
+                    },
+                  ),
+                  SideDrawerMenuTile(
+                    title: "Terms of Use",
+                    isBottomMenu: true,
+                    onPressed: () {
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PrivacyWeb(
-                                  title: "Contact Us",
-                                  url: "https://solhapp.com/contact-us.html",
-                                )));
-                  },
-                ),
-                SideDrawerMenuTile(
-                  title: "Privacy Policy",
-                  isBottomMenu: true,
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PrivacyWeb(
-                                  title: 'Privacy Policy',
-                                  url: "https://solhapp.com/privacypolicy.html",
-                                )));
-                  },
-                ),
-                SideDrawerMenuTile(
-                  title: "Terms of Use",
-                  isBottomMenu: true,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PrivacyWeb(
-                            url: 'https://solhapp.com/termsandcondition.html',
-                            title: 'Terms and Conditions'),
-                      ),
-                    );
-                  },
-                ),
-                SideDrawerMenuTile(
-                  title: "Give Feedback",
-                  isBottomMenu: true,
-                ),
-              ])
+                          builder: (context) => PrivacyWeb(
+                              url: 'https://solhapp.com/termsandcondition.html',
+                              title: 'Terms and Conditions'),
+                        ),
+                      );
+                    },
+                  ),
+                  SideDrawerMenuTile(
+                    title: "Give Feedback",
+                    isBottomMenu: true,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -164,11 +164,7 @@ class JournalCommentController extends GetxController {
     isReportingPost.value = true;
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/reportpost",
-        body: {
-          "type": type,
-          "postId": '628631c9ec62bc0b8d775dab',
-          "reason": reason
-        });
+        body: {"type": type, "postId": journalId, "reason": reason});
     isReportingPost.value = false;
     print(response);
     return false;

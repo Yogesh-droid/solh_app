@@ -348,7 +348,7 @@ class AlliedConsultantTile extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: SimpleImageContainer(
-              // zoomEnabled: true,
+              zoomEnabled: true,
               enableborder: true,
               enableGradientBorder: true,
               boxFit: BoxFit.cover,

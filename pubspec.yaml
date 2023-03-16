@@ -2,7 +2,7 @@ name: solh
 description: Solh App by OMLogic
 
 
-version: 1.0.23+67
+version: 1.0.25+69
 
 
 environment:
@@ -56,6 +56,7 @@ dependencies:
   facebook_app_events: ^0.18.1
   carousel_slider: ^4.2.1
   html: ^0.15.1
+  cc_avenue: ^1.0.3
   #alt_sms_autofill: ^1.0.0
 
 dev_dependencies:

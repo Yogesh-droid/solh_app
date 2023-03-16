@@ -277,7 +277,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
           Container(
             color: SolhColors.light_Bg,
             height: 48,
-            child: TextField(
+            child: TextFormField(
               decoration: TextFieldStyles.greenF_greenBroadUF_4R(
                       hintText: 'John@email.com')
                   .copyWith(
@@ -532,5 +532,15 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
         ],
       ),
     );
+  }
+}
+
+bool emailVarification(email) {
+  if (!RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email)) {
+    return false;
+  } else {
+    return true;
   }
 }

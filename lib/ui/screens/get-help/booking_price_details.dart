@@ -1,6 +1,8 @@
+import 'package:cc_avenue/cc_avenue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
@@ -234,89 +236,107 @@ class BookingPriceDetails extends StatelessWidget {
         onContinuePressed: () async {
           print(consultantController
               .consultantModelController.value.provder!.type);
-          Map<String, dynamic> map =
-              await bookAppointmentController.bookAppointment({
-            'provider': consultantController
-                        .consultantModelController.value.provder!.type ==
-                    'provider'
-                ? consultantController
-                    .consultantModelController.value.provder!.sId
-                : '',
-            'doctor': consultantController
-                        .consultantModelController.value.provder!.type ==
-                    'doctor'
-                ? consultantController
-                    .consultantModelController.value.provder!.sId
-                : '',
-            'start': getdateTime(
-                bookAppointmentController.selectedDay,
-                bookAppointmentController.selectedTimeSlotN,
-                0,
-                bookAppointmentController.selectedDate.value),
-            'end': getdateTime(
-                bookAppointmentController.selectedDay,
-                bookAppointmentController.selectedTimeSlotN,
-                1,
-                bookAppointmentController.selectedDate.value),
-            'seekerEmail':
-                bookAppointmentController.emailTextEditingController.text,
-            'from': bookAppointmentController.selectedTimeSlotN.split('-')[0],
-            'to': bookAppointmentController.selectedTimeSlotN.split('-')[1],
-            "type": "app",
-            "duration": "30",
-            "label":
-                bookAppointmentController.catTextEditingController.value.text,
-            "concern": bookAppointmentController.query ?? '',
-            "anonymousSession":
-                consultantController.isAnonymousBookingEnabled.value.toString(),
-            "offset": bookAppointmentController.selectedOffset.value,
-            "zone": bookAppointmentController.selectedTimeZone.value
-          });
 
-          if (map['success']) {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return Card(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: AssetImage(
-                                  'assets/images/ScaffoldBackgroundGreen.png'))),
-                      child: Column(children: [
-                        Image.asset('assets/images/thankripple.png'),
-                        Text(
-                          'Thank You',
-                          style: SolhTextStyles.QS_head_4.copyWith(
-                              color: SolhColors.white),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Text(
-                            "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
-                            style: SolhTextStyles.QS_cap_semi.copyWith(
-                                color: Colors.white),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
-                      ]),
-                    ),
-                  );
-                });
-
-            Get.find<AppointmentController>().getUserAppointments();
-            await Future.delayed(Duration(seconds: 2), () {});
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
-
-            Navigator.pushNamed(context, AppRoutes.appointmentPage,
-                arguments: {});
-          } else {
-            Utility.showToast(map['message']);
+          try {
+            await CcAvenue.cCAvenueInit(
+                transUrl: 'https://test.ccavenue.com/transaction/initTrans',
+                accessCode: 'AVJB13KA80BY20BJYB',
+                amount: '10',
+                cancelUrl:
+                    'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+                currencyType: 'INR',
+                merchantId: '2018132',
+                orderId: '519',
+                redirectUrl:
+                    'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
+                rsaKeyUrl:
+                    'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
+          } on PlatformException {
+            print('PlatformException');
           }
+          // Map<String, dynamic> map =
+          //     await bookAppointmentController.bookAppointment({
+          //   'provider': consultantController
+          //               .consultantModelController.value.provder!.type ==
+          //           'provider'
+          //       ? consultantController
+          //           .consultantModelController.value.provder!.sId
+          //       : '',
+          //   'doctor': consultantController
+          //               .consultantModelController.value.provder!.type ==
+          //           'doctor'
+          //       ? consultantController
+          //           .consultantModelController.value.provder!.sId
+          //       : '',
+          //   'start': getdateTime(
+          //       bookAppointmentController.selectedDay,
+          //       bookAppointmentController.selectedTimeSlotN,
+          //       0,
+          //       bookAppointmentController.selectedDate.value),
+          //   'end': getdateTime(
+          //       bookAppointmentController.selectedDay,
+          //       bookAppointmentController.selectedTimeSlotN,
+          //       1,
+          //       bookAppointmentController.selectedDate.value),
+          //   'seekerEmail':
+          //       bookAppointmentController.emailTextEditingController.text,
+          //   'from': bookAppointmentController.selectedTimeSlotN.split('-')[0],
+          //   'to': bookAppointmentController.selectedTimeSlotN.split('-')[1],
+          //   "type": "app",
+          //   "duration": "30",
+          //   "label":
+          //       bookAppointmentController.catTextEditingController.value.text,
+          //   "concern": bookAppointmentController.query ?? '',
+          //   "anonymousSession":
+          //       consultantController.isAnonymousBookingEnabled.value.toString(),
+          //   "offset": bookAppointmentController.selectedOffset.value,
+          //   "zone": bookAppointmentController.selectedTimeZone.value
+          // });
+
+          // if (map['success']) {
+          //   showDialog(
+          //       context: context,
+          //       builder: (context) {
+          //         return Card(
+          //           child: Container(
+          //             width: double.infinity,
+          //             decoration: BoxDecoration(
+          //                 image: DecorationImage(
+          //                     fit: BoxFit.fill,
+          //                     image: AssetImage(
+          //                         'assets/images/ScaffoldBackgroundGreen.png'))),
+          //             child: Column(children: [
+          //               Image.asset('assets/images/thankripple.png'),
+          //               Text(
+          //                 'Thank You',
+          //                 style: SolhTextStyles.QS_head_4.copyWith(
+          //                     color: SolhColors.white),
+          //               ),
+          //               Padding(
+          //                 padding: const EdgeInsets.all(18.0),
+          //                 child: Text(
+          //                   "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
+          //                   style: SolhTextStyles.QS_cap_semi.copyWith(
+          //                       color: Colors.white),
+          //                   textAlign: TextAlign.center,
+          //                 ),
+          //               )
+          //             ]),
+          //           ),
+          //         );
+          //       });
+
+          //   Get.find<AppointmentController>().getUserAppointments();
+          //   await Future.delayed(Duration(seconds: 2), () {});
+          //   Navigator.of(context).pop();
+          //   Navigator.of(context).pop();
+          //   Navigator.of(context).pop();
+
+          //   Navigator.pushNamed(context, AppRoutes.appointmentPage,
+          //       arguments: {});
+          // } else {
+          //   Utility.showToast(map['message']);
+          // }
         });
     /* return Container(
       height: 90,
@@ -738,7 +758,7 @@ class ContinueBookingWidget extends StatelessWidget {
                   ]),
             )
           ],
-        )
+        ),
       ]),
     );
   }
@@ -847,7 +867,7 @@ class SolhDeclarationWidget extends StatelessWidget {
                     Text(
                       'Round the clock support',
                       style: SolhTextStyles.QS_caption,
-                    )
+                    ),
                   ],
                 ),
               ],
