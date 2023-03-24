@@ -165,11 +165,12 @@ class AnonymousProfileText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Anonymous Profile',
+          'Anonymous Profile'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "Post or leave a comment, join group, book appointment, etc anonymously. ",
+          "Post or leave a comment, join group, book appointment, etc anonymously."
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -248,7 +249,7 @@ class AnonymousNameTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Anonymous Name',
+          'Anonymous Name'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(

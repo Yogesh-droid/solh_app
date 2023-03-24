@@ -67,23 +67,23 @@ class SideDrawerMenuTile extends StatelessWidget {
 }
 
 getIcon(title) {
-  if (title == "My Diary") {
+  if (title == "My Diary" || title == "माय डायरी") {
     return SvgPicture.asset('assets/images/myDiary.svg');
   }
-  if (title == "Groups") {
+  if (title == "Groups" || title == "समूह") {
     return SvgPicture.asset('assets/images/groups.svg');
   }
-  if (title == "Wheel of Emotions") {
+  if (title == "Wheel of Emotions" || title == "भावनाओं का चक्र") {
     return SvgPicture.asset('assets/images/wheelOfEmotions.svg');
   }
-  if (title == "Appointments") {
+  if (title == "Appointments" || title == "अपॉइंटमेंट") {
     return SvgPicture.asset('assets/images/appointment.svg');
   }
-  if (title == "Self Assessments") {
+  if (title == "Self Assessments" || title == "आत्म मूल्यांकन") {
     return SvgPicture.asset('assets/images/psycotests.svg');
   }
 
-  if (title == "Know Us More") {
+  if (title == "Know Us More" || title == "हमें और अधिक जानें") {
     return SvgPicture.asset('assets/images/tutorial.svg');
   } else {
     return Container();

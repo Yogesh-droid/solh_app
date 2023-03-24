@@ -21,6 +21,7 @@ import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/language_setting_page.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_avatar.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_email.dart';
@@ -142,6 +143,9 @@ class AppRoutes {
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
   static const String waitingScreen = '/waitingScreen';
+
+  //setting
+  static const String languageSettingPage = '/languageSettingPage';
 }
 
 class RouteGenerator {
@@ -317,6 +321,8 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) =>
                 ViewAlAlliedCategories(args: args as Map<String, dynamic>)));
+      case AppRoutes.languageSettingPage:
+        return MaterialPageRoute(builder: ((context) => LanguageSettingPage()));
       case AppRoutes.inhousePackage:
         return MaterialPageRoute(
             builder: ((context) =>

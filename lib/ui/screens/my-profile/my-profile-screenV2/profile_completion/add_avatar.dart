@@ -124,11 +124,12 @@ class AddAvatarText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Add an avatar',
+          'Add an avatar'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "Upload a pciture or choose one from our library of images that describes you best. ",
+          "Upload a pciture or choose one from our library of images that describes you best. "
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],

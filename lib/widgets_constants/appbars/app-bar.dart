@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_utils/get_utils.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
@@ -194,7 +195,7 @@ class SOSButton extends StatelessWidget {
         radius: 28,
         backgroundColor: SolhColors.pink224,
         child: Text(
-          "Now",
+          "Now".tr,
           style: TextStyle(
             color: SolhColors.white,
             fontSize: 10,

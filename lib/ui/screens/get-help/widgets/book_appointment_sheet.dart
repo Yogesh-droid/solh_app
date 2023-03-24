@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
@@ -129,7 +130,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Book Anonymously',
+                        'Book Anonymously'.tr,
                         style: SolhTextStyles.QS_body_2_bold.copyWith(
                             color: SolhColors.dark_grey),
                       ),
@@ -160,7 +161,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Select Day',
+                    'Select Day'.tr,
                     style: SolhTextStyles.QS_body_2_bold,
                   ),
                   SizedBox(
@@ -183,7 +184,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select Time',
+                        'Select Time'.tr,
                         style: SolhTextStyles.QS_body_2_bold,
                       ),
                       InkWell(
@@ -268,7 +269,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
       child: ListView(
         children: [
           Text(
-            'Email-Id',
+            'Email-Id'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           SizedBox(
@@ -301,7 +302,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'Mobile no',
+            'Mobile no'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           Container(
@@ -329,7 +330,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'How Can we help ? (optional)',
+            'How Can we help ? (optional)'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           SizedBox(
@@ -357,7 +358,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'Preffered Date & Time',
+            'Preffered Date & Time'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           SizedBox(height: 5),
@@ -395,7 +396,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
               width: MediaQuery.of(context).size.width,
               onPressed: widget.onContinueBtnPressed,
               child: Text(
-                'Continue',
+                'Continue'.tr,
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
           SizedBox(

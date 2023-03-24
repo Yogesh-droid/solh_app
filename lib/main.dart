@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart' as sizer;
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
@@ -18,6 +21,7 @@ import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/languages_contant.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -76,12 +80,25 @@ class _SolhAppState extends State<SolhApp> {
   String? utm_source;
 
   String? utm_name;
+  Locale? savedLocale;
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
     initDynamic();
     initControllers();
+    getLoacale();
     super.initState();
+  }
+
+  getLoacale() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var res = await prefs.getString('locale');
+    if (res != null) {
+      Map map = jsonDecode(res);
+      savedLocale = Locale(map.keys.first, map.values.first);
+      print('map $map');
+    }
+    print("locale $savedLocale");
   }
 
   @override
@@ -91,6 +108,9 @@ class _SolhAppState extends State<SolhApp> {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
+        locale: savedLocale != null ? savedLocale : Get.deviceLocale,
+        translations: Languages(),
+        fallbackLocale: const Locale('en', 'US'),
         title: 'Solh Wellness',
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,

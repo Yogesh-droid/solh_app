@@ -318,7 +318,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      'Filter counsellors',
+                                      'Filter counsellors'.tr,
                                       style:
                                           SolhTextStyles.JournalingUsernameText,
                                     ),
@@ -340,7 +340,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Issues',
+                                  'Issues'.tr,
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
                               ),
@@ -395,7 +395,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Speciality',
+                                  'Speciality'.tr,
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
                               ),
@@ -464,7 +464,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  'Country',
+                                  'Country'.tr,
                                   style: SolhTextStyles.JournalingUsernameText,
                                 ),
                               ),

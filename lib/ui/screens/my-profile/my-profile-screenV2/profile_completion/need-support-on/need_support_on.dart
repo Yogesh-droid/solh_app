@@ -104,7 +104,7 @@ class NeedSupportOn extends StatelessWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: FilterChip(
-                      label: Text('Other'),
+                      label: Text('Other'.tr),
                       onSelected: (value) {
                         if (value) {
                           profileSetupController.showOtherissueField.value =
@@ -123,7 +123,8 @@ class NeedSupportOn extends StatelessWidget {
                                 controller:
                                     profileSetupController.otherIssueTextField,
                                 decoration: TextFieldStyles.greenF_greyUF_4R
-                                    .copyWith(hintText: " Enter Custom issue"),
+                                    .copyWith(
+                                        hintText: "Enter Custom issue".tr),
                               ),
                               SizedBox(
                                 height: 1.h,
@@ -144,7 +145,7 @@ class NeedSupportOn extends StatelessWidget {
                                       .showOtherissueField.value = false;
                                 }),
                                 child: Text(
-                                  'Add',
+                                  'Add'.tr,
                                   style: SolhTextStyles.NormalTextWhiteS14W6,
                                 ),
                               )
@@ -171,11 +172,12 @@ class NeedSupportOnText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Need support on',
+          'Need support on'.tr,
           style: SolhTextStyles.Large2BlackTextS24W7,
         ),
         Text(
-          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one.  ",
+          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one."
+              .tr,
           style: SolhTextStyles.NormalTextGreyS14W5,
         ),
       ],

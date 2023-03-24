@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -12,7 +13,9 @@ class PsychologicalCapital extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
         isLandingScreen: false,
-        title: Text('Psychological Capital'),
+        title: Text('Psychological Capital'.tr,
+            style: SolhTextStyles.QS_body_1_bold.copyWith(
+                color: SolhColors.black)),
       ),
       body: Stack(children: [
         Column(
@@ -83,13 +86,14 @@ getPointContainer() {
         ),
       ),
       Text(
-        'Your Psychological Capital',
+        'Your Psychological Capital'.tr,
         style: SolhTextStyles.QS_big_body,
       ),
       SizedBox(
         height: 60.w,
         child: Text(
-            'This is the grand total of psychological Capital based on your Engagement on the app',
+            'This is the grand total of psychological Capital based on your Engagement on the app'
+                .tr,
             style: SolhTextStyles.QS_caption),
       )
     ],

@@ -90,11 +90,12 @@ class WhenIsBirthday extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'When is your birthday ?',
+          'When is your birthday ?'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "We want to know how many years of experience you have dealing with life :) ",
+          "We want to know how many years of experience you have dealing with life :) "
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -117,7 +118,7 @@ class _DOBTextFieldState extends State<DOBTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'DOB',
+          'DOB'.tr,
           style: SolhTextStyles.NormalTextWhiteS14W6,
         ),
         SizedBox(

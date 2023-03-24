@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -38,13 +39,13 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
         TabBar(controller: _tabController, tabs: [
           Tab(
             child: Text(
-              'Clinician',
+              'Clinician'.tr,
               style: SolhTextStyles.CTA,
             ),
           ),
           Tab(
             child: Text(
-              'Allied Therapy',
+              'Allied Therapy'.tr,
               style: SolhTextStyles.CTA,
             ),
           )

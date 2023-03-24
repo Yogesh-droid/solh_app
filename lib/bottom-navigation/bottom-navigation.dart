@@ -256,7 +256,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     ? SvgPicture.asset('assets/images/home_solid.svg')
                     : SvgPicture.asset('assets/images/home_outlined.svg'),
               ),
-              label: "Home",
+              label: "Home".tr,
             ),
             BottomNavigationBarItem(
                 icon: Obx(
@@ -266,7 +266,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           'assets/images/journalling outline.svg',
                         ),
                 ),
-                label: "Journaling"),
+                label: "Journaling".tr),
             getHelpItem(),
             BottomNavigationBarItem(
                 icon: Obx(() => SvgPicture.asset(
@@ -275,7 +275,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
-                label: "My Goals"),
+                label: "My Goals".tr),
             BottomNavigationBarItem(
                 icon: Obx(() => SvgPicture.asset(
                       'assets/images/profile.svg',
@@ -283,7 +283,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ? SolhColors.primary_green
                           : Colors.grey.shade600,
                     )),
-                label: "My Profile")
+                label: "My Profile".tr)
           ],
         ));
   }
@@ -317,8 +317,8 @@ class _MasterScreen2State extends State<MasterScreen2>
             ? 'Get Help'
             : profileController.myProfileModel.value.body!.user!.userType ==
                     'SolhProvider'
-                ? 'My Schedule'
-                : 'Get Help');
+                ? 'My Schedule'.tr
+                : 'Get Help'.tr);
     /* profileController.isProfileLoading.value
                 ? BottomNavigationBarItem(
                     icon: ButtonLoadingAnimation(

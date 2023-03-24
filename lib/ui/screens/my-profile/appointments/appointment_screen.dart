@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +48,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         height: 100,
         isLandingScreen: false,
         title: Text(
-          'Appointments',
+          'Appointments'.tr,
           style: SolhTextStyles.AppBarText,
         ),
         bottom: getTab(),
@@ -111,7 +112,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Scheduled',
+            'Scheduled'.tr,
             style: TextStyle(
               fontSize: SolhTextStyles.AppBarText.fontSize,
               fontWeight: SolhTextStyles.AppBarText.fontWeight,
@@ -282,7 +283,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                               mainAxisSize: MainAxisSize.min,
                                               children: [
                                                 Text(
-                                                  'Session',
+                                                  'Session'.tr,
                                                   style: SolhTextStyles.CTA
                                                       .copyWith(
                                                           color:
@@ -335,7 +336,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Completed',
+            'Completed'.tr,
             style: TextStyle(
               fontSize: SolhTextStyles.AppBarText.fontSize,
               fontWeight: SolhTextStyles.AppBarText.fontWeight,
@@ -512,10 +513,10 @@ class _AppointmentScreenState extends State<AppointmentScreen>
           controller: _tabController,
           tabs: [
             Text(
-              'Counselling',
+              'Counselling'.tr,
             ),
             Text(
-              'Allied',
+              'Allied'.tr,
             ),
           ],
           labelStyle:
@@ -648,7 +649,8 @@ class AlliedAppointmentList extends StatelessWidget {
           ),
           Divider(height: 25),
           Text(
-            "Services are in process and we'll be delivering them soon. Please keep an eye on your emails.",
+            "Services are in process and we'll be delivering them soon. Please keep an eye on your emails."
+                .tr,
             style: SolhTextStyles.QS_caption.copyWith(color: SolhColors.angry),
             textAlign: TextAlign.center,
           ),
@@ -761,7 +763,8 @@ Widget getAlliedInHousePackageCard(e) {
         ),
         Divider(height: 25),
         Text(
-          "Services are in process and we'll be delivering them soon. Please keep an eye on your emails.",
+          "Services are in process and we'll be delivering them soon. Please keep an eye on your emails."
+              .tr,
           style: SolhTextStyles.QS_caption.copyWith(color: SolhColors.angry),
           textAlign: TextAlign.center,
         ),

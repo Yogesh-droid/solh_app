@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
@@ -66,7 +67,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Groups',
+            'Groups'.tr,
             style: SolhTextStyles.LandingParaText,
           ),
           MaterialButton(
@@ -76,7 +77,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
               }));
             },
             child: Text(
-              'Create Group',
+              'Create Group'.tr,
               style: SolhTextStyles.GreenBorderButtonText,
             ),
           )
@@ -98,13 +99,13 @@ class _ManageGroupPageState extends State<ManageGroupPage>
       indicatorWeight: 3,
       tabs: [
         Tab(
-          text: 'Joined',
+          text: 'Joined'.tr,
         ),
         Tab(
-          text: 'Created',
+          text: 'Created'.tr,
         ),
         Tab(
-          text: 'Discover',
+          text: 'Discover'.tr,
         ),
       ],
     );
@@ -183,10 +184,10 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                     },
                   )
                 : Center(
-                    child: Text('No groups created yet'),
+                    child: Text('No groups created yet'.tr),
                   ))
         : Center(
-            child: Text('No groups created yet'),
+            child: Text('No groups created yet'.tr),
           );
   }
 
@@ -220,10 +221,10 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                     },
                   )
                 : Center(
-                    child: Text('new suggestions are on the way'),
+                    child: Text('new suggestions are on the way'.tr),
                   ))
         : Center(
-            child: Text('new suggestions are on the way'),
+            child: Text('new suggestions are on the way'.tr),
           );
   }
 }

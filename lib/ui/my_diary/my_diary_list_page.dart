@@ -9,6 +9,7 @@ import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/ui/my_diary/affirmation_page.dart';
 import 'package:solh/ui/my_diary/my_diary_details.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:get/get.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class MyDiaryListPage extends StatefulWidget {
@@ -63,7 +64,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
     return SolhAppBar(
         isLandingScreen: false,
         title: Text(
-          "My Diary",
+          "My Diary".tr,
           style: TextStyle(color: SolhColors.black),
         ));
   }
@@ -104,7 +105,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                   DropdownMenuItem(
                     value: 'My Diary',
                     child: Text(
-                      "Diary Entries",
+                      "Diary Entries".tr,
                       style: TextStyle(color: SolhColors.primary_green),
                     ),
                   ),

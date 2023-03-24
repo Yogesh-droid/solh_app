@@ -626,7 +626,7 @@ class MaxReminder extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Max Reminder',
+            'Max Reminder'.tr,
             style: GoogleFonts.signika(
               color: Color(0xff666666),
             ),

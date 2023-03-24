@@ -87,7 +87,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
           SizedBox(
             height: 10,
           ),
-          GetHelpCategory(title: "I want to work on"),
+          GetHelpCategory(title: "I want to work on".tr),
           IWantToWorkOn(),
         ],
       ),
@@ -103,7 +103,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Goals',
+                'Goals'.tr,
                 style: goalFontStyle(16.0, Color(0xffA6A6A6)),
               ),
               Row(
@@ -124,7 +124,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
                         child: Row(
                           children: [
                             Text(
-                              'Add',
+                              'Add'.tr,
                               style:
                                   goalFontStyle(14.0, SolhColors.primary_green),
                             ),
@@ -137,34 +137,34 @@ class _MyGoalPageState extends State<MyGoalPage> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 20,
-                    child: PopupMenuButton(
-                        position: PopupMenuPosition.under,
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: SolhColors.primary_green,
-                        ),
-                        iconSize: 18,
-                        itemBuilder: ((context) => [
-                              PopupMenuItem(
-                                child: Text(
-                                  'my Goals',
-                                  style: goalFontStyle(
-                                      14.0, SolhColors.primary_green),
-                                ),
-                                value: 1,
-                              ),
-                              PopupMenuItem(
-                                child: Text(
-                                  'Settings',
-                                  style: goalFontStyle(
-                                      14.0, SolhColors.primary_green),
-                                ),
-                                value: 2,
-                              ),
-                            ])),
-                  ),
+                  // Container(
+                  //   width: 20,
+                  //   child: PopupMenuButton(
+                  //       position: PopupMenuPosition.under,
+                  //       icon: Icon(
+                  //         Icons.more_vert,
+                  //         color: SolhColors.primary_green,
+                  //       ),
+                  //       iconSize: 18,
+                  //       itemBuilder: ((context) => [
+                  //             PopupMenuItem(
+                  //               child: Text(
+                  //                 'my Goals'.tr,
+                  //                 style: goalFontStyle(
+                  //                     14.0, SolhColors.primary_green),
+                  //               ),
+                  //               value: 1,
+                  //             ),
+                  //             PopupMenuItem(
+                  //               child: Text(
+                  //                 'Settings'.tr,
+                  //                 style: goalFontStyle(
+                  //                     14.0, SolhColors.primary_green),
+                  //               ),
+                  //               value: 2,
+                  //             ),
+                  //           ])),
+                  // ),
                 ],
               )
             ],
@@ -177,7 +177,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
             height: 24,
           ),
           SolhGreenButton(
-            child: Text('Add Goals +'),
+            child: Text('Add Goals +'.tr),
             height: 50,
             onPressed: () {
               Navigator.push(context,
@@ -280,11 +280,11 @@ class TodaysGoal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Today\'s Goals',
+                "Today's Goals".tr,
                 style: goalFontStyle(24.0, Color(0xff666666), FontWeight.w400),
               ),
               Text(
-                "Track your today's goals",
+                "Track your today's goals".tr,
                 style: goalFontStyle(14.0, Color(0xffA6A6A6), FontWeight.w300),
               )
             ],

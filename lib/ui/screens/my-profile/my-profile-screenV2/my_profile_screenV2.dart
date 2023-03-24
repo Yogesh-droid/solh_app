@@ -231,7 +231,7 @@ class StatsRow extends StatelessWidget {
               size: 18,
             ),
             like.toString(),
-            'Likes'),
+            'Likes'.tr),
         InkWell(
           onTap: () {
             Navigator.pushNamed(context, AppRoutes.connections);
@@ -241,7 +241,7 @@ class StatsRow extends StatelessWidget {
                 'assets/images/connect.svg',
               ),
               connections.toString(),
-              'Connections'),
+              'Connections'.tr),
         ),
         InkWell(
           onTap: (() {
@@ -254,7 +254,7 @@ class StatsRow extends StatelessWidget {
                 'assets/images/post.svg',
               ),
               posts.toString(),
-              'Posts'),
+              'Posts'.tr),
         ),
         InkWell(
           onTap: () =>
@@ -266,7 +266,7 @@ class StatsRow extends StatelessWidget {
                 color: SolhColors.primary_green,
               ),
               psychlogicalCapital.toString(),
-              'Capital'),
+              'Capital'.tr),
         )
         // reviews != null
         //     ? getStatsItem(
@@ -394,13 +394,14 @@ class YouAreAlmostThere extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'You are almost there',
+                      'You are almost there'.tr,
                       style: SolhTextStyles.QS_body_1_bold,
                     ),
                     SizedBox(
                       width: 40.w,
                       child: Text(
-                        "Let's take your profile from good to great. The details matter",
+                        "Let's take your profile from good to great. The details matter"
+                            .tr,
                         style: SolhTextStyles.QS_cap_2_semi,
                       ),
                     ),
@@ -439,7 +440,7 @@ class OptionsColumn extends StatelessWidget {
                 'assets/images/post.svg',
                 height: 15,
               ),
-              'Posts'),
+              'Posts'.tr),
         ),
         SizedBox(
           height: 8,
@@ -455,7 +456,7 @@ class OptionsColumn extends StatelessWidget {
                 color: SolhColors.primary_green,
                 size: 20,
               ),
-              'Sessions & Packages'),
+              'Sessions & Packages'.tr),
         ),
         SizedBox(
           height: 8,
@@ -471,7 +472,7 @@ class OptionsColumn extends StatelessWidget {
                 'assets/images/wheelOfEmotions.svg',
                 height: 20,
               ),
-              'Wheel of Emotions'),
+              'Wheel of Emotions'.tr),
         ),
         SizedBox(
           height: 8,
@@ -490,7 +491,7 @@ class OptionsColumn extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              'Activity  Log'),
+              'Activity Log'.tr),
         ),
       ],
     );

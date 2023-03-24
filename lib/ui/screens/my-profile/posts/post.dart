@@ -55,14 +55,10 @@ class _PostScreenState extends State<PostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Posts",
+              "Posts".tr,
               style: SolhTextStyles.AppBarText.copyWith(
                   color: Colors.black, fontSize: 18),
             ),
-            Text(
-              "",
-              style: SolhTextStyles.SOSGreyText.copyWith(fontSize: 12),
-            )
           ],
         ),
       ),
@@ -74,7 +70,7 @@ class _PostScreenState extends State<PostScreen> {
               if (journalsSnapshot.data!.isEmpty) {
                 return Center(
                     child: Text(
-                  "Well, there's nothing here! Why don't you begin today?",
+                  "Well, there's nothing here! Why don't you begin today?".tr,
                   style: TextStyle(
                     color: Colors.grey.shade400,
                     fontSize: 20,

@@ -35,7 +35,10 @@ class _ActivityBadgeParentState extends State<ActivityBadgeParent>
     return Scaffold(
       appBar: SolhAppBar(
         isLandingScreen: false,
-        title: Text(''),
+        title: Text(
+          'Psychological Capital'.tr,
+          style: SolhTextStyles.QS_body_1_bold,
+        ),
       ),
       body: SizedBox(
         height: 100.h,
@@ -55,13 +58,14 @@ class _ActivityBadgeParentState extends State<ActivityBadgeParent>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Psychological Capital',
+                          'Psychological Capital'.tr,
                           style: SolhTextStyles.QS_big_body.copyWith(
                             color: SolhColors.dark_grey,
                           ),
                         ),
                         Text(
-                          '''This is a grand total based on your Engagement on the app''',
+                          'This is a grand total based on your Engagement on the app'
+                              .tr,
                           textAlign: TextAlign.start,
                           style: SolhTextStyles.QS_caption,
                         )
@@ -85,7 +89,7 @@ class _ActivityBadgeParentState extends State<ActivityBadgeParent>
                               );
                       }),
                       Text(
-                        'Your Capital',
+                        'Your Capital'.tr,
                         style: SolhTextStyles.QS_cap_2_semi.copyWith(
                             color: SolhColors.Grey_1),
                       ),

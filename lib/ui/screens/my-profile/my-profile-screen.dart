@@ -79,7 +79,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20.w, vertical: 10.h),
                               child: Text(
-                                "Logout",
+                                "Logout".tr,
                                 style: TextStyle(
                                     fontSize: 18, color: SolhColors.black166),
                               ),

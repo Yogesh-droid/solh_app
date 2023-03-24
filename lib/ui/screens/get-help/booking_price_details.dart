@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ class BookingPriceDetails extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
           title: Text(
-            'Booking Online Session',
+            'Booking Online Session'.tr,
             style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false),
@@ -99,7 +100,7 @@ class BookingPriceDetails extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text(
-                'Change',
+                'Change'.tr,
                 style: SolhTextStyles.QS_cap_semi.copyWith(
                     color: SolhColors.primary_green),
               ))
@@ -223,7 +224,7 @@ class BookingPriceDetails extends StatelessWidget {
                     strokeWidth: 2,
                   )
                 : Text(
-                    'Book Now & Pay Later',
+                    'Book Now & Pay Later'.tr,
                     style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                   ))
           ],
@@ -563,7 +564,7 @@ class BillAndCoupon extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Billing Details',
+                  'Billing Details'.tr,
                   style: SolhTextStyles.QS_body_2_bold.copyWith(
                       color: SolhColors.black),
                 ),
@@ -572,7 +573,7 @@ class BillAndCoupon extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('Consultaion Fee',
+                    Text('Consultaion Fee'.tr,
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.Grey_1)),
                     Spacer(),
@@ -604,7 +605,7 @@ class BillAndCoupon extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('Total Payable',
+                    Text('Total Payable'.tr,
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.black)),
                     Spacer(),

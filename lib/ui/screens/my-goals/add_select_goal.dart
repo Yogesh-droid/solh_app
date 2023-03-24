@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +22,7 @@ class AddSelectGoal extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
           title: Text(
-            'Select/Add Goal',
+            'Select/Add Goal'.tr,
             style: GoogleFonts.signika(
               color: Colors.black,
             ),
@@ -56,7 +57,7 @@ class GoalsFound extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Custom Goals',
+                'Custom Goals'.tr,
                 style: GoogleFonts.signika(
                     color: Color(
                       0xffA6A6A6A6,
@@ -111,7 +112,7 @@ class AddGoalButton extends StatelessWidget {
           )),
       child: Center(
           child: Text(
-        'Add Goal',
+        'Add Goal'.tr,
         style: GoogleFonts.signika(
           color: Colors.white,
         ),
@@ -134,7 +135,7 @@ class SampleGoals extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Sample Goals',
+                'Sample Goals'.tr,
                 style: GoogleFonts.signika(
                     color: Color(0xff666666),
                     fontSize: 16,
@@ -266,7 +267,7 @@ class SampleGoals extends StatelessWidget {
                             })
                         : Center(
                             child: Text(
-                            'No Goals Found',
+                            'No Goals Found'.tr,
                             style: GoogleFonts.signika(
                                 color: Color(0xffA6A6A6),
                                 fontSize: 16,

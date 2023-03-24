@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -24,7 +25,7 @@ class Details extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
         title: Text(
-          'Details',
+          'Details'.tr,
           style: GoogleFonts.signika(color: Colors.black),
         ),
         isLandingScreen: false,
@@ -45,7 +46,7 @@ class Details extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: SolhGreenButton(
                   child: Text(
-                    'Set Goal',
+                    'Set Goal'.tr,
                     style: GoogleFonts.signika(color: Colors.white),
                   ),
                   height: 50,

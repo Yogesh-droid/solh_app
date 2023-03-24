@@ -77,7 +77,7 @@ class _CommentScreenState extends State<CommentScreen> {
     return Scaffold(
         appBar: SolhAppBar(
           title: Text(
-            "Comments",
+            "Comments".tr,
             style: SolhTextStyles.AppBarText,
           ),
           isLandingScreen: false,
@@ -1597,7 +1597,7 @@ class _PostForCommentState extends State<PostForComment> {
                   ReadMoreText(
                     widget._journalModel!.description ?? '',
                     style: SolhTextStyles.JournalingDescriptionText,
-                    trimCollapsedText: ' Read more',
+                    trimCollapsedText: ' Read more'.tr,
                     trimExpandedText: ' less',
                     trimLines: 3,
                     trimMode: TrimMode.Line,
@@ -1621,7 +1621,7 @@ class _PostForCommentState extends State<PostForComment> {
         Row(
           children: [
             Text(
-              "Comments",
+              "Comments".tr,
               style: SolhTextStyles.mostUpvoted,
             ),
             // Icon(CupertinoIcons.chevron_down, size: 16, color: SolhColors.green)

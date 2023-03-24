@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         ),
       ),
       title: Text(
-        "Psychological Tests",
+        "Psychological Tests".tr,
         style: SolhTextStyles.AppBarText,
       ),
       backgroundColor: Colors.white,
@@ -85,7 +86,8 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
       child: Column(
         children: [
           Text(
-            "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.",
+            "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you."
+                .tr,
             style: SolhTextStyles.JournalingDescriptionText,
           ),
           SizedBox(
@@ -95,10 +97,10 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
             controller: tabController,
             tabs: [
               Text(
-                'Discover Test',
+                'Discover Test'.tr,
               ),
               Text(
-                'Result History',
+                'Result History'.tr,
               )
             ],
             unselectedLabelColor: SolhColors.grey,

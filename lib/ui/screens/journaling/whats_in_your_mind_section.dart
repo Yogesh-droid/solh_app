@@ -69,8 +69,8 @@ class WhatsOnYourMindSection extends StatelessWidget {
                           padding: const EdgeInsets.only(left: 12),
                           child: Text(
                             _journalPageController.selectedGroupId.value == ''
-                                ? "What's on your mind?"
-                                : "post in group",
+                                ? "What's on your mind?".tr
+                                : "post in group".tr,
                             style: SolhTextStyles.QS_cap_semi,
                           ),
                         ),

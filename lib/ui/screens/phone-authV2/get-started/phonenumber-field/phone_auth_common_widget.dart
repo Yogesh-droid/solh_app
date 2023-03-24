@@ -48,7 +48,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
           children: [
             Column(
               children: [
-                Text('Country'),
+                Text('Country'.tr),
                 SizedBox(
                   height: 5,
                 ),
@@ -67,7 +67,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Mobile No.'),
+                  Text('Mobile No.'.tr),
                   SizedBox(
                     height: 5,
                   ),
@@ -104,7 +104,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     : SolhGreenButton(
                         width: double.maxFinite,
                         child: Text(
-                          'Continue',
+                          'Continue'.tr,
                         ),
                         onPressed: (() {
                           if (phoneAuthController.phoneNumber.text

@@ -75,7 +75,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: SolhSearchField(
-                hintText: 'Anxiety, Corporate Stress, Family Issues',
+                hintText: 'Anxiety, Corporate Stress, Family Issues'.tr,
                 icon: 'assets/icons/app-bar/search.svg',
                 onTap: () {
                   searchMarketController.searchMarketModel.value =
@@ -92,7 +92,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: GetHelpCategory(
-              title: 'Search for support',
+              title: 'Search for Support'.tr,
               trailing: InkWell(
                 onTap: () {
                   getHelpController.isAllIssueShown.value
@@ -107,8 +107,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     child: Obx(() {
                       return Text(
                         !getHelpController.isAllIssueShown.value
-                            ? "Show More"
-                            : "Show less",
+                            ? "Show More".tr
+                            : "Show less".tr,
                         style: TextStyle(
                           fontSize: 16,
                           color: SolhColors.primary_green,
@@ -146,7 +146,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               })),
           GetHelpDivider(),
           GetHelpCategory(
-            title: "Search by Profession",
+            title: "Search by Profession".tr,
           ),
           Obx(() {
             return getHelpController
@@ -280,7 +280,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "Leading Solh Experts",
+              title: "Leading Solh Experts".tr,
               onPressed: () {
                 Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                     arguments: {
@@ -299,8 +299,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               return getHelpController.topConsultantList.value.doctors != null
                   ? getHelpController.topConsultantList.value.doctors!.isEmpty
                       ? Center(
-                          child:
-                              Text('No Consultant available for your country'),
+                          child: Text(
+                              'No Consultant available for your country'.tr),
                         )
                       : ListView.builder(
                           shrinkWrap: true,
@@ -330,7 +330,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                           })
                   : Container(
                       child: Center(
-                      child: Text('No Doctors Found'),
+                      child: Text('No Doctors Found'.tr),
                     ));
             })),
           ),
@@ -614,7 +614,7 @@ class TopConsultantsTile extends StatelessWidget {
                 child: SolhGreenButton(
                   height: 28,
                   child: Text(
-                    "Book Appointment",
+                    "Book Appointment".tr,
                     style: SolhTextStyles.QS_cap_semi.copyWith(
                         fontSize: 10, color: SolhColors.white),
                   ),
@@ -674,7 +674,7 @@ class GetHelpCategory extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _title,
+                  _title.tr,
                   style: TextStyle(fontSize: 20, color: Color(0xFF666666)),
                 ),
                 trailing == null
@@ -682,7 +682,7 @@ class GetHelpCategory extends StatelessWidget {
                         ? InkWell(
                             onTap: _onPressed,
                             child: Text(
-                              "View All",
+                              "View All".tr,
                               style: SolhTextStyles.CTA
                                   .copyWith(color: SolhColors.primary_green),
                             ),
@@ -896,7 +896,7 @@ class SolhVolunteers extends StatelessWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Request Sent',
+                        Text('Request Sent'.tr,
                             style: GoogleFonts.signika(
                               fontSize: 12,
                               color: Color(0xffA6A6A6),
@@ -961,13 +961,13 @@ class SolhVolunteers extends StatelessWidget {
                                     width: 4,
                                   ),
                                   getConnectionIdBySId(sId ?? '') != ''
-                                      ? Text('Cancel',
+                                      ? Text('Cancel'.tr,
                                           style: GoogleFonts.signika(
                                             fontSize: 14,
                                             color: SolhColors.primary_green,
                                           ))
                                       : Text(
-                                          'Connect',
+                                          'Connect'.tr,
                                           style: GoogleFonts.signika(
                                             fontSize: 14,
                                             color: SolhColors.primary_green,

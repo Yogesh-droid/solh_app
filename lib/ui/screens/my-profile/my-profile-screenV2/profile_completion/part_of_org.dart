@@ -21,7 +21,8 @@ import 'package:solh/widgets_constants/text_field_styles.dart';
 import '../../../../../widgets_constants/solh_snackbar.dart';
 
 class PartOfOrg extends StatelessWidget {
-  PartOfOrg({Key? key, required Map<String, dynamic> args}) : indexOfpage = args['indexOfpage'],
+  PartOfOrg({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
         super(key: key);
   final ProfileCompletionController profileCompletionController = Get.find();
   ProfileController profileController = Get.find();
@@ -49,22 +50,21 @@ class PartOfOrg extends StatelessWidget {
               });
 
               if (response) {
-               if (profileCompletionController.uncompleteFields.last !=
+                if (profileCompletionController.uncompleteFields.last !=
+                    profileCompletionController.uncompleteFields[indexOfpage]) {
+                  Navigator.pushNamed(
+                      context,
+                      profileCompletionController.getAppRoute(
                           profileCompletionController
-                              .uncompleteFields[indexOfpage]) {
-                        Navigator.pushNamed(
-                            context,
-                            profileCompletionController.getAppRoute(
-                                profileCompletionController
-                                    .uncompleteFields[indexOfpage + 1]),
-                            arguments: {"indexOfpage": indexOfpage + 1});
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.master,
-                          (route) => false,
-                        );
-                      }
+                              .uncompleteFields[indexOfpage + 1]),
+                      arguments: {"indexOfpage": indexOfpage + 1});
+                } else {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.master,
+                    (route) => false,
+                  );
+                }
               }
             } else {
               SolhSnackbar.error(
@@ -77,22 +77,21 @@ class PartOfOrg extends StatelessWidget {
           backButtonColor: SolhColors.white,
           skipButtonStyle: SolhTextStyles.NormalTextWhiteS14W6,
           onSkip: (() {
-      if (profileCompletionController.uncompleteFields.last !=
-                          profileCompletionController
-                              .uncompleteFields[indexOfpage]) {
-                        Navigator.pushNamed(
-                            context,
-                            profileCompletionController.getAppRoute(
-                                profileCompletionController
-                                    .uncompleteFields[indexOfpage + 1]),
-                            arguments: {"indexOfpage": indexOfpage + 1});
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.master,
-                          (route) => false,
-                        );
-                      }
+            if (profileCompletionController.uncompleteFields.last !=
+                profileCompletionController.uncompleteFields[indexOfpage]) {
+              Navigator.pushNamed(
+                  context,
+                  profileCompletionController.getAppRoute(
+                      profileCompletionController
+                          .uncompleteFields[indexOfpage + 1]),
+                  arguments: {"indexOfpage": indexOfpage + 1});
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.master,
+                (route) => false,
+              );
+            }
           }),
           onBackButton: () => Navigator.of(context).pop()),
       body: Padding(
@@ -126,11 +125,12 @@ class PartOfAnOrganisationtext extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Part of an organisation ?',
+          'Part of an organisation ?'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "Please provide details below if you are boarding as part of an organization.",
+          "Please provide details below if you are boarding as part of an organization."
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -149,7 +149,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Organisation Type',
+          'Organisation Type'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -172,7 +172,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
                     print(profileCompletionController.orgType.value);
                     return profileCompletionController.orgType.value == ''
                         ? Text(
-                            'Select',
+                            'Select'.tr,
                             style: SolhTextStyles.NormalTextGreyS14W5,
                           )
                         : Text(
@@ -191,7 +191,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
           height: 2.h,
         ),
         Text(
-          'Organisation Name',
+          'Organisation Name'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -220,21 +220,21 @@ class OrganisationDropDownItem extends StatelessWidget {
         items: [
           DropdownMenuItem(
             child: Text(
-              'Educational Institutions',
+              'Educational Institutions'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Educational Institution',
           ),
           DropdownMenuItem(
             child: Text(
-              'Corporate',
+              'Corporate'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Corporate',
           ),
           DropdownMenuItem(
             child: Text(
-              'Others',
+              'Others'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Others',

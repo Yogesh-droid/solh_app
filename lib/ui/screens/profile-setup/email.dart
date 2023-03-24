@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:provider/provider.dart';
 import 'package:solh/model/user/provider-user.dart';
@@ -79,7 +80,7 @@ class _EmailScreenState extends State<EmailScreen> {
                 width: 90,
                 child: Center(
                   child: Text(
-                    'Skip',
+                    'Skip'.tr,
                     style: SolhTextStyles.GreenBorderButtonText,
                   ),
                 ),

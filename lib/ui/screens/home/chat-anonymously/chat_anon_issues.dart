@@ -191,7 +191,8 @@ class NeedSupportOnText extends StatelessWidget {
           style: SolhTextStyles.Large2BlackTextS24W7,
         ),
         Text(
-          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one.  ",
+          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one."
+              .tr,
           style: SolhTextStyles.NormalTextGreyS14W5,
         ),
       ],

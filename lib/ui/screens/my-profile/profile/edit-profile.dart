@@ -66,7 +66,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBar(
         title: Text(
-          "Personal Details",
+          "Personal Details".tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
         isLandingScreen: false,
@@ -173,7 +173,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
               Obx(() {
                 return _anonController.isNormalNameTaken.value
                     ? Text(
-                        "Username Already taken",
+                        "Username Already taken".tr,
                         style: TextStyle(color: Colors.red),
                       )
                     : Container();
@@ -181,15 +181,15 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             ],
           ),
           TextFieldB(
-            label: "Your First Name",
+            label: "Your First Name".tr,
             textEditingController: _firstNameTextEditingController,
           ),
           TextFieldB(
-            label: "Your Last Name",
+            label: "Your Last Name".tr,
             textEditingController: _lastNameTextEditingController,
           ),
           TextFieldB(
-            label: "About/Bio",
+            label: "About/Bio".tr,
             textEditingController: _bioTextEditingController,
             maxLine: 4,
           ),
@@ -197,7 +197,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Gender",
+                "Gender".tr,
                 style: SolhTextStyles.QS_caption_bold,
               ),
               GenderSelectionDropdown(
@@ -209,10 +209,14 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   print(newValue);
                   _gender = newValue!;
                 },
-                initialDropdownValue:
-                    profileController.myProfileModel.value.body!.user!.gender ==null || 
-                     profileController.myProfileModel.value.body!.user!.gender== "N/A"?"N/A"
-                        :profileController.myProfileModel.value.body!.user!.gender,
+                initialDropdownValue: profileController
+                                .myProfileModel.value.body!.user!.gender ==
+                            null ||
+                        profileController
+                                .myProfileModel.value.body!.user!.gender ==
+                            "N/A"
+                    ? "N/A"
+                    : profileController.myProfileModel.value.body!.user!.gender,
               ),
             ],
           ),
@@ -223,7 +227,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "DOB",
+                "DOB".tr,
                 style: SolhTextStyles.QS_caption_bold,
               ),
               DOBPicker(
@@ -252,7 +256,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
             ],
           ),
           TextFieldB(
-            label: "Your Email id",
+            label: "Your Email id".tr,
             textEditingController: _emailTextEditingController,
           ),
           Padding(
@@ -261,7 +265,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Select country',
+                  'Select country'.tr,
                   style: SolhTextStyles.QS_caption_bold,
                 ),
                 // Text(
@@ -408,7 +412,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                   SolhSnackbar.error('Opps!', 'enter a correct email');
                 }
               },
-              child: Text("Save Changes"),
+              child: Text("Save Changes".tr),
               height: 6.5.h,
             ),
           ),

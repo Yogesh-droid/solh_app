@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
@@ -54,7 +55,7 @@ class CommentMenuButton extends StatelessWidget {
                         ))
                       : null,
                   child: Text(
-                    "Delete this comment",
+                    "Delete this comment".tr,
                   ),
                 ),
                 onTap: () {
@@ -74,7 +75,7 @@ class CommentMenuButton extends StatelessWidget {
                       vertical: MediaQuery.of(context).size.height / 80,
                     ),
                     child: Text(
-                      "Select for best comment",
+                      "Select for best comment".tr,
                     ),
                   ),
                   onTap: _makeBestComment,

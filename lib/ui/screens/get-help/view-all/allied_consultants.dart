@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -323,7 +324,7 @@ class AlliedConsultantTile extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              'Starting @',
+                              'Starting @'.tr,
                               style: SolhTextStyles.QS_cap_semi,
                             ),
                             Text(feeAmount.toString(),

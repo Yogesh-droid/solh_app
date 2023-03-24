@@ -106,8 +106,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         appBar: SolhAppBar(
           title: Text(
               journalPageController.selectedGroupId.value == ''
-                  ? "Create Journal"
-                  : "Post in group",
+                  ? "Create Journal".tr
+                  : "Post in group".tr,
               style: SolhTextStyles.JournalingUsernameText),
           isLandingScreen: false,
           isDiaryBtnShown: true,
@@ -219,7 +219,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                         20.w,
                                     child: Center(
                                         child: Text(
-                                      "Post",
+                                      "Post".tr,
                                       style: TextStyle(color: SolhColors.white),
                                     ))))
                             : Container();
@@ -730,7 +730,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            "  Add Image/Video",
+                            "  Add Image/Video".tr,
                             style:
                                 SolhTextStyles.JournalingDescriptionReadMoreText
                                     .copyWith(color: SolhColors.dark_grey),
@@ -761,7 +761,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Choose your type"),
+                  Text("Choose your type".tr),
                   SizedBox(height: 3.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1166,19 +1166,19 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                     style: TextStyle(color: SolhColors.primary_green),
                     items: [
                       DropdownMenuItem(
-                        child: Text("Publically"),
+                        child: Text("Publically".tr),
                         value: "Publicaly",
                       ),
                       DropdownMenuItem(
-                        child: Text("My Diary"),
+                        child: Text("My Diary".tr),
                         value: "My_Diary",
                       ),
                       DropdownMenuItem(
-                        child: Text("Connections"),
+                        child: Text("Connections".tr),
                         value: "Connections",
                       ),
                       DropdownMenuItem(
-                        child: Text("Group"),
+                        child: Text("Group".tr),
                         value: "Group",
                       ),
                     ]),
@@ -1451,7 +1451,7 @@ class _JournalTextFieldState extends State<JournalTextField> {
                   enableSuggestions: true,
                   decoration: InputDecoration(
                     fillColor: SolhColors.grey239,
-                    hintText: "What's on your mind?",
+                    hintText: "What's on your mind?".tr,
                     hintStyle: TextStyle(color: Color(0xFFA6A6A6)),
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,

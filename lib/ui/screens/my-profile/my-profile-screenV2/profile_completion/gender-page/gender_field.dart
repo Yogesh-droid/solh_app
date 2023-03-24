@@ -15,10 +15,12 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../../../widgets_constants/solh_snackbar.dart';
 
 class GenderField extends StatelessWidget {
-  GenderField({Key? key,required Map<String, dynamic> args}) : indexOfpage = args['indexOfpage'],super(key: key);
+  GenderField({Key? key, required Map<String, dynamic> args})
+      : indexOfpage = args['indexOfpage'],
+        super(key: key);
   ProfileSetupController profileSetupController = Get.find();
-   final ProfileCompletionController profileCompletionController =Get.find();
-   final int indexOfpage;
+  final ProfileCompletionController profileCompletionController = Get.find();
+  final int indexOfpage;
   Widget build(BuildContext context) {
     return ScaffoldGreenWithBackgroundArt(
       floatingActionButton: Obx(() {
@@ -37,22 +39,21 @@ class GenderField extends StatelessWidget {
               });
 
               if (response) {
-                    if (profileCompletionController.uncompleteFields.last !=
+                if (profileCompletionController.uncompleteFields.last !=
+                    profileCompletionController.uncompleteFields[indexOfpage]) {
+                  Navigator.pushNamed(
+                      context,
+                      profileCompletionController.getAppRoute(
                           profileCompletionController
-                              .uncompleteFields[indexOfpage]) {
-                        Navigator.pushNamed(
-                            context,
-                            profileCompletionController.getAppRoute(
-                                profileCompletionController
-                                    .uncompleteFields[indexOfpage + 1]),
-                            arguments: {"indexOfpage": indexOfpage + 1});
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.master,
-                          (route) => false,
-                        );
-                      }
+                              .uncompleteFields[indexOfpage + 1]),
+                      arguments: {"indexOfpage": indexOfpage + 1});
+                } else {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    AppRoutes.master,
+                    (route) => false,
+                  );
+                }
                 FirebaseAnalytics.instance.logEvent(
                     name: 'OnBoardingGenderDone',
                     parameters: {'Page': 'OnBoarding'});
@@ -65,23 +66,21 @@ class GenderField extends StatelessWidget {
       }),
       appBar: SolhAppBarTanasparentOnlyBackButton(
         onSkip: () {
-            if (profileCompletionController.uncompleteFields.last !=
-                          profileCompletionController
-                              .uncompleteFields[indexOfpage]) {
-                        Navigator.pushNamed(
-                            context,
-                            profileCompletionController.getAppRoute(
-                                profileCompletionController
-                                    .uncompleteFields[indexOfpage + 1]),
-                            arguments: {"indexOfpage": indexOfpage + 1});
-                      } else {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoutes.master,
-                          (route) => false,
-                        );
-                      }
-                
+          if (profileCompletionController.uncompleteFields.last !=
+              profileCompletionController.uncompleteFields[indexOfpage]) {
+            Navigator.pushNamed(
+                context,
+                profileCompletionController.getAppRoute(
+                    profileCompletionController
+                        .uncompleteFields[indexOfpage + 1]),
+                arguments: {"indexOfpage": indexOfpage + 1});
+          } else {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              AppRoutes.master,
+              (route) => false,
+            );
+          }
         },
         skipButtonStyle: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
         backButtonColor: SolhColors.white,
@@ -125,11 +124,12 @@ class GenderText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Whats your gender ?',
+          'Whats your gender ?'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "If you don't conform to any of the options below, don't worry. We've got space for everybody",
+          "If you don't confirm to any of the options below, don't worry. We've got space for everybody"
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -148,7 +148,7 @@ class GenderSelection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Gender',
+          'Gender'.tr,
           style: SolhTextStyles.NormalTextWhiteS14W6,
         ),
         SizedBox(
@@ -181,11 +181,11 @@ class GenderSelection extends StatelessWidget {
                       Obx(() {
                         return profileSetupController.gender.value == ''
                             ? Text(
-                                'Select',
+                                'Select'.tr,
                                 style: SolhTextStyles.NormalTextGreyS14W5,
                               )
                             : Text(
-                                profileSetupController.gender.value,
+                                profileSetupController.gender.value.tr,
                                 style: SolhTextStyles.NormalTextBlack2S14W6,
                               );
                       }),
@@ -221,21 +221,21 @@ class DropDownItem extends StatelessWidget {
         items: [
           DropdownMenuItem(
             child: Text(
-              'Male',
+              'Male'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Male',
           ),
           DropdownMenuItem(
             child: Text(
-              'Female',
+              'Female'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Female',
           ),
           DropdownMenuItem(
             child: Text(
-              'Others',
+              'Others'.tr,
               style: SolhTextStyles.NormalTextGreenS14W5,
             ),
             value: 'Others',

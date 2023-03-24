@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'constants/colors.dart';
 
@@ -56,7 +57,7 @@ class SolhSearch extends StatelessWidget {
                   focusNode: focusNode,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Search',
+                    hintText: 'Search'.tr,
                     hintStyle: TextStyle(
                       color: Colors.grey,
                     ),

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
@@ -201,19 +202,19 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                   getAnalyticsBox(
                       icon: 'assets/images/get_help/smile.svg',
                       no: '${_controller.consultantModelController.value.provder!.apptCount}',
-                      title: 'Consultant'),
+                      title: 'Consultants'.tr),
                   getAnalyticsBox(
                       icon: 'assets/images/get_help/star.svg',
                       no: '${_controller.consultantModelController.value.provder!.ratingCount}',
-                      title: 'Ratings'),
+                      title: 'Ratings'.tr),
                   getAnalyticsBox(
                       icon: 'assets/images/get_help/post.svg',
                       no: '${_controller.consultantModelController.value.provder!.postCount}',
-                      title: 'Posts'),
+                      title: 'Posts'.tr),
                   getAnalyticsBox(
                       icon: 'assets/images/get_help/thumbs up.svg',
                       no: '${_controller.consultantModelController.value.provder!.likeCount}',
-                      title: 'likes'),
+                      title: 'Likes'.tr),
                 ],
               ),
             ],
@@ -288,7 +289,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Details',
+                    'Details'.tr,
                     style: SolhTextStyles.QS_body_2_bold.copyWith(
                         color: SolhColors.primary_green),
                   ),
@@ -316,7 +317,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('About',
+                  Text('About'.tr,
                       style: SolhTextStyles.QS_body_2_bold.copyWith(
                           color: SolhColors.primary_green)),
                   ReadMoreText(
@@ -373,7 +374,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
           width: 200,
           height: 48,
           child: Text(
-            'Book Appointment',
+            'Book Appointment'.tr,
             style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
           onPressed: () {

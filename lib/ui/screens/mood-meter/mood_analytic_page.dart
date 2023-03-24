@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -43,7 +44,7 @@ class MoodAnalyticPage extends StatelessWidget {
   SolhAppBar getAppBar(MoodMeterController moodMeterController, context) {
     return SolhAppBar(
       title: Text(
-        'Mood Analytics',
+        'Mood Analytics'.tr,
         style: SolhTextStyles.AppBarText,
       ),
       callback: (() {
@@ -74,7 +75,7 @@ class MoodAnalyticPage extends StatelessWidget {
               width: 15,
             ),
             Text(
-              'Tap to add current mood',
+              'Tap to add current mood'.tr,
               style: TextStyle(
                 fontSize: 18,
                 color: Color(0xFF666666),
@@ -138,7 +139,7 @@ class MoodAnalyticPage extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Mood count',
+                    'Mood count'.tr,
                     style: TextStyle(
                       fontSize: 16,
                       color: Color(0xFF666666),
@@ -213,7 +214,7 @@ class MoodAnalyticPage extends StatelessWidget {
           items: [
             DropdownMenuItem(
               child: Text(
-                'Week',
+                'Week'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: SolhColors.primary_green,
@@ -223,7 +224,7 @@ class MoodAnalyticPage extends StatelessWidget {
             ),
             DropdownMenuItem(
               child: Text(
-                '30 days',
+                '30 days'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: SolhColors.primary_green,
@@ -233,7 +234,7 @@ class MoodAnalyticPage extends StatelessWidget {
             ),
             DropdownMenuItem(
               child: Text(
-                '60 days',
+                '60 days'.tr,
                 style: TextStyle(
                   fontSize: 16,
                   color: SolhColors.primary_green,
@@ -439,7 +440,7 @@ class MoodAnalyticPage extends StatelessWidget {
             ),
           ),
           Text(
-            'No mood found',
+            'No mood found'.tr,
             style: TextStyle(
               fontSize: 16,
               color: SolhColors.grey,
@@ -488,7 +489,7 @@ class MoodAnalyticPage extends StatelessWidget {
                                         .moodAnlyticsModel.value.avgMood !=
                                     null
                                 ? "${moodMeterController.moodAnlyticsModel.value.avgMood} % \n Average Score"
-                                : 'Loading ...'),
+                                : 'Loading ...'.tr),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,

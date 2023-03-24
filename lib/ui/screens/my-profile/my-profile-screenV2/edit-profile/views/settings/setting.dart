@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -32,7 +33,7 @@ class Setting extends StatelessWidget {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBar(
         title: Text(
-          'Settings',
+          'Settings'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
         isLandingScreen: false,
@@ -48,30 +49,30 @@ class Setting extends StatelessWidget {
                 arguments: {}),
             child: getSettingOptions(
               SvgPicture.asset('assets/icons/profile/privacy.svg'),
-              'Account & Privacy',
-              'Delete account',
+              'Account & Privacy'.tr,
+              'Delete account'.tr,
             ),
           ),
           SizedBox(
             height: 15,
           ),
-          InkWell(
-            onTap: () => Navigator.pushNamed(
-              context,
-              AppRoutes.userType,
-            ),
-            child: getSettingOptions(
-              Icon(
-                Icons.group_outlined,
-                color: SolhColors.primary_green,
-              ),
-              'User Type',
-              'Seeker, Volunteer, Provider',
-            ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
+          // InkWell(
+          //   onTap: () => Navigator.pushNamed(
+          //     context,
+          //     AppRoutes.userType,
+          //   ),
+          //   child: getSettingOptions(
+          //     Icon(
+          //       Icons.group_outlined,
+          //       color: SolhColors.primary_green,
+          //     ),
+          //     'User Type',
+          //     'Seeker, Volunteer, Provider',
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 15,
+          // ),
           // InkWell(
           //   onTap: () =>
           //       Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
@@ -89,7 +90,22 @@ class Setting extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => BlockedUsers())),
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/blocked.svg'),
-                'Blocked Users',
+                'Blocked Users'.tr,
+                null),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () =>
+                Navigator.pushNamed(context, AppRoutes.languageSettingPage),
+            child: getSettingOptions(
+                Icon(
+                  CupertinoIcons.t_bubble,
+                  color: SolhColors.primary_green,
+                  size: 20,
+                ),
+                'Languages'.tr,
                 null),
           ),
           Expanded(child: SizedBox()),
@@ -173,7 +189,7 @@ class GetLogoutButton extends StatelessWidget {
         SizedBox(
           width: 6,
         ),
-        Text('Logout',
+        Text('Logout'.tr,
             style: SolhTextStyles.QS_body_2_bold.copyWith(
               color: SolhColors.Grey_1,
             )),

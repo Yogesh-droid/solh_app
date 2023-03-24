@@ -129,11 +129,11 @@ class BioText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Something about you...',
+          'Something about you...'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "Tell something about you ",
+          "Tell something about you".tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -152,7 +152,7 @@ class BioTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Bio',
+          'Bio'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -162,7 +162,7 @@ class BioTextField extends StatelessWidget {
           controller: profileCompletionController.bioTextEditingController,
           maxLines: null,
           decoration:
-              TextFieldStyles.greenF_greenBroadUF_4R(hintText: 'write here'),
+              TextFieldStyles.greenF_greenBroadUF_4R(hintText: 'write here'.tr),
         ),
         SizedBox(
           height: 2.h,

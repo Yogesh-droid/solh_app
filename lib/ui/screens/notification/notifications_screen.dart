@@ -36,7 +36,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
           isLandingScreen: false,
           isNotificationPage: true,
           title: Text(
-            'Notification',
+            'Notification'.tr,
             style: GoogleFonts.signika(
               color: SolhColors.black,
             ),

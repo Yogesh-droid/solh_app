@@ -94,11 +94,12 @@ class WhatShouldWeCallYou extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'What should we call you?',
+          'What should we call you?'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "It helps us to know your real name, don't worry we won't share it with anyone without your permission. ",
+          "It helps us to know your real name, don't worry we won't share it with anyone without your permission. "
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -117,7 +118,7 @@ class NameTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'First Name',
+          'First Name'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -131,7 +132,7 @@ class NameTextField extends StatelessWidget {
           height: 2.h,
         ),
         Text(
-          'Last Name',
+          'Last Name'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(

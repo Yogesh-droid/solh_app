@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
@@ -33,7 +34,7 @@ class _BlockedUsersState extends State<BlockedUsers> {
     return Scaffold(
       appBar: SolhAppBar(
         title: Text(
-          'Blocked Users',
+          'Blocked Users'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
         isLandingScreen: false,
@@ -43,7 +44,8 @@ class _BlockedUsersState extends State<BlockedUsers> {
           Padding(
             padding: const EdgeInsets.all(18.0),
             child: Text(
-              "Users you've blocked are listed below; tap any of them to unblock them.",
+              "Users you've blocked are listed below; tap any of them to unblock them."
+                  .tr,
               style: SolhTextStyles.QS_cap_semi,
               textAlign: TextAlign.center,
             ),
@@ -111,7 +113,7 @@ class _BlockedUsersState extends State<BlockedUsers> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Unblock',
+                    'Unblock'.tr,
                     style: SolhTextStyles.QS_body_1_bold,
                   ),
                   Padding(
@@ -139,7 +141,7 @@ class _BlockedUsersState extends State<BlockedUsers> {
                       height: 48,
                       width: MediaQuery.of(context).size.width,
                       child: Text(
-                        'Unblock',
+                        'Unblock'.tr,
                         style: SolhTextStyles.CTA.copyWith(color: Colors.white),
                       ),
                       onPressed: () async {

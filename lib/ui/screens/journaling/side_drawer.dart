@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -112,7 +113,7 @@ class SideDrawer extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Hi, there",
+                                          "Hi, there".tr,
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500),
@@ -149,7 +150,7 @@ class SideDrawer extends StatelessWidget {
               ),
               Column(children: [
                 SideDrawerMenuTile(
-                  title: "My Diary",
+                  title: "My Diary".tr,
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -158,7 +159,7 @@ class SideDrawer extends StatelessWidget {
                   },
                 ),
                 SideDrawerMenuTile(
-                  title: "Groups",
+                  title: "Groups".tr,
                   onPressed: () {
                     bottomNavigatorController.isDrawerOpen.value = false;
                     Navigator.push(
@@ -168,7 +169,7 @@ class SideDrawer extends StatelessWidget {
                   },
                 ),
                 SideDrawerMenuTile(
-                  title: "Wheel of Emotions",
+                  title: "Wheel of Emotions".tr,
                   onPressed: () async {
                     moodMeterController.getMoodAnalytics(7);
                     Navigator.push(
@@ -185,7 +186,7 @@ class SideDrawer extends StatelessWidget {
                                 'SolhProvider'
                             ? Container()
                             : SideDrawerMenuTile(
-                                title: "Appointments",
+                                title: "Appointments".tr,
                                 onPressed: () async {
                                   appointmentController.getUserAppointments();
                                   Navigator.push(
@@ -197,13 +198,13 @@ class SideDrawer extends StatelessWidget {
                               )
                         : Container(),
                 SideDrawerMenuTile(
-                  title: "Self Assessments",
+                  title: "Self Assessments".tr,
                   onPressed: () async {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   },
                 ),
                 SideDrawerMenuTile(
-                  title: "Know Us More",
+                  title: "Know Us More".tr,
                   onPressed: () async {
                     //Get.find<VideoTutorialController>().getVideoPlaylist();
                     Navigator.push(
@@ -219,34 +220,34 @@ class SideDrawer extends StatelessWidget {
               Column(
                 children: [
                   SideDrawerMenuTile(
-                    title: "Contact Us",
+                    title: "Contact Us".tr,
                     isBottomMenu: true,
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => PrivacyWeb(
-                                    title: "Contact Us",
+                                    title: "Contact Us".tr,
                                     url: "https://solhapp.com/contact-us.html",
                                   )));
                     },
                   ),
                   SideDrawerMenuTile(
-                    title: "Privacy Policy",
+                    title: "Privacy Policy".tr,
                     isBottomMenu: true,
                     onPressed: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => PrivacyWeb(
-                                    title: 'Privacy Policy',
+                                    title: 'Privacy Policy'.tr,
                                     url:
                                         "https://solhapp.com/privacypolicy.html",
                                   )));
                     },
                   ),
                   SideDrawerMenuTile(
-                    title: "Terms of Use",
+                    title: "Terms of Use".tr,
                     isBottomMenu: true,
                     onPressed: () {
                       Navigator.push(
@@ -260,7 +261,7 @@ class SideDrawer extends StatelessWidget {
                     },
                   ),
                   SideDrawerMenuTile(
-                    title: "Give Feedback",
+                    title: "Give Feedback".tr,
                     isBottomMenu: true,
                   ),
                 ],

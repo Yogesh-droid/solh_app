@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -225,7 +226,7 @@ class _HomePageState extends State<HomePage> {
             child: ChatAnonymouslyCard(),
           ),
           GetHelpCategory(
-            title: 'Trending Posts',
+            title: 'Trending Posts'.tr,
             trailing: InkWell(
               onTap: () async {
                 _bottomNavigatorController.activeIndex.value = 1;
@@ -238,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: Row(
                     children: [
-                      Text('Journaling',
+                      Text('Journaling'.tr,
                           style: SolhTextStyles.CTA
                               .copyWith(color: SolhColors.primary_green)),
                       Icon(
@@ -302,7 +303,7 @@ class _HomePageState extends State<HomePage> {
           //       : Container();
           // }),
           GetHelpCategory(
-            title: 'Goals',
+            title: 'Goals'.tr,
             trailing: InkWell(
               onTap: () {
                 _bottomNavigatorController.activeIndex.value = 3;
@@ -312,7 +313,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Text(
-                      'Goal Setting',
+                      'Goal Setting'.tr,
                       style: GoogleFonts.signika(
                         color: SolhColors.primary_green,
                         fontWeight: FontWeight.w400,
@@ -332,7 +333,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SolhGreenButton(
-              child: Text('Add Goals +'),
+              child: Text('Add Goals +'.tr),
               height: 32,
               width: 100,
               onPressed: () {
@@ -352,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                               .discoveredGroupModel.value.groupList!.length >
                           0
                   ? GetHelpCategory(
-                      title: 'Groups For You',
+                      title: 'Groups For You'.tr,
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ManageGroupPage()));
@@ -370,7 +371,7 @@ class _HomePageState extends State<HomePage> {
           }),
           GetHelpDivider(),
           GetHelpCategory(
-            title: 'Search for Support',
+            title: 'Search for Support'.tr,
             trailing: InkWell(
               onTap: () {
                 _bottomNavigatorController.activeIndex.value = 2;
@@ -380,7 +381,7 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   children: [
                     Text(
-                      'Get Help',
+                      'Get Help'.tr,
                       style: GoogleFonts.signika(
                         color: SolhColors.primary_green,
                         fontWeight: FontWeight.w400,
@@ -417,7 +418,7 @@ class _HomePageState extends State<HomePage> {
               : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "Leading Solh Experts",
+              title: "Leading Solh Experts".tr,
               onPressed: () => Navigator.pushNamed(
                       context, AppRoutes.consultantAlliedParent, arguments: {
                     "slug": '',
@@ -432,7 +433,7 @@ class _HomePageState extends State<HomePage> {
                     ? getHelpController.topConsultantList.value.doctors!.isEmpty
                         ? Center(
                             child: Text(
-                                'No Consultant available for your country'),
+                                'No Consultant available for your country'.tr),
                           )
                         : ListView.builder(
                             shrinkWrap: true,
@@ -476,7 +477,7 @@ class _HomePageState extends State<HomePage> {
           getSolhBuddiesUI(), */
           // GetHelpDivider(),
           GetHelpCategory(
-            title: 'Latest Reads',
+            title: 'Latest Reads'.tr,
           ),
           getRecommendedReadsUI(),
           SizedBox(
@@ -1781,7 +1782,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
                   SizedBox(
                     width: 60.w,
                     child: Text(
-                      'Overwhelmed with emotions: Talk to a Solh counsellor NOW',
+                      'Overwhelmed with emotions: Talk to a Solh counsellor NOW'
+                          .tr,
                       style: SolhTextStyles.QS_body_1_bold.copyWith(
                           color: SolhColors.white),
                     ),
@@ -1808,20 +1810,20 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 children: [
                   getIssuesRowItem(
                       Image(image: AssetImage('assets/images/anxiety.png')),
-                      'Anxiety'),
+                      'Anxiety'.tr),
                   getIssuesRowItem(
                       Image(image: AssetImage('assets/images/depression.png')),
-                      'Depression'),
+                      'Depression'.tr),
                   getIssuesRowItem(
                       Image(image: AssetImage('assets/images/addiction.png')),
-                      'Addiction'),
+                      'Addiction'.tr),
                   getIssuesRowItem(
                       Container(
                         decoration: BoxDecoration(
                             shape: BoxShape.circle, color: SolhColors.white),
                         child: Center(child: Text('20+')),
                       ),
-                      'More')
+                      'More'.tr)
                 ],
               ),
               SizedBox(
@@ -1832,7 +1834,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 thickness: 1,
               ),
               Text(
-                'Start chatting for free right away, with a Solh Counselor. ',
+                'Start chatting for free right away, with a Solh Counselor.'.tr,
                 style: SolhTextStyles.QS_caption.copyWith(
                     color: SolhColors.white, fontSize: 9.sp),
                 textAlign: TextAlign.center,
@@ -1883,7 +1885,7 @@ class AlliedExperts extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Allied Experts',
+                'Allied Experts'.tr,
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               // InkWell(

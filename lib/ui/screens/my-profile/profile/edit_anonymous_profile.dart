@@ -39,7 +39,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
     return ScaffoldWithBackgroundArt(
         appBar: SolhAppBar(
           title: Text(
-            "Edit Anonymous Profile",
+            "Edit Anonymous Profile".tr,
             style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false,
@@ -171,7 +171,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                         Obx(() {
                           return _anonController.isNameTaken.value
                               ? Text(
-                                  "Username Already taken",
+                                  "Username Already taken".tr,
                                   style: TextStyle(color: Colors.red),
                                 )
                               : Container();
@@ -185,7 +185,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                       padding: const EdgeInsets.symmetric(horizontal: 18.0),
                       child: SolhGreenButton(
                         child: Text(
-                          "Save",
+                          "Save".tr,
                           style: SolhTextStyles.CTA
                               .copyWith(color: SolhColors.white),
                         ),

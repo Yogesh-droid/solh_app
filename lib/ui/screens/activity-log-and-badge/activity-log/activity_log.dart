@@ -286,11 +286,11 @@ Widget getListItem(var time, content, subContent, activityType, isAnon,
 String getDay(DateTime date) {
   if (DateFormat('MM/dd/yyyy').format(date) ==
       DateFormat('MM/dd/yyyy').format(DateTime.now())) {
-    return 'Today';
+    return 'Today'.tr;
   } else if (DateFormat('MM/dd/yyyy')
           .format(DateTime.now().subtract(Duration(days: 1))) ==
       DateFormat('MM/dd/yyyy').format(date)) {
-    return 'Yesterday';
+    return 'Yesterday'.tr;
   } else {
     return DateFormat('dd-MMMM-yyyy').format(date);
   }

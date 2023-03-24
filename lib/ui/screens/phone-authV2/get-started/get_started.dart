@@ -39,7 +39,8 @@ class GetStartedScreen extends StatelessWidget {
                   SizedBox(
                     width: 60.w,
                     child: Text(
-                      'Clear your Mind. Find Happiness in Chaos. Seek Solh Within.',
+                      'Clear your Mind. Find Happiness in Chaos. Seek Solh Within.'
+                          .tr,
                       style: SolhTextStyles.QS_body_2_semi.copyWith(
                           color: SolhColors.dark_grey),
                       textAlign: TextAlign.center,
@@ -54,7 +55,7 @@ class GetStartedScreen extends StatelessWidget {
                 children: [
                   SolhGreenButton(
                     width: 80.w,
-                    child: Text('Get Started'),
+                    child: Text('Get Started'.tr),
                     onPressed: () => Navigator.pushNamed(
                         context, AppRoutes.loginSignup,
                         arguments: {
@@ -66,7 +67,7 @@ class GetStartedScreen extends StatelessWidget {
                   ),
                   RichText(
                       text: TextSpan(
-                          text: 'Already have an account? ',
+                          text: 'Already have an account? '.tr,
                           style: Theme.of(context).textTheme.bodyText2,
                           children: [
                         TextSpan(

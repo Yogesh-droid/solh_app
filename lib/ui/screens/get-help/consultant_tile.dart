@@ -75,7 +75,7 @@ class ConsultantsTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Starting @',
+                          'Starting @'.tr,
                           style: SolhTextStyles.QS_cap_semi,
                         ),
                         Text(

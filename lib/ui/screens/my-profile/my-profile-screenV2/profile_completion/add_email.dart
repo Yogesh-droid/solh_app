@@ -127,11 +127,12 @@ class AddEmailText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Email-id',
+          'Email-id'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "We need your email for safekeeping your account. We promise to not spam you.  ",
+          "We need your email for safekeeping your account. We promise to not spam you."
+              .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -148,7 +149,7 @@ class EmailTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Email',
+          'Email'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -156,8 +157,8 @@ class EmailTextField extends StatelessWidget {
         ),
         TextField(
           controller: profileCompletionController.emailTextEditingController,
-          decoration:
-              TextFieldStyles.greenF_greenBroadUF_4R(hintText: 'your email-id'),
+          decoration: TextFieldStyles.greenF_greenBroadUF_4R(
+              hintText: 'your email-id'.tr),
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
@@ -42,7 +43,7 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
                 Navigator.pop(context);
               },
               child: Text(
-                "Skip",
+                "Skip".tr,
                 style: TextStyle(
                   color: SolhColors.primary_green,
                   fontSize: 18,
@@ -76,7 +77,6 @@ class _MoodReasonPageState extends State<MoodReasonPage> {
                 borderSide: BorderSide(color: SolhColors.primary_green),
               ),
             ),
-           
           ),
           SizedBox(
             height: 30,

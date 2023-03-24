@@ -23,7 +23,7 @@ class AccountPrivacyScreen extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
         title: Text(
-          "Account Privacy",
+          "Account Privacy".tr,
           style: TextStyle(color: Colors.black),
         ),
         isLandingScreen: false,
@@ -38,14 +38,13 @@ class AccountPrivacyScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Delete Account",
+                    "Delete Account".tr,
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 0.5.h),
                   Text(
-                    '''Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. 
-
-You will have to create a new account and start your journey from the beginning if you wish to return.''',
+                    "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return."
+                        .tr,
                     style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 14),
                   ),
                   SizedBox(
@@ -94,7 +93,7 @@ You will have to create a new account and start your journey from the beginning 
                                               height: 5.h,
                                             ),
                                             Text(
-                                              "Delete Account",
+                                              "Delete Account".tr,
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w500),

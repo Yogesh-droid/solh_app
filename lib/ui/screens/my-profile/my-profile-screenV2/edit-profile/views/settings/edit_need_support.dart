@@ -45,7 +45,7 @@ class EditNeedSupportOn extends StatelessWidget {
       appBar: SolhAppBarTanasparentOnlyBackButton(
         backButtonColor: SolhColors.black666,
         onBackButton: () => Navigator.of(context).pop(),
-        onSkip: (() => Navigator.pushNamed(context, AppRoutes.partOfOrg)),
+        // onSkip: (() => Navigator.pushNamed(context, AppRoutes.partOfOrg)),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -71,7 +71,7 @@ class EditNeedSupportOn extends StatelessWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: FilterChip(
-                      label: Text('Other'),
+                      label: Text('Other'.tr),
                       onSelected: (value) {
                         if (value) {
                           userTypeController.showOtherissueField.value = true;
@@ -90,7 +90,7 @@ class EditNeedSupportOn extends StatelessWidget {
                                       userTypeController.otherIssueTextField,
                                   decoration: TextFieldStyles.greenF_greyUF_4R
                                       .copyWith(
-                                          hintText: " Enter Custom issue")),
+                                          hintText: "Enter Custom issue".tr)),
                               SizedBox(
                                 height: 1.h,
                               ),
@@ -110,7 +110,7 @@ class EditNeedSupportOn extends StatelessWidget {
                                       false;
                                 }),
                                 child: Text(
-                                  'Add',
+                                  'Add'.tr,
                                   style: SolhTextStyles.NormalTextWhiteS14W6,
                                 ),
                               )
@@ -137,11 +137,12 @@ class EditNeedSupportOnText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Need support on',
+          'Need support on'.tr,
           style: SolhTextStyles.Large2BlackTextS24W7,
         ),
         Text(
-          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one.  ",
+          "Give us a rough idea of the issues that you deal with on a daily basis. You may select more than one."
+              .tr,
           style: SolhTextStyles.NormalTextGreyS14W5,
         ),
       ],

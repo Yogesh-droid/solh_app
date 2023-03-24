@@ -147,7 +147,7 @@ class FeaturedTherapist extends StatelessWidget {
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Text(
-                'View All',
+                'View All'.tr,
                 style: SolhTextStyles.CTA
                     .copyWith(color: SolhColors.primary_green),
               )
@@ -389,7 +389,7 @@ class FeaturedTherapistCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Starting @',
+                          'Starting @'.tr,
                           style: SolhTextStyles.QS_cap_2_semi,
                         ),
                         Text(
@@ -429,7 +429,7 @@ class PopularPackagesList extends StatelessWidget {
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Text(
-                'View All',
+                'View All'.tr,
                 style: SolhTextStyles.CTA
                     .copyWith(color: SolhColors.primary_green),
               )
@@ -481,7 +481,7 @@ class FeatuedPackagesList extends StatelessWidget {
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Text(
-                'View All',
+                'View All'.tr,
                 style: SolhTextStyles.CTA
                     .copyWith(color: SolhColors.primary_green),
               )

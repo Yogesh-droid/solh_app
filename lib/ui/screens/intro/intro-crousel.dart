@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:solh/routes/routes.dart';
@@ -206,7 +207,7 @@ class SkipButton extends StatelessWidget {
           backgroundColor:
               MaterialStateProperty.all<Color>(Colors.transparent)),
       child: Text(
-        "Skip",
+        "Skip".tr,
         style: _buttonstyle,
       ),
       onPressed: _onPressed,

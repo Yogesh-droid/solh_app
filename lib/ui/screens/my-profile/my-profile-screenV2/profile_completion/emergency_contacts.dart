@@ -130,11 +130,11 @@ class EmergencyContactsText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Emergency Contact',
+          'Emergency Contact'.tr,
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "It is always good to have someone on speed dial isn't it? ",
+          "It is always good to have someone on speed dial isn't it?".tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
       ],
@@ -153,7 +153,7 @@ class AddEmergencyContacts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Select Connection',
+          'Select Connection'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -180,7 +180,7 @@ class AddEmergencyContacts extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Select',
+                    'Select'.tr,
                     style: SolhTextStyles.QS_body_2.copyWith(
                         color: SolhColors.Grey_1),
                   ),
@@ -220,7 +220,7 @@ class SosMessage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'SOS Message  ',
+          'SOS Message'.tr,
           style: SolhTextStyles.SmallTextWhiteS12W7,
         ),
         SizedBox(
@@ -232,7 +232,7 @@ class SosMessage extends StatelessWidget {
           maxLines: 5,
           minLines: 4,
           decoration:
-              TextFieldStyles.greenF_greenBroadUF_4R(hintText: 'Message'),
+              TextFieldStyles.greenF_greenBroadUF_4R(hintText: 'Message'.tr),
         ),
       ],
     );
@@ -259,7 +259,7 @@ class ModelBottomsheetContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Select People',
+                      'Select People'.tr,
                       style: SolhTextStyles.QS_body_1_bold,
                     ),
                   ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
@@ -18,7 +19,7 @@ class EditProfileOptions extends StatelessWidget {
     return ScaffoldWithBackgroundArt(
       appBar: SolhAppBar(
         title: Text(
-          'Edit Profile',
+          'Edit Profile'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
         isLandingScreen: false,
@@ -37,8 +38,8 @@ class EditProfileOptions extends StatelessWidget {
                 Icons.person,
                 color: SolhColors.primary_green,
               ),
-              'Personal Details',
-              'Name, age, gender',
+              'Personal Details'.tr,
+              'Name, age, gender'.tr,
             ),
           ),
           SizedBox(
@@ -50,8 +51,8 @@ class EditProfileOptions extends StatelessWidget {
                       context, AppRoutes.editAnonymousProfile),
                   child: getOptions(
                     SvgPicture.asset('assets/images/anon_glasses.svg'),
-                    'Anonymous profile',
-                    'Name, Avatar',
+                    'Anonymous profile'.tr,
+                    'Name, Avatar'.tr,
                   ),
                 )
               : Container(),
@@ -63,8 +64,8 @@ class EditProfileOptions extends StatelessWidget {
                 Navigator.pushNamed(context, AppRoutes.editNeedSupportOn),
             child: getSettingOptions(
               SvgPicture.asset('assets/images/other_detail.svg'),
-              'Other Detail',
-              'Issues, Organisation',
+              'Other Detail'.tr,
+              'Issues, Organisation'.tr,
             ),
           ),
         ]),
