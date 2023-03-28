@@ -413,6 +413,30 @@ class Languages extends Translations {
           "How Can we help ? (optional)":
               "हम आपकी कैसे सहायता कर सकते है?(वैकल्पिक)",
           "Preffered Date & Time": "पसंदीदा तिथि और समय",
+          "Clear your Mind. Find Happiness in Chaos. Seek Solh Within.":
+              "अपना दिमाग साफ़ करें। अराजकता में खुशी खोजें। अपने भीतर SOLH तलाशें। ",
+          "Already have an account?":
+              "क्या आपका पास पहले से ही एक अकाउंट मौजूद है?",
+          "Verify Phone No.": "फ़ोन नंबर की पुष्टि करें",
+          "Please enter the 6 digit code sent to ":
+              "कृपया भेजा गया 6 अंकों का कोड दर्ज करें",
+          "Didn't recieve a code? ": "कोड प्राप्त नहीं हुआ?",
+          "What should we call you?": "हम आपको क्या कहकर बुलाएं?",
+          "It helps us to know your real name, don't worry we won't share it with anyone without your permission.":
+              "यह हमें आपका वास्तविक नाम जानने में मदद करता है, चिंता न करें हम आपकी अनुमति के बिना इसे किसी के साथ साझा नहीं करेंगे।",
+          "When is your birthday ?": "आपका जन्मदिन कब है ?",
+          "We want to know how many years of experience you have dealing with life :) ":
+              "हम जानना चाहते हैं कि आपको जीवन से निपटने का कितने वर्षों का अनुभव है :)",
+          "Are you sure ? Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements.":
+              "क्या आप सुनिश्चित हैं ? आपके अकाउंट को हटाने से आपकी सभी पोस्ट, अपॉइंटमेंट, पत्रिकाएं, पसंद, टिप्पणियां और अन्य सभी कार्य हटा दिए जाएंगे।",
+          "Notification": "अधिसूचना",
+          "Upload a pciture or choose one from our library of images that describes you best.":
+              "एक तस्वीर अपलोड करें या हमारी लाइब्रेरी में से एक इमेज चुनें जो आपका सबसे अच्छा वर्णन करती है।",
+          "Email": "ईमेल",
+          "your email-id": "आपकी ई-मेल ID",
+          "Enter Custom issue": "कस्टम मुद्दा दर्ज करें",
+          "No Completed Appointment yet":
+              "अभी तक कोई अपॉइंटमेंट पूरा नहीं हुआ है",
           "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
               "आपके अकाउंट को हटाने से आपकी सभी पोस्ट, अपॉइंटमेंट, पत्रिकाएं, पसंद और टिप्पणियां और अन्य सभी कार्य हटा दिए जाएंगे। यदि आप वापस लौटना चाहते हैं तो आपको एक नया अकाउंट बनाना होगा और दोबारा शुरुआत करनी होगी।"
         },
