@@ -19,6 +19,7 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/html_translate.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
@@ -790,175 +791,171 @@ class LikesModalSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 5,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Post Liked By',
-                              style: GoogleFonts.signika(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Divider(
-                        thickness: 1,
-                      )
-                    ],
-                  ),
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
+          child: Column(
+            children: [
+              Container(
+                height: 5,
+                width: 30,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
                 ),
-                SizedBox(
-                  height: 6,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Post Liked By',
+                      style: GoogleFonts.signika(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                Obx((){
-                  return journalCommentController.isReactionLoading.value?ButtonLoadingAnimation() :  ( journalCommentController.reactionlistModel.value.data != null
-                    ? Wrap(
-                        alignment: WrapAlignment.start,
-                        children: journalCommentController
-                            .reactionlistModel.value.data!
-                            .map((e) => GestureDetector(
-                                  onTap: () {
-                                    onTap(e.sId ?? '');
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 2.w, vertical: 0.5.h),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 4.w, vertical: 1.h),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: SolhColors.primary_green),
-                                      borderRadius: BorderRadius.circular(18),
-                                      color: Color(0xFFFBFBFB),
-                                    ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          e.reactionName ?? '',
-                                          style: SolhTextStyles.QS_cap_semi,
-                                        ),
-                                        SizedBox(width: 3),
-                                        SvgPicture.network(
-                                            e.reactionImage ?? '')
-                                      ],
-                                    ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Divider(
+                thickness: 1,
+              )
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 6,
+        ),
+        Obx(() {
+          return journalCommentController.isReactionLoading.value
+              ? ButtonLoadingAnimation()
+              : (journalCommentController.reactionlistModel.value.data != null
+                  ? Wrap(
+                      alignment: WrapAlignment.start,
+                      children: journalCommentController
+                          .reactionlistModel.value.data!
+                          .map((e) => GestureDetector(
+                                onTap: () {
+                                  onTap(e.sId ?? '');
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 2.w, vertical: 0.5.h),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 4.w, vertical: 1.h),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: SolhColors.primary_green),
+                                    borderRadius: BorderRadius.circular(18),
+                                    color: Color(0xFFFBFBFB),
                                   ),
-                                ))
-                            .toList(),
-                      )
-                    : Container());
-                }),
-            
-                Divider(),
-              Obx(() => journalPageController.isLikedUserListLoading.value
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          :   (journalPageController.likedUserList.value.result == null
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        e.reactionName ?? '',
+                                        style: SolhTextStyles.QS_cap_semi,
+                                      ),
+                                      SizedBox(width: 3),
+                                      SvgPicture.network(e.reactionImage ?? '')
+                                    ],
+                                  ),
+                                ),
+                              ))
+                          .toList(),
+                    )
+                  : Container());
+        }),
+        Divider(),
+        Obx(() => journalPageController.isLikedUserListLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : (journalPageController.likedUserList.value.result == null
+                ? Container()
+                : journalPageController
+                        .likedUserList.value.result!.data!.isEmpty
                     ? Container()
-                    : journalPageController
-                            .likedUserList.value.result!.data!.isEmpty
-                        ? Container()
-                        : Expanded(
-                            child: ListView.builder(
-                                itemCount: journalPageController
-                                    .likedUserList.value.result!.data!.length,
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    onTap: () {},
-                                    child: Container(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 5),
-                                        child: Row(
-                                          children: [
-                                            CircleAvatar(
-                                              backgroundColor: Colors.grey,
-                                              backgroundImage: NetworkImage(
-                                                  journalPageController
-                                                          .likedUserList
-                                                          .value
-                                                          .result!
-                                                          .data![index]
-                                                          .user!
-                                                          .profilePicture ??
-                                                      ''),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      8, 0, 30, 0),
-                                              child: Text(
-                                                journalPageController
-                                                            .likedUserList
-                                                            .value
-                                                            .result!
-                                                            .data![index]
-                                                            .user!
-                                                            .sId ==
-                                                        Get.find<
-                                                                ProfileController>()
-                                                            .myProfileModel
-                                                            .value
-                                                            .body!
-                                                            .user!
-                                                            .sId
-                                                    ? "You"
-                                                    : journalPageController
-                                                            .likedUserList
-                                                            .value
-                                                            .result!
-                                                            .data![index]
-                                                            .user!
-                                                            .name ??
-                                                        '',
-                                                style: GoogleFonts.signika(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                            Spacer(),
-                                            SvgPicture.network(
-                                                journalPageController
+                    : Expanded(
+                        child: ListView.builder(
+                            itemCount: journalPageController
+                                .likedUserList.value.result!.data!.length,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 5),
+                                    child: Row(
+                                      children: [
+                                        CircleAvatar(
+                                          backgroundColor: Colors.grey,
+                                          backgroundImage: NetworkImage(
+                                              journalPageController
+                                                      .likedUserList
+                                                      .value
+                                                      .result!
+                                                      .data![index]
+                                                      .user!
+                                                      .profilePicture ??
+                                                  ''),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 0, 30, 0),
+                                          child: Text(
+                                            journalPageController
                                                         .likedUserList
                                                         .value
                                                         .result!
                                                         .data![index]
-                                                        .reaction!
-                                                        .reactionImage ??
-                                                    '')
-                                          ],
+                                                        .user!
+                                                        .sId ==
+                                                    Get.find<
+                                                            ProfileController>()
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .sId
+                                                ? "You"
+                                                : journalPageController
+                                                        .likedUserList
+                                                        .value
+                                                        .result!
+                                                        .data![index]
+                                                        .user!
+                                                        .name ??
+                                                    '',
+                                            style: GoogleFonts.signika(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        Spacer(),
+                                        SvgPicture.network(journalPageController
+                                                .likedUserList
+                                                .value
+                                                .result!
+                                                .data![index]
+                                                .reaction!
+                                                .reactionImage ??
+                                            '')
+                                      ],
                                     ),
-                                  );
-                                }),
-                          ))
-      )],
-            )
-    );
+                                  ),
+                                ),
+                              );
+                            }),
+                      )))
+      ],
+    ));
   }
 }
 
@@ -1029,67 +1026,93 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                         ? SizedBox()
                         : widget.journalModel.description!.length != 0
                             ? descriptionTexts.length == 1
-                                ? Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0,
-                                        right: 15.0,
-                                        top: 2.0,
-                                        bottom: 8.0),
-                                    child: ReadMoreText(
-                                        descriptionTexts[0].trim(),
-                                        trimLines: 5,
-                                        style: SolhTextStyles.QS_body_2_semi),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15.0,
-                                        right: 15.0,
-                                        top: 8.0,
-                                        bottom: 8.0),
-                                    child: Wrap(children: [
-                                      Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.end,
-                                        children: widget.journalModel
-                                                    .description!.length ==
-                                                0
-                                            ? []
-                                            : showMoreBtn
-                                                ? isExpanded
-                                                    ? descriptionTexts
-                                                        .map((item) {
-                                                        return getDescriptionText(
-                                                            item);
-                                                      }).toList()
-                                                    : descriptionTexts
-                                                        .sublist(0, 30)
-                                                        .map((item) {
-                                                        return getDescriptionText(
-                                                            item);
-                                                      }).toList()
-                                                : descriptionTexts.map((item) {
-                                                    return getDescriptionText(
-                                                        item);
-                                                  }).toList(),
+                                ? Wrap(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15.0,
+                                            right: 15.0,
+                                            top: 2.0,
+                                            bottom: 8.0),
+                                        child: ReadMoreText(
+                                            descriptionTexts[0].trim(),
+                                            trimLines: 5,
+                                            style:
+                                                SolhTextStyles.QS_body_2_semi),
                                       ),
-                                      showMoreBtn
-                                          ? InkWell(
-                                              child: Text(
-                                                !isExpanded
-                                                    ? '...show more'
-                                                    : '...show less',
-                                                style: GoogleFonts.signika(
-                                                    color: SolhColors
-                                                        .primary_green),
-                                              ),
-                                              onTap: () {
-                                                setState(() {
-                                                  isExpanded = !isExpanded;
-                                                });
-                                              },
-                                            )
-                                          : Container()
-                                    ]),
+                                      if (Get.locale!.languageCode != 'en')
+                                        TextButton(
+                                            onPressed: () async {
+                                              await getTexts(
+                                                  isForTranslation: true);
+                                              setState(() {});
+                                            },
+                                            child: Text("Translate"))
+                                    ],
+                                  )
+                                : Wrap(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15.0,
+                                            right: 15.0,
+                                            top: 8.0,
+                                            bottom: 8.0),
+                                        child: Wrap(children: [
+                                          Wrap(
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.end,
+                                            children: widget.journalModel
+                                                        .description!.length ==
+                                                    0
+                                                ? []
+                                                : showMoreBtn
+                                                    ? isExpanded
+                                                        ? descriptionTexts
+                                                            .map((item) {
+                                                            return getDescriptionText(
+                                                                item);
+                                                          }).toList()
+                                                        : descriptionTexts
+                                                            .sublist(0, 30)
+                                                            .map((item) {
+                                                            return getDescriptionText(
+                                                                item);
+                                                          }).toList()
+                                                    : descriptionTexts
+                                                        .map((item) {
+                                                        return getDescriptionText(
+                                                            item);
+                                                      }).toList(),
+                                          ),
+                                          showMoreBtn
+                                              ? InkWell(
+                                                  child: Text(
+                                                    !isExpanded
+                                                        ? '...show more'
+                                                        : '...show less',
+                                                    style: GoogleFonts.signika(
+                                                        color: SolhColors
+                                                            .primary_green),
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      isExpanded = !isExpanded;
+                                                    });
+                                                  },
+                                                )
+                                              : Container()
+                                        ]),
+                                      ),
+                                      if (Get.locale!.languageCode != 'en')
+                                        TextButton(
+                                            onPressed: () async {
+                                              await getTexts(
+                                                  isForTranslation: true);
+                                              setState(() {});
+                                            },
+                                            child: Text("Translate"))
+                                    ],
                                   )
                             : SizedBox(),
                   ],
@@ -1250,8 +1273,11 @@ class _PostContentWidgetState extends State<PostContentWidget> {
     );
   }
 
-  List getTexts() {
-    String desc = widget.journalModel.description!.trim();
+  Future<List> getTexts({bool? isForTranslation}) async {
+    String desc = isForTranslation != null
+        ? await HtmlTranslationService.translateDescrition(
+            widget.journalModel.description!.trim())
+        : widget.journalModel.description!.trim();
     List<String> textList = desc.split(' ');
     var regx = RegExp(r'@');
     // if (textList.length > 30) {

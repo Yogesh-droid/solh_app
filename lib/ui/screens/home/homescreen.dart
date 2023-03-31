@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
@@ -21,14 +19,13 @@ import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
-import 'package:solh/main.dart';
+import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
-import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
-import 'package:solh/ui/screens/journaling/create-journal.dart';
+import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -55,6 +52,7 @@ import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
+import '../psychology-test/test_question_page.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -149,7 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
-  BottomNavigatorController _controller = Get.find();
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -166,6 +163,7 @@ class _HomePageState extends State<HomePage> {
   ChatAnonController chatAnonController = Get.put(ChatAnonController());
   SearchMarketController searchMarketController = Get.find();
   HomeController homeController = Get.find();
+  PsychologyTestController psychologyTestController = Get.find();
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
@@ -258,50 +256,8 @@ class _HomePageState extends State<HomePage> {
                 ? getTrendingPostShimmer()
                 : getTrendingPostUI();
           }),
-
           WhatsOnYourMindSection(),
           GetHelpDivider(),
-          // Obx(() {
-          //   return !connectionController.isRecommnedationLoadingHome.value
-          //       ? connectionController
-          //                       .peopleYouMayKnowHome.value.reccomendation !=
-          //                   null &&
-          //               connectionController.peopleYouMayKnowHome.value
-          //                   .reccomendation!.isNotEmpty
-          //           ? GetHelpCategory(
-          //               title: 'Solh Mates',
-          //               onPressed: () {
-          //                 Navigator.push(context,
-          //                     MaterialPageRoute(builder: (context) {
-          //                   return ViewAllVolunteers();
-          //                 }));
-          //               },
-          //             )
-          //           : Container()
-          //       : Container();
-          // }),
-          // Obx(() {
-          //   return !connectionController.isRecommnedationLoadingHome.value
-          //       ? connectionController
-          //                       .peopleYouMayKnowHome.value.reccomendation !=
-          //                   null &&
-          //               connectionController.peopleYouMayKnowHome.value
-          //                   .reccomendation!.isNotEmpty
-          //           ? getPeopleYouMayKnowUI()
-          //           : Container()
-          //       : getRecommnededShimmer();
-          // }),
-          // Obx(() {
-          //   return !connectionController.isRecommnedationLoadingHome.value
-          //       ? connectionController
-          //                       .peopleYouMayKnowHome.value.reccomendation !=
-          //                   null &&
-          //               connectionController.peopleYouMayKnowHome.value
-          //                   .reccomendation!.isNotEmpty
-          //           ? GetHelpDivider()
-          //           : Container()
-          //       : Container();
-          // }),
           GetHelpCategory(
             title: 'Goals'.tr,
             trailing: InkWell(
@@ -369,6 +325,8 @@ class _HomePageState extends State<HomePage> {
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
+          GetHelpDivider(),
+          getTestUI(),
           GetHelpDivider(),
           GetHelpCategory(
             title: 'Search for Support'.tr,
@@ -1143,64 +1101,6 @@ class _HomePageState extends State<HomePage> {
                     .discoveredGroupModel.value.groupList!.length));
   }
 
-  Widget getPeopleYouMayKnowUI() {
-    return Container(
-      height: 270,
-      margin: EdgeInsets.only(bottom: 2.h),
-      child: Obx(() {
-        return ListView.separated(
-          padding: EdgeInsets.only(left: 2.h),
-          separatorBuilder: (_, __) => SizedBox(width: 2.w),
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: connectionController
-              .peopleYouMayKnowHome.value.reccomendation!.length,
-          itemBuilder: (context, index) => SolhVolunteers(
-            bio: connectionController.peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .bio,
-            name: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .name,
-            mobile: '',
-            imgUrl: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .profilePicture,
-            sId: connectionController.peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .sId,
-            uid: connectionController.peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .uid,
-            comments: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .commentCount
-                .toString(),
-            connections: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .connectionsCount
-                .toString(),
-            likes: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .likesCount
-                .toString(),
-            userType: null,
-            post: connectionController
-                    .peopleYouMayKnowHome.value.reccomendation!
-                    .elementAt(index)
-                    .postCount ??
-                0,
-          ),
-        );
-      }),
-    );
-  }
-
   getInteractionButton(Journals journal) {
     return ClipRRect(
       borderRadius: BorderRadius.only(
@@ -1269,132 +1169,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-    );
-  }
-
-  getRecommnededShimmer() {
-    return Container(
-      height: 270,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 190,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.fromBorderSide(
-                      BorderSide(
-                        color: SolhColors.greyS200,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 20,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 20,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.thumb_up_alt_outlined,
-                                color: SolhColors.primary_green,
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Text(
-                                '0',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: SolhColors.primary_green,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            width: 1,
-                            height: 20,
-                            color: SolhColors.primary_green,
-                          ),
-                          Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.chat_bubble,
-                                color: SolhColors.primary_green,
-                              ),
-                              SizedBox(
-                                width: 2.w,
-                              ),
-                              Text(
-                                '0',
-                                style: TextStyle(
-                                  color: SolhColors.primary_green,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 20,
-                        width: 180,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }),
     );
   }
 
@@ -1610,6 +1384,146 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getTestUI() {
+    return Obx(() => psychologyTestController.isLoadingList.value
+        ? const SizedBox()
+        : Column(
+            children: [
+              GetHelpCategory(
+                  title: 'Self-Assessment',
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.psychologyTest);
+                  }),
+              Container(
+                height: 180,
+                child: ListView(
+                  padding: EdgeInsets.only(left: 10),
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  children: psychologyTestController.testList
+                      .map((element) => PsychoTestContainer(
+                            test: element,
+                            psychologyTestController: psychologyTestController,
+                          ))
+                      .toList(),
+                ),
+              )
+            ],
+          ));
+  }
+}
+
+class PsychoTestContainer extends StatelessWidget {
+  const PsychoTestContainer(
+      {super.key, required this.test, required this.psychologyTestController});
+  final TestList test;
+  final PsychologyTestController psychologyTestController;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        psychologyTestController.selectedQuestion.clear();
+        psychologyTestController.score.clear();
+        psychologyTestController.submitAnswerModelList.clear();
+        psychologyTestController.getQuestion(test.sId ?? '');
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return TestQuestionsPage(
+            id: test.sId,
+            testTitle: test.testTitle,
+          );
+        }));
+      },
+      child: Container(
+        margin: EdgeInsets.only(right: 8),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Container(
+                width: 200,
+                child: CachedNetworkImage(
+                  imageUrl: test.testPicture ?? '',
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+            ),
+            Container(
+              height: 60,
+              width: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+                gradient: LinearGradient(colors: [
+                  Colors.black.withOpacity(0.01),
+                  Colors.black26,
+                  Colors.black45,
+                  Colors.black87,
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      test.testTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: SolhTextStyles.QS_body_1_bold.copyWith(
+                          color: Colors.white),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              CupertinoIcons.list_bullet,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              " ${test.testQuestionNumber.toString()} ques.",
+                              style: SolhTextStyles.QS_caption.copyWith(
+                                  color: Colors.white),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              CupertinoIcons.clock,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                            Text(
+                              " ${test.testDuration} min",
+                              style: SolhTextStyles.QS_caption.copyWith(
+                                  color: Colors.white),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             )
           ],
         ),
@@ -1888,26 +1802,30 @@ class AlliedExperts extends StatelessWidget {
                 'Allied Experts'.tr,
                 style: SolhTextStyles.QS_body_semi_1,
               ),
-              // InkWell(
-              //   onTap: () => Navigator.pushNamed(
-              //       context, AppRoutes.viewAllAlliedCategories,
-              //       arguments: {
-              //         "onTap": (value) {
-              //           Navigator.pushNamed(
-              //               context, AppRoutes.viewAllAlliedExpert, arguments: {
-              //             "slug": value,
-              //             "name": value,
-              //             "type": 'specialization',
-              //             "enableAppbar": true
-              //           });
-              //         }
-              //       }),
-              //   child: Text(
-              //     'Show more',
-              //     style: SolhTextStyles.CTA
-              //         .copyWith(color: SolhColors.primary_green),
-              //   ),
-              // )
+              InkWell(
+                onTap: () {
+                  getHelpController.getAlliedTherapyListMore();
+                  Navigator.pushNamed(
+                      context, AppRoutes.viewAllAlliedCategories,
+                      arguments: {
+                        "onTap": (value) {
+                          Navigator.pushNamed(
+                              context, AppRoutes.viewAllAlliedExpert,
+                              arguments: {
+                                "slug": value,
+                                "name": value,
+                                "type": 'specialization',
+                                "enableAppbar": true
+                              });
+                        }
+                      });
+                },
+                child: Text(
+                  'Show more',
+                  style: SolhTextStyles.CTA
+                      .copyWith(color: SolhColors.primary_green),
+                ),
+              )
             ],
           ),
           SizedBox(
@@ -1925,12 +1843,8 @@ class AlliedExperts extends StatelessWidget {
                       mainAxisSpacing: 4.0,
                       childAspectRatio: 2 / 2.6),
                   shrinkWrap: true,
-                  itemCount: getHelpController.getAlliedTherapyModel.value
-                              .specializationList!.length >
-                          6
-                      ? 6
-                      : getHelpController.getAlliedTherapyModel.value
-                          .specializationList!.length,
+                  itemCount: getHelpController
+                      .getAlliedTherapyModel.value.specializationList!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {

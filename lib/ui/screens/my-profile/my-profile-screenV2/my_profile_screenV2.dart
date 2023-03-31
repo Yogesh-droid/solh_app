@@ -17,6 +17,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import '../../../../widgets_constants/privacy_web.dart';
+import '../../../my_diary/my_diary_list_page.dart';
+import '../../groups/manage_groups.dart';
+import '../../intro/playlist_page.dart';
 
 class MyProfileScreenV2 extends StatelessWidget {
   MyProfileScreenV2({Key? key}) : super(key: key);
@@ -30,145 +34,149 @@ class MyProfileScreenV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     profileCompletionController.getAppRoute(0);
-    return SafeArea(
-      child: ScaffoldWithBackgroundArt(
-        body: Obx(() {
-          return profileController.isProfileLoading.value
-              ? Center(
-                  child: MyLoader(),
-                )
-              : profileController.myProfileModel.value.body == null
-                  ? Container()
-                  : Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: ListView(
-                        children: [
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          Center(
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  right: 0,
-                                  child: EditAndSettingOption(),
+    return ScaffoldWithBackgroundArt(
+      body: Obx(() {
+        return profileController.isProfileLoading.value
+            ? Center(
+                child: MyLoader(),
+              )
+            : profileController.myProfileModel.value.body == null
+                ? Container()
+                : Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        Center(
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                  left: 0,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(
+                                        CupertinoIcons.chevron_back,
+                                        color: SolhColors.grey,
+                                      ))),
+                              Positioned(
+                                right: 0,
+                                child: EditAndSettingOption(),
+                              ),
+                              Container(
+                                width: double.maxFinite,
+                                child: Column(
+                                  children: [
+                                    profileController
+                                                .myProfileModel.value.body !=
+                                            null
+                                        ? InkWell(
+                                            onTap: () {
+                                              if (profileController
+                                                  .myProfileModel
+                                                  .value
+                                                  .body!
+                                                  .userMoveEmptyScreenEmpty!
+                                                  .isNotEmpty) {
+                                                profileCompletionController
+                                                        .uncompleteFields =
+                                                    profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .userMoveEmptyScreenEmpty!;
+                                                Navigator.pushNamed(
+                                                    context,
+                                                    profileCompletionController
+                                                        .getAppRoute(
+                                                            profileCompletionController
+                                                                .uncompleteFields
+                                                                .first),
+                                                    arguments: {
+                                                      "indexOfpage": 0
+                                                    });
+                                              }
+                                            },
+                                            child: ImageWithProgressBarAndBadge(
+                                                imageRadius: Size(30.w, 30.w),
+                                                percent: profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .percentProfile ??
+                                                    0,
+                                                imageUrl: profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .profilePicture ??
+                                                    ''),
+                                          )
+                                        : Container(),
+                                  ],
                                 ),
-                                Container(
-                                  width: double.maxFinite,
-                                  child: Column(
-                                    children: [
-                                      profileController
-                                                  .myProfileModel.value.body !=
-                                              null
-                                          ? InkWell(
-                                              onTap: () {
-                                                if (profileController
-                                                    .myProfileModel
-                                                    .value
-                                                    .body!
-                                                    .userMoveEmptyScreenEmpty!
-                                                    .isNotEmpty) {
-                                                  profileCompletionController
-                                                          .uncompleteFields =
-                                                      profileController
-                                                          .myProfileModel
-                                                          .value
-                                                          .body!
-                                                          .userMoveEmptyScreenEmpty!;
-                                                  Navigator.pushNamed(
-                                                      context,
-                                                      profileCompletionController.getAppRoute(profileCompletionController
-                                                          .uncompleteFields
-                                                          .first),
-                                                      arguments: {
-                                                        "indexOfpage": 0
-                                                      });
-                                                }
-                                              },
-                                              child:
-                                                  ImageWithProgressBarAndBadge(
-                                                      imageRadius:
-                                                          Size(30.w, 30.w),
-                                                      percent: profileController
-                                                              .myProfileModel
-                                                              .value
-                                                              .body!
-                                                              .percentProfile ??
-                                                          0,
-                                                      imageUrl: profileController
-                                                              .myProfileModel
-                                                              .value
-                                                              .body!
-                                                              .user!
-                                                              .profilePicture ??
-                                                          ''),
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          NameUsertypeBio(
-                            name: profileController
-                                    .myProfileModel.value.body!.user!.name ??
-                                '',
-                            bio: profileController
-                                    .myProfileModel.value.body!.user!.bio ??
-                                '',
-                            userType: profileController.myProfileModel.value
-                                    .body!.user!.userType ??
-                                '',
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          StatsRow(
-                            like: profileController
-                                    .myProfileModel.value.body!.user!.likes ??
-                                0,
-                            connections: profileController.myProfileModel.value
-                                .body!.user!.connectionsList!.length,
-                            posts: profileController
-                                    .myProfileModel.value.body!.user!.posts ??
-                                0,
-                            reviews: profileController
-                                    .myProfileModel.value.body!.user!.reviews ??
-                                0,
-                            psychlogicalCapital: profileController
-                                    .myProfileModel
-                                    .value
-                                    .body!
-                                    .user!
-                                    .psychologicalCapital ??
-                                0,
-                          ),
-                          SizedBox(
-                            height: 1.h,
-                          ),
-                          Obx(() {
-                            return profileController.myProfileModel.value.body!
-                                        .percentProfile ==
-                                    100
-                                ? Container()
-                                : YouAreAlmostThere();
-                          }),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          SizedBox(
-                            height: 2.h,
-                          ),
-                          OptionsColumn()
-                        ],
-                      ),
-                    );
-        }),
-      ),
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        NameUsertypeBio(
+                          name: profileController
+                                  .myProfileModel.value.body!.user!.name ??
+                              '',
+                          bio: profileController
+                                  .myProfileModel.value.body!.user!.bio ??
+                              '',
+                          userType: profileController
+                                  .myProfileModel.value.body!.user!.userType ??
+                              '',
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        StatsRow(
+                          like: profileController
+                                  .myProfileModel.value.body!.user!.likes ??
+                              0,
+                          connections: profileController.myProfileModel.value
+                              .body!.user!.connectionsList!.length,
+                          posts: profileController
+                                  .myProfileModel.value.body!.user!.posts ??
+                              0,
+                          reviews: profileController
+                                  .myProfileModel.value.body!.user!.reviews ??
+                              0,
+                          psychlogicalCapital: profileController.myProfileModel
+                                  .value.body!.user!.psychologicalCapital ??
+                              0,
+                        ),
+                        SizedBox(
+                          height: 1.h,
+                        ),
+                        Obx(() {
+                          return profileController.myProfileModel.value.body!
+                                      .percentProfile ==
+                                  100
+                              ? Container()
+                              : YouAreAlmostThere();
+                        }),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        SizedBox(
+                          height: 2.h,
+                        ),
+                        OptionsColumn()
+                      ],
+                    ),
+                  );
+      }),
     );
   }
 }
@@ -493,9 +501,161 @@ class OptionsColumn extends StatelessWidget {
               ),
               'Activity Log'.tr),
         ),
+        SizedBox(
+          height: 8,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MyDiaryListPage()));
+          },
+          child: getOption(
+              Container(
+                height: 13,
+                child: SvgPicture.asset(
+                  'assets/images/myDiary.svg',
+                  height: 20,
+                ),
+              ),
+              "My Diary".tr),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ManageGroupPage()));
+          },
+          child: getOption(
+              Container(
+                height: 13,
+                child: SvgPicture.asset(
+                  'assets/images/groups.svg',
+                  height: 20,
+                ),
+              ),
+              "Groups".tr),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.psychologyTest);
+          },
+          child: getOption(
+              Container(
+                height: 13,
+                child: SvgPicture.asset(
+                  'assets/images/appointment.svg',
+                  height: 20,
+                ),
+              ),
+              "Self Assessments".tr),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => VideoPlaylist()));
+          },
+          child: getOption(
+              Container(
+                height: 13,
+                child: SvgPicture.asset(
+                  'assets/images/psycotests.svg',
+                  height: 20,
+                ),
+              ),
+              "Know Us More".tr),
+        ),
+        SizedBox(
+          height: 40,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: "Contact Us".tr,
+                                url: "https://solhapp.com/contact-us.html",
+                              )));
+                },
+                child: Text(
+                  "Help".tr,
+                  style: SolhTextStyles.CTA
+                      .copyWith(decoration: TextDecoration.underline),
+                )),
+            getGreenRoundDot(),
+            TextButton(
+                onPressed: () {
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => PrivacyWeb(
+                  //               title: "Contact Us".tr,
+                  //               url: "https://solhapp.com/contact-us.html",
+                  //             )));
+                },
+                child: Text(
+                  "Feedback".tr,
+                  style: SolhTextStyles.CTA
+                      .copyWith(decoration: TextDecoration.underline),
+                )),
+            getGreenRoundDot(),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: 'Privacy Policy'.tr,
+                                url: "https://solhapp.com/privacypolicy.html",
+                              )));
+                },
+                child: Text(
+                  "Policies".tr,
+                  style: SolhTextStyles.CTA
+                      .copyWith(decoration: TextDecoration.underline),
+                )),
+            getGreenRoundDot(),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: "Terms of Use".tr,
+                                url:
+                                    'https://solhapp.com/termsandcondition.html',
+                              )));
+                },
+                child: Text(
+                  "Terms of Use".tr,
+                  style: SolhTextStyles.CTA
+                      .copyWith(decoration: TextDecoration.underline),
+                ))
+          ],
+        )
       ],
     );
   }
+}
+
+Container getGreenRoundDot() {
+  return Container(
+    height: 8,
+    width: 8,
+    decoration:
+        BoxDecoration(shape: BoxShape.circle, color: SolhColors.primary_green),
+  );
 }
 
 Container getOption(Widget icon, String option) {

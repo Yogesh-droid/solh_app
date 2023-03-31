@@ -17,7 +17,9 @@ class GetHelpController extends GetxController {
   var solhVolunteerList = SolhVolunteerModel().obs;
   var getSpecializationModel = GetIssueResponseModel().obs;
   var getAlliedTherapyModel = GetIssueResponseModel().obs;
+  var getAlliedTherapyModelMore = GetIssueResponseModel().obs;
   var isAlliedShown = false.obs;
+  var isAlliedShownAll = false.obs;
   var isAllIssueShown = false.obs;
   var counsellorsCountryModel = CounsellorsCountryModel().obs;
   var isCountryLoading = false.obs;
@@ -92,6 +94,18 @@ class GetHelpController extends GetxController {
       }
 
       getAlliedTherapyModel.value = GetIssueResponseModel.fromJson(map);
+    } on Exception catch (e) {
+      ErrorHandler.handleException(e.toString());
+    }
+  }
+
+  void getAlliedTherapyListMore() async {
+    try {
+      ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/get-app-specialization-all?parent=222");
+      getAlliedTherapyModelMore.value = GetIssueResponseModel.fromJson(map);
+      print(map);
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }

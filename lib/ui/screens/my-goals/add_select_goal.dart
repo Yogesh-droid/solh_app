@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
@@ -29,15 +27,17 @@ class AddSelectGoal extends StatelessWidget {
           ),
           isLandingScreen: false),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SampleGoals(),
-            GetHelpDivider(),
-            SizedBox(
-              height: 10,
-            ),
-            GoalsFound(),
-          ],
+        child: SafeArea(
+          child: Column(
+            children: [
+              SampleGoals(),
+              GetHelpDivider(),
+              SizedBox(
+                height: 10,
+              ),
+              GoalsFound(),
+            ],
+          ),
         ),
       ),
     );
@@ -54,15 +54,18 @@ class GoalsFound extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Custom Goals'.tr,
-                style: GoogleFonts.signika(
-                    color: Color(
-                      0xffA6A6A6A6,
-                    ),
-                    fontSize: 16),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Custom Goals'.tr,
+                  style: GoogleFonts.signika(
+                      color: Color(
+                        0xffA6A6A6A6,
+                      ),
+                      fontSize: 16),
+                ),
               ),
               SizedBox(
                 height: 53,

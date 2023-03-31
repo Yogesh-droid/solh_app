@@ -1,10 +1,7 @@
 import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -65,7 +62,8 @@ class AlliedTherapyGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() =>
-        getHelpController.getAlliedTherapyModel.value.specializationList == null
+        getHelpController.getAlliedTherapyModelMore.value.specializationList ==
+                null
             ? Container()
             : GridView.builder(
                 physics: NeverScrollableScrollPhysics(),
@@ -75,16 +73,12 @@ class AlliedTherapyGrid extends StatelessWidget {
                     mainAxisSpacing: 4.0,
                     childAspectRatio: 2 / 2.8),
                 shrinkWrap: true,
-                itemCount: getHelpController.getAlliedTherapyModel.value
-                            .specializationList!.length >
-                        6
-                    ? 6
-                    : getHelpController
-                        .getAlliedTherapyModel.value.specializationList!.length,
+                itemCount: getHelpController
+                    .getAlliedTherapyModelMore.value.specializationList!.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      onTap(getHelpController.getAlliedTherapyModel.value
+                      onTap(getHelpController.getAlliedTherapyModelMore.value
                               .specializationList![index].slug ??
                           '');
                     },
@@ -103,7 +97,7 @@ class AlliedTherapyGrid extends StatelessWidget {
                           ),
                           child: CachedNetworkImage(
                             imageUrl: getHelpController
-                                    .getAlliedTherapyModel
+                                    .getAlliedTherapyModelMore
                                     .value
                                     .specializationList![index]
                                     .displayImage ??
@@ -112,7 +106,7 @@ class AlliedTherapyGrid extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          getHelpController.getAlliedTherapyModel.value
+                          getHelpController.getAlliedTherapyModelMore.value
                                   .specializationList![index].name ??
                               '',
                           style: SolhTextStyles.QS_cap_semi,

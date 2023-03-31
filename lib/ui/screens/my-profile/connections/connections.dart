@@ -7,6 +7,7 @@ import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
@@ -21,6 +22,9 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../get-help/get-help.dart';
+import '../../get-help/view-all/view_all_volunteers.dart';
 
 class Connections extends StatefulWidget {
   Connections({
@@ -1172,6 +1176,60 @@ class _ConnectionsState extends State<Connections> {
                     childCount: connectionController.groupInvites.value.length,
                   ))
                 : SliverToBoxAdapter(),
+            SliverToBoxAdapter(
+                child: SizedBox(
+              height: 40,
+            )),
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  Obx(() {
+                    return !connectionController
+                            .isRecommnedationLoadingHome.value
+                        ? connectionController.peopleYouMayKnowHome.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnowHome.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpCategory(
+                                title: 'Solh Mates',
+                                // onPressed: () {
+                                //   Navigator.push(context,
+                                //       MaterialPageRoute(builder: (context) {
+                                //     return ViewAllVolunteers();
+                                //   }));
+                                // },
+                              )
+                            : Container()
+                        : Container();
+                  }),
+                  Obx(() {
+                    return !connectionController
+                            .isRecommnedationLoadingHome.value
+                        ? connectionController.peopleYouMayKnowHome.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnowHome.value
+                                    .reccomendation!.isNotEmpty
+                            ? PeopleYouMayKnowWidget()
+                            : Container()
+                        : ReconnendedPeopleShimmer();
+                  }),
+                  Obx(() {
+                    return !connectionController
+                            .isRecommnedationLoadingHome.value
+                        ? connectionController.peopleYouMayKnowHome.value
+                                        .reccomendation !=
+                                    null &&
+                                connectionController.peopleYouMayKnowHome.value
+                                    .reccomendation!.isNotEmpty
+                            ? GetHelpDivider()
+                            : Container()
+                        : Container();
+                  }),
+                ],
+              ),
+            )
           ],
         ),
       );
@@ -1672,4 +1730,199 @@ List<Widget> gettabBarViews(
   }
 
   return tabWidget;
+}
+
+class PeopleYouMayKnowWidget extends StatelessWidget {
+  PeopleYouMayKnowWidget({Key? key}) : super(key: key);
+  final ConnectionController connectionController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 270,
+      margin: EdgeInsets.only(bottom: 2.h),
+      child: Obx(() {
+        return ListView.separated(
+          padding: EdgeInsets.only(left: 2.h),
+          separatorBuilder: (_, __) => SizedBox(width: 2.w),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: connectionController
+              .peopleYouMayKnowHome.value.reccomendation!.length,
+          itemBuilder: (context, index) => SolhVolunteers(
+            bio: connectionController.peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .bio,
+            name: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .name,
+            mobile: '',
+            imgUrl: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .profilePicture,
+            sId: connectionController.peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .sId,
+            uid: connectionController.peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .uid,
+            comments: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .commentCount
+                .toString(),
+            connections: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .connectionsCount
+                .toString(),
+            likes: connectionController
+                .peopleYouMayKnowHome.value.reccomendation!
+                .elementAt(index)
+                .likesCount
+                .toString(),
+            userType: null,
+            post: connectionController
+                    .peopleYouMayKnowHome.value.reccomendation!
+                    .elementAt(index)
+                    .postCount ??
+                0,
+          ),
+        );
+      }),
+    );
+  }
+}
+
+class ReconnendedPeopleShimmer extends StatelessWidget {
+  const ReconnendedPeopleShimmer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 270,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 190,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.fromBorderSide(
+                      BorderSide(
+                        color: SolhColors.greyS200,
+                        width: 1,
+                      ),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.thumb_up_alt_outlined,
+                                color: SolhColors.primary_green,
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '0',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: SolhColors.primary_green,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: 1,
+                            height: 20,
+                            color: SolhColors.primary_green,
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                CupertinoIcons.chat_bubble,
+                                color: SolhColors.primary_green,
+                              ),
+                              SizedBox(
+                                width: 2.w,
+                              ),
+                              Text(
+                                '0',
+                                style: TextStyle(
+                                  color: SolhColors.primary_green,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 20,
+                        width: 180,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]!,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
 }
