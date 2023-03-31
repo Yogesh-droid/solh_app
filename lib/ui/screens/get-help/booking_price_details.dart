@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/get-help/payment/payment_management.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -25,6 +26,7 @@ import 'book_appointment.dart';
 class BookingPriceDetails extends StatelessWidget {
   final ConsultantController consultantController = Get.find();
   final BookAppointmentController bookAppointmentController = Get.find();
+  PaymentManagement paymentManagement = PaymentManagement();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +76,7 @@ class BookingPriceDetails extends StatelessWidget {
         SolhDeclarationWidget(),
         SizedBox(
           height: 100,
-        )
+        ),
       ]),
     );
   }
@@ -96,14 +98,15 @@ class BookingPriceDetails extends StatelessWidget {
                   .copyWith(color: SolhColors.primary_green))),
           Spacer(),
           TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                'Change'.tr,
-                style: SolhTextStyles.QS_cap_semi.copyWith(
-                    color: SolhColors.primary_green),
-              ))
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              'Change'.tr,
+              style: SolhTextStyles.QS_cap_semi.copyWith(
+                  color: SolhColors.primary_green),
+            ),
+          )
         ],
       ),
     );
@@ -224,7 +227,7 @@ class BookingPriceDetails extends StatelessWidget {
                     strokeWidth: 2,
                   )
                 : Text(
-                    'Book Now & Pay Later'.tr,
+                    'Book Now'.tr,
                     style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                   ))
           ],
@@ -237,107 +240,126 @@ class BookingPriceDetails extends StatelessWidget {
         onContinuePressed: () async {
           print(consultantController
               .consultantModelController.value.provder!.type);
+          // showModalBottomSheet(
+          //   context: context,
+          //   builder: (context) {
+          //     return paymentManagement.paymentModelSheet(context);
+          //   },
+          // );
 
-          try {
-            await CcAvenue.cCAvenueInit(
-                transUrl: 'https://test.ccavenue.com/transaction/initTrans',
-                accessCode: 'AVJB13KA80BY20BJYB',
-                amount: '10',
-                cancelUrl:
-                    'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-                currencyType: 'INR',
-                merchantId: '2018132',
-                orderId: '519',
-                redirectUrl:
-                    'http://122.182.6.216/merchant/ccavResponseHandler.jsp',
-                rsaKeyUrl:
-                    'https://secure.ccavenue.com/transaction/jsp/GetRSA.jsp');
-          } on PlatformException {
-            print('PlatformException');
+          Map<String, dynamic> map =
+              await bookAppointmentController.bookAppointment({
+            'amount': consultantController
+                .consultantModelController.value.provder!.fee_amount!
+                .toString(),
+            'currency': consultantController
+                .consultantModelController.value.provder!.feeCurrency!,
+            'provider': consultantController
+                        .consultantModelController.value.provder!.type ==
+                    'provider'
+                ? consultantController
+                    .consultantModelController.value.provder!.sId
+                : '',
+            'doctor': consultantController
+                        .consultantModelController.value.provder!.type ==
+                    'doctor'
+                ? consultantController
+                    .consultantModelController.value.provder!.sId
+                : '',
+            'start': getdateTime(
+                bookAppointmentController.selectedDay,
+                bookAppointmentController.selectedTimeSlotN,
+                0,
+                bookAppointmentController.selectedDate.value),
+            'end': getdateTime(
+                bookAppointmentController.selectedDay,
+                bookAppointmentController.selectedTimeSlotN,
+                1,
+                bookAppointmentController.selectedDate.value),
+            'seekerEmail':
+                bookAppointmentController.emailTextEditingController.text,
+            'from': bookAppointmentController.selectedTimeSlotN.split('-')[0],
+            'to': bookAppointmentController.selectedTimeSlotN.split('-')[1],
+            "type": "app",
+            "duration": "30",
+            "label":
+                bookAppointmentController.catTextEditingController.value.text,
+            "concern": bookAppointmentController.query ?? '',
+            "anonymousSession":
+                consultantController.isAnonymousBookingEnabled.value.toString(),
+            "offset": bookAppointmentController.selectedOffset.value,
+            "zone": bookAppointmentController.selectedTimeZone.value
+          });
+
+          if (map['success']) {
+            print("map** $map");
+            // showDialog(
+            //     context: context,
+            //     builder: (context) {
+            //       return Card(
+            //         child: Container(
+            //           width: double.infinity,
+            //           decoration: BoxDecoration(
+            //               image: DecorationImage(
+            //                   fit: BoxFit.fill,
+            //                   image: AssetImage(
+            //                       'assets/images/ScaffoldBackgroundGreen.png'))),
+            //           child: Column(children: [
+            //             Image.asset('assets/images/thankripple.png'),
+            //             Text(
+            //               'Thank You',
+            //               style: SolhTextStyles.QS_head_4.copyWith(
+            //                   color: SolhColors.white),
+            //             ),
+            //             Padding(
+            //               padding: const EdgeInsets.all(18.0),
+            //               child: Text(
+            //                 "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
+            //                 style: SolhTextStyles.QS_cap_semi.copyWith(
+            //                     color: Colors.white),
+            //                 textAlign: TextAlign.center,
+            //               ),
+            //             ),
+            //             ElevatedButton(
+            //               style: ElevatedButton.styleFrom(
+            //                   backgroundColor: SolhColors.primaryRed),
+            //               onPressed: (() {
+            //                 paymentManagement.makePayment(context);
+            //               }),
+            //               child: Text(
+            //                 "Pay Now",
+            //                 style: SolhTextStyles.CTA
+            //                     .copyWith(color: SolhColors.white),
+            //               ),
+            //             )
+            //           ]),
+            //         ),
+            //       );
+            //     });
+
+            Get.find<AppointmentController>().getUserAppointments();
+            // await Future.delayed(Duration(seconds: 2), () {});
+            // Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+
+            Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
+              "amount": consultantController
+                      .consultantModelController.value.provder!.fee_amount ??
+                  0,
+              "feeCurrency": consultantController
+                      .consultantModelController.value.provder!.feeCurrency ??
+                  '',
+              "alliedOrderId": null,
+              "appointmentId": map['data']["appointmentId"],
+              "inhouseOrderId": null,
+              "marketplaceType": "Appointment",
+              "paymentGateway": "Stripe",
+              "paymentSource": "App",
+            });
+          } else {
+            Utility.showToast(map['message']);
           }
-          // Map<String, dynamic> map =
-          //     await bookAppointmentController.bookAppointment({
-          //   'provider': consultantController
-          //               .consultantModelController.value.provder!.type ==
-          //           'provider'
-          //       ? consultantController
-          //           .consultantModelController.value.provder!.sId
-          //       : '',
-          //   'doctor': consultantController
-          //               .consultantModelController.value.provder!.type ==
-          //           'doctor'
-          //       ? consultantController
-          //           .consultantModelController.value.provder!.sId
-          //       : '',
-          //   'start': getdateTime(
-          //       bookAppointmentController.selectedDay,
-          //       bookAppointmentController.selectedTimeSlotN,
-          //       0,
-          //       bookAppointmentController.selectedDate.value),
-          //   'end': getdateTime(
-          //       bookAppointmentController.selectedDay,
-          //       bookAppointmentController.selectedTimeSlotN,
-          //       1,
-          //       bookAppointmentController.selectedDate.value),
-          //   'seekerEmail':
-          //       bookAppointmentController.emailTextEditingController.text,
-          //   'from': bookAppointmentController.selectedTimeSlotN.split('-')[0],
-          //   'to': bookAppointmentController.selectedTimeSlotN.split('-')[1],
-          //   "type": "app",
-          //   "duration": "30",
-          //   "label":
-          //       bookAppointmentController.catTextEditingController.value.text,
-          //   "concern": bookAppointmentController.query ?? '',
-          //   "anonymousSession":
-          //       consultantController.isAnonymousBookingEnabled.value.toString(),
-          //   "offset": bookAppointmentController.selectedOffset.value,
-          //   "zone": bookAppointmentController.selectedTimeZone.value
-          // });
-
-          // if (map['success']) {
-          //   showDialog(
-          //       context: context,
-          //       builder: (context) {
-          //         return Card(
-          //           child: Container(
-          //             width: double.infinity,
-          //             decoration: BoxDecoration(
-          //                 image: DecorationImage(
-          //                     fit: BoxFit.fill,
-          //                     image: AssetImage(
-          //                         'assets/images/ScaffoldBackgroundGreen.png'))),
-          //             child: Column(children: [
-          //               Image.asset('assets/images/thankripple.png'),
-          //               Text(
-          //                 'Thank You',
-          //                 style: SolhTextStyles.QS_head_4.copyWith(
-          //                     color: SolhColors.white),
-          //               ),
-          //               Padding(
-          //                 padding: const EdgeInsets.all(18.0),
-          //                 child: Text(
-          //                   "Your appointment has been successfully booked on ${DateFormat('dd MMM, EEEE').format(bookAppointmentController.selectedDate.value)}, at ${bookAppointmentController.selectedTimeSlotN.value}",
-          //                   style: SolhTextStyles.QS_cap_semi.copyWith(
-          //                       color: Colors.white),
-          //                   textAlign: TextAlign.center,
-          //                 ),
-          //               )
-          //             ]),
-          //           ),
-          //         );
-          //       });
-
-          //   Get.find<AppointmentController>().getUserAppointments();
-          //   await Future.delayed(Duration(seconds: 2), () {});
-          //   Navigator.of(context).pop();
-          //   Navigator.of(context).pop();
-          //   Navigator.of(context).pop();
-
-          //   Navigator.pushNamed(context, AppRoutes.appointmentPage,
-          //       arguments: {});
-          // } else {
-          //   Utility.showToast(map['message']);
-          // }
         });
     /* return Container(
       height: 90,

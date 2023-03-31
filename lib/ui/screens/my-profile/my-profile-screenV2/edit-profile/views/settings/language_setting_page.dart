@@ -57,6 +57,23 @@ class LanguageSettingPage extends StatelessWidget {
                 "हिंदी",
                 null),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () async {
+              Get.updateLocale(const Locale('fr', 'FR'));
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.setString("locale", jsonEncode({"fr": "FR"}));
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoutes.master, (route) => true);
+            },
+            child: getSettingOptions(
+                SvgPicture.asset('assets/images/hindi_lang.svg'),
+                "French",
+                null),
+          )
         ]),
       ),
     );

@@ -82,6 +82,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
           try {
             Map<String, dynamic> map =
                 await _alliedController.createPackageOrder(packages);
+            print('inhouse**** $map');
             if (map['success']) {
               showDialog(
                   context: context,

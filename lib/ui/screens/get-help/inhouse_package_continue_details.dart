@@ -5,6 +5,7 @@ import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import '../../../services/utility.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
@@ -75,7 +76,7 @@ class InhouseContinueDetail extends StatelessWidget {
                 strokeWidth: 2,
               )
             : Text(
-                'Confirm',
+                'Confirmsdas',
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
         totalPayble: packages.amount == 0 ? 'Free' : "${packages.amount} ",
@@ -83,48 +84,56 @@ class InhouseContinueDetail extends StatelessWidget {
           try {
             Map<String, dynamic> map =
                 await _alliedController.createInhousePackageOrder(packages);
+            print("inhouse $map");
             if (map['success']) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Card(
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                    'assets/images/ScaffoldBackgroundGreen.png'))),
-                        child: Column(children: [
-                          Image.asset('assets/images/thankripple.png'),
-                          Text(
-                            'Thank You',
-                            style: SolhTextStyles.QS_head_4.copyWith(
-                                color: SolhColors.white),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Text(
-                              "Your appointment has been successfully booked on ",
-                              style: SolhTextStyles.QS_cap_semi.copyWith(
-                                  color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          )
-                        ]),
-                      ),
-                    );
-                  });
+              // showDialog(
+              //     context: context,
+              //     builder: (context) {
+              //       return Card(
+              //         child: Container(
+              //           width: double.infinity,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   fit: BoxFit.fill,
+              //                   image: AssetImage(
+              //                       'assets/images/ScaffoldBackgroundGreen.png'))),
+              //           child: Column(children: [
+              //             Image.asset('assets/images/thankripple.png'),
+              //             Text(
+              //               'Thank You',
+              //               style: SolhTextStyles.QS_head_4.copyWith(
+              //                   color: SolhColors.white),
+              //             ),
+              //             Padding(
+              //               padding: const EdgeInsets.all(18.0),
+              //               child: Text(
+              //                 "Your appointment has been successfully booked on ",
+              //                 style: SolhTextStyles.QS_cap_semi.copyWith(
+              //                     color: Colors.white),
+              //                 textAlign: TextAlign.center,
+              //               ),
+              //             ),
+              //           ]),
+              //         ),
+              //       );
+              //     });
               Future.delayed(Duration(seconds: 2), () {
                 Get.find<AppointmentController>().getUserAppointments();
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AppointmentScreen()));
+                Navigator.pushNamed(context, AppRoutes.paymentscreen,
+                    arguments: {
+                      "amount": packages.amount,
+                      "feeCurrency": packages.currency,
+                      "alliedOrderId": null,
+                      "appointmentId": null,
+                      "inhouseOrderId": map["data"]["inhouseOrderId"],
+                      "marketplaceType": "Inhouse",
+                      "paymentGateway": "Stripe",
+                      "paymentSource": "App",
+                    });
               });
             } else {
               Utility.showToast(map['message']);

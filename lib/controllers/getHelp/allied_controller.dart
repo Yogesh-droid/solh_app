@@ -125,12 +125,12 @@ class AlliedController extends GetxController {
       "carouselName": package.packageCarouselId!.name,
     };
     try {
-      map = {"success": true, "message": "Something went wrong"};
-      await Network.makePostRequestWithToken(
+      var map = await Network.makePostRequestWithToken(
           url: "${APIConstants.api}/api/allied/therapies/place-inhouse-order",
           body: body,
           isEncoded: true);
       //isPackageListFetching.value = false;
+      print("map** $map");
       return map;
     } catch (e) {
       //isPackageListFetching.value = false;
