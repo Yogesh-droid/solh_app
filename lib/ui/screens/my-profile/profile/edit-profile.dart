@@ -477,10 +477,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
 
   Future<void> getUserCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    country = sharedPreferences.getString('userCountry');
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {});
-    });
+    country = await sharedPreferences.getString('userCountry');
+    setState(() {});
   }
 
   void fillUserDetails() {

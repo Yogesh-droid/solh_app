@@ -13,10 +13,12 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/ui/screens/get-help/payment/payment_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class PaymentManagement {
+  PaymentController paymentController = Get.find();
   Widget paymentModelSheet({
     required BuildContext context,
     required String appointmentId,
@@ -117,6 +119,7 @@ class PaymentManagement {
     required String paymentSource,
     required String paymentGateway,
   }) async {
+    paymentController.isgettingPaymentIntent(true);
     try {
       var paymentIntent = await createPaymentIntent('100', 'USD');
       log(paymentIntent.toString());
@@ -130,7 +133,7 @@ class PaymentManagement {
                   style: ThemeMode.light,
                   merchantDisplayName: 'Solh'))
           .then((value) {});
-
+      paymentController.isgettingPaymentIntent(false);
       displayPaymentSheet(context, {
         "pgTransactionId": paymentIntent['id'],
         'appointmentId': appointmentId.toString(),

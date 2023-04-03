@@ -76,7 +76,7 @@ class InhouseContinueDetail extends StatelessWidget {
                 strokeWidth: 2,
               )
             : Text(
-                'Confirmsdas',
+                'Confirm',
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
         totalPayble: packages.amount == 0 ? 'Free' : "${packages.amount} ",

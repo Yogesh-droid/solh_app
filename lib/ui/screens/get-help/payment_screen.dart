@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/get-help/payment/payment_controller.dart';
 import 'package:solh/ui/screens/get-help/payment/payment_management.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -33,7 +36,7 @@ class PaymentScreen extends StatelessWidget {
   final String _paymentGateway;
 
   final String _paymentSource;
-
+  var paymentController = Get.put(PaymentController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,6 +162,7 @@ class CardPaymentSection extends StatelessWidget {
   final String paymentSource;
 
   PaymentManagement paymentManagement = PaymentManagement();
+  PaymentController paymentController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -179,29 +183,39 @@ class CardPaymentSection extends StatelessWidget {
           SizedBox(
             height: 14,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SolhGreenButton(
-                  onPressed: () {
-                    paymentManagement.makePayment(
-                      context: context,
-                      alliedOrderId: alliedOrderId,
-                      amount: amount,
-                      appointmentId: appointmentId,
-                      currency: currency,
-                      inhouseOrderId: inhouseOrderId,
-                      marketplaceType: marketplaceType,
-                      paymentGateway: paymentGateway,
-                      paymentSource: paymentSource,
-                    );
-                  },
-                  child: Text(
-                    "Pay through card",
-                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-                  )),
-            ],
-          )
+          Obx(() {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                paymentController.isgettingPaymentIntent.value
+                    ? SolhGreenButton(
+                        child: ButtonLoadingAnimation(
+                        ballColor: SolhColors.white,
+                        ballSizeLowerBound: 3,
+                        ballSizeUpperBound: 8,
+                      ))
+                    : SolhGreenButton(
+                        onPressed: () {
+                          paymentManagement.makePayment(
+                            context: context,
+                            alliedOrderId: alliedOrderId,
+                            amount: amount,
+                            appointmentId: appointmentId,
+                            currency: currency,
+                            inhouseOrderId: inhouseOrderId,
+                            marketplaceType: marketplaceType,
+                            paymentGateway: paymentGateway,
+                            paymentSource: paymentSource,
+                          );
+                        },
+                        child: Text(
+                          "Pay through card",
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        )),
+              ],
+            );
+          })
         ],
       ),
     );
