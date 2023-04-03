@@ -491,33 +491,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                     topRight: Radius.circular(10))),
             padding: EdgeInsets.all(20),
             child: Wrap(
-              runSpacing: 20,
-              spacing: 20,
               alignment: WrapAlignment.spaceAround,
               children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 10,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 20),
-                        Container(
-                          height: 10,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: SolhColors.grey,
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(Icons.close),
-                        )
-                      ]),
-                ),
+                UpperCloseDecoration(),
                 Divider(),
                 InkWell(
                   onTap: () {
@@ -653,7 +629,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   getBottomSheetIcon({required String icon}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(18.0),
       child: CircleAvatar(
         radius: 30,
         backgroundColor: Colors.brown,
@@ -669,6 +645,39 @@ class _MasterScreen2State extends State<MasterScreen2>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+}
+
+class UpperCloseDecoration extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 50,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 20),
+            Container(
+              height: 10,
+              width: 50,
+              decoration: BoxDecoration(
+                  color: SolhColors.grey,
+                  borderRadius: BorderRadius.circular(10)),
+            ),
+            Container(
+              width: 40,
+              height: 50,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(Icons.close),
+              ),
+            )
+          ]),
+    );
   }
 }
 
