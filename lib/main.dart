@@ -28,8 +28,7 @@ import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 
-final GlobalKey<NavigatorState> globalNavigatorKey =
-    GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

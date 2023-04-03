@@ -11,9 +11,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class TestQuestionsPage extends StatefulWidget {
-  TestQuestionsPage({Key? key, this.id, this.testTitle}) : super(key: key);
-  String? id;
-  String? testTitle;
+  const TestQuestionsPage({Key? key, this.id, this.testTitle})
+      : super(key: key);
+  final String? id;
+  final String? testTitle;
 
   @override
   State<TestQuestionsPage> createState() => _TestQuestionsPageState();
@@ -35,84 +36,86 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   }
 
   getBody(BuildContext context) {
-    return Obx(() {
-      return psychologyTestController.isQuestionsLoading.value
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  child: PageView(
-                    physics: NeverScrollableScrollPhysics(),
-                    controller: controller,
-                    children: psychologyTestController.questionList.value
-                        .map((e) => getQuestionView(context, e))
-                        .toList(),
-                    onPageChanged: (index) {
-                      if (index + 1 ==
-                          psychologyTestController.questionList.length) {
-                        setState(() {
-                          isLast = true;
-                        });
-                      } else {
-                        isLast = false;
-                      }
-                      getIsNextAvailable();
-                    },
-                  ),
-                ),
-                Spacer(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SolhGreenBorderMiniButton(
-                      child: Text(
-                        'Back',
-                        style: SolhTextStyles.GreenBorderButtonText,
-                      ),
-                      onPressed: () {
-                        if (controller.page != 0) {
-                          controller.previousPage(
-                              duration: Duration(milliseconds: 500),
-                              curve: Curves.easeOut);
+    return SafeArea(
+      child: Obx(() {
+        return psychologyTestController.isQuestionsLoading.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: PageView(
+                      physics: NeverScrollableScrollPhysics(),
+                      controller: controller,
+                      children: psychologyTestController.questionList.value
+                          .map((e) => getQuestionView(context, e))
+                          .toList(),
+                      onPageChanged: (index) {
+                        if (index + 1 ==
+                            psychologyTestController.questionList.length) {
+                          setState(() {
+                            isLast = true;
+                          });
                         } else {
-                          return;
+                          isLast = false;
                         }
+                        getIsNextAvailable();
                       },
                     ),
-                    SolhGreenMiniButton(
-                      backgroundColor: isNextActive
-                          ? SolhColors.primary_green
-                          : SolhColors.dark_grey,
-                      child: Text(isLast ? "Done" : 'Next',
-                          style: SolhTextStyles.GreenButtonText),
-                      onPressed: isNextActive
-                          ? () {
-                              if (isLast) {
-                                psychologyTestController
-                                    .submitTest(widget.id ?? '');
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return TestResultPage();
-                                }));
-                              } else {
-                                controller.nextPage(
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.decelerate);
+                  ),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SolhGreenBorderMiniButton(
+                        child: Text(
+                          'Back',
+                          style: SolhTextStyles.GreenBorderButtonText,
+                        ),
+                        onPressed: () {
+                          if (controller.page != 0) {
+                            controller.previousPage(
+                                duration: Duration(milliseconds: 500),
+                                curve: Curves.easeOut);
+                          } else {
+                            return;
+                          }
+                        },
+                      ),
+                      SolhGreenMiniButton(
+                        backgroundColor: isNextActive
+                            ? SolhColors.primary_green
+                            : SolhColors.dark_grey,
+                        child: Text(isLast ? "Done" : 'Next',
+                            style: SolhTextStyles.GreenButtonText),
+                        onPressed: isNextActive
+                            ? () {
+                                if (isLast) {
+                                  psychologyTestController
+                                      .submitTest(widget.id ?? '');
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return TestResultPage();
+                                  }));
+                                } else {
+                                  controller.nextPage(
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.decelerate);
+                                }
                               }
-                            }
-                          : () {},
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                )
-              ],
-            );
-    });
+                            : () {},
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  )
+                ],
+              );
+      }),
+    );
   }
 
   SolhAppBar getAppbar() {

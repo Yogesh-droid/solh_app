@@ -1,11 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/get_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
@@ -71,7 +67,47 @@ class LanguageSettingPage extends StatelessWidget {
             },
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/hindi_lang.svg'),
-                "French",
+                "Français",
+                null),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () async {
+              Get.updateLocale(const Locale('ar', 'sa'));
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.setString("locale", jsonEncode({"ar": "sa"}));
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoutes.master, (route) => true);
+            },
+            child: getSettingOptions(
+                SvgPicture.asset(
+                  'assets/images/arabic_lang.svg',
+                  color: SolhColors.primary_green,
+                ),
+                "عربي",
+                null),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () async {
+              Get.updateLocale(const Locale('ta', 'IN'));
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              await prefs.setString("locale", jsonEncode({"ta": "IN"}));
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AppRoutes.master, (route) => true);
+            },
+            child: getSettingOptions(
+                SvgPicture.asset(
+                  'assets/images/tamil_lang.svg',
+                  color: SolhColors.primary_green,
+                ),
+                "தமிழ்",
                 null),
           )
         ]),

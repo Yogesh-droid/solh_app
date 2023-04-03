@@ -2,21 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/controllers/video/video_tutorial_controller.dart';
 import 'package:solh/ui/my_diary/my_diary_list_page.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/intro/playlist_page.dart';
-import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
 import 'package:solh/ui/screens/journaling/widgets/side_drawer_menu_tile.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/profile/appointment_controller.dart';
 import '../../../routes/routes.dart';
@@ -36,9 +33,9 @@ class SideDrawer extends StatefulWidget {
  */
 class SideDrawer extends StatelessWidget {
   final MoodMeterController moodMeterController = Get.find();
-  BottomNavigatorController bottomNavigatorController = Get.find();
-  AppointmentController appointmentController = Get.find();
-  ProfileController profileController = Get.find();
+  final BottomNavigatorController bottomNavigatorController = Get.find();
+  final AppointmentController appointmentController = Get.find();
+  final ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return SizedBox(

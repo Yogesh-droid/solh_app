@@ -27,7 +27,6 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/chat-list/chat_list_controller.dart';
-import '../../../main.dart';
 
 class MyProfileScreen extends StatefulWidget {
   const MyProfileScreen({Key? key}) : super(key: key);
@@ -175,8 +174,6 @@ class ProfileMenu extends StatelessWidget {
           ProfileMenuTile(
             title: "Posts",
             onPressed: () {
-              // AutoRouter.of(context)
-              //     .push(PostScreenRouter(sId: userBlocNetwork.id));
               Navigator.pushNamed(context, AppRoutes.userPostScreen,
                   arguments: {"sId": userBlocNetwork.id});
             },
@@ -189,30 +186,26 @@ class ProfileMenu extends StatelessWidget {
                 Navigator.pushNamed(context, AppRoutes.accountPrivacy,
                     arguments: {});
               }),
-          // ProfileMenuTile(
-          //   title: "Settings",
-          //   onPressed: () {
-          //     AutoRouter.of(context).push(SettingsScreenRouter());
-          //   },
-          //   svgIconPath: "assets/icons/profile/settings.svg",
-          // ),
-          // ProfileMenuTile(
-          //   title: "Medical Reports",
-          //   onPressed: () {
-          //     AutoRouter.of(context).push(CreateProfileScreenRouter());
-          //   },
-          //   svgIconPath: "assets/icons/profile/medical-reports.svg",
-          // ),
-          // ProfileMenuTile(
-          //   title: "Personal Issues & Medical Backgrounds",
-          //   onPressed: () {},
-          //   svgIconPath: "assets/icons/profile/info.svg",
-          // ),
-          // ProfileMenuTile(
-          //   title: "Badges & Rewards",
-          //   onPressed: () {},
-          //   svgIconPath: "assets/icons/profile/badges-reward.svg",
-          // )
+          ProfileMenuTile(
+            title: "Settings",
+            onPressed: () {},
+            svgIconPath: "assets/icons/profile/settings.svg",
+          ),
+          ProfileMenuTile(
+            title: "Medical Reports",
+            onPressed: () {},
+            svgIconPath: "assets/icons/profile/medical-reports.svg",
+          ),
+          ProfileMenuTile(
+            title: "Personal Issues & Medical Backgrounds",
+            onPressed: () {},
+            svgIconPath: "assets/icons/profile/info.svg",
+          ),
+          ProfileMenuTile(
+            title: "Badges & Rewards",
+            onPressed: () {},
+            svgIconPath: "assets/icons/profile/badges-reward.svg",
+          )
         ],
       ),
     );

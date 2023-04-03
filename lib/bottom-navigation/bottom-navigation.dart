@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,8 @@ import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
+import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -21,8 +22,13 @@ import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
+import '../routes/routes.dart';
 import '../widgets_constants/constants/textstyles.dart';
+import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
+
+final _scaffoldKey = GlobalKey<ScaffoldState>();
+late PersistentBottomSheetController controller;
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
@@ -51,12 +57,13 @@ class MasterScreen extends StatelessWidget {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: Stack(
-          children: [
-            SideDrawer(),
-            MasterScreen2(),
-          ],
-        ),
+        child: MasterScreen2(),
+        // child: Stack(
+        //   children: [
+        //     SideDrawer(),
+        //     MasterScreen2(),
+        //   ],
+        // ),
       ),
     );
   }
@@ -96,16 +103,28 @@ class _MasterScreen2State extends State<MasterScreen2>
       Journaling(),
       GetHelpScreen(),
       MyGoalsScreen(),
-      MyProfileScreenV2()
+      // MyProfileScreenV2()
     ]);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(onWillPop: () {
-      return _onWillPop(context);
-    }, child: Obx(() {
+    return WillPopScope(
+      onWillPop: () {
+        return _onWillPop(context);
+      },
+      child: Scaffold(
+          key: _scaffoldKey,
+          appBar: SolhAppBar(
+            title: getDrawer(),
+            isLandingScreen: true,
+          ),
+          body: Obx(() => IndexedStack(
+              index: bottomNavigatorController.activeIndex.value,
+              children: bottomWidgetList)),
+          bottomNavigationBar: getBottomBar(context)),
+      /* child: Obx(() {
       return AnimatedPositioned(
         duration: Duration(milliseconds: 300),
         left: bottomNavigatorController.isDrawerOpen.value ? 78.w : 0,
@@ -131,7 +150,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                 title: getDrawer(),
                 isLandingScreen: true,
               ),
-              body: Obx(
+              body: IndexedStack(
+                  index: bottomNavigatorController.activeIndex.value,
+                  children: bottomWidgetList),
+              /* Obx(
                 () => Stack(
                   children: [
                     IgnorePointer(
@@ -159,11 +181,12 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ),
                   ],
                 ),
-              ),
-              bottomNavigationBar: getBottomBar()),
+              ), */
+              bottomNavigationBar: getBottomBar(context)),
         ),
       );
-    }));
+    }) */
+    );
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
@@ -214,78 +237,113 @@ class _MasterScreen2State extends State<MasterScreen2>
     }
   }
 
-  Widget getBottomBar() {
-    return Obx(() => BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: bottomNavigatorController.activeIndex.value,
-          showUnselectedLabels: true,
-          selectedItemColor: SolhColors.primary_green,
-          unselectedItemColor: SolhColors.dark_grey,
-          selectedLabelStyle: SolhTextStyles.QS_cap_semi,
-          onTap: (index) {
-            bottomNavigatorController.activeIndex.value = index;
-            switch (index) {
-              case 0:
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'HomePageOpen', parameters: {'Page': 'HomeScreen'});
-                break;
-              case 1:
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'JournalingOpened',
-                    parameters: {'Page': 'Journaling'});
-                break;
-              case 2:
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'GetHelpOpened', parameters: {'Page': 'GetHelp'});
-                break;
-              case 3:
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'MyGoalPageOpened', parameters: {'Page': 'My Goal'});
-                break;
-              case 4:
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'MyProfileOpened', parameters: {'Page': 'MyProfile'});
-                break;
-              default:
-            }
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: Obx(
-                () => bottomNavigatorController.activeIndex.value == 0
-                    ? SvgPicture.asset('assets/images/home_solid.svg')
-                    : SvgPicture.asset('assets/images/home_outlined.svg'),
-              ),
-              label: "Home".tr,
-            ),
-            BottomNavigationBarItem(
-                icon: Obx(
-                  () => bottomNavigatorController.activeIndex.value == 1
-                      ? SvgPicture.asset('assets/images/journaling.svg')
-                      : SvgPicture.asset(
-                          'assets/images/journalling outline.svg',
-                        ),
+  Widget getBottomBar(BuildContext context) {
+    return Row(children: [
+      Obx(() => SizedBox(
+            width: MediaQuery.of(context).size.width - 70,
+            child: BottomNavigationBar(
+              elevation: 0,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: bottomNavigatorController.activeIndex.value,
+              showUnselectedLabels: true,
+              selectedItemColor: SolhColors.primary_green,
+              unselectedItemColor: SolhColors.dark_grey,
+              selectedLabelStyle: SolhTextStyles.QS_cap_semi,
+              onTap: (index) {
+                bottomNavigatorController.activeIndex.value = index;
+                switch (index) {
+                  case 0:
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'HomePageOpen',
+                        parameters: {'Page': 'HomeScreen'});
+                    break;
+                  case 1:
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'JournalingOpened',
+                        parameters: {'Page': 'Journaling'});
+                    break;
+                  case 2:
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'GetHelpOpened', parameters: {'Page': 'GetHelp'});
+                    break;
+                  case 3:
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'MyGoalPageOpened',
+                        parameters: {'Page': 'My Goal'});
+                    break;
+                  // case 4:
+                  //   FirebaseAnalytics.instance.logEvent(
+                  //       name: 'MyProfileOpened', parameters: {'Page': 'MyProfile'});
+                  //   break;
+                  default:
+                }
+              },
+              items: [
+                BottomNavigationBarItem(
+                  icon: Obx(
+                    () => bottomNavigatorController.activeIndex.value == 0
+                        ? SvgPicture.asset('assets/images/home_solid.svg')
+                        : SvgPicture.asset('assets/images/home_outlined.svg'),
+                  ),
+                  label: "Home".tr,
                 ),
-                label: "Journaling".tr),
-            getHelpItem(),
-            BottomNavigationBarItem(
-                icon: Obx(() => SvgPicture.asset(
-                      'assets/images/groal tab vector.svg',
-                      color: bottomNavigatorController.activeIndex.value == 3
-                          ? SolhColors.primary_green
-                          : Colors.grey.shade600,
-                    )),
-                label: "My Goals".tr),
-            BottomNavigationBarItem(
-                icon: Obx(() => SvgPicture.asset(
-                      'assets/images/profile.svg',
-                      color: bottomNavigatorController.activeIndex.value == 4
-                          ? SolhColors.primary_green
-                          : Colors.grey.shade600,
-                    )),
-                label: "My Profile".tr)
-          ],
-        ));
+                BottomNavigationBarItem(
+                    icon: Obx(
+                      () => bottomNavigatorController.activeIndex.value == 1
+                          ? SvgPicture.asset('assets/images/journaling.svg')
+                          : SvgPicture.asset(
+                              'assets/images/journalling outline.svg',
+                            ),
+                    ),
+                    label: "Journaling".tr),
+                getHelpItem(),
+                BottomNavigationBarItem(
+                    icon: Obx(() => SvgPicture.asset(
+                          'assets/images/groal tab vector.svg',
+                          color:
+                              bottomNavigatorController.activeIndex.value == 3
+                                  ? SolhColors.primary_green
+                                  : Colors.grey.shade600,
+                        )),
+                    label: "My Goals".tr),
+                // BottomNavigationBarItem(
+                //     icon: Obx(() => SvgPicture.asset(
+                //           'assets/images/profile.svg',
+                //           color: bottomNavigatorController.activeIndex.value == 4
+                //               ? SolhColors.primary_green
+                //               : Colors.grey.shade600,
+                //         )),
+                //     label: "My Profile".tr)
+              ],
+            ),
+          )),
+      Expanded(
+          child: InkWell(
+        onTap: () {
+          openMoreSheet(context);
+        },
+        child: SafeArea(
+          child: Container(
+              color: Color.fromARGB(255, 247, 247, 247),
+              height: 50,
+              width: 50,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.menu,
+                    color: SolhColors.grey,
+                  ),
+                  Text(
+                    "More",
+                    style: TextStyle(fontSize: 12),
+                  )
+                ],
+              )),
+        ),
+      ))
+    ]);
   }
 
   BottomNavigationBarItem getHelpItem() {
@@ -355,29 +413,297 @@ class _MasterScreen2State extends State<MasterScreen2>
         decoration: BoxDecoration(shape: BoxShape.circle),
         child: InkWell(
           onTap: () {
-            print("side bar tapped");
-
-            bottomNavigatorController.isDrawerOpen.value
-                ? bottomNavigatorController.isDrawerOpen.value = false
-                : bottomNavigatorController.isDrawerOpen.value = true;
-            bottomNavigatorController.isDrawerOpen.value
-                ? animationController.forward()
-                : animationController.reverse();
-
-            print("opened");
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MyProfileScreenV2()));
           },
-          child: Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            height: 40,
-            width: 40,
-            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-            child: AnimatedIcon(
-              icon: AnimatedIcons.menu_arrow,
-              progress: animationController,
-              color: SolhColors.primary_green,
+          child: Obx(() {
+            return profileController.isProfileLoading.value
+                ? Center(
+                    child: SizedBox(
+                        height: 15, width: 15, child: MyLoader(strokeWidth: 2)),
+                  )
+                : profileController.myProfileModel.value.body == null
+                    ? InkWell(
+                        onTap: () {
+                          profileController.getMyProfile();
+                        },
+                        splashColor: Colors.transparent,
+                        child: Container(
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SolhColors.primary_green),
+                          child: Icon(
+                            Icons.refresh_rounded,
+                            color: SolhColors.white,
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 4.w,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          radius: 3.8.w,
+                          backgroundImage: CachedNetworkImageProvider(
+                            profileController.myProfileModel.value.body!.user!
+                                    .profilePicture ??
+                                "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                          ),
+                        ),
+                      );
+          }),
+
+          // bottomNavigatorController.isDrawerOpen.value
+          //     ? bottomNavigatorController.isDrawerOpen.value = false
+          //     : bottomNavigatorController.isDrawerOpen.value = true;
+          // bottomNavigatorController.isDrawerOpen.value
+          //     ? animationController.forward()
+          //     : animationController.reverse();
+
+          // ------------------------- Above comment for opening side drawer  -------------------------//
+
+          // child: Container(
+          //     decoration: BoxDecoration(shape: BoxShape.circle),
+          //     height: 40,
+          //     width: 40,
+          //     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+          //     child: Icon(
+          //       Icons.account_circle_outlined,
+          //       color: SolhColors.primary_green,
+          //     )),
+        ));
+  }
+
+  openMoreSheet(BuildContext context) {
+    // _scaffoldKey.currentState!.showBottomSheet((context) {
+    // showModalBottomSheet<Widget>(
+
+    //     backgroundColor: Colors.transparent,
+    //     // useRootNavigator: true,
+    //     anchorPoint: Offset(50, 0),
+    //     isDismissible: true,
+    //     context: context,
+    //     builder: (context) {
+    //       return Container(
+    //         color: Colors.white,
+    //       );
+    //     });
+
+    // });
+    _scaffoldKey.currentState!.showBottomSheet((context) {
+      return Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          ModalBarrier(
+            color: Colors.black26,
+            dismissible: false,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10))),
+            padding: EdgeInsets.all(20),
+            child: Wrap(
+              runSpacing: 20,
+              spacing: 20,
+              alignment: WrapAlignment.spaceAround,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 10,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(width: 20),
+                        Container(
+                          height: 10,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: SolhColors.grey,
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close),
+                        )
+                      ]),
+                ),
+                Divider(),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VideoTutorialPage()));
+                  },
+                  child: Column(
+                    children: [
+                      getBottomSheetIcon(icon: 'assets/images/allied.svg'),
+                      Text('Allied-Therapies')
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, AppRoutes.viewAllAlliedCategories,
+                        arguments: {
+                          "onTap": (value) {
+                            Navigator.pushNamed(
+                                context, AppRoutes.viewAllAlliedExpert,
+                                arguments: {
+                                  "slug": value,
+                                  "name": value,
+                                  "type": 'specialization',
+                                  "enableAppbar": true
+                                });
+                          }
+                        });
+                  },
+                  child: Column(
+                    children: [
+                      getBottomSheetIcon(icon: 'assets/images/packages.svg'),
+                      Text('Packages')
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, AppRoutes.psychologyTest);
+                  },
+                  child: Column(
+                    children: [
+                      getBottomSheetIcon(
+                          icon: 'assets/images/self-assessment.svg'),
+                      Text('Packages')
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AnonymousDialog());
+                  },
+                  child: Column(
+                    children: [
+                      getBottomSheetIcon(
+                          icon: 'assets/images/talk-now-sheet.svg'),
+                      Text('Talk Now')
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VideoTutorialPage()));
+                  },
+                  child: Column(
+                    children: [
+                      getBottomSheetIcon(
+                          icon: 'assets/images/know-us-more.svg'),
+                      Text('Know Us More')
+                    ],
+                  ),
+                ),
+                Column(
+                  children: [
+                    Obx(() {
+                      return profileController.isProfileLoading.value
+                          ? Center(
+                              child: SizedBox(
+                                  height: 15,
+                                  width: 15,
+                                  child: MyLoader(strokeWidth: 2)),
+                            )
+                          : profileController.myProfileModel.value.body == null
+                              ? InkWell(
+                                  onTap: () {
+                                    profileController.getMyProfile();
+                                  },
+                                  splashColor: Colors.transparent,
+                                  child: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: SolhColors.primary_green),
+                                    child: Icon(
+                                      CupertinoIcons.arrow_clockwise,
+                                      color: SolhColors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                )
+                              : InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MyProfileScreenV2()));
+                                  },
+                                  child: getBottomSheetIcon(
+                                      icon:
+                                          "assets/images/profile-bottom-sheet.svg"),
+                                );
+                    }),
+                    Text('My Profile')
+                  ],
+                ),
+              ],
             ),
           ),
-        ));
+        ],
+      );
+    }, enableDrag: true, elevation: 5.0, backgroundColor: Colors.transparent);
+  }
+
+  getBottomSheetIcon({required String icon}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        radius: 30,
+        backgroundColor: Colors.brown,
+        child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 29,
+            child: SvgPicture.asset(icon)),
+      ),
+    );
+  }
+}
+
+class AnimatedHideContainer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(width: 20),
+          Container(
+            height: 10,
+            width: 50,
+            decoration: BoxDecoration(
+                color: SolhColors.grey,
+                borderRadius: BorderRadius.circular(10)),
+          ),
+          IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.close))
+        ]);
   }
 }
 

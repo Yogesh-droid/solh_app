@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
+import 'package:solh/services/html_translate.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -23,6 +24,7 @@ class BlogDetailsPage extends StatefulWidget {
 
 class _BlogDetailsPageState extends State<BlogDetailsPage> {
   ConnectionController connectionController = Get.find();
+  late String des;
   @override
   void initState() {
     getBlogDetails();
@@ -80,6 +82,15 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                                 color: SolhColors.primary_green,
                               ),
                             ),
+                            Spacer(),
+                            IconButton(
+                                onPressed: () async {
+                                  des = await HtmlTranslationService
+                                      .translateDescrition(des, isHtml: true);
+                                  setState(() {});
+                                  print(des);
+                                },
+                                icon: Icon(Icons.translate))
                           ],
                         ),
                       ),
@@ -106,10 +117,7 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                       Container(
                         padding: EdgeInsets.all(10),
                         width: MediaQuery.of(context).size.width,
-                        child: Html(
-                            data: connectionController
-                                    .blogDetails.value.content ??
-                                ''),
+                        child: Html(data: des),
                       ),
                     ],
                   ),
@@ -117,7 +125,8 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
         }));
   }
 
-  void getBlogDetails() {
-    connectionController.getBlogDetails(widget.id);
+  Future<void> getBlogDetails() async {
+    await connectionController.getBlogDetails(widget.id);
+    des = connectionController.blogDetails.value.content ?? '';
   }
 }
