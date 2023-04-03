@@ -27,9 +27,6 @@ import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
 
-final _scaffoldKey = GlobalKey<ScaffoldState>();
-late PersistentBottomSheetController controller;
-
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
   //ProfileController profileController = Get.put(ProfileController());
@@ -42,7 +39,6 @@ class MasterScreen extends StatelessWidget {
       Get.put(BottomNavigatorController());
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
-
   final DiscoverGroupController discoverGroupController =
       Get.put(DiscoverGroupController());
   final ConnectionController connectionController =
@@ -76,6 +72,7 @@ class MasterScreen2 extends StatefulWidget {
 
 class _MasterScreen2State extends State<MasterScreen2>
     with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final JournalPageController journalPageController =
       Get.put(JournalPageController());
   final MoodMeterController meterController = Get.find();
@@ -477,21 +474,6 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   openMoreSheet(BuildContext context) {
-    // _scaffoldKey.currentState!.showBottomSheet((context) {
-    // showModalBottomSheet<Widget>(
-
-    //     backgroundColor: Colors.transparent,
-    //     // useRootNavigator: true,
-    //     anchorPoint: Offset(50, 0),
-    //     isDismissible: true,
-    //     context: context,
-    //     builder: (context) {
-    //       return Container(
-    //         color: Colors.white,
-    //       );
-    //     });
-
-    // });
     _scaffoldKey.currentState!.showBottomSheet((context) {
       return Stack(
         alignment: Alignment.bottomCenter,
@@ -647,6 +629,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                 )
                               : InkWell(
                                   onTap: () {
+                                    Navigator.pop(context);
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -680,6 +663,12 @@ class _MasterScreen2State extends State<MasterScreen2>
             child: SvgPicture.asset(icon)),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
   }
 }
 
