@@ -506,6 +506,12 @@ class _IssuesTileState extends State<IssuesTile>
       ),
     );
   }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 }
 
 class TopConsultantsTile extends StatelessWidget {

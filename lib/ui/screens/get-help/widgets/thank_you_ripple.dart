@@ -106,4 +106,10 @@ class _ThankYouRippleState extends State<ThankYouRipple>
           shape: BoxShape.circle,
         ));
   }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
 }
