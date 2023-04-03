@@ -70,7 +70,7 @@ class InhouseContinueDetail extends StatelessWidget {
 
   Widget continueWidget(BuildContext context) {
     return ContinueBookingWidget(
-        btnChild: Obx(() => _alliedController.isBookingLoading.value
+        btnChild: Obx(() => _alliedController.isInHouseBooking.value
             ? MyLoader(
                 radius: 8,
                 strokeWidth: 2,

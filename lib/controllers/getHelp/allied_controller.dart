@@ -15,6 +15,7 @@ class AlliedController extends GetxController {
   var inhousePackageModel = InhousePackageModel().obs;
   var inhousePackageFetching = false.obs;
   var isPackageListFetching = false.obs;
+  var isInHouseBooking = false.obs;
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
   var selectedPackagePrice = RxInt(-1);
@@ -105,7 +106,7 @@ class AlliedController extends GetxController {
     //     "vDescription": element.vDescription
     //   });
     // });
-
+    isInHouseBooking(true);
     Map<String, dynamic> body = {
       "packageName": package.name,
       "packageSlug": package.slug,
@@ -130,6 +131,7 @@ class AlliedController extends GetxController {
           body: body,
           isEncoded: true);
       //isPackageListFetching.value = false;
+      isInHouseBooking(false);
       print("map** $map");
       return map;
     } catch (e) {
