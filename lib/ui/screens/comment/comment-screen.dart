@@ -59,10 +59,40 @@ class _CommentScreenState extends State<CommentScreen> {
       TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
+  bool isFetchingMore = false;
+  int pageNo = 1;
 
   @override
   void initState() {
     super.initState();
+    journalCommentController.commentList.clear();
+    journalCommentController.repliesList.clear();
+    journalCommentController.nextPage = 1;
+    journalCommentController.previousPage = 0;
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print("current pixels are ${_scrollController.position.pixels}");
+        print("max position is  ${_scrollController.position.maxScrollExtent}");
+        pageNo++;
+        setState(() {
+          isFetchingMore = true;
+        });
+        await getComments();
+        setState(() {
+          isFetchingMore = false;
+        });
+        // setState(() {
+        //   pageNo++;
+        //   isFetchingMore = true;
+        // });
+      }
+      // await getComments();
+      // setState(() {
+      //   isFetchingMore = false;
+      // });
+    });
+
     getComments();
     if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
       _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
@@ -286,11 +316,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         }))
                                       : SliverToBoxAdapter(),
                                   journalCommentController
-                                          .getJouranalsCommentModel
-                                          .value
-                                          .body!
-                                          .comments!
-                                          .isNotEmpty
+                                          .commentList.isNotEmpty
                                       ? SliverList(
                                           delegate: SliverChildBuilderDelegate(
                                               (_, index) => CommentBoxWidget(
@@ -302,10 +328,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               '',
                                                           commentId:
                                                               journalCommentController
-                                                                      .getJouranalsCommentModel
-                                                                      .value
-                                                                      .body!
-                                                                      .comments![
+                                                                      .commentList[
                                                                           index]
                                                                       .sId ??
                                                                   '',
@@ -337,10 +360,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                       .id ??
                                                                   '',
                                                               commentId: journalCommentController
-                                                                      .getJouranalsCommentModel
-                                                                      .value
-                                                                      .body!
-                                                                      .comments![
+                                                                      .commentList[
                                                                           index]
                                                                       .sId ??
                                                                   '');
@@ -359,10 +379,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                                       journalCommentController
                                                               .commentId =
                                                           journalCommentController
-                                                              .getJouranalsCommentModel
-                                                              .value
-                                                              .body!
-                                                              .comments![index]
+                                                              .commentList[
+                                                                  index]
                                                               .sId!;
                                                       journalCommentController
                                                           .repliedTo
@@ -374,10 +392,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     },
                                                     commentModel:
                                                         journalCommentController
-                                                            .getJouranalsCommentModel
-                                                            .value
-                                                            .body!
-                                                            .comments![index],
+                                                            .commentList[index],
                                                     isUserPost:
                                                         _isLoginedUserJournal ??
                                                             false,
@@ -401,10 +416,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                         journalCommentController
                                                             .getReply(
                                                                 postId: journalCommentController
-                                                                    .getJouranalsCommentModel
-                                                                    .value
-                                                                    .body!
-                                                                    .comments![
+                                                                    .commentList[
                                                                         index]
                                                                     .sId!,
                                                                 pageNo: 1,
@@ -435,12 +447,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   ),
                                               childCount:
                                                   journalCommentController
-                                                      .getJouranalsCommentModel
-                                                      .value
-                                                      .body!
-                                                      .comments!
-                                                      .length))
+                                                      .commentList.length))
                                       : SliverToBoxAdapter(),
+                                  if (isFetchingMore)
+                                    SliverToBoxAdapter(
+                                      child: MyLoader(),
+                                    )
                                 ],
                               )
                         : Center(
@@ -571,7 +583,7 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> getComments() async {
     await journalCommentController.getJournalComment(
-        postId: widget._journalModel!.id!, pageNo: 1);
+        postId: widget._journalModel!.id!, pageNo: pageNo);
   }
 
   getUserNameAndImage() {
@@ -1287,22 +1299,13 @@ class CommentBoxWidget extends StatelessWidget {
                                   commentId: commentModel.sId ?? '',
                                   reaction: value);
                           if (message == 'Liked comment successfully') {
+                            journalCommentController.commentList[index].likes =
+                                journalCommentController
+                                        .commentList[index].likes! +
+                                    1;
                             journalCommentController
-                                .getJouranalsCommentModel
-                                .value
-                                .body!
-                                .comments![index]
-                                .likes = journalCommentController
-                                    .getJouranalsCommentModel
-                                    .value
-                                    .body!
-                                    .comments![index]
-                                    .likes! +
-                                1;
-                            journalCommentController.getJouranalsCommentModel
-                                .value.body!.comments![index].isLiked = true;
-                            journalCommentController.getJouranalsCommentModel
-                                .refresh();
+                                .commentList[index].isLiked = true;
+                            journalCommentController.commentList.refresh();
                             FirebaseAnalytics.instance.logEvent(
                                 name: 'LikeTapped',
                                 parameters: {'Page': 'JournalTile'});
@@ -1342,9 +1345,10 @@ class CommentBoxWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SvgPicture.asset(commentModel.isLiked
-                    ? 'assets/images/reactions_liked.svg'
-                    : 'assets/images/reactions.svg'),
+                if (commentModel.isLiked != null)
+                  SvgPicture.asset(commentModel.isLiked
+                      ? 'assets/images/reactions_liked.svg'
+                      : 'assets/images/reactions.svg'),
                 SizedBox(
                   width: 1.w,
                 ),
@@ -1358,16 +1362,6 @@ class CommentBoxWidget extends StatelessWidget {
                 ),
               ],
             ),
-            // child: Row(
-            //   children: [
-            //     Icon(
-            //       Icons.thumb_up_outlined,
-            //       color: SolhColors.primary_green,
-            //       size: 17,
-            //     ),
-
-            //   ],
-            // ),
           ),
           Row(
             children: [

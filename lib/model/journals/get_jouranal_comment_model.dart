@@ -21,12 +21,22 @@ class GetJouranalsCommentModel {
 
 class Body {
   int? totalComments;
+  int? previousPage;
+  int? nextPage;
   List<Comments>? comments;
   BestComment? bestComment;
-  Body({this.totalComments, this.comments, this.bestComment});
+  Body(
+      {this.totalComments,
+      this.comments,
+      this.bestComment,
+      this.nextPage,
+      this.previousPage});
 
   Body.fromJson(Map<String, dynamic> json) {
     totalComments = json['totalComments'];
+    previousPage =
+        json['previous'] != null ? json['previous']['pageNumber'] : null;
+    nextPage = json['next'] != null ? json['next']['pageNumber'] : null;
     if (json['comments'] != null) {
       comments = <Comments>[];
       json['comments'].forEach((v) {
@@ -93,7 +103,7 @@ class Comments {
     commentOn = json['commentOn'];
     commentUser = json['commentUser'];
     commentBy = json['commentBy'];
-    isLiked = json['isLiked'];
+    isLiked = json['isLiked'] != null ? json['isLiked'] : null;
     commentDate = json['commentDate'] != null ? json['commentDate'] : null;
     commentTime = json['commentTime'] != null ? json['commentTime'] : null;
     likes = json['likes'];
@@ -154,6 +164,7 @@ class BestComment {
   String? createdAt;
   String? updatedAt;
   User? user;
+  bool? isLiked;
 
   BestComment(
       {this.sId,
@@ -169,7 +180,8 @@ class BestComment {
       this.replyNum,
       this.createdAt,
       this.updatedAt,
-      this.user});
+      this.user,
+      this.isLiked});
 
   BestComment.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -191,6 +203,7 @@ class BestComment {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    isLiked = json['isLiked'] != null ? json['isLiked'] : null;
   }
 
   Map<String, dynamic> toJson() {
