@@ -339,7 +339,8 @@ Future<void> initialDialog(BuildContext context) {
             style: SolhTextStyles.QS_body_1_bold.copyWith(
                 color: SolhColors.primaryRed)),
         content: Text(
-            'We are not a medical emergency service provider or a suicide prevention helpline. If you are suicidal, or having any similar thoughts, we suggest you immediately reach out to a suicide prevention helpline. National Suicide Prevention Lifeline @ 1-800-273-8255 or Vandrevala Foundation Helpline @ 1-860-266-2345 or Aasra @ +91-22-22754-6669.',
+            'We are not a medical emergency service provider or a suicide prevention helpline. If you are suicidal, or having any similar thoughts, we suggest you immediately reach out to a suicide prevention helpline. National Suicide Prevention Lifeline @ 1-800-273-8255 or Vandrevala Foundation Helpline @ 1-860-266-2345 or Aasra @ +91-22-22754-6669.'
+                .tr,
             style: SolhTextStyles.QS_body_2),
         actions: <Widget>[
           TextButton(
@@ -347,7 +348,7 @@ Future<void> initialDialog(BuildContext context) {
               textStyle: Theme.of(context).textTheme.labelLarge,
             ),
             child: Text(
-              'Continue',
+              'Continue'.tr,
               style:
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
             ),

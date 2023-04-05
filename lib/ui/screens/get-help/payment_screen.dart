@@ -85,7 +85,7 @@ class BillingDetailScection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Billing Details',
+            'Billing Details'.tr,
             style: SolhTextStyles.QS_body_2_bold,
           ),
           SizedBox(
@@ -95,7 +95,7 @@ class BillingDetailScection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Consultation Fee',
+                'Consultation Fee'.tr,
                 style: SolhTextStyles.QS_cap_semi.copyWith(
                     color: SolhColors.Grey_1),
               ),
@@ -114,7 +114,7 @@ class BillingDetailScection extends StatelessWidget {
             height: 5,
           ),
           Text(
-            "Service Fee & Taxes",
+            "Service Fee & Taxes".tr,
             style:
                 SolhTextStyles.QS_cap_semi.copyWith(color: SolhColors.Grey_1),
           ),
@@ -125,7 +125,7 @@ class BillingDetailScection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Payable',
+                'Total Payable'.tr,
                 style: SolhTextStyles.QS_cap_semi,
               ),
               Text(
@@ -172,11 +172,12 @@ class CardPaymentSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Credit/Debit Card",
+            "Credit/Debit Card".tr,
             style: SolhTextStyles.QS_body_2_semi,
           ),
           Text(
-            "Pay amount using any card",
+            "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful."
+                .tr,
             style:
                 SolhTextStyles.QS_cap_semi.copyWith(color: SolhColors.Grey_1),
           ),
@@ -209,7 +210,7 @@ class CardPaymentSection extends StatelessWidget {
                           );
                         },
                         child: Text(
-                          "Pay through card",
+                          "Pay through card".tr,
                           style: SolhTextStyles.CTA
                               .copyWith(color: SolhColors.white),
                         )),
@@ -234,11 +235,13 @@ class UPIPaymentSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "UPI",
+              "UPI".tr,
               style: SolhTextStyles.QS_body_2_semi,
             ),
             Text(
-              "Pay amount on UPI-Id mentioned Below",
+              "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your"
+                  .tr
+                  .tr,
               style:
                   SolhTextStyles.QS_cap_semi.copyWith(color: SolhColors.Grey_1),
             ),
@@ -286,7 +289,7 @@ class UPIPaymentSection extends StatelessWidget {
                             onTap: () async {
                               await Clipboard.setData(
                                   ClipboardData(text: vpaId));
-                              Utility.showToast("Successfully copied");
+                              Utility.showToast("Successfully copied".tr);
                             },
                             child: Container(
                               height: 40,
@@ -321,12 +324,13 @@ class UPIPaymentSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Note: ",
+                    "Note:".tr,
                     style: SolhTextStyles.QS_body_2_bold,
                   ),
                   Expanded(
                     child: Text(
-                      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+                      "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com"
+                          .tr,
                       style: SolhTextStyles.QS_cap_semi.copyWith(
                           color: SolhColors.Grey_1),
                     ),
@@ -342,7 +346,7 @@ class UPIPaymentSection extends StatelessWidget {
               children: [
                 SolhGreenBorderButton(
                   width: 60.w,
-                  child: Text("Done"),
+                  child: Text("Done".tr),
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.appointmentPage,
                         arguments: {});

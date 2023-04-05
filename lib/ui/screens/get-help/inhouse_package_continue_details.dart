@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
@@ -31,7 +32,7 @@ class InhouseContinueDetail extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
           title: Text(
-            'Booking Online Session',
+            'Booking Online Session'.tr,
             style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false),
@@ -76,7 +77,7 @@ class InhouseContinueDetail extends StatelessWidget {
                 strokeWidth: 2,
               )
             : Text(
-                'Confirm',
+                'Confirm'.tr,
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
         totalPayble: packages.amount == 0 ? 'Free' : "${packages.amount} ",
@@ -119,10 +120,7 @@ class InhouseContinueDetail extends StatelessWidget {
               //     });
               Future.delayed(Duration(seconds: 2), () {
                 Get.find<AppointmentController>().getUserAppointments();
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
+
                 Navigator.pushNamed(context, AppRoutes.paymentscreen,
                     arguments: {
                       "amount": packages.amount,

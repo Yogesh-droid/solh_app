@@ -26,7 +26,6 @@ import 'book_appointment.dart';
 class BookingPriceDetails extends StatelessWidget {
   final ConsultantController consultantController = Get.find();
   final BookAppointmentController bookAppointmentController = Get.find();
-  PaymentManagement paymentManagement = PaymentManagement();
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +287,7 @@ class BookingPriceDetails extends StatelessWidget {
             "anonymousSession":
                 consultantController.isAnonymousBookingEnabled.value.toString(),
             "offset": bookAppointmentController.selectedOffset.value,
-            "zone": bookAppointmentController.selectedTimeZone.value
+            "zone": bookAppointmentController.selectedTimeZone.value,
           });
 
           if (map['success']) {

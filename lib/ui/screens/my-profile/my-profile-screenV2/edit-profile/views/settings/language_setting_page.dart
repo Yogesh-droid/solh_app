@@ -66,7 +66,10 @@ class LanguageSettingPage extends StatelessWidget {
                   context, AppRoutes.master, (route) => true);
             },
             child: getSettingOptions(
-                SvgPicture.asset('assets/images/hindi_lang.svg'),
+                SvgPicture.asset(
+                  'assets/images/french_lang.svg',
+                  color: SolhColors.primary_green,
+                ),
                 "Français",
                 null),
           ),

@@ -43,7 +43,7 @@ class UserPackageOrders {
   String? sId;
   Null? appointmentId;
   String? status;
-  List<Null>? videoSessions;
+  List<PackageVideoSessions>? packageVideoSessions;
   String? packageName;
   String? packageSlug;
   String? packageDuration;
@@ -57,14 +57,15 @@ class UserPackageOrders {
   String? packageOwner;
   String? packageType;
   String? packageCategory;
-  String? createdBy;
-  String? updatedBy;
   String? createdAt;
   String? updatedAt;
+  String? carouselName;
   int? iV;
-  List<PackageVideoSessions>? packageVideoSessions;
   List<Provider>? provider;
   String? id;
+  String? createdBy;
+  String? updatedBy;
+  List<Transaction>? transaction;
 
   UserPackageOrders(
       {this.packagePaymentType,
@@ -72,7 +73,7 @@ class UserPackageOrders {
       this.sId,
       this.appointmentId,
       this.status,
-      this.videoSessions,
+      this.packageVideoSessions,
       this.packageName,
       this.packageSlug,
       this.packageDuration,
@@ -86,14 +87,14 @@ class UserPackageOrders {
       this.packageOwner,
       this.packageType,
       this.packageCategory,
-      this.createdBy,
-      this.updatedBy,
       this.createdAt,
       this.updatedAt,
       this.iV,
-      this.packageVideoSessions,
+      this.carouselName,
       this.provider,
-      this.id});
+      this.id,
+      this.createdBy,
+      this.updatedBy});
 
   UserPackageOrders.fromJson(Map<String, dynamic> json) {
     packagePaymentType = json['packagePaymentType'];
@@ -101,17 +102,24 @@ class UserPackageOrders {
     sId = json['_id'];
     appointmentId = json['appointmentId'];
     status = json['status'];
-    if (json['videoSessions'] != null) {
-      videoSessions = <Null>[];
-      json['videoSessions'].forEach((v) {
-        videoSessions!.add(v);
+    if (json['packageVideoSessions'] != null) {
+      packageVideoSessions = <PackageVideoSessions>[];
+      json['packageVideoSessions'].forEach((v) {
+        packageVideoSessions!.add(new PackageVideoSessions.fromJson(v));
       });
     }
     packageName = json['packageName'];
+    if (json['Transaction'] != null) {
+      transaction = <Transaction>[];
+      json['Transaction'].forEach((v) {
+        transaction!.add(new Transaction.fromJson(v));
+      });
+    }
     packageSlug = json['packageSlug'];
     packageDuration = json['packageDuration'];
     packageUnitDuration = json['packageUnitDuration'];
     packageAboutPackage = json['packageAboutPackage'];
+    carouselName = json['carouselName'];
     packageBenefits = json['packageBenefits'];
     packageEquipment = json['packageEquipment'];
     packageCurrency = json['packageCurrency'];
@@ -120,17 +128,9 @@ class UserPackageOrders {
     packageOwner = json['packageOwner'];
     packageType = json['packageType'];
     packageCategory = json['packageCategory'];
-    createdBy = json['createdBy'];
-    updatedBy = json['updatedBy'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    if (json['packageVideoSessions'] != null) {
-      packageVideoSessions = <PackageVideoSessions>[];
-      json['packageVideoSessions'].forEach((v) {
-        packageVideoSessions!.add(new PackageVideoSessions.fromJson(v));
-      });
-    }
     if (json['provider'] != null) {
       provider = <Provider>[];
       json['provider'].forEach((v) {
@@ -138,6 +138,8 @@ class UserPackageOrders {
       });
     }
     id = json['id'];
+    createdBy = json['createdBy'];
+    updatedBy = json['updatedBy'];
   }
 
   Map<String, dynamic> toJson() {
@@ -147,10 +149,10 @@ class UserPackageOrders {
     data['_id'] = this.sId;
     data['appointmentId'] = this.appointmentId;
     data['status'] = this.status;
-    // if (this.videoSessions != null) {
-    //   data['videoSessions'] =
-    //       this.videoSessions!.map((v) => v?.toJson()).toList();
-    // }
+    if (this.packageVideoSessions != null) {
+      data['packageVideoSessions'] =
+          this.packageVideoSessions!.map((v) => v.toJson()).toList();
+    }
     data['packageName'] = this.packageName;
     data['packageSlug'] = this.packageSlug;
     data['packageDuration'] = this.packageDuration;
@@ -164,19 +166,15 @@ class UserPackageOrders {
     data['packageOwner'] = this.packageOwner;
     data['packageType'] = this.packageType;
     data['packageCategory'] = this.packageCategory;
-    data['createdBy'] = this.createdBy;
-    data['updatedBy'] = this.updatedBy;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
-    if (this.packageVideoSessions != null) {
-      data['packageVideoSessions'] =
-          this.packageVideoSessions!.map((v) => v.toJson()).toList();
-    }
     if (this.provider != null) {
       data['provider'] = this.provider!.map((v) => v.toJson()).toList();
     }
     data['id'] = this.id;
+    data['createdBy'] = this.createdBy;
+    data['updatedBy'] = this.updatedBy;
     return data;
   }
 }
@@ -230,7 +228,7 @@ class Provider {
 
 class InHousePackageOrders {
   String? sId;
-  Null? appointmentId;
+  String? appointmentId;
   String? status;
   String? packageName;
   String? packageSlug;
@@ -250,6 +248,9 @@ class InHousePackageOrders {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? packagePaymentType;
+  String? packagePaymentStatus;
+  List<Transaction>? transaction;
 
   InHousePackageOrders(
       {this.sId,
@@ -272,7 +273,9 @@ class InHousePackageOrders {
       this.createdBy,
       this.createdAt,
       this.updatedAt,
-      this.iV});
+      this.iV,
+      this.packagePaymentType,
+      this.packagePaymentStatus});
 
   InHousePackageOrders.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -283,21 +286,29 @@ class InHousePackageOrders {
     packageDuration = json['packageDuration'];
     packageUnitDuration = json['packageUnitDuration'];
     packageAboutPackage = json['packageAboutPackage'];
-    carouselName = json['carouselName'];
     packageBenefits = json['packageBenefits'];
     packageEquipment = json['packageEquipment'];
     packageCurrency = json['packageCurrency'];
     packageAmount = json['packageAmount'];
     userId = json['userId'];
+    if (json['Transaction'] != null) {
+      transaction = <Transaction>[];
+      json['Transaction'].forEach((v) {
+        transaction!.add(new Transaction.fromJson(v));
+      });
+    }
     packageOwner = json['packageOwner'] != null
         ? new PackageOwner.fromJson(json['packageOwner'])
         : null;
     packageType = json['packageType'];
     mainCategory = json['mainCategory'];
+    carouselName = json['carouselName'];
     createdBy = json['createdBy'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    packagePaymentType = json['packagePaymentType'];
+    packagePaymentStatus = json['packagePaymentStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -320,10 +331,13 @@ class InHousePackageOrders {
     }
     data['packageType'] = this.packageType;
     data['mainCategory'] = this.mainCategory;
+    data['carouselName'] = this.carouselName;
     data['createdBy'] = this.createdBy;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['packagePaymentType'] = this.packagePaymentType;
+    data['packagePaymentStatus'] = this.packagePaymentStatus;
     return data;
   }
 }
@@ -343,6 +357,43 @@ class PackageOwner {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['name'] = this.name;
+    return data;
+  }
+}
+
+class Transaction {
+  String? sId;
+  String? inhouseOrderId;
+  String? currency;
+  String? amount;
+  String? status;
+  String? pgTransactionId;
+
+  Transaction(
+      {this.sId,
+      this.inhouseOrderId,
+      this.currency,
+      this.amount,
+      this.status,
+      this.pgTransactionId});
+
+  Transaction.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    inhouseOrderId = json['inhouseOrderId'];
+    currency = json['currency'];
+    amount = json['amount'];
+    status = json['status'];
+    pgTransactionId = json['pgTransactionId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['inhouseOrderId'] = this.inhouseOrderId;
+    data['currency'] = this.currency;
+    data['amount'] = this.amount;
+    data['status'] = this.status;
+    data['pgTransactionId'] = this.pgTransactionId;
     return data;
   }
 }

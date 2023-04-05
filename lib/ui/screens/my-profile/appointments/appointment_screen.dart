@@ -10,6 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/model/profile/allied_appoinment_list.dart';
 import 'package:solh/model/user/user_appointments_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -132,10 +133,17 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                   itemCount: appointmentController
                       .userAppointmentModel.value.inHousePackageOrders!.length,
                   itemBuilder: ((context, index) {
-                    return getAlliedInHousePackageCard(appointmentController
-                        .userAppointmentModel
-                        .value
-                        .inHousePackageOrders![index]);
+                    return getAlliedInHousePackageCard(
+                        e: appointmentController.userAppointmentModel.value
+                            .inHousePackageOrders![index],
+                        context: context,
+                        alliedOrderId: null,
+                        appointmentId: null,
+                        inhouseOrderId: appointmentController
+                            .userAppointmentModel
+                            .value
+                            .inHousePackageOrders![index]
+                            .sId);
                   })),
           scheduldAppointments != null
               ? ListView.builder(
@@ -208,6 +216,124 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                   scheduldAppointments[index]
                                                       .doctor!
                                                       .profilePicture!)
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Payment : ',
+                                              style: SolhTextStyles
+                                                  .QS_caption_bold),
+                                          scheduldAppointments[index]
+                                                      .transaction!
+                                                      .length ==
+                                                  0
+                                              ? Text(
+                                                  'Pending',
+                                                  style: SolhTextStyles
+                                                          .QS_caption_bold
+                                                      .copyWith(
+                                                          color: SolhColors
+                                                              .primaryRed),
+                                                )
+                                              : Text(
+                                                  'Paid',
+                                                  style: SolhTextStyles
+                                                          .QS_caption_bold
+                                                      .copyWith(
+                                                          color: SolhColors
+                                                              .primary_green),
+                                                ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          scheduldAppointments[index]
+                                                      .transaction!
+                                                      .length ==
+                                                  0
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    print({
+                                                      "amount":
+                                                          scheduldAppointments[
+                                                                  index]
+                                                              .amount,
+                                                      "feeCurrency":
+                                                          scheduldAppointments[
+                                                                  index]
+                                                              .currency,
+                                                      "alliedOrderId": null,
+                                                      "appointmentId":
+                                                          scheduldAppointments[
+                                                                  index]
+                                                              .appointmentId,
+                                                      "inhouseOrderId": null,
+                                                      "marketplaceType":
+                                                          "Appointment",
+                                                      "paymentGateway":
+                                                          "Stripe",
+                                                      "paymentSource": "App",
+                                                    });
+                                                    Navigator.pushNamed(context,
+                                                        AppRoutes.paymentscreen,
+                                                        arguments: {
+                                                          "amount":
+                                                              scheduldAppointments[
+                                                                      index]
+                                                                  .amount,
+                                                          "feeCurrency":
+                                                              scheduldAppointments[
+                                                                      index]
+                                                                  .currency,
+                                                          "alliedOrderId": null,
+                                                          "appointmentId":
+                                                              scheduldAppointments[
+                                                                      index]
+                                                                  .appointmentId,
+                                                          "inhouseOrderId":
+                                                              null,
+                                                          "marketplaceType":
+                                                              "Appointment",
+                                                          "paymentGateway":
+                                                              "Stripe",
+                                                          "paymentSource":
+                                                              "App",
+                                                        });
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      SizedBox(
+                                                        height: 14,
+                                                        child: VerticalDivider(
+                                                          width: 2,
+                                                          color:
+                                                              SolhColors.black,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        "pay",
+                                                        style: SolhTextStyles
+                                                                .QS_caption_bold
+                                                            .copyWith(
+                                                                color: SolhColors
+                                                                    .primary_green),
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Icon(
+                                                        CupertinoIcons
+                                                            .arrow_right,
+                                                        color: SolhColors
+                                                            .primary_green,
+                                                        size: 14,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              : Container()
                                         ],
                                       ),
                                       SizedBox(
@@ -329,7 +455,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
   }
 
   Widget getCompletedAppointments(
-      List<ScheduldAppointments>? completedAppointments) {
+      List<CompletedAppointments>? completedAppointments) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -547,10 +673,17 @@ class AlliedAppointmentList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
               children: [
-                Column(
-                    children: alliedAppoinmentModel.userPackageOrders!
-                        .map((e) => getAlliedOrderCard(e))
-                        .toList()),
+                alliedAppoinmentModel.userPackageOrders == null
+                    ? Container()
+                    : Column(
+                        children: alliedAppoinmentModel.userPackageOrders!
+                            .map((e) => getAlliedOrderCard(
+                                e: e,
+                                alliedOrderId: e.sId,
+                                appointmentId: null,
+                                context: context,
+                                inhouseOrderId: null))
+                            .toList()),
                 SizedBox(
                   height: 8,
                 )
@@ -561,11 +694,18 @@ class AlliedAppointmentList extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
               children: [
-                Column(
-                  children: alliedAppoinmentModel.inHousePackageOrders!
-                      .map((e) => getAlliedInHousePackageCard(e))
-                      .toList(),
-                ),
+                alliedAppoinmentModel.inHousePackageOrders == null
+                    ? Container()
+                    : Column(
+                        children: alliedAppoinmentModel.inHousePackageOrders!
+                            .map((e) => getAlliedInHousePackageCard(
+                                alliedOrderId: null,
+                                appointmentId: null,
+                                context: context,
+                                e: e,
+                                inhouseOrderId: e.sId))
+                            .toList(),
+                      ),
                 SizedBox(
                   height: 8,
                 )
@@ -577,7 +717,15 @@ class AlliedAppointmentList extends StatelessWidget {
     );
   }
 
-  Widget getAlliedOrderCard(UserPackageOrders e) {
+  Widget getAlliedOrderCard(
+      {required UserPackageOrders e,
+      context,
+      alliedOrderId,
+      appointmentId,
+      inhouseOrderId}) {
+    if (e.transaction!.isNotEmpty) {
+      print('got a transaction');
+    }
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.all(16),
@@ -591,6 +739,7 @@ class AlliedAppointmentList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                       width: 60.w,
@@ -607,6 +756,74 @@ class AlliedAppointmentList extends StatelessWidget {
                                 color: SolhColors.dark_grey),
                           ))
                       : SizedBox(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    children: [
+                      Text('Payment : ', style: SolhTextStyles.QS_caption_bold),
+                      e.transaction!.length == 0
+                          ? Text(
+                              'Pending',
+                              style: SolhTextStyles.QS_caption_bold.copyWith(
+                                  color: SolhColors.primaryRed),
+                            )
+                          : Text(
+                              'Paid',
+                              style: SolhTextStyles.QS_caption_bold.copyWith(
+                                  color: SolhColors.primary_green),
+                            ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      e.transaction!.length == 0
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.paymentscreen,
+                                    arguments: {
+                                      "amount": e.packageAmount,
+                                      "feeCurrency": e.packageCurrency,
+                                      "alliedOrderId": alliedOrderId,
+                                      "appointmentId": appointmentId,
+                                      "inhouseOrderId": inhouseOrderId,
+                                      "marketplaceType": "Appointment",
+                                      "paymentGateway": "Stripe",
+                                      "paymentSource": "App",
+                                    });
+                              },
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    height: 14,
+                                    child: VerticalDivider(
+                                      width: 2,
+                                      color: SolhColors.black,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "pay",
+                                    style:
+                                        SolhTextStyles.QS_caption_bold.copyWith(
+                                            color: SolhColors.primary_green),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Icon(
+                                    CupertinoIcons.arrow_right,
+                                    color: SolhColors.primary_green,
+                                    size: 14,
+                                  )
+                                ],
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ],
               ),
               Column(
@@ -642,7 +859,7 @@ class AlliedAppointmentList extends StatelessWidget {
                         style: SolhTextStyles.QS_cap_2_semi,
                       ),
                     ],
-                  )
+                  ),
                 ],
               )
             ],
@@ -663,7 +880,8 @@ class AlliedAppointmentList extends StatelessWidget {
   }
 }
 
-Widget getAlliedInHousePackageCard(e) {
+Widget getAlliedInHousePackageCard(
+    {e, alliedOrderId, appointmentId, inhouseOrderId, context}) {
   return Container(
     margin: EdgeInsets.only(bottom: 8),
     padding: EdgeInsets.all(16),
@@ -711,7 +929,75 @@ Widget getAlliedInHousePackageCard(e) {
                       style: SolhTextStyles.QS_caption,
                     )
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Text('Payment : ', style: SolhTextStyles.QS_caption_bold),
+                    e.transaction!.length == 0
+                        ? Text(
+                            'Pending',
+                            style: SolhTextStyles.QS_caption_bold.copyWith(
+                                color: SolhColors.primaryRed),
+                          )
+                        : Text(
+                            'Paid',
+                            style: SolhTextStyles.QS_caption_bold.copyWith(
+                                color: SolhColors.primary_green),
+                          ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    e.transaction!.length == 0
+                        ? InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoutes.paymentscreen,
+                                  arguments: {
+                                    "amount": e.packageAmount,
+                                    "feeCurrency": e.packageCurrency,
+                                    "alliedOrderId": alliedOrderId,
+                                    "appointmentId": appointmentId,
+                                    "inhouseOrderId": inhouseOrderId,
+                                    "marketplaceType": "Appointment",
+                                    "paymentGateway": "Stripe",
+                                    "paymentSource": "App",
+                                  });
+                            },
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 14,
+                                  child: VerticalDivider(
+                                    width: 2,
+                                    color: SolhColors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "pay",
+                                  style:
+                                      SolhTextStyles.QS_caption_bold.copyWith(
+                                          color: SolhColors.primary_green),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(
+                                  CupertinoIcons.arrow_right,
+                                  color: SolhColors.primary_green,
+                                  size: 14,
+                                )
+                              ],
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
               ],
             ),
             Column(

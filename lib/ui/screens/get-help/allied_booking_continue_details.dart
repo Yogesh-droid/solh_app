@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/appointment_controller.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import '../../../services/utility.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
@@ -29,7 +31,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
           title: Text(
-            'Booking Online Session',
+            'Booking Online Session'.tr,
             style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false),
@@ -68,7 +70,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
 
   Widget continueWidget(BuildContext context) {
     return ContinueBookingWidget(
-        btnChild: Obx(() => _alliedController.isBookingLoading.value
+        btnChild: Obx(() => _alliedController.isAlliedBooking.value
             ? MyLoader(
                 radius: 8,
                 strokeWidth: 2,
@@ -82,49 +84,59 @@ class AlliedBookingContinueDetail extends StatelessWidget {
           try {
             Map<String, dynamic> map =
                 await _alliedController.createPackageOrder(packages);
-            print('inhouse**** $map');
+            print('allied**** $map');
             if (map['success']) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Card(
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                    'assets/images/ScaffoldBackgroundGreen.png'))),
-                        child: Column(children: [
-                          Image.asset('assets/images/thankripple.png'),
-                          Text(
-                            'Thank You',
-                            style: SolhTextStyles.QS_head_4.copyWith(
-                                color: SolhColors.white),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: Text(
-                              "Your appointment has been successfully booked on ",
-                              style: SolhTextStyles.QS_cap_semi.copyWith(
-                                  color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          )
-                        ]),
-                      ),
-                    );
-                  });
+              // showDialog(
+              //     context: context,
+              //     builder: (context) {
+              //       return Card(
+              //         child: Container(
+              //           width: double.infinity,
+              //           decoration: BoxDecoration(
+              //               image: DecorationImage(
+              //                   fit: BoxFit.fill,
+              //                   image: AssetImage(
+              //                       'assets/images/ScaffoldBackgroundGreen.png'))),
+              //           child: Column(children: [
+              //             Image.asset('assets/images/thankripple.png'),
+              //             Text(
+              //               'Thank You',
+              //               style: SolhTextStyles.QS_head_4.copyWith(
+              //                   color: SolhColors.white),
+              //             ),
+              //             Padding(
+              //               padding: const EdgeInsets.all(18.0),
+              //               child: Text(
+              //                 "Your appointment has been successfully booked on ",
+              //                 style: SolhTextStyles.QS_cap_semi.copyWith(
+              //                     color: Colors.white),
+              //                 textAlign: TextAlign.center,
+              //               ),
+              //             )
+              //           ]),
+              //         ),
+              //       );
+              //     });
+              Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
+                "amount": packages.amount,
+                "feeCurrency": packages.currency,
+                "alliedOrderId": map['data']["alliedOrderId"],
+                "appointmentId": null,
+                "inhouseOrderId": null,
+                "marketplaceType": "Appointment",
+                "paymentGateway": "Stripe",
+                "paymentSource": "App",
+              });
               Future.delayed(Duration(seconds: 2), () {
                 Get.find<AppointmentController>().getUserAppointments();
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AppointmentScreen()));
+                // Navigator.pop(context);
+                // Navigator.pop(context);
+                // Navigator.pop(context);
+                // Navigator.pop(context);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => AppointmentScreen()));
               });
             } else {
               Utility.showToast(map['message']);

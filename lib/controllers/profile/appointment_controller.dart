@@ -42,6 +42,7 @@ class AppointmentController extends GetxController {
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/allied/therapies/package/getOrderList");
+      print("alliedBooking $map");
       if (map['success']) {
         alliedAppoinmentModel.value = AlliedAppoinmentModel.fromJson(map);
         isAlliedLoading.value = false;

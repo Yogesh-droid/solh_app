@@ -16,6 +16,7 @@ class AlliedController extends GetxController {
   var inhousePackageFetching = false.obs;
   var isPackageListFetching = false.obs;
   var isInHouseBooking = false.obs;
+  var isAlliedBooking = false.obs;
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
   var selectedPackagePrice = RxInt(-1);
@@ -62,7 +63,7 @@ class AlliedController extends GetxController {
         "vDescription": element.vDescription
       });
     });
-
+    isAlliedBooking(true);
     Map<String, dynamic> body = {
       "packageName": package.name,
       "packageSlug": package.slug,
@@ -80,12 +81,12 @@ class AlliedController extends GetxController {
       "status": "Inprocess",
     };
     try {
-      map = {"success": true, "message": "Something went wrong"};
-      await Network.makePostRequestWithToken(
+      var map = await Network.makePostRequestWithToken(
           url: "${APIConstants.api}/api/allied/therapies/package/createOrder",
           body: body,
           isEncoded: true);
       //isPackageListFetching.value = false;
+      isAlliedBooking(false);
       return map;
     } catch (e) {
       //isPackageListFetching.value = false;

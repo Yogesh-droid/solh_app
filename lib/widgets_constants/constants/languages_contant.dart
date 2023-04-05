@@ -119,7 +119,7 @@ class Languages extends Translations {
           "No Doctors Found": "डॉक्टर उपलब्ध नहीं है",
           "View All": "सब देखें",
           "Request Sent": "अनुरोध भेजा गया",
-          "Email-id": "Email-ID  ",
+          "Email-id": "ईमेल",
           "Benefits": "फ़ायदे",
           "No results found": "कोई परिणाम नहीं मिला",
           "Filter counsellors": "फ़िल्टर सलाहकार",
@@ -197,8 +197,8 @@ class Languages extends Translations {
               "आप Solh काउंसलर से जुड़े रहेंगे",
           "Talk Now": "अभी बात करें",
           "DISCLAMER": "उद् घोषणा",
-          "We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please.":
-              "हम कोई मेडिकल इमरजेंसी या आत्महत्या रोकथाम सेवा नहीं हैं। यदि आप आत्महत्या का विचार कर रहे हैं, तो कृपया राष्ट्रीय आत्महत्या रोकथाम लाइफ़लाइन 1-800-273-8255 पर या वंद्रेवाला फ़ाउंडेशन हेल्पलाइन 1-860-266-2345 पर या आसरा +91-22-2754-6669 पर तुरंत कॉल करें .",
+          ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
+              ": हम कोई मेडिकल इमरजेंसी या आत्महत्या रोकथाम सेवा नहीं हैं। यदि आप आत्महत्या का विचार कर रहे हैं, तो कृपया राष्ट्रीय आत्महत्या रोकथाम लाइफ़लाइन 1-800-273-8255 पर या वंद्रेवाला फ़ाउंडेशन हेल्पलाइन 1-860-266-2345 पर या आसरा +91-22-2754-6669 पर तुरंत कॉल करें .",
           "Other": "अन्य",
           "Add": "जोड़ें",
           "Need support on": "पर समर्थन चाहिए",
@@ -634,8 +634,8 @@ Map<String, String> en_us_map = {
       "You will be connected to solh counsellor",
   "Talk Now": "Talk Now",
   "DISCLAMER": "DISCLAMER",
-  "We are not a medical emergency or suicide prevention service . If you are feeling suicidal Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
-      "We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.",
+  ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
+      ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.",
   "Other": "Other",
   "Add": "Add",
   "Need support on": "Need support on",
@@ -850,6 +850,19 @@ Map<String, String> en_us_map = {
   "Mobile no": "Mobile no",
   "How Can we help ? (optional)": "How Can we help ? (optional)",
   "Preffered Date & Time": "Preffered Date & Time",
+  "Packages": "Packages",
+  "Service Fee & Taxes": "Service Fee & Taxes",
+  "Credit/Debit Card": "Credit/Debit Card",
+  "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.":
+      "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.",
+  "Pay through card": "Pay through card",
+  "UPI": "UPI",
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
+      "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ",
+  "Note:": "Note:",
+  "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
+      "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com",
+  "Successfully copied": "Successfully copied",
   "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
       "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return."
 };
@@ -1043,8 +1056,8 @@ Map<String, String> fr_FR_map = {
       "Vous serez connecté à SOLH conseiller",
   "Talk Now": "Parler maintenant",
   "DISCLAMER": "Disqueur",
-  "We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
-      "Nous ne sommes pas un service d'urgence médicale ou de prévention du suicide. Si vous vous sentez suicidaire, veuillez appeler une ligne d'assistance téléphonique telle que le National Suicide Prevention Lifeline au 1-800-273-8255 ou la ligne d'assistance de la Vandrevala Foundation au 1-860-266-2345 ou AASRA à + 91-22-2754-6669 .",
+  ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
+      ": Nous ne sommes pas un service d'urgence médicale ou de prévention du suicide. Si vous vous sentez suicidaire, veuillez appeler une ligne d'assistance téléphonique telle que le National Suicide Prevention Lifeline au 1-800-273-8255 ou la ligne d'assistance de la Vandrevala Foundation au 1-860-266-2345 ou AASRA à + 91-22-2754-6669 .",
   "Other": "Autre",
   "Add": "Ajouter",
   "Need support on": "Besoin de support sur",
@@ -1212,8 +1225,6 @@ Map<String, String> fr_FR_map = {
   "Corporate": "Corporatif",
   "Others": "Autres",
   "Whats your gender ?": "Quel est ton genre ?",
-  "सेवाएं प्रक्रिया में हैं और हम उन्हें जल्द ही डिलीवर कर देंगे। कृपया अपने ईमेल पर नजर रखें।":
-      "सेवाएं प्रक्रिया में हैं और हम उन्हें जल्द ही डिलीवर कर देंगे। कृपया अपने ईमेल पर नजर रखें।",
   "Male": "Homme",
   "Female": "Femme",
   "Posts": "Des postes",
@@ -1283,6 +1294,19 @@ Map<String, String> fr_FR_map = {
   "your email-id": "Votre e-mail-ID",
   "Enter Custom issue": "Entrez le problème personnalisé",
   "No Completed Appointment yet": "Pas encore de rendez-vous terminé",
+  "Packages": "emballer",
+  "Service Fee & Taxes": "frais de service et taxes",
+  "Credit/Debit Card": "carte de crédit /carte de débit",
+  "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.":
+      "Nous acceptons également les paiements par cartes de crédit et de débit. Veuillez vous assurer que les détails de la carte que vous avez fournis sont complets et exacts. Veuillez noter que nous pouvons utiliser ces informations pour nous assurer que le paiement est réussi.",
+  "Pay through card": "payer par carte",
+  "UPI": "UPI",
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your":
+      "Optez pour nos services bancaires mobiles pour un processus de paiement sans tracas. Veuillez copier notre UPI-ID et procéder à votre",
+  "Note:": "Note",
+  "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
+      "Veuillez conserver une preuve de votre paiement (capture d'écran) et l'envoyer au +91 9667215980 ou par e-mail à info@solhapp.com",
+  "Successfully copied": "copié avec succès",
 };
 
 Map<String, String> ar_sa_map = {
@@ -1469,7 +1493,7 @@ Map<String, String> ar_sa_map = {
   "You will be connected to solh counsellor": "سوف تكون متصلاً بمستشار سوله",
   "Talk Now": "تحدث الآن",
   "DISCLAMER": "disclamer",
-  "We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
+  ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
       "نحن لسنا خدمة طارئة أو منع الانتحار. إذا كنت تشعر بالانتحار ، فيرجى الاتصال بخط مساعدة مثل خط حياة الوقاية من الانتحار الوطني على الرقم 1-800-273-8255 أو خط المساعدة من مؤسسة Vandrevala على الفترة 1-860-266-2345 أو AASRA في +91-22-2754-669 على الفور على الفور على الفور على الفور على الفور .",
   "Other": "آخر",
   "Add": "يضيف",
@@ -1708,6 +1732,20 @@ Map<String, String> ar_sa_map = {
   "your email-id": "معرف البريد الإلكتروني الخاص بك",
   "Enter Custom issue": "أدخل مشكلة مخصصة",
   "No Completed Appointment yet": "لا يوجد موعد مكتمل بعد",
+  "No Completed Appointment yet": "لا يوجد موعد مكتمل بعد",
+  "Packages": "حزم",
+  "Service Fee & Taxes": "رسوم الخدمة والضرائب",
+  "Credit/Debit Card": "بطاقة الائتمان/الخصم",
+  "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.":
+      "نحن نقبل أيضًا المدفوعات من خلال بطاقات الائتمان والخصم. يرجى التأكد من أن تفاصيل البطاقة التي توفرها تكون كاملة ودقيقة. يرجى ملاحظة أننا قد نستخدم هذه المعلومات لضمان نجاح الدفع.",
+  "Pay through card": "دفع من خلال البطاقة",
+  "UPI": "UPI",
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
+      "اختر خدماتنا المصرفية عبر الهاتف المحمول لعملية دفع خالية من المتاعب. يرجى نسخ upi-ID ومتابعة مع",
+  "Note:": "ملحوظة:",
+  "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
+      "يرجى الحفاظ على دليل على الدفع الخاص بك في متناول اليد (لقطة الشاشة) وأرسله إلى +91 9667215980 أو أرسله بالبريد الإلكتروني على info@solhapp.com",
+  "Successfully copied": "نسخ بنجاح",
 };
 
 Map<String, String> ta_IN_map = {
@@ -1901,7 +1939,7 @@ Map<String, String> ta_IN_map = {
       "நீங்கள் சோல் ஆலோசகருடன் இணைக்கப்படுவீர்கள்",
   "Talk Now": "இப்போது பேசுங்கள்",
   "DISCLAMER": "வெளியிடுபவர்",
-  "We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
+  ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
       "நாங்கள் மருத்துவ அவசரநிலை அல்லது தற்கொலை தடுப்பு சேவை அல்ல. நீங்கள் தற்கொலை செய்து கொண்டால், தயவுசெய்து தேசிய தற்கொலை தடுப்பு உயிர்நாடி போன்ற ஒரு ஹெல்ப்லைனை 1-800-273-8255 என்ற எண்ணிலோ அல்லது வான்ட்ரேவாலா அறக்கட்டளை ஹெல்ப்லைன் 1-860-266-2345 அல்லது AASRA ஐ உடனடியாக +91-22-2754-6669 என்ற எண்ணில் அழைக்கவும் .",
   "Other": "மற்றொன்று",
   "Add": "கூட்டு",
@@ -2143,4 +2181,18 @@ Map<String, String> ta_IN_map = {
   "your email-id": "உங்கள் மின்னஞ்சல்-ஐடி",
   "Enter Custom issue": "தனிப்பயன் சிக்கலை உள்ளிடவும்",
   "No Completed Appointment yet": "பூர்த்தி செய்யப்பட்ட நியமனம் இதுவரை இல்லை",
+  "No Completed Appointment yet": "பூர்த்தி செய்யப்பட்ட நியமனம் இதுவரை இல்லை",
+  "Packages": "தொகுப்புகள்",
+  "Service Fee & Taxes": "சேவை கட்டணம் மற்றும் வரி",
+  "Credit/Debit Card": "கிரெடிட்/டெபிட் கார்டு",
+  "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.":
+      "கிரெடிட் மற்றும் டெபிட் கார்டுகள் மூலம் கொடுப்பனவுகளையும் நாங்கள் ஏற்றுக்கொள்கிறோம். நீங்கள் வழங்கிய அட்டை விவரங்கள் முழுமையான மற்றும் துல்லியமாக இருக்க வேண்டும் என்பதை தயவுசெய்து உறுதிப்படுத்தவும். கட்டணம் வெற்றிகரமாக இருப்பதை உறுதிப்படுத்த இந்த தகவலைப் பயன்படுத்தலாம் என்பதை நினைவில் கொள்க.",
+  "Pay through card": "அட்டை மூலம் செலுத்துங்கள்",
+  "UPI": "யுபிஐ",
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
+      "தொந்தரவு இல்லாத கட்டண செயல்முறைக்கு எங்கள் மொபைல் வங்கி சேவைகளைத் தேர்வுசெய்க. தயவுசெய்து எங்கள் யுபிஐ ஐடியை நகலெடுத்து உங்களுடன் தொடரவும்",
+  "Note:": "குறிப்பு:",
+  "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
+      "தயவுசெய்து உங்கள் கட்டணத்திற்கான ஆதாரத்தை (ஸ்கிரீன்ஷாட்) வைத்து +91 9667215980 க்கு அனுப்பவும் அல்லது info@solhapp.com இல் மின்னஞ்சல் செய்யவும்",
+  "Successfully copied": "வெற்றிகரமாக நகலெடுக்கப்பட்டது",
 };

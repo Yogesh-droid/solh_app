@@ -29,7 +29,7 @@ class _EmailScreenState extends State<EmailScreen> {
     return Scaffold(
       appBar: ProfileSetupAppBar(
         onBackButton: widget._onBack,
-        title: "Email id",
+        title: "Email id".tr,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 5.w),

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
@@ -122,7 +123,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "Buy Plan",
+                              "Buy Plan".tr,
                               style: SolhTextStyles.CTA
                                   .copyWith(color: Colors.white),
                             )
@@ -162,7 +163,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text("Email-id",
+                                            Text("Email-id".tr,
                                                 style: SolhTextStyles
                                                     .QS_caption_bold),
                                             SizedBox(height: 5),
@@ -209,7 +210,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                   ? SolhColors.dark_grey
                                                   : SolhColors.primary_green,
                                               child: Text(
-                                                "Continue",
+                                                "Continue".tr,
                                                 style: SolhTextStyles.CTA
                                                     .copyWith(
                                                         color: Colors.white),
@@ -221,7 +222,8 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                       _alliedController
                                                           .userEmail.value)) {
                                                     Utility.showToast(
-                                                        'Enter a correct email-id');
+                                                        'Enter a correct email-id'
+                                                            .tr);
                                                     return;
                                                   } else {
                                                     _emailFocusNode.unfocus();
@@ -549,12 +551,12 @@ class PackageCard extends StatelessWidget {
                                     _alliedController.selectedPackage.value ==
                                             package!.sId
                                         ? Text(
-                                            'Hide',
+                                            'Hide'.tr,
                                             style: SolhTextStyles.CTA
                                                 .copyWith(color: Colors.white),
                                           )
                                         : Text(
-                                            'View',
+                                            'View'.tr,
                                             style: SolhTextStyles.CTA
                                                 .copyWith(color: Colors.white),
                                           ),

@@ -2076,14 +2076,14 @@ class AnonymousDialog extends StatelessWidget {
           height: 3.w,
         ),
         Text(
-          'Talk Now',
+          'Talk Now'.tr,
           style: SolhTextStyles.QS_big_body.copyWith(color: SolhColors.pink224),
         ),
         SizedBox(
           height: 3.w,
         ),
         Text(
-          'You will be connected to solh counsellor',
+          'You will be connected to solh counsellor'.tr,
           style: SolhTextStyles.QS_body_semi_1,
         ),
         SizedBox(
@@ -2091,12 +2091,13 @@ class AnonymousDialog extends StatelessWidget {
         ),
         RichText(
             text: TextSpan(
-                text: "DISCLAMER",
+                text: "DISCLAMER".tr,
                 style: SolhTextStyles.QS_body_semi_1,
                 children: [
               TextSpan(
                   text:
-                      ' : We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.',
+                      ': We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.'
+                          .tr,
                   style: SolhTextStyles.QS_body_2_semi)
             ])),
         // Text(
@@ -2112,7 +2113,7 @@ class AnonymousDialog extends StatelessWidget {
             SolhGreenBorderMiniButton(
               onPressed: (() => Navigator.of(context).pop()),
               child: Text(
-                'Cancel',
+                'Cancel'.tr,
                 style: SolhTextStyles.CTA,
               ),
             ),
@@ -2150,7 +2151,7 @@ class AnonymousDialog extends StatelessWidget {
                     parameters: {'Page': 'HomePage'});
               },
               child: Text(
-                'Connect',
+                'Connect'.tr,
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               ),
             ),

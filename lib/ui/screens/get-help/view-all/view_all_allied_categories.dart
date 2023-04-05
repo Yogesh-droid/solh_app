@@ -40,15 +40,15 @@ class ViewAlAlliedCategories extends StatelessWidget {
                 onTap: onTap,
               ),
             ),
-            GetHelpDivider(),
-            FeaturedTherapist(),
-            GetHelpDivider(),
-            PopularPackagesList(),
-            GetHelpDivider(),
-            FeatuedPackagesList(),
-            SizedBox(
-              height: 50,
-            )
+            // GetHelpDivider(),
+            // FeaturedTherapist(),
+            // GetHelpDivider(),
+            // PopularPackagesList(),
+            // GetHelpDivider(),
+            // FeatuedPackagesList(),
+            // SizedBox(
+            //   height: 50,
+            // )
           ],
         ));
   }

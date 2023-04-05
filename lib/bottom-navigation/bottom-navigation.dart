@@ -333,7 +333,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     color: SolhColors.grey,
                   ),
                   Text(
-                    "More",
+                    "More".tr,
                     style: TextStyle(fontSize: 12),
                   )
                 ],
@@ -497,20 +497,6 @@ class _MasterScreen2State extends State<MasterScreen2>
                 Divider(),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VideoTutorialPage()));
-                  },
-                  child: Column(
-                    children: [
-                      getBottomSheetIcon(icon: 'assets/images/allied.svg'),
-                      Text('Allied-Therapies')
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
                     Navigator.pushNamed(
                         context, AppRoutes.viewAllAlliedCategories,
                         arguments: {
@@ -528,11 +514,35 @@ class _MasterScreen2State extends State<MasterScreen2>
                   },
                   child: Column(
                     children: [
-                      getBottomSheetIcon(icon: 'assets/images/packages.svg'),
-                      Text('Packages')
+                      getBottomSheetIcon(icon: 'assets/images/allied.svg'),
+                      Text('Allied Therapies'.tr)
                     ],
                   ),
                 ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pushNamed(
+                //         context, AppRoutes.viewAllAlliedCategories,
+                //         arguments: {
+                //           "onTap": (value) {
+                //             Navigator.pushNamed(
+                //                 context, AppRoutes.viewAllAlliedExpert,
+                //                 arguments: {
+                //                   "slug": value,
+                //                   "name": value,
+                //                   "type": 'specialization',
+                //                   "enableAppbar": true
+                //                 });
+                //           }
+                //         });
+                //   },
+                //   child: Column(
+                //     children: [
+                //       getBottomSheetIcon(icon: 'assets/images/packages.svg'),
+                //       Text('Packages'.tr)
+                //     ],
+                //   ),
+                // ),
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
@@ -541,7 +551,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     children: [
                       getBottomSheetIcon(
                           icon: 'assets/images/self-assessment.svg'),
-                      Text('Packages')
+                      Text('Self Assessments'.tr)
                     ],
                   ),
                 ),
@@ -555,7 +565,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     children: [
                       getBottomSheetIcon(
                           icon: 'assets/images/talk-now-sheet.svg'),
-                      Text('Talk Now')
+                      Text('Talk Now'.tr)
                     ],
                   ),
                 ),
@@ -570,7 +580,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     children: [
                       getBottomSheetIcon(
                           icon: 'assets/images/know-us-more.svg'),
-                      Text('Know Us More')
+                      Text('Know Us More'.tr)
                     ],
                   ),
                 ),
@@ -616,7 +626,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                           "assets/images/profile-bottom-sheet.svg"),
                                 );
                     }),
-                    Text('My Profile')
+                    Text('My Profile'.tr)
                   ],
                 ),
               ],
