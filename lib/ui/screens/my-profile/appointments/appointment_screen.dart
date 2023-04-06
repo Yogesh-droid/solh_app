@@ -252,27 +252,6 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                   0
                                               ? InkWell(
                                                   onTap: () {
-                                                    print({
-                                                      "amount":
-                                                          scheduldAppointments[
-                                                                  index]
-                                                              .amount,
-                                                      "feeCurrency":
-                                                          scheduldAppointments[
-                                                                  index]
-                                                              .currency,
-                                                      "alliedOrderId": null,
-                                                      "appointmentId":
-                                                          scheduldAppointments[
-                                                                  index]
-                                                              .appointmentId,
-                                                      "inhouseOrderId": null,
-                                                      "marketplaceType":
-                                                          "Appointment",
-                                                      "paymentGateway":
-                                                          "Stripe",
-                                                      "paymentSource": "App",
-                                                    });
                                                     Navigator.pushNamed(context,
                                                         AppRoutes.paymentscreen,
                                                         arguments: {
@@ -334,6 +313,54 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                   ),
                                                 )
                                               : Container()
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Status : ',
+                                            style:
+                                                SolhTextStyles.QS_caption_bold,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: scheduldAppointments[
+                                                                    index]
+                                                                .status ==
+                                                            'Inprocess'
+                                                        ? Colors.orange
+                                                        : scheduldAppointments[
+                                                                        index]
+                                                                    .status ==
+                                                                'Confirmed'
+                                                            ? Colors.green
+                                                            : scheduldAppointments[
+                                                                            index]
+                                                                        .status ==
+                                                                    'Cancelled'
+                                                                ? Colors.red
+                                                                : Colors
+                                                                    .yellow),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                scheduldAppointments[index]
+                                                    .status!,
+                                                style: SolhTextStyles
+                                                    .QS_caption_bold,
+                                              ),
+                                            ],
+                                          )
                                         ],
                                       ),
                                       SizedBox(
@@ -787,7 +814,7 @@ class AlliedAppointmentList extends StatelessWidget {
                                       "alliedOrderId": alliedOrderId,
                                       "appointmentId": appointmentId,
                                       "inhouseOrderId": inhouseOrderId,
-                                      "marketplaceType": "Appointment",
+                                      "marketplaceType": "Allied",
                                       "paymentGateway": "Stripe",
                                       "paymentSource": "App",
                                     });
@@ -961,7 +988,7 @@ Widget getAlliedInHousePackageCard(
                                     "alliedOrderId": alliedOrderId,
                                     "appointmentId": appointmentId,
                                     "inhouseOrderId": inhouseOrderId,
-                                    "marketplaceType": "Appointment",
+                                    "marketplaceType": "Inhouse",
                                     "paymentGateway": "Stripe",
                                     "paymentSource": "App",
                                   });

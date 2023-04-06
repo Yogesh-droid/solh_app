@@ -123,7 +123,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
                 "alliedOrderId": map['data']["alliedOrderId"],
                 "appointmentId": null,
                 "inhouseOrderId": null,
-                "marketplaceType": "Appointment",
+                "marketplaceType": "Allied",
                 "paymentGateway": "Stripe",
                 "paymentSource": "App",
               });

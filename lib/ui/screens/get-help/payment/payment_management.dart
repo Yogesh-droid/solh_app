@@ -160,7 +160,8 @@ class PaymentManagement {
     try {
       //Request body
       Map<String, dynamic> body = {
-        'amount': "${int.parse(amount) * 100}",
+        'amount': (1 * 100).toString(),
+        //"${int.parse(amount) * 100}",
         'currency': "INR",
         "description":
             Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,

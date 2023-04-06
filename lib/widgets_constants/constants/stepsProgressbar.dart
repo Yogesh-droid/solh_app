@@ -7,10 +7,12 @@ class StepsProgressbar extends StatelessWidget {
   StepsProgressbar(
       {Key? key,
       required double this.stepNumber,
+      this.maxStep = 8,
       this.bottomBarcolor = const Color(0x60ffffff),
       this.upperBarcolor = const Color(0xffffffff)})
       : super(key: key);
   final double stepNumber;
+  final int maxStep;
   final Color bottomBarcolor;
   final Color? upperBarcolor;
   @override
@@ -28,7 +30,7 @@ class StepsProgressbar extends StatelessWidget {
         LayoutBuilder(
             builder: ((BuildContext context, BoxConstraints constraints) {
           return Container(
-            width: (constraints.maxWidth / 8) * stepNumber,
+            width: (constraints.maxWidth / maxStep) * stepNumber,
             height: 0.7.h,
             decoration: BoxDecoration(
               color: upperBarcolor,

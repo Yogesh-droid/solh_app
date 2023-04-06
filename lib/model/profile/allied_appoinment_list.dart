@@ -41,7 +41,7 @@ class UserPackageOrders {
   String? packagePaymentType;
   String? packagePaymentStatus;
   String? sId;
-  Null? appointmentId;
+  String? appointmentId;
   String? status;
   List<PackageVideoSessions>? packageVideoSessions;
   String? packageName;

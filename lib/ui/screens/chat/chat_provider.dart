@@ -529,8 +529,8 @@ class MessageTile extends StatelessWidget {
                       style: GoogleFonts.signika(color: Color(0xff666666)),
                       trimLines: 8,
                       colorClickableText: Colors.pink,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
+                      trimCollapsedText: 'Show more'.tr,
+                      trimExpandedText: 'Show less'.tr,
                       trimMode: TrimMode.Line,
                       moreStyle: TextStyle(
                           fontSize: 14,

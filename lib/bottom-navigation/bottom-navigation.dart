@@ -199,7 +199,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             return AlertDialog(
               actionsPadding: EdgeInsets.all(8.0),
               content: Text(
-                'Do you really want to exit app?',
+                'Do you really want to exit app?'.tr,
                 style: SolhTextStyles.JournalingDescriptionText,
               ),
               actions: [
@@ -207,7 +207,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Yes',
+                        'Yes'.tr,
                         style: SolhTextStyles.CTA
                             .copyWith(color: SolhColors.primaryRed),
                       ),
@@ -220,7 +220,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'No',
+                        'No'.tr,
                         style: SolhTextStyles.CTA
                             .copyWith(color: SolhColors.primary_green),
                       ),
@@ -484,6 +484,7 @@ class _MasterScreen2State extends State<MasterScreen2>
           ),
           Container(
             width: MediaQuery.of(context).size.width,
+            height: 60.h,
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -491,12 +492,15 @@ class _MasterScreen2State extends State<MasterScreen2>
                     topRight: Radius.circular(10))),
             padding: EdgeInsets.all(20),
             child: Wrap(
-              alignment: WrapAlignment.spaceAround,
+              spacing: 25,
+              runSpacing: 20,
+              alignment: WrapAlignment.start,
               children: [
                 UpperCloseDecoration(),
                 Divider(),
                 InkWell(
                   onTap: () {
+                    Get.find<GetHelpController>().getAlliedTherapyListMore();
                     Navigator.pushNamed(
                         context, AppRoutes.viewAllAlliedCategories,
                         arguments: {
@@ -571,10 +575,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VideoTutorialPage()));
+                    Navigator.pushNamed(context, AppRoutes.videoPlaylist);
                   },
                   child: Column(
                     children: [
@@ -639,7 +640,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   getBottomSheetIcon({required String icon}) {
     return Padding(
-      padding: const EdgeInsets.all(18.0),
+      padding: const EdgeInsets.all(8.0),
       child: CircleAvatar(
         radius: 30,
         backgroundColor: Colors.brown,

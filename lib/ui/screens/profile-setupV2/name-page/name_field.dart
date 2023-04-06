@@ -70,6 +70,7 @@ class NameField extends StatelessWidget {
           ),
           StepsProgressbar(
             stepNumber: 1,
+            maxStep: 2,
           ),
           SizedBox(
             height: 3.h,

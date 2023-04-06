@@ -56,6 +56,7 @@ class ScheduldAppointments {
   String? appointmentId;
   int? amount;
   String? currency;
+  String? status;
   SeekerTime? seekerTime;
   Doctor? doctor;
   String? apptFor;
@@ -65,6 +66,7 @@ class ScheduldAppointments {
       this.appointmentId,
       this.amount,
       this.currency,
+      this.status,
       this.seekerTime,
       this.transaction,
       this.doctor,
@@ -76,6 +78,7 @@ class ScheduldAppointments {
     appointmentId = json['appointmentId'];
     amount = json['amount'];
     currency = json['currency'];
+    status = json['status'];
     if (json['Transaction'] != null) {
       transaction = <Transaction>[];
       json['Transaction'].forEach((v) {

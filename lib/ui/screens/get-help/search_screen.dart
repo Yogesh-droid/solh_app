@@ -605,9 +605,23 @@ class _SearchScreenState extends State<SearchScreen> {
                         Divider(),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Country',
-                            style: SolhTextStyles.JournalingUsernameText,
+                          child: Row(
+                            children: [
+                              Text(
+                                'Country'.tr,
+                                style: SolhTextStyles.JournalingUsernameText,
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: SolhColors.primary_green),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: defaultCountry != null
+                                    ? Text(defaultCountry!)
+                                    : Text('Select Country'),
+                              )
+                            ],
                           ),
                         ),
                         ListView.builder(

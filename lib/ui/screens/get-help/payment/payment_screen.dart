@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -338,18 +340,58 @@ class UPIPaymentSection extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SolhGreenBorderButton(
                   width: 60.w,
-                  child: Text("Done".tr),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Done".tr),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Icon(
+                        CupertinoIcons.check_mark,
+                        size: 18,
+                        color: SolhColors.primary_green,
+                      ),
+                    ],
+                  ),
                   onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.appointmentPage,
-                        arguments: {});
+                    showDialog(
+                        context: context,
+                        builder: (_) {
+                          Future.delayed(Duration(seconds: 2), (() {
+                            Get.find<AppointmentController>()
+                                .getUserAppointments();
+                            Get.find<AppointmentController>()
+                                .getAlliedBooking();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                            globalNavigatorKey.currentState!.pushNamed(
+                                AppRoutes.appointmentPage,
+                                arguments: {});
+                          }));
+
+                          return AlertDialog(
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Image(
+                                    image: AssetImage(
+                                        "assets/images/payment_successful.gif")),
+                                SizedBox(height: 10.0),
+                                Text(
+                                  "Booked",
+                                  style: SolhTextStyles.QS_body_2_bold,
+                                ),
+                              ],
+                            ),
+                          );
+                        });
                   },
                 ),
               ],

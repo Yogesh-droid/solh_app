@@ -11,6 +11,7 @@ class IssueAndSpecializationFilterController extends GetxController {
   var selectedIssue = ''.obs;
   var selectedSpeciality = ''.obs;
   var selectedCountry = ''.obs;
+  var selectedCountryName = ''.obs;
 
   var issueAndSpecializationFilterModel =
       IssueAndSpecializationFilterModel().obs;

@@ -9,6 +9,8 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/issue_and_specialization_filter_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/model/doctor.dart';
+import 'package:solh/model/get-help/counsellors_country_model..dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -339,6 +341,89 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               Divider(),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Country'.tr,
+                                      style:
+                                          SolhTextStyles.JournalingUsernameText,
+                                    ),
+                                    Container(
+                                      width: 180,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: SolhColors.primary_green),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Stack(
+                                        children: [
+                                          Obx(() {
+                                            return Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 20),
+                                                child: Text(
+                                                  getCountryFromCode(
+                                                      getHelpController
+                                                          .counsellorsCountryModel
+                                                          .value,
+                                                      issueAndSpecializationFilterController
+                                                          .selectedCountry
+                                                          .value),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: SolhTextStyles
+                                                      .QS_body_2_bold,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                          Positioned(
+                                              right: 10,
+                                              top: 0,
+                                              bottom: 0,
+                                              child: Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color: SolhColors.primary_green,
+                                              )),
+                                          Container(
+                                            child: DropdownButton<String>(
+                                                underline: Container(),
+                                                icon: Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  color:
+                                                      SolhColors.primary_green,
+                                                ),
+                                                items: getHelpController
+                                                    .counsellorsCountryModel
+                                                    .value
+                                                    .providerCountry!
+                                                    .map((e) =>
+                                                        DropdownMenuItem<
+                                                            String>(
+                                                          child: Text(e.name!),
+                                                          value: e.code,
+                                                        ))
+                                                    .toList(),
+                                                onChanged: (value) {
+                                                  issueAndSpecializationFilterController
+                                                      .selectedCountry
+                                                      .value = value!;
+                                                }),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Issues'.tr,
                                   style: SolhTextStyles.JournalingUsernameText,
@@ -461,81 +546,78 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               SizedBox(
                                 height: 28,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Country'.tr,
-                                  style: SolhTextStyles.JournalingUsernameText,
-                                ),
-                              ),
-                              ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: getHelpController
-                                      .counsellorsCountryModel
-                                      .value
-                                      .providerCountry!
-                                      .length,
-                                  itemBuilder: (context, index) => Obx(() {
-                                        return ListTile(
-                                          title: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  getHelpController
-                                                          .counsellorsCountryModel
-                                                          .value
-                                                          .providerCountry![
-                                                              index]
-                                                          .name ??
-                                                      '',
-                                                  style: SolhTextStyles
-                                                      .QS_cap_semi,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                              getHelpController
-                                                          .counsellorsCountryModel
-                                                          .value
-                                                          .providerCountry![
-                                                              index]
-                                                          .code !=
-                                                      issueAndSpecializationFilterController
-                                                          .selectedCountry.value
-                                                  ? Container()
-                                                  : Icon(
-                                                      CupertinoIcons
-                                                          .check_mark_circled_solid,
-                                                      color: SolhColors
-                                                          .primary_green,
-                                                    ),
-                                            ],
-                                          ),
-                                          onTap: () {
-                                            // searchMarketController
-                                            //         .defaultCountry =
-                                            //     getHelpController
-                                            //             .counsellorsCountryModel
-                                            //             .value
-                                            //             .providerCountry![index]
-                                            //             .code ??
-                                            //         '';
 
-                                            issueAndSpecializationFilterController
-                                                .selectedCountry
-                                                .value = getHelpController
-                                                    .counsellorsCountryModel
-                                                    .value
-                                                    .providerCountry![index]
-                                                    .code ??
-                                                '';
-                                            // setState(() {});
-                                          },
-                                        );
-                                      }))
+                              // ListView.builder(
+                              //     physics: NeverScrollableScrollPhysics(),
+                              //     shrinkWrap: true,
+                              //     itemCount: getHelpController
+                              //         .counsellorsCountryModel
+                              //         .value
+                              //         .providerCountry!
+                              //         .length,
+                              //     itemBuilder: (context, index) => Obx(() {
+                              //           return ListTile(
+                              //             title: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.spaceBetween,
+                              //               children: [
+                              //                 Expanded(
+                              //                   child: Text(
+                              //                     getHelpController
+                              //                             .counsellorsCountryModel
+                              //                             .value
+                              //                             .providerCountry![
+                              //                                 index]
+                              //                             .name ??
+                              //                         '',
+                              //                     style: SolhTextStyles
+                              //                         .QS_cap_semi,
+                              //                     overflow:
+                              //                         TextOverflow.ellipsis,
+                              //                   ),
+                              //                 ),
+                              //                 getHelpController
+                              //                             .counsellorsCountryModel
+                              //                             .value
+                              //                             .providerCountry![
+                              //                                 index]
+                              //                             .code !=
+                              //                         issueAndSpecializationFilterController
+                              //                             .selectedCountry.value
+                              //                     ? Container()
+                              //                     : Icon(
+                              //                         CupertinoIcons
+                              //                             .check_mark_circled_solid,
+                              //                         color: SolhColors
+                              //                             .primary_green,
+                              //                       ),
+                              //               ],
+                              //             ),
+                              //             onTap: () {
+                              //               // searchMarketController
+                              //               //         .defaultCountry =
+                              //               //     getHelpController
+                              //               //             .counsellorsCountryModel
+                              //               //             .value
+                              //               //             .providerCountry![index]
+                              //               //             .code ??
+                              //               //         '';
+
+                              //               issueAndSpecializationFilterController
+                              //                   .selectedCountry
+                              //                   .value = getHelpController
+                              //                       .counsellorsCountryModel
+                              //                       .value
+                              //                       .providerCountry![index]
+                              //                       .code ??
+                              //                   '';
+                              //               // setState(() {});
+                              //             },
+                              //           );
+                              //         }))
+                              SizedBox(
+                                height: 100,
+                              ),
                             ],
                           ),
                         ),
@@ -614,6 +696,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             ],
           )),
     );
+  }
+
+  String getCountryFromCode(
+      CounsellorsCountryModel counsellorsCountryModel, selectedCountryCode) {
+    String selectedCountry = '';
+    counsellorsCountryModel.providerCountry!.forEach((element) {
+      if (element.code == selectedCountryCode) {
+        selectedCountry = element.name!;
+      }
+    });
+    return selectedCountry;
   }
 
   Future<void> getResultByCountry() async {

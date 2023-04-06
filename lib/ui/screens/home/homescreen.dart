@@ -22,6 +22,7 @@ import 'package:solh/controllers/psychology-test/psychology_test_controller.dart
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
@@ -939,7 +940,7 @@ class _HomePageState extends State<HomePage> {
     return Obx(() {
       return goalSettingController.pesonalGoalModel.value.goalList != null
           ? (goalSettingController.pesonalGoalModel.value.goalList!.length == 0
-              ? Text('Take the first step',
+              ? Text('Take the first step'.tr,
                   style: GoogleFonts.signika(
                     color: Colors.grey,
                     fontSize: 16,
@@ -1397,7 +1398,7 @@ class _HomePageState extends State<HomePage> {
         : Column(
             children: [
               GetHelpCategory(
-                  title: 'Self-Assessment',
+                  title: 'Self Assessments'.tr,
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   }),
@@ -1448,7 +1449,7 @@ class PsychoTestContainer extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Container(
-                width: 200,
+                width: 225,
                 child: CachedNetworkImage(
                   imageUrl: test.testPicture ?? '',
                   fit: BoxFit.fitWidth,
@@ -1456,8 +1457,8 @@ class PsychoTestContainer extends StatelessWidget {
               ),
             ),
             Container(
-              height: 60,
-              width: 200,
+              height: 90,
+              width: 225,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(10),
@@ -1503,7 +1504,14 @@ class PsychoTestContainer extends StatelessWidget {
                           ],
                         ),
                         SizedBox(
-                          width: 15,
+                          width: 7,
+                        ),
+                        SolhDot(
+                          color: SolhColors.white,
+                          size: 3,
+                        ),
+                        SizedBox(
+                          width: 7,
                         ),
                         Row(
                           children: [
@@ -1521,7 +1529,10 @@ class PsychoTestContainer extends StatelessWidget {
                         )
                       ],
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                 ],
               ),
             )
@@ -1821,7 +1832,7 @@ class AlliedExperts extends StatelessWidget {
                       });
                 },
                 child: Text(
-                  'Show more',
+                  'Show More'.tr,
                   style: SolhTextStyles.CTA
                       .copyWith(color: SolhColors.primary_green),
                 ),

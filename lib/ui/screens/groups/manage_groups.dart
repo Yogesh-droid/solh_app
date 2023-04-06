@@ -20,13 +20,12 @@ class ManageGroupPage extends StatefulWidget {
 
 class _ManageGroupPageState extends State<ManageGroupPage>
     with SingleTickerProviderStateMixin {
-  late final TabController tabController;
-
   DiscoverGroupController _groupController = Get.find();
-
+  late final TabController tabController;
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this)..animateTo(2);
+    _groupController.tabController = tabController;
     super.initState();
   }
 
@@ -39,7 +38,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
           getTabBar(),
           Expanded(
             child: TabBarView(
-              controller: tabController,
+              controller: _groupController.tabController,
               children: [
                 Obx(() {
                   return joinedGroupList(
@@ -90,9 +89,9 @@ class _ManageGroupPageState extends State<ManageGroupPage>
   Widget getTabBar() {
     return TabBar(
       onTap: (index) {
-        tabController.animateTo(index);
+        _groupController.tabController.animateTo(index);
       },
-      controller: tabController,
+      controller: _groupController.tabController,
       labelColor: SolhColors.primary_green,
       unselectedLabelColor: SolhColors.grey,
       indicatorColor: SolhColors.primary_green,

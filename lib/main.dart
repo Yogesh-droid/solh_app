@@ -34,7 +34,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Stripe.publishableKey =
-      "pk_test_51Mp4hISCjgNimACDiyGivqwK82xCjWxLP9z8U6upIeKgds5Oc332hnRHIpFO6aCEzh230Ysgklvm6nG9ccs7WKow004Gjwmmu2";
+      "pk_live_51Mp4hISCjgNimACD6TrkUMjkJDilo3BL2R5eUkxoqRRMRZ2qbtpDo8yArxHlIn5j9r2y2ps6c97QNeaELcdBBXEH00p9l2bh7c";
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

@@ -882,12 +882,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   }
 }
 
-getGroupJoinOption(
-    {context,
-    required CreateGroupController createGroupController,
-    required ProfileController profileController,
-    required DiscoverGroupController discoverGroupController,
-    groupList}) {
+getGroupJoinOption({
+  context,
+  required CreateGroupController createGroupController,
+  required ProfileController profileController,
+  required DiscoverGroupController discoverGroupController,
+  groupList,
+}) {
   return ListView(
     shrinkWrap: true,
     children: [
@@ -965,6 +966,7 @@ getGroupJoinOption(
                 discoverGroupController.joinedGroupModel.refresh();
                 discoverGroupController.groupsShownOnHome.add(groupList.sId!);
                 Navigator.of(context).pop();
+                discoverGroupController.tabController..animateTo(0);
                 Navigator.of(context, rootNavigator: true).pop();
                 Utility.showToast(success);
 

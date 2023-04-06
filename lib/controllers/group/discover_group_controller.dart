@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/constants/api.dart';
@@ -12,6 +13,7 @@ class DiscoverGroupController extends GetxController {
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
   var groupDetail = GroupList().obs;
+  late final TabController tabController;
   var isLoading = false.obs;
   var isDeletingGroup = false.obs;
 

@@ -9,7 +9,7 @@ import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
 import 'package:solh/ui/screens/get-help/inhouse_package_screen.dart';
-import 'package:solh/ui/screens/get-help/payment_screen.dart';
+import 'package:solh/ui/screens/get-help/payment/payment_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_allied_categories.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
@@ -17,6 +17,7 @@ import 'package:solh/ui/screens/groups/invite_member_ui.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
+import 'package:solh/ui/screens/intro/playlist_page.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
@@ -141,6 +142,7 @@ class AppRoutes {
   static const String activityLog = '/activityLog';
   static const String activityBadgeParent = '/activityBadgeParent';
   static const String psychologicalCapital = '/psychologicalCapital';
+  static const String videoPlaylist = '/videoPlaylist';
 
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
@@ -333,6 +335,8 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) =>
                 PaymentScreen(args: args as Map<String, dynamic>)));
+      case AppRoutes.videoPlaylist:
+        return MaterialPageRoute(builder: ((context) => VideoPlaylist()));
 
       default:
         return MaterialPageRoute(

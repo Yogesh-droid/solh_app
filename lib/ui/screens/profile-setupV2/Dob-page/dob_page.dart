@@ -65,7 +65,10 @@ class DobField extends StatelessWidget {
             SizedBox(
               height: 3.h,
             ),
-            StepsProgressbar(stepNumber: 2),
+            StepsProgressbar(
+              stepNumber: 2,
+              maxStep: 2,
+            ),
             SizedBox(
               height: 3.h,
             ),
