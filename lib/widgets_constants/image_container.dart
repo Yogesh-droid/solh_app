@@ -161,43 +161,44 @@ class ImageWithProgressBarAndBadge extends StatelessWidget {
             padding: const EdgeInsets.all(4.0),
             child: Stack(
               children: [
-                Positioned(
-                  child: CustomPaint(
-                    painter: OpenPainter2(imageRadius),
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.transparent,
-                  ),
-                  child: CustomPaint(
-                      // child: MyLoader(
-                      //   radius: imageRadius.width / 2,
-                      // ),
-                      child: CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        placeholder: (_, k) {
-                          return Container(
-                            child: Center(
-                              child: getImageShimmer(imageRadius.width),
+                // Positioned(
+                //   child: CustomPaint(
+                //     painter: OpenPainter2(imageRadius),
+                //   ),
+                // ),
+                CircleAvatar(
+                  radius: 66,
+                  backgroundColor: SolhColors.grey_3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.transparent,
+                    ),
+                    child: CustomPaint(
+                        // child: MyLoader(
+                        //   radius: imageRadius.width / 2,
+                        // ),
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          placeholder: (_, k) {
+                            return Container(
+                              child: Center(
+                                child: getImageShimmer(imageRadius.width),
+                              ),
+                            );
+                          },
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: imageRadius.width,
+                            height: imageRadius.height,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  image: imageProvider, fit: BoxFit.cover),
                             ),
-                          );
-                        },
-                        imageBuilder: (context, imageProvider) => Container(
-                          width: imageRadius.width,
-                 
-                          height: imageRadius.height,
-                          decoration: BoxDecoration(
-
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                             
-                                image: imageProvider, fit: BoxFit.cover),
                           ),
                         ),
-                      ),
-                      painter: OpenPainter(imageRadius, percent)),
+                        painter: OpenPainter(imageRadius, percent)),
+                  ),
                 ),
               ],
             ),
@@ -230,7 +231,7 @@ class OpenPainter extends CustomPainter {
     var paint1 = Paint()
       ..color = SolhColors.primary_green
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
+      ..strokeWidth = 13
       ..strokeCap = StrokeCap.round;
 
     //draw arc

@@ -981,8 +981,11 @@ class PostContentWidget extends StatefulWidget {
 class _PostContentWidgetState extends State<PostContentWidget> {
   List<String> feelingList = [];
   List<String> descriptionTexts = [];
+  List<String> originalDescriptionTexts = [];
   bool showMoreBtn = false;
   bool isExpanded = false;
+  String translationButtonText = 'See Translation';
+  bool isTranslationDone = false;
 
   @override
   void initState() {
@@ -1043,11 +1046,31 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                       if (Get.locale!.languageCode != 'en')
                                         TextButton(
                                             onPressed: () async {
-                                              await getTexts(
-                                                  isForTranslation: true);
-                                              setState(() {});
+                                              if (!isTranslationDone) {
+                                                originalDescriptionTexts =
+                                                    descriptionTexts;
+                                                await getTexts(
+                                                    isForTranslation: true);
+                                                isTranslationDone =
+                                                    !isTranslationDone;
+                                                translationButtonText =
+                                                    "See Original";
+                                                setState(() {});
+                                              } else {
+                                                isTranslationDone =
+                                                    !isTranslationDone;
+                                                translationButtonText =
+                                                    "See Translation";
+                                                descriptionTexts =
+                                                    originalDescriptionTexts;
+                                                setState(() {});
+                                              }
                                             },
-                                            child: Text("Translate"))
+                                            child: Text(
+                                              translationButtonText,
+                                              style:
+                                                  SolhTextStyles.QS_cap_2_semi,
+                                            ))
                                     ],
                                   )
                                 : Wrap(
@@ -1107,11 +1130,31 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                       if (Get.locale!.languageCode != 'en')
                                         TextButton(
                                             onPressed: () async {
-                                              await getTexts(
-                                                  isForTranslation: true);
-                                              setState(() {});
+                                              if (!isTranslationDone) {
+                                                originalDescriptionTexts =
+                                                    descriptionTexts;
+                                                await getTexts(
+                                                    isForTranslation: true);
+                                                isTranslationDone =
+                                                    !isTranslationDone;
+                                                translationButtonText =
+                                                    "See Original";
+                                                setState(() {});
+                                              } else {
+                                                isTranslationDone =
+                                                    !isTranslationDone;
+                                                translationButtonText =
+                                                    "See Translation";
+                                                descriptionTexts =
+                                                    originalDescriptionTexts;
+                                                setState(() {});
+                                              }
                                             },
-                                            child: Text("Translate"))
+                                            child: Text(
+                                              translationButtonText,
+                                              style:
+                                                  SolhTextStyles.QS_cap_2_semi,
+                                            ))
                                     ],
                                   )
                             : SizedBox(),

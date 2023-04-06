@@ -11,6 +11,7 @@ class JournalCommentController extends GetxController {
   var repliesList = [].obs;
   var bestCommentReplyList = [].obs;
   var getJouranalsCommentModel = GetJouranalsCommentModel().obs;
+  var commentList = <Comments>[].obs;
   var reactionlistModel = ReactionListModel().obs;
   var isReactionLoading = false.obs;
   var isReplying = false.obs;
@@ -32,14 +33,34 @@ class JournalCommentController extends GetxController {
   var isAnonymousSelected = false.obs;
   var anonymousProfileRadius = 2.0.w.obs;
   var nomalProfileRadius = 4.w.obs;
+  int previousPage = 0;
+  int nextPage = 1;
 
   Future<void> getJournalComment(
-      {required String postId, required int pageNo}) async {
-    isLoading.value = true;
+      {required String postId,
+      required int pageNo,
+      bool? shouldRefresh,
+      int? page}) async {
+    if (previousPage == nextPage && shouldRefresh == null && page == null) {
+      return;
+    }
+    if (previousPage == 0) {
+      isLoading.value = true;
+    }
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/v1/get-parent?journal=$postId");
+          "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=${page ?? pageNo}");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
+      if (page == null) {
+        commentList.value
+            .addAll(getJouranalsCommentModel.value.body!.comments ?? []);
+      } else {
+        commentList.value
+            .insert(0, getJouranalsCommentModel.value.body!.comments![0]);
+      }
+      commentList.refresh();
+      nextPage = getJouranalsCommentModel.value.body!.nextPage ?? 1;
+      previousPage = getJouranalsCommentModel.value.body!.previousPage ?? 0;
       getJournalcommentStatus = 0;
     } on Exceptions catch (e) {
       print(e.getStatus());
@@ -49,7 +70,7 @@ class JournalCommentController extends GetxController {
     /// repliesList is list<Map<List<comments,bool>>> where bool is false by default initially as all list is hidden,
     /// when we click "show replies" then we pass true to that list
 
-    repliesList.clear();
+    // repliesList.clear();
 
     if (getJouranalsCommentModel.value.body!.comments != null) {
       getJouranalsCommentModel.value.body!.comments!.forEach((element) {
@@ -57,6 +78,8 @@ class JournalCommentController extends GetxController {
         hiddenReplyList.value.add(false);
       });
     }
+    repliesList.refresh();
+    hiddenReplyList.refresh();
 
     isLoading.value = false;
   }
