@@ -37,8 +37,11 @@ class JournalCommentController extends GetxController {
   int nextPage = 1;
 
   Future<void> getJournalComment(
-      {required String postId, required int pageNo}) async {
-    if (previousPage == nextPage) {
+      {required String postId,
+      required int pageNo,
+      bool? shouldRefresh,
+      int? page}) async {
+    if (previousPage == nextPage && shouldRefresh == null && page == null) {
       return;
     }
     if (previousPage == 0) {
@@ -46,10 +49,15 @@ class JournalCommentController extends GetxController {
     }
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=$pageNo");
+          "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=${page ?? pageNo}");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
-      commentList.value
-          .addAll(getJouranalsCommentModel.value.body!.comments ?? []);
+      if (page == null) {
+        commentList.value
+            .addAll(getJouranalsCommentModel.value.body!.comments ?? []);
+      } else {
+        commentList.value
+            .insert(0, getJouranalsCommentModel.value.body!.comments![0]);
+      }
       commentList.refresh();
       nextPage = getJouranalsCommentModel.value.body!.nextPage ?? 1;
       previousPage = getJouranalsCommentModel.value.body!.previousPage ?? 0;
