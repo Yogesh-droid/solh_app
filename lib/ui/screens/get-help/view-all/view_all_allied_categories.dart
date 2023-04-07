@@ -25,7 +25,7 @@ class ViewAlAlliedCategories extends StatelessWidget {
         appBar: SolhAppBar(
           isLandingScreen: false,
           title: Text(
-            'Allied Therapies',
+            'Allied Therapies'.tr,
             style:
                 SolhTextStyles.QS_body_semi_1.copyWith(color: SolhColors.black),
           ),

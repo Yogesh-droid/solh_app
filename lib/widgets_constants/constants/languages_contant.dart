@@ -59,10 +59,9 @@ class Languages extends Translations {
           "Feeling": "भावना",
           "Go To Group": "समूह में जाएं",
           "join": "जुड़ें",
-          "Connect": "जुडिये",
+          "Connect": "जुड़ें",
           "Connections": "संबंध",
           "Message": "संदेश भेजें",
-          "Connect": "जुडिये",
           "Posts": "पोस्ट",
           "Capital": "कैपिटल",
           "Unfriend": "मित्रता समाप्त करें",
@@ -167,7 +166,6 @@ class Languages extends Translations {
           "Exit group": "ग्रुप छोड़ें",
           "Do You want to Exit group ?":
               "क्या आप ग्रुप से बाहर निकलना चाहते हैं?",
-          "Yes": "हाँ",
           "Join As": "के रूप में जुड़ें",
           "Join": "जुड़ें",
           "Invite Members": "सदस्यों को आमंत्रित करें",
@@ -190,13 +188,12 @@ class Languages extends Translations {
           "Anxiety": "चिंता",
           "Overwhelmed with emotions: Talk to a Solh counsellor NOW":
               "भावनाओं से अभिभूत: अभी Solh सलहाकार से बात करें",
-          "Start chatting for free right away, with a Solh Counselor.":
+          "Start chatting for free right away, with a Solh counsellor.":
               "Solh एक्सपर्ट्स से मुफ्त में बात करें",
           "Allied Experts": "अलाइड एक्सपर्ट्स",
-          "You will be connected to solh counsellor":
-              "आप Solh काउंसलर से जुड़े रहेंगे",
+          "Get connected to a Solh Counsellor": "हमारे विशेषज्ञों से जुड़ें",
           "Talk Now": "अभी बात करें",
-          "DISCLAMER": "उद् घोषणा",
+          "DISCLAMER": "अस्वीकरण",
           ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
               ": हम कोई मेडिकल इमरजेंसी या आत्महत्या रोकथाम सेवा नहीं हैं। यदि आप आत्महत्या का विचार कर रहे हैं, तो कृपया राष्ट्रीय आत्महत्या रोकथाम लाइफ़लाइन 1-800-273-8255 पर या वंद्रेवाला फ़ाउंडेशन हेल्पलाइन 1-860-266-2345 पर या आसरा +91-22-2754-6669 पर तुरंत कॉल करें .",
           "Other": "अन्य",
@@ -243,7 +240,7 @@ class Languages extends Translations {
           "post in group": "ग्रुप में पोस्ट करें",
           "Anxiety, Corporate Stress, Family Issues":
               "चिंता, कॉर्पोरेट तनाव, पारिवारिक मामले",
-          "Leading Solh Experts": "प्रमुख Sohl एक्सपर्ट्स",
+          "Leading Solh Experts": "प्रमुख Solh एक्सपर्ट्स",
           "Coming Soon": "जल्द आ रहा है",
           "Delete this comment": "इस टिप्पणी को हटाएं",
           "Select for best comment": "सर्वश्रेष्ठ टिप्पणी के लिए चुनें",
@@ -294,8 +291,8 @@ class Languages extends Translations {
           "occurrence": "घटित होना",
           "Add Task +": "कार्य जोड़ें",
           "Max Reminder": "अधिकतम याद दिलाने वाला",
-          "my Goals": "मेरे लक्ष्य",
-          "My Goals": "मेरे लक्ष्य",
+          "my Goals": "माय गोल्स",
+          "My Goals": "माय गोल्स",
           "Settings": "सेटिंग्स",
           "Is activity completed ?": "क्या गतिविधि पूरी हो गई है?",
           "Not yet": "अभी नहीं",
@@ -313,7 +310,7 @@ class Languages extends Translations {
               "सेवाएं प्रक्रिया में हैं और हम उन्हें जल्द ही डिलीवर कर देंगे। कृपया अपने ईमेल पर नजर रखें।",
           "Duration": "अवधि",
           "Blocked Users": "ब्लॉक्ड यूजर",
-          "Users you've blocked are listed below; tap any of them to unblock them.":
+          "Users you've blocked are listed below; Tap on their profile to unblock them":
               "आपके द्वारा ब्लॉक किए गए यूजर नीचे सूचीबद्ध हैं; उन्हें अनब्लॉक करने के लिए उनमें से किसी पर टैप करें।",
           "Unblock": "अनब्लॉक",
           "Connection": "सम्बन्ध",
@@ -329,10 +326,8 @@ class Languages extends Translations {
           "Disclaimer": "डिस्क्लेमर",
           "Please accept connection requests of known persons only":
               "कृपया केवल ज्ञात व्यक्तियों के कनेक्शन अनुरोध स्वीकार करें",
-          "Likes": "लाइक्स",
-          "Connections": "सम्बन्ध",
           "You are almost there": "आप लगभग वहाँ हैं",
-          "Let's take your profile from good to great. The details matter":
+          " The details matter. Let's take your profile from good to great.":
               "चलिए आपकी प्रोफ़ाइल को अच्छे से बढ़िया बनाते हैं। विवरण मायने रखता है",
           "Edit Profile": "एडिट प्रोफाइल",
           "User Type": "यूजर टाइप",
@@ -342,9 +337,6 @@ class Languages extends Translations {
               "अपनी एक तस्वीर अपलोड करें या हमारी लाइब्रेरी में से एक इमेज चुनें जो आपका सबसे अच्छा वर्णन करती है",
           "We need your email for safekeeping your account. We promise to not spam you.":
               "आपके अकाउंट को सुरक्षित रखने के लिए हमें आपके ईमेल की आवश्यकता है। हम आपको स्पैम नहीं करने का वादा करते हैं",
-          "Anonymous Profile": "गुमनाम प्रोफाइल",
-          "Post or leave a comment, join group, book appointment, etc anonymously.":
-              "गुमनाम रूप से टिप्पणी या पोस्ट करें, ग्रुप में शामिल हो या अपॉइंटमेंट बुक करें",
           "Anonymous Name": "अज्ञात नाम",
           "Something about you...": "आप के बारे में कुछ...",
           "Tell something about you": "अपने बारे में कुछ बताएं",
@@ -368,7 +360,6 @@ class Languages extends Translations {
               "यदि आप नीचे दिए गए किसी भी विकल्प की पुष्टि नहीं करते हैं, तो चिंता न करें। हमारे पास सबके लिए जगह है",
           "Male": "पुरुष",
           "Female": "स्त्री",
-          "Posts": "पोस्ट",
           "Edit Anonymous Profile": "गुमनाम प्रोफइल को एडिट करें",
           "Reload Profile": "प्रोफाइल रीलोड करें",
           "Personal Details": "व्यक्तिगत विवरण",
@@ -383,7 +374,6 @@ class Languages extends Translations {
           "Account & Privacy": "अकाउंट और गोपनीयता",
           "Delete account": "खाता हटाएं",
           "Created": "बनाया गया",
-          "Diary Entries": "डायरी एंट्रीज",
           "No groups created yet": "अभी तक कोई समूह नहीं बनाया गया है",
           "Now": "अभी",
           "Psychological Tests": "मनोवैज्ञानिक परीक्षण",
@@ -392,11 +382,7 @@ class Languages extends Translations {
           "Discover Test": "खोज परीक्षण",
           "Result History": "परिणाम इतिहास",
           "Video Playlist": "वीडियो प्लेलिस्ट",
-          "Discover previously unknown features by learning more about Solh Features":
-              "Solh सुविधाओं के बारे में अधिक जानकारी प्राप्त करके पहले अज्ञात सुविधाओं की खोज करें",
           "Publically": "सार्वजनिक",
-          "Groups": "समूह",
-          "Add Image/Video": "इमेज/वीडियो जोड़ें",
           "Sample Goals": "लक्ष्यों के सैंपल",
           "Set Goal": "लक्ष्य तय करें",
           "Your First Name": "आपका प्रथम नाम",
@@ -438,7 +424,55 @@ class Languages extends Translations {
           "No Completed Appointment yet":
               "अभी तक कोई अपॉइंटमेंट पूरा नहीं हुआ है",
           "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
-              "आपके अकाउंट को हटाने से आपकी सभी पोस्ट, अपॉइंटमेंट, पत्रिकाएं, पसंद और टिप्पणियां और अन्य सभी कार्य हटा दिए जाएंगे। यदि आप वापस लौटना चाहते हैं तो आपको एक नया अकाउंट बनाना होगा और दोबारा शुरुआत करनी होगी।"
+              "आपके अकाउंट को हटाने से आपकी सभी पोस्ट, अपॉइंटमेंट, पत्रिकाएं, पसंद और टिप्पणियां और अन्य सभी कार्य हटा दिए जाएंगे। यदि आप वापस लौटना चाहते हैं तो आपको एक नया अकाउंट बनाना होगा और दोबारा शुरुआत करनी होगी।",
+          "Packages": "पैकेज",
+          "Service Fee & Taxes": "सेवा शुल्क एवं कर",
+          "Credit/Debit Card": "क्रेडिट/डेबिट कार्ड",
+          "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.":
+              "हम क्रेडिट और डेबिट कार्ड के माध्यम से भी भुगतान स्वीकार करते हैं। कृपया सुनिश्चित करें कि आपके द्वारा प्रदान किया गया कार्ड विवरण पूर्ण और सटीक है। कृपया ध्यान दें कि हम इस जानकारी का उपयोग यह सुनिश्चित करने के लिए कर सकते हैं कि भुगतान सफल रहा है।",
+          "Pay through card": "कार्ड के माध्यम से भुगतान करें",
+          "UPI": "UPI",
+          "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment":
+              "परेशानी मुक्त भुगतान प्रक्रिया के लिए हमारी मोबाइल बैंकिंग सेवाओं का चयन करें। कृपया हमारी UPI-ID कॉपी करें और आगे बढ़ें",
+          "Note:": "ध्यान दें:",
+          "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
+              "कृपया अपने भुगतान का एक प्रमाण अपने पास रखें (स्क्रीनशॉट) और इसे +91 96672 15980 पर भेजें या हमें info@solhapp.com पर ईमेल करें",
+          "Successfully copied": "सफलतापूर्वक कॉपी किया गया",
+          "Policies": "नीतियां",
+          "Feedback": "प्रतिक्रिया",
+          "Help": "मदद",
+          "Goal setting": "गोल सेटिंग",
+          " I want to work on": "मैं इस पर काम करना चाहता हूँ",
+          "Sample goals": "सैंपल गोल्स",
+          "गोल्स": "जोड़ें/चुनें",
+          "Groups for you": "ग्रुप्स",
+          "Doctor": "डॉक्टर",
+          "Book appointment": "अपॉइंटमेंट बुक करें",
+          " What's on your mind?": "आपके दिमाग में क्या है?",
+          "Show more": "और देखें",
+          "Show les": "कम देखें",
+          "My goals": " माय गोल्स",
+          "Add Avatar": "अवतार लगाएं",
+          "Anonymus profile": "अज्ञात प्रोफाइल",
+          "We promise to not spam you":
+              "हम वादा करते हैं कि हम आपको स्पैम नहीं करेंगे",
+          "Please provide details below if you are boarding as part of an organization":
+              "अगर आप किसी संगठन का हिस्सा हैं तो कृप्या नीचे डिटेल्स प्रदान करें।",
+          "Give us rough idea of the issues that you want deal with on a daily basis. You may select more tha one":
+              "हमें उन मुद्दों के बारे में बताएं  जिससे आप दैनिक आधार पर निपटते हैं। आप एक से ज़्यादा चुन सकते हैं।",
+          "Need support on": "सपोर्ट चाहिए?",
+          "You are alomst there": "लगभग हो गया",
+          "Counseling": "काउंसिलिंग",
+          "This is a grand total based on your engagement on the app":
+              "यह ऐप पर आपके जुड़ाव के आधार पर कुल योग है",
+          "Discover test": "परीक्षण का पता लगाएं",
+          "Result history": "सभी नतीजे",
+          "Personal details": "यक्तिगत जानकारी",
+          "Delete account": "अकाउंट डिलीट करें",
+          "Journals": "जर्नल्स",
+          "You will have to create a new account and start your journey from the beginning if you wish to return":
+              "यदि आप वापिस लौटना चाहेंगे तो आपको एक नया अकाउंट बनाकर दोबारा शुरुआत करनी होगी।-अपनी पसदं के गोल्स बनाएं",
+          "Tell Us More": "हमें और अधिक बताएँ",
         },
         "en_us": en_us_map,
         "fr_FR": fr_FR_map,
@@ -627,11 +661,10 @@ Map<String, String> en_us_map = {
   "Anxiety": "Anxiety",
   "Overwhelmed with emotions: Talk to a Solh counsellor NOW":
       "Overwhelmed with emotions: Talk to a Solh counsellor NOW",
-  "Start chatting for free right away, with a Solh Counselor.":
-      "Start chatting for free right away, with a Solh Counselor.",
+  "Start chatting for free right away, with a Solh counsellor.":
+      "Start chatting for free right away, with a Solh counsellor.",
   "Allied Experts": "Allied Experts",
-  "You will be connected to solh counsellor":
-      "You will be connected to solh counsellor",
+  "Get connected to a Solh Counsellor": "Get connected to a Solh Counsellor",
   "Talk Now": "Talk Now",
   "DISCLAMER": "DISCLAMER",
   ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
@@ -752,8 +785,8 @@ Map<String, String> en_us_map = {
       "Services are in process and we'll be delivering them soon. Please keep an eye on your emails.",
   "Duration": "Duration",
   "Blocked Users": "Blocked Users",
-  "Users you've blocked are listed below; tap any of them to unblock them.":
-      "Users you've blocked are listed below; tap any of them to unblock them.",
+  "Users you've blocked are listed below; Tap on their profile to unblock them":
+      "Users you've blocked are listed below; Tap on their profile to unblock them",
   "Unblock": "Unblock",
   "Connection": "Connection",
   "Languages": "Languages",
@@ -771,8 +804,8 @@ Map<String, String> en_us_map = {
   "Likes": "Likes",
   "Connections": "Connections",
   "You are almost there": "You are almost there",
-  "Let's take your profile from good to great. The details matter":
-      "Let's take your profile from good to great. The details matter",
+  "The details matter. Let's take your profile from good to great. The details matter":
+      "The details matter. Let's take your profile from good to great. The details matter",
   "Edit Profile": "Edit Profile",
   "User Type": "User Type",
   "Save chanages": "Save chanages",
@@ -857,12 +890,13 @@ Map<String, String> en_us_map = {
       "We also accept payments through credit and debit cards. Kindly ensure that the card details provided by you shall be complete and accurate. Please note that we may use this information to ensure that the payment is successful.",
   "Pay through card": "Pay through card",
   "UPI": "UPI",
-  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
-      "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ",
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment":
+      "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment",
   "Note:": "Note:",
   "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
       "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com",
   "Successfully copied": "Successfully copied",
+  "Tell Us More": "Tell Us More",
   "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
       "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return."
 };
@@ -1049,11 +1083,10 @@ Map<String, String> fr_FR_map = {
   "Anxiety": "Anxiété",
   "Overwhelmed with emotions: Talk to a Solh counsellor NOW":
       "Submergé d'émotions: parlez à un conseiller SOLH maintenant",
-  "Start chatting for free right away, with a Solh Counselor.":
+  "Start chatting for free right away, with a Solh counsellor.":
       "Commencez à discuter gratuitement immédiatement, avec un conseiller SOLH.",
   "Allied Experts": "Experts alliés",
-  "You will be connected to solh counsellor":
-      "Vous serez connecté à SOLH conseiller",
+  "Get connected to a Solh Counsellor": "Vous serez connecté à SOLH conseiller",
   "Talk Now": "Parler maintenant",
   "DISCLAMER": "Disqueur",
   ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
@@ -1174,7 +1207,7 @@ Map<String, String> fr_FR_map = {
       "Les services sont en cours et nous les livrerons bientôt. Veuillez garder un œil sur vos e-mails.",
   "Duration": "Durée",
   "Blocked Users": "Utilisateurs bloqués",
-  "Users you've blocked are listed below; tap any of them to unblock them.":
+  "Users you've blocked are listed below; Tap on their profile to unblock them":
       "Les utilisateurs que vous avez bloqués sont répertoriés ci-dessous; Appuyez sur l'un d'eux pour les débloquer.",
   "Unblock": "Débloquer",
   "Connection": "Connexion",
@@ -1193,8 +1226,8 @@ Map<String, String> fr_FR_map = {
   "Likes": "Aime",
   "Connections": "Connexions",
   "You are almost there": "Tu es presque là",
-  "Let's take your profile from good to great. The details matter":
-      "Prenons votre profil de bon à grand. Les détails comptent",
+  "The details matter. Let's take your profile from good to great. The details matter":
+      "Les détails comptent. Prenons votre profil de bon à grand. Les détails comptent",
   "Edit Profile": "Editer le profil",
   "User Type": "Type d'utilisateur",
   "Save chanages": "Enregistrer les chanages",
@@ -1301,12 +1334,13 @@ Map<String, String> fr_FR_map = {
       "Nous acceptons également les paiements par cartes de crédit et de débit. Veuillez vous assurer que les détails de la carte que vous avez fournis sont complets et exacts. Veuillez noter que nous pouvons utiliser ces informations pour nous assurer que le paiement est réussi.",
   "Pay through card": "payer par carte",
   "UPI": "UPI",
-  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your":
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment":
       "Optez pour nos services bancaires mobiles pour un processus de paiement sans tracas. Veuillez copier notre UPI-ID et procéder à votre",
   "Note:": "Note",
   "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
       "Veuillez conserver une preuve de votre paiement (capture d'écran) et l'envoyer au +91 9667215980 ou par e-mail à info@solhapp.com",
   "Successfully copied": "copié avec succès",
+  "Tell Us More": "Dis nous en plus",
 };
 
 Map<String, String> ar_sa_map = {
@@ -1487,10 +1521,10 @@ Map<String, String> ar_sa_map = {
   "Anxiety": "قلق",
   "Overwhelmed with emotions: Talk to a Solh counsellor NOW":
       "غارقة في العواطف: تحدث إلى مستشار Solh الآن",
-  "Start chatting for free right away, with a Solh Counselor.":
+  "Start chatting for free right away, with a Solh counsellor.":
       "ابدأ في الدردشة مجانًا على الفور ، مع مستشار Solh.",
   "Allied Experts": "خبراء الحلفاء",
-  "You will be connected to solh counsellor": "سوف تكون متصلاً بمستشار سوله",
+  "Get connected to a Solh Counsellor": "سوف تكون متصلاً بمستشار سوله",
   "Talk Now": "تحدث الآن",
   "DISCLAMER": "disclamer",
   ": We are not a medical emergency or suicide prevention service . If you are feeling suicidal, please call a helpline such as the National Suicide Prevention Lifeline at 1-800-273-8255 or the Vandrevala Foundation Helpline at 1-860-266-2345 or Aasra at +91-22-2754-6669 immediately.":
@@ -1610,7 +1644,7 @@ Map<String, String> ar_sa_map = {
       "الخدمات قيد التشغيل وسنقوم بتسليمها قريبًا. يرجى مراقبة رسائل البريد الإلكتروني الخاصة بك.",
   "Duration": "مدة",
   "Blocked Users": "مستخدمين محجوبين",
-  "Users you've blocked are listed below; tap any of them to unblock them.":
+  "Users you've blocked are listed below; Tap on their profile to unblock them":
       "المستخدمون الذين قمت بحظرهم مدرجون أدناه ؛ اضغط على أي منهم لإلغاء حظرهم.",
   "Unblock": "رفع الحظر",
   "Connection": "اتصال",
@@ -1629,7 +1663,7 @@ Map<String, String> ar_sa_map = {
   "Likes": "الإعجابات",
   "Connections": "روابط",
   "You are almost there": "انت على وشك الوصول",
-  "Let's take your profile from good to great. The details matter":
+  "The details matter. Let's take your profile from good to great. The details matter":
       "لنأخذ ملفك الشخصي من Good إلى Great. التفاصيل مهمة",
   "Edit Profile": "تعديل الملف الشخصي",
   "User Type": "نوع المستخدم",
@@ -1740,12 +1774,13 @@ Map<String, String> ar_sa_map = {
       "نحن نقبل أيضًا المدفوعات من خلال بطاقات الائتمان والخصم. يرجى التأكد من أن تفاصيل البطاقة التي توفرها تكون كاملة ودقيقة. يرجى ملاحظة أننا قد نستخدم هذه المعلومات لضمان نجاح الدفع.",
   "Pay through card": "دفع من خلال البطاقة",
   "UPI": "UPI",
-  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment":
       "اختر خدماتنا المصرفية عبر الهاتف المحمول لعملية دفع خالية من المتاعب. يرجى نسخ upi-ID ومتابعة مع",
   "Note:": "ملحوظة:",
   "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
       "يرجى الحفاظ على دليل على الدفع الخاص بك في متناول اليد (لقطة الشاشة) وأرسله إلى +91 9667215980 أو أرسله بالبريد الإلكتروني على info@solhapp.com",
   "Successfully copied": "نسخ بنجاح",
+  "Tell Us More": "إخبرنا المزيد",
 };
 
 Map<String, String> ta_IN_map = {
@@ -1932,10 +1967,10 @@ Map<String, String> ta_IN_map = {
   "Anxiety": "கவலை",
   "Overwhelmed with emotions: Talk to a Solh counsellor NOW":
       "உணர்ச்சிகளால் அதிகமாக உள்ளது: இப்போது ஒரு சோல் ஆலோசகருடன் பேசுங்கள்",
-  "Start chatting for free right away, with a Solh Counselor.":
+  "Start chatting for free right away, with a Solh counsellor.":
       "ஒரு SOLH ஆலோசகருடன் இப்போதே இலவசமாக அரட்டையடிக்கத் தொடங்குங்கள்.",
   "Allied Experts": "கூட்டணி வல்லுநர்கள்",
-  "You will be connected to solh counsellor":
+  "Get connected to a Solh Counsellor":
       "நீங்கள் சோல் ஆலோசகருடன் இணைக்கப்படுவீர்கள்",
   "Talk Now": "இப்போது பேசுங்கள்",
   "DISCLAMER": "வெளியிடுபவர்",
@@ -2058,7 +2093,7 @@ Map<String, String> ta_IN_map = {
       "சேவைகள் செயல்பாட்டில் உள்ளன, அவற்றை விரைவில் வழங்குவோம். தயவுசெய்து உங்கள் மின்னஞ்சல்களைக் கவனியுங்கள்.",
   "Duration": "காலம்",
   "Blocked Users": "தடுக்கப்பட்ட பயனர்கள்",
-  "Users you've blocked are listed below; tap any of them to unblock them.":
+  "Users you've blocked are listed below; Tap on their profile to unblock them":
       "நீங்கள் தடுத்த பயனர்கள் கீழே பட்டியலிடப்பட்டுள்ளனர்; அவற்றைத் தடுக்க அவற்றில் ஏதேனும் தட்டவும்.",
   "Unblock": "தடை",
   "Connection": "இணைப்பு",
@@ -2077,7 +2112,7 @@ Map<String, String> ta_IN_map = {
   "Likes": "பிடிக்கும்",
   "Connections": "இணைப்புகள்",
   "You are almost there": "நீங்கள் கிட்டத்தட்ட இருக்கிறீர்கள்",
-  "Let's take your profile from good to great. The details matter":
+  "The details matter. Let's take your profile from good to great. The details matter":
       "உங்கள் சுயவிவரத்தை நல்லதிலிருந்து பெரியதாக எடுத்துக் கொள்வோம். விவரங்கள் முக்கியம்",
   "Edit Profile": "சுயவிவரத்தைத் திருத்து",
   "User Type": "பயனர் வகை",
@@ -2189,10 +2224,11 @@ Map<String, String> ta_IN_map = {
       "கிரெடிட் மற்றும் டெபிட் கார்டுகள் மூலம் கொடுப்பனவுகளையும் நாங்கள் ஏற்றுக்கொள்கிறோம். நீங்கள் வழங்கிய அட்டை விவரங்கள் முழுமையான மற்றும் துல்லியமாக இருக்க வேண்டும் என்பதை தயவுசெய்து உறுதிப்படுத்தவும். கட்டணம் வெற்றிகரமாக இருப்பதை உறுதிப்படுத்த இந்த தகவலைப் பயன்படுத்தலாம் என்பதை நினைவில் கொள்க.",
   "Pay through card": "அட்டை மூலம் செலுத்துங்கள்",
   "UPI": "யுபிஐ",
-  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your ":
+  "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment":
       "தொந்தரவு இல்லாத கட்டண செயல்முறைக்கு எங்கள் மொபைல் வங்கி சேவைகளைத் தேர்வுசெய்க. தயவுசெய்து எங்கள் யுபிஐ ஐடியை நகலெடுத்து உங்களுடன் தொடரவும்",
   "Note:": "குறிப்பு:",
   "Kindly keep a proof of your payment at hand (screenshot) and send it to +91 9667215980 or email it at info@solhapp.com":
       "தயவுசெய்து உங்கள் கட்டணத்திற்கான ஆதாரத்தை (ஸ்கிரீன்ஷாட்) வைத்து +91 9667215980 க்கு அனுப்பவும் அல்லது info@solhapp.com இல் மின்னஞ்சல் செய்யவும்",
   "Successfully copied": "வெற்றிகரமாக நகலெடுக்கப்பட்டது",
+  "Tell Us More": "மேலும் சொல்லுங்கள்",
 };

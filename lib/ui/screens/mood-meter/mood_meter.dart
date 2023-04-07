@@ -17,7 +17,7 @@ class MoodMeter extends StatelessWidget {
         super(key: key);
   final VoidCallback? continueAction;
   final MoodMeterController moodMeterController = Get.find();
-  MyDiaryController myDiaryController= Get.find();
+  MyDiaryController myDiaryController = Get.find();
   FocusNode _focusNode = FocusNode();
   TextEditingController _reasonController = TextEditingController();
   LinearGradient gradient = LinearGradient(colors: <Color>[
@@ -47,7 +47,7 @@ class MoodMeter extends StatelessWidget {
             return moodMeterController.isLoading.value
                 ? getShimmer()
                 : SingleChildScrollView(
-                  child: Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(height: 30),
@@ -79,9 +79,8 @@ class MoodMeter extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          "Express Yourself ",
-                          style:
-                             SolhTextStyles.QS_head_5,
+                          "Express Yourself".tr,
+                          style: SolhTextStyles.QS_head_5,
                         ),
                         SizedBox(
                           height: 2.h,
@@ -94,7 +93,8 @@ class MoodMeter extends StatelessWidget {
                                 height: 200,
                                 width: 200,
                                 fit: BoxFit.fill,
-                                placeholder: (context, url) => Shimmer.fromColors(
+                                placeholder: (context, url) =>
+                                    Shimmer.fromColors(
                                   child: Container(
                                     color: Colors.grey,
                                   ),
@@ -125,17 +125,21 @@ class MoodMeter extends StatelessWidget {
                                   overlayShape: RoundSliderOverlayShape(
                                     overlayRadius: 20.0,
                                   ),
-                                  overlayColor: SolhColors.black.withOpacity(0.2),
+                                  overlayColor:
+                                      SolhColors.black.withOpacity(0.2),
                                   tickMarkShape: MyTickerShape()),
                               child: Obx(() {
                                 return Slider(
                                     thumbColor: Colors.white,
-                                    divisions: moodMeterController.moodMeterModel
-                                            .value.moodList!.length -
+                                    divisions: moodMeterController
+                                            .moodMeterModel
+                                            .value
+                                            .moodList!
+                                            .length -
                                         1,
                                     min: 0,
-                                    max: moodMeterController.moodMeterModel.value
-                                            .moodList!.length -
+                                    max: moodMeterController.moodMeterModel
+                                            .value.moodList!.length -
                                         1.toDouble(),
                                     value:
                                         moodMeterController.selectedValue.value,
@@ -147,24 +151,27 @@ class MoodMeter extends StatelessWidget {
                                     });
                               })),
                         ),
-                
                         TextFormField(
-                            focusNode: _focusNode,
-                            controller: _reasonController,
-                             maxLines: 4,
-                            decoration: InputDecoration(
-                              labelText: "Tell Us More",
-                              labelStyle: TextStyle(color: Colors.grey),
-                              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: SolhColors.primary_green),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: SolhColors.primary_green),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: SolhColors.primary_green),
-                              ),
-                            ),),
+                          focusNode: _focusNode,
+                          controller: _reasonController,
+                          maxLines: 4,
+                          decoration: InputDecoration(
+                            labelText: "Tell Us More".tr,
+                            labelStyle: TextStyle(color: Colors.grey),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: SolhColors.primary_green),
+                            ),
+                            disabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: SolhColors.primary_green),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: SolhColors.primary_green),
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: 20,
                         ),
@@ -172,28 +179,29 @@ class MoodMeter extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: SolhGreenButton(
                               height: 50,
-                              child: Text("Done"),
+                              child: Text("Done".tr),
                               onPressed: continueAction != null
                                   ? continueAction
                                   : () {
                                       moodMeterController.saveMoodOfday();
                                       if (_reasonController.text.isNotEmpty) {
-                  try {
-                    moodMeterController.saveReason(_reasonController.text);
-                    myDiaryController.getMyJournals(1);
-                    Utility.showToast('Successfully Saved to Diary');
-                    _focusNode.unfocus();
-                  } on Exception catch (e) {
-                    // TODO
-                  }
-                
-                }  Navigator.pop(context);
-                                    
+                                        try {
+                                          moodMeterController.saveReason(
+                                              _reasonController.text);
+                                          myDiaryController.getMyJournals(1);
+                                          Utility.showToast(
+                                              'Successfully Saved to Diary');
+                                          _focusNode.unfocus();
+                                        } on Exception catch (e) {
+                                          // TODO
+                                        }
+                                      }
+                                      Navigator.pop(context);
                                     }),
                         ),
                       ],
                     ),
-                );
+                  );
           })),
     );
   }

@@ -241,7 +241,7 @@ class UPIPaymentSection extends StatelessWidget {
               style: SolhTextStyles.QS_body_2_semi,
             ),
             Text(
-              "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your"
+              "Opt for our mobile banking services for a hassle-free payment process. Kindly copy our UPI-ID and proceed with your payment"
                   .tr
                   .tr,
               style:

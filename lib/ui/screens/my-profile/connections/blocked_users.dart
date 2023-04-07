@@ -44,7 +44,7 @@ class _BlockedUsersState extends State<BlockedUsers> {
           Padding(
             padding: const EdgeInsets.all(18.0),
             child: Text(
-              "Users you've blocked are listed below; tap any of them to unblock them."
+              "Users you've blocked are listed below; Tap on their profile to unblock them"
                   .tr,
               style: SolhTextStyles.QS_cap_semi,
               textAlign: TextAlign.center,

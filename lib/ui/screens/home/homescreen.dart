@@ -1759,7 +1759,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 thickness: 1,
               ),
               Text(
-                'Start chatting for free right away, with a Solh Counselor.'.tr,
+                'Start chatting for free right away, with a Solh counsellor.'
+                    .tr,
                 style: SolhTextStyles.QS_caption.copyWith(
                     color: SolhColors.white, fontSize: 9.sp),
                 textAlign: TextAlign.center,
@@ -2094,7 +2095,7 @@ class AnonymousDialog extends StatelessWidget {
           height: 3.w,
         ),
         Text(
-          'You will be connected to solh counsellor'.tr,
+          'Get connected to a Solh Counsellor'.tr,
           style: SolhTextStyles.QS_body_semi_1,
         ),
         SizedBox(

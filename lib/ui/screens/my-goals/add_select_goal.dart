@@ -75,7 +75,7 @@ class GoalsFound extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'No Goals Found',
+                    'No Goals Found'.tr,
                     style: GoogleFonts.signika(
                         color: Color(
                           0xffA6A6A6A6,

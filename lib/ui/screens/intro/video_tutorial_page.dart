@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/video/video_tutorial_controller.dart';
@@ -26,7 +27,8 @@ class VideoTutorialPage extends StatelessWidget {
             padding: const EdgeInsets.all(18.0),
             child: Column(children: [
               Text(
-                'Discover previously unknown features by learning more about Solh Features',
+                'Discover previously unknown features by learning more about Solh Features'
+                    .tr,
                 style: SolhTextStyles.JournalingHintText,
               ),
               SizedBox(

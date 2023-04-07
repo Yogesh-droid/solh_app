@@ -25,7 +25,8 @@ class VideoPlaylist extends StatelessWidget {
             padding: const EdgeInsets.all(18.0),
             child: Column(children: [
               Text(
-                'Discover previously unknown features by learning more about Solh Features',
+                'Discover previously unknown features by learning more about Solh Features'
+                    .tr,
                 style: SolhTextStyles.JournalingHintText,
               ),
               SizedBox(
