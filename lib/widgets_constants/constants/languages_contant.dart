@@ -475,6 +475,7 @@ class Languages extends Translations {
           "Tell Us More": "हमें और अधिक बताएँ",
           "Write message": "संदेश लिखें",
           "Write here": "यहाँ लिखें",
+          "Chats": "चैट"
         },
         "en_us": en_us_map,
         "fr_FR": fr_FR_map,
@@ -498,6 +499,7 @@ Map<String, String> en_us_map = {
   "My Diary": "My Diary",
   "Post Publically": "Post Publically",
   "Close": "Close",
+  "Chats": "Chats",
   "Diary Entries": "Diary Entries",
   "Issues, Organisation": "Issues, Organisation",
   "Well, there's nothing here! Why don't you begin today?":
@@ -1345,6 +1347,7 @@ Map<String, String> fr_FR_map = {
   "Tell Us More": "Dis nous en plus",
   "Write message": "Écrire un message",
   "Write here": "Écrivez ici",
+  "Chats": "Chattes",
 };
 
 Map<String, String> ar_sa_map = {
@@ -1787,6 +1790,7 @@ Map<String, String> ar_sa_map = {
   "Tell Us More": "إخبرنا المزيد",
   "Write message": "اكتب رسالة",
   "Write here": "اكتب هنا",
+  "Chats": "الدردشات",
 };
 
 Map<String, String> ta_IN_map = {
@@ -2239,4 +2243,5 @@ Map<String, String> ta_IN_map = {
   "Tell Us More": "மேலும் சொல்லுங்கள்",
   "Write message": "செய்தியை எழுதுங்கள்",
   "Write here": "இங்கே எழுதுங்கள்",
+  "Chats": "அரட்டைகள்",
 };

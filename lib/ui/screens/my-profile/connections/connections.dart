@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -78,7 +79,7 @@ class _ConnectionsState extends State<Connections> {
     return SolhAppBar(
         isLandingScreen: false,
         title: Text(
-          'Connection',
+          'Connection'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
         menuButton: getMenuBtn());
@@ -94,7 +95,7 @@ class _ConnectionsState extends State<Connections> {
         return [
           PopupMenuItem(
             child: Text(
-              'Blocked Users',
+              'Blocked Users'.tr,
               style: SolhTextStyles.QS_body_2_semi,
             ),
             value: 1,
@@ -1686,7 +1687,7 @@ class GetSosSupportView extends StatelessWidget {
 }
 
 List<Tab> gettabs(ProfileController profileController) {
-  List tabsString = ['Chats', 'All', 'Invites', 'Now'];
+  List tabsString = ['Chats'.tr, 'All'.tr, 'Invites'.tr, 'Now'.tr];
   List<Tab> tabs = <Tab>[];
   int getTabNumber() {
     return profileController.myProfileModel.value.body!.user!.sosChatSupport!
