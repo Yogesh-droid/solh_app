@@ -84,6 +84,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   late TabController tabController;
   late AnimationController animationController;
+  PersistentBottomSheetController? persistentBottomSheetController;
 
   List<Widget> bottomWidgetList = [];
 
@@ -247,23 +248,38 @@ class _MasterScreen2State extends State<MasterScreen2>
               unselectedItemColor: SolhColors.dark_grey,
               selectedLabelStyle: SolhTextStyles.QS_cap_semi,
               onTap: (index) {
+                if (persistentBottomSheetController!=null) {
+                      persistentBottomSheetController!.close();
+                }
                 bottomNavigatorController.activeIndex.value = index;
                 switch (index) {
                   case 0:
+                  if (persistentBottomSheetController!=null) {
+                      persistentBottomSheetController!.close();
+                }
                     FirebaseAnalytics.instance.logEvent(
                         name: 'HomePageOpen',
                         parameters: {'Page': 'HomeScreen'});
                     break;
                   case 1:
+                 if (persistentBottomSheetController!=null) {
+                      persistentBottomSheetController!.close();
+                }
                     FirebaseAnalytics.instance.logEvent(
                         name: 'JournalingOpened',
                         parameters: {'Page': 'Journaling'});
                     break;
                   case 2:
+                 if (persistentBottomSheetController!=null) {
+                      persistentBottomSheetController!.close();
+                }
                     FirebaseAnalytics.instance.logEvent(
                         name: 'GetHelpOpened', parameters: {'Page': 'GetHelp'});
                     break;
                   case 3:
+                  if (persistentBottomSheetController!=null) {
+                      persistentBottomSheetController!.close();
+                }
                     FirebaseAnalytics.instance.logEvent(
                         name: 'MyGoalPageOpened',
                         parameters: {'Page': 'My Goal'});
@@ -474,7 +490,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   openMoreSheet(BuildContext context) {
-    _scaffoldKey.currentState!.showBottomSheet((context) {
+    persistentBottomSheetController = _scaffoldKey.currentState!.showBottomSheet((context) {
       return Stack(
         alignment: Alignment.bottomCenter,
         children: [

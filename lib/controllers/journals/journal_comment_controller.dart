@@ -42,6 +42,8 @@ class JournalCommentController extends GetxController {
       bool? shouldRefresh,
       int? page}) async {
     if (previousPage == nextPage && shouldRefresh == null && page == null) {
+      print("previousPage is ${previousPage}");
+      print("nextPage is ${nextPage}");
       return;
     }
     if (previousPage == 0) {
