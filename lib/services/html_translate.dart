@@ -15,7 +15,7 @@ class HtmlTranslationService {
     }
     if (isHtml != null) des = html.replaceAll(RegExp("&nbsp;"), '');
     http.Response res = await http.get(Uri.parse(
-        "https://translation.googleapis.com/language/translate/v2?target=$lanCode&key=AIzaSyCSsx2bMiBK8im3e9GajBGBQT3NHzfAOMM&q=$des"));
+        "https://translation.googleapis.com/language/translate/v2?target=$lanCode&key=AIzaSyBLQ7EU0ZAUZ4UWNfZ-gpsQnx5fdhIbKao&q=$des"));
 
     print(jsonDecode(res.body)["data"]["translations"][0]["translatedText"]);
 
