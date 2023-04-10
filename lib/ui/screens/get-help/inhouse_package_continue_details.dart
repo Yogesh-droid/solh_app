@@ -118,7 +118,7 @@ class InhouseContinueDetail extends StatelessWidget {
               //         ),
               //       );
               //     });
-              Future.delayed(Duration(seconds: 2), () {
+              Future.delayed(Duration(seconds: 0), () {
                 Get.find<AppointmentController>().getUserAppointments();
 
                 Navigator.pushNamed(context, AppRoutes.paymentscreen,
@@ -132,6 +132,7 @@ class InhouseContinueDetail extends StatelessWidget {
                       "paymentGateway": "Stripe",
                       "paymentSource": "App",
                     });
+                _alliedController.isInHouseBooking(false);
               });
             } else {
               Utility.showToast(map['message']);

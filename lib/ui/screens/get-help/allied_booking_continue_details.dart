@@ -127,6 +127,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
                 "paymentGateway": "Stripe",
                 "paymentSource": "App",
               });
+              _alliedController.isAlliedBooking(false);
               Future.delayed(Duration(seconds: 2), () {
                 Get.find<AppointmentController>().getUserAppointments();
                 // Navigator.pop(context);

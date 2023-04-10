@@ -42,7 +42,7 @@ class _WaitingScreenState extends State<WaitingScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyLoader(),
-          Text("Searching for a counceller",
+          Text("Searching for a counceller".tr,
               style: SolhTextStyles.CTA.copyWith(
                 color: SolhColors.white,
               ))

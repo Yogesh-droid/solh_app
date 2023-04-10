@@ -14,6 +14,7 @@ import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/view_all_allied_categories.dart';
 import 'package:solh/ui/screens/groups/group_detail.dart';
 import 'package:solh/ui/screens/groups/invite_member_ui.dart';
+import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat_anon_issues.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
@@ -127,6 +128,7 @@ class AppRoutes {
   static const String roleField = '/roleField';
   static const String needSupportOn = '/needSupportOn';
   static const String partOfAnOrgnisation = '/partOfAnOrgnisation';
+  static const String manageGroupPage = "/manageGroupPage";
 
   //my profile v2
 
@@ -337,6 +339,8 @@ class RouteGenerator {
                 PaymentScreen(args: args as Map<String, dynamic>)));
       case AppRoutes.videoPlaylist:
         return MaterialPageRoute(builder: ((context) => VideoPlaylist()));
+      case AppRoutes.manageGroupPage:
+        return MaterialPageRoute(builder: ((context) => ManageGroupPage()));
 
       default:
         return MaterialPageRoute(

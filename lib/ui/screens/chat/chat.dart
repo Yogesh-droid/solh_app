@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/animated_refresh_container.dart';
@@ -177,7 +179,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
-                          'Please wait a moment while we connect you to one of our Solh certified professionals. ',
+                          'Please wait a moment while we connect you to one of our Solh certified professionals.'
+                              .tr,
                           style: SolhTextStyles.QS_cap_semi.copyWith(
                               color: SolhColors.Grey_1),
                           textAlign: TextAlign.center,
@@ -189,7 +192,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         ? Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: Text(
-                              'Please take this conversation further. The seeker is waiting for you. ',
+                              'Please take this conversation further. The seeker is waiting for you.'
+                                  .tr,
                               style: SolhTextStyles.QS_cap_semi.copyWith(
                                   color: SolhColors.Grey_1),
                               textAlign: TextAlign.center,
@@ -457,7 +461,7 @@ class MessageBox extends StatelessWidget {
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Write message',
+                  hintText: 'Write message'.tr,
                 ),
               ),
             ),
@@ -615,22 +619,28 @@ class MessageTile extends StatelessWidget {
                             : Container(),
                       ],
                     ),
-                    ReadMoreText(
-                      _message,
-                      style: GoogleFonts.signika(color: Color(0xff666666)),
-                      trimLines: 8,
-                      colorClickableText: Colors.pink,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
-                      trimMode: TrimMode.Line,
-                      moreStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: SolhColors.primary_green),
-                      lessStyle: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: SolhColors.primary_green),
+                    InkWell(
+                      onLongPress: () async {
+                        await Clipboard.setData(ClipboardData(text: _message));
+                        Utility.showToast("Successfully copied".tr);
+                      },
+                      child: ReadMoreText(
+                        _message,
+                        style: GoogleFonts.signika(color: Color(0xff666666)),
+                        trimLines: 8,
+                        colorClickableText: Colors.pink,
+                        trimCollapsedText: 'Show more',
+                        trimExpandedText: 'Show less',
+                        trimMode: TrimMode.Line,
+                        moreStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: SolhColors.primary_green),
+                        lessStyle: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: SolhColors.primary_green),
+                      ),
                     ),
                     Text(
                       _dateTime == null
@@ -737,12 +747,12 @@ class RatingBottomSheetChild1 extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    'Rate your Experience',
+                    'Rate your Experience'.tr,
                     style: SolhTextStyles.QS_big_body.copyWith(
                         color: SolhColors.white),
                   ),
                   Text(
-                    'Your chat ended, Please rate your experience',
+                    'Your chat ended, Please rate your experience'.tr,
                     style: SolhTextStyles.QS_cap_2.copyWith(
                         color: SolhColors.white),
                   )
@@ -772,7 +782,7 @@ class RatingBottomSheetChild1 extends StatelessWidget {
                           width: 120,
                           child: Center(
                             child: Text(
-                              'Skip',
+                              'Skip'.tr,
                               style: SolhTextStyles.CTA
                                   .copyWith(color: SolhColors.white),
                             ),
@@ -896,7 +906,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Please write your feedfack here',
+                      'Please write your feedback here'.tr,
                       style: SolhTextStyles.QS_body_2,
                     ),
                   ],
@@ -909,7 +919,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                   maxLines: 5,
                   minLines: 2,
                   decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
-                    hintText: 'Write here',
+                    hintText: 'Write here'.tr,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(
@@ -956,7 +966,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                             ballSizeLowerBound: 3,
                             ballSizeUpperBound: 8,
                           )
-                        : Text('Submit');
+                        : Text('Submit'.tr);
                   }),
                 ),
                 SizedBox(
@@ -980,7 +990,7 @@ class RatingBottomSheetChild2 extends StatelessWidget {
                         width: 120,
                         child: Center(
                           child: Text(
-                            'Skip',
+                            'Skip'.tr,
                             style: SolhTextStyles.CTA
                                 .copyWith(color: SolhColors.primary_green),
                           ),
@@ -1005,13 +1015,13 @@ Future<bool> _onWillPop(context, sId) async {
         return AlertDialog(
           actionsPadding: EdgeInsets.all(8.0),
           content: Text(
-            'Do you really want to end the chat?',
+            'Do you really want to end the chat?'.tr,
             style: SolhTextStyles.JournalingDescriptionText,
           ),
           actions: [
             TextButton(
                 child: Text(
-                  'Cancel',
+                  'Cancel'.tr,
                   style: SolhTextStyles.CTA,
                 ),
                 onPressed: () {
@@ -1019,7 +1029,7 @@ Future<bool> _onWillPop(context, sId) async {
                 }),
             TextButton(
                 child: Text(
-                  'Leave',
+                  'Leave'.tr,
                   style:
                       SolhTextStyles.CTA.copyWith(color: SolhColors.primaryRed),
                 ),

@@ -259,6 +259,9 @@ class _HomePageState extends State<HomePage> {
           }),
           WhatsOnYourMindSection(),
           GetHelpDivider(),
+
+          getTestUI(),
+
           GetHelpCategory(
             title: 'Goals'.tr,
             trailing: InkWell(
@@ -326,9 +329,7 @@ class _HomePageState extends State<HomePage> {
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
-          GetHelpDivider(),
-          getTestUI(),
-          GetHelpDivider(),
+
           GetHelpCategory(
             title: 'Search for Support'.tr,
             trailing: InkWell(
@@ -1398,7 +1399,7 @@ class _HomePageState extends State<HomePage> {
         : Column(
             children: [
               GetHelpCategory(
-                  title: 'Self Assessments'.tr,
+                  title: 'Screening & Assessment'.tr,
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   }),

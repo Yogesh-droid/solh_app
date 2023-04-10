@@ -79,6 +79,7 @@ class AlliedController extends GetxController {
       "packageType": package.packageType,
       "packageCategory": package.packageCategory,
       "status": "Inprocess",
+      "email": userEmail.value,
     };
     try {
       var map = await Network.makePostRequestWithToken(
@@ -86,7 +87,7 @@ class AlliedController extends GetxController {
           body: body,
           isEncoded: true);
       //isPackageListFetching.value = false;
-      isAlliedBooking(false);
+
       return map;
     } catch (e) {
       //isPackageListFetching.value = false;
@@ -125,6 +126,7 @@ class AlliedController extends GetxController {
       "status": "Inprocess",
       "mainCategory": package.mainCategory!.sId,
       "carouselName": package.packageCarouselId!.name,
+      "email": userEmail.value,
     };
     try {
       var map = await Network.makePostRequestWithToken(
@@ -132,7 +134,7 @@ class AlliedController extends GetxController {
           body: body,
           isEncoded: true);
       //isPackageListFetching.value = false;
-      isInHouseBooking(false);
+
       print("map** $map");
       return map;
     } catch (e) {

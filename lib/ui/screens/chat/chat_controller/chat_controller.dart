@@ -60,8 +60,11 @@ class ChatController extends GetxController {
 
     SocketService.socket.on('message:received', (data) {
       debugPrint('message:received $data');
-
+      print(
+          "${data['authorId']} ${profileController.myProfileModel.value.body!.user!.sId!}");
       if (currentSid == data['authorId'] ||
+          data['authorId'] ==
+              profileController.myProfileModel.value.body!.user!.sId! ||
           data['supportUsers'].contains(data['authorId'])) {
         convo.add(Conversation.fromJson(data));
       }

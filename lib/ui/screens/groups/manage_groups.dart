@@ -89,7 +89,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
   Widget getTabBar() {
     return TabBar(
       onTap: (index) {
-        _groupController.tabController.animateTo(index);
+        _groupController.tabController?.animateTo(index);
       },
       controller: _groupController.tabController,
       labelColor: SolhColors.primary_green,

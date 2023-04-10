@@ -298,7 +298,7 @@ class MessageBoxProvider extends StatelessWidget {
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Write message',
+                  hintText: 'Write message'.tr,
                 ),
               ),
             ),

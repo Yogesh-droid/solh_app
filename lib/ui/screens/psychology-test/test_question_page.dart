@@ -94,6 +94,8 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                             ? () {
                                 if (isLast) {
                                   psychologyTestController
+                                      .getTestHistoryDetails(widget.id!);
+                                  psychologyTestController
                                       .submitTest(widget.id ?? '');
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {

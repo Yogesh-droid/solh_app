@@ -13,7 +13,7 @@ class DiscoverGroupController extends GetxController {
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
   var groupDetail = GroupList().obs;
-  late final TabController tabController;
+  TabController? tabController;
   var isLoading = false.obs;
   var isDeletingGroup = false.obs;
 

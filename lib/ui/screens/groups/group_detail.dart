@@ -966,7 +966,7 @@ getGroupJoinOption({
                 discoverGroupController.joinedGroupModel.refresh();
                 discoverGroupController.groupsShownOnHome.add(groupList.sId!);
                 Navigator.of(context).pop();
-                discoverGroupController.tabController..animateTo(0);
+                discoverGroupController.tabController?.animateTo(0);
                 Navigator.of(context, rootNavigator: true).pop();
                 Utility.showToast(success);
 
