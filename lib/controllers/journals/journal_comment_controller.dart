@@ -33,7 +33,7 @@ class JournalCommentController extends GetxController {
   var isAnonymousSelected = false.obs;
   var anonymousProfileRadius = 2.0.w.obs;
   var nomalProfileRadius = 4.w.obs;
-  int previousPage = 0;
+  int previousPage = -2;
   int nextPage = 1;
 
   Future<void> getJournalComment(
@@ -41,12 +41,12 @@ class JournalCommentController extends GetxController {
       required int pageNo,
       bool? shouldRefresh,
       int? page}) async {
-    if (previousPage == nextPage && shouldRefresh == null && page == null) {
+    if (nextPage == 0 && shouldRefresh == null && page == null) {
       print("previousPage is ${previousPage}");
       print("nextPage is ${nextPage}");
       return;
     }
-    if (previousPage == 0) {
+    if (previousPage == -2) {
       isLoading.value = true;
     }
     try {

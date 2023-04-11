@@ -94,6 +94,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
         Expanded(
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
@@ -106,6 +107,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                         style: SolhTextStyles.QS_body_2_semi,
                         trimLines: 2,
                         trimMode: TrimMode.Line,
+                        textAlign: TextAlign.left,
                       )),
                 ),
                 Divider(
