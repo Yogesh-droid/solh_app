@@ -224,6 +224,10 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: ChatAnonymouslyCard(),
           ),
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpDivider(),
           GetHelpCategory(
             title: 'Trending Posts'.tr,
             trailing: InkWell(
@@ -259,9 +263,11 @@ class _HomePageState extends State<HomePage> {
           }),
           WhatsOnYourMindSection(),
           GetHelpDivider(),
-
           getTestUI(),
-
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpDivider(),
           GetHelpCategory(
             title: 'Goals'.tr,
             trailing: InkWell(
@@ -329,6 +335,10 @@ class _HomePageState extends State<HomePage> {
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
+          SizedBox(
+            height: 10,
+          ),
+          GetHelpDivider(),
 
           GetHelpCategory(
             title: 'Search for Support'.tr,
@@ -370,6 +380,9 @@ class _HomePageState extends State<HomePage> {
                       });
                 })
               : const SizedBox())),
+          SizedBox(
+            height: 8,
+          ),
           Obx(() => getHelpController.isAlliedShown.value
               ? GetHelpDivider()
               : const SizedBox()),

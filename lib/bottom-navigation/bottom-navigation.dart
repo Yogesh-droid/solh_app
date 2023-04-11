@@ -303,9 +303,13 @@ class _MasterScreen2State extends State<MasterScreen2>
                 BottomNavigationBarItem(
                     icon: Obx(
                       () => bottomNavigatorController.activeIndex.value == 1
-                          ? SvgPicture.asset('assets/images/journaling.svg')
+                          ? SvgPicture.asset(
+                              'assets/images/journaling.svg',
+                              height: 18,
+                            )
                           : SvgPicture.asset(
                               'assets/images/journalling outline.svg',
+                              height: 18,
                             ),
                     ),
                     label: "Journaling".tr),

@@ -419,6 +419,26 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                         ],
                                       ),
                                     )
+                                    /*  DropdownButton<String>(
+                                        underline: Container(),
+                                        icon: Icon(
+                                          Icons.keyboard_arrow_down_rounded,
+                                          color: SolhColors.primary_green,
+                                        ),
+                                        items: getHelpController
+                                            .counsellorsCountryModel
+                                            .value
+                                            .providerCountry!
+                                            .map(
+                                                (e) => DropdownMenuItem<String>(
+                                                      child: Text(e.name!),
+                                                      value: e.code,
+                                                    ))
+                                            .toList(),
+                                        onChanged: (value) {
+                                          issueAndSpecializationFilterController
+                                              .selectedCountry.value = value!;
+                                        }), */
                                   ],
                                 ),
                               ),

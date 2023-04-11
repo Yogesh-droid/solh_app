@@ -31,7 +31,6 @@ class MoodMeter extends StatelessWidget {
     return Scaffold(
       body: Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          height: MediaQuery.of(context).size.height - 100,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
@@ -156,6 +155,7 @@ class MoodMeter extends StatelessWidget {
                           controller: _reasonController,
                           maxLines: 4,
                           decoration: InputDecoration(
+                            alignLabelWithHint: true,
                             labelText: "Tell Us More".tr,
                             labelStyle: TextStyle(color: Colors.grey),
                             enabledBorder: OutlineInputBorder(
