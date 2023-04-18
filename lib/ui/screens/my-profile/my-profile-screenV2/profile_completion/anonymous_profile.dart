@@ -25,7 +25,8 @@ class AnonymousProfile extends StatelessWidget {
       : indexOfpage = args['indexOfpage'],
         formAnonChat = args['formAnonChat'],
         super(key: key);
-  final ProfileCompletionController profileCompletionController = Get.find();
+  final ProfileCompletionController profileCompletionController =
+      Get.put(ProfileCompletionController());
   final ProfileController profileController = Get.find();
   final ChatAnonController chatAnonController = Get.find();
   final int indexOfpage;

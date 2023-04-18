@@ -131,11 +131,16 @@ class _CommentScreenState extends State<CommentScreen> {
                                       ),
                                     ),
                                     journalCommentController
-                                                .getJouranalsCommentModel
-                                                .value
-                                                .body!
-                                                .bestComment !=
-                                            null
+                                                    .getJouranalsCommentModel
+                                                    .value
+                                                    .body !=
+                                                null &&
+                                            journalCommentController
+                                                    .getJouranalsCommentModel
+                                                    .value
+                                                    .body!
+                                                    .bestComment !=
+                                                null
                                         ? SliverToBoxAdapter(child: Obx(() {
                                             return CommentBoxWidget(
                                               journalModel:
