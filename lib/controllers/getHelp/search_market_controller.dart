@@ -23,7 +23,7 @@ class SearchMarketController extends GetxController {
           '/api/v1/get-help?text=$searchText&country=$country';
     }
     Map<String, dynamic> map = await Network.makeGetRequest(url);
-
+    print("map $map");
     searchMarketModel.value = SearchMarketModel.fromJson(map);
     isLoading.value = false;
   }

@@ -13,14 +13,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/network/network.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
@@ -30,6 +34,7 @@ import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/find_help_bar.dart';
@@ -92,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
       openMoodMeter();
       getTrendingDecoration();
       homeController.getHomeCarousel();
+      Prefs.setBool("isProfileCreated", true);
     }
     ;
   }
@@ -175,6 +181,16 @@ class _HomePageState extends State<HomePage> {
     getAnnouncement();
     FirebaseAnalytics.instance
         .logEvent(name: 'HomePageOpen', parameters: {'Page': 'HomeScreen'});
+    checkForUserActive();
+  }
+
+  checkForUserActive() async {
+    var response = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/checkUserProfile");
+    print("checkForUserActive ${response["success"]}");
+    if (response["success"] == false) {
+      logOut();
+    }
   }
 
   @override
@@ -386,9 +402,11 @@ class _HomePageState extends State<HomePage> {
           Obx(() => getHelpController.isAlliedShown.value
               ? GetHelpDivider()
               : const SizedBox()),
-          Obx((() => homeController.isCorouselShown.value
-              ? AlliedCarousel()
-              : const SizedBox())),
+          Obx(
+            (() => homeController.isCorouselShown.value
+                ? AlliedCarousel()
+                : const SizedBox()),
+          ),
           GetHelpDivider(),
           GetHelpCategory(
               title: "Leading Solh Experts".tr,

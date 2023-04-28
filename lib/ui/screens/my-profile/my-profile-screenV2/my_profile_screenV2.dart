@@ -552,7 +552,7 @@ class OptionsColumn extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              "Self Assessments".tr),
+              "Screening & Assessment".tr),
         ),
         SizedBox(
           height: 8,

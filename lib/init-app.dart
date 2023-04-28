@@ -5,13 +5,23 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/bloc/user-bloc.dart';
 
+import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'services/user/session-cookie.dart';
 
 Future<Map<String, dynamic>> initApp() async {
   Map<String, dynamic> initialAppData = {};
   print("cejckndad a");
-  initialAppData["isProfileCreated"] = await userBlocNetwork.isProfileCreated();
+  bool? localResultForProfile = await Prefs.getBool("isProfileCreated");
+  print("isProfileCreated ${localResultForProfile.toString()}");
+  if (localResultForProfile != null && localResultForProfile) {
+    initialAppData = {"isProfileCreated": true};
+  } else {
+    initialAppData["isProfileCreated"] =
+        await userBlocNetwork.isProfileCreated();
+  }
+
   print("completed");
+  print("initialAppData*** $localResultForProfile");
   return initialAppData;
 }
 
@@ -19,6 +29,7 @@ Future<bool> isNewUser() async {
   var fcmToken = await FirebaseMessaging.instance.getToken();
   print("*" * 30 + " FCM TOKEN $fcmToken " + "*" * 30);
   String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+
   String oneSignalId = '';
   await OneSignal.shared.getDeviceState().then((value) {
     print(value!.userId);
@@ -30,7 +41,7 @@ Future<bool> isNewUser() async {
   } else {
     deviceType = 'IOS';
   }
-  print("*" * 30 + "\n" + "Id Token: $idToken");
+  print("##########" * 30 + "\n" + "Id Token: $idToken");
   print("*" * 30 + "\n" + "One Token: $oneSignalId");
 
   return await SessionCookie.createSessionCookie(

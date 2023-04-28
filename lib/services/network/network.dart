@@ -72,6 +72,8 @@ class Network {
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));
+        print(
+            "jsonDecode(apiResponse.body)  ${jsonDecode(apiResponse.body)["body"]}");
         return jsonDecode(apiResponse.body)["body"];
       } else if (apiResponse.statusCode == 200) {
         print(jsonDecode(apiResponse.body));

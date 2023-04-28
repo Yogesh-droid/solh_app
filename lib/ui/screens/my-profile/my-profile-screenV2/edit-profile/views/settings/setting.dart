@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +15,12 @@ import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/group/create_group_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/restart_widget.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
@@ -195,8 +201,10 @@ class GetLogoutButton extends StatelessWidget {
             )),
       ]),
       onPressed: () {
-        FirebaseAuth.instance.signOut().then((value) {
-          clearOneSignalID();
+        FirebaseAuth.instance.signOut().then((value) async {
+          await Prefs.clear();
+          await SolhCacheManager.instance.clearAllCache();
+          await clearOneSignalID();
           Get.find<BottomNavigatorController>().activeIndex.value = 0;
           userBlocNetwork.updateSessionCookie = "";
           Get.delete<NotificationController>();
@@ -217,10 +225,33 @@ class GetLogoutButton extends StatelessWidget {
   }
 }
 
-void clearOneSignalID() {
-  Network.makePutRequestWithToken(
+Future<void> clearOneSignalID() async {
+  await Network.makePutRequestWithToken(
       url: "${APIConstants.api}/api/edit-onesignal-id",
       body: {
         'onesignal_device_id': '',
       });
+}
+
+void logOut() async {
+  log("user logout");
+  FirebaseAuth.instance.signOut().then((value) async {
+    await Prefs.clear();
+    await SolhCacheManager.instance.clearAllCache();
+    await clearOneSignalID();
+    Get.find<BottomNavigatorController>().activeIndex.value = 0;
+    userBlocNetwork.updateSessionCookie = "";
+    Get.delete<NotificationController>();
+    Get.delete<ChatListController>();
+    Get.delete<GoalSettingController>();
+    Get.delete<PhoneAuthController>();
+    Get.delete<ConnectionController>();
+    Get.delete<DiscoverGroupController>();
+    Get.delete<CreateGroupController>();
+    Get.delete<BottomNavigatorController>();
+    Get.delete<ProfileController>();
+
+    globalNavigatorKey.currentState!
+        .pushNamedAndRemoveUntil(AppRoutes.getStarted, (route) => false);
+  });
 }

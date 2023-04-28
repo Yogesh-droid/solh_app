@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
   ChatAnonController chatAnonController = Get.put(ChatAnonController());
   MoodMeterController moodMeterController = Get.find();
   var _controller = Get.put(ChatController());
+  final focus = FocusNode();
   @override
   void initState() {
     debugPrint(
@@ -234,6 +235,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2.w),
                     child: MessageBox(
+                      focus: focus,
                       sId: widget._sId,
                       chatType: 'cc',
                       isAnon: widget._isAnonChat,
@@ -410,18 +412,38 @@ class ChatAppbar extends StatelessWidget {
   }
 }
 
-class MessageBox extends StatelessWidget {
-  MessageBox({Key? key, required String sId, this.chatType, this.isAnon})
+class MessageBox extends StatefulWidget {
+  MessageBox(
+      {Key? key, required String sId, this.chatType, this.isAnon, this.focus})
       : _sId = sId,
         super(key: key);
 
   final String _sId;
   final String? chatType;
   final bool? isAnon;
+  final focus;
+
+  @override
+  State<MessageBox> createState() => _MessageBoxState();
+}
+
+class _MessageBoxState extends State<MessageBox> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      FocusScope.of(context).requestFocus(widget.focus);
+    });
+
+    super.initState();
+  }
 
   ChatController _controller = Get.put(ChatController());
+
   SocketService service = SocketService();
+
   ChatListController chatListController = Get.find();
+
   ProfileController profileController = Get.find();
 
   @override
@@ -444,8 +466,10 @@ class MessageBox extends StatelessWidget {
           children: [
             Expanded(
               child: TextField(
+                focusNode: widget.focus,
                 onChanged: ((value) {
-                  service.typing(_sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                  service.typing(widget._sId,
+                      widget.chatType == 'sc' ? 'sc' : 'cc', 'users');
                   _controller.isTypingEpochTime.value =
                       DateTime.now().millisecondsSinceEpoch;
 
@@ -453,8 +477,8 @@ class MessageBox extends StatelessWidget {
                     if (DateTime.now().millisecondsSinceEpoch -
                             _controller.isTypingEpochTime.value >=
                         2000) {
-                      service.notTyping(
-                          _sId, chatType == 'sc' ? 'sc' : 'cc', 'users');
+                      service.notTyping(widget._sId,
+                          widget.chatType == 'sc' ? 'sc' : 'cc', 'users');
                     }
                   }));
                 }),
@@ -472,11 +496,11 @@ class MessageBox extends StatelessWidget {
                 } else {
                   _controller.sendMessageController(
                       message: _controller.messageEditingController.text,
-                      sId: _sId,
+                      sId: widget._sId,
                       autherType: 'users',
-                      ct: isAnon == true
+                      ct: widget.isAnon == true
                           ? 'sosChat'
-                          : (chatType == 'sc' ? 'sc' : 'cc'),
+                          : (widget.chatType == 'sc' ? 'sc' : 'cc'),
                       mediaType: '',
                       mediaUrl: '',
                       fileName: '',

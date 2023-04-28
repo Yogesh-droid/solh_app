@@ -70,6 +70,7 @@ class FirebaseNetwork {
             isProfileCreated.toString() +
             "^" * 30);
         if (isProfileCreated) {
+          print('isProfileCreated $isProfileCreated');
           Navigator.pushNamed(context, AppRoutes.master);
         } else {
           //// .  Firebase Signup event //////

@@ -1,10 +1,12 @@
 import 'dart:convert';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -17,7 +19,11 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/cache_manager/cache_manager.dart';
+import 'package:solh/services/errors/controllers/error_controller.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/firebase/local_notification.dart';
+import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -26,6 +32,7 @@ import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
+import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -38,18 +45,22 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
-
+  Prefs.init();
   await FirebaseAnalytics.instance.logBeginCheckout();
   Get.put(SearchMarketController());
+  Get.put(ProfileController());
   Get.put(AlliedController());
   Get.put(HomeController());
+  Get.put(BottomNavigatorController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
 
     Map<String, dynamic> _initialAppData = await initApp();
-    runApp(SolhApp(
-      isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
+    runApp(RestartWidget(
+      child: SolhApp(
+        isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
+      ),
     ));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
   } else
@@ -88,6 +99,7 @@ class _SolhAppState extends State<SolhApp> {
     initDynamic();
     initControllers();
     getLoacale();
+
     super.initState();
   }
 
@@ -104,6 +116,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   Widget build(BuildContext context) {
+    connectivityCheck(context);
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       print('This is First route ${widget._isProfileCreated}');
       return GetMaterialApp(
@@ -161,8 +174,10 @@ class _SolhAppState extends State<SolhApp> {
   }
 
   Future<void> initControllers() async {
+    Get.put(ErrorController());
     if (widget._isProfileCreated) {
-      Get.put(ProfileController());
+      Get.put(BottomNavigatorController());
+
       Get.put(ProfileSetupController());
       Get.put(BottomNavigatorController());
       // await profileController.getMyProfile();

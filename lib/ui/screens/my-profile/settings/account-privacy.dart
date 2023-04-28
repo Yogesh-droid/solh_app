@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -135,31 +136,13 @@ class AccountPrivacyScreen extends StatelessWidget {
                                                             1.1,
                                                     height: 6.5.h,
                                                     child: Text("Confirm"),
-                                                    onPressed: () {
+                                                    onPressed: () async {
+                                                      await userBlocNetwork
+                                                          .deleteAccount();
                                                       FirebaseAuth.instance
                                                           .signOut()
                                                           .then((value) async {
-                                                        Get.delete<
-                                                            GoalSettingController>();
-                                                        Get.delete<
-                                                            ConnectionController>();
-                                                        Get.delete<
-                                                            ConnectionController>();
-                                                        Get.delete<
-                                                            PhoneAuthController>();
-                                                        Utility.showLoader(
-                                                            context);
-                                                        await userBlocNetwork
-                                                            .deleteAccount();
-                                                        Utility.hideLoader(
-                                                            context);
-                                                        Navigator
-                                                            .pushNamedAndRemoveUntil(
-                                                                context,
-                                                                AppRoutes
-                                                                    .getStarted,
-                                                                (route) =>
-                                                                    false);
+                                                        logOut();
                                                         // Navigator.popUntil(
                                                         //     context,
                                                         //     (route) =>

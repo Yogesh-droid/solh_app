@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -182,12 +183,17 @@ class _OtpFieldState extends State<OtpField> {
               utm_medium: utm_medium,
               utm_compaign: utm_name,
               utm_source: utm_source);
+          log(isSessionCookieCreated.toString(),
+              name: "isSessionCookieCreated");
           ProfileController profileController = Get.put(ProfileController());
           await profileController.getMyProfile();
           print(isSessionCookieCreated);
           print("checking is profile created");
+          log("${await userBlocNetwork.isProfileCreated()}",
+              name: "isProfileCreated");
           bool isProfileCreated = await userBlocNetwork.isProfileCreated() &&
               !isSessionCookieCreated;
+
           print("profile checking complete");
           print("^" * 30 +
               "Is Profile Created:" +
