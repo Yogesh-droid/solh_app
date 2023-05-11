@@ -68,7 +68,7 @@ class _CommentScreenState extends State<CommentScreen> {
     journalCommentController.commentList.clear();
     journalCommentController.repliesList.clear();
     journalCommentController.nextPage = 1;
-    journalCommentController.previousPage = 0;
+    journalCommentController.previousPage = -2;
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
@@ -638,33 +638,12 @@ class _CommentScreenState extends State<CommentScreen> {
                         groupMediaUrl: widget._journalModel!.group!.groupImage,
                       ),
                     }),
-                // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                //   return GroupDetailsPage(
-                //     ///// this case is for group journal
-                //     args: {
-                //       "group":GroupList(
-                //       sId: widget._journalModel!.group!.sId,
-                //       groupName: widget._journalModel!.group!.groupName,
-                //       groupMediaUrl: widget._journalModel!.group!.groupImage,
-                //     ),
-                //     },
-                //   );
-                // }))
               }
             : widget._journalModel!.postedBy!.sId !=
                         null && ////// this case is for user journal
                     widget._journalModel!.anonymousJournal != null &&
                     !widget._journalModel!.anonymousJournal!
                 ? {
-                    // connectionController.getUserAnalytics(
-                    //     widget._journalModel!.postedBy!.sId!),
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ConnectProfileScreen(
-                    //             uid: widget._journalModel!.postedBy!.uid!,
-                    //             sId: widget._journalModel!.postedBy!.sId!)))
-
                     Navigator.pushNamed(context, AppRoutes.connectScreen,
                         arguments: {
                           "uid": widget._journalModel!.postedBy!.uid!,
@@ -1429,7 +1408,13 @@ class CommentBoxWidget extends StatelessWidget {
           Row(
             children: [
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    commentModel!.user!.id != null
+                        ? await connectionController.addConnection(
+                            commentModel!.user!.id!,
+                          )
+                        : null;
+                  },
                   icon: SvgPicture.asset('assets/images/connect.svg')),
             ],
           )

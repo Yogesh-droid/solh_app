@@ -50,6 +50,8 @@ class JournalCommentController extends GetxController {
       isLoading.value = true;
     }
     try {
+      print("------------------------  ${isLoading.value}");
+      print("------------------------  ${previousPage}");
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=${page ?? pageNo}");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
