@@ -60,6 +60,7 @@ dependencies:
   flutter_stripe: 8.0.0+1
   cache_manager: ^1.0.0+4
   connectivity_plus: ^3.0.4
+  just_the_tooltip: ^0.0.12
 
   
   #alt_sms_autofill: ^1.0.0

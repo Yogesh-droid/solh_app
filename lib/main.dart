@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -28,6 +29,7 @@ import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/languages_contant.dart';
+import 'package:solh/widgets_constants/constants/locale.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -55,7 +57,7 @@ void main() async {
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
-
+    log(newUser.toString(), name: "newUser");
     Map<String, dynamic> _initialAppData = await initApp();
     runApp(RestartWidget(
       child: SolhApp(
@@ -63,17 +65,19 @@ void main() async {
       ),
     ));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
-  } else
-    runApp(SolhApp(
-      isProfileCreated: false,
+    log('${FirebaseAuth.instance.currentUser}  ${newUser} ${_initialAppData["isProfileCreated"]}',
+        name: "currentUser");
+  } else {
+    log('${FirebaseAuth.instance.currentUser}', name: "currentUser");
+    runApp(RestartWidget(
+      child: SolhApp(
+        isProfileCreated: false,
+      ),
     ));
+  }
 
   FlutterNativeSplash.remove();
 }
-
-/// app ////
-///
-///
 
 class SolhApp extends StatefulWidget {
   SolhApp({Key? key, required bool isProfileCreated})
@@ -92,7 +96,7 @@ class _SolhAppState extends State<SolhApp> {
   String? utm_source;
 
   String? utm_name;
-  Locale? savedLocale;
+
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
@@ -108,21 +112,24 @@ class _SolhAppState extends State<SolhApp> {
     var res = await prefs.getString('locale');
     if (res != null) {
       Map map = jsonDecode(res);
-      savedLocale = Locale(map.keys.first, map.values.first);
+      AppLocale.appLocale = Locale(map.keys.first, map.values.first);
       print('map $map');
     }
-    print("locale $savedLocale");
+    print("locale ${AppLocale.appLocale.languageCode} ,${Get.locale}");
   }
 
   @override
   Widget build(BuildContext context) {
+    log("${widget._isProfileCreated}", name: "isProfileCreated");
     connectivityCheck(context);
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       print('This is First route ${widget._isProfileCreated}');
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
-        locale: savedLocale != null ? savedLocale : Get.deviceLocale,
+        locale: AppLocale.appLocale != null
+            ? AppLocale.appLocale
+            : Get.deviceLocale,
         translations: Languages(),
         fallbackLocale: const Locale('en', 'US'),
         title: 'Solh Wellness',

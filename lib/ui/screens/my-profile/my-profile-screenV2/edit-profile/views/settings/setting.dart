@@ -238,7 +238,7 @@ void logOut() async {
   FirebaseAuth.instance.signOut().then((value) async {
     await Prefs.clear();
     await SolhCacheManager.instance.clearAllCache();
-    await clearOneSignalID();
+    clearOneSignalID();
     Get.find<BottomNavigatorController>().activeIndex.value = 0;
     userBlocNetwork.updateSessionCookie = "";
     Get.delete<NotificationController>();

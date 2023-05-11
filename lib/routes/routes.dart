@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -21,7 +22,10 @@ import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/intro/playlist_page.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
+import 'package:solh/ui/screens/my-profile/appointments/appointment_menu.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
+import 'package:solh/ui/screens/my-profile/appointments/profile_transfer.dart';
+import 'package:solh/ui/screens/my-profile/appointments/profile_transfer_detail.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/language_setting_page.dart';
@@ -145,6 +149,12 @@ class AppRoutes {
   static const String activityBadgeParent = '/activityBadgeParent';
   static const String psychologicalCapital = '/psychologicalCapital';
   static const String videoPlaylist = '/videoPlaylist';
+  static const String appointmentMenu = '/appointmentMenu';
+
+  //appointment menu
+
+  static const String profileTransfer = '/profileTransfer';
+  static const String profileTransferDetail = '/profileTransferDetail';
 
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
@@ -339,8 +349,16 @@ class RouteGenerator {
                 PaymentScreen(args: args as Map<String, dynamic>)));
       case AppRoutes.videoPlaylist:
         return MaterialPageRoute(builder: ((context) => VideoPlaylist()));
+
       case AppRoutes.manageGroupPage:
         return MaterialPageRoute(builder: ((context) => ManageGroupPage()));
+      case AppRoutes.appointmentMenu:
+        return MaterialPageRoute(builder: ((context) => AppointmentMenu()));
+      case AppRoutes.profileTransfer:
+        return MaterialPageRoute(builder: ((context) => ProfileTransfer()));
+      case AppRoutes.profileTransferDetail:
+        return MaterialPageRoute(
+            builder: ((context) => ProfileTransferDetail()));
 
       default:
         return MaterialPageRoute(

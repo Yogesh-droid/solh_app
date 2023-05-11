@@ -17,7 +17,7 @@ class ViewAlAlliedCategories extends StatelessWidget {
   ViewAlAlliedCategories({super.key, Map<String, dynamic>? args})
       : onTap = args!["onTap"];
 
-  final Function(String slug) onTap;
+  final Function(String slug, String name) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class ViewAlAlliedCategories extends StatelessWidget {
 class AlliedTherapyGrid extends StatelessWidget {
   AlliedTherapyGrid({super.key, required this.onTap});
 
-  final Function(String slug) onTap;
+  final Function(String slug, String name) onTap;
   GetHelpController getHelpController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -78,9 +78,13 @@ class AlliedTherapyGrid extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      onTap(getHelpController.getAlliedTherapyModelMore.value
-                              .specializationList![index].slug ??
-                          '');
+                      onTap(
+                          getHelpController.getAlliedTherapyModelMore.value
+                                  .specializationList![index].slug ??
+                              '',
+                          getHelpController.getAlliedTherapyModelMore.value
+                                  .specializationList![index].name ??
+                              '');
                     },
                     child: Container(
                       decoration: BoxDecoration(

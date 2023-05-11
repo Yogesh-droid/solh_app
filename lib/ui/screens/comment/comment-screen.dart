@@ -64,34 +64,37 @@ class _CommentScreenState extends State<CommentScreen> {
 
   @override
   void initState() {
-    super.initState();
-    journalCommentController.commentList.clear();
-    journalCommentController.repliesList.clear();
-    journalCommentController.nextPage = 1;
-    journalCommentController.previousPage = 0;
-    _scrollController.addListener(() async {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        print("current pixels are ${_scrollController.position.pixels}");
-        print("max position is  ${_scrollController.position.maxScrollExtent}");
-        pageNo++;
-        setState(() {
-          isFetchingMore = true;
-        });
-        await getComments();
-        setState(() {
-          isFetchingMore = false;
-        });
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      journalCommentController.commentList.clear();
+      journalCommentController.repliesList.clear();
+      journalCommentController.nextPage = 1;
+      journalCommentController.previousPage = 0;
+      _scrollController.addListener(() async {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          print("current pixels are ${_scrollController.position.pixels}");
+          print(
+              "max position is  ${_scrollController.position.maxScrollExtent}");
+          pageNo++;
+          setState(() {
+            isFetchingMore = true;
+          });
+          await getComments();
+          setState(() {
+            isFetchingMore = false;
+          });
+        }
+      });
 
-    getComments();
-    if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
-      _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
-          FirebaseAuth.instance.currentUser!.uid;
-    }
-    journalCommentController.repliedTo.value = '';
-    journalCommentController.isReplying.value = false;
+      getComments();
+      if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
+        _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
+            FirebaseAuth.instance.currentUser!.uid;
+      }
+      journalCommentController.repliedTo.value = '';
+      journalCommentController.isReplying.value = false;
+    });
+    super.initState();
   }
 
   @override

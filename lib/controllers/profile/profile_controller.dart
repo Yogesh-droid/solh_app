@@ -17,6 +17,7 @@ class ProfileController extends GetxController {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
+
       print('This is profile   $map');
       isProfileLoading.value = false;
       return true;

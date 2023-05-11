@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
-import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
@@ -512,144 +512,174 @@ class _MasterScreen2State extends State<MasterScreen2>
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
             padding: EdgeInsets.all(20),
-            child: Wrap(
-              spacing: 25,
-              runSpacing: 20,
-              alignment: WrapAlignment.start,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 UpperCloseDecoration(),
                 Divider(),
-                InkWell(
-                  onTap: () {
-                    Get.find<GetHelpController>().getAlliedTherapyListMore();
-                    Navigator.pushNamed(
-                        context, AppRoutes.viewAllAlliedCategories,
-                        arguments: {
-                          "onTap": (value) {
-                            Navigator.pushNamed(
-                                context, AppRoutes.viewAllAlliedExpert,
-                                arguments: {
-                                  "slug": value,
-                                  "name": value,
-                                  "type": 'specialization',
-                                  "enableAppbar": true
-                                });
-                          }
-                        });
-                  },
-                  child: Column(
+                SizedBox(
+                  width: 100.w,
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 8.0,
                     children: [
-                      getBottomSheetIcon(icon: 'assets/images/allied.svg'),
-                      Text('Allied Therapies'.tr)
-                    ],
-                  ),
-                ),
-                // InkWell(
-                //   onTap: () {
-                //     Navigator.pushNamed(
-                //         context, AppRoutes.viewAllAlliedCategories,
-                //         arguments: {
-                //           "onTap": (value) {
-                //             Navigator.pushNamed(
-                //                 context, AppRoutes.viewAllAlliedExpert,
-                //                 arguments: {
-                //                   "slug": value,
-                //                   "name": value,
-                //                   "type": 'specialization',
-                //                   "enableAppbar": true
-                //                 });
-                //           }
-                //         });
-                //   },
-                //   child: Column(
-                //     children: [
-                //       getBottomSheetIcon(icon: 'assets/images/packages.svg'),
-                //       Text('Packages'.tr)
-                //     ],
-                //   ),
-                // ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.psychologyTest);
-                  },
-                  child: Column(
-                    children: [
-                      getBottomSheetIcon(
-                          icon: 'assets/images/self-assessment.svg'),
-                      Text('Screening & Assessment'.tr)
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) => AnonymousDialog());
-                  },
-                  child: Column(
-                    children: [
-                      getBottomSheetIcon(
-                          icon: 'assets/images/talk-now-sheet.svg'),
-                      Text('Talk Now'.tr)
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.videoPlaylist);
-                  },
-                  child: Column(
-                    children: [
-                      getBottomSheetIcon(
-                          icon: 'assets/images/know-us-more.svg'),
-                      Text('Know Us More'.tr)
-                    ],
-                  ),
-                ),
-                Column(
-                  children: [
-                    Obx(() {
-                      return profileController.isProfileLoading.value
-                          ? Center(
-                              child: SizedBox(
-                                  height: 15,
-                                  width: 15,
-                                  child: MyLoader(strokeWidth: 2)),
+                      InkWell(
+                        onTap: () {
+                          Get.find<GetHelpController>()
+                              .getAlliedTherapyListMore();
+                          Navigator.pushNamed(
+                              context, AppRoutes.viewAllAlliedCategories,
+                              arguments: {
+                                "onTap": (value) {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.viewAllAlliedExpert,
+                                      arguments: {
+                                        "slug": value,
+                                        "name": value,
+                                        "type": 'specialization',
+                                        "enableAppbar": true
+                                      });
+                                }
+                              });
+                        },
+                        child: Column(
+                          children: [
+                            getBottomSheetIcon(
+                                icon: 'assets/images/allied.svg'),
+                            Text(
+                              'Allied Therapies'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
                             )
-                          : profileController.myProfileModel.value.body == null
-                              ? InkWell(
-                                  onTap: () {
-                                    profileController.getMyProfile();
-                                  },
-                                  splashColor: Colors.transparent,
-                                  child: Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: SolhColors.primary_green),
-                                    child: Icon(
-                                      CupertinoIcons.arrow_clockwise,
-                                      color: SolhColors.white,
-                                      size: 20,
-                                    ),
-                                  ),
-                                )
-                              : InkWell(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MyProfileScreenV2()));
-                                  },
-                                  child: getBottomSheetIcon(
-                                      icon:
-                                          "assets/images/profile-bottom-sheet.svg"),
-                                );
-                    }),
-                    Text('My Profile'.tr)
-                  ],
+                          ],
+                        ),
+                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.pushNamed(
+                      //         context, AppRoutes.viewAllAlliedCategories,
+                      //         arguments: {
+                      //           "onTap": (value) {
+                      //             Navigator.pushNamed(
+                      //                 context, AppRoutes.viewAllAlliedExpert,
+                      //                 arguments: {
+                      //                   "slug": value,
+                      //                   "name": value,
+                      //                   "type": 'specialization',
+                      //                   "enableAppbar": true
+                      //                 });
+                      //           }
+                      //         });
+                      //   },
+                      //   child: Column(
+                      //     children: [
+                      //       getBottomSheetIcon(icon: 'assets/images/packages.svg'),
+                      //       Text('Packages'.tr)
+                      //     ],
+                      //   ),
+                      // ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.psychologyTest);
+                        },
+                        child: Column(
+                          children: [
+                            getBottomSheetIcon(
+                                icon: 'assets/images/self-assessment.svg'),
+                            Text(
+                              'Self Assessment'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AnonymousDialog());
+                        },
+                        child: Column(
+                          children: [
+                            getBottomSheetIcon(
+                                icon: 'assets/images/talk-now-sheet.svg'),
+                            Text(
+                              'Talk Now'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.videoPlaylist);
+                        },
+                        child: Column(
+                          children: [
+                            getBottomSheetIcon(
+                                icon: 'assets/images/know-us-more.svg'),
+                            Text(
+                              'Know Us More'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Obx(() {
+                            return profileController.isProfileLoading.value
+                                ? Center(
+                                    child: SizedBox(
+                                        height: 15,
+                                        width: 15,
+                                        child: MyLoader(strokeWidth: 2)),
+                                  )
+                                : profileController.myProfileModel.value.body ==
+                                        null
+                                    ? InkWell(
+                                        onTap: () {
+                                          profileController.getMyProfile();
+                                        },
+                                        splashColor: Colors.transparent,
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: SolhColors.primary_green),
+                                          child: Icon(
+                                            CupertinoIcons.arrow_clockwise,
+                                            color: SolhColors.white,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      )
+                                    : InkWell(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyProfileScreenV2()));
+                                        },
+                                        child: getBottomSheetIcon(
+                                            icon:
+                                                "assets/images/profile-bottom-sheet.svg"),
+                                      );
+                          }),
+                          Text(
+                            'My Profile'.tr,
+                            style: SolhTextStyles.QS_cap_semi,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -685,14 +715,14 @@ class UpperCloseDecoration extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 50,
+      height: 25,
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: 20),
+            SizedBox(width: 15),
             Container(
-              height: 10,
+              height: 8,
               width: 50,
               decoration: BoxDecoration(
                   color: SolhColors.grey,

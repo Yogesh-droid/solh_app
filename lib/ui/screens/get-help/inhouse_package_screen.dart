@@ -8,6 +8,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
 import 'package:solh/services/utility.dart';
@@ -37,11 +38,16 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
   FocusNode _emailFocusNode = FocusNode();
   @override
   void initState() {
-    print('id ${widget.args["id"]}');
-    _alliedController.selectedPackage.value = '';
-    _alliedController.selectedPackagePrice.value = -1;
     _scrollController = ScrollController();
-    _alliedController.getInhousePackage(widget.args["id"]);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        print('id ${widget.args["id"]}');
+        _alliedController.selectedPackage.value = '';
+        _alliedController.selectedPackagePrice.value = -1;
+        _alliedController.getInhousePackage(widget.args["id"]);
+      },
+    );
+
     super.initState();
   }
 
@@ -155,9 +161,10 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                                         height: 10,
                                         width: 40,
                                         decoration: BoxDecoration(
-                                            color: SolhColors.grey_3,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
+                                          color: SolhColors.grey_3,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
                                       ),
                                       Container(height: 20, child: Divider()),
                                       Padding(
@@ -172,7 +179,15 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                                                     .QS_caption_bold),
                                             SizedBox(height: 5),
                                             TextFormField(
-                                              controller: _emailTextcontroller,
+                                              controller: _emailTextcontroller
+                                                ..text = Get.find<
+                                                            ProfileController>()
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .email ??
+                                                    "",
                                               focusNode: _emailFocusNode,
                                               decoration: TextFieldStyles
                                                       .greenF_greenBroadUF_4R(
@@ -230,22 +245,25 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                                                     return;
                                                   } else {
                                                     _emailFocusNode.unfocus();
-                                                    Navigator.push(context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) {
-                                                      return InhouseContinueDetail(
-                                                          carousel:
-                                                              _alliedController
-                                                                  .inhousePackageModel
-                                                                  .value
-                                                                  .carousel!,
-                                                          packages: _alliedController
-                                                                  .inhousePackageModel
-                                                                  .value
-                                                                  .packageList![
-                                                              _alliedController
-                                                                  .selectedPackageIndex]);
-                                                    }));
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) {
+                                                          return InhouseContinueDetail(
+                                                              carousel:
+                                                                  _alliedController
+                                                                      .inhousePackageModel
+                                                                      .value
+                                                                      .carousel!,
+                                                              packages: _alliedController
+                                                                      .inhousePackageModel
+                                                                      .value
+                                                                      .packageList![
+                                                                  _alliedController
+                                                                      .selectedPackageIndex]);
+                                                        },
+                                                      ),
+                                                    );
                                                   }
                                                 } else {
                                                   Utility.showToast(

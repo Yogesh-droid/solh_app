@@ -8,6 +8,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
@@ -168,7 +169,15 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                     .QS_caption_bold),
                                             SizedBox(height: 5),
                                             TextFormField(
-                                              controller: _emailTextcontroller,
+                                              controller: _emailTextcontroller
+                                                ..text = Get.find<
+                                                            ProfileController>()
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .email ??
+                                                    "",
                                               focusNode: _emailFocusNode,
                                               decoration: TextFieldStyles
                                                       .greenF_greenBroadUF_4R(

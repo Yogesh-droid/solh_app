@@ -52,10 +52,10 @@ class _CreateGroupState extends State<CreateGroup> {
       _nameEditingController.text = widget.group!.groupName ?? '';
       _descriptionEditingController.text = widget.group!.groupDescription ?? '';
       _groupMediaUrl = widget.group!.groupMediaUrl;
-      widget.group!.groupTags!.forEach((element) {
-        print(element);
-        _controller.tagList.add(element);
-      });
+      // widget.group!.groupTags!.forEach((element) {
+      //   print(element);
+      //   _controller.tagList.add(element);
+      // });
       _controller.tagList.refresh();
     }
     _croppedFile = null;

@@ -1337,7 +1337,7 @@ class _PostContentWidgetState extends State<PostContentWidget> {
       textList = [desc];
     }
     descriptionTexts = textList;
-    print('textList: $descriptionTexts');
+    debugPrint('textList: $descriptionTexts');
 
     return textList;
   }

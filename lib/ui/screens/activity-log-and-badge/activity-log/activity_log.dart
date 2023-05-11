@@ -27,8 +27,8 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
   ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    lastDate = '';
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      lastDate = '';
       getMoreLogs();
     });
 

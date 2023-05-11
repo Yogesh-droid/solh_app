@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -25,6 +26,7 @@ import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
 import '../home/homescreen.dart';
+import 'dart:developer' as logs;
 
 class GetHelpScreen extends StatefulWidget {
   @override
@@ -42,6 +44,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
 
   ProfileController profileController = Get.find();
   HomeController homeController = Get.find();
+  final tooltipController = JustTheController();
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -145,8 +149,33 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 );
               })),
           GetHelpDivider(),
-          GetHelpCategory(
-            title: "Search by Profession".tr,
+          Padding(
+            padding: EdgeInsets.all(4.0.w),
+            child: Row(
+              children: [
+                Text(
+                  'Search by Profession',
+                  style: SolhTextStyles.QS_body_semi_1,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    logs.log("it ran");
+                    tooltipController.showTooltip;
+                  },
+                  child: JustTheTooltip(
+                    controller: tooltipController,
+                    content: Text("flutter pub add just_the_tooltip"),
+                    child: GestureDetector(
+                      onTap: () {
+                        logs.log("it ran");
+                        tooltipController.showTooltip;
+                      },
+                      child: Icon(Icons.info),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
           Obx(() {
             return getHelpController
@@ -681,7 +710,7 @@ class GetHelpCategory extends StatelessWidget {
               children: [
                 Text(
                   _title.tr,
-                  style: TextStyle(fontSize: 20, color: Color(0xFF666666)),
+                  style: SolhTextStyles.QS_body_semi_1,
                 ),
                 trailing == null
                     ? _onPressed != null

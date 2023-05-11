@@ -9,7 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';

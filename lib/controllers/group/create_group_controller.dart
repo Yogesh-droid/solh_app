@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import '../../bloc/user-bloc.dart';
 import '../../constants/api.dart';
 import '../../services/network/network.dart';
@@ -45,19 +47,21 @@ class CreateGroupController extends GetxController {
     print(groupId);
     Map<String, dynamic> map = groupId == null
         ? await Network.makePostRequestWithToken(
-                url: APIConstants.api + '/api/group', body: body)
+                url: APIConstants.api + '/api/v1/group', body: body)
             .onError((error, stackTrace) {
             print(error);
             return {};
           })
         : await Network.makePutRequestWithToken(
-                url: APIConstants.api + '/api/group?groupId=$groupId',
+                url: APIConstants.api + '/api/v1/group?groupId=$groupId',
                 body: body)
             .onError((error, stackTrace) {
             print(error);
             return {};
           });
-
+    log(map.toString());
+    SolhSnackbar.success("Success", map["message"],
+        duration: Duration(seconds: 3));
     isLoading.value = false;
     return map;
     return {};

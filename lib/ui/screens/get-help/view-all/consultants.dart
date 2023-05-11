@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -47,32 +49,50 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
       issueAndSpecializationFilterController =
       Get.put(IssueAndSpecializationFilterController());
 
+  int pageNo = 1;
+  late ScrollController _doctorsScrollController;
   void initState() {
-    print('Running init state of Consultant');
-    super.initState();
-    getResultByCountry();
-    print(
-        "defaultCountry2 " + searchMarketController.defaultCountry.toString());
     _doctorsScrollController = ScrollController();
-    issueAndSpecializationFilterController
-        .getIssueAndSpecializationFilter(widget.slug);
-    issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        print('Running init state of Consultant');
 
-    _doctorsScrollController.addListener(() async {
-      if (_doctorsScrollController.position.pixels ==
-              _doctorsScrollController.position.maxScrollExtent &&
-          !_fetchingMore) {
-        setState(() {
-          _fetchingMore = true;
+        getResultByCountry();
+        print("defaultCountry2 " +
+            searchMarketController.defaultCountry.toString());
+
+        issueAndSpecializationFilterController
+            .getIssueAndSpecializationFilter(widget.slug);
+        issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
+        fetchMoreClinician();
+        _doctorsScrollController.addListener(() async {
+          if (_doctorsScrollController.position.pixels ==
+                  _doctorsScrollController.position.maxScrollExtent &&
+              !_fetchingMore) {
+            setState(() {
+              _fetchingMore = true;
+            });
+            setState(() {
+              _fetchingMore = false;
+            });
+          }
         });
-        setState(() {
-          _fetchingMore = false;
-        });
+      },
+    );
+    super.initState();
+  }
+
+  void fetchMoreClinician() {
+    _doctorsScrollController.addListener(() {
+      log("scroll working");
+      if (_doctorsScrollController.position.pixels >
+          _doctorsScrollController.position.maxScrollExtent - 100) {
+        pageNo++;
+        searchMarketController.getIssueList(widget.slug,
+            c: searchMarketController.defaultCountry, page: pageNo);
       }
     });
   }
-
-  late ScrollController _doctorsScrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +141,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             : searchMarketController.issueModel.value.doctors != null ||
                     searchMarketController.issueModel.value.provider != null
                 ? CustomScrollView(
+                    controller: _doctorsScrollController,
                     slivers: [
                       SliverToBoxAdapter(
                         child: SizedBox(
@@ -140,82 +161,101 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                       searchMarketController.issueModel.value.doctors != null
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) => ConsultantsTile(
-                                  id: searchMarketController.issueModel.value
-                                          .doctors![index].sId ??
-                                      '',
-                                  name: searchMarketController.issueModel.value
-                                          .doctors![index].name ??
-                                      '',
-                                  currency: searchMarketController.issueModel
-                                          .value.doctors![index].feeCurrency ??
-                                      '',
-                                  feeAmount: searchMarketController.issueModel
-                                          .value.doctors![index].fee_amount ??
-                                      0,
-                                  fee: searchMarketController
-                                      .issueModel.value.doctors![index].fee,
-                                  prefix: searchMarketController
-                                      .issueModel.value.doctors![index].prefix,
-                                  profilePic: searchMarketController
-                                          .issueModel
-                                          .value
-                                          .doctors![index]
-                                          .profilePicture ??
-                                      '',
-                                  specialization: searchMarketController
-                                          .issueModel
-                                          .value
-                                          .doctors![index]
-                                          .specialization ??
-                                      '',
-                                  bio: searchMarketController
-                                      .issueModel.value.doctors![index].bio,
-                                  /* doctorModel: DoctorModel(
+                                (context, index) => Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ConsultantsTile(
+                                      id: searchMarketController.issueModel
+                                              .value.doctors![index].sId ??
+                                          '',
+                                      name: searchMarketController.issueModel
+                                              .value.doctors![index].name ??
+                                          '',
+                                      currency: searchMarketController
+                                              .issueModel
+                                              .value
+                                              .doctors![index]
+                                              .feeCurrency ??
+                                          '',
+                                      feeAmount: searchMarketController
+                                              .issueModel
+                                              .value
+                                              .doctors![index]
+                                              .fee_amount ??
+                                          0,
+                                      fee: searchMarketController
+                                          .issueModel.value.doctors![index].fee,
+                                      prefix: searchMarketController.issueModel
+                                          .value.doctors![index].prefix,
+                                      profilePic: searchMarketController
+                                              .issueModel
+                                              .value
+                                              .doctors![index]
+                                              .profilePicture ??
+                                          '',
                                       specialization: searchMarketController
                                               .issueModel
                                               .value
                                               .doctors![index]
                                               .specialization ??
                                           '',
-                                      organisation: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .doctors![index]
-                                              .organisation ??
-                                          '',
-                                      name: searchMarketController.issueModel
-                                              .value.doctors![index].name ??
-                                          '',
-                                      mobile: searchMarketController
-                                              .issueModel
-                                              .value
-                                              .doctors![index]
-                                              .contactNumber ??
-                                          '',
-                                      email:
-                                          searchMarketController.issueModel.value.doctors![index].email ?? '',
-                                      clinic: '',
-                                      fee: searchMarketController.issueModel.value.doctors![index].fee ?? '',
-                                      prefix: searchMarketController.issueModel.value.doctors![index].prefix,
-                                      feeCurrency: searchMarketController.issueModel.value.doctors![index].feeCurrency ?? '',
-                                      fee_amount: searchMarketController.issueModel.value.doctors![index].fee_amount ?? 0,
-                                      id: searchMarketController.issueModel.value.doctors![index].sId ?? '',
-                                      locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
-                                      pincode: '',
-                                      city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
-                                      bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
-                                      abbrevations: '',
-                                      profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''), */
-                                  onTap: () {
-                                    //                     connectionController
-                                    //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
-                                    //   print(widget._journalModel!.postedBy!.sId),
-                                    //   AutoRouter.of(context).push(ConnectScreenRouter(
-                                    //       uid: widget._journalModel!.postedBy!.uid ?? '',
-                                    //       sId: widget._journalModel!.postedBy!.sId ?? '')),
-                                    // },
-                                  },
+                                      bio: searchMarketController
+                                          .issueModel.value.doctors![index].bio,
+                                      /* doctorModel: DoctorModel(
+                                          specialization: searchMarketController
+                                                  .issueModel
+                                                  .value
+                                                  .doctors![index]
+                                                  .specialization ??
+                                              '',
+                                          organisation: searchMarketController
+                                                  .issueModel
+                                                  .value
+                                                  .doctors![index]
+                                                  .organisation ??
+                                              '',
+                                          name: searchMarketController.issueModel
+                                                  .value.doctors![index].name ??
+                                              '',
+                                          mobile: searchMarketController
+                                                  .issueModel
+                                                  .value
+                                                  .doctors![index]
+                                                  .contactNumber ??
+                                              '',
+                                          email:
+                                              searchMarketController.issueModel.value.doctors![index].email ?? '',
+                                          clinic: '',
+                                          fee: searchMarketController.issueModel.value.doctors![index].fee ?? '',
+                                          prefix: searchMarketController.issueModel.value.doctors![index].prefix,
+                                          feeCurrency: searchMarketController.issueModel.value.doctors![index].feeCurrency ?? '',
+                                          fee_amount: searchMarketController.issueModel.value.doctors![index].fee_amount ?? 0,
+                                          id: searchMarketController.issueModel.value.doctors![index].sId ?? '',
+                                          locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
+                                          pincode: '',
+                                          city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
+                                          bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
+                                          abbrevations: '',
+                                          profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''), */
+                                      onTap: () {
+                                        //                     connectionController
+                                        //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
+                                        //   print(widget._journalModel!.postedBy!.sId),
+                                        //   AutoRouter.of(context).push(ConnectScreenRouter(
+                                        //       uid: widget._journalModel!.postedBy!.uid ?? '',
+                                        //       sId: widget._journalModel!.postedBy!.sId ?? '')),
+                                        // },
+                                      },
+                                    ),
+                                    Obx(
+                                      () {
+                                        return searchMarketController
+                                                .isLoadingMoreClinician.value
+                                            ? ButtonLoadingAnimation()
+                                            : Container();
+                                      },
+                                    )
+                                  ],
                                 ),
                                 childCount: searchMarketController
                                     .issueModel.value.doctors!.length,
@@ -225,63 +265,89 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                       searchMarketController.issueModel.value.provider != null
                           ? SliverList(
                               delegate: SliverChildBuilderDelegate(
-                                (context, index) => ConsultantsTile(
-                                  currency: searchMarketController.issueModel
-                                          .value.provider![index].feeCurrency ??
-                                      '',
-                                  feeAmount: searchMarketController.issueModel
-                                      .value.provider![index].fee_amount,
-                                  id: searchMarketController.issueModel.value
-                                          .provider![index].sId ??
-                                      '',
-                                  name: searchMarketController.issueModel.value
-                                          .provider![index].name ??
-                                      '',
-                                  prefix: searchMarketController
-                                      .issueModel.value.provider![index].prefix,
-                                  profilePic: searchMarketController
-                                          .issueModel
-                                          .value
-                                          .provider![index]
-                                          .profilePicture ??
-                                      '',
-                                  specialization: '',
-                                  bio: searchMarketController.issueModel.value
-                                          .provider![index].bio ??
-                                      '',
-                                  fee: searchMarketController
-                                      .issueModel.value.provider![index].fee,
-
-                                  /*  doctorModel: DoctorModel(
-                                      specialization: '',
-                                      organisation: '',
-                                      name: searchMarketController.issueModel
-                                              .value.provider![index].name ??
-                                          '',
-                                      mobile: searchMarketController
+                                (context, index) => Column(
+                                  children: [
+                                    ConsultantsTile(
+                                      currency: searchMarketController
                                               .issueModel
                                               .value
                                               .provider![index]
-                                              .contactNumber ??
+                                              .feeCurrency ??
                                           '',
+                                      feeAmount: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .fee_amount,
                                       id: searchMarketController.issueModel
                                               .value.provider![index].sId ??
                                           '',
-                                      email: searchMarketController.issueModel
-                                              .value.provider![index].email ??
+                                      name: searchMarketController.issueModel
+                                              .value.provider![index].name ??
                                           '',
-                                      clinic: '',
-                                      fee: searchMarketController.issueModel.value.provider![index].fee,
-                                      prefix: searchMarketController.issueModel.value.provider![index].prefix,
-                                      feeCurrency: searchMarketController.issueModel.value.provider![index].feeCurrency,
-                                      fee_amount: searchMarketController.issueModel.value.provider![index].fee_amount,
-                                      locality: searchMarketController.issueModel.value.provider![index].addressLineOne ?? '',
-                                      pincode: '',
-                                      city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
-                                      bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
-                                      abbrevations: '',
-                                      profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''), */
-                                  onTap: () {},
+                                      prefix: searchMarketController.issueModel
+                                          .value.provider![index].prefix,
+                                      profilePic: searchMarketController
+                                              .issueModel
+                                              .value
+                                              .provider![index]
+                                              .profilePicture ??
+                                          '',
+                                      specialization: '',
+                                      bio: searchMarketController.issueModel
+                                              .value.provider![index].bio ??
+                                          '',
+                                      fee: searchMarketController.issueModel
+                                          .value.provider![index].fee,
+
+                                      /*  doctorModel: DoctorModel(
+                                          specialization: '',
+                                          organisation: '',
+                                          name: searchMarketController.issueModel
+                                                  .value.provider![index].name ??
+                                              '',
+                                          mobile: searchMarketController
+                                                  .issueModel
+                                                  .value
+                                                  .provider![index]
+                                                  .contactNumber ??
+                                              '',
+                                          id: searchMarketController.issueModel
+                                                  .value.provider![index].sId ??
+                                              '',
+                                          email: searchMarketController.issueModel
+                                                  .value.provider![index].email ??
+                                              '',
+                                          clinic: '',
+                                          fee: searchMarketController.issueModel.value.provider![index].fee,
+                                          prefix: searchMarketController.issueModel.value.provider![index].prefix,
+                                          feeCurrency: searchMarketController.issueModel.value.provider![index].feeCurrency,
+                                          fee_amount: searchMarketController.issueModel.value.provider![index].fee_amount,
+                                          locality: searchMarketController.issueModel.value.provider![index].addressLineOne ?? '',
+                                          pincode: '',
+                                          city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
+                                          bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
+                                          abbrevations: '',
+                                          profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''), */
+                                      onTap: () {},
+                                    ),
+                                    Obx(
+                                      () {
+                                        return searchMarketController
+                                                    .isLoadingMoreClinician
+                                                    .value &&
+                                                index ==
+                                                    searchMarketController
+                                                            .issueModel
+                                                            .value
+                                                            .provider!
+                                                            .length -
+                                                        1
+                                            ? ButtonLoadingAnimation()
+                                            : Container();
+                                      },
+                                    )
+                                  ],
                                 ),
                                 childCount: searchMarketController
                                     .issueModel.value.provider!.length,
@@ -320,7 +386,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      'Filter counsellors'.tr,
+                                      'Filter counselor'.tr,
                                       style:
                                           SolhTextStyles.JournalingUsernameText,
                                     ),
@@ -695,12 +761,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                       : searchMarketController.getIssueList(
                                           issueAndSpecializationFilterController
                                               .selectedSpeciality.value,
-                                          issue:
-                                              issueAndSpecializationFilterController
-                                                  .selectedIssue.value,
-                                          c: issueAndSpecializationFilterController
-                                              .selectedCountry.value,
-                                        );
+                                          issue: issueAndSpecializationFilterController.selectedIssue.value,
+                                          c: issueAndSpecializationFilterController.selectedCountry.value,
+                                          page: 1);
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -743,13 +806,15 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
         'default country is ${searchMarketController.defaultCountry}' +
         ' &' * 30);
     widget.type == 'specialization'
-        ? searchMarketController.getSpecializationList(widget.slug,
-            c: searchMarketController.defaultCountry)
+        ? searchMarketController.getSpecializationList(
+            widget.slug,
+            c: searchMarketController.defaultCountry,
+          )
         : widget.type == 'topconsultant'
             ? searchMarketController.getTopConsultants(
                 c: searchMarketController.defaultCountry)
             : searchMarketController.getIssueList(widget.slug,
-                c: searchMarketController.defaultCountry);
+                c: searchMarketController.defaultCountry, page: 1);
   }
 
   @override

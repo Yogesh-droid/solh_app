@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity-log-controller/activity_log_controller.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
-import 'package:solh/ui/screens/activity-log-and-badge/badges/badge_screen.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/allChat/all_chat_model.dart';
@@ -5,14 +8,14 @@ import 'package:solh/services/network/network.dart';
 
 class ChatListController extends GetxController {
   var isLoading = false.obs;
-
+  var isMorePageLoading = false.obs;
   var chatList = <ChatList>[].obs;
   var sosChatList = <ChatList>[].obs;
 
   @override
   void onInit() {
     chatListController();
-    sosChatListController();
+    sosChatListController(1);
     super.onInit();
   }
 
@@ -28,16 +31,24 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future sosChatListController() async {
-    isLoading(true);
-    var response = await getSosChat();
-    isLoading(false);
+  Future sosChatListController(int pageNo) async {
+    pageNo > 1 ? isMorePageLoading(true) : isLoading(true);
+    ChatListModel response = await getSosChat(pageNo);
 
-    if (response.chatList != null) {
+    if (response.chatList != null && pageNo == 1) {
       sosChatList.value = response.chatList!;
+    } else if (response.chatList != null &&
+        pageNo > 1 &&
+        response.chatList!.isNotEmpty) {
+      log(response.chatList.toString());
+      response.chatList!.forEach((element) {
+        sosChatList.value.add(element);
+      });
+      sosChatList.refresh();
     } else {
       print(response);
     }
+    pageNo > 1 ? isMorePageLoading(false) : isLoading(false);
   }
 
   Future getAllChat() async {
@@ -53,9 +64,9 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future getSosChat() async {
+  Future getSosChat(int pageNo) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/sosChatList')
+            APIConstants.api + '/api/v1/sosChatList?page=$pageNo')
         .onError((error, stackTrace) {
       print(error);
       return {};

@@ -55,15 +55,16 @@ class ScaffoldWithLightBg2BackgroundArt extends StatelessWidget {
     return Stack(
       children: [
         Container(
-            height: 100.h,
-            width: 100.w,
-            color: Colors.white,
-            child: FittedBox(
-              fit: BoxFit.cover,
-              child: Image(
-                image: AssetImage('assets/images/ScaffoldBackgroundArt.png'),
-              ),
-            )),
+          height: 100.h,
+          width: 100.w,
+          color: Colors.white,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Image(
+              image: AssetImage('assets/images/ScaffoldBackgroundArt.png'),
+            ),
+          ),
+        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           floatingActionButton: floatingActionButton,

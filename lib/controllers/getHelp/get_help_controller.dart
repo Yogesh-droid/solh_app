@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/model/get-help/counsellors_country_model..dart';
 import 'package:solh/model/get-help/solh_volunteer_model.dart';
+import 'package:solh/widgets_constants/constants/locale.dart';
 import '../../constants/api.dart';
 import '../../model/get-help/get_issue_response_model.dart';
 import '../../model/get-help/search_market_model.dart';
@@ -26,8 +27,9 @@ class GetHelpController extends GetxController {
 
   void getIssueList() async {
     try {
-      Map<String, dynamic> map =
-          await Network.makeGetRequest("${APIConstants.api}/api/issue");
+      Map<String, dynamic> map = await Network.makeGetRequest(
+          "${APIConstants.api}/api/issue",
+          {"Accept-Language": AppLocale.appLocale.languageCode});
 
       print('issues $map');
       getIssueResponseModel.value = GetIssueResponseModel.fromJson(map);
@@ -76,7 +78,8 @@ class GetHelpController extends GetxController {
     try {
       ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
       Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/get-app-specialization?parent=111");
+          "${APIConstants.api}/api/get-app-specialization?parent=111",
+          {"Accept-Language": AppLocale.appLocale.languageCode});
 
       getSpecializationModel.value = GetIssueResponseModel.fromJson(map);
     } on Exception catch (e) {
@@ -88,7 +91,8 @@ class GetHelpController extends GetxController {
     try {
       ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
       Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/get-app-specialization?parent=222");
+          "${APIConstants.api}/api/get-app-specialization?parent=222",
+          {"Accept-Language": AppLocale.appLocale.languageCode});
       if (map['success']) {
         isAlliedShown.value = true;
       }

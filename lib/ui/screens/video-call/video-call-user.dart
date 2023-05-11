@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -10,6 +12,7 @@ import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../bloc/user-bloc.dart';
@@ -35,6 +38,7 @@ class VideoCallUser extends StatefulWidget {
 
 class _CallState extends State<VideoCallUser> {
   int? _remoteUid;
+  List _remoteUidList = [];
   bool _localUserJoined = false;
   late RtcEngine _engine;
   bool muted = false;
@@ -116,18 +120,26 @@ class _CallState extends State<VideoCallUser> {
           print("remote user $uid joined");
           setState(() {
             _remoteUid = uid;
+            _remoteUidList.add(uid);
           });
         },
         userOffline: (int uid, UserOfflineReason reason) {
           print("remote user $uid left channel");
-          _engine.leaveChannel();
-          _engine.destroy();
 
-          Navigator.pop(context);
-          if (isBottomSheetOpened) {
-            Navigator.pop(context);
+          if (uid != _remoteUidList.first) {
+            _remoteUidList.remove(uid);
           }
 
+          if (_remoteUidList.isEmpty || uid == _remoteUidList.first) {
+            _engine.leaveChannel();
+            _engine.destroy();
+            Navigator.pop(context);
+            if (isBottomSheetOpened) {
+              Navigator.pop(context);
+            }
+          }
+          log("${_remoteUidList} , $uid");
+          setState(() {});
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
               reason.name == 'Quit' ? '  Call Ended  ' : '  User offline  ',
@@ -139,6 +151,7 @@ class _CallState extends State<VideoCallUser> {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(5), topRight: Radius.circular(5))),
           ));
+          log("remote ${_remoteUidList}");
         },
       ),
     );
@@ -150,11 +163,12 @@ class _CallState extends State<VideoCallUser> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        backgroundColor: Colors.grey[900],
         appBar: SolhAppBar(
           isLandingScreen: false,
           title: Text(
             'Video Call',
-            style: SolhTextStyles.AppBarText,
+            style: SolhTextStyles.QS_body_1_bold,
           ),
           callback: () {
             showDialog(
@@ -196,14 +210,33 @@ class _CallState extends State<VideoCallUser> {
 
   Widget _remoteVideo() {
     if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(
-        uid: _remoteUid!,
-        channelId: widget.channel,
-      );
+      if (_remoteUidList.length == 1) {
+        return RtcRemoteView.SurfaceView(
+          mirrorMode: VideoMirrorMode.Disabled,
+          renderMode: VideoRenderMode.Fit,
+          uid: _remoteUidList[0],
+          channelId: widget.channel,
+        );
+      }
+      return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              childAspectRatio: 3 / 4,
+              crossAxisCount: 2,
+              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 4.0),
+          itemCount: _remoteUidList.length,
+          shrinkWrap: true,
+          itemBuilder: ((context, index) {
+            return RtcRemoteView.SurfaceView(
+              mirrorMode: VideoMirrorMode.Disabled,
+              renderMode: VideoRenderMode.Fit,
+              uid: _remoteUidList[index],
+              channelId: widget.channel,
+            );
+          }));
     } else {
-      return Text(
-        'Connecting ......',
-        textAlign: TextAlign.center,
+      return ButtonLoadingAnimation(
+        ballColor: Colors.white,
       );
     }
   }
@@ -254,8 +287,10 @@ class _CallState extends State<VideoCallUser> {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.bottomCenter,
+        Positioned(
+          bottom: 20,
+          left: 0,
+          right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -271,12 +306,12 @@ class _CallState extends State<VideoCallUser> {
                   },
                   child: Icon(
                     muted ? Icons.mic_off : Icons.mic,
-                    color: muted ? Colors.white : Colors.blueAccent,
+                    color: muted ? Colors.white : SolhColors.primary_green,
                     size: 20.0,
                   ),
                   shape: CircleBorder(),
                   elevation: 2.0,
-                  fillColor: muted ? Colors.blueAccent : Colors.white,
+                  fillColor: muted ? SolhColors.primary_green : Colors.white,
                   padding: const EdgeInsets.all(8.0),
                 ),
               ),
@@ -291,13 +326,16 @@ class _CallState extends State<VideoCallUser> {
                   },
                   child: Icon(
                     _isVideoDisabled ? Icons.videocam_off : Icons.videocam,
-                    color: _isVideoDisabled ? Colors.white : Colors.blueAccent,
+                    color: _isVideoDisabled
+                        ? Colors.white
+                        : SolhColors.primary_green,
                     size: 20.0,
                   ),
                   shape: CircleBorder(),
                   elevation: 2.0,
-                  fillColor:
-                      _isVideoDisabled ? Colors.blueAccent : Colors.white,
+                  fillColor: _isVideoDisabled
+                      ? SolhColors.primary_green
+                      : Colors.white,
                   padding: const EdgeInsets.all(8.0),
                 ),
               ),
@@ -325,8 +363,8 @@ class _CallState extends State<VideoCallUser> {
                 child: RawMaterialButton(
                   onPressed: () => _engine.switchCamera(),
                   child: Icon(
-                    Icons.switch_camera,
-                    color: Colors.blueAccent,
+                    CupertinoIcons.switch_camera_solid,
+                    color: SolhColors.primary_green,
                     size: 20.0,
                   ),
                   shape: CircleBorder(),
@@ -352,7 +390,7 @@ class _CallState extends State<VideoCallUser> {
                   },
                   child: Icon(
                     Icons.chat_bubble_outline,
-                    color: Colors.blueAccent,
+                    color: SolhColors.primary_green,
                     size: 20.0,
                   ),
                   shape: CircleBorder(),

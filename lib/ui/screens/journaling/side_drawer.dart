@@ -15,7 +15,7 @@ import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart'
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
-import '../../../controllers/profile/appointment_controller.dart';
+import '../my-profile/appointments/controller/appointment_controller.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
@@ -309,7 +309,7 @@ Widget getBadge(String usertype) {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Counsellor',
+            'Counselor',
             style: GoogleFonts.signika(
               color: SolhColors.primary_green,
               fontWeight: FontWeight.w400,

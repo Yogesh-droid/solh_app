@@ -4,8 +4,8 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 class ButtonLoadingAnimation extends StatelessWidget {
   const ButtonLoadingAnimation(
       {Key? key,
-      this.ballSizeLowerBound,
-      this.ballSizeUpperBound,
+      this.ballSizeLowerBound = 3,
+      this.ballSizeUpperBound = 8,
       this.ballColor = SolhColors.primary_green})
       : super(key: key);
 

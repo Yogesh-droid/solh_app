@@ -59,6 +59,7 @@ import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../mood-meter/mood_meter.dart';
 import '../psychology-test/test_question_page.dart';
+import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -99,7 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
       homeController.getHomeCarousel();
       Prefs.setBool("isProfileCreated", true);
     }
-    ;
   }
 
   @override
@@ -108,6 +108,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> openMoodMeter() async {
+    log("${await Prefs.getBool("isProfileCreated")}",
+        name: "isProfileCreatedd");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (moodMeterController.moodList.isEmpty) {
       await moodMeterController.getMoodList();
@@ -207,7 +209,7 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           FindHelpBar(
             onConnectionTapped: () {
-              Get.find<ChatListController>().sosChatListController();
+              Get.find<ChatListController>().sosChatListController(1);
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => Connections()));
             },
@@ -330,10 +332,7 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           Obx(() =>
               discoverGroupController.discoveredGroupModel.value.groupList !=
-                          null &&
-                      discoverGroupController
-                              .discoveredGroupModel.value.groupList!.length >
-                          0
+                      null
                   ? GetHelpCategory(
                       title: 'Groups For You'.tr,
                       onPressed: () {
@@ -343,11 +342,8 @@ class _HomePageState extends State<HomePage> {
                   : Container()),
           Obx(() {
             return discoverGroupController
-                            .discoveredGroupModel.value.groupList !=
-                        null &&
-                    discoverGroupController
-                            .discoveredGroupModel.value.groupList!.length >
-                        0
+                        .discoveredGroupModel.value.groupList !=
+                    null
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
@@ -999,10 +995,15 @@ class _HomePageState extends State<HomePage> {
                             group: discoverGroupController
                                 .discoveredGroupModel.value.groupList![index],
                           ))); */
+                  print(
+                    discoverGroupController.discoveredGroupModel.value.groupList
+                        .toString(),
+                  );
                   Navigator.pushNamed(context, AppRoutes.groupDetails,
                       arguments: {
-                        "group": discoverGroupController
-                            .discoveredGroupModel.value.groupList![index],
+                        "groupId": discoverGroupController
+                            .discoveredGroupModel.value.groupList![index].sId,
+                        // "isJoined": false
                       });
                 }),
                 child: Container(
@@ -1082,7 +1083,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Text(
                               discoverGroupController.discoveredGroupModel.value
-                                  .groupList![index].groupMembers!.length
+                                  .groupList![index].groupMembers!
                                   .toString(),
                               style: SolhTextStyles.JournalingHintText,
                             ),
@@ -1430,7 +1431,7 @@ class _HomePageState extends State<HomePage> {
         : Column(
             children: [
               GetHelpCategory(
-                  title: 'Screening & Assessment'.tr,
+                  title: 'Self Assessment'.tr,
                   onPressed: () {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   }),
@@ -1739,7 +1740,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                   SizedBox(
                     width: 60.w,
                     child: Text(
-                      'Overwhelmed with emotions: Talk to a Solh counsellor NOW'
+                      'Overwhelmed with emotions: Talk to a Solh counselor NOW'
                           .tr,
                       style: SolhTextStyles.QS_body_1_bold.copyWith(
                           color: SolhColors.white),
@@ -1791,8 +1792,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 thickness: 1,
               ),
               Text(
-                'Start chatting for free right away, with a Solh counsellor.'
-                    .tr,
+                'Start chatting for free right away, with a Solh counselor.'.tr,
                 style: SolhTextStyles.QS_caption.copyWith(
                     color: SolhColors.white, fontSize: 9.sp),
                 textAlign: TextAlign.center,
@@ -1852,12 +1852,12 @@ class AlliedExperts extends StatelessWidget {
                   Navigator.pushNamed(
                       context, AppRoutes.viewAllAlliedCategories,
                       arguments: {
-                        "onTap": (value) {
+                        "onTap": (value, name) {
                           Navigator.pushNamed(
                               context, AppRoutes.viewAllAlliedExpert,
                               arguments: {
                                 "slug": value,
-                                "name": value,
+                                "name": name,
                                 "type": 'specialization',
                                 "enableAppbar": true
                               });
@@ -2090,14 +2090,6 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
   }
 }
 
-List list = [
-  0,
-  1,
-  2,
-  3,
-  4,
-];
-
 class AnonymousDialog extends StatelessWidget {
   AnonymousDialog({super.key});
   final ProfileController profileController = Get.find();
@@ -2127,7 +2119,7 @@ class AnonymousDialog extends StatelessWidget {
           height: 3.w,
         ),
         Text(
-          'Get connected to a Solh Counsellor'.tr,
+          'Get connected to a Solh counselor'.tr,
           style: SolhTextStyles.QS_body_semi_1,
         ),
         SizedBox(

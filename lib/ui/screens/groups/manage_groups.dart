@@ -123,7 +123,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.groupDetails,
                               arguments: {
-                                "group": groupList[index],
+                                "groupId": groupList[index].sId,
                                 "isJoined": true,
                               });
                           /*  Navigator.push(context,
@@ -138,7 +138,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                         groupName: groupList[index].groupName,
                         id: groupList[index].sId,
                         journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!.length,
+                        membersCount: groupList[index].groupMembers!,
                       );
                     },
                   )
@@ -163,7 +163,8 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.groupDetails,
                               arguments: {
-                                "group": groupList[index],
+                                "groupId": _groupController.createdGroupModel
+                                    .value.groupList![index].sId,
                                 "isJoined": true,
                               });
                           /* Navigator.push(context,
@@ -178,7 +179,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                         groupName: groupList[index].groupName,
                         id: groupList[index].sId,
                         journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!.length,
+                        membersCount: groupList[index].groupMembers!,
                       );
                     },
                   )
@@ -198,25 +199,23 @@ class _ManageGroupPageState extends State<ManageGroupPage>
                     itemCount: groupList.length,
                     itemBuilder: (context, index) {
                       return GroupCard(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.groupDetails,
-                              arguments: {
-                                "group": groupList[index],
-                              });
-                          /* Navigator.push(context,
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRoutes.groupDetails,
+                                arguments: {
+                                  "groupId": groupList[index].sId,
+                                });
+                            /* Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return GroupDetailsPage(
                               group: groupList[index],
                             );
                           })); */
-                        },
-                        groupMediaUrl: groupList[index].groupMediaUrl,
-                        groupName: groupList[index].groupName,
-                        id: groupList[index].sId,
-                        journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!.length +
-                            groupList[index].anonymousMembers!.length,
-                      );
+                          },
+                          groupMediaUrl: groupList[index].groupMediaUrl,
+                          groupName: groupList[index].groupName,
+                          id: groupList[index].sId,
+                          journalCount: groupList[index].journalCount,
+                          membersCount: groupList[index].groupMembers!);
                     },
                   )
                 : Center(

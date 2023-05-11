@@ -48,9 +48,7 @@ class SessionCookie {
         return false;
       } else {
         await SolhCacheManager.instance.writeJsonCache(
-            duration: Duration(minutes: 2),
-            json: response,
-            key: "sessionCookie");
+            duration: Duration(days: 6), json: response, key: "sessionCookie");
         print("Cached json writter");
       }
 

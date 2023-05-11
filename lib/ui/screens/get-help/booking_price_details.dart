@@ -8,7 +8,7 @@ import 'package:get/instance_manager.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
-import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/get-help/payment/payment_management.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';

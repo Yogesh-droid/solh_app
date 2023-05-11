@@ -2194,8 +2194,8 @@ int compression(int filesize) {
   if (filesize > 4485760) {
     return 20;
   } else if (filesize >= 1000000 && filesize <= 4485760) {
-    return 30;
+    return 60;
   } else {
-    return 40;
+    return 80;
   }
 }

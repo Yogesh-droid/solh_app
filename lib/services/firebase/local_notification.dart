@@ -121,7 +121,7 @@ class LocalNotification {
         case "chat":
           var response = await Get.find<ProfileController>().getMyProfile();
           if (response) {
-            Get.find<ChatListController>().sosChatListController();
+            Get.find<ChatListController>().sosChatListController(1);
             Get.find<ChatListController>().chatListController();
             globalNavigatorKey.currentState!.push(
               MaterialPageRoute(

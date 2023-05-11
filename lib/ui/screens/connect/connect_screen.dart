@@ -460,7 +460,7 @@ Widget getUnfriendAcceptPendingButton(
       width: 70.w,
       child: Container(
         child: Text(
-          'Cancle',
+          'Cancel',
           style: SolhTextStyles.GreenBorderButtonText,
         ),
       ),

@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
-import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bloc/user-bloc.dart';

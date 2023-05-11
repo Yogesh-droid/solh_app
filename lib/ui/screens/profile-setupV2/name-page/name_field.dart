@@ -126,6 +126,7 @@ class NameTextField extends StatelessWidget {
           height: 1.h,
         ),
         TextField(
+          maxLength: 20,
           controller: profileSetupController.firstNameController,
           decoration: TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
         ),
@@ -140,6 +141,7 @@ class NameTextField extends StatelessWidget {
           height: 1.h,
         ),
         TextField(
+          maxLength: 20,
           controller: profileSetupController.lastNameController,
           decoration: TextFieldStyles.greenF_greenBroadUF_4R(hintText: null),
         ),

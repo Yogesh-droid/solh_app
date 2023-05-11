@@ -5,9 +5,10 @@ class RestartWidget extends StatefulWidget {
 
   final Widget? child;
 
-  static bool restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
-    return true;
+  static void restartApp(BuildContext context) {
+    if (context.findAncestorStateOfType<_RestartWidgetState>() != null) {
+      context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+    }
   }
 
   @override

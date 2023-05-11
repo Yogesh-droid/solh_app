@@ -1,9 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/main.dart';
+import 'package:solh/routes/routes.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/exceptions.dart';
+import 'dart:developer';
 
 class Network {
 /*   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
@@ -38,7 +43,7 @@ class Network {
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
       http.Response apiResponse = await http.get(_uri, headers: {
-        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
+        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
       });
 
       switch (apiResponse.statusCode) {
@@ -66,8 +71,9 @@ class Network {
     try {
       Uri _uri = Uri.parse(url);
       print(url);
-      print(body);
-      print("token: ${userBlocNetwork.getSessionCookie}");
+      log(body.toString(), name: "body makeHttpPostRequest");
+      log("token: ${userBlocNetwork.getSessionCookie}",
+          name: "token makeHttpPostRequest");
       http.Response apiResponse = await http.post(_uri, body: body);
 
       if (apiResponse.statusCode == 201) {
@@ -225,7 +231,8 @@ class Network {
   }
 
   static Future<Map<String, dynamic>> makeGetRequestWithToken(
-      String url) async {
+    String url,
+  ) async {
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
@@ -233,7 +240,7 @@ class Network {
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
       http.Response apiResponse = await http.get(_uri, headers: {
-        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
+        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
       });
       print(jsonDecode(apiResponse.body));
       print(apiResponse.statusCode);
@@ -279,14 +286,18 @@ class Network {
     }*/
   }
 
-  static Future<Map<String, dynamic>> makeGetRequest(String url) async {
+  static Future<Map<String, dynamic>> makeGetRequest(String url,
+      [Map<String, String>? headers]) async {
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
 
-      print("token: ${userBlocNetwork.getSessionCookie}");
+      log("token: ${userBlocNetwork.getSessionCookie}", name: "makeGetRequest");
       print(url);
-      http.Response apiResponse = await http.get(_uri);
+      http.Response apiResponse = await http.get(
+        _uri,
+        headers: headers ?? null,
+      );
 
       switch (apiResponse.statusCode) {
         case 200:
@@ -299,6 +310,15 @@ class Network {
           return {};
       }
     } on SocketException {
+      globalNavigatorKey.currentState!.push(
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+              body: NoInternetPage(
+            onRetry: () {},
+            enableRetryButton: false,
+          )),
+        ),
+      );
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);

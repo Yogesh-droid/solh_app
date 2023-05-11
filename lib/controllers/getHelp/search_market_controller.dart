@@ -3,9 +3,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'dart:developer';
 
 class SearchMarketController extends GetxController {
   var isLoading = false.obs;
+  var isLoadingMoreClinician = false.obs;
   var suggestionList = [].obs;
   var searchMarketModel = SearchMarketModel().obs;
   var issueModel = SearchMarketModel().obs;
@@ -44,6 +46,7 @@ class SearchMarketController extends GetxController {
   Future<void> getSpecializationList(String slug,
       {String? c, String issue = ''}) async {
     isSearchingDoctors.value = true;
+    log("it ran1");
     String url;
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
@@ -58,7 +61,10 @@ class SearchMarketController extends GetxController {
     isSearchingDoctors.value = false;
   }
 
-  Future<void> getTopConsultants({String? c, String issue = ''}) async {
+  Future<void> getTopConsultants({
+    String? c,
+    String issue = '',
+  }) async {
     isSearchingDoctors.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
@@ -72,20 +78,37 @@ class SearchMarketController extends GetxController {
     isSearchingDoctors.value = false;
   }
 
-  Future<void> getIssueList(String slug, {String? c, String issue = ''}) async {
-    isSearchingDoctors.value = true;
-    String url;
-    if (c != null && c.isNotEmpty) {
-      url = APIConstants.api +
-          '/api/v1/get-help?specialization=$slug&country=$c&issue=$issue';
-    } else {
-      url = APIConstants.api +
-          '/api/v1/get-help?specialization=$slug&country=$country';
-    }
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
+  Future<void> getIssueList(String slug,
+      {String? c, String issue = '', required int page}) async {
+    try {
+      log("it ran2 $page");
+      page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
+      String url;
+      if (c != null && c.isNotEmpty) {
+        url = APIConstants.api +
+            '/api/v2/get-help?specialization=$slug&country=$c$issue&page=$page';
+      } else {
+        url = APIConstants.api +
+            '/api/v2/get-help?specialization=$slug&country=$country$issue&page=$page';
+      }
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
-    issueModel.value = SearchMarketModel.fromJson(map);
-    isSearchingDoctors.value = false;
+      if (page == 1) {
+        log("in if");
+        issueModel.value = SearchMarketModel.fromJson(map);
+      } else {
+        issueModel.value.provider!
+            .addAll(SearchMarketModel.fromJson(map).provider!.toList());
+
+        issueModel.refresh();
+      }
+
+      page > 1
+          ? isLoadingMoreClinician(false)
+          : isSearchingDoctors.value = false;
+    } catch (e) {
+      throw (e);
+    }
   }
 
   @override

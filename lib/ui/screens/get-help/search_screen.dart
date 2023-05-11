@@ -595,7 +595,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                            'Filter counsellors'.tr,
+                            'Filter counselor'.tr,
                             style: SolhTextStyles.JournalingUsernameText,
                           ),
                         ),

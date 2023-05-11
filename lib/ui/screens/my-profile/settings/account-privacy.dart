@@ -40,13 +40,13 @@ class AccountPrivacyScreen extends StatelessWidget {
                 children: [
                   Text(
                     "Delete Account".tr,
-                    style: TextStyle(fontSize: 16),
+                    style: SolhTextStyles.QS_body_1_bold,
                   ),
                   SizedBox(height: 0.5.h),
                   Text(
                     "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return."
                         .tr,
-                    style: TextStyle(color: Color(0xFFA6A6A6), fontSize: 14),
+                    style: SolhTextStyles.QS_body_2,
                   ),
                   SizedBox(
                     height: 3.h,
@@ -95,15 +95,13 @@ class AccountPrivacyScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               "Delete Account".tr,
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500),
+                                              style:
+                                                  SolhTextStyles.QS_body_1_bold,
                                             ),
                                             SizedBox(height: 2.h),
                                             Text(
                                               '''Are you sure ? Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. ''',
-                                              style: SolhTextStyles
-                                                  .ProfileSetupSubHeading,
+                                              style: SolhTextStyles.QS_body_2,
                                               textAlign: TextAlign.center,
                                             ),
                                             Spacer(),

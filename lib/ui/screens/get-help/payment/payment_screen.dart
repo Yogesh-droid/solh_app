@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/controllers/profile/appointment_controller.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';

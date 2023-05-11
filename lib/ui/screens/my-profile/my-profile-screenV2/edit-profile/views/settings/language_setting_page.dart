@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/restart_widget.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -30,6 +31,7 @@ class LanguageSettingPage extends StatelessWidget {
               await prefs.setString("locale", jsonEncode({"en": "us"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
+              RestartWidget.restartApp(context);
             },
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/eng_lang.svg'),
@@ -47,6 +49,7 @@ class LanguageSettingPage extends StatelessWidget {
               await prefs.setString("locale", jsonEncode({"hi": "IN"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
+              RestartWidget.restartApp(context);
             },
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/hindi_lang.svg'),

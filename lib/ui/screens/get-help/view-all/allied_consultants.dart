@@ -157,7 +157,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
         : widget.type == 'topconsultant'
             ? searchMarketController.getTopConsultants(c: defaultCountry)
             : searchMarketController.getIssueList(widget.slug ?? '',
-                c: defaultCountry);
+                page: 1, c: defaultCountry);
   }
 }
 

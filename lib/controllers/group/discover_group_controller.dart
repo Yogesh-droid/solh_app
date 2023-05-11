@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/group/group_detail_model.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/network/network.dart';
 
@@ -9,10 +12,11 @@ class DiscoverGroupController extends GetxController {
   var createdGroupModel = GetGroupResponseModel().obs;
   var joinedGroupModel = GetGroupResponseModel().obs;
   var discoveredGroupModel = GetGroupResponseModel().obs;
+  var groupDetailModel = GroupDetailModel().obs;
   List<String> groupsShownOnHome =
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
-  var groupDetail = GroupList().obs;
+  //var groupDetail = GroupList().obs;
   TabController? tabController;
   var isLoading = false.obs;
   var isDeletingGroup = false.obs;
@@ -27,29 +31,29 @@ class DiscoverGroupController extends GetxController {
 
   Future<void> getCreatedGroups() async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/created-groups');
+        '${APIConstants.api}/api/created-groupsv1');
     if (map['success']) {
       createdGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
-    createdGroupModel.value.groupList!.forEach((group) {
-      groupsShownOnHome.add(group.id!);
-    });
+    // createdGroupModel.value.groupList!.forEach((group) {
+    //   groupsShownOnHome.add(group.id!);
+    // });
   }
 
   Future<void> getJoinedGroups() async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/joined-groups');
+        '${APIConstants.api}/api/joined-groupsv1?pageNumber=1&limit=10');
     if (map['success']) {
       joinedGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
-    joinedGroupModel.value.groupList!.forEach((group) {
-      groupsShownOnHome.add(group.id!);
-    });
+    // joinedGroupModel.value.groupList!.forEach((group) {
+    //   groupsShownOnHome.add(group.id!);
+    // });
   }
 
   Future<void> getDiscoverGroups() async {
-    Map<String, dynamic> map =
-        await Network.makeGetRequestWithToken('${APIConstants.api}/api/group');
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        '${APIConstants.api}/api/groupv1?pageNumber=1&limit=20');
     if (map['success']) {
       discoveredGroupModel.value = GetGroupResponseModel.fromJson(map);
     }
@@ -65,16 +69,21 @@ class DiscoverGroupController extends GetxController {
   }
 
   Future<void> getGroupDetail(String groupId) async {
+    log(groupId);
     isLoading.value = true;
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/group/$groupId');
 
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/group/$groupId');
-
-    if (map['success']) {
-      print('This is map $map');
-      groupDetail.value = GroupList.fromJson(map['groupList'][0]);
-      print(groupDetail.value.groupMembers!.length);
+      if (map['success']) {
+        print('This is map $map');
+        groupDetailModel.value = GroupDetailModel.fromJson(map);
+      }
+    } catch (e) {
+      log(e.toString());
+      throw (e);
     }
+
     isLoading.value = false;
   }
 }

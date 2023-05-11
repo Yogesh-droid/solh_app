@@ -455,7 +455,7 @@ class OptionsColumn extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushNamed(context, AppRoutes.appointmentPage,
+            Navigator.pushNamed(context, AppRoutes.appointmentMenu,
                 arguments: {});
           },
           child: getOption(
@@ -552,7 +552,7 @@ class OptionsColumn extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              "Screening & Assessment".tr),
+              "Self Assessment".tr),
         ),
         SizedBox(
           height: 8,

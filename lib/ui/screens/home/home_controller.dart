@@ -41,7 +41,10 @@ class HomeController extends GetxController {
         for (int i = 0;
             i < homePageCarouselModel.value.packageCarouselList!.length;
             i++) {
-          dotList.value.add(i);
+          if (dotList.value.length <
+              homePageCarouselModel.value.packageCarouselList!.length) {
+            dotList.value.add(i);
+          }
         }
         isBannerLoading.value = false;
         return {"success": true};
