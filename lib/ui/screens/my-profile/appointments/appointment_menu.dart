@@ -40,16 +40,16 @@ class AppointmentMenu extends StatelessWidget {
           SizedBox(
             height: 14,
           ),
-          getMenuOption(
-              Icon(
-                Icons.self_improvement_outlined,
-                color: SolhColors.primary_green,
-              ),
-              'Allied Packages ',
-              'Yoga, dance, etc'),
-          SizedBox(
-            height: 14,
-          ),
+          // getMenuOption(
+          //     Icon(
+          //       Icons.self_improvement_outlined,
+          //       color: SolhColors.primary_green,
+          //     ),
+          //     'Allied Packages ',
+          //     'Yoga, dance, etc'),
+          // SizedBox(
+          //   height: 14,
+          // ),
           InkWell(
             onTap: () {
               Navigator.of(context).pushNamed(AppRoutes.profileTransfer);

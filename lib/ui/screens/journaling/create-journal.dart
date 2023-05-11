@@ -1821,7 +1821,10 @@ class GroupModalSheet extends StatelessWidget {
           discoverGroupController.joinedGroupModel.value.groupList!.isEmpty
               ? Container()
               : Expanded(
-                  child: ListView.builder(
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                            height: 5,
+                          ),
                       itemCount: discoverGroupController
                           .joinedGroupModel.value.groupList!.length,
                       itemBuilder: (context, index) {

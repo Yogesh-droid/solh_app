@@ -23,7 +23,7 @@ class SessionCookie {
     Map<String, dynamic>? cachedJson =
         await SolhCacheManager.instance.readJsonCache(key: "sessionCookie");
     print("createSessionCookie running $cachedJson");
-    if (cachedJson != null) {
+    if (cachedJson != null && cachedJson["newProfile"] == false) {
       response = cachedJson;
       userBlocNetwork.updateSessionCookie =
           response["details"]["sessionCookie"];
@@ -69,9 +69,7 @@ class SessionCookie {
       debugPrint("New session cookie: " + userBlocNetwork.getSessionCookie);
       debugPrint("*" * 30 + "\n");
     }
-    log(
-      response["newProfile"].toString(),
-    );
+    log(response["newProfile"].toString(), name: "newProfile");
     return response["newProfile"] ?? false;
   }
 }

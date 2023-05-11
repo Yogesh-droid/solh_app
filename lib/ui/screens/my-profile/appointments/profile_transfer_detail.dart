@@ -328,7 +328,7 @@ class ApprovalUI extends StatelessWidget {
               }),
             ],
           ),
-          DocumentsUI()
+          // DocumentsUI()
         ],
       ),
     );

@@ -65,7 +65,7 @@ void main() async {
       ),
     ));
     LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
-    log('${FirebaseAuth.instance.currentUser}  ${newUser} ${_initialAppData["isProfileCreated"]}',
+    log(' ${newUser} ${_initialAppData["isProfileCreated"]}',
         name: "currentUser");
   } else {
     log('${FirebaseAuth.instance.currentUser}', name: "currentUser");
@@ -121,7 +121,7 @@ class _SolhAppState extends State<SolhApp> {
   @override
   Widget build(BuildContext context) {
     log("${widget._isProfileCreated}", name: "isProfileCreated");
-    connectivityCheck(context);
+    // connectivityCheck(context);
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       print('This is First route ${widget._isProfileCreated}');
       return GetMaterialApp(

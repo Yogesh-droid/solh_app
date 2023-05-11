@@ -55,6 +55,14 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
     super.initState();
   }
 
+  Widget showInfoDialog() {
+    return Container(
+      color: Colors.black,
+      height: 100,
+      width: 100,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -157,21 +165,17 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                   'Search by Profession',
                   style: SolhTextStyles.QS_body_semi_1,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    logs.log("it ran");
-                    tooltipController.showTooltip;
-                  },
-                  child: JustTheTooltip(
-                    controller: tooltipController,
-                    content: Text("flutter pub add just_the_tooltip"),
-                    child: GestureDetector(
-                      onTap: () {
-                        logs.log("it ran");
-                        tooltipController.showTooltip;
+                IconButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return showInfoDialog();
                       },
-                      child: Icon(Icons.info),
-                    ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.info,
                   ),
                 )
               ],

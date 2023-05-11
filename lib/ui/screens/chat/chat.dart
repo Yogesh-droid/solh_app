@@ -454,7 +454,7 @@ class _MessageBoxState extends State<MessageBox> {
       decoration: BoxDecoration(
           color: SolhColors.white,
           border: Border.all(
-            color: SolhColors.primary_green,
+            color: SolhColors.white,
           ),
           borderRadius: BorderRadius.circular(22)),
       child: Padding(
@@ -466,6 +466,7 @@ class _MessageBoxState extends State<MessageBox> {
           children: [
             Expanded(
               child: TextField(
+                maxLines: null,
                 focusNode: widget.focus,
                 onChanged: ((value) {
                   service.typing(widget._sId,
@@ -484,38 +485,70 @@ class _MessageBoxState extends State<MessageBox> {
                 }),
                 controller: _controller.messageEditingController,
                 decoration: InputDecoration(
-                  border: InputBorder.none,
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: SolhColors.primary_green)),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(color: SolhColors.primary_green)),
+                  // border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      if (_controller.messageEditingController.text.trim() ==
+                          '') {
+                        return;
+                      } else {
+                        _controller.sendMessageController(
+                            message: _controller.messageEditingController.text,
+                            sId: widget._sId,
+                            autherType: 'users',
+                            ct: widget.isAnon == true
+                                ? 'sosChat'
+                                : (widget.chatType == 'sc' ? 'sc' : 'cc'),
+                            mediaType: '',
+                            mediaUrl: '',
+                            fileName: '',
+                            appointmentId: '',
+                            conversationType: 'text',
+                            authorId: profileController
+                                .myProfileModel.value.body!.user!.sId!);
+                      }
+                      chatListController.chatListController();
+                    },
+                    icon: Icon(
+                      Icons.send,
+                      color: SolhColors.primary_green,
+                    ),
+                  ),
                   hintText: 'Write message'.tr,
                 ),
               ),
             ),
             InkWell(
-              onTap: () {
-                if (_controller.messageEditingController.text.trim() == '') {
-                  return;
-                } else {
-                  _controller.sendMessageController(
-                      message: _controller.messageEditingController.text,
-                      sId: widget._sId,
-                      autherType: 'users',
-                      ct: widget.isAnon == true
-                          ? 'sosChat'
-                          : (widget.chatType == 'sc' ? 'sc' : 'cc'),
-                      mediaType: '',
-                      mediaUrl: '',
-                      fileName: '',
-                      appointmentId: '',
-                      conversationType: 'text',
-                      authorId: profileController
-                          .myProfileModel.value.body!.user!.sId!);
-                }
-                chatListController.chatListController();
-              },
-              child: Icon(
-                Icons.send,
-                color: SolhColors.primary_green,
-              ),
-            )
+                onTap: () {
+                  if (_controller.messageEditingController.text.trim() == '') {
+                    return;
+                  } else {
+                    _controller.sendMessageController(
+                        message: _controller.messageEditingController.text,
+                        sId: widget._sId,
+                        autherType: 'users',
+                        ct: widget.isAnon == true
+                            ? 'sosChat'
+                            : (widget.chatType == 'sc' ? 'sc' : 'cc'),
+                        mediaType: '',
+                        mediaUrl: '',
+                        fileName: '',
+                        appointmentId: '',
+                        conversationType: 'text',
+                        authorId: profileController
+                            .myProfileModel.value.body!.user!.sId!);
+                  }
+                  chatListController.chatListController();
+                },
+                child: Container())
           ],
         ),
       ),

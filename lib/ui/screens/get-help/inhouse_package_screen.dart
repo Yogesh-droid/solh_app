@@ -295,8 +295,7 @@ class ProfileDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FittedBox(
-          fit: BoxFit.fitWidth,
-          child: Image(image: NetworkImage(profile!.image!))),
+          fit: BoxFit.fill, child: Image(image: NetworkImage(profile!.image!))),
     );
   }
 
