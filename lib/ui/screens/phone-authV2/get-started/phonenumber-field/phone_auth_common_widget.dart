@@ -140,7 +140,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                                               "https://solhapp.com/terms-condition.html",
                                         )))),
                       TextSpan(
-                          text: '& Privicy Policies ',
+                          text: '& Privacy Policies ',
                           style: Theme.of(context).textTheme.bodyText1,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(

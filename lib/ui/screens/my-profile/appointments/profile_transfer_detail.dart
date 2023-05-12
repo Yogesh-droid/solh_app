@@ -264,18 +264,20 @@ class ApprovalUI extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(
-                        "I Approve Transfer of Following",
-                        style: SolhTextStyles.QS_body_2_bold,
+                      Expanded(
+                        child: Text(
+                          "There is a pending request for transfer of your case history & reports.",
+                          style: SolhTextStyles.QS_body_2_bold,
+                        ),
                       )
                     ],
                   ),
                 ),
               ),
-              getApprovalPointers("Psychological Score"),
-              getApprovalPointers("Mood Analysis"),
-              getApprovalPointers("Reports & History"),
-              getApprovalPointers("Data Related to your activity"),
+              // getApprovalPointers("Psychological Score"),
+              // getApprovalPointers("Mood Analysis"),
+              // getApprovalPointers("Reports & History"),
+              // getApprovalPointers("Data Related to your activity"),
             ]),
           ),
           SizedBox(
@@ -301,7 +303,7 @@ class ApprovalUI extends StatelessWidget {
                               color: SolhColors.white,
                               size: 15,
                             ),
-                            'Decline',
+                            'DECLINE',
                             SolhColors.pink224),
                       );
               }),
@@ -322,7 +324,7 @@ class ApprovalUI extends StatelessWidget {
                               color: SolhColors.white,
                               size: 15,
                             ),
-                            'Accept',
+                            'APPROVE',
                             SolhColors.primary_green),
                       );
               }),

@@ -885,7 +885,12 @@ class LikesModalSheet extends StatelessWidget {
                             itemCount: journalPageController
                                 .likedUserList.value.result!.data!.length,
                             itemBuilder: (context, index) {
-                              return InkWell(
+                              return journalPageController
+                                                        .likedUserList
+                                                        .value
+                                                        .result!
+                                                        .data![index]
+                                                        .user==null ? SizedBox(): InkWell(
                                 onTap: () {},
                                 child: Container(
                                   child: Padding(

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +21,7 @@ import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
@@ -55,11 +57,41 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
     super.initState();
   }
 
-  Widget showInfoDialog() {
-    return Container(
-      color: Colors.black,
-      height: 100,
-      width: 100,
+  Widget showInfoDialog(context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.only(top: 14),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                Container(
+                  height: 6,
+                  width: 30,
+                  decoration: BoxDecoration(
+                      color: SolhColors.grey,
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.cancel_sharp,
+                      size: 30,
+                      color: SolhColors.grey,
+                    ))
+              ],
+            ),
+            Html(
+                data: AppLocale.appLocale.languageCode == "hi"
+                    ? infoHtmlHindi
+                    : infoHtml),
+          ],
+        ),
+      ),
     );
   }
 
@@ -131,31 +163,61 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               ),
             ),
           ),
-          Container(
-              margin: EdgeInsets.only(bottom: 1.5.h),
-              child: Obx(() {
-                return Wrap(
-                  runSpacing: 5,
-                  children: getHelpController.issueList.value.map((issue) {
-                    return IssuesTile(
-                      title: issue.name ?? '',
-                      onPressed: () {
-                        bookAppointmentController.query = issue.name;
-                        Navigator.pushNamed(
-                            context, AppRoutes.consultantAlliedParent,
-                            arguments: {
-                              "slug": issue.slug ?? '',
-                              "type": 'issue',
-                              "enableAppbar": false
-                            });
-                        FirebaseAnalytics.instance.logEvent(
-                            name: 'IssueSearchTapped',
-                            parameters: {'Page': 'GetHelp'});
-                      },
+          Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(bottom: 1.5.h),
+                  child: Obx(() {
+                    return Wrap(
+                      runSpacing: 5,
+                      children: getHelpController.issueList.value.map((issue) {
+                        return IssuesTile(
+                          title: issue.name ?? '',
+                          onPressed: () {
+                            bookAppointmentController.query = issue.name;
+                            Navigator.pushNamed(
+                                context, AppRoutes.consultantAlliedParent,
+                                arguments: {
+                                  "slug": issue.slug ?? '',
+                                  "type": 'issue',
+                                  "enableAppbar": false
+                                });
+                            FirebaseAnalytics.instance.logEvent(
+                                name: 'IssueSearchTapped',
+                                parameters: {'Page': 'GetHelp'});
+                          },
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
-                );
-              })),
+                  })),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 7.w),
+                child: Row(
+                  children: [
+                    IssuesTile(
+                        title: "I don't know".tr,
+                        onPressed: (() {
+                          profileController.myProfileModel.value.body!.user!
+                                      .anonymous ==
+                                  null
+                              ? Navigator.pushNamed(
+                                  context, AppRoutes.anonymousProfile,
+                                  arguments: {
+                                      "formAnonChat": true,
+                                      "indexOfpage": 0,
+                                    })
+                              : Navigator.pushNamed(
+                                  context, AppRoutes.waitingScreen,
+                                  arguments: {
+                                      "formAnonChat": true,
+                                      "indexOfpage": 0,
+                                    });
+                        })),
+                  ],
+                ),
+              )
+            ],
+          ),
           GetHelpDivider(),
           Padding(
             padding: EdgeInsets.all(4.0.w),
@@ -167,15 +229,21 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                 ),
                 IconButton(
                   onPressed: () {
-                    showDialog(
+                    showModalBottomSheet(
+                      constraints: BoxConstraints(maxHeight: 70.h),
+                      isScrollControlled: true,
                       context: context,
+                      enableDrag: true,
+                      isDismissible: true,
                       builder: (context) {
-                        return showInfoDialog();
+                        return showInfoDialog(context);
                       },
                     );
                   },
                   icon: Icon(
                     Icons.info,
+                    size: 15,
+                    color: SolhColors.grey,
                   ),
                 )
               ],
@@ -1833,3 +1901,122 @@ class SolhVolunteers extends StatelessWidget {
   }
 }
  */
+
+String infoHtml =
+    '''<p><strong>Clinical psychologist-</strong> You go to them first for any problems with your mental health that you encounter on a regular basis. They will accurately diagnose your symptoms for you and then choose an appropriate course of action. If you have a serious mental health problem, they can refer you to a psychiatrist, who will prescribe you medication for the same. Many times they work with psychiatrist as medication and counseling together has a better effect on the client. They can treat-</p>
+<ol>
+  <li>Anxiety or depression</li>
+  <li>Temporary stress or adjustment difficulties</li>
+  <li>Difficulty sleeping</li>
+  <li>Mild obsessive-compulsive behaviors</li>
+  <li>Minor substance abuse or addiction</li>
+  <li>Relationship or family problems</li>
+  <li>Generalized anxiety disorder</li>
+  <li>Depression or bipolar disorder</li>
+  <li>Panic disorder or phobias</li>
+  <li>Obsessive-compulsive disorder</li>
+  <li>Post-traumatic stress disorder</li>
+  <li>Eating disorders</li>
+  <li>Moderate substance abuse or addiction</li>
+</ol>
+
+<p><strong>Psychiatrist-</strong> You go to them when your ability to function on a daily basis is severely hindered, such as when you experience hallucinations, delusions, or are completely hopeless. They offer diagnoses and prescribe medication. They typically collaborate with professional psychologists because therapy and medicine go hand in hand and have been shown to be the best course of action for the client's mental health. They provide treatment for-</p>
+<ol>
+  <li>Generalized anxiety disorder</li>
+  <li>Depression or bipolar disorder</li>
+  <li>Panic disorder or phobias</li>
+  <li>Obsessive-compulsive disorder</li>
+  <li>Post-traumatic stress disorder</li>
+  <li>Eating disorders</li>
+  <li>Moderate substance abuse or addiction</li>
+  <li>Schizophrenia or other psychotic disorders</li>
+  <li>Severe depression or bipolar disorder</li>
+  <li>Borderline personality disorder</li>
+  <li>Severe obsessive-compulsive disorder</li>
+  <li>Severe substance abuse or addiction</li>
+  <li>Suicidal thoughts or intentions</li>
+  <li>Severe trauma or PTSD</li>
+</ol>
+
+<p><strong>Counseling Psychologist-</strong> You consult them when something in your life or some thought process is troubling you enough to feel good emotions and it is somewhere hampering your productivity too. They treat-</p>
+<ol>
+  <li>Feeling of loneliness</li>
+  <li>Despair</li>
+  <li>Guilt</li>
+  <li>Career issues</li>
+  <li>Mild anxiety or depression</li>
+  <li>Temporary stress or adjustment difficulties</li>
+  <li>Difficulty sleeping</li>
+  <li>Mild obsessive-compulsive behaviors</li>
+  <li>Minor substance abuse or addiction</li>
+  <li>Relationship or family problems</li>
+</ol>
+
+<p><strong>Counselor -</strong> It includes professionals who are specialized in a particular domain of counseling.</p>
+
+<p>It includes -</p>
+<ul>
+  <li>Career and Educational Counselor</li>
+  <li>School counselor</li>
+  <li>Family and marriage Counselor</li>
+  <li>Relationship Counselor</li
+''';
+
+String infoHtmlHindi =
+    ''' <p><strong>क्लिनिकल साइकोलॉजिस्ट-</strong> आप अपने मानसिक स्वास्थ्य के साथ किसी भी समस्या के लिए सबसे पहले उनके पास जाते हैं जिसका आप नियमित रूप से सामना करते हैं। वे आपके लिए आपके लक्षणों का सटीक निदान करेंगे और फिर उचित कार्रवाई का चयन करेंगे। यदि आपको कोई गंभीर मानसिक स्वास्थ्य समस्या है, तो वे आपको साइकेट्रिस्ट के पास भेज सकते हैं, जो आपको इसके लिए दवा लिखेंगे। कई बार वे साइकेट्रिस्ट के साथ इसी लिए काम करते हैं क्योंकि दवा और काउन्सलिंग एक साथ ग्राहक पर बेहतर प्रभाव डालते हैं। वे इन सभी का इलाज कर सकते हैं :-</p>
+<ol>
+  <li>एंग्जायटी और डिप्रेशन</li>
+  <li> अस्थायी तनाव या समायोजन कठिनाइयाँ</li>
+  <li>सोने में कठिनाई</li>
+  <li>हलके ऑब्सेसिव-कंपल्सिव व्यवहार</li>
+  <li>नशीले पदार्थों का सेवन या लत की मामूली आदत</li>
+  <li>रिश्ते या पारिवारिक समस्याएं</li>
+  <li>जनरलाइज्ड एंग्जायटी डिसऑर्डर</li>
+  <li>डिप्रेशन और बाइपोलर डिसऑर्डर </li>
+  <li>पैनिक डिसऑर्डर और फोबिया</li>
+  <li>ऑब्सेसिव-कंपल्सिव डिसऑर्डर</li>
+  <li>पोस्ट-ट्रॉमेटिक स्ट्रेस डिसऑर्डर</li>
+  <li>ईटिंग डिसऑर्डर</li>
+  <li>कभी कभी नशीले पदार्थों का सेवन या लत</li>
+</ol>
+
+<p><strong> साइकेट्रिस्ट -</strong> आप उनके पास तब जाते हैं जब आपकी दैनिक आधार पर कार्य करने की क्षमता गंभीर रूप से बाधित होती है, जैसे कि जब आप हैलुसिनेशन या भ्रम का अनुभव करते हैं, या फिर पूरी तरह से निराश हो जाते हैं। वे निदान की पेशकश करते हैं और दवा लिखते हैं। वे आम तौर पर पेशेवर साइकोलोजिस्ट के साथ सहयोग करते हैं क्योंकि थेरेपी और दवा साथ-साथ चलते हैं जो की ग्राहक के मानसिक स्वास्थ्य के लिए सबसे अच्छा तरीका माना गया है। वे इसके लिए उपचार प्रदान करते हैं-</p>
+<ol>
+  <li>जनरलाइज्ड एंग्जायटी डिसऑर्डर</li>
+  <li>डिप्रेशन और बाइपोलर डिसऑर्डर</li>
+  <li>पैनिक डिसऑर्डर और फोबिया</li>
+  <li>ऑब्सेसिव-कंपल्सिव डिसऑर्डर</li>
+  <li>पोस्ट-ट्रॉमेटिक स्ट्रेस डिसऑर्डर</li>
+  <li>ईटिंग डिसऑर्डर</li>
+  <li>कभी कभी नशीले पदार्थों का सेवन या लत</li>
+  <li>सिजोफ्रेनिया और दुसरे सायकोटिक डिसऑर्डर</li>
+  <li>गंभीर डिप्रेशन और बाइपोलर डिसऑर्डर</li>
+  <li>बॉर्डरलाइन पर्सनैलिटी डिसॉर्डर</li>
+  <li>गंभीर ऑब्सेसिव-कंपल्सिव डिसऑर्डर</li>
+  <li>नशीले पदार्थों के सेवन या लत की गंभीर आदत </li>
+  <li>आत्महत्या के विचार या इरादे</li>
+  <li>गंभीर ट्रॉमा और PTSD</li>
+</ol>
+
+<p><strong>काउन्सलिंग साइकोलोजिस्ट -</strong> आप उनसे तब कंसल्ट करते हैं जब आपके जीवन में कुछ मुद्दे या कुछ विचार प्रक्रिया आपको अच्छी भावनाओं को महसूस करने के लिए काफी परेशान कर रही होती है जिससे कहीं न कहीं आपकी उत्पादकता भी बाधित होती है। वे इन सब इलाज करते हैं-</p>
+<ol>
+  <li>अकेलापन महसूस होना</li>
+  <li>निराशा</li>
+  <li>गिल्ट/ दोषी महसूस करना</li>
+  <li>करियर की समस्याएंs</li>
+  <li>हलकी एंग्जायटी और डिप्रेशन</li>
+  <li>अस्थायी स्ट्रेस या समायोजन की कठिनाइयाँ</li>
+  <li>सोने में कठिनाई</li>
+  <li>हलके ऑब्सेसिव-कंपल्सिव व्यवहार</li>
+  <li>नशीले पदार्थों का सेवन या लत की मामूली आदत</li>
+  <li>रिश्ते या पारिवारिक समस्याएं</li>
+</ol>
+
+<p><strong>काउंसलर  -</strong> इसमें ऐसे पेशेवर शामिल होते हैं जो काउन्सलिंग के एक विशेष क्षेत्र में विशिष्ट होते हैं।</p>
+
+<p>इनमें शामिल हैं  -</p>
+<ul>
+  <li> स्पेशल एडुकेटर</li>
+  <li>स्कूल काउंसलर</li>
+  <li>फैमिली एंड मैरिज काउंसलर</li>
+  <li>रिलेशनशिप काउंसलर</li''';

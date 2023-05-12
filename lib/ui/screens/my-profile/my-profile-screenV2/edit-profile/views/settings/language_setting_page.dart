@@ -31,7 +31,7 @@ class LanguageSettingPage extends StatelessWidget {
               await prefs.setString("locale", jsonEncode({"en": "us"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
-              RestartWidget.restartApp(context);
+              // RestartWidget.restartApp(context);
             },
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/eng_lang.svg'),
@@ -49,7 +49,7 @@ class LanguageSettingPage extends StatelessWidget {
               await prefs.setString("locale", jsonEncode({"hi": "IN"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
-              RestartWidget.restartApp(context);
+              // RestartWidget.restartApp(context);
             },
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/hindi_lang.svg'),
@@ -61,7 +61,9 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(const Locale('fr', 'FR'));
+              Get.updateLocale(
+                const Locale('fr', 'FR'),
+              );
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
               await prefs.setString("locale", jsonEncode({"fr": "FR"}));
@@ -84,7 +86,10 @@ class LanguageSettingPage extends StatelessWidget {
               Get.updateLocale(const Locale('ar', 'sa'));
               final SharedPreferences prefs =
                   await SharedPreferences.getInstance();
-              await prefs.setString("locale", jsonEncode({"ar": "sa"}));
+              await prefs.setString(
+                "locale",
+                jsonEncode({"ar": "sa"}),
+              );
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
             },

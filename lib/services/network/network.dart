@@ -10,6 +10,8 @@ import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'dart:developer';
 
+import 'package:solh/widgets_constants/constants/locale.dart';
+
 class Network {
 /*   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
   try {
@@ -236,12 +238,14 @@ class Network {
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
-
+      Map<String, String> headers = {
+        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
+        "Accept-Language": AppLocale.appLocale.languageCode
+      };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
-      http.Response apiResponse = await http.get(_uri, headers: {
-        "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
-      });
+      log(headers.toString(), name: "headers");
+      http.Response apiResponse = await http.get(_uri, headers: headers);
       print(jsonDecode(apiResponse.body));
       print(apiResponse.statusCode);
       switch (apiResponse.statusCode) {
@@ -310,15 +314,15 @@ class Network {
           return {};
       }
     } on SocketException {
-      globalNavigatorKey.currentState!.push(
-        MaterialPageRoute(
-          builder: (context) => Scaffold(
-              body: NoInternetPage(
-            onRetry: () {},
-            enableRetryButton: false,
-          )),
-        ),
-      );
+      // globalNavigatorKey.currentState!.push(
+      //   MaterialPageRoute(
+      //     builder: (context) => Scaffold(
+      //         body: NoInternetPage(
+      //       onRetry: () {},
+      //       enableRetryButton: false,
+      //     )),
+      //   ),
+      // );
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);

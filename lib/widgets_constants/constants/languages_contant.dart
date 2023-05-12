@@ -474,7 +474,8 @@ class Languages extends Translations {
           "Tell Us More": "हमें और अधिक बताएँ",
           "Write message": "संदेश लिखें",
           "Write here": "यहाँ लिखें",
-          "Chats": "चैट"
+          "Chats": "चैट",
+          "I don't know": "मुझें नहीं पता",
         },
         "en_us": en_us_map,
         "fr_FR": fr_FR_map,

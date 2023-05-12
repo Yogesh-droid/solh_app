@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,6 +37,7 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -373,13 +375,74 @@ class _HomePageState extends State<HomePage> {
                       Icons.arrow_forward,
                       color: SolhColors.primary_green,
                       size: 14,
-                    )
+                    ),
                   ],
                 ),
               ),
             ),
           ),
           getIssueUI(bookAppointmentController, getHelpController, context),
+          GetHelpDivider(),
+          Padding(
+            padding: EdgeInsets.all(4.0.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Search by Profession',
+                      style: SolhTextStyles.QS_body_semi_1,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          constraints: BoxConstraints(maxHeight: 70.h),
+                          isScrollControlled: true,
+                          context: context,
+                          enableDrag: true,
+                          isDismissible: true,
+                          builder: (context) {
+                            return showInfoDialog(context);
+                          },
+                        );
+                      },
+                      icon: Icon(
+                        Icons.info,
+                        size: 15,
+                        color: SolhColors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+                InkWell(
+                  onTap: () {
+                    _bottomNavigatorController.activeIndex.value = 2;
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Get Help'.tr,
+                          style: GoogleFonts.signika(
+                            color: SolhColors.primary_green,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: SolhColors.primary_green,
+                          size: 14,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SearchByProfesssionUI(),
           GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
               ? AlliedExperts(onTap: (value, name) {
@@ -481,7 +544,7 @@ class _HomePageState extends State<HomePage> {
       if (DateTime.fromMillisecondsSinceEpoch(
                   prefs.getInt('lastDateShownAnnouncement')!)
               .day ==
-          DateTime.now().day) {
+          DateTime.now().second) {
         return;
       } else if (value['media'] == null) {
         return;
@@ -494,6 +557,7 @@ class _HomePageState extends State<HomePage> {
                   onTap: () async {
                     print('it tapped 1');
                     if (value["redirectTo"] == "gethelp") {
+                      Navigator.of(context).pop();
                       Get.find<BottomNavigatorController>().activeIndex.value =
                           2;
                     } else if (value["redirectTo"] == "createpost") {
@@ -511,6 +575,13 @@ class _HomePageState extends State<HomePage> {
                       await Navigator.pushNamed(
                           context, AppRoutes.inhousePackage,
                           arguments: {"id": value["redirectKey"]});
+                    } else if (value["redirectTo"] == "group") {
+                      Navigator.of(context).pop();
+                      await Navigator.pushNamed(context, AppRoutes.groupDetails,
+                          arguments: {
+                            "groupId": value["redirectKey"],
+                            // "isJoined": false
+                          });
                     }
                   },
                   child: Container(
@@ -545,6 +616,7 @@ class _HomePageState extends State<HomePage> {
               child: InkWell(
                 onTap: () async {
                   if (value["redirectTo"] == "gethelp") {
+                    Navigator.of(context).pop();
                     Get.find<BottomNavigatorController>().activeIndex.value = 2;
                   } else if (value["redirectTo"] == "createpost") {
                     Navigator.of(context).pop();
@@ -558,6 +630,13 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).pop();
                     await Navigator.pushNamed(context, AppRoutes.inhousePackage,
                         arguments: {"id": value["redirectKey"]});
+                  } else if (value["redirectTo"] == "group") {
+                    Navigator.of(context).pop();
+                    await Navigator.pushNamed(context, AppRoutes.groupDetails,
+                        arguments: {
+                          "groupId": value["redirectKey"],
+                          // "isJoined": false
+                        });
                   }
                 },
                 child: Container(
@@ -598,11 +677,19 @@ class _HomePageState extends State<HomePage> {
         print('it tapped 3');
         print(value["redirectKey"]);
         if (value["redirectTo"] == "gethelp") {
+          Navigator.of(context).pop();
           Get.find<BottomNavigatorController>().activeIndex.value = 2;
         } else if (value["redirectTo"] == "createpost") {
           Navigator.of(context).pop();
           await Navigator.pushNamed(context, AppRoutes.createJournal);
           Get.find<BottomNavigatorController>().activeIndex.value = 1;
+        } else if (value["redirectTo"] == "group") {
+          Navigator.of(context).pop();
+          await Navigator.pushNamed(context, AppRoutes.groupDetails,
+              arguments: {
+                "groupId": value["redirectKey"],
+                // "isJoined": false,
+              });
         } else if (value["redirectTo"] == "explorethyself") {
           Navigator.of(context).pop();
           await Navigator.pushNamed(context, AppRoutes.psychologyTest);
@@ -2196,4 +2283,156 @@ class AnonymousDialog extends StatelessWidget {
       ]),
     );
   }
+}
+
+class SearchByProfesssionUI extends StatelessWidget {
+  SearchByProfesssionUI({super.key});
+  GetHelpController getHelpController = Get.find();
+  BookAppointmentController bookAppointmentController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      return getHelpController
+                  .getSpecializationModel.value.specializationList !=
+              null
+          ? Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 2.5.w,
+                    crossAxisSpacing: 2.5.w,
+                    crossAxisCount: 2,
+                    childAspectRatio: 2),
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: getHelpController
+                    .getSpecializationModel.value.specializationList!.length,
+                shrinkWrap: true,
+                itemBuilder: (_, index) => GestureDetector(
+                  onTap: () {
+                    bookAppointmentController.query = getHelpController
+                        .getSpecializationModel
+                        .value
+                        .specializationList![index]
+                        .name;
+                    Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                        arguments: {
+                          "slug": getHelpController.getSpecializationModel.value
+                                  .specializationList![index].slug ??
+                              '',
+                          "type": 'specialization',
+                          "name": getHelpController.getSpecializationModel.value
+                                  .specializationList![index].name ??
+                              ''
+                        });
+                    FirebaseAnalytics.instance.logEvent(
+                        name: 'SearhSpecialityTapped',
+                        parameters: {'Page': 'GetHelp'});
+                  },
+                  child: Container(
+                    height: 1.h,
+                    width: 10.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Color(0xFFEFEFEF)),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          child: CircleAvatar(
+                            radius: 8.w,
+                            child: CircleAvatar(
+                              radius: 7.8.w,
+                              backgroundColor: Colors.white,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  getHelpController
+                                          .getSpecializationModel
+                                          .value
+                                          .specializationList![index]
+                                          .displayImage ??
+                                      ''),
+                              /* child: CachedNetworkImage(
+                                      imageUrl: getHelpController
+                                              .getSpecializationModel
+                                              .value
+                                              .specializationList![index]
+                                              .displayImage ??
+                                          '',
+                                      fit: BoxFit.fill,
+                                      placeholder: (context, url) =>
+                                          Shimmer.fromColors(
+                                              child: Container(
+                                                height: 1.h,
+                                                width: 1.w,
+                                                color: Colors.grey,
+                                              ),
+                                              baseColor: Colors.grey,
+                                              highlightColor: Colors.white),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(
+                                        Icons.person,
+                                        size: 50,
+                                        color: Colors.grey,
+                                      ),
+                                    ), */
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        Container(
+                          width: 25.w,
+                          child: Text(
+                            getHelpController.getSpecializationModel.value
+                                    .specializationList![index].name ??
+                                '',
+                            style: SolhTextStyles.QS_cap_semi,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : Container();
+    });
+  }
+}
+
+Widget showInfoDialog(context) {
+  log(AppLocale.appLocale.languageCode);
+  return SingleChildScrollView(
+    child: Container(
+      padding: EdgeInsets.only(top: 14),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              Container(
+                height: 6,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: SolhColors.grey,
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.cancel_sharp,
+                    size: 30,
+                    color: SolhColors.grey,
+                  ))
+            ],
+          ),
+          Html(
+              data: AppLocale.appLocale.languageCode == "hi"
+                  ? infoHtmlHindi
+                  : infoHtml),
+        ],
+      ),
+    ),
+  );
 }
