@@ -544,7 +544,7 @@ class _HomePageState extends State<HomePage> {
       if (DateTime.fromMillisecondsSinceEpoch(
                   prefs.getInt('lastDateShownAnnouncement')!)
               .day ==
-          DateTime.now().second) {
+          DateTime.now().day) {
         return;
       } else if (value['media'] == null) {
         return;

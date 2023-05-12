@@ -44,13 +44,13 @@ class SearchMarketController extends GetxController {
   }
 
   Future<void> getSpecializationList(String slug,
-      {String? c, String issue = ''}) async {
+      {String? c, String issue = '', String? page}) async {
     isSearchingDoctors.value = true;
     log("it ran1");
     String url;
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
-          '/api/v1/get-help?specialization=$slug&country=$c&issue=$issue';
+          '/api/v2/get-help?specialization=$slug&country=$c$issue&page=$page';
     } else {
       url = APIConstants.api +
           '/api/v1/get-help?specialization=$slug&country=$country';
