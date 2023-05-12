@@ -263,6 +263,9 @@ class AlliedConsultantTile extends StatelessWidget {
                         prefix ?? '',
                         style: SolhTextStyles.QS_body_2_semi,
                       ),
+                      SizedBox(
+                        width: 4,
+                      ),
                       Text(
                         name ?? '',
                         style: SolhTextStyles.QS_body_2_semi,
