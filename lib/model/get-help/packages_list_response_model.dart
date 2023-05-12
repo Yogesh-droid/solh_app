@@ -29,6 +29,7 @@ class FinalResult {
   int? numberOfConsultations;
   String? rating;
   String? posts;
+  String? prefix;
   String? bio;
   String? previewVideo;
   String? isVerified;
@@ -39,6 +40,7 @@ class FinalResult {
       {this.name,
       this.id,
       this.profession,
+      this.prefix,
       this.experience,
       this.numberOfConsultations,
       this.rating,
@@ -54,6 +56,7 @@ class FinalResult {
     id = json['ownerId'];
     profession = json['profession'];
     experience = json['experience'];
+    prefix = json['prefix'];
     numberOfConsultations = json['numberOfConsultations'];
     rating = json['rating'];
     posts = json['posts'];

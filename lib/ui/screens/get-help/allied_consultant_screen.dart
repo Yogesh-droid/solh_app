@@ -293,10 +293,17 @@ class ProfileDetails extends StatelessWidget {
           children: [
             SizedBox(
               width: 180,
-              child: Text(
-                profile!.name ?? '',
-                style:
-                    SolhTextStyles.QS_body_1_bold.copyWith(color: Colors.white),
+              child: Row(
+                children: [
+                  Text(
+                    profile!.prefix ?? '',
+                  ),
+                  Text(
+                    profile!.name ?? '',
+                    style: SolhTextStyles.QS_body_1_bold.copyWith(
+                        color: Colors.white),
+                  ),
+                ],
               ),
             ),
             Text(profile!.profession ?? '',

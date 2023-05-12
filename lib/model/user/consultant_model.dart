@@ -95,7 +95,7 @@ class Provder {
     postCount = json['postCount'];
     likeCount = json['likeCount'];
     ratingCount = json['ratingCount'];
-    // prefix = json['prefix'];
+    prefix = json['prefix'];
     profession = json['profession'];
   }
 
