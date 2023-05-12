@@ -139,7 +139,8 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                 children: [
                   Text(
                     _controller
-                        .consultantModelController.value.provder!.prefix!,
+                            .consultantModelController.value.provder!.prefix ??
+                        '',
                     style: SolhTextStyles.QS_body_1_bold.copyWith(
                         color: SolhColors.white),
                   ),
