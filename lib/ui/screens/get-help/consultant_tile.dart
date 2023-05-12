@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -42,6 +44,7 @@ class ConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log("$currency currency");
     return Column(
       children: [
         InkWell(

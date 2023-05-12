@@ -109,7 +109,7 @@ class Languages extends Translations {
           "Details": "डिटेल्स",
           "Paid": "भुगतान किया गया",
           "Consultation Fee": "कंसल्टेशन फीस",
-          "Starting @": "शुरुआत",
+          "Starting @": "शुरुआत @",
           "Show More": "और दिखाए",
           "Show less": "कम दिखाएं",
           "No Consultant available for your country":
