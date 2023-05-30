@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
+import 'package:solh/ui/live_stream/live_stream.dart';
+import 'package:solh/ui/live_stream/live_stream_waiting.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -159,6 +161,10 @@ class AppRoutes {
   /// Chat anonymously///
   static const String chatAnonIssues = '/chatAnonIssues';
   static const String waitingScreen = '/waitingScreen';
+
+  /// Live Stream
+  static const String liveStream = '/liveStream';
+  static const String liveStreamWaiting = '/liveStreamWaiting';
 
   //setting
   static const String languageSettingPage = '/languageSettingPage';
@@ -359,6 +365,12 @@ class RouteGenerator {
       case AppRoutes.profileTransferDetail:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransferDetail()));
+      case AppRoutes.liveStream:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                LiveStream(args: args as Map<String, dynamic>)));
+      case AppRoutes.liveStreamWaiting:
+        return MaterialPageRoute(builder: ((context) => LiveStreamWaiting()));
 
       default:
         return MaterialPageRoute(

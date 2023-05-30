@@ -220,7 +220,7 @@ class Network {
 
     var response = await request.send();
     var apiResponse = jsonDecode(await response.stream.bytesToString());
-    print(apiResponse);
+    log(apiResponse.toString(), name: "apiRespone");
     if (response.statusCode == 200)
       return {
         "success": true,

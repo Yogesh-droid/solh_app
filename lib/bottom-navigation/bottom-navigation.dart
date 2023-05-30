@@ -532,12 +532,12 @@ class _MasterScreen2State extends State<MasterScreen2>
                           Navigator.pushNamed(
                               context, AppRoutes.viewAllAlliedCategories,
                               arguments: {
-                                "onTap": (value) {
+                                "onTap": (value, name) {
                                   Navigator.pushNamed(
                                       context, AppRoutes.viewAllAlliedExpert,
                                       arguments: {
                                         "slug": value,
-                                        "name": value,
+                                        "name": name,
                                         "type": 'specialization',
                                         "enableAppbar": true
                                       });

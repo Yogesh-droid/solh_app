@@ -573,6 +573,27 @@ class OptionsColumn extends StatelessWidget {
               "Know Us More".tr),
         ),
         SizedBox(
+          height: 8,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              AppRoutes.liveStreamWaiting,
+            );
+          },
+          child: getOption(
+              Icon(
+                Icons.live_tv,
+                color: SolhColors.primary_green,
+                size: 20,
+              ),
+              'Go Live'.tr),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        SizedBox(
           height: 40,
         ),
         Row(

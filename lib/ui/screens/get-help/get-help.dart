@@ -6,7 +6,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:just_the_tooltip/just_the_tooltip.dart';
+
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -46,7 +46,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
 
   ProfileController profileController = Get.find();
   HomeController homeController = Get.find();
-  final tooltipController = JustTheController();
 
   @override
   void initState() {
@@ -75,14 +74,15 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                       borderRadius: BorderRadius.circular(8)),
                 ),
                 IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.cancel_sharp,
-                      size: 30,
-                      color: SolhColors.grey,
-                    ))
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.cancel_sharp,
+                    size: 30,
+                    color: SolhColors.grey,
+                  ),
+                )
               ],
             ),
             Html(

@@ -524,6 +524,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.7"
+  flutter_speed_dial:
+    dependency: "direct main"
+    description:
+      name: flutter_speed_dial
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.2.0"
   flutter_stripe:
     dependency: "direct main"
     description:
@@ -716,13 +723,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.7.0"
-  just_the_tooltip:
-    dependency: "direct main"
-    description:
-      name: just_the_tooltip
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.12"
   lint:
     dependency: transitive
     description:

@@ -720,20 +720,27 @@ class _JournalTileState extends State<JournalTile> {
                                                 .selectedGroupId.value.length ==
                                             0
                                     ? {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.groupDetails,
-                                            arguments: {
-                                              "group": GroupList(
-                                                sId: widget
+
+                                       Navigator.pushNamed(context, AppRoutes.groupDetails,
+                              arguments: {
+                                "groupId":widget
                                                     ._journalModel!.group!.sId,
-                                                groupName: widget._journalModel!
-                                                    .group!.groupName,
-                                                groupMediaUrl: widget
-                                                    ._journalModel!
-                                                    .group!
-                                                    .groupImage,
-                                              ),
-                                            })
+                                "isJoined": true,
+                              })
+                                        // Navigator.pushNamed(
+                                        //     context, AppRoutes.groupDetails,
+                                        //     arguments: {
+                                        //       "group": GroupList(
+                                        //         sId: widget
+                                        //             ._journalModel!.group!.sId,
+                                        //         groupName: widget._journalModel!
+                                        //             .group!.groupName,
+                                        //         groupMediaUrl: widget
+                                        //             ._journalModel!
+                                        //             .group!
+                                        //             .groupImage,
+                                        //       ),
+                                        //     })
                                       }
                                     : await connectionController.addConnection(
                                         widget._journalModel!.postedBy!.sId!,

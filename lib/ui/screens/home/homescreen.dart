@@ -26,6 +26,8 @@ import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
+import 'package:solh/ui/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+import 'package:solh/ui/live_stream/live_stream_for_user_card.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
@@ -87,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
   final HomeController homeController = Get.find();
+  LiveStreamController liveStreamController = Get.put(LiveStreamController());
 
   late bool isMoodMeterShown;
 
@@ -100,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
       openMoodMeter();
       getTrendingDecoration();
       homeController.getHomeCarousel();
+      liveStreamController.getLiveStreamForUserData();
       Prefs.setBool("isProfileCreated", true);
     }
   }
@@ -140,11 +144,11 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } else {
       // await moodMeterController.getMoodList();
-      showGeneralDialog(
-          context: context,
-          pageBuilder: (context, animation, secondaryAnimation) {
-            return Scaffold(body: MoodMeter());
-          });
+      // showGeneralDialog(
+      //     context: context,
+      //     pageBuilder: (context, animation, secondaryAnimation) {
+      //       return Scaffold(body: MoodMeter());
+      //     });
 
       prefs.setBool('moodMeterShown', true);
       prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
@@ -236,7 +240,9 @@ class _HomePageState extends State<HomePage> {
               // );
             },
           ),
-          GetHelpDivider(),
+
+          LiveStreamForUserCard(),
+
           SizedBox(
             height: 10,
           ),
@@ -544,7 +550,7 @@ class _HomePageState extends State<HomePage> {
       if (DateTime.fromMillisecondsSinceEpoch(
                   prefs.getInt('lastDateShownAnnouncement')!)
               .day ==
-          DateTime.now().day) {
+          DateTime.now().second) {
         return;
       } else if (value['media'] == null) {
         return;
@@ -582,6 +588,15 @@ class _HomePageState extends State<HomePage> {
                             "groupId": value["redirectKey"],
                             // "isJoined": false
                           });
+                    } else if (value["redirectTo"] == "knowusmore") {
+                      Navigator.of(context).pop();
+                      await Navigator.pushNamed(
+                        context, AppRoutes.videoPlaylist,
+                        // arguments: {
+                        //   "groupId": value["redirectKey"],
+                        //   // "isJoined": false
+                        // }
+                      );
                     }
                   },
                   child: Container(
@@ -592,13 +607,14 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                icon: Icon(Icons.close),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              )),
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
                           Expanded(child: announcementMedia(value))
                         ]),
                   ),
@@ -609,57 +625,57 @@ class _HomePageState extends State<HomePage> {
             'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
       }
     } else {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return Dialog(
-              child: InkWell(
-                onTap: () async {
-                  if (value["redirectTo"] == "gethelp") {
-                    Navigator.of(context).pop();
-                    Get.find<BottomNavigatorController>().activeIndex.value = 2;
-                  } else if (value["redirectTo"] == "createpost") {
-                    Navigator.of(context).pop();
-                    await Navigator.pushNamed(context, AppRoutes.createJournal);
-                    Get.find<BottomNavigatorController>().activeIndex.value = 1;
-                  } else if (value["redirectTo"] == "explorethyself") {
-                    Navigator.of(context).pop();
-                    await Navigator.pushNamed(
-                        context, AppRoutes.psychologyTest);
-                  } else if (value["redirectTo"] == "inhousepackages") {
-                    Navigator.of(context).pop();
-                    await Navigator.pushNamed(context, AppRoutes.inhousePackage,
-                        arguments: {"id": value["redirectKey"]});
-                  } else if (value["redirectTo"] == "group") {
-                    Navigator.of(context).pop();
-                    await Navigator.pushNamed(context, AppRoutes.groupDetails,
-                        arguments: {
-                          "groupId": value["redirectKey"],
-                          // "isJoined": false
-                        });
-                  }
-                },
-                child: Container(
-                  height: 595,
-                  width: 375,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            )),
-                        Expanded(child: announcementMedia(value))
-                      ]),
-                ),
-              ),
-            );
-          });
+      // showDialog(
+      //     context: context,
+      //     builder: (context) {
+      //       return Dialog(
+      //         child: InkWell(
+      //           onTap: () async {
+      //             if (value["redirectTo"] == "gethelp") {
+      //               Navigator.of(context).pop();
+      //               Get.find<BottomNavigatorController>().activeIndex.value = 2;
+      //             } else if (value["redirectTo"] == "createpost") {
+      //               Navigator.of(context).pop();
+      //               await Navigator.pushNamed(context, AppRoutes.createJournal);
+      //               Get.find<BottomNavigatorController>().activeIndex.value = 1;
+      //             } else if (value["redirectTo"] == "explorethyself") {
+      //               Navigator.of(context).pop();
+      //               await Navigator.pushNamed(
+      //                   context, AppRoutes.psychologyTest);
+      //             } else if (value["redirectTo"] == "inhousepackages") {
+      //               Navigator.of(context).pop();
+      //               await Navigator.pushNamed(context, AppRoutes.inhousePackage,
+      //                   arguments: {"id": value["redirectKey"]});
+      //             } else if (value["redirectTo"] == "group") {
+      //               Navigator.of(context).pop();
+      //               await Navigator.pushNamed(context, AppRoutes.groupDetails,
+      //                   arguments: {
+      //                     "groupId": value["redirectKey"],
+      //                     // "isJoined": false
+      //                   });
+      //             }
+      //           },
+      //           child: Container(
+      //             height: 595,
+      //             width: 375,
+      //             child: Column(
+      //                 crossAxisAlignment: CrossAxisAlignment.center,
+      //                 mainAxisAlignment: MainAxisAlignment.center,
+      //                 children: [
+      //                   Align(
+      //                       alignment: Alignment.topRight,
+      //                       child: IconButton(
+      //                         icon: Icon(Icons.close),
+      //                         onPressed: () {
+      //                           Navigator.pop(context);
+      //                         },
+      //                       )),
+      //                   Expanded(child: announcementMedia(value))
+      //                 ]),
+      //           ),
+      //         ),
+      //       );
+      //     });
       prefs.setInt(
           'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
     }
@@ -697,6 +713,25 @@ class _HomePageState extends State<HomePage> {
           Navigator.of(context).pop();
           await Navigator.pushNamed(context, AppRoutes.inhousePackage,
               arguments: {"id": value["redirectKey"]});
+        } else if (value["redirectTo"] == "knowusmore") {
+          Navigator.of(context).pop();
+          if (value["redirectTo"] != "") {
+            await Navigator.pushNamed(
+              context, AppRoutes.videoPlaylist,
+              // arguments: {
+              //   "groupId": value["redirectKey"],
+              //   // "isJoined": false
+              // }
+            );
+          } else {
+            await Navigator.pushNamed(
+              context, AppRoutes.videoPlaylist,
+              // arguments: {
+              //   "groupId": value["redirectKey"],
+              //   // "isJoined": false
+              // }
+            );
+          }
         }
       },
       child: CachedNetworkImage(
@@ -1370,7 +1405,7 @@ class _HomePageState extends State<HomePage> {
                                   '',
                               height: 98,
                               width: 180,
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.fill,
                               placeholder: (context, url) => Container(
                                 height: 150,
                                 decoration: BoxDecoration(

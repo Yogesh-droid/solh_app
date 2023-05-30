@@ -49,7 +49,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       ..onFullscreenChange = (isFullScreen) {
         print('${isFullScreen ? 'Entered' : 'Exited'} Fullscreen.');
       };
-    ;
+
     super.initState();
   }
 

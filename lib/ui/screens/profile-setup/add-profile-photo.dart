@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -149,6 +150,8 @@ class _AddProfilePhotoPageState extends State<AddProfilePhotoPage> {
                           "${APIConstants.api}/api/fileupload/user-profile-picture",
                           "profile",
                           _croppedFile!);
+                      log("${response}",
+                          name: "/api/fileupload/user-profile-picture");
                       if (response["success"]) {
                         print("image uplaoded successfully");
                         widget._onNext();

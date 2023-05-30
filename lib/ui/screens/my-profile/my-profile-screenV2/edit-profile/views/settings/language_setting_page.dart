@@ -4,10 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/restart_widget.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class LanguageSettingPage extends StatelessWidget {
@@ -25,10 +28,11 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(const Locale('en', 'us'));
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString("locale", jsonEncode({"en": "us"}));
+              changeLanguage("en", "us");
+              // Get.updateLocale(const Locale('en', 'us'));
+              // final SharedPreferences prefs =
+              //     await SharedPreferences.getInstance();
+              // await prefs.setString("locale", jsonEncode({"en": "us"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
               // RestartWidget.restartApp(context);
@@ -43,10 +47,11 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(const Locale('hi', 'IN'));
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString("locale", jsonEncode({"hi": "IN"}));
+              changeLanguage("hi", "IN");
+              // Get.updateLocale(const Locale('hi', 'IN'));
+              // final SharedPreferences prefs =
+              //     await SharedPreferences.getInstance();
+              // await prefs.setString("locale", jsonEncode({"hi": "IN"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
               // RestartWidget.restartApp(context);
@@ -61,12 +66,13 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(
-                const Locale('fr', 'FR'),
-              );
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString("locale", jsonEncode({"fr": "FR"}));
+              changeLanguage('fr', 'FR');
+              // Get.updateLocale(
+              //   const Locale('fr', 'FR'),
+              // );
+              // final SharedPreferences prefs =
+              //     await SharedPreferences.getInstance();
+              // await prefs.setString("locale", jsonEncode({"fr": "FR"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
             },
@@ -83,13 +89,14 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(const Locale('ar', 'sa'));
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString(
-                "locale",
-                jsonEncode({"ar": "sa"}),
-              );
+              changeLanguage("ar", "sa");
+              // Get.updateLocale(const Locale('ar', 'sa'));
+              // final SharedPreferences prefs =
+              //     await SharedPreferences.getInstance();
+              // await prefs.setString(
+              //   "locale",
+              //   jsonEncode({"ar": "sa"}),
+              // );
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
             },
@@ -106,10 +113,11 @@ class LanguageSettingPage extends StatelessWidget {
           ),
           InkWell(
             onTap: () async {
-              Get.updateLocale(const Locale('ta', 'IN'));
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.setString("locale", jsonEncode({"ta": "IN"}));
+              changeLanguage("ta", "IN");
+              // Get.updateLocale(const Locale('ta', 'IN'));
+              // final SharedPreferences prefs =
+              //     await SharedPreferences.getInstance();
+              // await prefs.setString("locale", jsonEncode({"ta": "IN"}));
               Navigator.pushNamedAndRemoveUntil(
                   context, AppRoutes.master, (route) => true);
             },
@@ -125,6 +133,18 @@ class LanguageSettingPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> changeLanguage(String langCode, String countryCode) async {
+  Get.updateLocale(Locale(langCode, countryCode));
+  AppLocale.appLocale = Locale(langCode, countryCode);
+  Get.find<GetHelpController>().getIssueList();
+  Get.find<GetHelpController>().getSpecializationList();
+  Get.find<GetHelpController>().getAlliedTherapyList();
+  await Prefs.setString(
+    "locale",
+    jsonEncode({langCode: countryCode}),
+  );
 }
 
 Widget getSettingOptions(

@@ -39,7 +39,7 @@ class Body {
 
   Body.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    percentProfile = json['percentProfile'] ;
+    percentProfile = json['percentProfile'];
     userMoveEmptyScreenEmpty = json['userMoveEmptyScreenEmpty'];
     if (json['userCountryAvailableTimezones'] != null) {
       userCountryAvailableTimezones = <UserCountryAvailableTimezones>[];
@@ -106,7 +106,7 @@ class User {
   bool? featured;
   bool? isProvider;
   bool? sosChatSupport;
-
+  bool? isLiveStreamEnable;
   String? deviceId;
   List<String>? hiddenPosts;
   List<String>? issueList;
@@ -126,6 +126,7 @@ class User {
   User(
       {this.sId,
       this.sosChatSupport,
+      this.isLiveStreamEnable,
       this.gender,
       this.reviews,
       this.status,
@@ -184,6 +185,7 @@ class User {
       });
     }
     sosChatSupport = json['sosChatSupport'];
+    isLiveStreamEnable = json['isLiveStreamEnable'];
     psychologicalCapital = json['psychologicalCapital'];
     status = json['status'];
     connectionsList = json['connectionsList'].cast<String>();

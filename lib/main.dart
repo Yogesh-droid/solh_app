@@ -26,7 +26,7 @@ import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/languages_contant.dart';
+import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
@@ -40,7 +40,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Stripe.publishableKey =
-      "pk_live_51Mp4hISCjgNimACD6TrkUMjkJDilo3BL2R5eUkxoqRRMRZ2qbtpDo8yArxHlIn5j9r2y2ps6c97QNeaELcdBBXEH00p9l2bh7c";
+      "pk_test_51Mp4hISCjgNimACDiyGivqwK82xCjWxLP9z8U6upIeKgds5Oc332hnRHIpFO6aCEzh230Ysgklvm6nG9ccs7WKow004Gjwmmu2";
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

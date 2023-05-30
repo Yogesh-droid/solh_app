@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -467,6 +468,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
         "${APIConstants.api}/api/fileupload/user-profile-picture",
         "profile",
         _croppedFile!);
+    log("${response}", name: "/api/fileupload/user-profile-picture");
     profileController.isEditProfilePicUploading(false);
     if (response["success"]) {
       Utility.showToast('Profile picture updated');
