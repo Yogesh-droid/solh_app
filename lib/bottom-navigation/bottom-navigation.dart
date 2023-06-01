@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -17,6 +18,7 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/live_blink.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
@@ -78,6 +80,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   final MoodMeterController meterController = Get.find();
   final BottomNavigatorController bottomNavigatorController = Get.find();
   ProfileController profileController = Get.find();
+  final LiveStreamController liveStreamController = Get.find();
 
   final MoodMeterController moodMeterController =
       Get.put(MoodMeterController());
@@ -301,18 +304,19 @@ class _MasterScreen2State extends State<MasterScreen2>
                   label: "Home".tr,
                 ),
                 BottomNavigationBarItem(
-                    icon: Obx(
-                      () => bottomNavigatorController.activeIndex.value == 1
-                          ? SvgPicture.asset(
-                              'assets/images/journaling.svg',
-                              height: 18,
-                            )
-                          : SvgPicture.asset(
-                              'assets/images/journalling outline.svg',
-                              height: 18,
-                            ),
-                    ),
-                    label: "Journaling".tr),
+                  icon: Obx(
+                    () => bottomNavigatorController.activeIndex.value == 1
+                        ? SvgPicture.asset(
+                            'assets/images/journaling.svg',
+                            height: 18,
+                          )
+                        : SvgPicture.asset(
+                            'assets/images/journalling outline.svg',
+                            height: 18,
+                          ),
+                  ),
+                  label: "Journaling".tr,
+                ),
                 getHelpItem(),
                 BottomNavigationBarItem(
                     icon: Obx(() => SvgPicture.asset(
@@ -342,20 +346,26 @@ class _MasterScreen2State extends State<MasterScreen2>
         child: SafeArea(
           child: Container(
               color: Color.fromARGB(255, 247, 247, 247),
-              height: 50,
-              width: 50,
+              height: 60,
+              width: 60,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Icon(
                     Icons.menu,
-                    color: SolhColors.grey,
+                    color: Colors.grey.shade600,
                   ),
-                  Text(
-                    "More".tr,
-                    style: TextStyle(fontSize: 12),
-                  )
+                  Obx(() {
+                    return liveStreamController
+                                .liveStreamForUserModel.value.webinar ==
+                            null
+                        ? Text(
+                            "More".tr,
+                            style: TextStyle(fontSize: 12),
+                          )
+                        : LiveBlink();
+                  }),
                 ],
               )),
         ),
@@ -620,6 +630,15 @@ class _MasterScreen2State extends State<MasterScreen2>
                         },
                         child: Column(
                           children: [
+                            Obx(() {
+                              return liveStreamController.liveStreamForUserModel
+                                          .value.webinar ==
+                                      null
+                                  ? Container(
+                                      height: 14,
+                                    )
+                                  : LiveBlink();
+                            }),
                             getBottomSheetIcon(
                                 icon: 'assets/images/know-us-more.svg'),
                             Text(
@@ -631,6 +650,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ),
                       Column(
                         children: [
+                          SizedBox(
+                            height: 14,
+                          ),
                           Obx(() {
                             return profileController.isProfileLoading.value
                                 ? Center(

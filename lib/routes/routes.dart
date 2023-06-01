@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:solh/bottom-navigation/bottom-navigation.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
-import 'package:solh/ui/live_stream/live_stream.dart';
-import 'package:solh/ui/live_stream/live_stream_waiting.dart';
 
 import 'package:solh/ui/screens/activity-log-and-badge/activity-log/activity_log.dart';
 import 'package:solh/ui/screens/activity-log-and-badge/activity_badge_parent.dart';
@@ -23,6 +21,8 @@ import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/intro/playlist_page.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
+import 'package:solh/ui/screens/live_stream/live_stream.dart';
+import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_menu.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';

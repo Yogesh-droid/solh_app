@@ -10,11 +10,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sizer/sizer.dart';
-import 'package:solh/ui/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:wakelock/wakelock.dart';
 
 class LiveStream extends StatefulWidget {
   LiveStream({super.key, required Map<dynamic, dynamic> args})
@@ -55,6 +56,7 @@ class _LiveStreamState extends State<LiveStream> {
     _engine!.leaveChannel();
     _engine!.destroy();
     _liveStreamController.dispose();
+    Wakelock.toggle(enable: false);
     super.dispose();
   }
 
@@ -62,6 +64,7 @@ class _LiveStreamState extends State<LiveStream> {
   void initState() {
     super.initState();
     // initialize agora sdk
+    Wakelock.toggle(enable: true);
     log({
       'appId': widget.appId,
       'title': widget.title,
@@ -98,7 +101,9 @@ class _LiveStreamState extends State<LiveStream> {
   }
 
   Future<void> _initAgoraRtcEngine() async {
-    await [Permission.microphone, Permission.camera].request();
+    if (widget.isBroadcaster) {
+      await [Permission.microphone, Permission.camera].request();
+    }
     _engine = await RtcEngine.create(widget.appId);
     await _engine!.enableVideo();
 
@@ -157,7 +162,8 @@ class _LiveStreamState extends State<LiveStream> {
             )
           });
           setState(() {});
-          log(uid.toString(),name: 'uid');
+          log(uid.toString(), name: 'uid');
+          log(viewWidgets.toString());
         });
       },
       userOffline: (uid, elapsed) {
@@ -171,14 +177,21 @@ class _LiveStreamState extends State<LiveStream> {
   }
 
   Widget _remoteVideo() {
-    if (_infoStrings != null) {
+    if (viewWidgets.isNotEmpty) {
       if (viewWidgets.length == 1) {
         print(_infoStrings.toString() + "_infoString");
-        return RtcLocalView.SurfaceView(
-          mirrorMode: VideoMirrorMode.Enabled,
-          renderMode: VideoRenderMode.Fit,
-          channelId: widget.channelName,
-        );
+        return widget.isBroadcaster
+            ? RtcLocalView.SurfaceView(
+                mirrorMode: VideoMirrorMode.Enabled,
+                renderMode: VideoRenderMode.Fit,
+                channelId: widget.channelName,
+              )
+            : RtcRemoteView.SurfaceView(
+                mirrorMode: VideoMirrorMode.Enabled,
+                renderMode: VideoRenderMode.Fit,
+                channelId: widget.channelName,
+                uid: viewWidgets.first.keys.first,
+              );
       }
 
       if (viewWidgets.length == 2) {
@@ -209,7 +222,12 @@ class _LiveStreamState extends State<LiveStream> {
         ),
       );
     } else {
-      return CircularProgressIndicator();
+      return Center(
+        child: Text(
+          'Waiting for the host.',
+          style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+        ),
+      );
     }
   }
 
@@ -299,70 +317,83 @@ class _LiveStreamState extends State<LiveStream> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return _onWillPop(context);
+        return _onWillPop(context, widget.isBroadcaster);
       },
       child: SafeArea(
-          child: Scaffold(
-        floatingActionButton: SpeedDial(
-          // direction: SpeedDialDirection.down,
-          childPadding: EdgeInsets.all(10),
-          buttonSize: Size(45, 45),
-          openCloseDial: isDialOpen,
-          closeDialOnPop: false,
-          closeManually: true,
-          icon: CupertinoIcons.ellipsis_vertical,
-          activeIcon: CupertinoIcons.clear,
-          overlayOpacity: 0,
-          children: getSpeedDialChildern(),
-        ),
-        backgroundColor: Colors.grey.shade900,
-        body: Stack(
-          children: [
-            _remoteVideo(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black54,
-                      Colors.black38,
-                      Colors.black12,
-                      Colors.transparent
-                    ]),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          children: [
-                            Text(
-                              widget.title,
-                              style: SolhTextStyles.QS_body_1_bold.copyWith(
-                                color: SolhColors.white,
+        child: Scaffold(
+          floatingActionButton: widget.isBroadcaster
+              ? SpeedDial(
+                  // direction: SpeedDialDirection.down,
+                  childPadding: EdgeInsets.all(9),
+
+                  openCloseDial: isDialOpen,
+                  spaceBetweenChildren: 20,
+                  closeDialOnPop: false,
+                  closeManually: true,
+                  isOpenOnStart: true,
+                  icon: CupertinoIcons.ellipsis_vertical,
+                  activeIcon: CupertinoIcons.clear,
+                  overlayOpacity: 0,
+                  children: getSpeedDialChildern(),
+                )
+              : FloatingActionButton(
+                  backgroundColor: SolhColors.primaryRed,
+                  child: Icon(
+                    Icons.exit_to_app_rounded,
+                    color: SolhColors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+          backgroundColor: Colors.grey.shade900,
+          body: Stack(
+            children: [
+              _remoteVideo(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black54,
+                        Colors.black38,
+                        Colors.black12,
+                        Colors.transparent
+                      ]),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.title,
+                                style: SolhTextStyles.QS_body_1_bold.copyWith(
+                                  color: SolhColors.white,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }
 
-_onWillPop(context) async {
+_onWillPop(context, isBroadcaster) async {
   return await showDialog(
       context: context,
       builder: (context) {
@@ -385,7 +416,9 @@ _onWillPop(context) async {
                 onTap: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
-                  Navigator.of(context).pop();
+                  if (isBroadcaster) {
+                    Navigator.of(context).pop();
+                  }
                 }),
             SizedBox(width: 30),
             InkWell(

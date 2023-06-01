@@ -720,13 +720,13 @@ class _JournalTileState extends State<JournalTile> {
                                                 .selectedGroupId.value.length ==
                                             0
                                     ? {
-
-                                       Navigator.pushNamed(context, AppRoutes.groupDetails,
-                              arguments: {
-                                "groupId":widget
-                                                    ._journalModel!.group!.sId,
-                                "isJoined": true,
-                              })
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.groupDetails,
+                                            arguments: {
+                                              "groupId": widget
+                                                  ._journalModel!.group!.sId,
+                                              "isJoined": true,
+                                            })
                                         // Navigator.pushNamed(
                                         //     context, AppRoutes.groupDetails,
                                         //     arguments: {
@@ -892,78 +892,79 @@ class LikesModalSheet extends StatelessWidget {
                             itemCount: journalPageController
                                 .likedUserList.value.result!.data!.length,
                             itemBuilder: (context, index) {
-                              return journalPageController
-                                                        .likedUserList
-                                                        .value
-                                                        .result!
-                                                        .data![index]
-                                                        .user==null ? SizedBox(): InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
-                                    child: Row(
-                                      children: [
-                                        CircleAvatar(
-                                          backgroundColor: Colors.grey,
-                                          backgroundImage: NetworkImage(
-                                              journalPageController
-                                                      .likedUserList
-                                                      .value
-                                                      .result!
-                                                      .data![index]
-                                                      .user!
-                                                      .profilePicture ??
-                                                  ''),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8, 0, 30, 0),
-                                          child: Text(
-                                            journalPageController
-                                                        .likedUserList
-                                                        .value
-                                                        .result!
-                                                        .data![index]
-                                                        .user!
-                                                        .sId ==
-                                                    Get.find<
-                                                            ProfileController>()
-                                                        .myProfileModel
-                                                        .value
-                                                        .body!
-                                                        .user!
-                                                        .sId
-                                                ? "You"
-                                                : journalPageController
-                                                        .likedUserList
-                                                        .value
-                                                        .result!
-                                                        .data![index]
-                                                        .user!
-                                                        .name ??
-                                                    '',
-                                            style: GoogleFonts.signika(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                              return journalPageController.likedUserList.value
+                                          .result!.data![index].user ==
+                                      null
+                                  ? SizedBox()
+                                  : InkWell(
+                                      onTap: () {},
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20, vertical: 5),
+                                          child: Row(
+                                            children: [
+                                              CircleAvatar(
+                                                backgroundColor: Colors.grey,
+                                                backgroundImage: NetworkImage(
+                                                    journalPageController
+                                                            .likedUserList
+                                                            .value
+                                                            .result!
+                                                            .data![index]
+                                                            .user!
+                                                            .profilePicture ??
+                                                        ''),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 0, 30, 0),
+                                                child: Text(
+                                                  journalPageController
+                                                              .likedUserList
+                                                              .value
+                                                              .result!
+                                                              .data![index]
+                                                              .user!
+                                                              .sId ==
+                                                          Get.find<
+                                                                  ProfileController>()
+                                                              .myProfileModel
+                                                              .value
+                                                              .body!
+                                                              .user!
+                                                              .sId
+                                                      ? "You"
+                                                      : journalPageController
+                                                              .likedUserList
+                                                              .value
+                                                              .result!
+                                                              .data![index]
+                                                              .user!
+                                                              .name ??
+                                                          '',
+                                                  style: GoogleFonts.signika(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              SvgPicture.network(
+                                                  journalPageController
+                                                          .likedUserList
+                                                          .value
+                                                          .result!
+                                                          .data![index]
+                                                          .reaction!
+                                                          .reactionImage ??
+                                                      '')
+                                            ],
                                           ),
                                         ),
-                                        Spacer(),
-                                        SvgPicture.network(journalPageController
-                                                .likedUserList
-                                                .value
-                                                .result!
-                                                .data![index]
-                                                .reaction!
-                                                .reactionImage ??
-                                            '')
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
+                                      ),
+                                    );
                             }),
                       )))
       ],
@@ -1233,9 +1234,10 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                                     .isPlaying
                                         ? getBlackOverlay(
                                             context,
-                                            aspectRatio: double.parse(widget
-                                                    .journalModel.aspectRatio ??
-                                                (16 / 9).toString()),
+                                            aspectRatio: double.parse(
+                                              widget.journalModel.aspectRatio ??
+                                                  (16 / 9).toString(),
+                                            ),
                                           )
                                         : Container();
                                   }),

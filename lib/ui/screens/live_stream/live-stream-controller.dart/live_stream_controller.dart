@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/ui/live_stream/live-stream-model/live_stream_for_user_model.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-model/live_stream_for_user_model.dart';
 
 class LiveStreamController extends GetxController {
   var isMuted = false.obs;

@@ -26,14 +26,15 @@ import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
-import 'package:solh/ui/live_stream/live-stream-controller.dart/live_stream_controller.dart';
-import 'package:solh/ui/live_stream/live_stream_for_user_card.dart';
+
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/groups/manage_groups.dart';
 import 'package:solh/ui/screens/home/blog_details.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+import 'package:solh/ui/screens/live_stream/live_stream_for_user_card.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
   final HomeController homeController = Get.find();
-  LiveStreamController liveStreamController = Get.put(LiveStreamController());
+  LiveStreamController liveStreamController = Get.find();
 
   late bool isMoodMeterShown;
 
@@ -241,7 +242,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
 
-          LiveStreamForUserCard(),
+          // LiveStreamForUserCard(),
 
           SizedBox(
             height: 10,

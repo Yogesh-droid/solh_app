@@ -33,6 +33,7 @@ class Webinar {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? appId;
 
   Webinar(
       {this.sId,
@@ -46,6 +47,7 @@ class Webinar {
       this.status,
       this.createdAt,
       this.updatedAt,
+      this.appId,
       this.iV});
 
   Webinar.fromJson(Map<String, dynamic> json) {
@@ -60,6 +62,7 @@ class Webinar {
       });
     }
     channelName = json['channelName'];
+    appId = json['appId'];
     token = json['token'];
     provider = json['provider'];
     status = json['status'];

@@ -33,6 +33,7 @@ import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
+import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,6 +53,7 @@ void main() async {
   Get.put(AlliedController());
   Get.put(HomeController());
   Get.put(BottomNavigatorController());
+  Get.put(LiveStreamController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();

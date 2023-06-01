@@ -1,17 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/ui/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
-import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class LiveStreamForUserCard extends StatelessWidget {
   LiveStreamForUserCard({super.key});
@@ -26,9 +24,8 @@ class LiveStreamForUserCard extends StatelessWidget {
           : _liveStreamController.liveStreamForUserModel.value.webinar == null
               ? Container()
               : Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  padding: EdgeInsets.symmetric(horizontal: 0),
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
-                    GetHelpDivider(),
                     SizedBox(
                       height: 10,
                     ),
@@ -64,7 +61,8 @@ class LiveStreamForUserCard extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.liveStream,
                             arguments: {
-                              'appId': "4db2d5eea0c3466cb8dc7ba7f488dbef",
+                              'appId': _liveStreamController
+                                  .liveStreamForUserModel.value.webinar!.appId,
                               'title': _liveStreamController
                                   .liveStreamForUserModel.value.webinar!.title,
                               'channelName': _liveStreamController
@@ -92,7 +90,6 @@ class LiveStreamForUserCard extends StatelessWidget {
                     SizedBox(
                       height: 10,
                     ),
-                    GetHelpDivider(),
                   ]),
                 ));
     });
