@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -23,27 +25,31 @@ class _SolhVideoPlayerState extends State<SolhVideoPlayer> {
 
   @override
   void initState() {
-    super.initState();
-
+    // log(key.currentContext!.findRenderObject().toString());
+    log(widget.videoUrl);
     _controller = VideoPlayerController.network(widget.videoUrl);
-    _controller.play();
+    _initializeVideoPlayerFuture =
+        _controller.initialize().then((value) => setState(() {}));
+
     _controller.addListener(() {
+      if (_controller.value.isBuffering) {
+        setState(() {});
+      }
       if (_controller.value.duration == _controller.value.position &&
           !_controller.value.isPlaying &&
           _controller.value.isInitialized) {
         _isVideoEnded = true;
-
-        setState(() {});
       }
     });
-
-    _initializeVideoPlayerFuture = _controller.initialize();
+    super.initState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    _controller.removeListener(() {});
     _controller.dispose();
+
     super.dispose();
   }
 
@@ -168,4 +174,12 @@ class _AnimatedVideoPlayerIconState extends State<AnimatedVideoPlayerIcon>
       },
     );
   }
+}
+
+enum SolhVideoPlayerState {
+  undefinded,
+  playing,
+  paused,
+  initializing,
+  error,
 }

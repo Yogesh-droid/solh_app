@@ -4,13 +4,17 @@ class SearchMarketModel {
   List<Provider>? provider;
   List<Doctors>? doctors;
   List<Provider>? alliedProviders;
+  PagesForProvider? pagesForProvider;
+  PagesForAllied? pagesForAllied;
 
   SearchMarketModel(
       {this.code,
       this.success,
       this.provider,
       this.doctors,
-      this.alliedProviders});
+      this.alliedProviders,
+      this.pagesForAllied,
+      this.pagesForProvider});
 
   SearchMarketModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
@@ -33,6 +37,19 @@ class SearchMarketModel {
         doctors!.add(new Doctors.fromJson(v));
       });
     }
+    if (json['doctors'] != null) {
+      doctors = <Doctors>[];
+      json['doctors'].forEach((v) {
+        doctors!.add(new Doctors.fromJson(v));
+      });
+    }
+
+    pagesForProvider = json['pagesForProvider'] != null
+        ? new PagesForProvider.fromJson(json['pagesForProvider'])
+        : null;
+    pagesForAllied = json['pagesForAllied'] != null
+        ? new PagesForAllied.fromJson(json['pagesForAllied'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -89,22 +106,22 @@ class Doctors {
 
   Doctors.fromJson(Map<String, dynamic> json) {
     offlineSession = json['offlineSession'];
-    fee = json['fee'] ??'';
-    fee_amount = json['fee_amount'] ;
-    feeCurrency = json['feeCurrency']??'';
-    name = json['name']??'';
-    organisation = json['organisation']??'';
-    addressLineOne = json['addressLineOne']??'';
-    addressLineTwo = json['addressLineTwo']??'';
-    addressLineThree = json['addressLineThree']??'';
+    fee = json['fee'] ?? '';
+    fee_amount = json['fee_amount'];
+    feeCurrency = json['feeCurrency'] ?? '';
+    name = json['name'] ?? '';
+    organisation = json['organisation'] ?? '';
+    addressLineOne = json['addressLineOne'] ?? '';
+    addressLineTwo = json['addressLineTwo'] ?? '';
+    addressLineThree = json['addressLineThree'] ?? '';
     addressLineFour = json['addressLineFour'];
-    bio = json['bio']??'';
-    contactNumber = json['contactNumber']??'';
-    email = json['email']??'';
-    sId = json['_id']??'';
-    profilePicture = json['profilePicture']??'';
-    specialization = json['specialization']??'';
-    prefix = json['prefix']??'';
+    bio = json['bio'] ?? '';
+    contactNumber = json['contactNumber'] ?? '';
+    email = json['email'] ?? '';
+    sId = json['_id'] ?? '';
+    profilePicture = json['profilePicture'] ?? '';
+    specialization = json['specialization'] ?? '';
+    prefix = json['prefix'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
@@ -197,9 +214,10 @@ class Provider {
     fee = json['fee'];
     fee_amount = json['fee_amount'];
     feeCurrency = json['fee_currency'];
-    language = json['language'] !=null? json['language'].cast<String>():[] ;
+    language = json['language'] != null ? json['language'].cast<String>() : [];
     offlineSession = json['offlineSession'];
-    education = json['education'] !=null? json['education'].cast<String>():[];
+    education =
+        json['education'] != null ? json['education'].cast<String>() : [];
     specialization = json['specialization'].cast<String>();
     contactNumber = json['contactNumber'];
     country = json['country'];
@@ -254,6 +272,44 @@ class Provider {
     data['profilePicture'] = this.profilePicture;
     data['prefix'] = this.prefix;
     data['preview'] = this.preview;
+    return data;
+  }
+}
+
+class PagesForProvider {
+  int? prev;
+  int? next;
+
+  PagesForProvider({this.prev, this.next});
+
+  PagesForProvider.fromJson(Map<String, dynamic> json) {
+    prev = json['prev'];
+    next = json['next'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['prev'] = this.prev;
+    data['next'] = this.next;
+    return data;
+  }
+}
+
+class PagesForAllied {
+  int? prev;
+  int? next;
+
+  PagesForAllied({this.prev, this.next});
+
+  PagesForAllied.fromJson(Map<String, dynamic> json) {
+    prev = json['prev'];
+    next = json['next'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['prev'] = this.prev;
+    data['next'] = this.next;
     return data;
   }
 }

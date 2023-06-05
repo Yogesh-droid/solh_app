@@ -24,6 +24,7 @@ class Webinar {
   String? sId;
   String? title;
   String? description;
+  String? image;
   Host? host;
   List<OtherHost>? otherHost;
   String? channelName;
@@ -39,6 +40,7 @@ class Webinar {
       {this.sId,
       this.title,
       this.description,
+      this.image,
       this.host,
       this.otherHost,
       this.channelName,
@@ -62,6 +64,7 @@ class Webinar {
       });
     }
     channelName = json['channelName'];
+    image = json['image'];
     appId = json['appId'];
     token = json['token'];
     provider = json['provider'];

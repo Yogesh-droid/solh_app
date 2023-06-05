@@ -28,6 +28,7 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/solh_video_player.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
 import 'solh_expert_badge.dart';
@@ -1178,7 +1179,9 @@ class _PostContentWidgetState extends State<PostContentWidget> {
               ?
               //// For Video player ////
               widget.journalModel.mediaType == 'video/mp4'
-                  ? InkWell(
+                  ?
+                  // SolhVideoPlayer(videoUrl: widget.journalModel.mediaUrl!)
+                  InkWell(
                       onTap: () {
                         widget.isMyJournal
                             ? journalPageController.playMyPostVideo(

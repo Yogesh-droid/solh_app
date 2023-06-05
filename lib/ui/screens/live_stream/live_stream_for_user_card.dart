@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
@@ -77,7 +78,9 @@ class LiveStreamForUserCard extends StatelessWidget {
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: _getThumbnailCard(),
+                        child: _getThumbnailCard(_liveStreamController
+                                .liveStreamForUserModel.value.webinar!.image ??
+                            ''),
                       ),
                     ),
                     SizedBox(
@@ -96,39 +99,54 @@ class LiveStreamForUserCard extends StatelessWidget {
   }
 }
 
-Widget _getThumbnailCard() {
-  return Container(
-    height: 28.h,
-    width: 100.w,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8),
-      image: DecorationImage(
-        fit: BoxFit.fill,
-        image: NetworkImage(
-          'https://picsum.photos/seed/picsum/300/200',
+Widget _getThumbnailCard(String imageUrl) {
+  return Stack(
+    children: [
+      Container(
+        height: 28.h,
+        width: 100.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: NetworkImage(
+              imageUrl,
+            ),
+          ),
         ),
-      ),
-    ),
-    child: FittedBox(
-        fit: BoxFit.fill,
-        child: Stack(
-          children: [
-            Container(
+        child: FittedBox(
+            fit: BoxFit.fill,
+            child: Container(
+              alignment: Alignment.center,
               width: 100.w,
               height: 28.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.black38,
               ),
-              child: Center(
-                  child: Icon(
-                CupertinoIcons.play_circle_fill,
-                size: 15.w,
-                color: SolhColors.primaryRed.withOpacity(0.7),
-              )),
-            )
-          ],
-        )),
+              // child: Container(
+              //   alignment: Alignment.center,
+              //   child: SvgPicture.asset(
+              //     'assets/images/watch_stream.svg',
+              //     width: 100,
+              //   ),
+              // ),
+            )),
+      ),
+      Positioned(
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        child: Container(
+          alignment: Alignment.center,
+          child: SvgPicture.asset(
+            'assets/images/watch_stream.svg',
+            width: 10.h,
+          ),
+        ),
+      ),
+    ],
   );
 }
 

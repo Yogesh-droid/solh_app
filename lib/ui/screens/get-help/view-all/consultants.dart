@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -65,18 +64,20 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             .getIssueAndSpecializationFilter(widget.slug);
         issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
         fetchMoreClinician();
-        _doctorsScrollController.addListener(() async {
-          if (_doctorsScrollController.position.pixels ==
-                  _doctorsScrollController.position.maxScrollExtent &&
-              !_fetchingMore) {
-            setState(() {
-              _fetchingMore = true;
-            });
-            setState(() {
-              _fetchingMore = false;
-            });
-          }
-        });
+        _doctorsScrollController.addListener(
+          () async {
+            if (_doctorsScrollController.position.pixels ==
+                    _doctorsScrollController.position.maxScrollExtent &&
+                !_fetchingMore) {
+              setState(() {
+                _fetchingMore = true;
+              });
+              setState(() {
+                _fetchingMore = false;
+              });
+            }
+          },
+        );
       },
     );
     super.initState();
@@ -86,7 +87,10 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
     _doctorsScrollController.addListener(() {
       log("scroll working");
       if (_doctorsScrollController.position.pixels >
-          _doctorsScrollController.position.maxScrollExtent - 100) {
+              _doctorsScrollController.position.maxScrollExtent - 100 &&
+          searchMarketController.issueModel.value.pagesForProvider!.next !=
+              null &&
+          searchMarketController.isLoading.value == false) {
         pageNo++;
         searchMarketController.getIssueList(widget.slug,
             c: searchMarketController.defaultCountry, page: pageNo);

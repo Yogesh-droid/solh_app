@@ -80,16 +80,17 @@ class SearchMarketController extends GetxController {
 
   Future<void> getIssueList(String slug,
       {String? c, String issue = '', required int page}) async {
+    isLoading(true);
     try {
       log("it ran2 $page");
       page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
       String url;
       if (c != null && c.isNotEmpty) {
         url = APIConstants.api +
-            '/api/v2/get-help?specialization=$slug&country=$c$issue&page=$page';
+            '/api/v3/get-help?specialization=$slug&country=$c$issue&page=$page';
       } else {
         url = APIConstants.api +
-            '/api/v2/get-help?specialization=$slug&country=$country$issue&page=$page';
+            '/api/v3/get-help?specialization=$slug&country=$country$issue&page=$page';
       }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
@@ -106,7 +107,9 @@ class SearchMarketController extends GetxController {
       page > 1
           ? isLoadingMoreClinician(false)
           : isSearchingDoctors.value = false;
+      isLoading(false);
     } catch (e) {
+      isLoading(false);
       throw (e);
     }
   }
