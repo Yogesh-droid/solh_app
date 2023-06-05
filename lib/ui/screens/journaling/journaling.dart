@@ -82,6 +82,12 @@ class _JournalingState extends State<Journaling> {
       }
     });
 
+    _journalPageController.customeScrollController.addListener(() {
+      if (_journalPageController.customeScrollController.position.pixels ==
+          _journalPageController
+              .customeScrollController.position.maxScrollExtent) {}
+    });
+
     // if (_journalPageController.selectedGroupId.value != '') {
     //   _customScrollController.jumpTo(80 *
     //       _groupsShownOnHome

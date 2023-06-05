@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
@@ -10,8 +7,8 @@ import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../widgets_constants/group_card.dart';
-import 'group_detail.dart';
 
 class ManageGroupPage extends StatefulWidget {
   @override
@@ -22,10 +19,37 @@ class _ManageGroupPageState extends State<ManageGroupPage>
     with SingleTickerProviderStateMixin {
   DiscoverGroupController _groupController = Get.find();
   late final TabController tabController;
+  final ScrollController scrollController =
+      ScrollController(); // for discoverGroupList
+  final ScrollController createdGroupsScrollController =
+      ScrollController(); // for createdFGroupsList
+  final ScrollController joinedGroupsScrollController =
+      ScrollController(); // for joinedGroupsLiat
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this)..animateTo(2);
     _groupController.tabController = tabController;
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print("Getting more groups");
+        Get.find<DiscoverGroupController>().getDiscoverGroups();
+      }
+    });
+    createdGroupsScrollController.addListener(() {
+      if (createdGroupsScrollController.position.pixels ==
+          createdGroupsScrollController.position.maxScrollExtent) {
+        print("Getting more groups");
+        Get.find<DiscoverGroupController>().getCreatedGroups();
+      }
+    });
+    joinedGroupsScrollController.addListener(() {
+      if (joinedGroupsScrollController.position.pixels ==
+          joinedGroupsScrollController.position.maxScrollExtent) {
+        print("Getting more groups");
+        Get.find<DiscoverGroupController>().getJoinedGroups();
+      }
+    });
     super.initState();
   }
 
@@ -114,33 +138,50 @@ class _ManageGroupPageState extends State<ManageGroupPage>
     return groupList != null
         ? Container(
             child: groupList.isNotEmpty
-                ? ListView.builder(
-                    itemCount: groupList.length,
-                    itemBuilder: (context, index) {
-                      // return getGroupCard(groupList[index], context,
-                      //     isJoined: true);
-                      return GroupCard(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.groupDetails,
-                              arguments: {
-                                "groupId": groupList[index].sId,
-                                "isJoined": true,
-                              });
-                          /*  Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GroupDetailsPage(
-                              group: groupList[index],
-                              isJoined: true,
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          controller: joinedGroupsScrollController,
+                          shrinkWrap: true,
+                          itemCount: groupList.length,
+                          itemBuilder: (context, index) {
+                            // return getGroupCard(groupList[index], context,
+                            //     isJoined: true);
+                            return GroupCard(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.groupDetails,
+                                    arguments: {
+                                      "groupId": groupList[index].sId,
+                                      "isJoined": true,
+                                    });
+                                /*  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return GroupDetailsPage(
+                                    group: groupList[index],
+                                    isJoined: true,
+                                  );
+                                })); */
+                              },
+                              groupMediaUrl: groupList[index].groupMediaUrl,
+                              groupName: groupList[index].groupName,
+                              id: groupList[index].sId,
+                              journalCount: groupList[index].journalCount,
+                              membersCount: groupList[index].groupMembers!,
                             );
-                          })); */
-                        },
-                        groupMediaUrl: groupList[index].groupMediaUrl,
-                        groupName: groupList[index].groupName,
-                        id: groupList[index].sId,
-                        journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!,
-                      );
-                    },
+                          },
+                        ),
+                      ),
+                      Obx(() => Get.find<DiscoverGroupController>()
+                              .loadingJoinedGroups
+                              .value
+                          ? SizedBox(
+                              height: 100,
+                              child: MyLoader(),
+                            )
+                          : SizedBox())
+                    ],
                   )
                 : Center(
                     child: Text('No groups joined yet'),
@@ -154,34 +195,54 @@ class _ManageGroupPageState extends State<ManageGroupPage>
     return groupList != null
         ? Container(
             child: groupList.isNotEmpty
-                ? ListView.builder(
-                    itemCount: groupList.length,
-                    itemBuilder: (context, index) {
-                      // return getGroupCard(groupList[index], context,
-                      //     isJoined: true);
-                      return GroupCard(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.groupDetails,
-                              arguments: {
-                                "groupId": _groupController.createdGroupModel
-                                    .value.groupList![index].sId,
-                                "isJoined": true,
-                              });
-                          /* Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GroupDetailsPage(
-                              group: groupList[index],
-                              isJoined: true,
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          controller: createdGroupsScrollController,
+                          shrinkWrap: true,
+                          itemCount: groupList.length,
+                          itemBuilder: (context, index) {
+                            // return getGroupCard(groupList[index], context,
+                            //     isJoined: true);
+                            return GroupCard(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.groupDetails,
+                                    arguments: {
+                                      "groupId": _groupController
+                                          .createdGroupModel
+                                          .value
+                                          .groupList![index]
+                                          .sId,
+                                      "isJoined": true,
+                                    });
+                                /* Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return GroupDetailsPage(
+                                    group: groupList[index],
+                                    isJoined: true,
+                                  );
+                                })); */
+                              },
+                              groupMediaUrl: groupList[index].groupMediaUrl,
+                              groupName: groupList[index].groupName,
+                              id: groupList[index].sId,
+                              journalCount: groupList[index].journalCount,
+                              membersCount: groupList[index].groupMembers!,
                             );
-                          })); */
-                        },
-                        groupMediaUrl: groupList[index].groupMediaUrl,
-                        groupName: groupList[index].groupName,
-                        id: groupList[index].sId,
-                        journalCount: groupList[index].journalCount,
-                        membersCount: groupList[index].groupMembers!,
-                      );
-                    },
+                          },
+                        ),
+                      ),
+                      Obx(() => Get.find<DiscoverGroupController>()
+                              .loadingCreatedGroups
+                              .value
+                          ? SizedBox(
+                              height: 100,
+                              child: MyLoader(),
+                            )
+                          : SizedBox())
+                    ],
                   )
                 : Center(
                     child: Text('No groups created yet'.tr),
@@ -195,28 +256,45 @@ class _ManageGroupPageState extends State<ManageGroupPage>
     return groupList != null
         ? Container(
             child: groupList.isNotEmpty
-                ? ListView.builder(
-                    itemCount: groupList.length,
-                    itemBuilder: (context, index) {
-                      return GroupCard(
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.groupDetails,
-                                arguments: {
-                                  "groupId": groupList[index].sId,
-                                });
-                            /* Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return GroupDetailsPage(
-                              group: groupList[index],
-                            );
-                          })); */
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: groupList.length,
+                          controller: scrollController,
+                          itemBuilder: (context, index) {
+                            return GroupCard(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.groupDetails,
+                                      arguments: {
+                                        "groupId": groupList[index].sId,
+                                      });
+                                  /* Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return GroupDetailsPage(
+                                    group: groupList[index],
+                                  );
+                                })); */
+                                },
+                                groupMediaUrl: groupList[index].groupMediaUrl,
+                                groupName: groupList[index].groupName,
+                                id: groupList[index].sId,
+                                journalCount: groupList[index].journalCount,
+                                membersCount: groupList[index].groupMembers!);
                           },
-                          groupMediaUrl: groupList[index].groupMediaUrl,
-                          groupName: groupList[index].groupName,
-                          id: groupList[index].sId,
-                          journalCount: groupList[index].journalCount,
-                          membersCount: groupList[index].groupMembers!);
-                    },
+                        ),
+                      ),
+                      Obx(() => Get.find<DiscoverGroupController>()
+                              .loadingDiscoverGroups
+                              .value
+                          ? SizedBox(
+                              height: 100,
+                              child: MyLoader(),
+                            )
+                          : SizedBox())
+                    ],
                   )
                 : Center(
                     child: Text('new suggestions are on the way'.tr),

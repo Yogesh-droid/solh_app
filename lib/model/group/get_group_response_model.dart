@@ -1,11 +1,13 @@
 class GetGroupResponseModel {
   bool? success;
   List<GroupList>? groupList;
+  Pages? pages;
 
-  GetGroupResponseModel({this.success, this.groupList});
+  GetGroupResponseModel({this.success, this.groupList, this.pages});
 
   GetGroupResponseModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    pages = Pages.fromJson(json['pages']);
     if (json['groupList'] != null) {
       groupList = <GroupList>[];
       json['groupList'].forEach((v) {
@@ -62,5 +64,16 @@ class GroupList {
     data['groupMembers'] = this.groupMembers;
     data['journalCount'] = this.journalCount;
     return data;
+  }
+}
+
+class Pages {
+  int? prev;
+  int? next;
+  Pages({this.next, this.prev});
+
+  Pages.fromJson(Map<String, dynamic> json) {
+    prev = json['prev'];
+    next = json['next'];
   }
 }
