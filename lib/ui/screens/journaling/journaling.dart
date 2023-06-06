@@ -35,6 +35,8 @@ class _JournalingState extends State<Journaling> {
   DiscoverGroupController discoverGroupController = Get.find();
   MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
+  final joinedGroupController = ScrollController();
+  final createdGroupController = ScrollController();
   late ScrollController _journalsScrollController;
   late RefreshController _refreshController;
   bool _fetchingMore = false;
@@ -85,7 +87,14 @@ class _JournalingState extends State<Journaling> {
     _journalPageController.customeScrollController.addListener(() {
       if (_journalPageController.customeScrollController.position.pixels ==
           _journalPageController
-              .customeScrollController.position.maxScrollExtent) {}
+              .customeScrollController.position.maxScrollExtent) {
+        if (discoverGroupController.joinedGroupNextPage != null) {
+          discoverGroupController.getJoinedGroups();
+        } else if (discoverGroupController.createGroupNextPage != null &&
+            discoverGroupController.joinedGroupNextPage == null) {
+          discoverGroupController.getCreatedGroups();
+        }
+      }
     });
 
     // if (_journalPageController.selectedGroupId.value != '') {
@@ -339,6 +348,20 @@ class _JournalingState extends State<Journaling> {
                         childCount: discoverGroupController
                             .createdGroupModel.value.groupList!.length))
                 : getGroupShimmer(context),
+            Obx(
+              () => discoverGroupController.loadingCreatedGroups.value ||
+                      discoverGroupController.loadingJoinedGroups.value
+                  ? SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 15),
+                          CircularProgressIndicator(),
+                          SizedBox(height: 15),
+                        ],
+                      ),
+                    )
+                  : SliverToBoxAdapter(),
+            )
           ],
         );
       }),
