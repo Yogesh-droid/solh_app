@@ -35,6 +35,8 @@ class _JournalingState extends State<Journaling> {
   DiscoverGroupController discoverGroupController = Get.find();
   MoodMeterController moodMeterController = Get.find();
   BottomNavigatorController bottomNavigatorController = Get.find();
+  final joinedGroupController = ScrollController();
+  final createdGroupController = ScrollController();
   late ScrollController _journalsScrollController;
   late RefreshController _refreshController;
   bool _fetchingMore = false;
@@ -79,6 +81,19 @@ class _JournalingState extends State<Journaling> {
       if (_journalsScrollController.position.pixels ==
           _journalsScrollController.position.maxScrollExtent) {
         _journalPageController.isScrollingStarted.value = false;
+      }
+    });
+
+    _journalPageController.customeScrollController.addListener(() {
+      if (_journalPageController.customeScrollController.position.pixels ==
+          _journalPageController
+              .customeScrollController.position.maxScrollExtent) {
+        if (discoverGroupController.joinedGroupNextPage != null) {
+          discoverGroupController.getJoinedGroups();
+        } else if (discoverGroupController.createGroupNextPage != null &&
+            discoverGroupController.joinedGroupNextPage == null) {
+          discoverGroupController.getCreatedGroups();
+        }
       }
     });
 
@@ -333,6 +348,20 @@ class _JournalingState extends State<Journaling> {
                         childCount: discoverGroupController
                             .createdGroupModel.value.groupList!.length))
                 : getGroupShimmer(context),
+            Obx(
+              () => discoverGroupController.loadingCreatedGroups.value ||
+                      discoverGroupController.loadingJoinedGroups.value
+                  ? SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 15),
+                          CircularProgressIndicator(),
+                          SizedBox(height: 15),
+                        ],
+                      ),
+                    )
+                  : SliverToBoxAdapter(),
+            )
           ],
         );
       }),

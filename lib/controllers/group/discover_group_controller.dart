@@ -17,11 +17,16 @@ class DiscoverGroupController extends GetxController {
   List<String> groupsShownOnHome =
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
-  //var groupDetail = GroupList().obs;
   TabController? tabController;
   var isLoading = false.obs;
   var isLoadingMoreGroupMembers = false.obs;
   var isDeletingGroup = false.obs;
+  var loadingDiscoverGroups = false.obs;
+  var loadingJoinedGroups = false.obs;
+  var loadingCreatedGroups = false.obs;
+  int? nextPage = 1; // used for discover groups
+  int? createGroupNextPage = 1; // used for create groups
+  int? joinedGroupNextPage = 1; // used for joined groups
 
   @override
   void onInit() {
@@ -32,32 +37,69 @@ class DiscoverGroupController extends GetxController {
   }
 
   Future<void> getCreatedGroups() async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/created-groupsv1');
-    if (map['success']) {
-      createdGroupModel.value = GetGroupResponseModel.fromJson(map);
+    if (createGroupNextPage != null) {
+      loadingCreatedGroups.value = true;
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/created-groupsv1?pageNumber=${createGroupNextPage}&limit=10');
+      loadingCreatedGroups.value = false;
+      if (map['success']) {
+        GetGroupResponseModel groupResponseModel =
+            GetGroupResponseModel.fromJson(map);
+        if (createGroupNextPage == 1) {
+          createdGroupModel.value = groupResponseModel;
+        } else {
+          createdGroupModel.value.groupList!
+              .addAll(groupResponseModel.groupList!);
+          createdGroupModel.value.pages!.next = groupResponseModel.pages!.next;
+          createdGroupModel.refresh();
+        }
+        createGroupNextPage = createdGroupModel.value.pages!.next;
+      }
     }
-    // createdGroupModel.value.groupList!.forEach((group) {
-    //   groupsShownOnHome.add(group.id!);
-    // });
   }
 
   Future<void> getJoinedGroups() async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/joined-groupsv1?pageNumber=1&limit=10');
-    if (map['success']) {
-      joinedGroupModel.value = GetGroupResponseModel.fromJson(map);
+    if (joinedGroupNextPage != null) {
+      loadingJoinedGroups.value = true;
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/joined-groupsv1?pageNumber=$joinedGroupNextPage&limit=10');
+      loadingJoinedGroups.value = false;
+      if (map['success']) {
+        GetGroupResponseModel groupResponseModel =
+            GetGroupResponseModel.fromJson(map);
+        if (joinedGroupNextPage == 1) {
+          joinedGroupModel.value = groupResponseModel;
+        } else {
+          joinedGroupModel.value.groupList!
+              .addAll(groupResponseModel.groupList!);
+          joinedGroupModel.value.pages!.next = groupResponseModel.pages!.next;
+          joinedGroupModel.refresh();
+        }
+        joinedGroupNextPage = joinedGroupModel.value.pages!.next;
+      }
     }
-    // joinedGroupModel.value.groupList!.forEach((group) {
-    //   groupsShownOnHome.add(group.id!);
-    // });
   }
 
   Future<void> getDiscoverGroups() async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/groupv1?pageNumber=1&limit=20');
-    if (map['success']) {
-      discoveredGroupModel.value = GetGroupResponseModel.fromJson(map);
+    if (nextPage != null) {
+      loadingDiscoverGroups.value = true;
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/groupv1?pageNumber=${nextPage}&limit=10');
+      loadingDiscoverGroups.value = false;
+      if (map['success']) {
+        GetGroupResponseModel groupResponseModel =
+            GetGroupResponseModel.fromJson(map);
+        if (nextPage == 1) {
+          discoveredGroupModel.value = groupResponseModel;
+        } else {
+          discoveredGroupModel.value.groupList!
+              .addAll(groupResponseModel.groupList!);
+          discoveredGroupModel.value.pages!.next =
+              groupResponseModel.pages!.next;
+          discoveredGroupModel.refresh();
+        }
+        nextPage = discoveredGroupModel.value.pages!.next;
+      }
     }
   }
 
