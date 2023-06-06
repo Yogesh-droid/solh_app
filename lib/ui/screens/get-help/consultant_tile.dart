@@ -114,33 +114,42 @@ class ConsultantsTile extends StatelessWidget {
               SizedBox(
                 height: 3.h,
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  prefix != null
-                      ? Text(
-                          "${prefix}",
-                          style: SolhTextStyles.QS_body_1_bold,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      : Container(),
-                  prefix != null
-                      ? prefix!.isNotEmpty
-                          ? SizedBox(
-                              width: 5,
-                            )
-                          : Container()
-                      : Container(),
-                  Container(
-                    width: 40.w,
-                    child: Text(
-                      "${name}",
-                      style: SolhTextStyles.QS_body_1_bold,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
+
+              RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                    text: prefix != null ? "$prefix " : '',
+                    style: SolhTextStyles.QS_body_1_bold),
+                TextSpan(text: "$name", style: SolhTextStyles.QS_body_1_bold)
+              ]))
+              // Row(
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     prefix != null
+              //         ? Text(
+              //             "${prefix}",
+              //             style: SolhTextStyles.QS_body_1_bold,
+              //             overflow: TextOverflow.ellipsis,
+              //           )
+              //         : Container(),
+              //     prefix != null
+              //         ? prefix!.isNotEmpty
+              //             ? SizedBox(
+              //                 width: 5,
+              //               )
+              //             : Container()
+              //         : Container(),
+              //     Container(
+              //       width: 40.w,
+              //       child: Text(
+              //         "${name}",
+              //         style: SolhTextStyles.QS_body_1_bold,
+              //         overflow: TextOverflow.ellipsis,
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              ,
               Container(
                 width: 50.w,
                 child: Text(

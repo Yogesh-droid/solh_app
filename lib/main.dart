@@ -139,6 +139,7 @@ class _SolhAppState extends State<SolhApp> {
         onGenerateRoute: RouteGenerator.generateRoute,
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
         theme: ThemeData(
+          // useMaterial3: true,
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
             bodyText2: TextStyle(

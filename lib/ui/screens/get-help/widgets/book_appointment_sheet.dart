@@ -302,7 +302,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'Mobile no'.tr,
+            'Mobile no.'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           Container(
@@ -330,7 +330,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'How Can we help ? (optional)'.tr,
+            'How can we help ? (optional)'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           SizedBox(
@@ -358,7 +358,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
             height: 20,
           ),
           Text(
-            'Preffered Date & Time'.tr,
+            'Preferred Date & Time'.tr,
             style: SolhTextStyles.QS_caption_bold,
           ),
           SizedBox(height: 5),

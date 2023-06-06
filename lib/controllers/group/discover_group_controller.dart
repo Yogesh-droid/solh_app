@@ -7,6 +7,7 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/group_detail_model.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/model/group/get_group_response_model.dart' as groupList;
 
 class DiscoverGroupController extends GetxController {
   var createdGroupModel = GetGroupResponseModel().obs;
@@ -19,6 +20,7 @@ class DiscoverGroupController extends GetxController {
   //var groupDetail = GroupList().obs;
   TabController? tabController;
   var isLoading = false.obs;
+  var isLoadingMoreGroupMembers = false.obs;
   var isDeletingGroup = false.obs;
 
   @override
@@ -68,17 +70,27 @@ class DiscoverGroupController extends GetxController {
     isDeletingGroup.value = false;
   }
 
-  Future<void> getGroupDetail(String groupId) async {
+  Future<void> getGroupDetail(String groupId, int pageNo) async {
     log(groupId);
-    isLoading.value = true;
+    pageNo > 1 ? isLoadingMoreGroupMembers(true) : isLoading.value = true;
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          '${APIConstants.api}/api/group/$groupId');
+          '${APIConstants.api}/api/groupv1/${groupId}?pageNumber=$pageNo&limit=50');
 
-      if (map['success']) {
+      if (map['success'] && pageNo == 1) {
         print('This is map $map');
         groupDetailModel.value = GroupDetailModel.fromJson(map);
+      } else if (pageNo > 1) {
+        GroupDetailModel groupDetailModelMore = GroupDetailModel.fromJson(map);
+
+        groupDetailModelMore.groupList!.groupMembers!.forEach((element) {
+          groupDetailModel.value.groupList!.groupMembers!.add(element);
+        });
+
+        groupDetailModel.refresh();
       }
+      isLoading(false);
+      isLoadingMoreGroupMembers(false);
     } catch (e) {
       log(e.toString());
       throw (e);

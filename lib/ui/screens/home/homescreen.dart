@@ -1890,14 +1890,14 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/anxiety.png')),
-                      'Anxiety'.tr),
+                      Image(image: AssetImage('assets/images/stress.png')),
+                      'Stress'.tr),
                   getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/depression.png')),
-                      'Depression'.tr),
+                      Image(image: AssetImage('assets/images/saddness.png')),
+                      'Sadness'.tr),
                   getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/addiction.png')),
-                      'Addiction'.tr),
+                      Image(image: AssetImage('assets/images/loneliness.png')),
+                      'Loneliness'.tr),
                   getIssuesRowItem(
                       Container(
                         decoration: BoxDecoration(
@@ -1919,7 +1919,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 style: SolhTextStyles.QS_caption.copyWith(
                     color: SolhColors.white, fontSize: 9.sp),
                 textAlign: TextAlign.center,
-              )
+              ),
             ],
           ),
         ),

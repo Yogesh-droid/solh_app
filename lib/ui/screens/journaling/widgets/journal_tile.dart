@@ -245,12 +245,13 @@ class _JournalTileState extends State<JournalTile> {
               ? {
                   Navigator.pushNamed(context, AppRoutes.groupDetails,
                       arguments: {
-                        "group": GroupList(
-                          sId: widget._journalModel!.group!.sId,
-                          groupName: widget._journalModel!.group!.groupName,
-                          groupMediaUrl:
-                              widget._journalModel!.group!.groupImage,
-                        ),
+                        "groupId": widget._journalModel!.group!.sId,
+                        //  GroupList(
+                        //   sId: widget._journalModel!.group!.sId,
+                        //   groupName: widget._journalModel!.group!.groupName,
+                        //   groupMediaUrl:
+                        //       widget._journalModel!.group!.groupImage,
+                        // ),
                       })
                 }
               : widget._journalModel!.postedBy!.sId !=

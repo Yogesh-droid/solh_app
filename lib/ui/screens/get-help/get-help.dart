@@ -1902,64 +1902,136 @@ class SolhVolunteers extends StatelessWidget {
 }
  */
 
-String infoHtml =
-    '''<p><strong>Clinical psychologist-</strong> You go to them first for any problems with your mental health that you encounter on a regular basis. They will accurately diagnose your symptoms for you and then choose an appropriate course of action. If you have a serious mental health problem, they can refer you to a psychiatrist, who will prescribe you medication for the same. Many times they work with psychiatrist as medication and counseling together has a better effect on the client. They can treat-</p>
-<ol>
-  <li>Anxiety or depression</li>
-  <li>Temporary stress or adjustment difficulties</li>
-  <li>Difficulty sleeping</li>
-  <li>Mild obsessive-compulsive behaviors</li>
-  <li>Minor substance abuse or addiction</li>
-  <li>Relationship or family problems</li>
-  <li>Generalized anxiety disorder</li>
-  <li>Depression or bipolar disorder</li>
-  <li>Panic disorder or phobias</li>
-  <li>Obsessive-compulsive disorder</li>
-  <li>Post-traumatic stress disorder</li>
-  <li>Eating disorders</li>
-  <li>Moderate substance abuse or addiction</li>
-</ol>
+String infoHtml = '''<!DOCTYPE html>
+<html>
+<head>
+  <title>Mental Health Professionals</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
 
-<p><strong>Psychiatrist-</strong> You go to them when your ability to function on a daily basis is severely hindered, such as when you experience hallucinations, delusions, or are completely hopeless. They offer diagnoses and prescribe medication. They typically collaborate with professional psychologists because therapy and medicine go hand in hand and have been shown to be the best course of action for the client's mental health. They provide treatment for-</p>
-<ol>
-  <li>Generalized anxiety disorder</li>
-  <li>Depression or bipolar disorder</li>
-  <li>Panic disorder or phobias</li>
-  <li>Obsessive-compulsive disorder</li>
-  <li>Post-traumatic stress disorder</li>
-  <li>Eating disorders</li>
-  <li>Moderate substance abuse or addiction</li>
-  <li>Schizophrenia or other psychotic disorders</li>
-  <li>Severe depression or bipolar disorder</li>
-  <li>Borderline personality disorder</li>
-  <li>Severe obsessive-compulsive disorder</li>
-  <li>Severe substance abuse or addiction</li>
-  <li>Suicidal thoughts or intentions</li>
-  <li>Severe trauma or PTSD</li>
-</ol>
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: underline;
+      margin-bottom: 10px;
+      animation: colorChange 4s infinite;
+    }
 
-<p><strong>Counseling Psychologist-</strong> You consult them when something in your life or some thought process is troubling you enough to feel good emotions and it is somewhere hampering your productivity too. They treat-</p>
-<ol>
-  <li>Feeling of loneliness</li>
-  <li>Despair</li>
-  <li>Guilt</li>
-  <li>Career issues</li>
-  <li>Mild anxiety or depression</li>
-  <li>Temporary stress or adjustment difficulties</li>
-  <li>Difficulty sleeping</li>
-  <li>Mild obsessive-compulsive behaviors</li>
-  <li>Minor substance abuse or addiction</li>
-  <li>Relationship or family problems</li>
-</ol>
+    @keyframes colorChange {
+      0% {
+        color: #FF7F50;
+      }
+      50% {
+        color: #6495ED;
+      }
+      100% {
+        color: #FF7F50;
+      }
+    }
 
-<p><strong>Counselor -</strong> It includes professionals who are specialized in a particular domain of counseling.</p>
+    p {
+      line-height: 1.5;
+    }
 
-<p>It includes -</p>
-<ul>
-  <li>Career and Educational Counselor</li>
-  <li>School counselor</li>
-  <li>Family and marriage Counselor</li>
-  <li>Relationship Counselor</li
+    ul {
+      margin-left: 20px;
+    }
+
+    li {
+      list-style-type: disc;
+      margin-bottom: 5px;
+    }
+
+    li:last-child {
+      margin-bottom: 10px;
+    }
+
+    li:before {
+      content: "•";
+      margin-right: 5px;
+    }
+
+    /* Colors */
+    h2:nth-child(odd) {
+      color: #FF7F50;
+    }
+
+    h2:nth-child(even) {
+      color: #6495ED;
+    }
+
+    li:nth-child(odd) {
+      color: #FF6347;
+    }
+
+    li:nth-child(even) {
+      color: #7B68EE;
+    }
+  </style>
+</head>
+<body>
+  <h2>Clinical Psychologist</h2>
+  <p>They are the initial point of contact for mental health problems. A clinical psychologist can help in accurately diagnosing symptoms and recommend appropriate treatment. They often collaborate with psychiatrists for combined medication and counseling. Issues treated include:</p>
+  <ul>
+    <li>Anxiety</li>
+    <li>Depression</li>
+    <li>Stress</li>
+    <li>Sleep difficulties</li>
+    <li>Relationship or family problems</li>
+    <li>Generalized anxiety disorder</li>
+    <li>Depression or bipolar disorder</li>
+    <li>Panic disorder or phobias</li>
+    <li>Obsessive-compulsive disorder</li>
+    <li>Post-traumatic stress disorder</li>
+    <li>Eating disorders</li>
+    <li>Moderate substance abuse or addiction</li>
+  </ul>
+
+  <h2>Psychiatrist</h2>
+  <p>A psychiatrist is usually consulted when daily functioning is severely hindered. They offer diagnoses and prescribe medication. Issues treated include:</p>
+  <ul>
+    <li>Generalized anxiety disorder</li>
+    <li>Depression or bipolar disorder</li>
+    <li>Panic disorder or phobias</li>
+    <li>Obsessive-compulsive disorder</li>
+    <li>Post-traumatic stress disorder</li>
+    <li>Eating disorders</li>
+    <li>Substance abuse or addiction</li>
+    <li>Schizophrenia or other psychotic disorders</li>
+    <li>Borderline personality disorder</li>
+    <li>Substance abuse or addiction</li>
+    <li>Suicidal thoughts or intentions</li>
+    <li>Severe trauma or PTSD</li>
+  </ul>
+
+  <h2>Psychologist</h2>
+  <p>A psychologist is consulted for troubling life aspects or thought processes affecting emotions and productivity. They help treat:</p>
+  <ul>
+    <li>Feelings of loneliness, despair, guilt</li>
+    <li>Career issues</li>
+    <li>Mild anxiety or depression</li>
+    <li>Temporary stress or adjustment difficulties</li>
+    <li>Difficulty sleeping</li>
+    <li>Mild obsessive-compulsive behaviors</li>
+    <li>Minor substance abuse or addiction</li>
+    <li>Relationship or family problems</li>
+  </ul>
+
+  <h2>Counselor</h2>
+  <p>A counselor is a professional specialized in a specific domain of counseling. These include:</p>
+  <ul>
+    <li>Career and Educational Counselor</li>
+    <li>School Counselor</li>
+    <li>Family and Marriage Counselor</li>
+    <li>Relationship Counselor</li>
+    <li>Special Educator</li>
+  </ul>
+</body>
+</html>
+
 ''';
 
 String infoHtmlHindi =

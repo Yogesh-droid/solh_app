@@ -32,16 +32,16 @@ class LiveStreamForUserCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          'Streaming',
-                          style: SolhTextStyles.QS_body_semi_1,
-                        ),
-                        SizedBox(
-                          width: 5,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Text(
+                            'Streaming',
+                            style: SolhTextStyles.QS_body_semi_1,
+                          ),
                         ),
                         Container(
                           padding:
-                              EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                              EdgeInsets.symmetric(vertical: 3, horizontal: 15),
                           decoration: BoxDecoration(
                             color: SolhColors.primaryRed,
                             borderRadius: BorderRadius.circular(12),
@@ -77,7 +77,7 @@ class LiveStreamForUserCard extends StatelessWidget {
                             });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: _getThumbnailCard(_liveStreamController
                                 .liveStreamForUserModel.value.webinar!.image ??
                             ''),
@@ -87,12 +87,13 @@ class LiveStreamForUserCard extends StatelessWidget {
                       height: 10,
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
                       child: _getStreamInfo(_liveStreamController),
                     ),
                     SizedBox(
                       height: 10,
                     ),
+                    GetHelpDivider()
                   ]),
                 ));
     });

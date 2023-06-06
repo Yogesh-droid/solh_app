@@ -20,6 +20,7 @@ import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -50,23 +51,14 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   DiscoverGroupController discoverGroupController = Get.find();
   BottomNavigatorController _bottomNavigatorController = Get.find();
   ProfileController profileController = Get.find();
-
+  ScrollController groupDetailScrollController = ScrollController();
+  int pageNo = 1;
   @override
   void initState() {
     // groupList = widget.group;
     log("${widget.isJoined}");
     isJoined = widget.isJoined;
-    getGroupDetails();
-    // if (groupList.groupMembers == null) {}
-    // // groupList.defaultAdmin?.forEach((element) {
-    // //   if (element.id ==
-    // //       profileController.myProfileModel.value.body!.user!.sId!) {
-    // //     isDefaultAdmin = true;
-    // //   }
-    // //   if (userBlocNetwork.id == '62e125176a858283a925d15c') {
-    // //     isDefaultAdmin = true;
-    // //   }
-    // // });
+    getGroupDetails(1);
 
     if (widget.isJoined == null) {
       discoverGroupController.joinedGroupModel.value.groupList != null
@@ -77,62 +69,77 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               }
             })
           : null;
-      // discoverGroupController.createdGroupModel.value.groupList!
-      //     .forEach((element) {
-      //   if (element.sId == groupList.sId) {
-      //     isJoined = true;
-      //   }
-      // });
     }
+    getMoreGroupMembers();
     super.initState();
+  }
+
+  getMoreGroupMembers() {
+    groupDetailScrollController.addListener(() {
+      log("scroll working");
+      if (groupDetailScrollController.position.pixels ==
+              groupDetailScrollController.position.maxScrollExtent &&
+          discoverGroupController.groupDetailModel.value.pagesForMember!.next !=
+              null) {
+        print('fetching');
+        discoverGroupController.isLoadingMoreGroupMembers(true);
+        pageNo++;
+        discoverGroupController.getGroupDetail(widget.groupId, pageNo);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: getAppBar(context),
-      body: SingleChildScrollView(child: Obx(() {
-        return discoverGroupController.isDeletingGroup.value ||
-                discoverGroupController.isLoading.value
-            ? Center(child: MyLoader())
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+      body: SingleChildScrollView(
+          controller: groupDetailScrollController,
+          child: Obx(() {
+            return discoverGroupController.isDeletingGroup.value ||
+                    discoverGroupController.isLoading.value
+                ? Center(child: MyLoader())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      getGroupImg(),
+                      Stack(
+                        children: [
+                          getGroupImg(),
+                          Obx(() {
+                            return discoverGroupController.isLoading.value
+                                ? Container()
+                                : getGroupInfo(context);
+                          })
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Obx(() {
                         return discoverGroupController.isLoading.value
                             ? Container()
-                            : getGroupInfo(context);
-                      })
+                            : getPostButton(context);
+                      }),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Obx(() {
+                        return discoverGroupController.isLoading.value
+                            ? Container()
+                            : getGroupDesc();
+                      }),
+                      Divider(),
+                      Obx(() {
+                        return discoverGroupController.isLoading.value
+                            ? Container()
+                            : getMembersList(context);
+                      }),
+                      discoverGroupController.isLoadingMoreGroupMembers.value
+                          ? MyLoader()
+                          : Container(),
                     ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Obx(() {
-                    return discoverGroupController.isLoading.value
-                        ? Container()
-                        : getPostButton(context);
-                  }),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Obx(() {
-                    return discoverGroupController.isLoading.value
-                        ? Container()
-                        : getGroupDesc();
-                  }),
-                  Divider(),
-                  Obx(() {
-                    return discoverGroupController.isLoading.value
-                        ? getShimmer()
-                        : getMembersList(context);
-                  })
-                ],
-              );
-      })),
+                  );
+          })),
     );
   }
 
@@ -771,8 +778,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     );
   }
 
-  Future<void> getGroupDetails() async {
-    await discoverGroupController.getGroupDetail(widget.groupId);
+  Future<void> getGroupDetails(int pageNo) async {
+    await discoverGroupController.getGroupDetail(widget.groupId, pageNo);
 
     discoverGroupController.groupDetailModel.value.groupList!.defaultAdmin!
         .forEach((element) {

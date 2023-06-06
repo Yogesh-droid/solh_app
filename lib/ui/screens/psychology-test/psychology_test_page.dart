@@ -62,8 +62,8 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         ),
       ),
       title: Text(
-        "Psychological Tests".tr,
-        style: SolhTextStyles.AppBarText,
+        "Self Assessment".tr,
+        style: SolhTextStyles.QS_body_1_bold,
       ),
       backgroundColor: Colors.white,
       elevation: isAtTop ? 0 : 5,
@@ -84,8 +84,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
       child: Column(
         children: [
           Text(
-            "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you."
-                .tr,
+            "Our Self Assessment tests help you learn more about yourself.".tr,
             style: SolhTextStyles.JournalingDescriptionText,
           ),
           SizedBox(

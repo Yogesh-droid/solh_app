@@ -269,11 +269,11 @@ class _LiveStreamState extends State<LiveStream> {
         child: Obx(() {
           return _liveStreamController.isMuted.value
               ? Icon(
-                  CupertinoIcons.mic_fill,
+                  CupertinoIcons.mic_slash_fill,
                   color: SolhColors.primary_green,
                 )
               : Icon(
-                  CupertinoIcons.mic_slash_fill,
+                  CupertinoIcons.mic_fill,
                   color: SolhColors.primary_green,
                 );
         }),
@@ -302,10 +302,10 @@ class _LiveStreamState extends State<LiveStream> {
                 name: "obx");
             return _liveStreamController.isCameraOff.value
                 ? SvgPicture.asset(
-                    'assets/images/camera_on.svg',
+                    'assets/images/camera_off.svg',
                   )
                 : SvgPicture.asset(
-                    'assets/images/camera_off.svg',
+                    'assets/images/camera_on.svg',
                   );
           },
         ),

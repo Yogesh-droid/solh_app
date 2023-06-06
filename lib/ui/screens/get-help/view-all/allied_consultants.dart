@@ -256,22 +256,14 @@ class AlliedConsultantTile extends StatelessWidget {
                   SizedBox(
                     height: 3.h,
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        prefix ?? '',
-                        style: SolhTextStyles.QS_body_2_semi,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        name ?? '',
-                        style: SolhTextStyles.QS_body_2_semi,
-                      ),
-                    ],
-                  ),
+                  RichText(
+                      text: TextSpan(children: [
+                    TextSpan(
+                        text: prefix != null ? "$prefix " : '',
+                        style: SolhTextStyles.QS_body_1_bold),
+                    TextSpan(
+                        text: "$name", style: SolhTextStyles.QS_body_1_bold)
+                  ])),
                   Row(
                     children: [
                       Text(

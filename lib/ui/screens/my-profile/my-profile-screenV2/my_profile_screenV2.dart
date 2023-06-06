@@ -437,6 +437,26 @@ class OptionsColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        profileController.myProfileModel.value.body!.user!.isLiveStreamEnable!
+            ? InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.liveStreamWaiting,
+                  );
+                },
+                child: getOption(
+                    Icon(
+                      CupertinoIcons.dot_radiowaves_left_right,
+                      color: SolhColors.primary_green,
+                      size: 20,
+                    ),
+                    'Go Live'.tr),
+              )
+            : Container(),
+        SizedBox(
+          height: 8,
+        ),
         InkWell(
           onTap: (() {
             Navigator.pushNamed(context, AppRoutes.userPostScreen, arguments: {
@@ -575,23 +595,6 @@ class OptionsColumn extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        profileController.myProfileModel.value.body!.user!.isLiveStreamEnable!
-            ? InkWell(
-                onTap: () {
-                  Navigator.pushNamed(
-                    context,
-                    AppRoutes.liveStreamWaiting,
-                  );
-                },
-                child: getOption(
-                    Icon(
-                      Icons.live_tv,
-                      color: SolhColors.primary_green,
-                      size: 20,
-                    ),
-                    'Go Live'.tr),
-              )
-            : Container(),
         SizedBox(
           height: 8,
         ),

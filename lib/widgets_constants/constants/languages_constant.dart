@@ -98,7 +98,7 @@ class Languages extends Translations {
           "Change": "बदलें",
           "Book Now & Pay Later": "अभी बुक करें और बाद में भुगतान करें",
           "Billing Details": "बिल डिटेल्स",
-          "Consultaion Fee": "परामर्श शुल्क",
+          "Consultation Fee": "परामर्श शुल्क",
           "By confirming you agree": "अपनी उम्र की पुष्टि करके",
           "Terms & Conditions": "नियम और शर्तें",
           "Solh Promises": "Solh के वादे",
@@ -393,11 +393,11 @@ class Languages extends Translations {
           "Select Time": "समय का चयन करें",
           "Book Anonymously": "गुमनाम रूप से बुक करें",
           "Email-Id": "ई-मेल",
-          "Mobile no": "मोबाइल नंबर",
+          "Mobile no.": "मोबाइल नंबर",
           "Mobile No.": "मोबाइल नंबर",
-          "How Can we help ? (optional)":
+          "How can we help ? (optional)":
               "हम आपकी कैसे सहायता कर सकते है?(वैकल्पिक)",
-          "Preffered Date & Time": "पसंदीदा तिथि और समय",
+          "Preferred Date & Time": "पसंदीदा तिथि और समय",
           "Clear your Mind. Find Happiness in Chaos. Seek Solh Within.":
               "अपना दिमाग साफ़ करें। अराजकता में खुशी खोजें। अपने भीतर SOLH तलाशें। ",
           "Already have an account?":
@@ -576,7 +576,7 @@ Map<String, String> en_us_map = {
   "Change": "Change",
   "Book Now & Pay Later": "Book Now & Pay Later",
   "Billing Details": "Billing Details",
-  "Consultaion Fee": "Consultaion Fee",
+  "Consultation Fee": "Consultation Fee",
   "By confirming you agree": "By confirming you agree",
   "Terms & Conditions": "Terms & Conditions",
   "Solh Promises": "Solh Promises",
@@ -884,9 +884,9 @@ Map<String, String> en_us_map = {
   "Select Time": "Select Time",
   "Book Anonymously": "Book Anonymously",
   "Email-Id": "Email-Id",
-  "Mobile no": "Mobile no",
-  "How Can we help ? (optional)": "How Can we help ? (optional)",
-  "Preffered Date & Time": "Preffered Date & Time",
+  "Mobile no.": "Mobile no",
+  "How can we help ? (optional)": "How Can we help ? (optional)",
+  "Preferred Date & Time": "Preffered Date & Time",
   "Packages": "Packages",
   "Service Fee & Taxes": "Service Fee & Taxes",
   "Credit/Debit Card": "Credit/Debit Card",
@@ -1304,9 +1304,9 @@ Map<String, String> fr_FR_map = {
   "Select Time": "Sélectionner l'heure",
   "Book Anonymously": "Réserver de manière anonyme",
   "Email-Id": "E-mail-id",
-  "Mobile no": "Mobile non",
-  "How Can we help ? (optional)": "Comment pouvons nous aider ? (facultatif)",
-  "Preffered Date & Time": "Date et heure pré-affichées",
+  "Mobile no.": "Mobile non",
+  "How can we help ? (optional)": "Comment pouvons nous aider ? (facultatif)",
+  "Preferred Date & Time": "Date et heure pré-affichées",
   "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
       "La suppression de votre compte supprimera tous vos messages, rendez-vous, revues, goûts et commentaires et tous les autres engagements.Vous devrez créer un nouveau compte et commencer votre voyage depuis le début si vous souhaitez revenir.",
   "Clear your Mind. Find Happiness in Chaos. Seek Solh Within.":
@@ -1440,7 +1440,7 @@ Map<String, String> ar_sa_map = {
   "Change": "يتغير",
   "Book Now & Pay Later": "كتاب الآن وادفع لاحقًا",
   "Billing Details": "تفاصيل الفاتورة",
-  "Consultaion Fee": "رسوم الاستشارات",
+  "Consultation Fee": "رسوم الاستشارات",
   "By confirming you agree": "بتأكيدك توافق",
   "Terms & Conditions": "البنود و الظروف",
   "Solh Promises": "وعود سوله",
@@ -1746,9 +1746,9 @@ Map<String, String> ar_sa_map = {
   "Select Time": "حدد الوقت",
   "Book Anonymously": "كتاب مجهول",
   "Email-Id": "عنوان الايميل",
-  "Mobile no": "رقم المحمول",
-  "How Can we help ? (optional)": "كيف يمكن أن نساعد ؟ (خياري)",
-  "Preffered Date & Time": "تاريخ ووقت ما بعد",
+  "Mobile no.": "رقم المحمول",
+  "How can we help ? (optional)": "كيف يمكن أن نساعد ؟ (خياري)",
+  "Preferred Date & Time": "تاريخ ووقت ما بعد",
   "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
       "سيؤدي حذف حسابك إلى حذف جميع مشاركاتك ومواعيدك والمجلات والأحب والتعليقات وجميع المشاركات الأخرى.سيتعين عليك إنشاء حساب جديد وبدء رحلتك من البداية إذا كنت ترغب في العودة.",
   "Clear your Mind. Find Happiness in Chaos. Seek Solh Within.":
@@ -1886,7 +1886,7 @@ Map<String, String> ta_IN_map = {
   "Change": "மாற்றம்",
   "Book Now & Pay Later": "இப்போது முன்பதிவு செய்து பின்னர் செலுத்துங்கள்",
   "Billing Details": "பில்லிங் விவரங்கள்",
-  "Consultaion Fee": "ஆலோசனை கட்டணம்",
+  "Consultation Fee": "ஆலோசனை கட்டணம்",
   "By confirming you agree": "நீங்கள் ஒப்புக்கொள்வதன் மூலம்",
   "Terms & Conditions": "விதிமுறைகளும் நிபந்தனைகளும்",
   "Solh Promises": "சோல் வாக்குறுதிகள்",
@@ -2198,10 +2198,10 @@ Map<String, String> ta_IN_map = {
   "Select Time": "நேரம் தேர்ந்தெடுக்கவும்",
   "Book Anonymously": "அநாமதேயமாக பதிவு செய்யுங்கள்",
   "Email-Id": "மின்னஞ்சல் முகவரி",
-  "Mobile no": "அலைபேசி எண்",
-  "How Can we help ? (optional)":
+  "Mobile no.": "அலைபேசி எண்",
+  "How can we help ? (optional)":
       "நாங்கள் உங்களுக்கு எப்படி உதவ முடியும் ? (விரும்பினால்)",
-  "Preffered Date & Time": "தற்செயலான தேதி & நேரம்",
+  "Preferred Date & Time": "தற்செயலான தேதி & நேரம்",
   "Deleting your account will  delete all your posts, appointments, journals, likes & comments & all other engagements. You will have to create a new account and start your journey from the beginning if you wish to return.":
       "உங்கள் கணக்கை நீக்குவது உங்கள் இடுகைகள், சந்திப்புகள், பத்திரிகைகள், விருப்பங்கள் மற்றும் கருத்துகள் மற்றும் பிற அனைத்து ஈடுபாடுகளையும் நீக்கிவிடும்.நீங்கள் திரும்ப விரும்பினால் நீங்கள் ஒரு புதிய கணக்கை உருவாக்கி ஆரம்பத்தில் இருந்தே உங்கள் பயணத்தைத் தொடங்க வேண்டும்.",
   "Clear your Mind. Find Happiness in Chaos. Seek Solh Within.":

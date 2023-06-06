@@ -370,13 +370,14 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                                   Navigator.pushNamed(
                                       context, AppRoutes.groupDetails,
                                       arguments: {
-                                        "group": GroupList(
-                                          sId: groupCount[index].sId,
-                                          groupName:
-                                              groupCount[index].groupName,
-                                          groupMediaUrl:
-                                              groupCount[index].groupMediaUrl,
-                                        ),
+                                        "groupId": groupCount[index].sId,
+                                        // "group": GroupList(
+                                        //   sId: groupCount[index].sId,
+                                        //   groupName:
+                                        //       groupCount[index].groupName,
+                                        //   groupMediaUrl:
+                                        //       groupCount[index].groupMediaUrl,
+                                        // ),
                                       });
                                   /*   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {

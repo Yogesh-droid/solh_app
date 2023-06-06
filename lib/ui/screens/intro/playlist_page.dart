@@ -25,47 +25,48 @@ class VideoPlaylist extends StatelessWidget {
             ),
             isLandingScreen: false),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(children: [
-              Text(
-                'Discover previously unknown features by learning more about Solh Features'
-                    .tr,
-                style: SolhTextStyles.JournalingHintText,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(
+              height: 10,
+            ),
+            LiveStreamForUserCard(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              child: Text(
+                'Other Videos',
+                style: SolhTextStyles.QS_body_semi_1,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              LiveStreamForUserCard(),
-              Obx(() => videoTutorialController.isLoadingPlaylist.value
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      children: videoTutorialController.videoPlaylist.value
-                          .map((e) => Hero(
-                                tag: e.sId ?? '',
-                                child: VideoTile(
-                                  title: e.title ?? '',
-                                  description: e.description ?? '',
-                                  videoThumb: e.videoThumbnail ?? '',
-                                  playlistIcon: Icons.playlist_play_outlined,
-                                  onTap: () {
-                                    videoTutorialController
-                                        .getVideolist(e.sId ?? '');
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (conext) {
-                                      return VideoTutorialPage();
-                                    }));
-                                  },
-                                ),
-                              ))
-                          .toList(),
-                    ))
-            ]),
-          ),
+            ),
+            Obx(() => videoTutorialController.isLoadingPlaylist.value
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView(
+                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: videoTutorialController.videoPlaylist.value
+                        .map((e) => Hero(
+                              tag: e.sId ?? '',
+                              child: VideoTile(
+                                title: e.title ?? '',
+                                description: e.description ?? '',
+                                videoThumb: e.videoThumbnail ?? '',
+                                playlistIcon: Icons.playlist_play_outlined,
+                                onTap: () {
+                                  videoTutorialController
+                                      .getVideolist(e.sId ?? '');
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (conext) {
+                                    return VideoTutorialPage();
+                                  }));
+                                },
+                              ),
+                            ))
+                        .toList(),
+                  ))
+          ]),
         ));
   }
 }

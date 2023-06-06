@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class FindHelpBar extends StatelessWidget {
   const FindHelpBar(
@@ -37,13 +40,20 @@ class FindHelpBar extends StatelessWidget {
           SizedBox(
             width: 3.w,
           ),
-          InkWell(
-            onTap: () => onConnectionTapped(),
-            child: SvgPicture.asset(
-              "assets/images/connections.svg",
-              height: 30,
-            ),
-          ),
+          Obx(() {
+            return Get.find<ProfileController>().isProfileLoading.value
+                ? MyLoader(
+                    radius: 10,
+                    strokeWidth: 2,
+                  )
+                : InkWell(
+                    onTap: () => onConnectionTapped(),
+                    child: SvgPicture.asset(
+                      "assets/images/connections.svg",
+                      height: 30,
+                    ),
+                  );
+          }),
         ],
       ),
     );

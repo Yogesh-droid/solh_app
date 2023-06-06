@@ -594,7 +594,7 @@ class BillAndCoupon extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    Text('Consultaion Fee'.tr,
+                    Text('Consultation Fee'.tr,
                         style: SolhTextStyles.QS_cap_semi.copyWith(
                             color: SolhColors.Grey_1)),
                     Spacer(),

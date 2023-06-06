@@ -1,13 +1,18 @@
 class GroupDetailModel {
   bool? success;
   GroupList? groupList;
+  PagesForMember? pagesForMember;
 
-  GroupDetailModel({this.success, this.groupList});
+  GroupDetailModel({this.success, this.groupList, this.pagesForMember});
 
   GroupDetailModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     groupList = json['groupList'] != null
         ? new GroupList.fromJson(json['groupList'])
+        : null;
+
+    pagesForMember = json['pagesForMember'] != null
+        ? new PagesForMember.fromJson(json['pagesForMember'])
         : null;
   }
 
@@ -198,6 +203,25 @@ class DefaultAdmin {
     data['uid'] = this.uid;
     data['name'] = this.name;
     data['bio'] = this.bio;
+    return data;
+  }
+}
+
+class PagesForMember {
+  int? prev;
+  int? next;
+
+  PagesForMember({this.prev, this.next});
+
+  PagesForMember.fromJson(Map<String, dynamic> json) {
+    prev = json['prev'];
+    next = json['next'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['prev'] = this.prev;
+    data['next'] = this.next;
     return data;
   }
 }
