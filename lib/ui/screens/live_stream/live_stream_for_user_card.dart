@@ -186,15 +186,15 @@ Widget _getHostsRow(LiveStreamController liveStreamController) {
             enableborder: true,
             borderWidth: 1,
             borderColor: SolhColors.grey_2,
-            imageUrl: liveStreamController
-                .liveStreamForUserModel.value.webinar!.host!.profilePicture!,
+            imageUrl: liveStreamController.liveStreamForUserModel.value.webinar!
+                .hosts!.first.profilePicture!,
           ),
           SizedBox(
             width: 3,
           ),
           Text(
             liveStreamController
-                .liveStreamForUserModel.value.webinar!.host!.name!,
+                .liveStreamForUserModel.value.webinar!.hosts!.first.name!,
             style: SolhTextStyles.QS_caption_2_bold,
           ),
         ],
@@ -202,39 +202,34 @@ Widget _getHostsRow(LiveStreamController liveStreamController) {
       SizedBox(
         width: 12,
       ),
-      Row(children: [
-        SimpleImageContainer(
-          radius: 22,
-          enableborder: true,
-          borderWidth: 1,
-          borderColor: SolhColors.grey_2,
-          imageUrl: liveStreamController.liveStreamForUserModel.value.webinar!
-              .otherHost![0].profilePicture!,
-        ),
-        SizedBox(
-          width: 3,
-        ),
-        liveStreamController.liveStreamForUserModel.value.webinar!.otherHost !=
-                    null ||
+      liveStreamController.liveStreamForUserModel.value.webinar!.hosts!.length >
+              1
+          ? Row(children: [
+              SimpleImageContainer(
+                radius: 22,
+                enableborder: true,
+                borderWidth: 1,
+                borderColor: SolhColors.grey_2,
+                imageUrl: liveStreamController.liveStreamForUserModel.value
+                    .webinar!.hosts![1].profilePicture!,
+              ),
+              SizedBox(
+                width: 3,
+              ),
+              Text(
                 liveStreamController
-                    .liveStreamForUserModel.value.webinar!.otherHost!.isNotEmpty
-            ? Text(
-                liveStreamController
-                    .liveStreamForUserModel.value.webinar!.otherHost![0].name!,
+                    .liveStreamForUserModel.value.webinar!.hosts![1].name!,
                 style: SolhTextStyles.QS_caption_2_bold,
-              )
-            : Container(),
-      ]),
+              ),
+            ])
+          : Container(),
       SizedBox(
         width: 15,
       ),
-      liveStreamController.liveStreamForUserModel.value.webinar!.otherHost !=
-                  null ||
-              liveStreamController
-                      .liveStreamForUserModel.value.webinar!.otherHost!.length >
-                  1
+      liveStreamController.liveStreamForUserModel.value.webinar!.hosts!.length >
+              2
           ? Text(
-              '+${liveStreamController.liveStreamForUserModel.value.webinar!.otherHost!.length - 1} more',
+              '+${liveStreamController.liveStreamForUserModel.value.webinar!.hosts!.length - 2} more',
               style: SolhTextStyles.QS_caption_2_bold,
             )
           : Container()

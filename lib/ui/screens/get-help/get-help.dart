@@ -224,7 +224,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             child: Row(
               children: [
                 Text(
-                  'Search by Profession',
+                  'Search by Profession'.tr,
                   style: SolhTextStyles.QS_body_semi_1,
                 ),
                 IconButton(
@@ -2092,3 +2092,36 @@ String infoHtmlHindi =
   <li>स्कूल काउंसलर</li>
   <li>फैमिली एंड मैरिज काउंसलर</li>
   <li>रिलेशनशिप काउंसलर</li''';
+
+String disclaimerHtml = ''' 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Self-Assessment Disclaimer</title>
+</head>
+<body>
+  <h2>Disclaimer</h2>
+  <p>In our self assessments, there are certain questions given to measure the severity of your emotions. Select the option that first comes to your mind and you feel is best suited according to the question. At the end of the assessment, you will get the results based on your responses.</p>
+  <p>Please note, these assessments are not a substitute for professional advice or diagnosis. If you experience any significant mental health concerns, seek assistance from a qualified healthcare or mental health professional. Self-assessment tools provide initial awareness, but personalized professional advice is crucial.</p>
+  <p><strong>Warning:</strong> The generated result cannot be used for any legal or medical purposes.</p>
+</body>
+</html>
+''';
+
+String disclaimerHtmlHindi = '''  
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Self-Assessment Disclaimer</title>
+</head>
+<body>
+  <h2>डिस्क्लेमर</h2>
+  <p>हमारे सेल्फ असेसमेंट में, आपकी भावनाओं की गंभीरता को मापने के लिए कुछ प्रश्न दिए गए हैं। उस विकल्प का चयन करें जो आपके दिमाग में सबसे पहले आता है और जो आपको प्रश्न के अनुसार सबसे उपयुक्त लगता है। असेसमेंट के अंत में, आप अपनी प्रतिक्रियाओं के आधार पर परिणाम प्राप्त करेंगे।
+कृपया ध्यान दें, ये असेसमेंट पेशेवर सलाह या निदान का विकल्प नहीं हैं। यदि आप किसी महत्वपूर्ण मानसिक स्वास्थ्य चिंता का अनुभव करते हैं, तो योग्य स्वास्थ्य देखभाल या मानसिक स्वास्थ्य पेशेवर से सहायता लें। सेल्फ-असेसमेंट उपकरण प्रारंभिक जागरूकता प्रदान करते हैं, लेकिन व्यक्तिगत पेशेवर सलाह महत्वपूर्ण है।
+</p>
+<p>चेतावनी: जनरेट की गई रिपोर्ट का उपयोग किसी भी कानूनी या चिकित्सीय उद्देश्यों के लिए नहीं किया जा सकता है।</p>
+
+</body>
+</html>
+''';

@@ -6,15 +6,20 @@ class SearchMarketModel {
   List<Provider>? alliedProviders;
   PagesForProvider? pagesForProvider;
   PagesForAllied? pagesForAllied;
+  int? totalProvider;
+  int? totalAllied;
 
-  SearchMarketModel(
-      {this.code,
-      this.success,
-      this.provider,
-      this.doctors,
-      this.alliedProviders,
-      this.pagesForAllied,
-      this.pagesForProvider});
+  SearchMarketModel({
+    this.code,
+    this.success,
+    this.provider,
+    this.doctors,
+    this.alliedProviders,
+    this.pagesForAllied,
+    this.pagesForProvider,
+    this.totalProvider,
+    this.totalAllied,
+  });
 
   SearchMarketModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
@@ -43,6 +48,8 @@ class SearchMarketModel {
         doctors!.add(new Doctors.fromJson(v));
       });
     }
+    totalAllied = json['totalAllied'];
+    totalProvider = json['totalProvider'];
 
     pagesForProvider = json['pagesForProvider'] != null
         ? new PagesForProvider.fromJson(json['pagesForProvider'])

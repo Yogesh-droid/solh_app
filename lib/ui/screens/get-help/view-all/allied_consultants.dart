@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
@@ -36,10 +39,32 @@ class AlliedConsultant extends StatefulWidget {
 class _AlliedConsultantState extends State<AlliedConsultant> {
   String? defaultCountry;
   SearchMarketController searchMarketController = Get.find();
+  int pageNo = 1;
+  bool _fetchingMore = false;
+  late ScrollController _alliedScrollController;
   @override
   void initState() {
+    _alliedScrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      getResultByCountry();
+    });
+
+    fetchMoreAlliedConsultant();
     super.initState();
-    getResultByCountry();
+  }
+
+  void fetchMoreAlliedConsultant() {
+    _alliedScrollController.addListener(() {
+      if (_alliedScrollController.position.pixels >
+              _alliedScrollController.position.maxScrollExtent - 100 &&
+          searchMarketController.issueModel.value.pagesForAllied!.next !=
+              null &&
+          searchMarketController.isLoading.value == false) {
+        pageNo++;
+        searchMarketController.getIssueList(widget.slug!,
+            c: searchMarketController.defaultCountry, page: pageNo);
+      }
+    });
   }
 
   @override
@@ -67,7 +92,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                                   .issueModel.value.alliedProviders !=
                               null
                           ? Text(
-                              "${searchMarketController.issueModel.value.alliedProviders!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
+                              "${searchMarketController.issueModel.value.totalAllied} ${widget.name}",
                               style: SolhTextStyles.QS_cap_2_semi.copyWith(
                                   color: SolhColors.Grey_1),
                             )
@@ -82,6 +107,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
           ? getShimmer(context)
           : searchMarketController.issueModel.value.alliedProviders != null
               ? CustomScrollView(
+                  controller: _alliedScrollController,
                   slivers: [
                     SliverToBoxAdapter(
                       child: SizedBox(
@@ -153,7 +179,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
     defaultCountry = sharedPreferences.getString('userCountry');
     widget.type == 'specialization'
         ? searchMarketController.getSpecializationList(widget.slug ?? '',
-            c: defaultCountry)
+            c: defaultCountry, page: pageNo)
         : widget.type == 'topconsultant'
             ? searchMarketController.getTopConsultants(c: defaultCountry)
             : searchMarketController.getIssueList(widget.slug ?? '',
@@ -162,7 +188,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
 }
 
 class AlliedConsultantTile extends StatelessWidget {
-  const AlliedConsultantTile(
+  AlliedConsultantTile(
       {super.key,
       required this.profilePic,
       required this.prefix,
@@ -182,32 +208,45 @@ class AlliedConsultantTile extends StatelessWidget {
   final int feeAmount;
   final String? preview;
 
+  final SearchMarketController _searchMarketController = Get.find();
   @override
   Widget build(BuildContext context) {
     print("The preview is $preview");
     return Column(
       children: [
-        Stack(
+        Column(
           children: [
-            InkWell(
-              onTap: () => Navigator.pushNamed(
-                  context, AppRoutes.alliedConsultantScreen,
-                  arguments: {"id": id}),
-              child: Container(
-                height: 24.h,
-                width: 100.w,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color:
-                            Color.fromRGBO(217, 217, 217, 1).withOpacity(0.4))),
-                child: getProfileDetails(context: context),
-              ),
+            Stack(
+              children: [
+                InkWell(
+                  onTap: () => Navigator.pushNamed(
+                      context, AppRoutes.alliedConsultantScreen,
+                      arguments: {"id": id}),
+                  child: Container(
+                    height: 24.h,
+                    width: 100.w,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: Color.fromRGBO(217, 217, 217, 1)
+                                .withOpacity(0.4))),
+                    child: getProfileDetails(context: context),
+                  ),
+                ),
+                // SvgPicture.asset('assets/images/demo.svg')
+              ],
             ),
-            // SvgPicture.asset('assets/images/demo.svg')
+            GetHelpDivider(),
           ],
         ),
-        GetHelpDivider(),
+        Obx(() {
+          return _searchMarketController.isLoadingMoreClinician.value &&
+                  name ==
+                      _searchMarketController
+                          .issueModel.value.alliedProviders!.last.name
+              ? ButtonLoadingAnimation()
+              : Container();
+        })
       ],
     );
   }
@@ -260,9 +299,10 @@ class AlliedConsultantTile extends StatelessWidget {
                       text: TextSpan(children: [
                     TextSpan(
                         text: prefix != null ? "$prefix " : '',
-                        style: SolhTextStyles.QS_body_1_bold),
+                        style: Theme.of(context).textTheme.headline3),
                     TextSpan(
-                        text: "$name", style: SolhTextStyles.QS_body_1_bold)
+                        text: "$name",
+                        style: Theme.of(context).textTheme.headline3)
                   ])),
                   Row(
                     children: [

@@ -46,10 +46,11 @@ class AlliedBookingContinueDetail extends StatelessWidget {
     return Container(
       child: ListView(children: [
         DoctorNameAndImage(
-            img: finalResult.profilePicture ??
-                'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
-            name: finalResult.name ?? '',
-            profession: finalResult.profession ?? ''),
+          img: finalResult.profilePicture ??
+              'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y',
+          name: finalResult.name ?? '',
+          profession: finalResult.profession ?? '',
+        ),
         GetHelpDivider(),
         packageDetails(),
         GetHelpDivider(),

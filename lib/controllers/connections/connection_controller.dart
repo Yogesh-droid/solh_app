@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -52,17 +53,29 @@ class ConnectionController extends GetxController {
   var userModel = UserModel().obs;
   DiscoverGroupController discoverGroupController = Get.find();
 
-  getBlogDetails(int id) {
+  Future<void> getBlogDetails(int id) async {
     isBlogDetailsLoading.value = true;
-    http
-        .get(Uri.parse('https://solhapp.com/blog/api/post/${id}'))
-        .then((response) {
-      isBlogDetailsLoading.value = false;
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        blogDetails.value = BlogDetails.fromJson(data);
-      }
-    });
+    // log('https://solhapp.com/blog/api/post/${id}');
+    // http
+    //     .get(Uri.parse('https://solhapp.com/blog/api/post/${id}'))
+    //     .then((response) {
+    //   if (response.statusCode == 200) {
+    //     var data = json.decode(response.body);
+    //     blogDetails.value = BlogDetails.fromJson(data);
+    //     log(response.body);
+    //   }
+    //   isBlogDetailsLoading.value = false;
+    // });
+
+    var response =
+        await http.get(Uri.parse('https://solhapp.com/blog/api/post/${id}'));
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      blogDetails.value = BlogDetails.fromJson(data);
+      log(response.body);
+    }
+    isBlogDetailsLoading.value = false;
   }
 
   /////  For recommended posts

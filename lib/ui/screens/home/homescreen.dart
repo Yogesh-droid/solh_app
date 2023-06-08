@@ -348,8 +348,10 @@ class _HomePageState extends State<HomePage> {
                   : Container()),
           Obx(() {
             return discoverGroupController
-                        .discoveredGroupModel.value.groupList !=
-                    null
+                            .discoveredGroupModel.value.groupList !=
+                        null ||
+                    discoverGroupController
+                        .discoveredGroupModel.value.groupList!.isNotEmpty
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
@@ -395,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Text(
-                      'Search by Profession',
+                      'Search by Profession'.tr,
                       style: SolhTextStyles.QS_body_semi_1,
                     ),
                     IconButton(
@@ -1103,156 +1105,173 @@ class _HomePageState extends State<HomePage> {
     return Container(
         padding: EdgeInsets.only(bottom: 2.h),
         height: MediaQuery.of(context).size.height * 0.4,
-        child: ListView.separated(
-            padding: EdgeInsets.only(left: 2.h),
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return InkWell(
-                onTap: (() {
-                  /*   Navigator.of(context).push(MaterialPageRoute(
+        child: discoverGroupController
+                        .discoveredGroupModel.value.groupList!.length ==
+                    0 ||
+                discoverGroupController.discoveredGroupModel.value.groupList ==
+                    null
+            ? Center(
+                child: Text(
+                "No groups to explore !",
+                style: SolhTextStyles.QS_body_1_bold,
+              ))
+            : ListView.separated(
+                padding: EdgeInsets.only(left: 2.h),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) {
+                  return InkWell(
+                    onTap: (() {
+                      /*   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => GroupDetailsPage(
                             group: discoverGroupController
                                 .discoveredGroupModel.value.groupList![index],
                           ))); */
-                  print(
-                    discoverGroupController.discoveredGroupModel.value.groupList
-                        .toString(),
-                  );
-                  Navigator.pushNamed(context, AppRoutes.groupDetails,
-                      arguments: {
-                        "groupId": discoverGroupController
-                            .discoveredGroupModel.value.groupList![index].sId,
-                        // "isJoined": false
-                      });
-                }),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: SolhColors.greyS200,
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        width: MediaQuery.of(context).size.width,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
-                          ),
-                          child: discoverGroupController.discoveredGroupModel
-                                      .value.groupList![index].groupMediaUrl !=
-                                  null
-                              ? CachedNetworkImage(
-                                  imageUrl: discoverGroupController
+                      print(
+                        discoverGroupController
+                            .discoveredGroupModel.value.groupList
+                            .toString(),
+                      );
+                      Navigator.pushNamed(context, AppRoutes.groupDetails,
+                          arguments: {
+                            "groupId": discoverGroupController
+                                .discoveredGroupModel
+                                .value
+                                .groupList![index]
+                                .sId,
+                            // "isJoined": false
+                          });
+                    }),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: SolhColors.greyS200,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            width: MediaQuery.of(context).size.width,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10),
+                              ),
+                              child: discoverGroupController
                                           .discoveredGroupModel
                                           .value
                                           .groupList![index]
-                                          .groupMediaUrl ??
-                                      '',
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    'assets/images/no-image-available_err.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                  placeholder: (context, url) =>
-                                      getImgShimmer(),
-                                )
-                              : Image.asset(
-                                  'assets/images/group_placeholder.png',
-                                  fit: BoxFit.fill,
-                                ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                          top: 8,
-                        ),
-                        child: Text(
-                          discoverGroupController.discoveredGroupModel.value
-                                  .groupList![index].groupName ??
-                              '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.signika(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff222222),
+                                          .groupMediaUrl !=
+                                      null
+                                  ? CachedNetworkImage(
+                                      imageUrl: discoverGroupController
+                                              .discoveredGroupModel
+                                              .value
+                                              .groupList![index]
+                                              .groupMediaUrl ??
+                                          '',
+                                      fit: BoxFit.cover,
+                                      errorWidget: (context, url, error) =>
+                                          Image.asset(
+                                        'assets/images/no-image-available_err.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                      placeholder: (context, url) =>
+                                          getImgShimmer(),
+                                    )
+                                  : Image.asset(
+                                      'assets/images/group_placeholder.png',
+                                      fit: BoxFit.fill,
+                                    ),
+                            ),
                           ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              CupertinoIcons.person_3,
-                              color: SolhColors.primary_green,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              top: 8,
                             ),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            Text(
+                            child: Text(
                               discoverGroupController.discoveredGroupModel.value
-                                  .groupList![index].groupMembers!
-                                  .toString(),
-                              style: SolhTextStyles.JournalingHintText,
+                                      .groupList![index].groupName ??
+                                  '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.signika(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xff222222),
+                              ),
                             ),
-                            SizedBox(
-                              width: 4.w,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  CupertinoIcons.person_3,
+                                  color: SolhColors.primary_green,
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text(
+                                  discoverGroupController.discoveredGroupModel
+                                      .value.groupList![index].groupMembers!
+                                      .toString(),
+                                  style: SolhTextStyles.JournalingHintText,
+                                ),
+                                SizedBox(
+                                  width: 4.w,
+                                ),
+                                SvgPicture.asset(
+                                  'assets/images/eye.svg',
+                                  color: SolhColors.primary_green,
+                                ),
+                                SizedBox(
+                                  width: 2.w,
+                                ),
+                                Text(
+                                  discoverGroupController.discoveredGroupModel
+                                      .value.groupList![index].journalCount
+                                      .toString(),
+                                  style: SolhTextStyles.JournalingHintText,
+                                ),
+                              ],
                             ),
-                            SvgPicture.asset(
-                              'assets/images/eye.svg',
-                              color: SolhColors.primary_green,
-                            ),
-                            SizedBox(
-                              width: 2.w,
-                            ),
-                            Text(
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 8.0),
+                            child: Text(
                               discoverGroupController.discoveredGroupModel.value
-                                  .groupList![index].journalCount
-                                  .toString(),
+                                      .groupList![index].groupDescription ??
+                                  '',
                               style: SolhTextStyles.JournalingHintText,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: Text(
-                          discoverGroupController.discoveredGroupModel.value
-                                  .groupList![index].groupDescription ??
-                              '',
-                          style: SolhTextStyles.JournalingHintText,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                width: 10,
-              );
-            },
-            itemCount: discoverGroupController
-                        .discoveredGroupModel.value.groupList!.length >
-                    10
-                ? 10
-                : discoverGroupController
-                    .discoveredGroupModel.value.groupList!.length));
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return SizedBox(
+                    width: 10,
+                  );
+                },
+                itemCount: discoverGroupController
+                            .discoveredGroupModel.value.groupList!.length >
+                        10
+                    ? 10
+                    : discoverGroupController
+                        .discoveredGroupModel.value.groupList!.length));
   }
 
   getInteractionButton(Journals journal) {
@@ -1550,11 +1569,36 @@ class _HomePageState extends State<HomePage> {
         ? const SizedBox()
         : Column(
             children: [
-              GetHelpCategory(
-                  title: 'Self Assessment'.tr,
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.psychologyTest);
-                  }),
+              Padding(
+                padding: EdgeInsets.all(4.0.w),
+                child: Row(
+                  children: [
+                    Text(
+                      'Self Assessment'.tr,
+                      style: SolhTextStyles.QS_body_semi_1,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          constraints: BoxConstraints(maxHeight: 70.h),
+                          isScrollControlled: true,
+                          context: context,
+                          enableDrag: true,
+                          isDismissible: true,
+                          builder: (context) {
+                            return showSelfAssessmentDisclaimer(context);
+                          },
+                        );
+                      },
+                      icon: Icon(
+                        Icons.info,
+                        size: 15,
+                        color: SolhColors.grey,
+                      ),
+                    )
+                  ],
+                ),
+              ),
               Container(
                 height: 180,
                 child: ListView(
@@ -2464,6 +2508,48 @@ Widget showInfoDialog(context) {
               data: AppLocale.appLocale.languageCode == "hi"
                   ? infoHtmlHindi
                   : infoHtml),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget showSelfAssessmentDisclaimer(context) {
+  log(AppLocale.appLocale.languageCode);
+  return SingleChildScrollView(
+    child: Container(
+      padding: EdgeInsets.only(top: 14),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              Container(
+                height: 6,
+                width: 30,
+                decoration: BoxDecoration(
+                    color: SolhColors.grey,
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.cancel_sharp,
+                    size: 30,
+                    color: SolhColors.grey,
+                  ))
+            ],
+          ),
+          Html(
+              data: AppLocale.appLocale.languageCode == "hi"
+                  ? disclaimerHtmlHindi
+                  : disclaimerHtml),
+          SizedBox(
+            height: 90,
+          )
         ],
       ),
     ),

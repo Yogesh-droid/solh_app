@@ -198,15 +198,21 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                 style: SolhTextStyles
                                                     .QS_body_2_bold,
                                               ),
-                                              Text(
-                                                scheduldAppointments[index]
-                                                    .doctor!
-                                                    .specialization!
-                                                    .first
-                                                    .name!,
-                                                style:
-                                                    SolhTextStyles.QS_caption,
-                                              )
+                                              scheduldAppointments[index]
+                                                      .doctor!
+                                                      .specialization!
+                                                      .isNotEmpty
+                                                  ? Text(
+                                                      scheduldAppointments[
+                                                              index]
+                                                          .doctor!
+                                                          .specialization!
+                                                          .first
+                                                          .name!,
+                                                      style: SolhTextStyles
+                                                          .QS_caption,
+                                                    )
+                                                  : Container()
                                             ],
                                           ),
                                           SimpleImageContainer(

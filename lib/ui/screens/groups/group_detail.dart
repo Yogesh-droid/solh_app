@@ -56,21 +56,27 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   @override
   void initState() {
     // groupList = widget.group;
-    log("${widget.isJoined}");
     isJoined = widget.isJoined;
-    getGroupDetails(1);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        log("${widget.isJoined}");
 
-    if (widget.isJoined == null) {
-      discoverGroupController.joinedGroupModel.value.groupList != null
-          ? discoverGroupController.joinedGroupModel.value.groupList!
-              .forEach((element) {
-              if (element.sId == widget.groupId) {
-                isJoined = true;
-              }
-            })
-          : null;
-    }
-    getMoreGroupMembers();
+        getGroupDetails(1);
+
+        if (widget.isJoined == null) {
+          discoverGroupController.joinedGroupModel.value.groupList != null
+              ? discoverGroupController.joinedGroupModel.value.groupList!
+                  .forEach((element) {
+                  if (element.sId == widget.groupId) {
+                    isJoined = true;
+                  }
+                })
+              : null;
+        }
+        getMoreGroupMembers();
+      },
+    );
+
     super.initState();
   }
 
@@ -290,9 +296,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               SizedBox(width: 5),
                               Text(
                                   discoverGroupController.groupDetailModel.value
-                                          .groupList!.groupMembers!.length
+                                          .totalGroupMembers
                                           .toString() +
-                                      ' members',
+                                      " members",
                                   style: TextStyle(
                                     color: SolhColors.white,
                                     fontSize: 12,
@@ -1039,6 +1045,19 @@ getGroupJoinOption({
                     discoverGroupController
                         .groupDetailModel.value.groupList!.sId!);
                 discoverGroupController.getJoinedGroups();
+                discoverGroupController.joinedGroupModel.value.groupList!.add(GroupList(
+                    sId: discoverGroupController
+                        .groupDetailModel.value.groupList!.sId,
+                    groupName: discoverGroupController
+                        .groupDetailModel.value.groupList!.groupName,
+                    groupDescription: discoverGroupController
+                        .groupDetailModel.value.groupList!.groupDescription,
+                    groupMediaUrl: discoverGroupController
+                        .groupDetailModel.value.groupList!.groupMediaUrl,
+                    journalCount: discoverGroupController
+                        .groupDetailModel.value.groupList!.journalCount,
+                    groupMembers: discoverGroupController.groupDetailModel.value
+                        .groupList!.groupMembers!.length));
                 Navigator.of(context).pop();
                 discoverGroupController.tabController?.animateTo(0);
                 Navigator.of(context, rootNavigator: true).pop();

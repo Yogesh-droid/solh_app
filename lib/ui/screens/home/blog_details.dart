@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +26,12 @@ class BlogDetailsPage extends StatefulWidget {
 
 class _BlogDetailsPageState extends State<BlogDetailsPage> {
   ConnectionController connectionController = Get.find();
-  late String des;
+  String? des;
   @override
   void initState() {
+    log(widget.id.toString(), name: 'id');
     getBlogDetails();
+
     super.initState();
   }
 
@@ -36,8 +40,8 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
     return Scaffold(
         appBar: SolhAppBar(
           title: Text(
-            'Blog Details',
-            style: SolhTextStyles.AppBarText,
+            'Blog'.tr,
+            style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false,
         ),
@@ -86,7 +90,8 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                             IconButton(
                                 onPressed: () async {
                                   des = await HtmlTranslationService
-                                      .translateDescrition(des, isHtml: true);
+                                      .translateDescrition(des ?? '',
+                                          isHtml: true);
                                   setState(() {});
                                   print(des);
                                 },
@@ -117,7 +122,9 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                       Container(
                         padding: EdgeInsets.all(10),
                         width: MediaQuery.of(context).size.width,
-                        child: Html(data: des),
+                        child: Html(
+                            data: des ??
+                                connectionController.blogDetails.value.content),
                       ),
                     ],
                   ),
@@ -127,6 +134,6 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
 
   Future<void> getBlogDetails() async {
     await connectionController.getBlogDetails(widget.id);
-    des = connectionController.blogDetails.value.content ?? '';
+    des = await connectionController.blogDetails.value.content ?? '';
   }
 }

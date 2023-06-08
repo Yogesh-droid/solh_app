@@ -174,21 +174,21 @@ class Languages extends Translations {
           "Joined": "जुड़ गए",
           "No groups joined yet": "अभी तक किसी ग्रुप से नहीं जुड़े हैं ",
           "new suggestions are on the way": "नए सुझाव आ रहे हैं",
-          "Blog Details": "ब्लॉग विवरण",
+          "Blog": "ब्लॉग",
           "Journaling": "जर्नलिंग",
           "Goal Setting": "लक्ष्य निर्धारण",
           "Add Goals +": "लक्ष्य जोड़ें",
           "Add Goal": "लक्ष्य जोड़ें",
           "I want to work on": "मैं काम करना चाहता हूँ",
-          "Self Assessment": "आत्म मूल्यांकन",
+          "Self Assessment": "सेल्फ असेसमेंट",
           "Get Help": "मदद प्राप्त करें",
           "Take the first step": "पहला कदम उठाएं",
           "Anonymous": "गुमनाम",
           "Anxiety": "चिंता",
           "Overwhelmed with emotions: Talk to a Solh counselor NOW":
-              "भावनाओं से अभिभूत: अभी Solh सलहाकार से बात करें",
+              "भावनाओं से अभिभूत: अभी Solh काउंसलर से बात करें",
           "Start chatting for free right away, with a Solh counselor.":
-              "Solh एक्सपर्ट्स से मुफ्त में बात करें",
+              "Solh काउंसलर के साथ मुफ्त में चैट करना शुरू करें",
           "Allied Experts": "अलाइड एक्सपर्ट्स",
           "Get connected to a Solh counselor": "हमारे विशेषज्ञों से जुड़ें",
           "Talk Now": "अभी बात करें",
@@ -235,7 +235,7 @@ class Languages extends Translations {
           "Volunteer": "वॉलंटियर",
           "counselor": "काउंसलर",
           "Video Trimmer": "वीडियो ट्रिमर",
-          "What's on your mind?": "आपके दिमाग में क्या है",
+          "What's on your mind?": "आपके दिमाग में क्या है?",
           "post in group": "ग्रुप में पोस्ट करें",
           "Anxiety, Corporate Stress, Family Issues":
               "चिंता, कॉर्पोरेट तनाव, पारिवारिक मामले",
@@ -476,6 +476,18 @@ class Languages extends Translations {
           "Write here": "यहाँ लिखें",
           "Chats": "चैट",
           "I don't know": "मुझें नहीं पता",
+          "Featured Videos": "फीचर्ड वीडियोज़",
+          "Stress": "स्ट्रेस",
+          "Sadness": "उदासी",
+          "Loneliness": "अकेलापन",
+          "Start chatting with a Solh counselor right away for free":
+              "Solh काउंसलर के साथ मुफ्त में चैट करना शुरू करें",
+          "The details matter. Let's take your profile from good to great.":
+              "डिटेल्स महत्वपूर्ण है। चलिए आपकी प्रोफ़ाइल को और अच्छा बनाते हैं।",
+          "Go Live": "लाइव जाओ",
+          "BUY PACK": "पैक खरीदें",
+          "Our Self Assessment tests help you learn more about yourself.":
+              "हमारे सेल्फ असेसमेंट टेस्ट आपको अपने बारे में अधिक जानने में मदद कर सकते हैं।"
         },
         "en_us": en_us_map,
         "fr_FR": fr_FR_map,

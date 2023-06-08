@@ -642,7 +642,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                             getBottomSheetIcon(
                                 icon: 'assets/images/know-us-more.svg'),
                             Text(
-                              'Know Us More'.tr,
+                              'Featured Videos'.tr,
                               style: SolhTextStyles.QS_cap_semi,
                             )
                           ],

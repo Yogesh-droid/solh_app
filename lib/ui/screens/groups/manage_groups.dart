@@ -31,21 +31,24 @@ class _ManageGroupPageState extends State<ManageGroupPage>
     _groupController.tabController = tabController;
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+              scrollController.position.maxScrollExtent &&
+          _groupController.loadingDiscoverGroups.value == false) {
         print("Getting more groups");
         Get.find<DiscoverGroupController>().getDiscoverGroups();
       }
     });
     createdGroupsScrollController.addListener(() {
       if (createdGroupsScrollController.position.pixels ==
-          createdGroupsScrollController.position.maxScrollExtent) {
+              createdGroupsScrollController.position.maxScrollExtent &&
+          _groupController.loadingCreatedGroups.value == false) {
         print("Getting more groups");
         Get.find<DiscoverGroupController>().getCreatedGroups();
       }
     });
     joinedGroupsScrollController.addListener(() {
       if (joinedGroupsScrollController.position.pixels ==
-          joinedGroupsScrollController.position.maxScrollExtent) {
+              joinedGroupsScrollController.position.maxScrollExtent &&
+          _groupController.loadingJoinedGroups.value == false) {
         print("Getting more groups");
         Get.find<DiscoverGroupController>().getJoinedGroups();
       }

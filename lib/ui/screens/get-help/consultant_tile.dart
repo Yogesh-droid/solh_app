@@ -119,8 +119,9 @@ class ConsultantsTile extends StatelessWidget {
                   text: TextSpan(children: [
                 TextSpan(
                     text: prefix != null ? "$prefix " : '',
-                    style: SolhTextStyles.QS_body_1_bold),
-                TextSpan(text: "$name", style: SolhTextStyles.QS_body_1_bold)
+                    style: Theme.of(context).textTheme.headline3),
+                TextSpan(
+                    text: "$name", style: Theme.of(context).textTheme.headline3)
               ]))
               // Row(
               //   crossAxisAlignment: CrossAxisAlignment.center,

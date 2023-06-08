@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
+import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/psychology-test/test_history_details.dart';
 import 'package:solh/ui/screens/psychology-test/test_question_page.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -61,9 +62,32 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
           size: 24,
         ),
       ),
-      title: Text(
-        "Self Assessment".tr,
-        style: SolhTextStyles.QS_body_1_bold,
+      title: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Self Assessment".tr,
+            style: SolhTextStyles.QS_body_1_bold,
+          ),
+          Expanded(
+            child: SizedBox(),
+          ),
+          InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return showSelfAssessmentDisclaimer(context);
+                },
+              );
+            },
+            child: Icon(
+              Icons.info,
+              size: 15,
+              color: SolhColors.grey_2,
+            ),
+          )
+        ],
       ),
       backgroundColor: Colors.white,
       elevation: isAtTop ? 0 : 5,
@@ -83,9 +107,20 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
       padding: const EdgeInsets.only(left: 18.0),
       child: Column(
         children: [
-          Text(
-            "Our Self Assessment tests help you learn more about yourself.".tr,
-            style: SolhTextStyles.JournalingDescriptionText,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    "Our Self Assessment tests help you learn more about yourself."
+                        .tr,
+                    style: SolhTextStyles.JournalingDescriptionText,
+                  ),
+                ),
+              ],
+            ),
           ),
           SizedBox(
             height: 20,

@@ -98,6 +98,7 @@ class DiscoverGroupController extends GetxController {
               groupResponseModel.pages!.next;
           discoveredGroupModel.refresh();
         }
+
         nextPage = discoveredGroupModel.value.pages!.next;
       }
     }

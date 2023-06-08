@@ -53,7 +53,9 @@ class BookingPriceDetails extends StatelessWidget {
             name: consultantController
                     .consultantModelController.value.provder!.name ??
                 '',
-            profession: 'Profession(Doctor)'),
+            profession: consultantController
+                    .consultantModelController.value.provder!.specialization ??
+                ''),
         GetHelpDivider(),
         getSelectedDateTimeWidget(context),
         GetHelpDivider(),
@@ -675,23 +677,25 @@ class DoctorNameAndImage extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                name,
-                // consultantController
-                //         .consultantModelController.value.provder!.name ??
-                //     '',
-                style: SolhTextStyles.QS_body_2_bold,
-              ),
-              Text(
-                //'Profession(Doctor)',
-                profession,
-                style: SolhTextStyles.QS_caption,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  name,
+                  // consultantController
+                  //         .consultantModelController.value.provder!.name ??
+                  //     '',
+                  style: SolhTextStyles.QS_body_2_bold,
+                ),
+                Text(
+                  //'Profession(Doctor)',
+                  profession,
+                  style: SolhTextStyles.QS_caption,
+                ),
+              ],
+            ),
           )
         ]),
       ),

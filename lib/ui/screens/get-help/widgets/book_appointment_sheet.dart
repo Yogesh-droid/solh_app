@@ -208,7 +208,7 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                               Obx(() => Text(
                                     bookAppointmentController
                                         .selectedTimeZone.value
-                                        .split('/')[1],
+                                        .split('/')[0],
                                     style: SolhTextStyles.QS_body_2,
                                   )),
                               SizedBox(
@@ -476,9 +476,10 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                                         .body!
                                         .userCountryAvailableTimezones![index]
                                         .zone!
-                                        .split('/')[1],
+                                        .split('/')[0],
                                     style: SolhTextStyles.QS_cap_semi.copyWith(
-                                        fontSize: 16),
+                                        fontSize: 16,
+                                        overflow: TextOverflow.ellipsis),
                                   ),
                                 ),
                                 Text(

@@ -2,11 +2,17 @@ class GroupDetailModel {
   bool? success;
   GroupList? groupList;
   PagesForMember? pagesForMember;
+  int? totalGroupMembers;
 
-  GroupDetailModel({this.success, this.groupList, this.pagesForMember});
+  GroupDetailModel(
+      {this.success,
+      this.groupList,
+      this.pagesForMember,
+      this.totalGroupMembers});
 
   GroupDetailModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    totalGroupMembers = json["totalGroupMembers"];
     groupList = json['groupList'] != null
         ? new GroupList.fromJson(json['groupList'])
         : null;

@@ -590,7 +590,7 @@ class OptionsColumn extends StatelessWidget {
                   height: 20,
                 ),
               ),
-              "Know Us More".tr),
+              "Featured Videos".tr),
         ),
         SizedBox(
           height: 8,

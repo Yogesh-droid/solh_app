@@ -23,13 +23,14 @@ class LiveStreamForUserModel {
 class Webinar {
   String? sId;
   String? title;
-  String? description;
   String? image;
-  Host? host;
-  List<OtherHost>? otherHost;
+  String? description;
+  List<Hosts>? hosts;
   String? channelName;
   String? token;
   String? provider;
+  String? sechudleAt;
+  int? duration;
   String? status;
   String? createdAt;
   String? updatedAt;
@@ -39,107 +40,87 @@ class Webinar {
   Webinar(
       {this.sId,
       this.title,
-      this.description,
       this.image,
-      this.host,
-      this.otherHost,
+      this.description,
+      this.hosts,
       this.channelName,
       this.token,
       this.provider,
+      this.sechudleAt,
+      this.duration,
       this.status,
       this.createdAt,
       this.updatedAt,
-      this.appId,
-      this.iV});
+      this.iV,
+      this.appId});
 
   Webinar.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     title = json['title'];
+    image = json['image'];
     description = json['description'];
-    host = json['host'] != null ? new Host.fromJson(json['host']) : null;
-    if (json['otherHost'] != null) {
-      otherHost = <OtherHost>[];
-      json['otherHost'].forEach((v) {
-        otherHost!.add(new OtherHost.fromJson(v));
+    if (json['hosts'] != null) {
+      hosts = <Hosts>[];
+      json['hosts'].forEach((v) {
+        hosts!.add(new Hosts.fromJson(v));
       });
     }
     channelName = json['channelName'];
-    image = json['image'];
-    appId = json['appId'];
     token = json['token'];
     provider = json['provider'];
+    sechudleAt = json['sechudleAt'];
+    duration = json['duration'];
     status = json['status'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    appId = json['appId'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['title'] = this.title;
+    data['image'] = this.image;
     data['description'] = this.description;
-    if (this.host != null) {
-      data['host'] = this.host!.toJson();
-    }
-    if (this.otherHost != null) {
-      data['otherHost'] = this.otherHost!.map((v) => v.toJson()).toList();
+    if (this.hosts != null) {
+      data['hosts'] = this.hosts!.map((v) => v.toJson()).toList();
     }
     data['channelName'] = this.channelName;
     data['token'] = this.token;
     data['provider'] = this.provider;
+    data['sechudleAt'] = this.sechudleAt;
+    data['duration'] = this.duration;
     data['status'] = this.status;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['appId'] = this.appId;
     return data;
   }
 }
 
-class Host {
+class Hosts {
   String? sId;
-  String? name;
-  String? id;
   String? profilePicture;
+  String? mobile;
+  String? name;
 
-  Host({this.sId, this.name, this.id, this.profilePicture});
+  Hosts({this.sId, this.profilePicture, this.mobile, this.name});
 
-  Host.fromJson(Map<String, dynamic> json) {
+  Hosts.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    name = json['name'];
-    id = json['id'];
     profilePicture = json['profilePicture'];
+    mobile = json['mobile'];
+    name = json['name'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
+    data['profilePicture'] = this.profilePicture;
+    data['mobile'] = this.mobile;
     data['name'] = this.name;
-    data['id'] = this.id;
-    return data;
-  }
-}
-
-class OtherHost {
-  String? sId;
-  String? name;
-  String? id;
-  String? profilePicture;
-
-  OtherHost({this.sId, this.name, this.id, this.profilePicture});
-
-  OtherHost.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    id = json['id'];
-    profilePicture = json['profilePicture'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['id'] = this.id;
     return data;
   }
 }

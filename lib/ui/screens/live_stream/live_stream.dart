@@ -317,7 +317,9 @@ class _LiveStreamState extends State<LiveStream> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        return _onWillPop(context, widget.isBroadcaster);
+        isDialOpen.value = false;
+        log('it ran $isDialOpen');
+        return _onWillPop(context, widget.isBroadcaster, isDialOpen);
       },
       child: SafeArea(
         child: Scaffold(
@@ -325,7 +327,7 @@ class _LiveStreamState extends State<LiveStream> {
               ? SpeedDial(
                   // direction: SpeedDialDirection.down,
                   childPadding: EdgeInsets.all(9),
-
+                  backgroundColor: SolhColors.primary_green,
                   openCloseDial: isDialOpen,
                   spaceBetweenChildren: 20,
                   closeDialOnPop: false,
@@ -393,7 +395,7 @@ class _LiveStreamState extends State<LiveStream> {
   }
 }
 
-_onWillPop(context, isBroadcaster) async {
+_onWillPop(context, isBroadcaster, dialState) async {
   return await showDialog(
       context: context,
       builder: (context) {
@@ -432,6 +434,7 @@ _onWillPop(context, isBroadcaster) async {
                 ),
                 onTap: () {
                   Navigator.of(context).pop(false);
+                  dialState.value = true;
                 }),
           ],
         );

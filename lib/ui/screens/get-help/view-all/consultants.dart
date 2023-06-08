@@ -120,7 +120,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                             searchMarketController.issueModel.value.provider !=
                                 null
                         ? Text(
-                            "${searchMarketController.issueModel.value.doctors!.length + searchMarketController.issueModel.value.provider!.length} ${widget.name == null ? "Consultants" : widget.name!.isEmpty ? "Consultants" : widget.name!}",
+                            "${searchMarketController.issueModel.value.totalProvider.toString()} Consultants ",
                             style: SolhTextStyles.QS_cap_2_semi.copyWith(
                                 color: SolhColors.Grey_1),
                           )

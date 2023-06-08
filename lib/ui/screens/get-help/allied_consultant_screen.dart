@@ -36,6 +36,12 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
   FocusNode _emailFocusNode = FocusNode();
   @override
   void initState() {
+    _emailTextcontroller.text =
+        Get.find<ProfileController>().myProfileModel.value.body!.user!.email ??
+            "";
+    _alliedController.userEmail.value =
+        Get.find<ProfileController>().myProfileModel.value.body!.user!.email ??
+            "";
     _alliedController.selectedPackage.value = '';
     _alliedController.selectedPackagePrice.value = -1;
     _scrollController = ScrollController();
@@ -134,6 +140,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                         if (!_emailFocusNode.hasFocus) {
                           _emailFocusNode.requestFocus();
                         }
+
                         showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -152,9 +159,10 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                         height: 10,
                                         width: 40,
                                         decoration: BoxDecoration(
-                                            color: SolhColors.grey_3,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
+                                          color: SolhColors.grey_3,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
                                       ),
                                       Container(height: 20, child: Divider()),
                                       Padding(
@@ -169,15 +177,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                     .QS_caption_bold),
                                             SizedBox(height: 5),
                                             TextFormField(
-                                              controller: _emailTextcontroller
-                                                ..text = Get.find<
-                                                            ProfileController>()
-                                                        .myProfileModel
-                                                        .value
-                                                        .body!
-                                                        .user!
-                                                        .email ??
-                                                    "",
+                                              controller: _emailTextcontroller,
                                               focusNode: _emailFocusNode,
                                               decoration: TextFieldStyles
                                                       .greenF_greenBroadUF_4R(

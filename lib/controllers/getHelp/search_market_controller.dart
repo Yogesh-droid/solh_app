@@ -44,7 +44,7 @@ class SearchMarketController extends GetxController {
   }
 
   Future<void> getSpecializationList(String slug,
-      {String? c, String issue = '', String? page}) async {
+      {String? c, String issue = '', int? page}) async {
     isSearchingDoctors.value = true;
     log("it ran1");
     String url;
@@ -100,7 +100,11 @@ class SearchMarketController extends GetxController {
       } else {
         issueModel.value.provider!
             .addAll(SearchMarketModel.fromJson(map).provider!.toList());
+        issueModel.value.alliedProviders!
+            .addAll(SearchMarketModel.fromJson(map).alliedProviders!.toList());
 
+        issueModel.value.pagesForAllied =
+            SearchMarketModel.fromJson(map).pagesForAllied;
         issueModel.refresh();
       }
 

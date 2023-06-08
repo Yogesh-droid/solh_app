@@ -128,8 +128,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         if (value == "Group") {
                           showModalBottomSheet(
                               context: context,
+                              constraints: BoxConstraints(maxHeight: 80.h),
                               enableDrag: false,
-                              isScrollControlled: false,
+                              isScrollControlled: true,
                               isDismissible: false,
                               builder: (context) {
                                 return Container(
@@ -1766,6 +1767,7 @@ class GroupModalSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 12),
@@ -1818,6 +1820,16 @@ class GroupModalSheet extends StatelessWidget {
           SizedBox(
             height: 6,
           ),
+          discoverGroupController.joinedGroupModel.value.groupList!.isNotEmpty
+              ? Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  child: Text(
+                    'Joined Groups',
+                    style: SolhTextStyles.QS_body_2_semi,
+                  ),
+                )
+              : Container(),
           discoverGroupController.joinedGroupModel.value.groupList!.isEmpty
               ? Container()
               : Expanded(
@@ -1901,6 +1913,16 @@ class GroupModalSheet extends StatelessWidget {
                         );
                       }),
                 ),
+          discoverGroupController.createdGroupModel.value.groupList!.isNotEmpty
+              ? Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  child: Text(
+                    'Created Groups',
+                    style: SolhTextStyles.QS_body_2_semi,
+                  ),
+                )
+              : Container(),
           discoverGroupController.createdGroupModel.value.groupList!.isEmpty
               ? Container()
               : Expanded(
@@ -1922,6 +1944,7 @@ class GroupModalSheet extends StatelessWidget {
                                 discoverGroupController.createdGroupModel.value
                                         .groupList![index].groupMediaUrl ??
                                     '';
+                            Navigator.of(context).pop();
                           },
                           child: Container(
                             child: Padding(

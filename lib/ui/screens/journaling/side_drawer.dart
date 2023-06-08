@@ -195,7 +195,7 @@ class SideDrawer extends StatelessWidget {
                               )
                         : Container(),
                 SideDrawerMenuTile(
-                  title: "Self Assessments".tr,
+                  title: "Self Assessment".tr,
                   onPressed: () async {
                     Navigator.pushNamed(context, AppRoutes.psychologyTest);
                   },

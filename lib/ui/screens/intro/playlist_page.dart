@@ -20,7 +20,7 @@ class VideoPlaylist extends StatelessWidget {
     return Scaffold(
         appBar: SolhAppBar(
             title: Text(
-              'Know Us More'.tr,
+              'Featured Videos'.tr,
               style: SolhTextStyles.QS_body_1_bold,
             ),
             isLandingScreen: false),

@@ -34,6 +34,7 @@ import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+import 'widgets_constants/constants/textstyles.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -41,7 +42,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Stripe.publishableKey =
-      "pk_test_51Mp4hISCjgNimACDiyGivqwK82xCjWxLP9z8U6upIeKgds5Oc332hnRHIpFO6aCEzh230Ysgklvm6nG9ccs7WKow004Gjwmmu2";
+      "pk_live_51Mp4hISCjgNimACD6TrkUMjkJDilo3BL2R5eUkxoqRRMRZ2qbtpDo8yArxHlIn5j9r2y2ps6c97QNeaELcdBBXEH00p9l2bh7c";
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -142,27 +143,27 @@ class _SolhAppState extends State<SolhApp> {
           // useMaterial3: true,
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
-            bodyText2: TextStyle(
-              color: SolhColors.black666,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-            headline1: TextStyle(
-              color: SolhColors.black53,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            headline2: TextStyle(
-              color: SolhColors.primary_green,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-            ),
-            bodyText1: TextStyle(
-              color: SolhColors.black666,
-              fontSize: 14,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
+              bodyText2: TextStyle(
+                color: SolhColors.black666,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              headline1: TextStyle(
+                color: SolhColors.black53,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              headline2: TextStyle(
+                color: SolhColors.primary_green,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              bodyText1: TextStyle(
+                color: SolhColors.black666,
+                fontSize: 14,
+                fontWeight: FontWeight.w800,
+              ),
+              headline3: SolhTextStyles.QS_body_1_bold),
           switchTheme: SwitchThemeData(
             thumbColor:
                 MaterialStateProperty.all<Color>(SolhColors.primary_green),
