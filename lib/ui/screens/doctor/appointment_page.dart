@@ -66,7 +66,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
         tabs: [
           Tab(
             child: Text(
-              'Online',
+              'Online'.tr,
               style: TextStyle(
                 fontSize: 16,
               ),
@@ -74,7 +74,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
           ),
           Tab(
             child: Text(
-              'Offline',
+              'Offline'.tr,
               style: TextStyle(
                 fontSize: 16,
               ),
@@ -82,7 +82,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
           ),
           Tab(
             child: Text(
-              'Completed',
+              'Completed'.tr,
               style: TextStyle(
                 fontSize: 16,
               ),
@@ -106,7 +106,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                       appointmentController.doctorAppointmentModel.value
                           .scheduldAppointments!.isEmpty
                   ? Center(
-                      child: Text('No Scheduled Appointment yet',
+                      child: Text('No Scheduled Appointment yet'.tr,
                           style: SolhTextStyles.JournalingDescriptionText),
                     )
                   : ListView.builder(
@@ -433,7 +433,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
   getOfflineList() {
     return Container(
         child: Center(
-      child: Text('Not Available Now',
+      child: Text('Not Available Now'.tr,
           style: SolhTextStyles.JournalingDescriptionText),
     ));
   }

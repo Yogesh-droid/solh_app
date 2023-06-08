@@ -99,12 +99,12 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     // TODO: implement initState
-
-    journalCommentController.commentList.clear();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) { 
+         journalCommentController.commentList.clear();
     journalCommentController.repliesList.clear();
     journalCommentController.nextPage = 1;
     journalCommentController.previousPage = -2;
-    _scrollController.addListener(() async {
+       _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         print("current pixels are ${_scrollController.position.pixels}");
@@ -119,14 +119,18 @@ class _CommentScreenState extends State<CommentScreen> {
         });
       }
     });
-
-    getComments();
+       getComments();
     if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
       _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
           FirebaseAuth.instance.currentUser!.uid;
     }
     journalCommentController.repliedTo.value = '';
     journalCommentController.isReplying.value = false;
+    });
+ 
+ 
+
+ 
     super.initState();
   }
 

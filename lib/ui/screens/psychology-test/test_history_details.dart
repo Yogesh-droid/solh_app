@@ -18,7 +18,7 @@ class TestHistoryDetails extends StatelessWidget {
     return Scaffold(
       appBar: SolhAppBar(
           title: Text(
-            'Result',
+            'Result'.tr,
             style: SolhTextStyles.AppBarText,
           ),
           isLandingScreen: false),
@@ -31,7 +31,8 @@ class TestHistoryDetails extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: Text(
-              'Your test result is given below, It is not exact,\n but close enogh.',
+              'Your test result is given below. It is not exact,\n but close enough.'
+                  .tr,
               textAlign: TextAlign.center,
               style: SolhTextStyles.ProfileMenuGreyText,
             ),
@@ -102,7 +103,7 @@ class TestHistoryDetails extends StatelessWidget {
             child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Other Psychological Tests',
+                'Other Self Assessment'.tr,
                 style: SolhTextStyles.AppBarText,
               ),
             ),
@@ -117,7 +118,8 @@ class TestHistoryDetails extends StatelessWidget {
               child: Container(
                 width: 300,
                 child: Text(
-                    'It will be a guide to your therapy and to your own self-evaluation.'),
+                    'It will be a guide to your therapy and to your own self-evaluation.'
+                        .tr),
               ),
             ),
           ),

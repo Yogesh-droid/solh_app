@@ -34,24 +34,35 @@ class NameField extends StatelessWidget {
                   size: 40,
                 ),
           onPressed: () async {
-            if (profileSetupController.firstNameController.text.trim() != '') {
-              bool response = await profileSetupController.updateUserProfile({
-                "first_name":
-                    profileSetupController.firstNameController.text.trim(),
-                "last_name":
-                    profileSetupController.firstNameController.text.trim() != ''
-                        ? profileSetupController.lastNameController.text.trim()
-                        : ''
-              });
+            print(checkNumber(
+                profileSetupController.lastNameController.text.trim()));
+            if (checkNumber(
+                    profileSetupController.lastNameController.text.trim()) ==
+                false) {
+              if (profileSetupController.firstNameController.text.trim() !=
+                  '') {
+                bool response = await profileSetupController.updateUserProfile({
+                  "first_name":
+                      profileSetupController.firstNameController.text.trim(),
+                  "last_name": profileSetupController.firstNameController.text
+                              .trim() !=
+                          ''
+                      ? profileSetupController.lastNameController.text.trim()
+                      : ''
+                });
 
-              if (response) {
-                Navigator.pushNamed(context, AppRoutes.dobField);
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'OnBoardingNameDone',
-                    parameters: {'Page': 'OnBoarding'});
+                if (response) {
+                  Navigator.pushNamed(context, AppRoutes.dobField);
+                  FirebaseAnalytics.instance.logEvent(
+                      name: 'OnBoardingNameDone',
+                      parameters: {'Page': 'OnBoarding'});
+                }
+              } else {
+                SolhSnackbar.error('Error', 'Enter a valid name');
               }
             } else {
-              SolhSnackbar.error('Error', 'Enter a valid name');
+              SolhSnackbar.error(
+                  'Error', "Last name has unexpected characters");
             }
             // Navigator.pushNamed(context, AppRoutes.dobField);
           },
@@ -148,4 +159,10 @@ class NameTextField extends StatelessWidget {
       ],
     );
   }
+}
+
+bool checkNumber(String name) {
+  final x = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%0-9-]').hasMatch(name);
+
+  return x;
 }

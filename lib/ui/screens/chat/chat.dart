@@ -180,7 +180,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ? Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24),
                         child: Text(
-                          'Please wait a moment while we connect you to one of our Solh certified professionals.'
+                          'Welcome to your safe and confidential space for mental wellness. Take the first step and share your feelings here.'
                               .tr,
                           style: SolhTextStyles.QS_cap_semi.copyWith(
                               color: SolhColors.Grey_1),

@@ -77,7 +77,8 @@ class Languages extends Translations {
           "Online": "ऑनलाइन",
           "Offline": "ऑफलाइन",
           "Completed": "पूरा हो चुका है",
-          "No Scheduled Appointment yet": "अभी तक कोई अपॉइंटमेंट नहीं है",
+          "No Scheduled Appointment yet":
+              "अभी तक कोई निर्धारित अपॉइंटमेंट नहीं है",
           "Session": "सेशन",
           "Not Available Now": "अभी उपलब्ध नहीं है",
           "Booking Online Session": "ऑनलाइन सेशन की बुकिंग",
@@ -484,10 +485,20 @@ class Languages extends Translations {
               "Solh काउंसलर के साथ मुफ्त में चैट करना शुरू करें",
           "The details matter. Let's take your profile from good to great.":
               "डिटेल्स महत्वपूर्ण है। चलिए आपकी प्रोफ़ाइल को और अच्छा बनाते हैं।",
-          "Go Live": "लाइव जाओ",
+          "Go Live": "लाइव जाएं",
           "BUY PACK": "पैक खरीदें",
           "Our Self Assessment tests help you learn more about yourself.":
-              "हमारे सेल्फ असेसमेंट टेस्ट आपको अपने बारे में अधिक जानने में मदद कर सकते हैं।"
+              "हमारे सेल्फ असेसमेंट टेस्ट आपको अपने बारे में अधिक जानने में मदद कर सकते हैं।",
+          "My Schedule": "मेरा शेड्यूल",
+          "In-house Experts": "Solh विशेषष्ज्ञ",
+          "It will be a guide to your therapy and to your own self-evaluation.":
+              "यह आपकी थेरेपी और आपके अपने आत्म-मूल्यांकन के लिए एक मार्गदर्शक होगा।",
+          "Your test result is given below. It is not exact,\n but close enough.":
+              "आपका सेल्फ-असेसमेंट परिणाम नीचे दिया गया है। \n यह सटीक तो नहीं है लेकिन काफी करीब है",
+          "Other Self Assessment": "अन्य सेल्फ-असेसमेंट",
+          "Result": "परिणाम",
+          "Welcome to your safe and confidential space for mental wellness. Take the first step and share your feelings here.":
+              "मानसिक कल्याण के लिए आपके सुरक्षित और गोपनीय स्थान में आपका स्वागत है। पहला कदम उठाएं और अपनी भावनाओं को यहां साझा करें।"
         },
         "en_us": en_us_map,
         "fr_FR": fr_FR_map,
