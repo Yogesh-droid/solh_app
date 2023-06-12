@@ -310,7 +310,7 @@ class FeaturedTherapistCard extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                "Consultations",
+                                "Consultations".tr,
                                 style: SolhTextStyles.QS_cap_2,
                               )
                             ],
@@ -338,7 +338,7 @@ class FeaturedTherapistCard extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                'Rating',
+                                'Rating'.tr,
                                 style: SolhTextStyles.QS_cap_2,
                               )
                             ],
@@ -351,7 +351,7 @@ class FeaturedTherapistCard extends StatelessWidget {
                       Wrap(
                         children: [
                           Text(
-                            'Recorded ',
+                            'Recorded'.tr,
                             style: SolhTextStyles.QS_cap_2_semi.copyWith(
                                 color: SolhColors.pink224),
                           ),
