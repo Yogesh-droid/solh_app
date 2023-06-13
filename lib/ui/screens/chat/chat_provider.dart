@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -229,12 +230,16 @@ class ChatAppbar extends StatelessWidget {
                 };
                 var value = await _controller.initiateVideoController(body);
                 if (value['success'] == true) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: ((context) => VideoCallUser(
-                            channel: value['data']['channelName'],
-                            token: value['data']['rtcToken'],
-                            sId: _sId,
-                          ))));
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: ((context) {
+                    return LiveStreamWaiting();
+                  }
+                          // VideoCallUser(
+                          //       channel: value['data']['channelName'],
+                          //       token: value['data']['rtcToken'],
+                          //       sId: _sId,
+                          //     )
+                          )));
                 }
               },
               child: Padding(

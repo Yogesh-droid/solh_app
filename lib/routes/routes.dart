@@ -365,10 +365,10 @@ class RouteGenerator {
       case AppRoutes.profileTransferDetail:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransferDetail()));
-      case AppRoutes.liveStream:
-        return MaterialPageRoute(
-            builder: ((context) =>
-                LiveStream(args: args as Map<String, dynamic>)));
+      // case AppRoutes.liveStream:
+      //   return MaterialPageRoute(
+      //       builder: ((context) =>
+      //           LiveStream(args: args as Map<String, dynamic>)));
       case AppRoutes.liveStreamWaiting:
         return MaterialPageRoute(builder: ((context) => LiveStreamWaiting()));
 

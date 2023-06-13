@@ -364,10 +364,10 @@ class GradientRectSliderTrackShape extends SliderTrackShape
       required SliderThemeData sliderTheme,
       required Animation<double> enableAnimation,
       required Offset thumbCenter,
+      Offset? secondaryOffset,
       bool? isEnabled,
       bool? isDiscrete,
       required TextDirection textDirection}) {
-    //// for the track
     final rect = Rect.fromCenter(
       center: Offset(parentBox.size.width / 2, parentBox.size.height / 2),
       width: parentBox.size.width,
@@ -386,7 +386,5 @@ class GradientRectSliderTrackShape extends SliderTrackShape
           rect, Radius.circular(sliderTheme.trackHeight ?? 2.0)),
       paint,
     );
-
-    /// for the indicator
   }
 }

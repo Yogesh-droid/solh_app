@@ -5,6 +5,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
+import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../ui/screens/chat/chat.dart';
@@ -60,21 +61,22 @@ class LocalNotification {
                   "this is sender ID${result.notification.additionalData!['data']["senderId"]}");
               Future.delayed(Duration(milliseconds: 500), () {
                 globalNavigatorKey.currentState!.push(
-                  MaterialPageRoute(
-                      builder: (context) => VideoCallUser(
-                            sId: result.notification.additionalData!['data']
-                                        ["senderId"] !=
-                                    null
-                                ? result.notification.additionalData!['data']
-                                    ["senderId"]
-                                : null,
-                            channel: result.notification.additionalData!['data']
-                                ["channelName"],
-                            token: result.notification.additionalData!['data']
-                                ['rtcToken'],
-                            type:
-                                result.notification.additionalData!['callType'],
-                          )),
+                  MaterialPageRoute(builder: (context) => LiveStreamWaiting()
+                      //  VideoCallUser(
+                      //       sId: result.notification.additionalData!['data']
+                      //                   ["senderId"] !=
+                      //               null
+                      //           ? result.notification.additionalData!['data']
+                      //               ["senderId"]
+                      //           : null,
+                      //       channel: result.notification.additionalData!['data']
+                      //           ["channelName"],
+                      //       token: result.notification.additionalData!['data']
+                      //           ['rtcToken'],
+                      //       type:
+                      //           result.notification.additionalData!['callType'],
+                      //     )
+                      ),
                 );
               });
             } else if (result.action!.actionId == "reject") {
@@ -221,20 +223,22 @@ class LocalNotification {
                             globalNavigatorKey.currentState!.pop();
                             globalNavigatorKey.currentState!.push(
                               MaterialPageRoute(
-                                  builder: (context) => VideoCallUser(
-                                        sId: result.additionalData!['data']
-                                                    ["senderId"] !=
-                                                null
-                                            ? result.additionalData!['data']
-                                                ["senderId"]
-                                            : null,
-                                        channel: result.additionalData!['data']
-                                            ["channelName"],
-                                        token: result.additionalData!['data']
-                                            ["rtcToken"],
-                                        type:
-                                            result.additionalData!['callType'],
-                                      )),
+                                  builder: (context) => LiveStreamWaiting()
+                                  // VideoCallUser(
+                                  //       sId: result.additionalData!['data']
+                                  //                   ["senderId"] !=
+                                  //               null
+                                  //           ? result.additionalData!['data']
+                                  //               ["senderId"]
+                                  //           : null,
+                                  //       channel: result.additionalData!['data']
+                                  //           ["channelName"],
+                                  //       token: result.additionalData!['data']
+                                  //           ["rtcToken"],
+                                  //       type:
+                                  //           result.additionalData!['callType'],
+                                  //     )
+                                  ),
                             );
                           });
                         },

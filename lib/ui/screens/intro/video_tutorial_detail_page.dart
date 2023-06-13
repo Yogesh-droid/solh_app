@@ -41,14 +41,14 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       showFullscreenButton: true,
       loop: false,
       enableCaption: true,
-    ))
-      ..onInit = () {
-        controller.loadVideo(
-            videoTutorialController.currentVideo.value.videoUrl ?? '');
-      }
-      ..onFullscreenChange = (isFullScreen) {
-        print('${isFullScreen ? 'Entered' : 'Exited'} Fullscreen.');
-      };
+    ));
+    //  = () {
+    //   controller.loadVideo(
+    //       videoTutorialController.currentVideo.value.videoUrl ?? '');
+    // }
+    // ..onFullscreenChange = (isFullScreen) {
+    //   print('${isFullScreen ? 'Entered' : 'Exited'} Fullscreen.');
+    // };
 
     super.initState();
   }

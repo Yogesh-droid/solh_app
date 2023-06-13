@@ -15,11 +15,28 @@ class PrivacyWeb extends StatefulWidget {
 
 class _PrivacyWebState extends State<PrivacyWeb> {
   int progress = 0;
+
+  late WebViewController controller;
+
+  void setProgress(progress) {
+    setState(() {
+      this.progress = progress.round();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     // Enable virtual display.
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setNavigationDelegate(NavigationDelegate(
+        onProgress: (progress) {
+          setProgress(progress);
+        },
+      ));
+    // if (Platform.isAndroid) WebViewPlatform.instance = AndroidWebView();
   }
 
   @override
@@ -33,14 +50,8 @@ class _PrivacyWebState extends State<PrivacyWeb> {
         ),
         isLandingScreen: false,
       ),
-      body: WebView(
-        initialUrl: widget.url,
-        javascriptMode: JavascriptMode.unrestricted,
-        onProgress: (progress) {
-          setState(() {
-            this.progress = progress.round();
-          });
-        },
+      body: WebViewWidget(
+        controller: controller,
       ),
     );
   }
