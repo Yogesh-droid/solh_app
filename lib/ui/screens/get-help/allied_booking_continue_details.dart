@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
@@ -12,7 +10,6 @@ import '../../../widgets_constants/appbars/app-bar.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
-import '../my-profile/appointments/appointment_screen.dart';
 import 'booking_price_details.dart';
 import 'get-help.dart';
 

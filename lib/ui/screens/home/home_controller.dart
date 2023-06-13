@@ -3,7 +3,6 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/model/get-help/inhouse_packages_carousel_model.dart';
 import 'package:solh/services/network/network.dart';
 
-import '../../../model/home/home_carousel.dart';
 
 class HomeController extends GetxController {
   var homePageCarouselModel = InhousePackagesCarouselModel().obs;
@@ -22,7 +21,7 @@ class HomeController extends GetxController {
         line.value = map['data']['line'];
         print('The line is ${line.value}');
       }
-    } on Exception catch (e) {
+    } on Exception {
       // TODO
     }
   }

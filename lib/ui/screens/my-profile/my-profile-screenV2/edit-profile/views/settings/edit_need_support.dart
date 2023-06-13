@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -215,12 +214,12 @@ class _IssueChipsState extends State<IssueChips> {
                               e.slug!,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline1!
+                                  .displayLarge!
                                   .copyWith(color: SolhColors.white),
                             )
                           : Text(
                               e.slug!,
-                              style: Theme.of(context).textTheme.headline1,
+                              style: Theme.of(context).textTheme.displayLarge,
                             ),
                     ),
                   )
@@ -257,7 +256,7 @@ class OtherIssueList extends StatelessWidget {
                   element,
                   style: Theme.of(context)
                       .textTheme
-                      .headline1!
+                      .displayLarge!
                       .copyWith(color: SolhColors.white),
                 ),
               ],

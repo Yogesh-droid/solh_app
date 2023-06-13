@@ -1,4 +1,3 @@
-import 'package:solh/model/psychology-test/test_question_model.dart';
 
 class SubmitAnswerModel {
   String? question;

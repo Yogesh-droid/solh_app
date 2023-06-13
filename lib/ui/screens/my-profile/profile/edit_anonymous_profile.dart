@@ -210,9 +210,7 @@ class _EditAnonymousProfileState extends State<EditAnonymousProfile> {
                                   "profilePictureType": imgType
                                 });
                             debugPrint("anon upload try2 $response");
-                            if (response != null) {
-                              print(response['imageUrl']);
-                            }
+                            print(response['imageUrl']);
                           }
                           profileController.getMyProfile();
                           Navigator.of(context).pop();

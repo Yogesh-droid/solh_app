@@ -3,8 +3,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/ui/screens/get-help/booking_price_details.dart';

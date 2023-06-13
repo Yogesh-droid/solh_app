@@ -180,7 +180,7 @@ class _TrimmerViewState extends State<TrimmerView> {
     );
   }
 
-  Future<Map<String, dynamic>> _uploadImage({bool? isVideo}) async {
+  Future<Map<String, dynamic>> _uploadImage() async {
     journalPageController.isImageUploading.value = true;
     Map<String, dynamic> map = {};
 

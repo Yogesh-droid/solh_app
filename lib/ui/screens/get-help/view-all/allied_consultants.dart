@@ -1,10 +1,7 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
@@ -16,7 +13,6 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/solh_video_player.dart';
 import '../../../../widgets_constants/appbars/app-bar.dart';
-import '../../../../widgets_constants/loader/my-loader.dart';
 import '../../comment/comment-screen.dart';
 
 class AlliedConsultant extends StatefulWidget {
@@ -71,7 +67,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFF6F6F8),
-      appBar: widget.enableAppbar && widget.enableAppbar != null
+      appBar: widget.enableAppbar
           ? SolhAppBar(
               title: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,10 +295,10 @@ class AlliedConsultantTile extends StatelessWidget {
                       text: TextSpan(children: [
                     TextSpan(
                         text: prefix != null ? "$prefix " : '',
-                        style: Theme.of(context).textTheme.headline3),
+                        style: Theme.of(context).textTheme.displaySmall),
                     TextSpan(
                         text: "$name",
-                        style: Theme.of(context).textTheme.headline3)
+                        style: Theme.of(context).textTheme.displaySmall)
                   ])),
                   Row(
                     children: [

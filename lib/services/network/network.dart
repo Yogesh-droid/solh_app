@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:solh/bloc/user-bloc.dart';
-import 'package:solh/main.dart';
-import 'package:solh/routes/routes.dart';
-import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'dart:developer';
 

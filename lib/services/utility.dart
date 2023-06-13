@@ -45,7 +45,7 @@ class Utility {
   }
 
   static void createOverlay(BuildContext context) {
-    Overlay.of(context)!.insert(OverlayEntry(builder: (context) {
+    Overlay.of(context).insert(OverlayEntry(builder: (context) {
       final size = MediaQuery.of(context).size;
       print(size.width);
       return Positioned(

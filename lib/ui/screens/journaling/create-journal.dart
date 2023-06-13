@@ -1031,9 +1031,9 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                                     .feelingsList.value[index].sId!)
                             ? Theme.of(context)
                                 .textTheme
-                                .bodyText2!
+                                .bodyMedium!
                                 .copyWith(color: SolhColors.white)
-                            : Theme.of(context).textTheme.bodyText2,
+                            : Theme.of(context).textTheme.bodyMedium,
                         onSelected: (value) {
                           widget._onFeelingsChanged.call(_selectedFeeling);
                           feelingsController.selectedFeelingsId.contains(

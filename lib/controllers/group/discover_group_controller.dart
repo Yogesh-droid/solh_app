@@ -7,7 +7,6 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/group/group_detail_model.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/model/group/get_group_response_model.dart' as groupList;
 
 class DiscoverGroupController extends GetxController {
   var createdGroupModel = GetGroupResponseModel().obs;

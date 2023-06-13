@@ -391,7 +391,7 @@ class GroupCount {
   List<String>? groupMembers;
   List<String>? groupTags;
   String? groupType;
-  Null? journalCount;
+  Null journalCount;
   String? groupName;
   String? groupDescription;
   String? groupMediaUrl;

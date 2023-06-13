@@ -60,11 +60,9 @@ class MyJournalsBloc {
     }
 
     _journalPageController.myVideoPlayerControllers.value.forEach((element) {
-      if (element != null) {
-        element.forEach((key, value) {
-          value.dispose();
-        });
-      }
+      element.forEach((key, value) {
+        value.dispose();
+      });
     });
     _journalPageController.myVideoPlayerControllers.value.clear();
     for (int i = 0; i < _journals.length; i++) {

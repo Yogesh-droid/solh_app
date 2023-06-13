@@ -63,7 +63,7 @@ class Journals {
   int? comments;
   String? feelings;
   String? createdAt;
-  Null? bestComment;
+  Null bestComment;
 
   Journals(
       {this.description,

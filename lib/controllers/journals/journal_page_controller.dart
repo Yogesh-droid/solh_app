@@ -70,11 +70,9 @@ class JournalPageController extends GetxController {
             : null;
         this.pageNo = pageNo;
         videoPlayerController.value.forEach((element) {
-          if (element != null) {
-            element.forEach((key, value) {
-              value.dispose();
-            });
-          }
+          element.forEach((key, value) {
+            value.dispose();
+          });
         });
         videoPlayerController.value.clear();
         for (int i = 0; i < journalsList.value.length; i++) {
@@ -138,17 +136,15 @@ class JournalPageController extends GetxController {
     isPlayingMyPostVideo = false;
 
     isPlayingTrendingPostVideo = false;
-    if (videoPlayerController.value[index] != null) {
-      if (videoIndex != index) {
-        videoPlayerController.value[index][index]!.pause();
-      }
-      if (videoPlayerController.value[index][index]!.value.isPlaying) {
-        videoPlayerController.value[index][index]!.pause();
-      } else {
-        if (!isPlayingMyPostVideo && !isPlayingTrendingPostVideo) {
-          videoPlayerController.value[index][index]!.play();
-          videoIndex = index;
-        }
+    if (videoIndex != index) {
+      videoPlayerController.value[index][index]!.pause();
+    }
+    if (videoPlayerController.value[index][index]!.value.isPlaying) {
+      videoPlayerController.value[index][index]!.pause();
+    } else {
+      if (!isPlayingMyPostVideo && !isPlayingTrendingPostVideo) {
+        videoPlayerController.value[index][index]!.play();
+        videoIndex = index;
       }
     }
   }
@@ -156,16 +152,14 @@ class JournalPageController extends GetxController {
   Future<void> playMyPostVideo(int index) async {
     isPlayingMyPostVideo = true;
 
-    if (myVideoPlayerControllers.value[index] != null) {
-      if (myVideoIndex != index) {
-        myVideoPlayerControllers.value[index][index]!.pause();
-      }
-      if (myVideoPlayerControllers.value[index][index]!.value.isPlaying) {
-        myVideoPlayerControllers.value[index][index]!.pause();
-      } else {
-        myVideoPlayerControllers.value[index][index]!.play();
-        myVideoIndex = index;
-      }
+    if (myVideoIndex != index) {
+      myVideoPlayerControllers.value[index][index]!.pause();
+    }
+    if (myVideoPlayerControllers.value[index][index]!.value.isPlaying) {
+      myVideoPlayerControllers.value[index][index]!.pause();
+    } else {
+      myVideoPlayerControllers.value[index][index]!.play();
+      myVideoIndex = index;
     }
   }
 

@@ -12,7 +12,6 @@ import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_c
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
-import 'package:solh/ui/screens/intro/video_tutorial_page.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';

@@ -119,9 +119,9 @@ class ConsultantsTile extends StatelessWidget {
                   text: TextSpan(children: [
                 TextSpan(
                     text: prefix != null ? "$prefix " : '',
-                    style: Theme.of(context).textTheme.headline3),
+                    style: Theme.of(context).textTheme.displaySmall),
                 TextSpan(
-                    text: "$name", style: Theme.of(context).textTheme.headline3)
+                    text: "$name", style: Theme.of(context).textTheme.displaySmall)
               ]))
               // Row(
               //   crossAxisAlignment: CrossAxisAlignment.center,

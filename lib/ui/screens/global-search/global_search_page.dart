@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/search/global_search_controller.dart';
 import 'package:solh/model/search/global_search_model.dart';
@@ -14,7 +12,6 @@ import 'package:solh/widgets_constants/group_card.dart';
 import 'package:solh/widgets_constants/search/people_tile.dart';
 import 'package:solh/widgets_constants/search/post_tile.dart';
 import 'package:solh/widgets_constants/solh_search.dart';
-import '../../../model/group/get_group_response_model.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../routes/routes.dart';
 import '../comment/comment-screen.dart';

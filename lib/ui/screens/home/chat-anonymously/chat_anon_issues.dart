@@ -252,12 +252,12 @@ class _IssueChipsState extends State<IssueChips> {
                               e.slug!,
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline1!
+                                  .displayLarge!
                                   .copyWith(color: SolhColors.white),
                             )
                           : Text(
                               e.slug!,
-                              style: Theme.of(context).textTheme.headline1,
+                              style: Theme.of(context).textTheme.displayLarge,
                             )))
                   .toList());
     });
@@ -292,7 +292,7 @@ class OtherIssueList extends StatelessWidget {
                   element,
                   style: Theme.of(context)
                       .textTheme
-                      .headline1!
+                      .displayLarge!
                       .copyWith(color: SolhColors.white),
                 ),
               ],

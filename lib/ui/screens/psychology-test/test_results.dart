@@ -9,7 +9,6 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../model/psychology-test/psychology_test_model.dart';
 import '../../../model/psychology-test/testHistory_result_model.dart';
-import '../../../routes/routes.dart';
 import '../../../widgets_constants/constants/colors.dart';
 
 class TestResultPage extends StatelessWidget {

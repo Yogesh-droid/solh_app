@@ -16,7 +16,6 @@ import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
-import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatProviderScreen extends StatefulWidget {

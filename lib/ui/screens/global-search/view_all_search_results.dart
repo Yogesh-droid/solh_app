@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/model/search/global_search_model.dart';
 import 'package:solh/ui/screens/get-help/consultant_tile.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-import '../../../model/group/get_group_response_model.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../routes/routes.dart';
 import '../../../widgets_constants/group_card.dart';

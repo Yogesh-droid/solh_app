@@ -3,15 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/issue_and_specialization_filter_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
-import 'package:solh/model/doctor.dart';
 import 'package:solh/model/get-help/counsellors_country_model..dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -102,7 +99,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFF6F6F8),
-        appBar: widget.enableAppbar && widget.enableAppbar != null
+        appBar: widget.enableAppbar
             ? SolhAppBar(
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

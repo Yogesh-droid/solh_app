@@ -10,7 +10,6 @@ import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';

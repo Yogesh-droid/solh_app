@@ -12,7 +12,6 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../constants/api.dart';
-import '../../../routes/routes.dart';
 import '../../../services/network/network.dart';
 import '../../../services/utility.dart';
 import '../journaling/create-journal.dart';

@@ -28,7 +28,6 @@ import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
 import '../home/homescreen.dart';
-import 'dart:developer' as logs;
 
 class GetHelpScreen extends StatefulWidget {
   @override

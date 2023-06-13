@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/model/goal-setting/personal_goal_model.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
-import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-goals/add_select_goal.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';

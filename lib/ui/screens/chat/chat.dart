@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,6 @@ import 'package:solh/widgets_constants/animated_refresh_container.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 import 'package:solh/widgets_constants/text_field_styles.dart';
@@ -26,7 +24,6 @@ import 'package:solh/widgets_constants/typing_indicator.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
-import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ChatScreen extends StatefulWidget {

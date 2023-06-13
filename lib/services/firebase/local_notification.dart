@@ -10,7 +10,6 @@ import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import '../../ui/screens/chat/chat.dart';
 import '../../ui/screens/comment/comment-screen.dart';
-import '../../ui/screens/video-call/video-call-user.dart';
 import '../../widgets_constants/buttons/custom_buttons.dart';
 import '../../widgets_constants/constants/textstyles.dart';
 

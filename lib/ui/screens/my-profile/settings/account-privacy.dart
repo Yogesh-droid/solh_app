@@ -2,18 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
-import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../../bloc/user-bloc.dart';
-import '../../../../controllers/connections/connection_controller.dart';
-import '../../../../controllers/goal-setting/goal_setting_controller.dart';
-import '../../../../routes/routes.dart';
-import '../../../../services/utility.dart';
 
 class AccountPrivacyScreen extends StatelessWidget {
   const AccountPrivacyScreen({Key? key, Map<dynamic, dynamic>? args})

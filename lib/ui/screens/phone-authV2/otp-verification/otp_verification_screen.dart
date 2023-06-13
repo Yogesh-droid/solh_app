@@ -87,11 +87,11 @@ class VerifyPhoneNo extends StatelessWidget {
         RichText(
           text: TextSpan(
             text: 'Please enter the 6 digit code sent to ',
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context).textTheme.bodyMedium,
             children: <TextSpan>[
               TextSpan(
                 text: phoneNumber,
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
             ],
           ),

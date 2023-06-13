@@ -91,6 +91,7 @@ class _GradientProgressIndicatorState extends State<GradientProgressIndicator>
                       radius: widget.radius,
                       strokeWidth: widget.strokeWidth,
                       backgroundColor: widget.backgroundColor,
+                      strokeRound: true,
                       value: Tween(begin: 0.0, end: 1.0)
                           .animate(
                             CurvedAnimation(
@@ -119,12 +120,12 @@ class _GradientProgressIndicatorState extends State<GradientProgressIndicator>
 class _GradientCircularProgressIndicator extends StatelessWidget {
   _GradientCircularProgressIndicator({
     this.strokeWidth = 10.0,
-    this.strokeRound = false,
     this.backgroundColor = Colors.transparent,
     required this.radius,
     required this.gradientStops,
     required this.gradientColors,
     required this.value,
+    required this.strokeRound,
   });
 
   final double strokeWidth;
@@ -146,6 +147,7 @@ class _GradientCircularProgressIndicator extends StatelessWidget {
           strokeRound: strokeRound,
           backgroundColor: backgroundColor,
           gradientColors: gradientColors,
+          20,
           value: value,
           radius: radius,
           gradientStops: gradientStops,
@@ -157,21 +159,21 @@ class _GradientCircularProgressIndicator extends StatelessWidget {
 
 // This class paint is gradientcircular
 class _GradientCircularProgressPainter extends CustomPainter {
-  _GradientCircularProgressPainter({
+  _GradientCircularProgressPainter(
+    this.total, {
     required this.strokeWidth,
     required this.strokeRound,
     required this.value,
     this.backgroundColor = Colors.transparent,
     required this.gradientColors,
     required this.gradientStops,
-    this.total = 2 * pi,
     this.radius,
   });
 
   final double strokeWidth;
   final bool strokeRound;
   final double value;
-  final Color backgroundColor;
+  final Color? backgroundColor;
   final List<Color> gradientColors;
   final List<double> gradientStops;
   final double total;
@@ -200,7 +202,7 @@ class _GradientCircularProgressPainter extends CustomPainter {
       ..isAntiAlias = true;
 
     if (backgroundColor != Colors.transparent) {
-      paint.color = backgroundColor;
+      paint.color = backgroundColor!;
       canvas.drawArc(rect, _start, total, false, paint);
     }
 

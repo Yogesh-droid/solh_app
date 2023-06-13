@@ -40,7 +40,7 @@ class Group {
   String? groupId;
   String? inviteId;
   String? flag;
-  Null? groupDetails;
+  Null groupDetails;
   String? groupMediaUrl;
 
   Group(

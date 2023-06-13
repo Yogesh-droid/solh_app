@@ -31,7 +31,7 @@ class Categories {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  Null? parent;
+  Null parent;
   String? displayImage;
 
   Categories(

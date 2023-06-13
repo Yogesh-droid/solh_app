@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,17 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/instance_manager.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
-import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-model/chat_anon_model.dart';
 import 'package:solh/ui/screens/my-profile/connections/blocked_users.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -30,7 +24,6 @@ import '../../../../routes/routes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../get-help/get-help.dart';
-import '../../get-help/view-all/view_all_volunteers.dart';
 
 class Connections extends StatefulWidget {
   Connections({
@@ -1457,7 +1450,7 @@ AlertDialog cancelAcceptAlertDialog(
         RichText(
             text: TextSpan(
                 text: 'Disclaimer : ',
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       decoration: TextDecoration.none,
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
@@ -1465,7 +1458,7 @@ AlertDialog cancelAcceptAlertDialog(
                 children: <TextSpan>[
               TextSpan(
                 text: 'Please accept connection requests of known persons only',
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     decoration: TextDecoration.none,
                     fontWeight: FontWeight.w500,
                     fontSize: 16,

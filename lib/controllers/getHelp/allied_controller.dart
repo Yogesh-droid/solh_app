@@ -4,10 +4,8 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
-import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class AlliedController extends GetxController {

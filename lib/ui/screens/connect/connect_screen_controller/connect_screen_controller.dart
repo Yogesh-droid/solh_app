@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/model/get_all_connection_model.dart';
 import 'package:solh/model/my_connection_model.dart';
-import 'package:solh/model/search/global_search_model.dart';
 import 'package:solh/services/connection/connection_services.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/connect/connect_sceen_model/connect_screen_model.dart';

@@ -21,7 +21,7 @@ class ProfileController extends GetxController {
       print('This is profile   $map');
       isProfileLoading.value = false;
       return true;
-    } on Exception catch (e) {}
+    } on Exception {}
     isProfileLoading.value = false;
     return false;
   }

@@ -19,7 +19,6 @@ import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/network/network.dart';
-import 'package:solh/services/restart_widget.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';

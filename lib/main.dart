@@ -20,7 +20,6 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/controllers/error_controller.dart';
-import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -143,27 +142,27 @@ class _SolhAppState extends State<SolhApp> {
           // useMaterial3: true,
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
-              bodyText2: TextStyle(
+              bodyMedium: TextStyle(
                 color: SolhColors.black666,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
-              headline1: TextStyle(
+              displayLarge: TextStyle(
                 color: SolhColors.black53,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              headline2: TextStyle(
+              displayMedium: TextStyle(
                 color: SolhColors.primary_green,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
-              bodyText1: TextStyle(
+              bodyLarge: TextStyle(
                 color: SolhColors.black666,
                 fontSize: 14,
                 fontWeight: FontWeight.w800,
               ),
-              headline3: SolhTextStyles.QS_body_1_bold),
+              displaySmall: SolhTextStyles.QS_body_1_bold),
           switchTheme: SwitchThemeData(
             thumbColor:
                 MaterialStateProperty.all<Color>(SolhColors.primary_green),

@@ -275,7 +275,7 @@ class OtherIssueList extends StatelessWidget {
                   element,
                   style: Theme.of(context)
                       .textTheme
-                      .headline1!
+                      .displayLarge!
                       .copyWith(color: SolhColors.white),
                 ),
               ],

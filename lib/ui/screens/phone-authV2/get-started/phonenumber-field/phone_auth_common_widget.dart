@@ -125,11 +125,11 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                 text: TextSpan(
                     text:
                         'By Clicking Signing ${isLogin ? 'in' : 'up'} you agree to our',
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.bodyMedium,
                     children: <TextSpan>[
                       TextSpan(
                           text: ' Terms of service  ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(
                                 context,
@@ -141,7 +141,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                                         )))),
                       TextSpan(
                           text: '& Privacy Policies ',
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.bodyLarge,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(
                                 context,

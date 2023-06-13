@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/services/network/network.dart';
 import 'package:http/http.dart' as http;
 
 class ProviderUser {

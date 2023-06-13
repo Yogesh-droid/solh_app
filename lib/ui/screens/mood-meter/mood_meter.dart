@@ -6,7 +6,6 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/my_diary/my_diary_controller.dart';
 import 'package:solh/services/utility.dart';
-import 'package:solh/ui/screens/mood-meter/mood-reason-page.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -192,7 +191,7 @@ class MoodMeter extends StatelessWidget {
                                           Utility.showToast(
                                               'Successfully Saved to Diary');
                                           _focusNode.unfocus();
-                                        } on Exception catch (e) {
+                                        } on Exception {
                                           // TODO
                                         }
                                       }
