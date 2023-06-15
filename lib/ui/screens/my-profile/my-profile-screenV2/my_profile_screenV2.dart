@@ -622,13 +622,13 @@ class OptionsColumn extends StatelessWidget {
             getGreenRoundDot(),
             TextButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) => PrivacyWeb(
-                  //               title: "Contact Us".tr,
-                  //               url: "https://solhapp.com/contact-us.html",
-                  //             )));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PrivacyWeb(
+                                title: "Contact Us".tr,
+                                url: "https://solhapp.com/contact-us.html",
+                              )));
                 },
                 child: Text(
                   "Feedback".tr,
@@ -639,12 +639,14 @@ class OptionsColumn extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PrivacyWeb(
-                                title: 'Privacy Policy'.tr,
-                                url: "https://solhapp.com/privacypolicy.html",
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyWeb(
+                        title: 'Privacy Policy'.tr,
+                        url: "https://solhapp.com/privacypolicy.html",
+                      ),
+                    ),
+                  );
                 },
                 child: Text(
                   "Policies".tr,

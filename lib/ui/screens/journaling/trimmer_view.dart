@@ -145,7 +145,7 @@ class _TrimmerViewState extends State<TrimmerView> {
                               color: Colors.white,
                             ),
                       onPressed: () async {
-                        var playbackState;
+                        var playbackState = false;
                         await _trimmer.saveTrimmedVideo(
                           startValue: _startValue,
                           endValue: _endValue,

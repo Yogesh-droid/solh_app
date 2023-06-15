@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -40,8 +41,9 @@ GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  Stripe.publishableKey =
-      "pk_live_51Mp4hISCjgNimACD6TrkUMjkJDilo3BL2R5eUkxoqRRMRZ2qbtpDo8yArxHlIn5j9r2y2ps6c97QNeaELcdBBXEH00p9l2bh7c";
+  await dotenv.load(fileName: '.env');
+  Stripe.publishableKey = dotenv.env['STRIPE_PK'] ?? '';
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
@@ -139,7 +141,8 @@ class _SolhAppState extends State<SolhApp> {
         onGenerateRoute: RouteGenerator.generateRoute,
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
         theme: ThemeData(
-          // useMaterial3: true,
+          useMaterial3: true,
+          colorSchemeSeed: SolhColors.primary_green,
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
               bodyMedium: TextStyle(
@@ -171,9 +174,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-          primaryColor: SolhColors.primary_green,
 
-          primarySwatch: Colors.green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
         ),

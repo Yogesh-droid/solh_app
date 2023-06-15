@@ -1,6 +1,5 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class APIConstants {
-  //static const api = "http://192.168.1.5:3000";
-  //static const api = "http://192.168.1.22:3000";
-  //static const api = "https://staging.solhapp.com";
-  static const api = "https://api.solhapp.com";
+  static final api = dotenv.env['API_CONSTANT'] ?? 'https://api.solhapp.com';
 }

@@ -1,4 +1,8 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -29,13 +33,14 @@ class _PrivacyWebState extends State<PrivacyWeb> {
     // Enable virtual display.
 
     controller = WebViewController()
+      ..loadRequest(Uri.parse(widget.url))
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(NavigationDelegate(
         onProgress: (progress) {
           setProgress(progress);
         },
       ));
-    // if (Platform.isAndroid) WebViewPlatform.instance = AndroidWebView();
+    //if (Platform.isAndroid) WebViewPlatform.instance = SurfaceAndroidView();
   }
 
   @override
