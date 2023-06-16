@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -191,8 +192,9 @@ class _TrimmerViewState extends State<TrimmerView> {
           File(journalPageController.outputPath.value),
           isVideo: true);
       journalPageController.isImageUploading.value = false;
+      log('upload done');
     } on Exception catch (e) {
-      print(e.toString());
+      log(e.toString());
       Utility.showToast('Something went wrong');
       Navigator.pop(context);
     }
