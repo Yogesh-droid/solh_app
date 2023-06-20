@@ -8,6 +8,7 @@ import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
+import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import '../../ui/screens/chat/chat.dart';
 import '../../ui/screens/comment/comment-screen.dart';
 import '../../widgets_constants/buttons/custom_buttons.dart';
@@ -222,22 +223,20 @@ class LocalNotification {
                             globalNavigatorKey.currentState!.pop();
                             globalNavigatorKey.currentState!.push(
                               MaterialPageRoute(
-                                  builder: (context) => LiveStreamWaiting()
-                                  // VideoCallUser(
-                                  //       sId: result.additionalData!['data']
-                                  //                   ["senderId"] !=
-                                  //               null
-                                  //           ? result.additionalData!['data']
-                                  //               ["senderId"]
-                                  //           : null,
-                                  //       channel: result.additionalData!['data']
-                                  //           ["channelName"],
-                                  //       token: result.additionalData!['data']
-                                  //           ["rtcToken"],
-                                  //       type:
-                                  //           result.additionalData!['callType'],
-                                  //     )
-                                  ),
+                                  builder: (context) => VideoCallUser(
+                                        sId: result.additionalData!['data']
+                                                    ["senderId"] !=
+                                                null
+                                            ? result.additionalData!['data']
+                                                ["senderId"]
+                                            : null,
+                                        channel: result.additionalData!['data']
+                                            ["channelName"],
+                                        token: result.additionalData!['data']
+                                            ["rtcToken"],
+                                        type:
+                                            result.additionalData!['callType'],
+                                      )),
                             );
                           });
                         },
