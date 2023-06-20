@@ -39,13 +39,13 @@ class MoodMeterController extends GetxController {
 
     if (map['success']) {
       moodMeterModel.value = MoodMeterModel.fromJson(map);
-      colorList.value.clear();
+      colorList.clear();
       moodList = [];
       moodMeterModel.value.moodList!.forEach((element) {
         moodList.add(element.name ?? '');
         gifList.add(element.media ?? '');
         int color = int.parse((element.color!.replaceAll('#', '0xFF')));
-        colorList.value.add(Color(color));
+        colorList.add(Color(color));
       });
       selectedGif.value = gifList[0];
       selectedMood.value = moodList[0];
@@ -58,7 +58,7 @@ class MoodMeterController extends GetxController {
   }
 
   Future<void> saveMoodOfday() async {
-    Map<String, dynamic> map = await Network.makePostRequestWithToken(
+    await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/mood-today',
         body: {
           'mood':
@@ -67,7 +67,7 @@ class MoodMeterController extends GetxController {
   }
 
   Future<void> saveReason(String reason) async {
-    Map<String, dynamic> map = await Network.makePostRequestWithToken(
+    await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/feeling-log',
         body: {
           'feelings':
@@ -81,13 +81,13 @@ class MoodMeterController extends GetxController {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         '${APIConstants.api}/api/mood-analytics?days=$days');
     moodAnlyticsModel.value = MoodAnalyticsModel.fromJson(map);
-    selectedFrequencyMoodMap.value.clear();
-    activeColorList.value.clear();
+    selectedFrequencyMoodMap.clear();
+    activeColorList.clear();
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
-      selectedFrequencyMoodMap.value[element.name ?? ''] =
+      selectedFrequencyMoodMap[element.name ?? ''] =
           element.moodCount!.toDouble();
       int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
-      activeColorList.value.add(Color(color));
+      activeColorList.add(Color(color));
     });
     moodAnlyticsModel.refresh();
     isFetchingMoodAnalytics.value = false;

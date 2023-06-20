@@ -33,13 +33,13 @@ class CreateGroupController extends GetxController {
             'groupType': groupType,
             'groupMediaUrl': img,
             'groupMediaType': imgType,
-            'groupTags': tagList.value.join(',')
+            'groupTags': tagList.join(',')
           }
         : {
             'groupName': groupName,
             'groupDescription': desc,
             'groupType': groupType,
-            'groupTags': tagList.value.join(',')
+            'groupTags': tagList.join(',')
           };
     print(body);
     print(groupId);
@@ -62,7 +62,6 @@ class CreateGroupController extends GetxController {
         duration: Duration(seconds: 3));
     isLoading.value = false;
     return map;
-    return {};
   }
 
   Future<Map<String, dynamic>> addMembers({
@@ -105,13 +104,13 @@ class CreateGroupController extends GetxController {
                     'groupType': groupType,
                     'groupMediaUrl': img,
                     'groupMediaType': imgType,
-                    'groupTags': tagList.value.join(',')
+                    'groupTags': tagList.join(',')
                   }
                 : {
                     'groupName': groupName,
                     'groupDescription': desc,
                     'groupType': groupType,
-                    'groupTags': tagList.value.join(',')
+                    'groupTags': tagList.join(',')
                   })
         .onError((error, stackTrace) {
       print(error);

@@ -37,7 +37,7 @@ class SearchMarketController extends GetxController {
     suggestionList.clear();
 
     if (map['suggestions'] != null) {
-      suggestionList.value.addAll(map['suggestions']);
+      suggestionList.addAll(map['suggestions']);
     }
     suggestionList.refresh();
     isLoading.value = false;

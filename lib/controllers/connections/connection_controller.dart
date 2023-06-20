@@ -91,7 +91,7 @@ class ConnectionController extends GetxController {
         .map((i) => BlogListModel.fromJson(i))
         .toList();
 
-    print('Blog list.length = ' + bloglist.value.length.toString());
+    print('Blog list.length = ' + bloglist.length.toString());
 
     isBlogLoading.value = false;
   }
@@ -123,14 +123,14 @@ class ConnectionController extends GetxController {
       allConnectionModel.value = GetConnectionResponse.fromJson(map);
       allConnectionModel.value.connections!.forEach((element) {
         if (element.flag == 'sent') {
-          sentConnections.value.add(element);
+          sentConnections.add(element);
         } else {
-          receivedConnections.value.add(element);
+          receivedConnections.add(element);
         }
       });
-      groupInvites.value.clear();
+      groupInvites.clear();
       allConnectionModel.value.group!.forEach((element) {
-        groupInvites.value.add(element);
+        groupInvites.add(element);
       });
     }
     getPeopleYouMayKnow('all');

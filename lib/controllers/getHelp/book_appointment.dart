@@ -85,7 +85,7 @@ class BookAppointmentController extends GetxController {
         : bookedTimeSlots.value = [];
     if (selectedDate.value.day == DateTime.now().day) {
       print('selectedDate.value == DateTime.now()');
-      timeSlotList.value = timeSlotList.value
+      timeSlotList.value = timeSlotList
           .where((element) => element.toString().compareTo(currentTimeSlot) > 0)
           .toList();
     }

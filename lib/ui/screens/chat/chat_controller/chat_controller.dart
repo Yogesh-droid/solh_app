@@ -103,7 +103,7 @@ class ChatController extends GetxController {
 
     if (response.chatLog != null) {
       convo.value = response.chatLog!.conversation!;
-      debugPrint(convo.value.toString());
+      debugPrint(convo.toString());
     } else {
       convo.value = [];
     }
@@ -119,7 +119,7 @@ class ChatController extends GetxController {
 
     if (response.chatLog != null) {
       convo.value = response.chatLog!.conversation!;
-      debugPrint(convo.value.toString());
+      debugPrint(convo.toString());
     } else {
       convo.value = [];
     }

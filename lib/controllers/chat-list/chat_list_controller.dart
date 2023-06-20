@@ -41,7 +41,7 @@ class ChatListController extends GetxController {
         response.chatList!.isNotEmpty) {
       log(response.chatList.toString());
       response.chatList!.forEach((element) {
-        sosChatList.value.add(element);
+        sosChatList.add(element);
       });
       sosChatList.refresh();
     } else {

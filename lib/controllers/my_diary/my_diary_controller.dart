@@ -22,7 +22,7 @@ class MyDiaryController extends GetxController {
 
       myJournalResponseModel.value =
           JournalsResponseModel.fromJson(map['data']);
-      myJournalsList.value.addAll(myJournalResponseModel.value.journals ?? []);
+      myJournalsList.addAll(myJournalResponseModel.value.journals ?? []);
       // _endPageLimit = myJournalResponseModel.value.totalPages!;
       //this.pageNo = pageNo;
       //}

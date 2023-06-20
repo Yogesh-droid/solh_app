@@ -3,7 +3,6 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/model/get-help/inhouse_packages_carousel_model.dart';
 import 'package:solh/services/network/network.dart';
 
-
 class HomeController extends GetxController {
   var homePageCarouselModel = InhousePackagesCarouselModel().obs;
   var isBannerLoading = false.obs;
@@ -40,9 +39,9 @@ class HomeController extends GetxController {
         for (int i = 0;
             i < homePageCarouselModel.value.packageCarouselList!.length;
             i++) {
-          if (dotList.value.length <
+          if (dotList.length <
               homePageCarouselModel.value.packageCarouselList!.length) {
-            dotList.value.add(i);
+            dotList.add(i);
           }
         }
         isBannerLoading.value = false;

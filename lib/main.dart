@@ -129,9 +129,7 @@ class _SolhAppState extends State<SolhApp> {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         navigatorKey: globalNavigatorKey,
-        locale: AppLocale.appLocale != null
-            ? AppLocale.appLocale
-            : Get.deviceLocale,
+        locale: AppLocale.appLocale,
         translations: Languages(),
         fallbackLocale: const Locale('en', 'US'),
         title: 'Solh Wellness',

@@ -62,7 +62,6 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     SocketService.dispose();
     _controller.scrollOffset.value = 0.0;
     super.dispose();
@@ -92,7 +91,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        _controller.istyping.value == true
+                        _controller.istyping == true
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
@@ -120,7 +119,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
               //       : Container();
               // })
               // Obx(() {
-              //   return _controller.scrollController.value != 0
+              //   return _controller.scrollController   != 0
               //       ? Icon(Icons.keyboard_arrow_down)
               //       : Container();
               // })
@@ -132,6 +131,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class ChatAppbar extends StatelessWidget {
   ChatAppbar({Key? key, required String imageUrl, required name, required sId})
       : _imageUrl = imageUrl,
@@ -199,7 +199,7 @@ class ChatAppbar extends StatelessWidget {
                     ),
                     Obx(() {
                       print('seen status ran' +
-                          _controller.seenStatus.value.toString());
+                          _controller.seenStatus.toString());
                       return Text(
                         _controller.seenStatus.value,
                         style: GoogleFonts.signika(
@@ -257,6 +257,7 @@ class ChatAppbar extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class MessageBoxProvider extends StatelessWidget {
   MessageBoxProvider({Key? key, required String sId})
       : _sId = sId,
@@ -438,39 +439,36 @@ class _MessageListProviderState extends State<MessageListProvider> {
                       final reversedIndex =
                           _controller.convo.length - 1 - index;
 
-                      if (_controller
-                              .convo.value[reversedIndex].conversationType ==
+                      if (_controller.convo[reversedIndex].conversationType ==
                           'media') {
                         print(
-                            'mediaUrl ${_controller.convo.value[reversedIndex].media!.mediaUrl}');
+                            'mediaUrl ${_controller.convo[reversedIndex].media!.mediaUrl}');
                       }
                       _controller.scrollOffset.value = scrollController.offset;
                       print('scrollController ${_controller.scrollOffset}');
-                      return _controller.convo.value[reversedIndex]
-                                  .conversationType ==
+                      return _controller
+                                  .convo[reversedIndex].conversationType ==
                               'media'
                           ? Filetile(
-                              message:
-                                  _controller.convo.value[reversedIndex].body,
-                              authorId: _controller
-                                  .convo.value[reversedIndex].authorId,
+                              message: _controller.convo[reversedIndex].body,
+                              authorId:
+                                  _controller.convo[reversedIndex].authorId,
                               sId: widget._sId,
-                              fileName: _controller
-                                  .convo.value[reversedIndex].fileName,
+                              fileName:
+                                  _controller.convo[reversedIndex].fileName,
                               mediaUrl: _controller
-                                  .convo.value[reversedIndex].media!.mediaUrl,
+                                  .convo[reversedIndex].media!.mediaUrl,
                               fileType: _controller
-                                  .convo.value[reversedIndex].media!.mediaType,
-                              dateTime: _controller
-                                  .convo.value[reversedIndex].dateTime,
+                                  .convo[reversedIndex].media!.mediaType,
+                              dateTime:
+                                  _controller.convo[reversedIndex].dateTime,
                             )
                           : MessageTile(
-                              message:
-                                  _controller.convo.value[reversedIndex].body,
-                              dateTime: _controller
-                                  .convo.value[reversedIndex].dateTime,
-                              authorId: _controller
-                                  .convo.value[reversedIndex].authorId,
+                              message: _controller.convo[reversedIndex].body,
+                              dateTime:
+                                  _controller.convo[reversedIndex].dateTime,
+                              authorId:
+                                  _controller.convo[reversedIndex].authorId,
                               sId: widget._sId,
                             );
                     }),
@@ -546,12 +544,10 @@ class MessageTile extends StatelessWidget {
                           color: SolhColors.primary_green),
                     ),
                     Text(
-                      _dateTime == null
-                          ? ''
-                          : DateTime.tryParse(_dateTime) != null
-                              ? DateFormat('dd MMM kk:mm')
-                                  .format(DateTime.parse(_dateTime).toLocal())
-                              : '',
+                      DateTime.tryParse(_dateTime) != null
+                          ? DateFormat('dd MMM kk:mm')
+                              .format(DateTime.parse(_dateTime).toLocal())
+                          : '',
                       style: GoogleFonts.signika(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
@@ -568,6 +564,7 @@ class MessageTile extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class Filetile extends StatelessWidget {
   Filetile({
     Key? key,
@@ -587,6 +584,7 @@ class Filetile extends StatelessWidget {
         _dateTime = dateTime ?? '',
         super(key: key);
 
+  // ignore: unused_field
   final String _message;
   final String _mediaUrl;
   final String _authorId;
@@ -691,12 +689,10 @@ class Filetile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          _dateTime == null
-                              ? ''
-                              : DateTime.tryParse(_dateTime) != null
-                                  ? DateFormat('dd MMM kk:mm').format(
-                                      DateTime.parse(_dateTime).toLocal())
-                                  : '',
+                          DateTime.tryParse(_dateTime) != null
+                              ? DateFormat('dd MMM kk:mm')
+                                  .format(DateTime.parse(_dateTime).toLocal())
+                              : '',
                           style: GoogleFonts.signika(
                               fontWeight: FontWeight.w400,
                               fontSize: 12,

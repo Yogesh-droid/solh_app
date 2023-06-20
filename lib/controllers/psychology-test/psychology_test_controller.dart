@@ -33,7 +33,7 @@ class PsychologyTestController extends GetxController {
     PsychologyTestModel psychologyTestModel = PsychologyTestModel.fromJson(map);
 
     psychologyTestModel.testList!.forEach((element) {
-      testList.value.add(element);
+      testList.add(element);
     });
     isLoadingList.value = false;
   }
@@ -48,8 +48,7 @@ class PsychologyTestController extends GetxController {
 
     testHistoryModel.testList!.forEach((element) {
       if (element.test != null) {
-        testHistorylist.value
-            .add({element.createdAt ?? "": element.test ?? Test()});
+        testHistorylist.add({element.createdAt ?? "": element.test ?? Test()});
       }
     });
 
@@ -65,7 +64,7 @@ class PsychologyTestController extends GetxController {
     selectedTestname.value = testQuestionModel.testDetail!.testTitle ?? '';
 
     testQuestionModel.testDetail!.testQuestionList!.forEach((element) {
-      questionList.value.add(element);
+      questionList.add(element);
     });
     questionList.refresh();
     isQuestionsLoading.value = false;

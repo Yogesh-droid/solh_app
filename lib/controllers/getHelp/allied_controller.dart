@@ -50,8 +50,6 @@ class AlliedController extends GetxController {
   }
 
   Future<Map<String, dynamic>> createPackageOrder(Packages package) async {
-    Map<String, dynamic> map;
-
     List<Map<String, dynamic>> videoSession = [];
 
     package.videoSessions!.forEach((element) {
@@ -95,17 +93,6 @@ class AlliedController extends GetxController {
 
   Future<Map<String, dynamic>> createInhousePackageOrder(
       PackageList package) async {
-    Map<String, dynamic> map;
-
-    List<Map<String, dynamic>> videoSession = [];
-
-    // package.videoSessions!.forEach((element) {
-    //   videoSession.add({
-    //     "vName": element.vName,
-    //     "duration": element.vDescription,
-    //     "vDescription": element.vDescription
-    //   });
-    // });
     isInHouseBooking(true);
     Map<String, dynamic> body = {
       "packageName": package.name,

@@ -53,7 +53,7 @@ class GoalSettingController extends GetxController {
       pesonalGoalModel.value.goalList!.forEach((element) {
         if (element.activity!
             .every((element1) => element1.isComplete ?? true)) {
-          completedGoalsToday.value.add(element.sId);
+          completedGoalsToday.add(element.sId);
         }
       });
     }
@@ -110,7 +110,7 @@ class GoalSettingController extends GetxController {
   }
 
   void addTask() {
-    task.value.add({TextEditingController(): '1'});
+    task.add({TextEditingController(): '1'});
     task.refresh();
   }
 
@@ -123,7 +123,7 @@ class GoalSettingController extends GetxController {
     List activity = [];
     isSavingGoal.value = true;
     if (goalType == 'custom') {
-      task.value.forEach((element) {
+      task.forEach((element) {
         activity.add({
           'task': element.keys.first.text,
           'occurence': element.values.first,
@@ -151,11 +151,7 @@ class GoalSettingController extends GetxController {
         print(response.body);
       });
     } else {
-      Map<String, dynamic> map;
-
-      print('adding Sample Goal');
-
-      map = await Network.makePostRequestWithToken(
+      await Network.makePostRequestWithToken(
           url: '${APIConstants.api}/api/personal-goals',
           body: {
             "goalType": "sample",
@@ -168,10 +164,9 @@ class GoalSettingController extends GetxController {
   }
 
   Future<void> deleteGoal(String id) async {
-    Map<String, dynamic> map;
     isDeletingGoal.value = true;
 
-    map = await Network.makeHttpDeleteRequestWithToken(
+    await Network.makeHttpDeleteRequestWithToken(
         body: {}, url: '${APIConstants.api}/api/goal?goalId=$id');
     isDeletingGoal.value = false;
     getPersonalGoals();
@@ -197,7 +192,7 @@ class GoalSettingController extends GetxController {
           pesonalGoalModel.value.milestoneReached! + 1;
           pesonalGoalModel.refresh();
           noOfGoalsCompleted.value = noOfGoalsCompleted.value + 1;
-          completedGoalsToday.value.add(element.sId);
+          completedGoalsToday.add(element.sId);
           completedGoalsToday.refresh();
         }
       }
@@ -214,7 +209,7 @@ class GoalSettingController extends GetxController {
     getPersonalGoals();
     getGoalsCat();
     getFeaturedGoals();
-    task.value.add({TextEditingController(): '1'});
+    task.add({TextEditingController(): '1'});
     super.onInit();
   }
 }

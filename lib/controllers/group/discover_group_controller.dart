@@ -105,7 +105,7 @@ class DiscoverGroupController extends GetxController {
 
   Future<void> deleteGroups(String groupId) async {
     isDeletingGroup.value = true;
-    Map<String, dynamic> map = await Network.makeHttpDeleteRequestWithToken(
+    await Network.makeHttpDeleteRequestWithToken(
         url: '${APIConstants.api}/api/group?groupId=$groupId', body: {});
     getCreatedGroups();
     getJoinedGroups();
