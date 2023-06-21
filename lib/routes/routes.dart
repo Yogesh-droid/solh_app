@@ -20,6 +20,7 @@ import 'package:solh/ui/screens/home/chat-anonymously/waiting_screen.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/intro/playlist_page.dart';
 import 'package:solh/ui/screens/journaling/create-journal.dart';
+import 'package:solh/ui/screens/live_stream/live_stream.dart';
 import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_menu.dart';
@@ -363,10 +364,10 @@ class RouteGenerator {
       case AppRoutes.profileTransferDetail:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransferDetail()));
-      // case AppRoutes.liveStream:
-      //   return MaterialPageRoute(
-      //       builder: ((context) =>
-      //           LiveStream(args: args as Map<String, dynamic>)));
+      case AppRoutes.liveStream:
+        return MaterialPageRoute(
+            builder: ((context) =>
+                LiveStream(args: args as Map<String, dynamic>)));
       case AppRoutes.liveStreamWaiting:
         return MaterialPageRoute(builder: ((context) => LiveStreamWaiting()));
 
