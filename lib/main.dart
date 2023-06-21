@@ -140,7 +140,7 @@ class _SolhAppState extends State<SolhApp> {
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
         theme: ThemeData(
           useMaterial3: true,
-          colorSchemeSeed: SolhColors.primary_green,
+          colorSchemeSeed: SolhColors.white,
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
               bodyMedium: TextStyle(
