@@ -34,16 +34,26 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
   FocusNode _emailFocusNode = FocusNode();
   @override
   void initState() {
-    _emailTextcontroller.text =
-        Get.find<ProfileController>().myProfileModel.value.body!.user!.email ??
-            "";
-    _alliedController.userEmail.value =
-        Get.find<ProfileController>().myProfileModel.value.body!.user!.email ??
-            "";
-    _alliedController.selectedPackage.value = '';
-    _alliedController.selectedPackagePrice.value = -1;
-    _scrollController = ScrollController();
-    _alliedController.getPackages(widget.args["id"]);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _emailTextcontroller.text = Get.find<ProfileController>()
+              .myProfileModel
+              .value
+              .body!
+              .user!
+              .email ??
+          "";
+      _alliedController.userEmail.value = Get.find<ProfileController>()
+              .myProfileModel
+              .value
+              .body!
+              .user!
+              .email ??
+          "";
+      _alliedController.selectedPackage.value = '';
+      _alliedController.selectedPackagePrice.value = -1;
+      _scrollController = ScrollController();
+      _alliedController.getPackages(widget.args["id"]);
+    });
     super.initState();
   }
 
@@ -104,7 +114,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                       children: [
                         Text(
                           _alliedController.selectedPackagePrice.value > 0
-                              ? "₹ ${_alliedController.selectedPackagePrice.toString()}"
+                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackagePrice.toString()}"
                               : "No Package",
                           style: SolhTextStyles.QS_body_2_semi.copyWith(
                               color: Colors.black),
@@ -488,7 +498,8 @@ class AboutAndPlans extends StatelessWidget {
               children: user!.packages!
                   .map((e) => PackageCard(
                         package: e,
-                        onPackageSelect: (String id, int price) {
+                        onPackageSelect:
+                            (String id, int price, String currency) {
                           if (!(_alliedController.selectedPackage.value ==
                               id)) {
                             _alliedController.selectedPackage.value = id;
@@ -496,6 +507,7 @@ class AboutAndPlans extends StatelessWidget {
                                 price;
                             _alliedController.selectedPackageIndex =
                                 user!.packages!.indexOf(e);
+                            _alliedController.selectedCurrency.value = currency;
                           } else {
                             _alliedController.selectedPackage.value = "";
                             _alliedController.selectedPackagePrice.value = -1;
@@ -513,13 +525,14 @@ class PackageCard extends StatelessWidget {
   PackageCard({Key? key, this.package, required this.onPackageSelect})
       : super(key: key);
   final Packages? package;
-  final Function(String, int) onPackageSelect;
+  final Function(String, int, String) onPackageSelect;
   final AlliedController _alliedController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPackageSelect(package!.sId ?? '', package!.amount ?? 0),
+      onTap: () => onPackageSelect(
+          package!.sId ?? '', package!.amount ?? 0, package!.currency ?? ''),
       child: Obx(() => AnimatedSize(
             duration: Duration(milliseconds: 500),
             curve: Curves.linear,
@@ -629,7 +642,7 @@ class PackageCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "₹ ${package!.amount ?? 0}",
+                "${package!.currency ?? ''} ${package!.amount ?? 0}",
                 style: SolhTextStyles.QS_body_1_bold.copyWith(
                     color: SolhColors.primary_green),
               ),
@@ -754,179 +767,3 @@ class PackageCard extends StatelessWidget {
     );
   }
 }
-/*
-Map<String, dynamic> fakeJson = {
-  "name": 'Allied therapist Name',
-  "profession": 'Profession(Yoga)',
-  "experience": "07 Year ",
-  "numberOfConsultations": 27,
-  "rating": '4.5',
-  "posts": 17,
-  "bio":
-      "Self experiences/ package highlights etc/Other Achivements,  orci cras. Elementum, Lorem ipsum dolor amet, consectetur adipiscing elit. More",
-  "previewVideo": "",
-  "isVerified": "",
-  "profilePicture": "https://picsum.photos/200",
-  "plans": [
-    {
-      "Duration": "4.5 hours",
-      "numberOfVideos": "5",
-      "sessionDuration": "7 days",
-      "price": "2500",
-      "currency": "Rs",
-      "highlightedPoint": [
-        "Full value Yoga-practice includes pranayama kriyas, asanas, relaxation. ",
-        "2 private yoga session for 30 mins each"
-      ],
-      "Benefits": [
-        "Yoga improves strength, balance and flexibility",
-        "Yoga helps with back pain relief",
-        "Yoga can ease arthritis symptoms",
-      ],
-      "VideoPackage": [
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-      ],
-    },
-    {
-      "Duration": "4.5 hours",
-      "numberOfVideos": "5",
-      "sessionDuration": "7 days",
-      "price": "2500",
-      "currency": "Rs",
-      "highlightedPoint": [
-        "Full value Yoga-practice includes pranayama kriyas, asanas, relaxation. ",
-        "2 private yoga session for 30 mins each"
-      ],
-      "Benefits": [
-        "Yoga improves strength, balance and flexibility",
-        "Yoga helps with back pain relief",
-        "Yoga can ease arthritis symptoms",
-      ],
-      "VideoPackage": [
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-      ],
-    },
-    {
-      "Duration": "4.5 hours",
-      "numberOfVideos": "5",
-      "sessionDuration": "7 days",
-      "price": "2500",
-      "currency": "Rs",
-      "highlightedPoint": [
-        "Full value Yoga-practice includes pranayama kriyas, asanas, relaxation. ",
-        "2 private yoga session for 30 mins each"
-      ],
-      "Benefits": [
-        "Yoga improves strength, balance and flexibility",
-        "Yoga helps with back pain relief",
-        "Yoga can ease arthritis symptoms",
-      ],
-      "VideoPackage": [
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-        {
-          "videoName": "",
-          "duration": "30 mins",
-          "aboutVideo":
-              "About video session Lorem ipsum dolor sit amet consectetur. Tortor consequat ut leo sed at. Dui vulputate in ",
-        },
-      ],
-    }
-  ],
-  "reviews": [
-    {
-      "seekerProfilePicture": "https://picsum.photos/200",
-      "seekername": "",
-      "time": "",
-      "rating": "4.5",
-      "review":
-          "Lorem ipsum dolor sit amet consectetur. Accumsan turpis eu egestas tincidunt. Id nisl gravida.",
-    },
-    {
-      "seekerProfilePicture": "https://picsum.photos/200",
-      "seekername": "",
-      "time": "",
-      "rating": "4.5",
-      "review":
-          "Lorem ipsum dolor sit amet consectetur. Accumsan turpis eu egestas tincidunt. Id nisl gravida.",
-    },
-    {
-      "seekerProfilePicture": "https://picsum.photos/200",
-      "seekername": "",
-      "time": "",
-      "rating": "4.5",
-      "review":
-          "Lorem ipsum dolor sit amet consectetur. Accumsan turpis eu egestas tincidunt. Id nisl gravida.",
-    },
-    {
-      "seekerProfilePicture": "https://picsum.photos/200",
-      "seekername": "",
-      "time": "",
-      "rating": "4.5",
-      "review":
-          "Lorem ipsum dolor sit amet consectetur. Accumsan turpis eu egestas tincidunt. Id nisl gravida.",
-    }
-  ]
-}; */

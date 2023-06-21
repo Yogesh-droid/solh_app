@@ -149,10 +149,11 @@ class InhouseContinueDetail extends StatelessWidget {
             unitDuration: packages.unitDuration,
             currency: packages.currency,
             benefits: packages.benefits),
-        onPackageSelect: (String id, int price) {
+        onPackageSelect: (String id, int price, String currency) {
           if (!(_alliedController.selectedPackage.value == id)) {
             _alliedController.selectedPackage.value = id;
             _alliedController.selectedPackagePrice.value = price;
+            _alliedController.selectedCurrency.value = currency;
             // _alliedController.selectedPackageIndex =
             //     user!.packages!.indexOf(e);
           } else {

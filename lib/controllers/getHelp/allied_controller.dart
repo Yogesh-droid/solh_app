@@ -18,6 +18,7 @@ class AlliedController extends GetxController {
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
   var selectedPackagePrice = RxInt(-1);
+  var selectedCurrency = ''.obs;
   var userEmail = "".obs;
   var isBookingLoading = false.obs;
 
@@ -35,6 +36,9 @@ class AlliedController extends GetxController {
                   packagesListModel.value.finalResult!.packages![0].sId ?? '';
               selectedPackagePrice.value =
                   packagesListModel.value.finalResult!.packages![0].amount ?? 0;
+              selectedCurrency.value =
+                  packagesListModel.value.finalResult!.packages![0].currency ??
+                      '';
             }
           }
         } on Exception catch (e) {

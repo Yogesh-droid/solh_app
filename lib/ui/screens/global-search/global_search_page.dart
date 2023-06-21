@@ -236,6 +236,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                         profession:
                             alliedProviders[index].profession!.name ?? '',
                         preview: alliedProviders[index].preview ?? '',
+                        feeCurrency: alliedProviders[index].feeCurrency ?? '',
                       )),
             )
           ]),
