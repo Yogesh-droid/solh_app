@@ -141,8 +141,8 @@ class _SolhAppState extends State<SolhApp> {
         onGenerateRoute: RouteGenerator.generateRoute,
         navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
         theme: ThemeData(
-          useMaterial3: true,
-          colorSchemeSeed: Colors.white,
+          // useMaterial3: true,
+          // colorSchemeSeed: Colors.white,
 
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
@@ -175,7 +175,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-
+          primaryColor: SolhColors.primary_green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
         ),

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -55,6 +57,11 @@ class _CallState extends State<VideoCallUser> {
   void dispose() {
     timer.cancel();
     super.dispose();
+    _engine.leaveChannel(
+        options: LeaveChannelOptions(
+            stopAllEffect: true,
+            stopAudioMixing: true,
+            stopMicrophoneRecording: true));
     _engine.release();
   }
 
@@ -129,7 +136,6 @@ class _CallState extends State<VideoCallUser> {
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
-          log("remote user $remoteUid left channel");
           setState(() {
             _remoteUidList.remove(remoteUid);
           });
@@ -148,12 +154,14 @@ class _CallState extends State<VideoCallUser> {
     await _engine.enableVideo();
     await _engine.startPreview();
 
-    await _engine.joinChannel(
-      token: widget.token,
-      channelId: widget.channel,
-      uid: 0,
-      options: const ChannelMediaOptions(),
-    );
+    await _engine
+        .joinChannel(
+          token: widget.token,
+          channelId: widget.channel,
+          uid: 0,
+          options: const ChannelMediaOptions(),
+        )
+        .onError((error, stackTrace) => {});
   }
 
   @override
@@ -212,7 +220,8 @@ class _CallState extends State<VideoCallUser> {
         return AgoraVideoView(
             controller: VideoViewController.remote(
           rtcEngine: _engine,
-          canvas: VideoCanvas(uid: _remoteUidList[0]),
+          canvas: VideoCanvas(
+              uid: _remoteUidList[0], renderMode: RenderModeType.renderModeFit),
           connection: RtcConnection(channelId: widget.channel),
         ));
       }
@@ -227,8 +236,14 @@ class _CallState extends State<VideoCallUser> {
           itemBuilder: ((context, index) {
             return AgoraVideoView(
                 controller: VideoViewController.remote(
+              useAndroidSurfaceView: Platform.isAndroid,
               rtcEngine: _engine,
-              canvas: VideoCanvas(uid: _remoteUidList[index]),
+              canvas: VideoCanvas(
+                  uid: _remoteUidList[index],
+                  mirrorMode: VideoMirrorModeType.videoMirrorModeAuto,
+                  enableAlphaMask: true,
+                  view: 1,
+                  renderMode: RenderModeType.renderModeFit),
               connection: RtcConnection(channelId: widget.channel),
             ));
           }));

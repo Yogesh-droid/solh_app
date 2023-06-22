@@ -51,6 +51,7 @@ class _LiveStreamState extends State<LiveStream> {
     _users.clear();
     // destroy sdk and leave channel
     _engine!.leaveChannel();
+
     _engine!.release();
     _liveStreamController.dispose();
     Wakelock.toggle(enable: false);
@@ -134,6 +135,10 @@ class _LiveStreamState extends State<LiveStream> {
           log(info.toString());
         });
       },
+      onRemoteVideoStateChanged:
+          (connection, remoteUid, state, reason, elapsed) {
+        log(" $reason");
+      },
       onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
         setState(() {
           _users.add(connection.localUid!);
@@ -151,6 +156,12 @@ class _LiveStreamState extends State<LiveStream> {
           });
           log(connection.localUid.toString(), name: "uId");
         });
+      },
+      onExtensionError: (provider, extension, error, message) {
+        log("onExtensionError $message");
+      },
+      onLocalVideoTranscoderError: (stream, error) {
+        log("onLocalVideoTranscoderError $error");
       },
       onLeaveChannel: (connection, stats) {
         setState(() {
