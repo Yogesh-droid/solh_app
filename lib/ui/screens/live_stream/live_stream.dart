@@ -172,7 +172,7 @@ class _LiveStreamState extends State<LiveStream> {
           });
           setState(() {});
           log(uid.toString(), name: 'uid');
-          log(viewWidgets.toString());
+          log("user joined" + viewWidgets.toString());
         });
       },
       onUserOffline: (connection, uid, elapsed) {
@@ -180,6 +180,8 @@ class _LiveStreamState extends State<LiveStream> {
         setState(() {
           viewWidgets.removeWhere((element) => uid == element.keys.first);
         });
+
+        log('user left ${viewWidgets}');
       },
     ));
   }

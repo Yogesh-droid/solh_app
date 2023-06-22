@@ -1905,71 +1905,7 @@ String infoHtml = '''<!DOCTYPE html>
 <html>
 <head>
   <title>Mental Health Professionals</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
 
-    h2 {
-      font-size: 24px;
-      font-weight: bold;
-      text-decoration: underline;
-      margin-bottom: 10px;
-      animation: colorChange 4s infinite;
-    }
-
-    @keyframes colorChange {
-      0% {
-        color: #FF7F50;
-      }
-      50% {
-        color: #6495ED;
-      }
-      100% {
-        color: #FF7F50;
-      }
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    ul {
-      margin-left: 20px;
-    }
-
-    li {
-      list-style-type: disc;
-      margin-bottom: 5px;
-    }
-
-    li:last-child {
-      margin-bottom: 10px;
-    }
-
-    li:before {
-      content: "•";
-      margin-right: 5px;
-    }
-
-    /* Colors */
-    h2:nth-child(odd) {
-      color: #FF7F50;
-    }
-
-    h2:nth-child(even) {
-      color: #6495ED;
-    }
-
-    li:nth-child(odd) {
-      color: #FF6347;
-    }
-
-    li:nth-child(even) {
-      color: #7B68EE;
-    }
-  </style>
 </head>
 <body>
   <h2>Clinical Psychologist</h2>
@@ -1981,7 +1917,7 @@ String infoHtml = '''<!DOCTYPE html>
     <li>Sleep difficulties</li>
     <li>Relationship or family problems</li>
     <li>Generalized anxiety disorder</li>
-    <li>Depression or bipolar disorder</li>
+    <li>Depression or bipolar disorder</li>`
     <li>Panic disorder or phobias</li>
     <li>Obsessive-compulsive disorder</li>
     <li>Post-traumatic stress disorder</li>

@@ -119,7 +119,7 @@ class GetHelpController extends GetxController {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? country = sharedPreferences.getString('userCountry') ?? "IN";
     try {
-      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/top-consultants?country=$country");
 
       topConsultantList.value = SearchMarketModel.fromJson(map);
