@@ -667,6 +667,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
           color: Colors.white,
         ),
         child: TabBar(
+          indicatorColor: SolhColors.primary_green,
           controller: _tabController,
           tabs: [
             Text(

@@ -143,7 +143,8 @@ class _SolhAppState extends State<SolhApp> {
         theme: ThemeData(
           // useMaterial3: true,
           // colorSchemeSeed: Colors.white,
-
+          progressIndicatorTheme:
+              ProgressIndicatorThemeData(color: SolhColors.primary_green),
           //using textTheme only for rich text ,else use constant text Styles
           textTheme: TextTheme(
               bodyMedium: TextStyle(
@@ -175,7 +176,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-          primaryColor: SolhColors.primary_green,
+
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
         ),

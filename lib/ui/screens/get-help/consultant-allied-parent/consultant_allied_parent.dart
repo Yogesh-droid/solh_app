@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class ConsultantAlliedParent extends StatefulWidget {
@@ -38,20 +39,23 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
     return Scaffold(
       appBar: SolhAppBar(title: Text(''), isLandingScreen: false),
       body: Column(mainAxisSize: MainAxisSize.min, children: [
-        TabBar(controller: _tabController, tabs: [
-          Tab(
-            child: Text(
-              'Clinician'.tr,
-              style: SolhTextStyles.CTA,
-            ),
-          ),
-          Tab(
-            child: Text(
-              'Allied Therapy'.tr,
-              style: SolhTextStyles.CTA,
-            ),
-          )
-        ]),
+        TabBar(
+            indicatorColor: SolhColors.primary_green,
+            controller: _tabController,
+            tabs: [
+              Tab(
+                child: Text(
+                  'Clinician'.tr,
+                  style: SolhTextStyles.CTA,
+                ),
+              ),
+              Tab(
+                child: Text(
+                  'Allied Therapy'.tr,
+                  style: SolhTextStyles.CTA,
+                ),
+              )
+            ]),
         Expanded(
           child: TabBarView(controller: _tabController, children: [
             ConsultantsScreen(
