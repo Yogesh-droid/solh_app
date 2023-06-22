@@ -401,6 +401,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
       _alliedController.selectedPackage.value = widget.packageList!.first.sId!;
       _alliedController.selectedPackagePrice.value =
           widget.packageList!.first.amount!;
+      _alliedController.selectedCurrency.value =
+          widget.packageList!.first.currency!;
     });
     // TODO: implement initState
     super.initState();
