@@ -26,10 +26,7 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
 
   @override
   void initState() {
-    // TODO: implement initState
     _tabController = TabController(length: 2, vsync: this);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
-
     super.initState();
   }
 

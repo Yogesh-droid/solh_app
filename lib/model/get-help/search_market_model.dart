@@ -220,7 +220,7 @@ class Provider {
     gender = json['gender'];
     fee = json['fee'];
     fee_amount = json['fee_amount'];
-    feeCurrency = json['fee_currency'];
+    feeCurrency = json['feeCurrency'];
     language = json['language'] != null ? json['language'].cast<String>() : [];
     offlineSession = json['offlineSession'];
     education =

@@ -121,6 +121,7 @@ class PaymentManagement {
   }) async {
     paymentController.isgettingPaymentIntent(true);
     try {
+      print(feeCode);
       var paymentIntent = await createPaymentIntent(amount, "$feeCode");
       log(paymentIntent.toString());
 
@@ -160,7 +161,7 @@ class PaymentManagement {
       //Request body
       Map<String, dynamic> body = {
         'amount': "${int.parse(amount) * 100}",
-        'currency': "INR",
+        'currency': currency,
         "description":
             Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,
         "mobileNo": Get.find<ProfileController>()

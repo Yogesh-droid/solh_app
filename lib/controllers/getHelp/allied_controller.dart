@@ -77,6 +77,7 @@ class AlliedController extends GetxController {
       "packageAmount": package.amount,
       "packageOwner": package.packageOwner,
       "packageType": package.packageType,
+      "packageCurrencyCode": package.feeCode,
       "packageCategory": package.packageCategory,
       "status": "Inprocess",
       "email": userEmail.value,
@@ -116,6 +117,7 @@ class AlliedController extends GetxController {
       "mainCategory": package.mainCategory!.sId,
       "carouselName": package.packageCarouselId!.name,
       "email": userEmail.value,
+      "packageCurrencyCode": package.feeCode ?? "INR"
     };
     try {
       var map = await Network.makePostRequestWithToken(
