@@ -124,6 +124,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
                 "marketplaceType": "Allied",
                 "paymentGateway": "Stripe",
                 "paymentSource": "App",
+                "feeCode": packages.feeCode
               });
               _alliedController.isAlliedBooking(false);
               Future.delayed(Duration(seconds: 2), () {

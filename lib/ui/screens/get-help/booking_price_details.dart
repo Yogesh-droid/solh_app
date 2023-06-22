@@ -352,6 +352,9 @@ class BookingPriceDetails extends StatelessWidget {
               "marketplaceType": "Appointment",
               "paymentGateway": "Stripe",
               "paymentSource": "App",
+              "feeCode": consultantController
+                      .consultantModelController.value.provder!.feeCode ??
+                  '',
             });
           } else {
             Utility.showToast(map['message']);

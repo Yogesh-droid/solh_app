@@ -107,6 +107,7 @@ class Packages {
   String? packageOwner;
   String? packageType;
   String? packageCategory;
+  String? feeCode;
 
   Packages(
       {this.sId,
@@ -122,7 +123,8 @@ class Packages {
       this.amount,
       this.packageCategory,
       this.packageType,
-      this.packageOwner});
+      this.packageOwner,
+      this.feeCode});
 
   Packages.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -144,6 +146,7 @@ class Packages {
     packageOwner = json['packageOwner'];
     packageType = json['packageType'];
     packageCategory = json['packageCategory'];
+    feeCode = json["feeCode"];
   }
 
   Map<String, dynamic> toJson() {

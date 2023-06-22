@@ -218,7 +218,6 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => Connections()));
             },
             onMoodMeterTapped: () {
-              print("Hello");
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MoodMeter()));
               FirebaseAnalytics.instance.logEvent(
@@ -242,7 +241,8 @@ class _HomePageState extends State<HomePage> {
           // LiveStreamForUserCard(),
 
           SizedBox(
-            height: 10,
+            height: 70,
+            child: MyLoader(),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),

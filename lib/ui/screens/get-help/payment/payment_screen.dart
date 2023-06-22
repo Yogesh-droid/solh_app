@@ -16,6 +16,7 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+// ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {
   PaymentScreen({super.key, required Map<dynamic, dynamic> args})
       : _amount = args["amount"],
@@ -25,8 +26,10 @@ class PaymentScreen extends StatelessWidget {
         _inhouseOrderId = args["inhouseOrderId"] ?? null,
         _marketplaceType = args["marketplaceType"],
         _paymentGateway = args["paymentGateway"],
-        _paymentSource = args["paymentSource"];
+        _paymentSource = args["paymentSource"],
+        _feeCode = args["feeCode"] ?? "INR";
 
+  final String _feeCode;
   final int _amount;
   final String _feeCurrency;
   final String? _alliedOrderId;
@@ -34,7 +37,6 @@ class PaymentScreen extends StatelessWidget {
   final String? _inhouseOrderId;
   final String _marketplaceType;
   final String _paymentGateway;
-
   final String _paymentSource;
   var paymentController = Get.put(PaymentController());
   @override
@@ -63,6 +65,7 @@ class PaymentScreen extends StatelessWidget {
           marketplaceType: _marketplaceType,
           paymentGateway: _paymentGateway,
           paymentSource: _paymentSource,
+          feeCode: _feeCode,
         ),
         GetHelpDivider(),
         UPIPaymentSection(),
@@ -141,17 +144,17 @@ class BillingDetailScection extends StatelessWidget {
 }
 
 class CardPaymentSection extends StatelessWidget {
-  CardPaymentSection({
-    super.key,
-    required this.alliedOrderId,
-    required this.amount,
-    required this.appointmentId,
-    required this.currency,
-    required this.inhouseOrderId,
-    required this.marketplaceType,
-    required this.paymentGateway,
-    required this.paymentSource,
-  });
+  CardPaymentSection(
+      {super.key,
+      required this.alliedOrderId,
+      required this.amount,
+      required this.appointmentId,
+      required this.currency,
+      required this.inhouseOrderId,
+      required this.marketplaceType,
+      required this.paymentGateway,
+      required this.paymentSource,
+      required this.feeCode});
   final String? alliedOrderId;
   final String amount;
   final String? appointmentId;
@@ -160,6 +163,7 @@ class CardPaymentSection extends StatelessWidget {
   final String marketplaceType;
   final String paymentGateway;
   final String paymentSource;
+  final String feeCode;
 
   PaymentManagement paymentManagement = PaymentManagement();
   PaymentController paymentController = Get.find();
@@ -198,16 +202,16 @@ class CardPaymentSection extends StatelessWidget {
                     : SolhGreenButton(
                         onPressed: () {
                           paymentManagement.makePayment(
-                            context: context,
-                            alliedOrderId: alliedOrderId,
-                            amount: amount,
-                            appointmentId: appointmentId,
-                            currency: currency,
-                            inhouseOrderId: inhouseOrderId,
-                            marketplaceType: marketplaceType,
-                            paymentGateway: paymentGateway,
-                            paymentSource: paymentSource,
-                          );
+                              context: context,
+                              alliedOrderId: alliedOrderId,
+                              amount: amount,
+                              appointmentId: appointmentId,
+                              currency: currency,
+                              inhouseOrderId: inhouseOrderId,
+                              marketplaceType: marketplaceType,
+                              paymentGateway: paymentGateway,
+                              paymentSource: paymentSource,
+                              feeCode: feeCode);
                         },
                         child: Text(
                           "Pay through card".tr,

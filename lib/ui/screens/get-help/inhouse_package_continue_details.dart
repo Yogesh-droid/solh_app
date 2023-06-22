@@ -128,6 +128,7 @@ class InhouseContinueDetail extends StatelessWidget {
                       "marketplaceType": "Inhouse",
                       "paymentGateway": "Stripe",
                       "paymentSource": "App",
+                      "feeCode": packages.feeCode
                     });
                 _alliedController.isInHouseBooking(false);
               });

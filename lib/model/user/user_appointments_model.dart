@@ -61,6 +61,7 @@ class ScheduldAppointments {
   Doctor? doctor;
   String? apptFor;
   List<Transaction>? transaction;
+  String? feeCode;
   ScheduldAppointments(
       {this.patient,
       this.appointmentId,
@@ -70,7 +71,8 @@ class ScheduldAppointments {
       this.seekerTime,
       this.transaction,
       this.doctor,
-      this.apptFor});
+      this.apptFor,
+      this.feeCode});
 
   ScheduldAppointments.fromJson(Map<String, dynamic> json) {
     patient =
@@ -91,6 +93,7 @@ class ScheduldAppointments {
     doctor =
         json['doctor'] != null ? new Doctor.fromJson(json['doctor']) : null;
     apptFor = json['apptFor'];
+    feeCode = json['feeCode'];
   }
 
   Map<String, dynamic> toJson() {

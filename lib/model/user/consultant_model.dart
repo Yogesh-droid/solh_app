@@ -45,6 +45,7 @@ class Provder {
   int? ratingCount;
   String? prefix;
   String? profession;
+  String? feeCode;
 
   Provder(
       {this.contactNumber,
@@ -70,6 +71,7 @@ class Provder {
       this.likeCount,
       this.ratingCount,
       this.profession,
+      this.feeCode,
       this.prefix});
 
   Provder.fromJson(Map<String, dynamic> json) {
@@ -96,6 +98,7 @@ class Provder {
     likeCount = json['likeCount'];
     ratingCount = json['ratingCount'];
     prefix = json['prefix'];
+    feeCode = json['feeCode'];
     profession = json['profession'];
   }
 
