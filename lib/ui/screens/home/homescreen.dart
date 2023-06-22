@@ -241,8 +241,7 @@ class _HomePageState extends State<HomePage> {
           // LiveStreamForUserCard(),
 
           SizedBox(
-            height: 70,
-            child: MyLoader(),
+            height: 10,
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
