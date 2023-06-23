@@ -602,7 +602,10 @@ class AcceptedApprovalUI extends StatelessWidget {
                   onPressed: () {
                     _consultantController.getConsultantDataController(
                         _appointmentController.profileTransferDetailModel.value
-                            .details!.referedTo!.sId!);
+                            .details!.referedTo!.sId!,
+                        _appointmentController.profileTransferDetailModel.value
+                                .details!.referedTo!.feeCurrency ??
+                            '');
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ConsultantProfilePage()));
                   },

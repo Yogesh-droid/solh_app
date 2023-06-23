@@ -49,7 +49,7 @@ class ConsultantsTile extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            _controller.getConsultantDataController(id);
+            _controller.getConsultantDataController(id, currency);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ConsultantProfilePage();
             }));
@@ -121,7 +121,8 @@ class ConsultantsTile extends StatelessWidget {
                     text: prefix != null ? "$prefix " : '',
                     style: Theme.of(context).textTheme.displaySmall),
                 TextSpan(
-                    text: "$name", style: Theme.of(context).textTheme.displaySmall)
+                    text: "$name",
+                    style: Theme.of(context).textTheme.displaySmall)
               ]))
               // Row(
               //   crossAxisAlignment: CrossAxisAlignment.center,
@@ -294,7 +295,7 @@ class ConsultantsTile extends StatelessWidget {
             //     builder: (context) => ConsultantProfile(
             //           id: _doctorModel.id,
             //         )));
-            _controller.getConsultantDataController(id);
+            _controller.getConsultantDataController(id, currency);
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return ConsultantProfilePage();
             }));

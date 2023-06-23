@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/user/consultant_model.dart';
@@ -11,9 +13,11 @@ class ConsultantController extends GetxController {
   var consultantModelController = ConsultantModel().obs;
   ConsultantDataService _consultantDataService = ConsultantDataService();
 
-  getConsultantDataController(id) async {
+  getConsultantDataController(id, String currency,
+      {String? countrycode}) async {
+    log(currency);
     isLoading(true);
-    var response = await _consultantDataService.getConsultantData(id);
+    var response = await _consultantDataService.getConsultantData(id, currency);
     isLoading(false);
     print(response.toString());
     consultantModelController.value = response;
@@ -21,9 +25,10 @@ class ConsultantController extends GetxController {
 }
 
 class ConsultantDataService {
-  getConsultantData(id) async {
+  getConsultantData(id, currency) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/provider-profile?provider=$id')
+            APIConstants.api +
+                '/api/provider-profile?provider=$id&currency=$currency')
         .onError((error, stackTrace) {
       print(error);
       return {};

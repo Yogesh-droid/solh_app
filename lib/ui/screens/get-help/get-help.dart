@@ -618,7 +618,8 @@ class TopConsultantsTile extends StatelessWidget {
         '' + 'sjfiodksmlsd,clsdiofjksdomflfmfdsmdsmm');
     return InkWell(
       onTap: () {
-        consultantController.getConsultantDataController(_doctors.sId ?? '');
+        consultantController.getConsultantDataController(
+            _doctors.sId ?? '', _doctors.feeCurrency ?? '');
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => ConsultantProfilePage()));
         FirebaseAnalytics.instance.logEvent(
@@ -716,8 +717,8 @@ class TopConsultantsTile extends StatelessWidget {
                   ),
                   onPressed: () {
                     //launch("tel://$_mobile");
-                    consultantController
-                        .getConsultantDataController(_doctors.sId ?? '');
+                    consultantController.getConsultantDataController(
+                        _doctors.sId ?? '', _doctors.feeCurrency ?? '');
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => ConsultantProfilePage()));
                   },
