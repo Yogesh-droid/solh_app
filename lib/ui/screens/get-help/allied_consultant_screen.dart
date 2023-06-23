@@ -488,7 +488,7 @@ class AboutAndPlans extends StatelessWidget {
                   height: 30,
                 ),
                 Text(
-                  "Select Pack",
+                  "Select Pack".tr,
                   style: SolhTextStyles.QS_body_1_bold,
                 ),
               ],
