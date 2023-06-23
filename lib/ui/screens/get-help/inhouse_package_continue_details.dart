@@ -77,7 +77,9 @@ class InhouseContinueDetail extends StatelessWidget {
                 'Confirm'.tr,
                 style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               )),
-        totalPayble: packages.amount == 0 ? 'Free' : "${packages.amount} ",
+        totalPayble: packages.amount == 0
+            ? 'Free'
+            : "${packages.currency} ${packages.amount} ",
         onContinuePressed: () async {
           try {
             Map<String, dynamic> map =

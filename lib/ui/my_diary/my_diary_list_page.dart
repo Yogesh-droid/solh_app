@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
@@ -47,7 +49,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
     return Scaffold(
       appBar: getAppBar(context),
       body: Column(children: [
-        getPageDropDown(),
+        //  getPageDropDown(),
         Obx((() => myDiaryController.selectedElement == 'My Diary'
             ? getMyDiaryList(context)
             : getThoughttsView()))
@@ -82,54 +84,48 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
               ]),
           duration: Duration(milliseconds: 300),
           curve: Curves.fastOutSlowIn,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              decoration: BoxDecoration(
-                  border:
-                      Border.all(color: SolhColors.primary_green, width: 0.5),
-                  borderRadius: BorderRadius.circular(50)),
-              child: DropdownButtonFormField(
-                icon: Icon(Icons.keyboard_arrow_down, color: SolhColors.grey),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(0),
-                  labelStyle: TextStyle(color: SolhColors.primary_green),
-                  hintStyle: TextStyle(color: SolhColors.primary_green),
-                ),
-                value: myDiaryController.selectedElement,
-                items: [
-                  DropdownMenuItem(
-                    value: 'My Diary',
-                    child: Text(
-                      "Diary Entries".tr,
-                      style: TextStyle(color: SolhColors.primary_green),
-                    ),
-                  ),
-                  // DropdownMenuItem(
-                  //   value: "Thoughts",
-                  //   child: Text("Affirmations",
-                  //       style: TextStyle(color: SolhColors.green)),
-                  // ),
-                ],
-                onChanged: (value) {
-                  myDiaryController.selectedElement.value = value.toString();
-                },
-              ),
-            ),
-          ),
+          // child: Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 20),
+          //   child: Container(
+          //     padding: EdgeInsets.symmetric(horizontal: 16),
+          //     decoration: BoxDecoration(
+          //         border:
+          //             Border.all(color: SolhColors.primary_green, width: 0.5),
+          //         borderRadius: BorderRadius.circular(50)),
+          //     // child: DropdownButtonFormField(
+          //     //   icon: Icon(Icons.keyboard_arrow_down, color: SolhColors.grey),
+          //     //   decoration: InputDecoration(
+          //     //     border: InputBorder.none,
+          //     //     contentPadding: EdgeInsets.all(0),
+          //     //     labelStyle: TextStyle(color: SolhColors.primary_green),
+          //     //     hintStyle: TextStyle(color: SolhColors.primary_green),
+          //     //   ),
+          //     //   value: myDiaryController.selectedElement,
+          //     //   items: [
+          //     //     DropdownMenuItem(
+          //     //       value: 'My Diary',
+          //     //       child: Text(
+          //     //         "Diary Entries".tr,
+          //     //         style: TextStyle(color: SolhColors.primary_green),
+          //     //       ),
+          //     //     ),
+          //     //     DropdownMenuItem(
+          //     //       value: "Thoughts",
+          //     //       child: Text("Affirmations",
+          //     //           style: TextStyle(color: SolhColors.primary_green)),
+          //     //     ),
+          //     //   ],
+          //     //   onChanged: (value) {
+          //     //     myDiaryController.selectedElement.value = value.toString();
+          //     //   },
+          //     // ),
+          //   ),
+          // ),
         ));
   }
 
   Widget getMyDiaryList(BuildContext context) {
     return Obx(() => Container(
-          height: MediaQuery.of(context).size.height -
-              100 -
-              MediaQuery.of(context).padding.top -
-              MediaQuery.of(context).padding.bottom -
-              kToolbarHeight -
-              50,
           child: myDiaryController.myJournalsList.isEmpty
               ? Center(
                   child: Text(
@@ -145,6 +141,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                   shrinkWrap: true,
                   itemCount: myDiaryController.myJournalsList.length,
                   itemBuilder: (context, index) {
+                    log(myDiaryController.myJournalsList.length.toString());
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12.0, vertical: 8),
