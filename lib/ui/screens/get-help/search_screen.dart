@@ -52,6 +52,8 @@ class _SearchScreenState extends State<SearchScreen> {
             Obx(() => searchMarketController.isLoading.value
                 ? LinearProgressIndicator(
                     minHeight: 1,
+                    color: SolhColors.primary_green,
+                    backgroundColor: SolhColors.primary_green.withOpacity(0.3),
                   )
                 : SizedBox()),
             /*  Obx(() => searchMarketController.searchMarketModel.value.doctors !=
@@ -585,7 +587,10 @@ class _SearchScreenState extends State<SearchScreen> {
         context: context,
         builder: ((context) =>
             Obx(() => getHelpController.isCountryLoading.value
-                ? LinearProgressIndicator()
+                ? LinearProgressIndicator(
+                    color: SolhColors.primary_green,
+                    backgroundColor: SolhColors.primary_green.withOpacity(0.3),
+                  )
                 : Container(
                     padding: EdgeInsets.symmetric(horizontal: 18, vertical: 18),
                     child: Column(

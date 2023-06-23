@@ -72,7 +72,10 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
 
   Widget getSearchResult(BuildContext context) {
     return Obx(() => globalSearchController.isSearching.value
-        ? LinearProgressIndicator()
+        ? LinearProgressIndicator(
+            color: SolhColors.primary_green,
+            backgroundColor: SolhColors.primary_green.withOpacity(0.3),
+          )
         : Expanded(
             child: globalSearchController.globalSearchModel.value.connection ==
                         null &&

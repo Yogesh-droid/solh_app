@@ -371,7 +371,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             children: [
               Obx(
                 () => getHelpController.isCountryLoading.value
-                    ? LinearProgressIndicator()
+                    ? LinearProgressIndicator(
+                        color: SolhColors.primary_green,
+                        backgroundColor:
+                            SolhColors.primary_green.withOpacity(0.3),
+                      )
                     : Container(
                         height: 100.h,
                         padding:
