@@ -354,7 +354,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                     color: SolhColors.primary_green)),
             _controller.consultantModelController.value.provder!.fee_amount! > 0
                 ? Text(
-                    'Consultation Fee',
+                    'Consultation Fee'.tr,
                     style: SolhTextStyles.QS_cap_2.copyWith(
                         color: SolhColors.Grey_1),
                   )

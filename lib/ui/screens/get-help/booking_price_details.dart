@@ -740,7 +740,7 @@ class ContinueBookingWidget extends StatelessWidget {
             SizedBox(
               height: 5,
             ),
-            Text('Total Payable',
+            Text('Total Payable'.tr,
                 style: SolhTextStyles.QS_cap_2_semi.copyWith(
                     color: SolhColors.dark_grey)),
           ],

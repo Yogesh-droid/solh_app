@@ -473,13 +473,8 @@ class _HomePageState extends State<HomePage> {
           ),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "In-house Experts".tr,
-              onPressed: () => Navigator.pushNamed(
-                      context, AppRoutes.consultantAlliedParent, arguments: {
-                    "slug": '',
-                    "type": 'topconsultant',
-                    "enableAppbar": false
-                  })),
+            title: "In-house Experts".tr,
+          ),
           Container(
             height: 35.h,
             margin: EdgeInsets.only(bottom: 2.h),

@@ -139,6 +139,7 @@ Future<void> changeLanguage(String langCode, String countryCode) async {
   Get.find<GetHelpController>().getIssueList();
   Get.find<GetHelpController>().getSpecializationList();
   Get.find<GetHelpController>().getAlliedTherapyList();
+  Get.find<GetHelpController>().getTopConsultant();
   await Prefs.setString(
     "locale",
     jsonEncode({langCode: countryCode}),

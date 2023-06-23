@@ -98,6 +98,7 @@ class Languages extends Translations {
           "Tax Incl.": "कर सहित",
           "Change": "बदलें",
           "Book Now & Pay Later": "अभी बुक करें और बाद में भुगतान करें",
+          "Book Now": "अभी बुक करें",
           "Billing Details": "बिल डिटेल्स",
           "Consultation Fee": "परामर्श शुल्क",
           "By confirming you agree": "अपनी उम्र की पुष्टि करके",

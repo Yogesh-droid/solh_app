@@ -120,7 +120,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                               color: Colors.black),
                         ),
                         Text(
-                          "Total Payable",
+                          "Total Payable".tr,
                           style: SolhTextStyles.QS_cap_semi,
                         )
                       ],

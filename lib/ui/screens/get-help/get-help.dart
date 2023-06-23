@@ -380,18 +380,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               : const SizedBox())),
           GetHelpDivider(),
           GetHelpCategory(
-              title: "In-house Experts".tr,
-              onPressed: () {
-                Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
-                    arguments: {
-                      "slug": '',
-                      "type": 'topconsultant',
-                      "enableAppbar": false
-                    });
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'viewAllConsultanttapped',
-                    parameters: {'Page': 'GetHelp'});
-              }),
+            title: "In-house Experts".tr,
+          ),
           Container(
             height: 35.h,
             margin: EdgeInsets.only(bottom: 2.h),
