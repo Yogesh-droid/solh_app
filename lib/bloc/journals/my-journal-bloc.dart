@@ -59,28 +59,27 @@ class MyJournalsBloc {
       _myJournalController.sink.add(_journals);
     }
 
-    _journalPageController.myVideoPlayerControllers.value.forEach((element) {
+    _journalPageController.myVideoPlayerControllers.forEach((element) {
       element.forEach((key, value) {
         value.dispose();
       });
     });
-    _journalPageController.myVideoPlayerControllers.value.clear();
+    _journalPageController.myVideoPlayerControllers.clear();
     for (int i = 0; i < _journals.length; i++) {
       if (_journals[i].mediaType == "video/mp4") {
-        if (_journalPageController.myVideoPlayerControllers.value.isEmpty) {
+        if (_journalPageController.myVideoPlayerControllers.isEmpty) {
           _journalPageController.myVideoIndex = i;
         }
         VideoPlayerController vc =
             VideoPlayerController.network(_journals[i].mediaUrl!);
-        _journalPageController.myVideoPlayerControllers.value
+        _journalPageController.myVideoPlayerControllers
             .add({i: vc..initialize()});
       } else {
-        _journalPageController.myVideoPlayerControllers.value.add({});
+        _journalPageController.myVideoPlayerControllers.add({});
       }
     }
     print('length of video player controller: ' +
-        _journalPageController.myVideoPlayerControllers.value.length
-            .toString());
+        _journalPageController.myVideoPlayerControllers.length.toString());
 
     return _journals;
     // } catch (error) {

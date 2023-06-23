@@ -250,6 +250,9 @@ class BookingPriceDetails extends StatelessWidget {
                 .toString(),
             'currency': consultantController
                 .consultantModelController.value.provder!.feeCurrency!,
+            'currencyCode': consultantController
+                    .consultantModelController.value.provder!.feeCode ??
+                'INR',
             'provider': consultantController
                         .consultantModelController.value.provder!.type ==
                     'provider'
@@ -352,6 +355,9 @@ class BookingPriceDetails extends StatelessWidget {
               "marketplaceType": "Appointment",
               "paymentGateway": "Stripe",
               "paymentSource": "App",
+              "feeCode": consultantController
+                      .consultantModelController.value.provder!.feeCode ??
+                  '',
             });
           } else {
             Utility.showToast(map['message']);

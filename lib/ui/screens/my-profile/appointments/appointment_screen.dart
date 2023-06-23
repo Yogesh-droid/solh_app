@@ -280,6 +280,10 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                               "Stripe",
                                                           "paymentSource":
                                                               "App",
+                                                          "feeCode":
+                                                              scheduldAppointments[
+                                                                      index]
+                                                                  .feeCode,
                                                         });
                                                   },
                                                   child: Row(
@@ -822,6 +826,7 @@ class AlliedAppointmentList extends StatelessWidget {
                                       "marketplaceType": "Allied",
                                       "paymentGateway": "Stripe",
                                       "paymentSource": "App",
+                                      "feeCode": e.feeCode
                                     });
                               },
                               child: Row(
@@ -996,6 +1001,7 @@ Widget getAlliedInHousePackageCard(
                                     "marketplaceType": "Inhouse",
                                     "paymentGateway": "Stripe",
                                     "paymentSource": "App",
+                                    "feeCode": e.feeCode
                                   });
                             },
                             child: Row(

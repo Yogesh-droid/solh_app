@@ -98,7 +98,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                   labelStyle: TextStyle(color: SolhColors.primary_green),
                   hintStyle: TextStyle(color: SolhColors.primary_green),
                 ),
-                value: myDiaryController.selectedElement.value,
+                value: myDiaryController.selectedElement,
                 items: [
                   DropdownMenuItem(
                     value: 'My Diary',
@@ -143,7 +143,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
               : ListView.builder(
                   controller: _scrollController,
                   shrinkWrap: true,
-                  itemCount: myDiaryController.myJournalsList.value.length,
+                  itemCount: myDiaryController.myJournalsList.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
@@ -153,13 +153,13 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                           debugPrint('onTap Ran ${widget.isPickFromDiary}');
                           if (widget.isPickFromDiary != null) {
                             journalPageController.descriptionController.text =
-                                myDiaryController.myJournalsList.value[index]
-                                        .description ??
+                                myDiaryController
+                                        .myJournalsList[index].description ??
                                     '';
                             journalPageController.selectedDiary.value =
-                                myDiaryController.myJournalsList.value[index];
-                            feelingsController.selectedFeelingsId.value.add(
-                                myDiaryController.myJournalsList.value[index]
+                                myDiaryController.myJournalsList[index];
+                            feelingsController.selectedFeelingsId.add(
+                                myDiaryController.myJournalsList[index]
                                         .feelings![0].sId ??
                                     '');
                             feelingsController.selectedFeelingsId.refresh();
@@ -170,7 +170,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                                 MaterialPageRoute(
                                     builder: (context) => MyDiaryDetails(
                                         myDiary: myDiaryController
-                                            .myJournalsList.value[index])));
+                                            .myJournalsList[index])));
                           }
                         },
                         child: Container(
@@ -185,22 +185,19 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                             children: [
                               Text(
                                 DateFormat('d MMM').format(DateTime.parse(
-                                    myDiaryController.myJournalsList
-                                        .value[index].createdAt!)),
+                                    myDiaryController
+                                        .myJournalsList[index].createdAt!)),
                                 style: TextStyle(
                                     color: SolhColors.black34,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
                               ),
                               SizedBox(height: 2.0),
-                              myDiaryController.myJournalsList.value[index]
-                                      .feelings!.isNotEmpty
+                              myDiaryController.myJournalsList[index].feelings!
+                                      .isNotEmpty
                                   ? Text(
-                                      myDiaryController
-                                          .myJournalsList
-                                          .value[index]
-                                          .feelings![0]
-                                          .feelingName!,
+                                      myDiaryController.myJournalsList[index]
+                                          .feelings![0].feelingName!,
                                       style: TextStyle(
                                           color: SolhColors.pink224,
                                           fontSize: 16,
@@ -209,7 +206,7 @@ class _MyDiaryListPageState extends State<MyDiaryListPage> {
                               SizedBox(height: 2),
                               Text(
                                 myDiaryController
-                                    .myJournalsList.value[index].description!,
+                                    .myJournalsList[index].description!,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

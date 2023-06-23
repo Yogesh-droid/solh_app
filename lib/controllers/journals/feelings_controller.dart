@@ -24,7 +24,7 @@ class FeelingsController extends GetxController {
         });
       }
       if (feelingsList.isNotEmpty) {
-        selectedFeelingsId.value.add(feelingsList.first.sId!);
+        selectedFeelingsId.add(feelingsList.first.sId!);
       }
     } on Exception catch (e) {
       print(e.toString());
@@ -53,11 +53,10 @@ class FeelingsController extends GetxController {
 
   Future<void> deleteCustomFeeling(String feelingId, int index) async {
     try {
-      Map<String, dynamic> response =
-          await Network.makeHttpDeleteRequestWithToken(
-                  body: {},
-                  url: APIConstants.api + '/api/feeling?feelingId=$feelingId')
-              .onError((error, stackTrace) {
+      await Network.makeHttpDeleteRequestWithToken(
+              body: {},
+              url: APIConstants.api + '/api/feeling?feelingId=$feelingId')
+          .onError((error, stackTrace) {
         print(error);
         return {};
       });

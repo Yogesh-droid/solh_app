@@ -18,6 +18,7 @@ class AlliedController extends GetxController {
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
   var selectedPackagePrice = RxInt(-1);
+  var selectedCurrency = ''.obs;
   var userEmail = "".obs;
   var isBookingLoading = false.obs;
 
@@ -35,6 +36,9 @@ class AlliedController extends GetxController {
                   packagesListModel.value.finalResult!.packages![0].sId ?? '';
               selectedPackagePrice.value =
                   packagesListModel.value.finalResult!.packages![0].amount ?? 0;
+              selectedCurrency.value =
+                  packagesListModel.value.finalResult!.packages![0].currency ??
+                      '';
             }
           }
         } on Exception catch (e) {
@@ -50,8 +54,6 @@ class AlliedController extends GetxController {
   }
 
   Future<Map<String, dynamic>> createPackageOrder(Packages package) async {
-    Map<String, dynamic> map;
-
     List<Map<String, dynamic>> videoSession = [];
 
     package.videoSessions!.forEach((element) {
@@ -75,6 +77,7 @@ class AlliedController extends GetxController {
       "packageAmount": package.amount,
       "packageOwner": package.packageOwner,
       "packageType": package.packageType,
+      "packageCurrencyCode": package.feeCode,
       "packageCategory": package.packageCategory,
       "status": "Inprocess",
       "email": userEmail.value,
@@ -95,17 +98,6 @@ class AlliedController extends GetxController {
 
   Future<Map<String, dynamic>> createInhousePackageOrder(
       PackageList package) async {
-    Map<String, dynamic> map;
-
-    List<Map<String, dynamic>> videoSession = [];
-
-    // package.videoSessions!.forEach((element) {
-    //   videoSession.add({
-    //     "vName": element.vName,
-    //     "duration": element.vDescription,
-    //     "vDescription": element.vDescription
-    //   });
-    // });
     isInHouseBooking(true);
     Map<String, dynamic> body = {
       "packageName": package.name,
@@ -125,6 +117,7 @@ class AlliedController extends GetxController {
       "mainCategory": package.mainCategory!.sId,
       "carouselName": package.packageCarouselId!.name,
       "email": userEmail.value,
+      "packageCurrencyCode": package.feeCode ?? "INR"
     };
     try {
       var map = await Network.makePostRequestWithToken(

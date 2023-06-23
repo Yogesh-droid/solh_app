@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
@@ -9,10 +8,8 @@ import 'package:solh/model/profile/allied_appoinment_list.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/my-profile/appointments/model/profile_transfer_detail_model.dart';
 import 'package:solh/ui/screens/my-profile/appointments/model/profile_transfer_model.dart';
-
 import 'package:solh/ui/screens/my-profile/appointments/service/appointment_services.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
-
 import '../../../../../model/user/user_appointments_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';

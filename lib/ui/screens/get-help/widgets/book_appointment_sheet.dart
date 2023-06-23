@@ -36,28 +36,33 @@ class _BookAppoinmentSheetState extends State<BookAppoinmentSheet> {
                 .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty
             ? 1
             : 0);
-    bookAppointmentController.selectedDayForTimeSlot.value = DateTime.now().day;
-    bookAppointmentController.selectedDate.value = DateTime.now();
-    // bookAppointmentController.getTimeSlot(
-    //     providerId: _controller.consultantModelController.value.provder!.sId,
-    //     date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-
-    if (profileController
-        .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty) {
-      print(profileController.myProfileModel.value.body!.user!.userTimezone!);
-      // if (bookAppointmentController.selectedTimeZone.value.isEmpty) {
-      bookAppointmentController.selectedTimeZone.value =
-          profileController.myProfileModel.value.body!.user!.userTimezone ?? '';
-      bookAppointmentController.selectedOffset.value = profileController
-              .myProfileModel.value.body!.user!.userTimezoneOffset ??
-          '';
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       bookAppointmentController.selectedDayForTimeSlot.value =
           DateTime.now().day;
       bookAppointmentController.selectedDate.value = DateTime.now();
-      bookAppointmentController.getTimeSlot(
-          providerId: _controller.consultantModelController.value.provder!.sId,
-          date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-    }
+      // bookAppointmentController.getTimeSlot(
+      //     providerId: _controller.consultantModelController.value.provder!.sId,
+      //     date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+
+      if (profileController
+          .myProfileModel.value.body!.user!.userTimezone!.isNotEmpty) {
+        print(profileController.myProfileModel.value.body!.user!.userTimezone!);
+        // if (bookAppointmentController.selectedTimeZone.value.isEmpty) {
+        bookAppointmentController.selectedTimeZone.value =
+            profileController.myProfileModel.value.body!.user!.userTimezone ??
+                '';
+        bookAppointmentController.selectedOffset.value = profileController
+                .myProfileModel.value.body!.user!.userTimezoneOffset ??
+            '';
+        bookAppointmentController.selectedDayForTimeSlot.value =
+            DateTime.now().day;
+        bookAppointmentController.selectedDate.value = DateTime.now();
+        bookAppointmentController.getTimeSlot(
+            providerId:
+                _controller.consultantModelController.value.provder!.sId,
+            date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+      }
+    });
 
     super.initState();
   }

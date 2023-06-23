@@ -202,51 +202,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                           '',
                                       bio: searchMarketController
                                           .issueModel.value.doctors![index].bio,
-                                      /* doctorModel: DoctorModel(
-                                          specialization: searchMarketController
-                                                  .issueModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .specialization ??
-                                              '',
-                                          organisation: searchMarketController
-                                                  .issueModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .organisation ??
-                                              '',
-                                          name: searchMarketController.issueModel
-                                                  .value.doctors![index].name ??
-                                              '',
-                                          mobile: searchMarketController
-                                                  .issueModel
-                                                  .value
-                                                  .doctors![index]
-                                                  .contactNumber ??
-                                              '',
-                                          email:
-                                              searchMarketController.issueModel.value.doctors![index].email ?? '',
-                                          clinic: '',
-                                          fee: searchMarketController.issueModel.value.doctors![index].fee ?? '',
-                                          prefix: searchMarketController.issueModel.value.doctors![index].prefix,
-                                          feeCurrency: searchMarketController.issueModel.value.doctors![index].feeCurrency ?? '',
-                                          fee_amount: searchMarketController.issueModel.value.doctors![index].fee_amount ?? 0,
-                                          id: searchMarketController.issueModel.value.doctors![index].sId ?? '',
-                                          locality: searchMarketController.issueModel.value.doctors![index].addressLineOne ?? '',
-                                          pincode: '',
-                                          city: searchMarketController.issueModel.value.doctors![index].addressLineFour ?? '',
-                                          bio: searchMarketController.issueModel.value.doctors![index].bio ?? '',
-                                          abbrevations: '',
-                                          profilePicture: searchMarketController.issueModel.value.doctors![index].profilePicture ?? ''), */
-                                      onTap: () {
-                                        //                     connectionController
-                                        //       .getUserAnalytics(searchMarketController.issueModel.value.doctors![index]. ),
-                                        //   print(widget._journalModel!.postedBy!.sId),
-                                        //   AutoRouter.of(context).push(ConnectScreenRouter(
-                                        //       uid: widget._journalModel!.postedBy!.uid ?? '',
-                                        //       sId: widget._journalModel!.postedBy!.sId ?? '')),
-                                        // },
-                                      },
+                                      onTap: () {},
                                     ),
                                     Obx(
                                       () {

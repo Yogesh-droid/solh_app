@@ -124,6 +124,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
                 "marketplaceType": "Allied",
                 "paymentGateway": "Stripe",
                 "paymentSource": "App",
+                "feeCode": packages.feeCode
               });
               _alliedController.isAlliedBooking(false);
               Future.delayed(Duration(seconds: 2), () {
@@ -149,10 +150,11 @@ class AlliedBookingContinueDetail extends StatelessWidget {
   Widget packageDetails() {
     return PackageCard(
         package: packages,
-        onPackageSelect: (String id, int price) {
+        onPackageSelect: (String id, int price, String currency) {
           if (!(_alliedController.selectedPackage.value == id)) {
             _alliedController.selectedPackage.value = id;
             _alliedController.selectedPackagePrice.value = price;
+            _alliedController.selectedCurrency.value = currency;
             // _alliedController.selectedPackageIndex =
             //     user!.packages!.indexOf(e);
           } else {

@@ -19,7 +19,6 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
-
 import 'package:solh/widgets_constants/text_field_styles.dart';
 import 'package:solh/widgets_constants/typing_indicator.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
@@ -130,7 +129,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.isVideoConnecting.value = false;
     _service.userLeft();
     SocketService.isAnon = false;
@@ -250,6 +248,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
+// ignore: must_be_immutable
 class ChatAppbar extends StatelessWidget {
   ChatAppbar(
       {Key? key,
@@ -429,7 +428,6 @@ class MessageBox extends StatefulWidget {
 class _MessageBoxState extends State<MessageBox> {
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       FocusScope.of(context).requestFocus(widget.focus);
     });
@@ -595,12 +593,10 @@ class _MessageListState extends State<MessageList> {
                           _controller.convo.length - 1 - index;
 
                       return MessageTile(
-                        message: _controller.convo.value[reversedIndex].body,
-                        author: _controller.convo.value[reversedIndex].author,
-                        dateTime:
-                            _controller.convo.value[reversedIndex].dateTime,
-                        authorId:
-                            _controller.convo.value[reversedIndex].authorId,
+                        message: _controller.convo[reversedIndex].body,
+                        author: _controller.convo[reversedIndex].author,
+                        dateTime: _controller.convo[reversedIndex].dateTime,
+                        authorId: _controller.convo[reversedIndex].authorId,
                         sId: widget._sId,
                       );
                     }),
@@ -610,6 +606,7 @@ class _MessageListState extends State<MessageList> {
   }
 }
 
+// ignore: must_be_immutable
 class MessageTile extends StatelessWidget {
   MessageTile(
       {Key? key,
@@ -628,6 +625,7 @@ class MessageTile extends StatelessWidget {
   final String _message;
   final String _authorId;
   final String _author;
+  // ignore: unused_field
   final String _sId;
   final String _dateTime;
 
@@ -699,12 +697,10 @@ class MessageTile extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      _dateTime == null
-                          ? ''
-                          : DateTime.tryParse(_dateTime) != null
-                              ? DateFormat('dd MMM kk:mm')
-                                  .format(DateTime.parse(_dateTime).toLocal())
-                              : '',
+                      DateTime.tryParse(_dateTime) != null
+                          ? DateFormat('dd MMM kk:mm')
+                              .format(DateTime.parse(_dateTime).toLocal())
+                          : '',
                       style: GoogleFonts.signika(
                           fontWeight: FontWeight.w400,
                           fontSize: 12,
@@ -735,7 +731,6 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   final ChatController chatController = Get.find();
   @override
   void dispose() {
-    // TODO: implement dispose
     pageController.dispose();
     chatController.dispose();
 

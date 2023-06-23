@@ -64,28 +64,28 @@ class JournalPageController extends GetxController {
 
         journalsResponseModel.value =
             JournalsResponseModel.fromJson(map['data']);
-        journalsList.value.addAll(journalsResponseModel.value.journals ?? []);
+        journalsList.addAll(journalsResponseModel.value.journals ?? []);
         nextPage = journalsResponseModel.value.next != null
             ? journalsResponseModel.value.next!.pageNumber
             : null;
         this.pageNo = pageNo;
-        videoPlayerController.value.forEach((element) {
+        videoPlayerController.forEach((element) {
           element.forEach((key, value) {
             value.dispose();
           });
         });
-        videoPlayerController.value.clear();
-        for (int i = 0; i < journalsList.value.length; i++) {
+        videoPlayerController.clear();
+        for (int i = 0; i < journalsList.length; i++) {
           if (journalsList[i].mediaType == "video/mp4") {
-            if (videoPlayerController.value.isEmpty) {
+            if (videoPlayerController.isEmpty) {
               videoIndex = i;
             }
             VideoPlayerController vc =
-                VideoPlayerController.network(journalsList.value[i].mediaUrl!);
+                VideoPlayerController.network(journalsList[i].mediaUrl!);
 
-            videoPlayerController.value.add({i: vc..initialize()});
+            videoPlayerController.add({i: vc..initialize()});
           } else {
-            videoPlayerController.value.add({});
+            videoPlayerController.add({});
           }
         }
       }
@@ -101,29 +101,28 @@ class JournalPageController extends GetxController {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/v1/trending");
       journalsResponseModel.value = JournalsResponseModel.fromJson(map['data']);
-      trendingJournalsList.value
-          .addAll(journalsResponseModel.value.journals ?? []);
-      tredingVideoPlayerController.value.forEach((element) {
+      trendingJournalsList.addAll(journalsResponseModel.value.journals ?? []);
+      tredingVideoPlayerController.forEach((element) {
         if (element != null) {
           element.forEach((key, value) {
             value.dispose();
           });
         }
       });
-      tredingVideoPlayerController.value.clear();
-      for (int i = 0; i < trendingJournalsList.value.length; i++) {
+      tredingVideoPlayerController.clear();
+      for (int i = 0; i < trendingJournalsList.length; i++) {
         if (trendingJournalsList[i].mediaType == "video/mp4") {
-          if (videoPlayerController.value.isEmpty) {
+          if (videoPlayerController.isEmpty) {
             videoIndex = i;
           }
 
-          tredingVideoPlayerController.value.add({
+          tredingVideoPlayerController.add({
             i: await VideoPlayerController.network(
-                trendingJournalsList.value[i].mediaUrl!)
+                trendingJournalsList[i].mediaUrl!)
               ..initialize()
           });
         } else {
-          tredingVideoPlayerController.value.add(null);
+          tredingVideoPlayerController.add(null);
         }
       }
     } on Exception catch (e) {
@@ -137,13 +136,13 @@ class JournalPageController extends GetxController {
 
     isPlayingTrendingPostVideo = false;
     if (videoIndex != index) {
-      videoPlayerController.value[index][index]!.pause();
+      videoPlayerController[index][index]!.pause();
     }
-    if (videoPlayerController.value[index][index]!.value.isPlaying) {
-      videoPlayerController.value[index][index]!.pause();
+    if (videoPlayerController[index][index]!.value.isPlaying) {
+      videoPlayerController[index][index]!.pause();
     } else {
       if (!isPlayingMyPostVideo && !isPlayingTrendingPostVideo) {
-        videoPlayerController.value[index][index]!.play();
+        videoPlayerController[index][index]!.play();
         videoIndex = index;
       }
     }
@@ -153,26 +152,26 @@ class JournalPageController extends GetxController {
     isPlayingMyPostVideo = true;
 
     if (myVideoIndex != index) {
-      myVideoPlayerControllers.value[index][index]!.pause();
+      myVideoPlayerControllers[index][index]!.pause();
     }
-    if (myVideoPlayerControllers.value[index][index]!.value.isPlaying) {
-      myVideoPlayerControllers.value[index][index]!.pause();
+    if (myVideoPlayerControllers[index][index]!.value.isPlaying) {
+      myVideoPlayerControllers[index][index]!.pause();
     } else {
-      myVideoPlayerControllers.value[index][index]!.play();
+      myVideoPlayerControllers[index][index]!.play();
       myVideoIndex = index;
     }
   }
 
   Future<void> playTrendingPostVideo(int index) async {
     isPlayingTrendingPostVideo = true;
-    if (tredingVideoPlayerController.value[index] != null) {
+    if (tredingVideoPlayerController[index] != null) {
       if (trendingVideoIndex != index) {
-        tredingVideoPlayerController.value[index]![index]!.pause();
+        tredingVideoPlayerController[index]![index]!.pause();
       }
-      if (tredingVideoPlayerController.value[index]![index]!.value.isPlaying) {
-        tredingVideoPlayerController.value[index]![index]!.pause();
+      if (tredingVideoPlayerController[index]![index]!.value.isPlaying) {
+        tredingVideoPlayerController[index]![index]!.pause();
       } else {
-        tredingVideoPlayerController.value[index]![index]!.play();
+        tredingVideoPlayerController[index]![index]!.play();
         trendingVideoIndex = index;
       }
     }

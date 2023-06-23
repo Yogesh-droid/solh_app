@@ -41,7 +41,7 @@ class SolhGradientLoader extends StatelessWidget {
                       : constraints.maxHeight / 2)),
           duration: Duration(milliseconds: 500),
           strokeWidth: strokeWidth,
-          gradientStops: const [0.2, 0.8, 0.10],
+          gradientStops: const [0.0, 0.4, 0.10],
           gradientColors: const [
             Color(0xff5F9B8C),
             Color(0xffe1555a),

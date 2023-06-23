@@ -105,7 +105,7 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                       children: [
                         Text(
                           _alliedController.selectedPackagePrice.value > 0
-                              ? "₹ ${_alliedController.selectedPackagePrice.toString()}"
+                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackagePrice.toString()}"
                               : "No Package",
                           style: SolhTextStyles.QS_body_2_semi.copyWith(
                               color: Colors.black),
@@ -401,6 +401,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
       _alliedController.selectedPackage.value = widget.packageList!.first.sId!;
       _alliedController.selectedPackagePrice.value =
           widget.packageList!.first.amount!;
+      _alliedController.selectedCurrency.value =
+          widget.packageList!.first.currency!;
     });
     // TODO: implement initState
     super.initState();
@@ -448,7 +450,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
               children: widget.packageList!
                   .map((e) => PackageCard(
                         package: e,
-                        onPackageSelect: (String id, int price) {
+                        onPackageSelect:
+                            (String id, int price, String currency) {
                           if (!(_alliedController.selectedPackage.value ==
                               id)) {
                             _alliedController.selectedPackage.value = id;
@@ -456,6 +459,7 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                                 price;
                             _alliedController.selectedPackageIndex =
                                 widget.packageList!.indexOf(e);
+                            _alliedController.selectedCurrency.value = currency;
                           } else {
                             _alliedController.selectedPackage.value = "";
                             _alliedController.selectedPackagePrice.value = -1;
@@ -473,13 +477,14 @@ class PackageCard extends StatelessWidget {
   PackageCard({Key? key, this.package, required this.onPackageSelect})
       : super(key: key);
   final PackageList? package;
-  final Function(String, int) onPackageSelect;
+  final Function(String, int, String) onPackageSelect;
   final AlliedController _alliedController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPackageSelect(package!.sId ?? '', package!.amount ?? 0),
+      onTap: () => onPackageSelect(
+          package!.sId ?? '', package!.amount ?? 0, package!.currency ?? ''),
       child: Obx(() => AnimatedSize(
             duration: Duration(milliseconds: 500),
             curve: Curves.linear,
@@ -589,7 +594,7 @@ class PackageCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                "₹ ${package!.amount ?? 0}",
+                "${package!.currency} ${package!.amount ?? 0}",
                 style: SolhTextStyles.QS_body_1_bold.copyWith(
                     color: SolhColors.primary_green),
               ),

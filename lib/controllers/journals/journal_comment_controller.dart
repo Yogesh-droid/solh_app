@@ -56,11 +56,10 @@ class JournalCommentController extends GetxController {
           "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=${page ?? pageNo}");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
       if (page == null) {
-        commentList.value
-            .addAll(getJouranalsCommentModel.value.body!.comments ?? []);
+        commentList.addAll(getJouranalsCommentModel.value.body!.comments ?? []);
       } else {
-        commentList.value
-            .insert(0, getJouranalsCommentModel.value.body!.comments![0]);
+        commentList.insert(
+            0, getJouranalsCommentModel.value.body!.comments![0]);
       }
       commentList.refresh();
       nextPage = getJouranalsCommentModel.value.body!.nextPage ?? 1;
@@ -78,8 +77,8 @@ class JournalCommentController extends GetxController {
 
     if (getJouranalsCommentModel.value.body!.comments != null) {
       getJouranalsCommentModel.value.body!.comments!.forEach((element) {
-        repliesList.value.add([]);
-        hiddenReplyList.value.add(false);
+        repliesList.add([]);
+        hiddenReplyList.add(false);
       });
     }
     repliesList.refresh();
@@ -163,16 +162,16 @@ class JournalCommentController extends GetxController {
       print('index: ' + index.toString());
       if (index != null) {
         print('index: ' + index.toString());
-        print('repliesList: ' + repliesList.value.toString());
+        print('repliesList: ' + repliesList.toString());
         if (GetJouranalsCommentModel.fromJson(map).body!.comments != null &&
             GetJouranalsCommentModel.fromJson(map).body!.comments!.length > 0) {
-          repliesList.value.removeAt(index);
-          repliesList.value.insert(
+          repliesList.removeAt(index);
+          repliesList.insert(
               index, GetJouranalsCommentModel.fromJson(map).body!.comments);
           repliesList.refresh();
         } else {
-          repliesList.value.removeAt(index);
-          repliesList.value.insert(index, []);
+          repliesList.removeAt(index);
+          repliesList.insert(index, []);
           repliesList.refresh();
         }
       } else {

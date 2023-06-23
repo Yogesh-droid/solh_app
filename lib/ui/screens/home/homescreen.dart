@@ -218,7 +218,6 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => Connections()));
             },
             onMoodMeterTapped: () {
-              print("Hello");
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MoodMeter()));
               FirebaseAnalytics.instance.logEvent(

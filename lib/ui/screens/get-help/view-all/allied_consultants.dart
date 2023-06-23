@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -36,7 +35,6 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
   String? defaultCountry;
   SearchMarketController searchMarketController = Get.find();
   int pageNo = 1;
-  bool _fetchingMore = false;
   late ScrollController _alliedScrollController;
   @override
   void initState() {
@@ -131,6 +129,12 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                         ? SliverList(
                             delegate: SliverChildBuilderDelegate(
                               (context, index) => AlliedConsultantTile(
+                                feeCurrency: searchMarketController
+                                        .issueModel
+                                        .value
+                                        .alliedProviders![index]
+                                        .feeCurrency ??
+                                    '',
                                 experience: searchMarketController.issueModel
                                     .value.alliedProviders![index].experience
                                     .toString(),
@@ -193,7 +197,8 @@ class AlliedConsultantTile extends StatelessWidget {
       required this.experience,
       required this.feeAmount,
       required this.id,
-      required this.preview});
+      required this.preview,
+      required this.feeCurrency});
 
   final String? profilePic;
   final String id;
@@ -203,6 +208,7 @@ class AlliedConsultantTile extends StatelessWidget {
   final String experience;
   final int feeAmount;
   final String? preview;
+  final String feeCurrency;
 
   final SearchMarketController _searchMarketController = Get.find();
   @override
@@ -358,7 +364,7 @@ class AlliedConsultantTile extends StatelessWidget {
                               'Starting @'.tr,
                               style: SolhTextStyles.QS_cap_semi,
                             ),
-                            Text(feeAmount.toString(),
+                            Text(feeCurrency + " " + feeAmount.toString(),
                                 style: SolhTextStyles.QS_cap_semi),
                           ],
                         ),

@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -19,18 +18,18 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class PaymentManagement {
   PaymentController paymentController = Get.find();
-  Widget paymentModelSheet({
-    required BuildContext context,
-    required String appointmentId,
-    required String? alliedOrderId,
-    required String? inhouseOrderId,
-    required String marketplaceType,
-    required String currency,
-    required String amount,
-    required String paymentSource,
-    required String paymentGateway,
-    required String status,
-  }) {
+  Widget paymentModelSheet(
+      {required BuildContext context,
+      required String appointmentId,
+      required String? alliedOrderId,
+      required String? inhouseOrderId,
+      required String marketplaceType,
+      required String currency,
+      required String amount,
+      required String paymentSource,
+      required String paymentGateway,
+      required String status,
+      required String feeCode}) {
     return Container(
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Padding(
@@ -48,16 +47,16 @@ class PaymentManagement {
         InkWell(
           onTap: () {
             makePayment(
-              alliedOrderId: alliedOrderId,
-              amount: amount,
-              appointmentId: appointmentId,
-              context: context,
-              currency: currency,
-              inhouseOrderId: inhouseOrderId,
-              marketplaceType: marketplaceType,
-              paymentGateway: paymentGateway,
-              paymentSource: paymentSource,
-            );
+                alliedOrderId: alliedOrderId,
+                amount: amount,
+                appointmentId: appointmentId,
+                context: context,
+                currency: currency,
+                inhouseOrderId: inhouseOrderId,
+                marketplaceType: marketplaceType,
+                paymentGateway: paymentGateway,
+                paymentSource: paymentSource,
+                feeCode: feeCode);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -118,10 +117,12 @@ class PaymentManagement {
     required String amount,
     required String paymentSource,
     required String paymentGateway,
+    required String feeCode,
   }) async {
     paymentController.isgettingPaymentIntent(true);
     try {
-      var paymentIntent = await createPaymentIntent(amount, "INR");
+      print(feeCode);
+      var paymentIntent = await createPaymentIntent(amount, "$feeCode");
       log(paymentIntent.toString());
 
       await Stripe.instance
@@ -160,7 +161,7 @@ class PaymentManagement {
       //Request body
       Map<String, dynamic> body = {
         'amount': "${int.parse(amount) * 100}",
-        'currency': "INR",
+        'currency': currency,
         "description":
             Get.find<ProfileController>().myProfileModel.value.body!.user!.sId,
         "mobileNo": Get.find<ProfileController>()

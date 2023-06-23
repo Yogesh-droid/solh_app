@@ -132,8 +132,6 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
     });
   }
 
-  @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

@@ -86,6 +86,7 @@ class PackageList {
   PackageType? packageType;
   MainCategory? mainCategory;
   PackageCarouselId? packageCarouselId;
+  String? feeCode;
 
   PackageList(
       {this.sId,
@@ -100,7 +101,8 @@ class PackageList {
       this.packageOwner,
       this.currency,
       this.amount,
-      this.packageType});
+      this.packageType,
+      this.feeCode});
 
   PackageList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -123,6 +125,7 @@ class PackageList {
     packageCarouselId = json['packageCarouselId'] != null
         ? new PackageCarouselId.fromJson(json['packageCarouselId'])
         : null;
+    feeCode = json['feeCode'];
   }
 
   Map<String, dynamic> toJson() {

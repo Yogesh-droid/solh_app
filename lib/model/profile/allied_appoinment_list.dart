@@ -66,6 +66,7 @@ class UserPackageOrders {
   String? createdBy;
   String? updatedBy;
   List<Transaction>? transaction;
+  String? feeCode;
 
   UserPackageOrders(
       {this.packagePaymentType,
@@ -94,6 +95,7 @@ class UserPackageOrders {
       this.provider,
       this.id,
       this.createdBy,
+      this.feeCode,
       this.updatedBy});
 
   UserPackageOrders.fromJson(Map<String, dynamic> json) {
@@ -130,6 +132,7 @@ class UserPackageOrders {
     packageCategory = json['packageCategory'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    feeCode = json["feeCode"];
     iV = json['__v'];
     if (json['provider'] != null) {
       provider = <Provider>[];
