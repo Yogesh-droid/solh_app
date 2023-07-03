@@ -174,7 +174,7 @@ class _SolhAppState extends State<SolhApp> {
 
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
-
+          primaryColor: SolhColors.primary_green,
           buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
           iconTheme: IconThemeData(color: Colors.black),
         ),
