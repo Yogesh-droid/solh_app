@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import '../../constants/api.dart';
 
 class ProfileController extends GetxController {
@@ -24,6 +26,29 @@ class ProfileController extends GetxController {
     } on Exception {}
     isProfileLoading.value = false;
     return false;
+  }
+
+  Future<void> editProfile(Map<String, dynamic> body) async {
+    try {
+      isProfileLoading(true);
+
+      var response = await Network.makePutRequestWithToken(
+        url: '${APIConstants.api}/api/edit-user-details',
+        body: body,
+      );
+
+      if (response["success"]) {
+        myProfileModel.value = MyProfileModel.fromJson(response);
+        isProfileLoading(false);
+      } else {
+        SolhSnackbar.error('Error', 'Opps, Something went wrong');
+        isProfileLoading(false);
+      }
+    } catch (e) {
+      SolhSnackbar.error('Error', 'Opps, Something went wrong');
+      debugPrint(e.toString());
+      isProfileLoading(false);
+    }
   }
 
   @override

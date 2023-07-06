@@ -113,6 +113,20 @@ class Setting extends StatelessWidget {
                 'Languages'.tr,
                 null),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, AppRoutes.OrgSetting),
+            child: getSettingOptions(
+                Icon(
+                  CupertinoIcons.waveform,
+                  color: SolhColors.primary_green,
+                  size: 20,
+                ),
+                'Organization'.tr,
+                null),
+          ),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
           SizedBox(

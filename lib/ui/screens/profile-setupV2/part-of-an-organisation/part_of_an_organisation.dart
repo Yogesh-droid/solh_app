@@ -174,7 +174,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
 
 class OrgainsationSuggestionList extends StatelessWidget {
   OrgainsationSuggestionList({Key? key}) : super(key: key);
-  final ProfileSetupController profileSetupController = Get.find();
+
   final PartOfAnOrganisationController partOfAnOrganisationController =
       Get.find();
   @override

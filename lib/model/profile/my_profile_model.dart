@@ -30,12 +30,14 @@ class Body {
   int? percentProfile;
   List? userMoveEmptyScreenEmpty;
   List<UserCountryAvailableTimezones>? userCountryAvailableTimezones;
+  List<UserOrganisations>? userOrganisations;
 
   Body(
       {this.user,
       this.percentProfile,
       this.userMoveEmptyScreenEmpty,
-      this.userCountryAvailableTimezones});
+      this.userCountryAvailableTimezones,
+      this.userOrganisations});
 
   Body.fromJson(Map<String, dynamic> json) {
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
@@ -46,6 +48,12 @@ class Body {
       json['userCountryAvailableTimezones'].forEach((v) {
         userCountryAvailableTimezones!
             .add(new UserCountryAvailableTimezones.fromJson(v));
+      });
+    }
+    if (json['userOrganisations'] != null) {
+      userOrganisations = <UserOrganisations>[];
+      json['userOrganisations'].forEach((v) {
+        userOrganisations!.add(new UserOrganisations.fromJson(v));
       });
     }
   }
@@ -350,6 +358,76 @@ class Anonymous {
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
     data['gender'] = this.gender;
+    return data;
+  }
+}
+
+class UserOrganisations {
+  String? sId;
+  String? status;
+  String? user;
+  Organisation? organisation;
+  bool? isDefault;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+
+  UserOrganisations(
+      {this.sId,
+      this.status,
+      this.user,
+      this.organisation,
+      this.isDefault,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
+
+  UserOrganisations.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    status = json['status'];
+    user = json['user'];
+    organisation = json['organisation'] != null
+        ? new Organisation.fromJson(json['organisation'])
+        : null;
+    isDefault = json['isDefault'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['status'] = this.status;
+    data['user'] = this.user;
+    if (this.organisation != null) {
+      data['organisation'] = this.organisation!.toJson();
+    }
+    data['isDefault'] = this.isDefault;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    data['__v'] = this.iV;
+    return data;
+  }
+}
+
+class Organisation {
+  String? sId;
+  String? logo;
+  String? name;
+
+  Organisation({this.sId, this.logo, this.name});
+
+  Organisation.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    logo = json['logo'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['logo'] = this.logo;
     return data;
   }
 }

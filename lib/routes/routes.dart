@@ -30,6 +30,8 @@ import 'package:solh/ui/screens/my-profile/appointments/profile_transfer_detail.
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/edit_profile_option.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/edit_need_support.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/language_setting_page.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/add_org.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/org_setting.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/user_type.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_avatar.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/add_email.dart';
@@ -167,6 +169,8 @@ class AppRoutes {
 
   //setting
   static const String languageSettingPage = '/languageSettingPage';
+  static const String OrgSetting = '/OrgSetting';
+  static const String addOrg = '/addOrg';
 }
 
 class RouteGenerator {
@@ -361,9 +365,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => AppointmentMenu()));
       case AppRoutes.profileTransfer:
         return MaterialPageRoute(builder: ((context) => ProfileTransfer()));
+      case AppRoutes.addOrg:
+        return MaterialPageRoute(builder: ((context) => AddOrg()));
       case AppRoutes.profileTransferDetail:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransferDetail()));
+      case AppRoutes.OrgSetting:
+        return MaterialPageRoute(builder: ((context) => OrgSetting()));
       case AppRoutes.liveStream:
         return MaterialPageRoute(
             builder: ((context) =>
