@@ -6,6 +6,7 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -153,6 +154,17 @@ Widget getDefaultOrg(
               textAlign: TextAlign.center,
               style: SolhTextStyles.QS_caption,
             ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+              decoration: BoxDecoration(
+                  color: SolhColors.primary_green.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(6)),
+              child: Text(
+                'Select Team',
+                style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                    color: SolhColors.primary_green),
+              ),
+            ),
           ],
         ),
       ),
@@ -171,6 +183,7 @@ Widget getOtherOrgs(
     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       mainAxisSpacing: 15,
+      childAspectRatio: 2 / 2.2,
       crossAxisSpacing: 15,
     ),
     itemCount: subList.length,
@@ -234,9 +247,72 @@ Widget getOtherOrgs(
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                  constraints: BoxConstraints(maxHeight: 80.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  context: context,
+                  builder: (context) {
+                    return TeamsModelSheetContent();
+                  },
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                    color: SolhColors.primary_green.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(6)),
+                child: Text(
+                  'Select Team',
+                  style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                      color: SolhColors.primary_green),
+                ),
+              ),
+            ),
           ],
         ),
       );
     },
   );
+}
+
+class TeamsModelSheetContent extends StatelessWidget {
+  const TeamsModelSheetContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Select Your team',
+              style: SolhTextStyles.QS_big_body_med_20,
+            ),
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Card(
+                  child: Row(
+                children: [
+                  Checkbox(
+                    value: false,
+                    onChanged: (value) {},
+                  ),
+                  Text("Omlogic"),
+                ],
+              ));
+            },
+            itemCount: 6,
+          ),
+        ],
+      ),
+    );
+  }
 }
