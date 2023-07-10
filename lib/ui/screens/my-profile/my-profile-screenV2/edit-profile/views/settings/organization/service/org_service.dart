@@ -18,4 +18,23 @@ class OrgService {
       throw (e);
     }
   }
+
+  Future<MyProfileModel> updateOrgTeam(
+      {required String userOrgId, required String selectedOptionId}) async {
+    try {
+      final response = await Network.makePutRequestWithToken(
+          url: '${APIConstants.api}/api/update-user-option',
+          body: {
+            "userOrgId": userOrgId,
+            "selectedOptionId": selectedOptionId,
+          });
+      if (response['success']) {
+        return MyProfileModel.fromJson(response);
+      } else {
+        throw (response);
+      }
+    } catch (e) {
+      throw (e);
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/service/org_service.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/orgainsation-model/organisation_model.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/service/part_of_orgination_service.dart';
@@ -19,6 +20,7 @@ class OrgController extends GetxController {
   OrgService orgService = OrgService();
   final orgSuggestionTextEditingController = TextEditingController().obs;
   var addingOrgs = false.obs;
+  var isUpdatingOrgTeam = false.obs;
 
   RxList selectedorgs = [].obs;
 
@@ -30,14 +32,6 @@ class OrgController extends GetxController {
   Future<void> removeAndUpdateOrg(String id) async {
     isDeletingOrg(true);
     try {
-      // log('it ran');
-      // profileController.myProfileModel.value.body!.userOrganisations!
-      //     .removeAt(index);
-      // List<String> orgList = profileController
-      //     .myProfileModel.value.body!.userOrganisations!
-      //     .map((e) => e.organisation!.sId!)
-      //     .toList();
-
       MyProfileModel response = await orgService.deleteOrgService(id);
       profileController.myProfileModel.value = response;
     } catch (e) {
@@ -123,6 +117,23 @@ class OrgController extends GetxController {
     allId.add(firstItem.organisation!.sId);
     log(allId.toString());
     profileController.editProfile({'organisation': jsonEncode(allId)});
+  }
+
+  Future<void> updateOrgTeamController(
+      {required String userOrgId, required String selectedOptionId}) async {
+    isUpdatingOrgTeam(true);
+    try {
+      final response = await orgService.updateOrgTeam(
+          selectedOptionId: selectedOptionId, userOrgId: userOrgId);
+      if (response.success == true) {
+        profileController.myProfileModel.value = response;
+        Utility.showToast('Information updated successfully');
+      }
+    } catch (e) {
+      SolhSnackbar.error('Error', "Opps, something went wrong!");
+      throw (e);
+    }
+    isUpdatingOrgTeam(false);
   }
 
   @override

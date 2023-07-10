@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -48,7 +51,7 @@ class OrgSetting extends StatelessWidget {
                                 null
                         ? Container()
                         : getDefaultOrg(profileController.myProfileModel.value,
-                            _controller);
+                            _controller, context);
                   }),
                   Obx(() {
                     return profileController.myProfileModel.value.body!
@@ -98,8 +101,8 @@ Widget getAddOrgButton() {
   );
 }
 
-Widget getDefaultOrg(
-    MyProfileModel myProfileModel, OrgController orgController) {
+Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
+    BuildContext context) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -155,18 +158,40 @@ Widget getDefaultOrg(
               textAlign: TextAlign.center,
               style: SolhTextStyles.QS_caption,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-              decoration: BoxDecoration(
-                  color: SolhColors.primary_green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(6)),
-              child: Text(
-                myProfileModel
-                    .body!.userOrganisations!.first.orgusercategories!.label!,
-                style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                    color: SolhColors.primary_green),
-              ),
-            ),
+            myProfileModel.body!.userOrganisations!.first.orgusercategories !=
+                    null
+                ? Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    decoration: BoxDecoration(
+                        color: SolhColors.primary_green.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(6)),
+                    child: InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          constraints: BoxConstraints(maxHeight: 80.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          context: context,
+                          builder: (context) {
+                            return TeamsModelSheetContent(
+                              userOrganisations:
+                                  myProfileModel.body!.userOrganisations!.first,
+                              label: myProfileModel.body!.userOrganisations!
+                                  .first.orgusercategories!.label!,
+                            );
+                          },
+                        );
+                      },
+                      child: Text(
+                        myProfileModel.body!.userOrganisations!.first
+                            .orgusercategories!.label!,
+                        style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                            color: SolhColors.primary_green),
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -284,12 +309,31 @@ Widget getOtherOrgs(
   );
 }
 
-class TeamsModelSheetContent extends StatelessWidget {
+class TeamsModelSheetContent extends StatefulWidget {
   TeamsModelSheetContent(
       {super.key, required this.userOrganisations, required this.label});
 
   final UserOrganisations userOrganisations;
   final String label;
+
+  @override
+  State<TeamsModelSheetContent> createState() => _TeamsModelSheetContentState();
+}
+
+class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
+  final OrgController orgController = Get.find();
+  String groupValue = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    groupValue =
+        widget.userOrganisations.orgusercategories!.selectedOption != null
+            ? widget.userOrganisations.orgusercategories!.selectedOption!
+            : '';
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -298,11 +342,11 @@ class TeamsModelSheetContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              label,
+              widget.label,
               style: SolhTextStyles.QS_big_body_med_20,
             ),
           ),
-          userOrganisations.orgusercategories == null
+          widget.userOrganisations.orgusercategories == null
               ? Text('No Category to select')
               : ListView.builder(
                   shrinkWrap: true,
@@ -312,26 +356,48 @@ class TeamsModelSheetContent extends StatelessWidget {
                         child: Row(
                       children: [
                         Radio(
-                          groupValue: '',
-                          value: true,
-                          onChanged: (value) {},
+                          activeColor: SolhColors.primary_green,
+                          groupValue: groupValue,
+                          value: widget.userOrganisations.orgusercategories!
+                              .options![index].sId!,
+                          onChanged: (value) async {
+                            log("changed");
+                            groupValue = widget.userOrganisations
+                                .orgusercategories!.options![index].sId!;
+                            setState(() {});
+                          },
                         ),
                         Text(
-                          userOrganisations
-                              .orgusercategories!.options![index].name!,
+                          widget.userOrganisations.orgusercategories!
+                              .options![index].name!,
                           style: SolhTextStyles.QS_caption,
                         ),
                       ],
                     ));
                   },
-                  itemCount:
-                      userOrganisations.orgusercategories!.options!.length,
+                  itemCount: widget
+                      .userOrganisations.orgusercategories!.options!.length,
                 ),
-          SolhGreenButton(
-              child: Text(
-            'Save',
-            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-          )),
+          Obx(() {
+            return orgController.isUpdatingOrgTeam.value
+                ? SolhGreenButton(
+                    child: ButtonLoadingAnimation(
+                    ballColor: SolhColors.white,
+                  ))
+                : SolhGreenButton(
+                    onPressed: () async {
+                      await orgController.updateOrgTeamController(
+                          userOrgId: widget.userOrganisations.sId!,
+                          selectedOptionId: groupValue);
+
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Save',
+                      style:
+                          SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+                    ));
+          }),
           SizedBox(
             height: 2.h,
           ),
