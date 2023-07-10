@@ -161,7 +161,8 @@ Widget getDefaultOrg(
                   color: SolhColors.primary_green.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(6)),
               child: Text(
-                'Select Team',
+                myProfileModel
+                    .body!.userOrganisations!.first.orgusercategories!.label!,
                 style: SolhTextStyles.QS_cap_2_semi.copyWith(
                     color: SolhColors.primary_green),
               ),
@@ -257,7 +258,10 @@ Widget getOtherOrgs(
                   ),
                   context: context,
                   builder: (context) {
-                    return TeamsModelSheetContent();
+                    return TeamsModelSheetContent(
+                      userOrganisations: subList[index],
+                      label: subList[index].orgusercategories!.label!,
+                    );
                   },
                 );
               },
@@ -267,7 +271,7 @@ Widget getOtherOrgs(
                     color: SolhColors.primary_green.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(6)),
                 child: Text(
-                  'Select Team',
+                  subList[index].orgusercategories!.label!,
                   style: SolhTextStyles.QS_cap_2_semi.copyWith(
                       color: SolhColors.primary_green),
                 ),
@@ -281,8 +285,11 @@ Widget getOtherOrgs(
 }
 
 class TeamsModelSheetContent extends StatelessWidget {
-  const TeamsModelSheetContent({super.key});
+  TeamsModelSheetContent(
+      {super.key, required this.userOrganisations, required this.label});
 
+  final UserOrganisations userOrganisations;
+  final String label;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -291,32 +298,40 @@ class TeamsModelSheetContent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'Select Your team',
+              label,
               style: SolhTextStyles.QS_big_body_med_20,
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Card(
-                  child: Row(
-                children: [
-                  Radio(
-                    groupValue: '',
-                    value: false,
-                    onChanged: (value) {},
-                  ),
-                  Text(
-                    "Omlogic",
-                    style: SolhTextStyles.QS_caption,
-                  ),
-                ],
-              ));
-            },
-            itemCount: 6,
-          ),
-          SolhGreenButton(child: Text('Save')),
+          userOrganisations.orgusercategories == null
+              ? Text('No Category to select')
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Card(
+                        child: Row(
+                      children: [
+                        Radio(
+                          groupValue: '',
+                          value: true,
+                          onChanged: (value) {},
+                        ),
+                        Text(
+                          userOrganisations
+                              .orgusercategories!.options![index].name!,
+                          style: SolhTextStyles.QS_caption,
+                        ),
+                      ],
+                    ));
+                  },
+                  itemCount:
+                      userOrganisations.orgusercategories!.options!.length,
+                ),
+          SolhGreenButton(
+              child: Text(
+            'Save',
+            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+          )),
           SizedBox(
             height: 2.h,
           ),

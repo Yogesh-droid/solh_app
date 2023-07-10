@@ -367,6 +367,7 @@ class UserOrganisations {
   String? status;
   String? user;
   Organisation? organisation;
+  Orgusercategories? orgusercategories;
   bool? isDefault;
   String? createdAt;
   String? updatedAt;
@@ -380,6 +381,7 @@ class UserOrganisations {
       this.isDefault,
       this.createdAt,
       this.updatedAt,
+      this.orgusercategories,
       this.iV});
 
   UserOrganisations.fromJson(Map<String, dynamic> json) {
@@ -388,6 +390,9 @@ class UserOrganisations {
     user = json['user'];
     organisation = json['organisation'] != null
         ? new Organisation.fromJson(json['organisation'])
+        : null;
+    orgusercategories = json['Orgusercategories'] != null
+        ? new Orgusercategories.fromJson(json['Orgusercategories'])
         : null;
     isDefault = json['isDefault'];
     createdAt = json['createdAt'];
@@ -432,6 +437,74 @@ class Organisation {
   }
 }
 
+class Orgusercategories {
+  String? sId;
+  String? organisation;
+  String? label;
+  List<Options>? options;
+  String? status;
+  String? createdBy;
+  String? updatedBy;
+  String? createdAt;
+  String? updatedAt;
+  int? iV;
+  String? selectedOption;
+
+  Orgusercategories(
+      {this.sId,
+      this.organisation,
+      this.label,
+      this.options,
+      this.status,
+      this.createdBy,
+      this.updatedBy,
+      this.createdAt,
+      this.updatedAt,
+      this.iV,
+      this.selectedOption});
+
+  Orgusercategories.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    organisation = json['organisation'];
+    label = json['label'];
+    if (json['options'] != null) {
+      options = <Options>[];
+      json['options'].forEach((v) {
+        options!.add(new Options.fromJson(v));
+      });
+    }
+    status = json['status'];
+    createdBy = json['createdBy'];
+    updatedBy = json['updatedBy'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
+    iV = json['__v'];
+    selectedOption = json['selectedOption'];
+  }
+}
+
+class Options {
+  String? name;
+  String? status;
+  String? sId;
+
+  Options({this.name, this.status, this.sId});
+
+  Options.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    status = json['status'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['status'] = this.status;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+  
 
 // /* class MyProfileModel {
 //   int? code;
@@ -1066,3 +1139,5 @@ class Organisation {
 //   }
 // }
 // */
+
+
