@@ -108,40 +108,50 @@ class _AddOrgSuggestionState extends State<AddOrgSuggestion> {
   final OrgController orgController = Get.find();
 
   @override
+  void dispose() {
+    orgController.selectedorgs.value = [];
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Obx(() => orgController.SuggestedOrgs.value.data == null ||
-            orgController.orgSuggestionTextEditingController.value.text
-                    .trim() ==
-                ''
-        ? Container()
-        : ListView.builder(
-            shrinkWrap: true,
-            itemCount: orgController.SuggestedOrgs.value.data!.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Obx(() {
-                      return Checkbox(
-                        checkColor: SolhColors.white,
-                        activeColor: SolhColors.primary_green,
-                        value: orgController.selectedorgs.value.contains(
-                            orgController.SuggestedOrgs.value.data![index].sId),
-                        onChanged: (value) {
-                          orgController.addRemoveOrgs(orgController
-                              .SuggestedOrgs.value.data![index].sId!);
-                          setState(() {});
-                        },
-                      );
-                    }),
-                    Expanded(
-                        child: Text(orgController
-                            .SuggestedOrgs.value.data![index].name!))
-                  ],
-                ),
-              );
-            },
-          ));
+    return Obx(
+      () => orgController.SuggestedOrgs.value.data == null ||
+              orgController.orgSuggestionTextEditingController.value.text
+                      .trim() ==
+                  ''
+          ? Container()
+          : ListView.builder(
+              shrinkWrap: true,
+              itemCount: orgController.SuggestedOrgs.value.data!.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Obx(() {
+                        return Checkbox(
+                          checkColor: SolhColors.white,
+                          activeColor: SolhColors.primary_green,
+                          value: orgController.selectedorgs.value.contains(
+                              orgController
+                                  .SuggestedOrgs.value.data![index].sId),
+                          onChanged: (value) {
+                            orgController.addRemoveOrgs(orgController
+                                .SuggestedOrgs.value.data![index].sId!);
+                            setState(() {});
+                          },
+                        );
+                      }),
+                      Expanded(
+                          child: Text(orgController
+                              .SuggestedOrgs.value.data![index].name!))
+                    ],
+                  ),
+                );
+              },
+            ),
+    );
   }
 }

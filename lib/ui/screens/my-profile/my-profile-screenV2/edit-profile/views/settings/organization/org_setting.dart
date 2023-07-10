@@ -290,17 +290,19 @@ Widget getOtherOrgs(
                   },
                 );
               },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                decoration: BoxDecoration(
-                    color: SolhColors.primary_green.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(6)),
-                child: Text(
-                  subList[index].orgusercategories!.label!,
-                  style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                      color: SolhColors.primary_green),
-                ),
-              ),
+              child: subList[index].orgusercategories != null
+                  ? Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      decoration: BoxDecoration(
+                          color: SolhColors.primary_green.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: Text(
+                        subList[index].orgusercategories!.label!,
+                        style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                            color: SolhColors.primary_green),
+                      ),
+                    )
+                  : Container(),
             ),
           ],
         ),
