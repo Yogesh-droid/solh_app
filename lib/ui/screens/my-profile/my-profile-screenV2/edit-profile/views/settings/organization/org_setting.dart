@@ -8,6 +8,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -301,15 +302,23 @@ class TeamsModelSheetContent extends StatelessWidget {
               return Card(
                   child: Row(
                 children: [
-                  Checkbox(
+                  Radio(
+                    groupValue: '',
                     value: false,
                     onChanged: (value) {},
                   ),
-                  Text("Omlogic"),
+                  Text(
+                    "Omlogic",
+                    style: SolhTextStyles.QS_caption,
+                  ),
                 ],
               ));
             },
             itemCount: 6,
+          ),
+          SolhGreenButton(child: Text('Save')),
+          SizedBox(
+            height: 2.h,
           ),
         ],
       ),
