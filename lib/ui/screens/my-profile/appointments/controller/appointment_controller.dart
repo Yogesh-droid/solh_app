@@ -88,11 +88,16 @@ class AppointmentController extends GetxController {
 
   Future<void> getDoctorAppointments() async {
     isAppointmentLoading.value = true;
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        '${APIConstants.api}/api/app-provider-appointents');
-
-    if (map['success']) {
-      doctorAppointmentModel.value = DoctorsAppointmentModel.fromJson(map);
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/app-provider-appointents');
+      log(map.toString(), name: 'map');
+      if (map['success']) {
+        doctorAppointmentModel.value = DoctorsAppointmentModel.fromJson(map);
+      }
+    } catch (e) {
+      log(e.toString(), name: "error");
+      throw (e);
     }
     isAppointmentLoading.value = false;
   }

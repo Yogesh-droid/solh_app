@@ -9,6 +9,7 @@ import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/service/org_service.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/orgainsation-model/organisation_model.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/service/part_of_orgination_service.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class OrgController extends GetxController {
@@ -34,6 +35,8 @@ class OrgController extends GetxController {
     try {
       MyProfileModel response = await orgService.deleteOrgService(id);
       profileController.myProfileModel.value = response;
+      DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
+          .userOrganisations!.first.organisation!.sId!);
     } catch (e) {
       throw (e);
     }
@@ -91,9 +94,10 @@ class OrgController extends GetxController {
       selectedorgs.forEach((element) {
         allOrgs.add(element);
       });
-      log(allOrgs.toString());
       await profileController
           .editProfile({'organisation': jsonEncode(allOrgs)});
+      DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
+          .userOrganisations!.first.organisation!.sId!);
     } catch (e) {
       throw (e);
     }
@@ -117,6 +121,7 @@ class OrgController extends GetxController {
     allId.add(firstItem.organisation!.sId);
     log(allId.toString());
     profileController.editProfile({'organisation': jsonEncode(allId)});
+    DefaultOrg.setDefaultOrg(allId.first);
   }
 
   Future<void> updateOrgTeamController(

@@ -26,6 +26,7 @@ import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
@@ -105,6 +106,7 @@ class _SolhAppState extends State<SolhApp> {
     initDynamic();
     initControllers();
     getLoacale();
+    DefaultOrg.getDefaultOrg();
 
     super.initState();
   }

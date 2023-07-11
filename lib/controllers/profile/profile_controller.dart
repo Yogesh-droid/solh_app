@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import '../../constants/api.dart';
 
@@ -19,6 +20,12 @@ class ProfileController extends GetxController {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
+      if (myProfileModel.value.body!.userOrganisations != null) {
+        if (myProfileModel.value.body!.userOrganisations!.isNotEmpty) {
+          DefaultOrg.setDefaultOrg(myProfileModel
+              .value.body!.userOrganisations!.first.organisation!.sId!);
+        }
+      }
 
       print('This is profile   $map');
       isProfileLoading.value = false;

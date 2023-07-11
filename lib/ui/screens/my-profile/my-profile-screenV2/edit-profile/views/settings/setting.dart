@@ -118,14 +118,8 @@ class Setting extends StatelessWidget {
           ),
           InkWell(
             onTap: () => Navigator.pushNamed(context, AppRoutes.OrgSetting),
-            child: getSettingOptions(
-                Icon(
-                  CupertinoIcons.waveform,
-                  color: SolhColors.primary_green,
-                  size: 20,
-                ),
-                'Organization'.tr,
-                null),
+            child: getSettingOptions(Image.asset('assets/images/org_icon.png'),
+                'Organization'.tr, null),
           ),
           Expanded(child: SizedBox()),
           GetLogoutButton(),

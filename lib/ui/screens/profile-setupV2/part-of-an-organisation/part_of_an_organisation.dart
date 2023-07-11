@@ -10,6 +10,7 @@ import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/controll
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/profileSetupFloatingActionButton.dart';
 import 'package:solh/widgets_constants/constants/stepsProgressbar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -43,7 +44,8 @@ class PartOfAnOrganisationPage extends StatelessWidget {
                     .map((element) => element['sId'])
                     .toList())
               });
-
+              DefaultOrg.setDefaultOrg(
+                  _controller.selectedOrgList.first['sId']);
               if (response) {
                 Navigator.pushNamed(context, AppRoutes.master);
               }
