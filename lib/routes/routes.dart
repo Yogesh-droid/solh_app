@@ -38,7 +38,7 @@ import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completio
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/anonymous_profile.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/bio.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/part_of_org.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/part-of-org/part_of_org.dart';
 import 'package:solh/ui/screens/my-profile/posts/post.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit_anonymous_profile.dart';
