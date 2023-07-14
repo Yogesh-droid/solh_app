@@ -44,8 +44,6 @@ class PartOfAnOrganisationPage extends StatelessWidget {
                     .map((element) => element['sId'])
                     .toList())
               });
-              DefaultOrg.setDefaultOrg(
-                  _controller.selectedOrgList.first['sId']);
               if (response) {
                 Navigator.pushNamed(context, AppRoutes.master);
               }

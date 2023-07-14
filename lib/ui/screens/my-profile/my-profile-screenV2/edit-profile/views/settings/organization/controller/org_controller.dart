@@ -35,8 +35,14 @@ class OrgController extends GetxController {
     try {
       MyProfileModel response = await orgService.deleteOrgService(id);
       profileController.myProfileModel.value = response;
-      DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
-          .userOrganisations!.first.organisation!.sId!);
+      if (profileController
+              .myProfileModel.value.body!.userOrganisations!.first.status ==
+          'Approved') {
+        DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
+            .userOrganisations!.first.organisation!.sId!);
+      } else {
+        DefaultOrg.setDefaultOrg(null);
+      }
     } catch (e) {
       throw (e);
     }

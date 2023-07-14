@@ -7,6 +7,7 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -153,6 +154,13 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
               backgroundImage: NetworkImage(myProfileModel
                   .body!.userOrganisations!.first.organisation!.logo!),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                getOrgStatus(
+                    myProfileModel.body!.userOrganisations!.first.status!),
+              ],
+            ),
             Text(
               myProfileModel.body!.userOrganisations!.first.organisation!.name!,
               textAlign: TextAlign.center,
@@ -237,7 +245,14 @@ Widget getOtherOrgs(
                 Padding(
                     padding: const EdgeInsets.only(left: 8, top: 8),
                     child: InkWell(
-                      onTap: () => orgController.changeDefault(index),
+                      onTap: () {
+                        if (subList[index].status == 'Approved') {
+                          orgController.changeDefault(index);
+                        } else {
+                          Utility.showToast(
+                              'Only approved organizations can be made default');
+                        }
+                      },
                       child: Container(
                         height: 20,
                         width: 20,
@@ -422,12 +437,28 @@ Widget getOrgStatus(String status) {
         height: 5,
         width: 5,
         decoration: BoxDecoration(
-            shape: BoxShape.circle, color: SolhColors.red_shade_1),
+            shape: BoxShape.circle, color: getStatusColor(status)),
+      ),
+      SizedBox(
+        width: 5,
       ),
       Text(
-        'Active',
+        status,
         style: SolhTextStyles.QS_cap_2_semi,
-      )
+      ),
     ],
   );
+}
+
+Color getStatusColor(String label) {
+  switch (label) {
+    case 'Approved':
+      return Color(0xff0C812C);
+    case 'Invited':
+      return Color(0xffEAA900);
+    case 'Rejected':
+      return Color(0xffE11616);
+    default:
+      return Colors.white;
+  }
 }

@@ -106,6 +106,28 @@ class _SolhAppState extends State<SolhApp> {
     initDynamic();
     initControllers();
     getLoacale();
+    if (Get.find<ProfileController>()
+                .myProfileModel
+                .value
+                .body!
+                .userOrganisations !=
+            null &&
+        Get.find<ProfileController>()
+            .myProfileModel
+            .value
+            .body!
+            .userOrganisations!
+            .isNotEmpty &&
+        Get.find<ProfileController>()
+                .myProfileModel
+                .value
+                .body!
+                .userOrganisations!
+                .first
+                .status ==
+            'Approved') {
+      DefaultOrg.getDefaultOrg();
+    }
     DefaultOrg.getDefaultOrg();
 
     super.initState();
