@@ -39,7 +39,7 @@ class DiscoverGroupController extends GetxController {
     if (createGroupNextPage != null) {
       loadingCreatedGroups.value = true;
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          '${APIConstants.api}/api/created-groupsv1?pageNumber=${createGroupNextPage}&limit=10');
+          '${APIConstants.api}/api/created-groupsv2?pageNumber=${createGroupNextPage}&limit=10');
       loadingCreatedGroups.value = false;
       if (map['success']) {
         GetGroupResponseModel groupResponseModel =

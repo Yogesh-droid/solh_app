@@ -21,9 +21,13 @@ class ProfileController extends GetxController {
           "${APIConstants.api}/api/get-my-profile-details");
       myProfileModel.value = MyProfileModel.fromJson(map);
       if (myProfileModel.value.body!.userOrganisations != null) {
-        if (myProfileModel.value.body!.userOrganisations!.isNotEmpty) {
+        if (myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
+            myProfileModel.value.body!.userOrganisations!.first.status ==
+                'Approved') {
           DefaultOrg.setDefaultOrg(myProfileModel
               .value.body!.userOrganisations!.first.organisation!.sId!);
+        } else {
+          DefaultOrg.setDefaultOrg(null);
         }
       }
 

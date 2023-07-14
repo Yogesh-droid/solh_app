@@ -104,33 +104,16 @@ class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
     initDynamic();
-    initControllers();
+    init();
     getLoacale();
-    if (Get.find<ProfileController>()
-                .myProfileModel
-                .value
-                .body!
-                .userOrganisations !=
-            null &&
-        Get.find<ProfileController>()
-            .myProfileModel
-            .value
-            .body!
-            .userOrganisations!
-            .isNotEmpty &&
-        Get.find<ProfileController>()
-                .myProfileModel
-                .value
-                .body!
-                .userOrganisations!
-                .first
-                .status ==
-            'Approved') {
-      DefaultOrg.getDefaultOrg();
-    }
+
     DefaultOrg.getDefaultOrg();
 
     super.initState();
+  }
+
+  Future<void> init() async {
+    await initControllers();
   }
 
   getLoacale() async {
@@ -210,7 +193,7 @@ class _SolhAppState extends State<SolhApp> {
     Get.put(ErrorController());
     if (widget._isProfileCreated) {
       Get.put(BottomNavigatorController());
-
+      Get.put(ProfileController());
       Get.put(ProfileSetupController());
       Get.put(BottomNavigatorController());
       // await profileController.getMyProfile();
