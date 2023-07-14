@@ -265,6 +265,12 @@ Widget getOtherOrgs(
               radius: 15.w,
               backgroundImage: NetworkImage(subList[index].organisation!.logo!),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                getOrgStatus(subList[index].status ?? ''),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
@@ -407,4 +413,21 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
       ),
     );
   }
+}
+
+Widget getOrgStatus(String status) {
+  return Row(
+    children: [
+      Container(
+        height: 5,
+        width: 5,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle, color: SolhColors.red_shade_1),
+      ),
+      Text(
+        'Active',
+        style: SolhTextStyles.QS_cap_2_semi,
+      )
+    ],
+  );
 }
