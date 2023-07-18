@@ -35,7 +35,7 @@ class VideoTutorialController extends GetxController {
   Future<void> getVideoPlaylist() async {
     isLoadingPlaylist.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-        "${APIConstants.api}/api/custom/app/get-tutorial-category");
+        "${APIConstants.api}/api/custom/app/get-tutorial-categoryv2");
     VideoPlaylistModel videoPlaylistModel = VideoPlaylistModel.fromJson(map);
     videoPlaylist.value = videoPlaylistModel.tutorialCategoryList ?? [];
     isLoadingPlaylist.value = false;
