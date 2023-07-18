@@ -17,11 +17,8 @@ class SimpleImageContainer extends StatelessWidget {
       this.borderWidth = 2.0,
       this.boxFit = BoxFit.contain,
       this.enableGradientBorder = false,
-      this.gradientColorList = const [
-        SolhColors.primary_green,
-        SolhColors.primaryRed
-      ],
-      this.borderColor = SolhColors.primary_green,
+      this.gradientColorList,
+      this.borderColor,
       this.enableborder = false})
       : super(key: key);
   final String imageUrl;
@@ -29,10 +26,10 @@ class SimpleImageContainer extends StatelessWidget {
   final VoidCallback? onClick;
   final bool enableborder;
   final bool enableGradientBorder;
-  final List<Color> gradientColorList;
+  final List<Color>? gradientColorList;
   final bool zoomEnabled;
   final double borderWidth;
-  final Color borderColor;
+  final Color? borderColor;
   final BoxFit boxFit;
   @override
   Widget build(BuildContext context) {
@@ -47,9 +44,13 @@ class SimpleImageContainer extends StatelessWidget {
           shape: BoxShape.circle,
           //to enable gradient border ,enable both border and gradient border
           gradient: enableGradientBorder
-              ? LinearGradient(colors: gradientColorList)
+              ? LinearGradient(
+                  colors: gradientColorList ??
+                      [SolhColors.primary_green, SolhColors.primaryRed])
               : null,
-          color: enableborder == true ? borderColor : Colors.transparent,
+          color: enableborder == true
+              ? borderColor ?? SolhColors.primary_green
+              : Colors.transparent,
         ),
         child: CachedNetworkImage(
           imageUrl: imageUrl,
@@ -84,7 +85,7 @@ class StackImage extends StatelessWidget {
     this.topImageBorderEnable = true,
     this.topImageBorderRadius = 1,
     this.topImageBorderColor = Colors.white,
-    this.bottomImageBorderColor = SolhColors.primary_green,
+    this.bottomImageBorderColor,
     this.onClick,
     required this.topImageOffset,
     required this.topImageUrl,
@@ -99,7 +100,7 @@ class StackImage extends StatelessWidget {
   final double bottomImageBorderRadius;
   final double topImageBorderRadius;
   final Offset topImageOffset;
-  final Color bottomImageBorderColor;
+  final Color? bottomImageBorderColor;
   final Color topImageBorderColor;
   final VoidCallback? onClick;
 
@@ -114,7 +115,7 @@ class StackImage extends StatelessWidget {
             radius: bottomImageRadius,
             enableborder: bottomImageBorderEnable,
             borderColor: bottomImageBorderEnable == true
-                ? bottomImageBorderColor
+                ? bottomImageBorderColor ?? SolhColors.primary_green
                 : Colors.transparent,
           ),
           Positioned(

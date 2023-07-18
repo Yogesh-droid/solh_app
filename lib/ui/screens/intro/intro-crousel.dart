@@ -192,13 +192,13 @@ class SkipButton extends StatelessWidget {
   const SkipButton({
     Key? key,
     VoidCallback? onPressed,
-    TextStyle buttonstyle = SolhTextStyles.GreenBorderButtonText,
+    TextStyle? buttonstyle,
   })  : _onPressed = onPressed,
         _buttonstyle = buttonstyle,
         super(key: key);
 
   final VoidCallback? _onPressed;
-  final TextStyle _buttonstyle;
+  final TextStyle? _buttonstyle;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +208,7 @@ class SkipButton extends StatelessWidget {
               MaterialStateProperty.all<Color>(Colors.transparent)),
       child: Text(
         "Skip".tr,
-        style: _buttonstyle,
+        style: _buttonstyle ?? SolhTextStyles.GreenBorderButtonText,
       ),
       onPressed: _onPressed,
     );

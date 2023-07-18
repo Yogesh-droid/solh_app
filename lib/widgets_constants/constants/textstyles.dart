@@ -19,7 +19,7 @@ class SolhTextStyles {
 
   //First Time Landing Page
 
-  static const TextStyle LandingTitleText = TextStyle(
+  static TextStyle LandingTitleText = TextStyle(
     fontSize: 24,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
@@ -54,7 +54,7 @@ class SolhTextStyles {
     height: 1.23, //Figma Line Height 19.71
   );
 
-  static const TextStyle ToggleLinkText = TextStyle(
+  static TextStyle ToggleLinkText = TextStyle(
     fontSize: 16,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
@@ -83,7 +83,7 @@ class SolhTextStyles {
     height: 1.23, //Figma Line Height 14.78
   );
 
-  static const TextStyle JournalingBadgeText = TextStyle(
+  static TextStyle JournalingBadgeText = TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: SolhColors.primary_green,
@@ -105,7 +105,7 @@ class SolhTextStyles {
       letterSpacing: 0.1 //Figma Line Height 19.71
       );
 
-  static const TextStyle JournalingDescriptionReadMoreText = TextStyle(
+  static TextStyle JournalingDescriptionReadMoreText = TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: SolhColors.primary_green,
@@ -121,7 +121,7 @@ class SolhTextStyles {
 
   // Buttons
 
-  static const TextStyle GreenBorderButtonText = TextStyle(
+  static TextStyle GreenBorderButtonText = TextStyle(
     fontSize: 14,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w400,
@@ -149,10 +149,10 @@ class SolhTextStyles {
     height: 1.23, //Figma Line Height 17.25
   );
 
-  static const TextStyle SOSGreenHeading =
+  static TextStyle SOSGreenHeading =
       TextStyle(color: SolhColors.primary_green, fontSize: 20);
 
-  static const TextStyle mostUpvoted = TextStyle(
+  static TextStyle mostUpvoted = TextStyle(
     fontSize: 15,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,
@@ -169,7 +169,7 @@ class SolhTextStyles {
       TextStyle(color: Color(0xFFA6A6A6), fontSize: 16);
 
   ///second version of text styles starts from here
-  static const TextStyle LargeGreenTextS32W7 = TextStyle(
+  static TextStyle LargeGreenTextS32W7 = TextStyle(
     fontSize: 32,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w700,
@@ -198,7 +198,7 @@ class SolhTextStyles {
     fontWeight: FontWeight.w600,
   );
 
-  static const TextStyle NormalTextGreenS14W5 = TextStyle(
+  static TextStyle NormalTextGreenS14W5 = TextStyle(
     fontSize: 14,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,
@@ -227,7 +227,7 @@ class SolhTextStyles {
     color: SolhColors.grey7E,
     fontWeight: FontWeight.w500,
   );
-  static const TextStyle SmallTextGreen1S12W5 = TextStyle(
+  static TextStyle SmallTextGreen1S12W5 = TextStyle(
     fontSize: 12,
     color: SolhColors.primary_green,
     fontWeight: FontWeight.w500,

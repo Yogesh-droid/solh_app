@@ -9,15 +9,15 @@ class MyArc extends StatelessWidget {
   const MyArc({
     Key? key,
     this.diameter = 200,
-    this.color = SolhColors.primary_green,
+    this.color,
   }) : super(key: key);
 
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: MyPainter(color),
+      painter: MyPainter(color ?? SolhColors.primary_green),
       size: Size(diameter, diameter),
     );
   }

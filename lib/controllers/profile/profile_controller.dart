@@ -1,7 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import '../../constants/api.dart';
@@ -19,6 +22,7 @@ class ProfileController extends GetxController {
       //await Future.delayed(Duration(seconds: 30));
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-my-profile-details");
+      SolhColors.primary_green = Color(0xFFFFEBE5);
       myProfileModel.value = MyProfileModel.fromJson(map);
       if (myProfileModel.value.body!.userOrganisations != null) {
         if (myProfileModel.value.body!.userOrganisations!.isNotEmpty &&

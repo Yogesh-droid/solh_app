@@ -207,16 +207,15 @@ class TransferProfileCard extends StatelessWidget {
 class DotWidget extends StatelessWidget {
   final double totalWidth, dashWidth, emptyWidth, dashHeight;
 
-  final Color dashColor;
+  final Color? dashColor;
 
-  DotWidget({
-    super.key,
-    this.totalWidth = 100,
-    this.dashWidth = 7,
-    this.emptyWidth = 5,
-    this.dashHeight = 1,
-    this.dashColor = SolhColors.primary_green,
-  });
+  DotWidget(
+      {super.key,
+      this.totalWidth = 100,
+      this.dashWidth = 7,
+      this.emptyWidth = 5,
+      this.dashHeight = 1,
+      this.dashColor});
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +226,7 @@ class DotWidget extends StatelessWidget {
         (_) => Container(
           width: dashWidth,
           height: dashHeight,
-          color: dashColor,
+          color: dashColor ?? SolhColors.primary_green,
           margin: EdgeInsets.only(left: emptyWidth / 2, right: emptyWidth / 2),
         ),
       ),

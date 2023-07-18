@@ -494,16 +494,16 @@ class AlliedConsultantTile extends StatelessWidget {
 }
 
 class SolhDot extends StatelessWidget {
-  const SolhDot(
-      {super.key, this.color = SolhColors.primary_green, this.size = 5});
-  final Color color;
+  const SolhDot({super.key, this.color, this.size = 5});
+  final Color? color;
   final double size;
   @override
   Widget build(BuildContext context) {
     return Container(
       height: size,
       width: size,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      decoration: BoxDecoration(
+          shape: BoxShape.circle, color: color ?? SolhColors.primary_green),
     );
   }
 }
