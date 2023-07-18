@@ -39,7 +39,7 @@ class DiscoverGroupController extends GetxController {
     if (createGroupNextPage != null) {
       loadingCreatedGroups.value = true;
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          '${APIConstants.api}/api/created-groupsv1?pageNumber=${createGroupNextPage}&limit=10');
+          '${APIConstants.api}/api/created-groupsv2?pageNumber=${createGroupNextPage}&limit=10');
       loadingCreatedGroups.value = false;
       if (map['success']) {
         GetGroupResponseModel groupResponseModel =
@@ -83,7 +83,7 @@ class DiscoverGroupController extends GetxController {
     if (nextPage != null) {
       loadingDiscoverGroups.value = true;
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          '${APIConstants.api}/api/groupv1?pageNumber=${nextPage}&limit=10');
+          '${APIConstants.api}/api/groupv2?pageNumber=${nextPage}&limit=10');
       loadingDiscoverGroups.value = false;
       if (map['success']) {
         GetGroupResponseModel groupResponseModel =

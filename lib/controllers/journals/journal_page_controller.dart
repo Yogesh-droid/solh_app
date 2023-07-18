@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -58,7 +60,7 @@ class JournalPageController extends GetxController {
             ? await await Network.makeGetRequestWithToken(
                 "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}")
             : await Network.makeGetRequestWithToken(
-                "${APIConstants.api}/api/v1/posts?pageNumber=$pageNo");
+                "${APIConstants.api}/api/v2/posts?pageNumber=$pageNo");
 
         print('map: ' + map.toString());
 
@@ -179,7 +181,8 @@ class JournalPageController extends GetxController {
 
   Future<Map<String, dynamic>> getAnnouncement() async {
     Map<String, dynamic> map = {};
-    await Network.makeGetRequest("${APIConstants.api}/api/popup-announcement")
+    await Network.makeGetRequestWithToken(
+            "${APIConstants.api}/api/v1/popup-announcement")
         .then((value) {
       map = {
         //"mediaType": value['announcementList']['mediaType'],
@@ -198,8 +201,11 @@ class JournalPageController extends GetxController {
   }
 
   Future<void> getHeaderAnnounce() async {
-    await Network.makeGetRequest("${APIConstants.api}/api/header-announcement")
+    log('it ran', name: "announcementMedia");
+    await Network.makeGetRequestWithToken(
+            "${APIConstants.api}/api/v1/header-announcement")
         .then((value) {
+      log(value.toString(), name: "announcementMedia");
       announcementData.value = value['announcementList'].isEmpty
           ? ''
           : value['announcementList'][0]['announcementMedia'];

@@ -113,6 +113,14 @@ class Setting extends StatelessWidget {
                 'Languages'.tr,
                 null),
           ),
+          SizedBox(
+            height: 15,
+          ),
+          InkWell(
+            onTap: () => Navigator.pushNamed(context, AppRoutes.OrgSetting),
+            child: getSettingOptions(Image.asset('assets/images/org_icon.png'),
+                'Organization'.tr, null),
+          ),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
           SizedBox(

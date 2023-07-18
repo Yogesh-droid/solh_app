@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/services/network/exceptions.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'dart:developer';
 
 import 'package:solh/widgets_constants/constants/locale.dart';
@@ -236,7 +237,8 @@ class Network {
       print("requested");
       Map<String, String> headers = {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
-        "Accept-Language": AppLocale.appLocale.languageCode
+        "Accept-Language": AppLocale.appLocale.languageCode,
+        "organisation": DefaultOrg.defaultOrg ?? "",
       };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);

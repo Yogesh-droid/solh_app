@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/chat/chat_provider.dart';
@@ -110,13 +111,12 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                       itemCount: appointmentController.doctorAppointmentModel
                           .value.scheduldAppointments!.length,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return appointmentController
                                     .doctorAppointmentModel
                                     .value
                                     .scheduldAppointments![index]
-                                    .patient !=
+                                    .patientId !=
                                 null
                             ? Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -141,7 +141,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                   .doctorAppointmentModel
                                                   .value
                                                   .scheduldAppointments![index]
-                                                  .patient!
+                                                  .patientId!
                                                   .profilePicture ??
                                               '',
                                           imageBuilder:
@@ -178,7 +178,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                       .value
                                                       .scheduldAppointments![
                                                           index]
-                                                      .patient!
+                                                      .patientId!
                                                       .name ??
                                                   '',
                                               style: SolhTextStyles
@@ -196,7 +196,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                           Container(
                                             alignment: Alignment.centerRight,
                                             child: Text(
-                                              '${appointmentController.doctorAppointmentModel.value.scheduldAppointments![index].scheduledOn ?? ''}',
+                                              '${DateFormat('dd-MM-yyyy').format(DateTime.parse(appointmentController.doctorAppointmentModel.value.scheduldAppointments![index].startDate ?? ''))}',
                                               style: SolhTextStyles
                                                   .JournalingDescriptionText,
                                             ),
@@ -204,35 +204,37 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                           SolhGreenMiniButton(
                                             onPressed: () {
                                               Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ChatProviderScreen(
-                                                            name: appointmentController
-                                                                    .doctorAppointmentModel
-                                                                    .value
-                                                                    .scheduldAppointments![
-                                                                        index]
-                                                                    .patient!
-                                                                    .name ??
-                                                                '',
-                                                            imageUrl: appointmentController
-                                                                    .doctorAppointmentModel
-                                                                    .value
-                                                                    .scheduldAppointments![
-                                                                        index]
-                                                                    .patient!
-                                                                    .profilePicture ??
-                                                                '',
-                                                            sId: appointmentController
-                                                                    .doctorAppointmentModel
-                                                                    .value
-                                                                    .scheduldAppointments![
-                                                                        index]
-                                                                    .patient!
-                                                                    .sId ??
-                                                                '',
-                                                          )));
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatProviderScreen(
+                                                    name: appointmentController
+                                                            .doctorAppointmentModel
+                                                            .value
+                                                            .scheduldAppointments![
+                                                                index]
+                                                            .patientId!
+                                                            .name ??
+                                                        '',
+                                                    imageUrl: appointmentController
+                                                            .doctorAppointmentModel
+                                                            .value
+                                                            .scheduldAppointments![
+                                                                index]
+                                                            .patientId!
+                                                            .profilePicture ??
+                                                        '',
+                                                    sId: appointmentController
+                                                            .doctorAppointmentModel
+                                                            .value
+                                                            .scheduldAppointments![
+                                                                index]
+                                                            .patientId!
+                                                            .sId ??
+                                                        '',
+                                                  ),
+                                                ),
+                                              );
                                             },
                                             child: Row(
                                               mainAxisAlignment:
@@ -282,13 +284,12 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                       itemCount: appointmentController.doctorAppointmentModel
                           .value.completedAppointments!.length,
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return appointmentController
                                     .doctorAppointmentModel
                                     .value
                                     .completedAppointments![index]
-                                    .patient !=
+                                    .patientId !=
                                 null
                             ? Padding(
                                 padding: const EdgeInsets.only(bottom: 8.0),
@@ -312,7 +313,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                 .doctorAppointmentModel
                                                 .value
                                                 .completedAppointments![index]
-                                                .patient!
+                                                .patientId!
                                                 .profilePicture ??
                                             '',
                                         imageBuilder:
@@ -349,7 +350,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                                     .value
                                                     .completedAppointments![
                                                         index]
-                                                    .patient!
+                                                    .patientId!
                                                     .name ??
                                                 '',
                                             style: SolhTextStyles
@@ -367,7 +368,7 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                         Container(
                                           alignment: Alignment.centerRight,
                                           child: Text(
-                                            '${appointmentController.doctorAppointmentModel.value.scheduldAppointments![index].scheduledOn ?? ''}',
+                                            '${DateFormat('dd-MM-yyyy').format(DateTime.parse(appointmentController.doctorAppointmentModel.value.completedAppointments![index].startDate ?? ''))}',
                                             style: SolhTextStyles
                                                 .JournalingDescriptionText,
                                           ),
@@ -375,35 +376,37 @@ class _DoctorsAppointmentPageState extends State<DoctorsAppointmentPage>
                                         SolhGreenBorderMiniButton(
                                           onPressed: () {
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ChatProviderScreen(
-                                                          name: appointmentController
-                                                                  .doctorAppointmentModel
-                                                                  .value
-                                                                  .completedAppointments![
-                                                                      index]
-                                                                  .patient!
-                                                                  .name ??
-                                                              '',
-                                                          imageUrl: appointmentController
-                                                                  .doctorAppointmentModel
-                                                                  .value
-                                                                  .completedAppointments![
-                                                                      index]
-                                                                  .patient!
-                                                                  .profilePicture ??
-                                                              '',
-                                                          sId: appointmentController
-                                                                  .doctorAppointmentModel
-                                                                  .value
-                                                                  .completedAppointments![
-                                                                      index]
-                                                                  .patient!
-                                                                  .sId ??
-                                                              '',
-                                                        )));
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChatProviderScreen(
+                                                  name: appointmentController
+                                                          .doctorAppointmentModel
+                                                          .value
+                                                          .completedAppointments![
+                                                              index]
+                                                          .patientId!
+                                                          .name ??
+                                                      '',
+                                                  imageUrl: appointmentController
+                                                          .doctorAppointmentModel
+                                                          .value
+                                                          .completedAppointments![
+                                                              index]
+                                                          .patientId!
+                                                          .profilePicture ??
+                                                      '',
+                                                  sId: appointmentController
+                                                          .doctorAppointmentModel
+                                                          .value
+                                                          .completedAppointments![
+                                                              index]
+                                                          .patientId!
+                                                          .sId ??
+                                                      '',
+                                                ),
+                                              ),
+                                            );
                                           },
                                           child: Row(
                                             mainAxisAlignment:

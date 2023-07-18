@@ -26,6 +26,7 @@ import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/profile-setupV2/profile-setup-controller/profile_setup_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
@@ -103,10 +104,16 @@ class _SolhAppState extends State<SolhApp> {
   @override
   void initState() {
     initDynamic();
-    initControllers();
+    init();
     getLoacale();
 
+    DefaultOrg.getDefaultOrg();
+
     super.initState();
+  }
+
+  Future<void> init() async {
+    await initControllers();
   }
 
   getLoacale() async {
@@ -186,7 +193,7 @@ class _SolhAppState extends State<SolhApp> {
     Get.put(ErrorController());
     if (widget._isProfileCreated) {
       Get.put(BottomNavigatorController());
-
+      Get.put(ProfileController());
       Get.put(ProfileSetupController());
       Get.put(BottomNavigatorController());
       // await profileController.getMyProfile();
