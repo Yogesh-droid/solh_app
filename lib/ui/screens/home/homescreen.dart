@@ -1764,93 +1764,108 @@ class ChatAnonymouslyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showDialog(context: context, builder: (context) => AnonymousDialog());
-      },
-      child: Container(
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            colorFilter:
-                ColorFilter.mode(SolhColors.primary_green, BlendMode.color),
-            image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
-          ),
-        ),
-        child: Padding(
-          padding:
-              EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 60.w,
-                    child: Text(
-                      'Overwhelmed with emotions: Talk to a Solh counselor NOW'
-                          .tr,
-                      style: SolhTextStyles.QS_body_1_bold.copyWith(
-                          color: SolhColors.white),
+        onTap: () {
+          showDialog(context: context, builder: (context) => AnonymousDialog());
+        },
+        child: Obx(() => Container(
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                      profileController.myProfileModel.value.body!
+                                  .userOrganisations!.isNotEmpty &&
+                              profileController.myProfileModel.value.body!
+                                      .userOrganisations!.first.status ==
+                                  'Approved'
+                          ? SolhColors.org_color
+                          : SolhColors.primary_green,
+                      BlendMode.color),
+                  image:
+                      AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 60.w,
+                          child: Text(
+                            'Overwhelmed with emotions: Talk to a Solh counselor NOW'
+                                .tr,
+                            style: SolhTextStyles.QS_body_1_bold.copyWith(
+                                color: SolhColors.white),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(2.w),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SolhColors.primary_green,
+                              border: Border.all(
+                                  color: SolhColors.white, width: 1)),
+                          child: Center(
+                              child: Icon(
+                            CupertinoIcons.arrow_right,
+                            color: SolhColors.white,
+                          )),
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(2.w),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SolhColors.primary_green,
-                        border: Border.all(color: SolhColors.white, width: 1)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.arrow_right,
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        getIssuesRowItem(
+                            Image(
+                                image: AssetImage('assets/images/stress.png')),
+                            'Stress'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image:
+                                    AssetImage('assets/images/saddness.png')),
+                            'Sadness'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image:
+                                    AssetImage('assets/images/loneliness.png')),
+                            'Loneliness'.tr),
+                        getIssuesRowItem(
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: SolhColors.white),
+                              child: Center(child: Text('20+')),
+                            ),
+                            'More'.tr)
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Divider(
                       color: SolhColors.white,
-                    )),
-                  ),
-                ],
+                      thickness: 1,
+                    ),
+                    Text(
+                      'Start chatting for free right away, with a Solh counselor.'
+                          .tr,
+                      style: SolhTextStyles.QS_caption.copyWith(
+                          color: SolhColors.white, fontSize: 9.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/stress.png')),
-                      'Stress'.tr),
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/saddness.png')),
-                      'Sadness'.tr),
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/loneliness.png')),
-                      'Loneliness'.tr),
-                  getIssuesRowItem(
-                      Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: SolhColors.white),
-                        child: Center(child: Text('20+')),
-                      ),
-                      'More'.tr)
-                ],
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Divider(
-                color: SolhColors.white,
-                thickness: 1,
-              ),
-              Text(
-                'Start chatting for free right away, with a Solh counselor.'.tr,
-                style: SolhTextStyles.QS_caption.copyWith(
-                    color: SolhColors.white, fontSize: 9.sp),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            )));
   }
 }
 
