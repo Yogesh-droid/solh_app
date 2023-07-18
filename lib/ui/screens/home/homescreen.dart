@@ -71,7 +71,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CreateGroupController _controller = Get.put(CreateGroupController());
+  final CreateGroupController controller = Get.put(CreateGroupController());
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
@@ -1380,7 +1380,7 @@ class _HomePageState extends State<HomePage> {
                 separatorBuilder: (_, __) => SizedBox(width: 2.w),
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: connectionController.bloglist.value.length,
+                itemCount: connectionController.bloglist.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -1388,8 +1388,7 @@ class _HomePageState extends State<HomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => BlogDetailsPage(
-                                  id: connectionController
-                                          .bloglist.value[index].id ??
+                                  id: connectionController.bloglist[index].id ??
                                       0)));
                     },
                     child: Container(
@@ -1411,9 +1410,9 @@ class _HomePageState extends State<HomePage> {
                               topRight: Radius.circular(10),
                             ),
                             child: CachedNetworkImage(
-                              imageUrl: connectionController
-                                      .bloglist.value[index].image ??
-                                  '',
+                              imageUrl:
+                                  connectionController.bloglist[index].image ??
+                                      '',
                               height: 98,
                               width: 180,
                               fit: BoxFit.fill,
@@ -1431,8 +1430,7 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  connectionController
-                                          .bloglist.value[index].name ??
+                                  connectionController.bloglist[index].name ??
                                       '',
                                   maxLines: 2,
                                   style: TextStyle(
@@ -1455,8 +1453,7 @@ class _HomePageState extends State<HomePage> {
                                       width: 2.w,
                                     ),
                                     Text(
-                                      connectionController
-                                          .bloglist.value[index].views
+                                      connectionController.bloglist[index].views
                                           .toString(),
                                       style: TextStyle(
                                         fontSize: 12,
@@ -1467,7 +1464,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Text(
                                   connectionController
-                                          .bloglist.value[index].description ??
+                                          .bloglist[index].description ??
                                       '',
                                   maxLines: 5,
                                   style: TextStyle(
@@ -1737,124 +1734,13 @@ class PsychoTestContainer extends StatelessWidget {
 Widget getIssueUI(
     bookAppointmentController, GetHelpController getHelpController, context) {
   return Obx(() {
-    /*   return Container(
-      height: 300,
-      child: GridView.count(
-        mainAxisSpacing: 25,
-        crossAxisSpacing: 25,
-        scrollDirection: Axis.horizontal,
-        crossAxisCount: 3,
-        children: getHelpController.issueList.value.map<Widget>((issue) {
-          return IssuesTile(
-            title: issue.name ?? '',
-            onPressed: () {
-              bookAppointmentController.query = issue.name;
-              // AutoRouter.of(context).push(ConsultantsScreenRouter(
-              //     slug: issue.slug ?? '', type: 'issue'));
-              Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                  arguments: {"slug": issue.slug ?? '', "type": 'issue'});
-            },
-          );
-        }).toList(),
-      ),
-    ); */
-
-    /* return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: getHelpController.issueList.length * 100.0,
-            height: 130,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList.indexOf(issue) * 90.0,
-                  top: Random().nextInt(40) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          Container(
-            width: getHelpController.issueList1.length * 100.0,
-            height: 120,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList1.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList1.indexOf(issue) * 100.0,
-                  top: Random().nextInt(35) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          Container(
-            width: getHelpController.issueList2.length * 100.0,
-            height: 120,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList2.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList2.indexOf(issue) * 100.0,
-                  top: Random().nextInt(45) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    ); */
-
     return Wrap(
       runSpacing: 5,
-      children: getHelpController.issueList.value.map<Widget>((issue) {
+      children: getHelpController.issueList.map<Widget>((issue) {
         return IssuesTile(
           title: issue.name ?? '',
           onPressed: () {
             bookAppointmentController.query = issue.name;
-            // AutoRouter.of(context).push(ConsultantsScreenRouter(
-            //     slug: issue.slug ?? '', type: 'issue'));
             Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                 arguments: {
                   "slug": issue.slug ?? '',
@@ -1884,6 +1770,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           image: DecorationImage(
             fit: BoxFit.cover,
+            colorFilter:
+                ColorFilter.mode(SolhColors.primary_green, BlendMode.color),
             image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
           ),
         ),
@@ -2210,7 +2098,7 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                         ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: homeController.dotList.value
+                    children: homeController.dotList
                         .map((e) => Container(
                               height: e == _current ? 6 : 5,
                               width: e == _current ? 6 : 5,
@@ -2356,6 +2244,7 @@ class AnonymousDialog extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class SearchByProfesssionUI extends StatelessWidget {
   SearchByProfesssionUI({super.key});
   GetHelpController getHelpController = Get.find();
