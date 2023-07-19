@@ -41,7 +41,7 @@ class _ProfileTransferDetailState extends State<ProfileTransferDetail> {
       appBar: SolhAppBar(
         isLandingScreen: false,
         title: Text(
-          'Profile Transferred',
+          'Profile Transferred'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
       ),
@@ -55,7 +55,7 @@ class _ProfileTransferDetailState extends State<ProfileTransferDetail> {
                     delegate: SliverChildListDelegate([
                   GetHelpDivider(),
                   providerCard(
-                      tranferStatus: 'Transfered from',
+                      tranferStatus: 'Transfered from'.tr,
                       imageUrl: _appointmentController
                           .profileTransferDetailModel
                           .value
@@ -107,7 +107,7 @@ class _ProfileTransferDetailState extends State<ProfileTransferDetail> {
                           .details!
                           .referedTo!
                           .experience!,
-                      tranferStatus: "Transfered to"),
+                      tranferStatus: "Transfered to".tr),
                   GetHelpDivider(),
                   Obx(() {
                     if (_appointmentController.profileTransferStatus.value ==
@@ -264,7 +264,7 @@ class ApprovalUI extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          "There is a pending request for transfer of your case history & reports.",
+                          "There is a pending request for transfer of your case history & reports.".tr,
                           style: SolhTextStyles.QS_body_2_bold,
                         ),
                       )
@@ -552,7 +552,7 @@ class AcceptedApprovalUI extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    'Profile Transferred Successfully!',
+                    'Profile Transferred Successfully!'.tr,
                     style: SolhTextStyles.QS_body_2_bold,
                   ),
                 ],
@@ -588,7 +588,7 @@ class AcceptedApprovalUI extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Session Fee',
+                    'Session Fee'.tr,
                     style: SolhTextStyles.QS_cap_semi,
                   )
                 ],
@@ -610,7 +610,7 @@ class AcceptedApprovalUI extends StatelessWidget {
                         builder: (context) => ConsultantProfilePage()));
                   },
                   child: Text(
-                    "Visit Profile",
+                    "Visit Profile".tr,
                     style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                   ))
             ],
@@ -622,7 +622,7 @@ class AcceptedApprovalUI extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Details",
+                "Details".tr,
                 style: SolhTextStyles.QS_body_2_bold.copyWith(
                     color: SolhColors.primary_green),
               ),
@@ -684,7 +684,7 @@ Widget declinedTransferUI() {
               width: 10,
             ),
             Text(
-              'Profile Transferred Declined !',
+              'Profile Transferred Declined !'.tr,
               style: SolhTextStyles.QS_body_2_bold,
             ),
           ],

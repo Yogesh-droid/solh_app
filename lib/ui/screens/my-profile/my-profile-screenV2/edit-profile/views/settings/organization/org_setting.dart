@@ -92,7 +92,7 @@ Widget getAddOrgButton() {
               width: 5,
             ),
             Text(
-              'Add',
+              'Add'.tr,
               style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
             ),
           ],

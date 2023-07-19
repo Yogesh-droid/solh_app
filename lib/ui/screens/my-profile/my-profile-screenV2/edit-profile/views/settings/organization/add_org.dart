@@ -48,7 +48,7 @@ class AddOrg extends StatelessWidget {
                       filled: true,
                       fillColor: SolhColors.white,
                       border: OutlineInputBorder(borderSide: BorderSide.none),
-                      hintText: 'Search Organization',
+                      hintText: 'Search Organization'.tr,
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                         borderSide: BorderSide(color: SolhColors.primary_green),

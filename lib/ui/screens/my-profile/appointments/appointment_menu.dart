@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -32,8 +33,8 @@ class AppointmentMenu extends StatelessWidget {
                   CupertinoIcons.calendar,
                   color: SolhColors.primary_green,
                 ),
-                'My Appointments',
-                'with Clinician'),
+                'My Appointments'.tr,
+                'with Clinician'.tr),
           ),
           SizedBox(
             height: 14,
@@ -57,7 +58,7 @@ class AppointmentMenu extends StatelessWidget {
                   CupertinoIcons.person_circle,
                   color: SolhColors.primary_green,
                 ),
-                'Profile Transfers ',
+                'Profile Transfers',
                 'One consultant to other'),
           ),
         ]),
