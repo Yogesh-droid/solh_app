@@ -498,27 +498,9 @@ class _HomePageState extends State<HomePage> {
                                 : getHelpController
                                     .topConsultantList.value.doctors!.length,
                             itemBuilder: (_, index) {
-                              // print(getHelpController
-                              //     .topConsultantList
-                              //     .value
-                              //     .doctors![index]
-                              //     .profilePicture);
                               return TopConsultantsTile(
                                 doctors: getHelpController
                                     .topConsultantList.value.doctors![index],
-                                // bio: getHelpController.topConsultantList.value
-                                //         .doctors![index].bio ??
-                                //     '',
-                                // name: getHelpController.topConsultantList.value
-                                //         .doctors![index].name ??
-                                //     '',
-                                // mobile: getHelpController.topConsultantList
-                                //         .value.doctors![index].contactNumber ??
-                                //     '',
-                                // imgUrl: getHelpController.topConsultantList
-                                //     .value.doctors![index].profilePicture,
-                                // sId: getHelpController.topConsultantList.value
-                                //     .doctors![index].sId,
                               );
                             })
                     : Container())),
@@ -588,12 +570,7 @@ class _HomePageState extends State<HomePage> {
                     } else if (value["redirectTo"] == "knowusmore") {
                       Navigator.of(context).pop();
                       await Navigator.pushNamed(
-                        context, AppRoutes.videoPlaylist,
-                        // arguments: {
-                        //   "groupId": value["redirectKey"],
-                        //   // "isJoined": false
-                        // }
-                      );
+                          context, AppRoutes.videoPlaylist);
                     }
                   },
                   child: Container(
@@ -622,57 +599,6 @@ class _HomePageState extends State<HomePage> {
             'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
       }
     } else {
-      // showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return Dialog(
-      //         child: InkWell(
-      //           onTap: () async {
-      //             if (value["redirectTo"] == "gethelp") {
-      //               Navigator.of(context).pop();
-      //               Get.find<BottomNavigatorController>().activeIndex.value = 2;
-      //             } else if (value["redirectTo"] == "createpost") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.createJournal);
-      //               Get.find<BottomNavigatorController>().activeIndex.value = 1;
-      //             } else if (value["redirectTo"] == "explorethyself") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(
-      //                   context, AppRoutes.psychologyTest);
-      //             } else if (value["redirectTo"] == "inhousepackages") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.inhousePackage,
-      //                   arguments: {"id": value["redirectKey"]});
-      //             } else if (value["redirectTo"] == "group") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.groupDetails,
-      //                   arguments: {
-      //                     "groupId": value["redirectKey"],
-      //                     // "isJoined": false
-      //                   });
-      //             }
-      //           },
-      //           child: Container(
-      //             height: 595,
-      //             width: 375,
-      //             child: Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.center,
-      //                 mainAxisAlignment: MainAxisAlignment.center,
-      //                 children: [
-      //                   Align(
-      //                       alignment: Alignment.topRight,
-      //                       child: IconButton(
-      //                         icon: Icon(Icons.close),
-      //                         onPressed: () {
-      //                           Navigator.pop(context);
-      //                         },
-      //                       )),
-      //                   Expanded(child: announcementMedia(value))
-      //                 ]),
-      //           ),
-      //         ),
-      //       );
-      //     });
       prefs.setInt(
           'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
     }

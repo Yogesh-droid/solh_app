@@ -367,24 +367,42 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                     ],
                                   ),
                                 ),
-                                Positioned(
-                                  top: -20,
-                                  right: -20,
-                                  child: Transform.rotate(
-                                    angle: math.pi / 5,
-                                    child: Container(
-                                      alignment: Alignment.bottomCenter,
-                                      height: 45,
-                                      width: 75,
-                                      color: Colors.red,
-                                      child: Text(
-                                        '15% off',
-                                        style: SolhTextStyles.GreenButtonText
-                                            .copyWith(fontSize: 12),
+                                Obx(() {
+                                  if (profileController
+                                          .myProfileModel
+                                          .value
+                                          .body!
+                                          .userOrganisations!
+                                          .isNotEmpty &&
+                                      profileController
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .userOrganisations!
+                                              .first
+                                              .status ==
+                                          'Approved')
+                                    Positioned(
+                                      top: -20,
+                                      right: -20,
+                                      child: Transform.rotate(
+                                        angle: math.pi / 5,
+                                        child: Container(
+                                          alignment: Alignment.bottomCenter,
+                                          height: 45,
+                                          width: 75,
+                                          color: Colors.red,
+                                          child: Text(
+                                            '15% off',
+                                            style:
+                                                SolhTextStyles.GreenButtonText
+                                                    .copyWith(fontSize: 12),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                    );
+                                  return SizedBox();
+                                })
                               ],
                             ),
                           ),
