@@ -38,6 +38,7 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/find_help_bar.dart';
@@ -181,7 +182,7 @@ class _HomePageState extends State<HomePage> {
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
-
+  bool switchToggle = false;
   @override
   void initState() {
     super.initState();
@@ -264,18 +265,31 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Row(
-                    children: [
-                      Text('Journaling'.tr,
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.primary_green)),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: SolhColors.primary_green,
-                        size: 14,
-                      )
-                    ],
-                  ),
+                  child: DefaultOrg.defaultOrg != null
+                      ? Switch(
+                          value: switchToggle,
+                          onChanged: (value) {
+                            switchToggle
+                                ? switchToggle = !switchToggle
+                                : switchToggle = !switchToggle;
+                            _journalPageController.getTrendingJournals(
+                                orgToggle: switchToggle);
+
+                            setState(() {});
+                          },
+                        )
+                      : Row(
+                          children: [
+                            Text('Journaling'.tr,
+                                style: SolhTextStyles.CTA
+                                    .copyWith(color: SolhColors.primary_green)),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: SolhColors.primary_green,
+                              size: 14,
+                            )
+                          ],
+                        ),
                 ),
               ),
             ),

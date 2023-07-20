@@ -97,13 +97,17 @@ class JournalPageController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> getTrendingJournals() async {
+  Future<void> getTrendingJournals({bool orgToggle = false}) async {
     isTrendingLoading.value = true;
     try {
+      if (orgToggle) {
+        trendingJournalsList.clear();
+      }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/v1/trending");
+          "${APIConstants.api}/api/v1/trending?orgToggle=$orgToggle");
       journalsResponseModel.value = JournalsResponseModel.fromJson(map['data']);
       trendingJournalsList.addAll(journalsResponseModel.value.journals ?? []);
+      log(trendingJournalsList.length.toString(), name: 'trending length');
       tredingVideoPlayerController.forEach((element) {
         if (element != null) {
           element.forEach((key, value) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/bloc/user-bloc.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/widgets_constants/animated_refresh_container.dart';
@@ -22,8 +23,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        notificaltionColtroller.getNoificationController(userBlocNetwork.id));
+    WidgetsBinding.instance.addPostFrameCallback((_) => notificaltionColtroller
+        .getNoificationController(Get.find<ProfileController>()
+                .myProfileModel
+                .value
+                .body!
+                .user!
+                .sId ??
+            ''));
 
     super.initState();
   }

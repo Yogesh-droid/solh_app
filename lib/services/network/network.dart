@@ -242,9 +242,9 @@ class Network {
       };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
-
+      log("${url} ${headers.toString()}", name: 'headers');
       http.Response apiResponse = await http.get(_uri, headers: headers);
-      log('$url ${apiResponse.body}');
+
       print(apiResponse.statusCode);
       switch (apiResponse.statusCode) {
         case 200:
