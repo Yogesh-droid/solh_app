@@ -77,9 +77,9 @@ class GetHelpController extends GetxController {
   void getSpecializationList() async {
     try {
       ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
-      Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/get-app-specialization?parent=111",
-          {"Accept-Language": AppLocale.appLocale.languageCode});
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/v1/get-app-specialization?parent=111",
+      );
 
       getSpecializationModel.value = GetIssueResponseModel.fromJson(map);
     } on Exception catch (e) {
@@ -90,9 +90,9 @@ class GetHelpController extends GetxController {
   void getAlliedTherapyList() async {
     try {
       ///   Pass 111 as query to get specialization only and 222 to get allied therapy  ///
-      Map<String, dynamic> map = await Network.makeGetRequest(
-          "${APIConstants.api}/api/get-app-specialization?parent=222",
-          {"Accept-Language": AppLocale.appLocale.languageCode});
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+        "${APIConstants.api}/api/v1/get-app-specialization?parent=222",
+      );
       if (map['success']) {
         isAlliedShown.value = true;
       }
