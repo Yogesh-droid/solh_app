@@ -81,7 +81,7 @@ class AddOrg extends StatelessWidget {
                           },
                           width: 70.w,
                           child: Text(
-                            'Save Organization',
+                            'Save Organization'.tr,
                             style: SolhTextStyles.CTA.copyWith(
                               color: SolhColors.white,
                             ),

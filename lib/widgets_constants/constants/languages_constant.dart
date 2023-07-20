@@ -1372,6 +1372,25 @@ Map<String, String> fr_FR_map = {
   "Write message": "Écrire un message",
   "Write here": "Écrivez ici",
   "Chats": "Chattes",
+  "Organization": "Organisation",
+  "Search Organization": "Organisation de recherche",
+  "Save Organization'": "Économiser l'organisation '",
+  "Offers": "Des offres",
+  "Save Organization": "Save Organization",
+  "with Clinician": "avec clinicien",
+  "Profile Transfers": "Transferts de profil",
+  "One consultant to other": "Un consultant à d'autres",
+  "Profile Transfer": "Transfert de profil",
+  "Profile Transferred": "Profil transféré",
+  "Transfered from": "Transféré de",
+  "Transfered to": "Transféré à",
+  "There is a pending request for transfer of your case history & reports.":
+      "Il y a une demande en attente de transfert de votre historique de cas et de vos rapports.",
+  "Profile Transferred Successfully!": "Profil transféré avec succès!",
+  "Visit Profile": "Visiter le profil",
+  "Details": "Détails",
+  "About": "À propos",
+  "Profile Transferred Declined !": "Le profil transféré a refusé!",
 };
 
 Map<String, String> ar_sa_map = {
@@ -1815,6 +1834,25 @@ Map<String, String> ar_sa_map = {
   "Write message": "اكتب رسالة",
   "Write here": "اكتب هنا",
   "Chats": "الدردشات",
+  "Organization": "منظمة",
+  "Search Organization": "منظمة البحث",
+  "Save Organization'": "حفظ المنظمة",
+  "Offers": "عروض",
+  "Save Organization": "حفظ المنظمة",
+  "with Clinician": "مع الطبيب",
+  "Profile Transfers": "نقل الملف الشخصي",
+  "One consultant to other": "مستشار واحد للآخرين",
+  "Profile Transfer": "نقل الملف الشخصي",
+  "Profile Transferred": "تم نقل الملف الشخصي",
+  "Transfered from": "نقل من",
+  "Transfered to": "نقل إلى",
+  "There is a pending request for transfer of your case history & reports.":
+      "هناك طلب معلق لنقل سجل قضيتك وتقاريره.",
+  "Profile Transferred Successfully!": "تم نقل الملف الشخصي بنجاح!",
+  "Visit Profile": "زيارة الملف الشخصي",
+  "Details": "تفاصيل",
+  "About": "عن",
+  "Profile Transferred Declined !": "تم نقل الملف الشخصي!",
 };
 
 Map<String, String> ta_IN_map = {
