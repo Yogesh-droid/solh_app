@@ -100,8 +100,8 @@ class JournalPageController extends GetxController {
   Future<void> getTrendingJournals() async {
     isTrendingLoading.value = true;
     try {
-      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/v1/trending");
+      Map<String, dynamic> map =
+          await Network.makeGetRequestWithToken("${APIConstants.api}/ending");
       journalsResponseModel.value = JournalsResponseModel.fromJson(map['data']);
       trendingJournalsList.addAll(journalsResponseModel.value.journals ?? []);
       tredingVideoPlayerController.forEach((element) {

@@ -780,46 +780,50 @@ class _HomePageState extends State<HomePage> {
               builder: (context) =>
                   CommentScreen(journalModel: journal, index: 0)));
         },
-        child: Container(
-          // height: MediaQuery.of(context).size.height * 0.5,
-          height: 300,
-          width: MediaQuery.of(context).size.width * 0.8,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  // image: journal.mediaUrl != null
-                  //     ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                  //     : AssetImage(
-                  //         'assets/images/backgroundScaffold.png',
-                  //       ) as ImageProvider),
-                  image: AssetImage('assets/images/trending_bg.png')),
-              gradient: journal.postedBy!.userType == 'Official'
-                  ? LinearGradient(
-                      stops: [0.1, 0.9],
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Color.fromARGB(255, 173, 215, 204),
-                        Color.fromARGB(255, 201, 156, 157),
-                      ],
+        child: Obx(() => Container(
+              // height: MediaQuery.of(context).size.height * 0.5,
+              height: 300,
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Get.find<ProfileController>()
+                                  .orgColor1
+                                  .value
+                                  .isNotEmpty
+                              ? Color(int.parse(
+                                  "0xFF${Get.find<ProfileController>().orgColor2}"))
+                              : SolhColors.primary_green,
+                          BlendMode.color),
+                      image: AssetImage('assets/images/trending_bg.png')),
+                  gradient: journal.postedBy!.userType == 'Official'
+                      ? LinearGradient(
+                          stops: [0.1, 0.9],
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Color.fromARGB(255, 173, 215, 204),
+                            Color.fromARGB(255, 201, 156, 157),
+                          ],
+                        )
+                      : LinearGradient(colors: [
+                          SolhColors.greenShade4,
+                          SolhColors.greenShade4,
+                        ]),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: 5.0,
+                      spreadRadius: 2,
                     )
-                  : LinearGradient(colors: [
-                      SolhColors.greenShade4,
-                      SolhColors.greenShade4,
-                    ]),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  blurRadius: 5.0,
-                  spreadRadius: 2,
-                )
-              ],
-              border: Border.all(
-                color: SolhColors.greyS200,
-              )),
-          child: getPostContent(journal, 12),
-        ),
+                  ],
+                  border: Border.all(
+                    color: SolhColors.greyS200,
+                  )),
+              child: getPostContent(journal, 12),
+            )),
       ),
       feedback: Card(
         shape: RoundedRectangleBorder(
@@ -1774,12 +1778,9 @@ class ChatAnonymouslyCard extends StatelessWidget {
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                      profileController.myProfileModel.value.body!
-                                  .userOrganisations!.isNotEmpty &&
-                              profileController.myProfileModel.value.body!
-                                      .userOrganisations!.first.status ==
-                                  'Approved'
-                          ? SolhColors.org_color
+                      profileController.orgColor1.value.isNotEmpty
+                          ? Color(
+                              int.parse("0xFF${profileController.orgColor1}"))
                           : SolhColors.primary_green,
                       BlendMode.color),
                   image:
