@@ -73,7 +73,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final CreateGroupController _controller = Get.put(CreateGroupController());
+  final CreateGroupController controller = Get.put(CreateGroupController());
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
@@ -512,27 +512,9 @@ class _HomePageState extends State<HomePage> {
                                 : getHelpController
                                     .topConsultantList.value.doctors!.length,
                             itemBuilder: (_, index) {
-                              // print(getHelpController
-                              //     .topConsultantList
-                              //     .value
-                              //     .doctors![index]
-                              //     .profilePicture);
                               return TopConsultantsTile(
                                 doctors: getHelpController
                                     .topConsultantList.value.doctors![index],
-                                // bio: getHelpController.topConsultantList.value
-                                //         .doctors![index].bio ??
-                                //     '',
-                                // name: getHelpController.topConsultantList.value
-                                //         .doctors![index].name ??
-                                //     '',
-                                // mobile: getHelpController.topConsultantList
-                                //         .value.doctors![index].contactNumber ??
-                                //     '',
-                                // imgUrl: getHelpController.topConsultantList
-                                //     .value.doctors![index].profilePicture,
-                                // sId: getHelpController.topConsultantList.value
-                                //     .doctors![index].sId,
                               );
                             })
                     : Container())),
@@ -602,12 +584,7 @@ class _HomePageState extends State<HomePage> {
                     } else if (value["redirectTo"] == "knowusmore") {
                       Navigator.of(context).pop();
                       await Navigator.pushNamed(
-                        context, AppRoutes.videoPlaylist,
-                        // arguments: {
-                        //   "groupId": value["redirectKey"],
-                        //   // "isJoined": false
-                        // }
-                      );
+                          context, AppRoutes.videoPlaylist);
                     }
                   },
                   child: Container(
@@ -636,57 +613,6 @@ class _HomePageState extends State<HomePage> {
             'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
       }
     } else {
-      // showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return Dialog(
-      //         child: InkWell(
-      //           onTap: () async {
-      //             if (value["redirectTo"] == "gethelp") {
-      //               Navigator.of(context).pop();
-      //               Get.find<BottomNavigatorController>().activeIndex.value = 2;
-      //             } else if (value["redirectTo"] == "createpost") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.createJournal);
-      //               Get.find<BottomNavigatorController>().activeIndex.value = 1;
-      //             } else if (value["redirectTo"] == "explorethyself") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(
-      //                   context, AppRoutes.psychologyTest);
-      //             } else if (value["redirectTo"] == "inhousepackages") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.inhousePackage,
-      //                   arguments: {"id": value["redirectKey"]});
-      //             } else if (value["redirectTo"] == "group") {
-      //               Navigator.of(context).pop();
-      //               await Navigator.pushNamed(context, AppRoutes.groupDetails,
-      //                   arguments: {
-      //                     "groupId": value["redirectKey"],
-      //                     // "isJoined": false
-      //                   });
-      //             }
-      //           },
-      //           child: Container(
-      //             height: 595,
-      //             width: 375,
-      //             child: Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.center,
-      //                 mainAxisAlignment: MainAxisAlignment.center,
-      //                 children: [
-      //                   Align(
-      //                       alignment: Alignment.topRight,
-      //                       child: IconButton(
-      //                         icon: Icon(Icons.close),
-      //                         onPressed: () {
-      //                           Navigator.pop(context);
-      //                         },
-      //                       )),
-      //                   Expanded(child: announcementMedia(value))
-      //                 ]),
-      //           ),
-      //         ),
-      //       );
-      //     });
       prefs.setInt(
           'lastDateShownAnnouncement', DateTime.now().millisecondsSinceEpoch);
     }
@@ -794,46 +720,50 @@ class _HomePageState extends State<HomePage> {
               builder: (context) =>
                   CommentScreen(journalModel: journal, index: 0)));
         },
-        child: Container(
-          // height: MediaQuery.of(context).size.height * 0.5,
-          height: 300,
-          width: MediaQuery.of(context).size.width * 0.8,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  fit: BoxFit.fill,
-                  // image: journal.mediaUrl != null
-                  //     ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
-                  //     : AssetImage(
-                  //         'assets/images/backgroundScaffold.png',
-                  //       ) as ImageProvider),
-                  image: AssetImage('assets/images/trending_bg.png')),
-              gradient: journal.postedBy!.userType == 'Official'
-                  ? LinearGradient(
-                      stops: [0.1, 0.9],
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        Color.fromARGB(255, 173, 215, 204),
-                        Color.fromARGB(255, 201, 156, 157),
-                      ],
+        child: Obx(() => Container(
+              // height: MediaQuery.of(context).size.height * 0.5,
+              height: 300,
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Get.find<ProfileController>()
+                                  .orgColor1
+                                  .value
+                                  .isNotEmpty
+                              ? Color(int.parse(
+                                  "0xFF${Get.find<ProfileController>().orgColor2}"))
+                              : SolhColors.primary_green,
+                          BlendMode.color),
+                      image: AssetImage('assets/images/trending_bg.png')),
+                  gradient: journal.postedBy!.userType == 'Official'
+                      ? LinearGradient(
+                          stops: [0.1, 0.9],
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Color.fromARGB(255, 173, 215, 204),
+                            Color.fromARGB(255, 201, 156, 157),
+                          ],
+                        )
+                      : LinearGradient(colors: [
+                          SolhColors.greenShade4,
+                          SolhColors.greenShade4,
+                        ]),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: 5.0,
+                      spreadRadius: 2,
                     )
-                  : LinearGradient(colors: [
-                      SolhColors.greenShade4,
-                      SolhColors.greenShade4,
-                    ]),
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  blurRadius: 5.0,
-                  spreadRadius: 2,
-                )
-              ],
-              border: Border.all(
-                color: SolhColors.greyS200,
-              )),
-          child: getPostContent(journal, 12),
-        ),
+                  ],
+                  border: Border.all(
+                    color: SolhColors.greyS200,
+                  )),
+              child: getPostContent(journal, 12),
+            )),
       ),
       feedback: Card(
         shape: RoundedRectangleBorder(
@@ -1397,7 +1327,7 @@ class _HomePageState extends State<HomePage> {
                 separatorBuilder: (_, __) => SizedBox(width: 2.w),
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: connectionController.bloglist.value.length,
+                itemCount: connectionController.bloglist.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
@@ -1405,8 +1335,7 @@ class _HomePageState extends State<HomePage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => BlogDetailsPage(
-                                  id: connectionController
-                                          .bloglist.value[index].id ??
+                                  id: connectionController.bloglist[index].id ??
                                       0)));
                     },
                     child: Container(
@@ -1428,9 +1357,9 @@ class _HomePageState extends State<HomePage> {
                               topRight: Radius.circular(10),
                             ),
                             child: CachedNetworkImage(
-                              imageUrl: connectionController
-                                      .bloglist.value[index].image ??
-                                  '',
+                              imageUrl:
+                                  connectionController.bloglist[index].image ??
+                                      '',
                               height: 98,
                               width: 180,
                               fit: BoxFit.fill,
@@ -1448,8 +1377,7 @@ class _HomePageState extends State<HomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  connectionController
-                                          .bloglist.value[index].name ??
+                                  connectionController.bloglist[index].name ??
                                       '',
                                   maxLines: 2,
                                   style: TextStyle(
@@ -1472,8 +1400,7 @@ class _HomePageState extends State<HomePage> {
                                       width: 2.w,
                                     ),
                                     Text(
-                                      connectionController
-                                          .bloglist.value[index].views
+                                      connectionController.bloglist[index].views
                                           .toString(),
                                       style: TextStyle(
                                         fontSize: 12,
@@ -1484,7 +1411,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 Text(
                                   connectionController
-                                          .bloglist.value[index].description ??
+                                          .bloglist[index].description ??
                                       '',
                                   maxLines: 5,
                                   style: TextStyle(
@@ -1754,124 +1681,13 @@ class PsychoTestContainer extends StatelessWidget {
 Widget getIssueUI(
     bookAppointmentController, GetHelpController getHelpController, context) {
   return Obx(() {
-    /*   return Container(
-      height: 300,
-      child: GridView.count(
-        mainAxisSpacing: 25,
-        crossAxisSpacing: 25,
-        scrollDirection: Axis.horizontal,
-        crossAxisCount: 3,
-        children: getHelpController.issueList.value.map<Widget>((issue) {
-          return IssuesTile(
-            title: issue.name ?? '',
-            onPressed: () {
-              bookAppointmentController.query = issue.name;
-              // AutoRouter.of(context).push(ConsultantsScreenRouter(
-              //     slug: issue.slug ?? '', type: 'issue'));
-              Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                  arguments: {"slug": issue.slug ?? '', "type": 'issue'});
-            },
-          );
-        }).toList(),
-      ),
-    ); */
-
-    /* return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: getHelpController.issueList.length * 100.0,
-            height: 130,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList.indexOf(issue) * 90.0,
-                  top: Random().nextInt(40) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          Container(
-            width: getHelpController.issueList1.length * 100.0,
-            height: 120,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList1.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList1.indexOf(issue) * 100.0,
-                  top: Random().nextInt(35) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-          Container(
-            width: getHelpController.issueList2.length * 100.0,
-            height: 120,
-            color: Colors.transparent,
-            child: Stack(
-              children: getHelpController.issueList2.value.map<Widget>((issue) {
-                return Positioned(
-                  left: getHelpController.issueList2.indexOf(issue) * 100.0,
-                  top: Random().nextInt(45) + 15.0,
-                  child: IssuesTile(
-                    title: issue.name ?? '',
-                    onPressed: () {
-                      bookAppointmentController.query = issue.name;
-                      // AutoRouter.of(context).push(ConsultantsScreenRouter(
-                      //     slug: issue.slug ?? '', type: 'issue'));
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": issue.slug ?? '',
-                            "type": 'issue'
-                          });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    ); */
-
     return Wrap(
       runSpacing: 5,
-      children: getHelpController.issueList.value.map<Widget>((issue) {
+      children: getHelpController.issueList.map<Widget>((issue) {
         return IssuesTile(
           title: issue.name ?? '',
           onPressed: () {
             bookAppointmentController.query = issue.name;
-            // AutoRouter.of(context).push(ConsultantsScreenRouter(
-            //     slug: issue.slug ?? '', type: 'issue'));
             Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                 arguments: {
                   "slug": issue.slug ?? '',
@@ -1892,91 +1708,105 @@ class ChatAnonymouslyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showDialog(context: context, builder: (context) => AnonymousDialog());
-      },
-      child: Container(
-        width: double.maxFinite,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
-          ),
-        ),
-        child: Padding(
-          padding:
-              EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 60.w,
-                    child: Text(
-                      'Overwhelmed with emotions: Talk to a Solh counselor NOW'
-                          .tr,
-                      style: SolhTextStyles.QS_body_1_bold.copyWith(
-                          color: SolhColors.white),
+        onTap: () {
+          showDialog(context: context, builder: (context) => AnonymousDialog());
+        },
+        child: Obx(() => Container(
+              width: double.maxFinite,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                      profileController.orgColor1.value.isNotEmpty
+                          ? Color(
+                              int.parse("0xFF${profileController.orgColor1}"))
+                          : SolhColors.primary_green,
+                      BlendMode.color),
+                  image:
+                      AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
+                ),
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: 4.w, right: 4.w, top: 2.h, bottom: 1.h),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 60.w,
+                          child: Text(
+                            'Overwhelmed with emotions: Talk to a Solh counselor NOW'
+                                .tr,
+                            style: SolhTextStyles.QS_body_1_bold.copyWith(
+                                color: SolhColors.white),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(2.w),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SolhColors.primary_green,
+                              border: Border.all(
+                                  color: SolhColors.white, width: 1)),
+                          child: Center(
+                              child: Icon(
+                            CupertinoIcons.arrow_right,
+                            color: SolhColors.white,
+                          )),
+                        ),
+                      ],
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(2.w),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SolhColors.primary_green,
-                        border: Border.all(color: SolhColors.white, width: 1)),
-                    child: Center(
-                        child: Icon(
-                      CupertinoIcons.arrow_right,
+                    SizedBox(
+                      height: 2.h,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        getIssuesRowItem(
+                            Image(
+                                image: AssetImage('assets/images/stress.png')),
+                            'Stress'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image:
+                                    AssetImage('assets/images/saddness.png')),
+                            'Sadness'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image:
+                                    AssetImage('assets/images/loneliness.png')),
+                            'Loneliness'.tr),
+                        getIssuesRowItem(
+                            Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: SolhColors.white),
+                              child: Center(child: Text('20+')),
+                            ),
+                            'More'.tr)
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1.h,
+                    ),
+                    Divider(
                       color: SolhColors.white,
-                    )),
-                  ),
-                ],
+                      thickness: 1,
+                    ),
+                    Text(
+                      'Start chatting for free right away, with a Solh counselor.'
+                          .tr,
+                      style: SolhTextStyles.QS_caption.copyWith(
+                          color: SolhColors.white, fontSize: 9.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(
-                height: 2.h,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/stress.png')),
-                      'Stress'.tr),
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/saddness.png')),
-                      'Sadness'.tr),
-                  getIssuesRowItem(
-                      Image(image: AssetImage('assets/images/loneliness.png')),
-                      'Loneliness'.tr),
-                  getIssuesRowItem(
-                      Container(
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: SolhColors.white),
-                        child: Center(child: Text('20+')),
-                      ),
-                      'More'.tr)
-                ],
-              ),
-              SizedBox(
-                height: 1.h,
-              ),
-              Divider(
-                color: SolhColors.white,
-                thickness: 1,
-              ),
-              Text(
-                'Start chatting for free right away, with a Solh counselor.'.tr,
-                style: SolhTextStyles.QS_caption.copyWith(
-                    color: SolhColors.white, fontSize: 9.sp),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+            )));
   }
 }
 
@@ -2227,7 +2057,7 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                         ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: homeController.dotList.value
+                    children: homeController.dotList
                         .map((e) => Container(
                               height: e == _current ? 6 : 5,
                               width: e == _current ? 6 : 5,
@@ -2373,6 +2203,7 @@ class AnonymousDialog extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class SearchByProfesssionUI extends StatelessWidget {
   SearchByProfesssionUI({super.key});
   GetHelpController getHelpController = Get.find();

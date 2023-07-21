@@ -28,6 +28,7 @@ import '../../../widgets_constants/buttons/custom_buttons.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import '../doctor/appointment_page.dart';
 import '../home/homescreen.dart';
+import 'dart:math' as math;
 
 class GetHelpScreen extends StatefulWidget {
   @override
@@ -293,66 +294,117 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                               name: 'SearhSpecialityTapped',
                               parameters: {'Page': 'GetHelp'});
                         },
-                        child: Container(
-                          height: 1.h,
-                          width: 10.w,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: Color(0xFFEFEFEF)),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                                child: CircleAvatar(
-                                  radius: 8.w,
-                                  child: CircleAvatar(
-                                    radius: 7.8.w,
-                                    backgroundColor: Colors.white,
-                                    backgroundImage: CachedNetworkImageProvider(
-                                        getHelpController
-                                                .getSpecializationModel
-                                                .value
-                                                .specializationList![index]
-                                                .displayImage ??
-                                            ''),
-                                    /* child: CachedNetworkImage(
-                                      imageUrl: getHelpController
-                                              .getSpecializationModel
-                                              .value
-                                              .specializationList![index]
-                                              .displayImage ??
-                                          '',
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                              child: Container(
-                                                height: 1.h,
-                                                width: 1.w,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Container(
+                            height: 1.h,
+                            width: 10.w,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: Color(0xFFEFEFEF)),
+                            child: Stack(
+                              children: [
+                                Positioned.fill(
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 0, 0, 0),
+                                        child: CircleAvatar(
+                                          radius: 8.w,
+                                          child: CircleAvatar(
+                                            radius: 7.8.w,
+                                            backgroundColor: Colors.white,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    getHelpController
+                                                            .getSpecializationModel
+                                                            .value
+                                                            .specializationList![
+                                                                index]
+                                                            .displayImage ??
+                                                        ''),
+                                            /* child: CachedNetworkImage(
+                                              imageUrl: getHelpController
+                                                      .getSpecializationModel
+                                                      .value
+                                                      .specializationList![index]
+                                                      .displayImage ??
+                                                  '',
+                                              fit: BoxFit.fill,
+                                              placeholder: (context, url) =>
+                                                  Shimmer.fromColors(
+                                                      child: Container(
+                                                        height: 1.h,
+                                                        width: 1.w,
+                                                        color: Colors.grey,
+                                                      ),
+                                                      baseColor: Colors.grey,
+                                                      highlightColor: Colors.white),
+                                              errorWidget: (context, url, error) =>
+                                                  Icon(
+                                                Icons.person,
+                                                size: 50,
                                                 color: Colors.grey,
                                               ),
-                                              baseColor: Colors.grey,
-                                              highlightColor: Colors.white),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(
-                                        Icons.person,
-                                        size: 50,
-                                        color: Colors.grey,
+                                            ), */
+                                          ),
+                                        ),
                                       ),
-                                    ), */
+                                      SizedBox(width: 2.w),
+                                      Container(
+                                        width: 25.w,
+                                        child: Text(
+                                          getHelpController
+                                                  .getSpecializationModel
+                                                  .value
+                                                  .specializationList![index]
+                                                  .name ??
+                                              '',
+                                          style: SolhTextStyles.QS_cap_semi,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ),
-                              SizedBox(width: 2.w),
-                              Container(
-                                width: 25.w,
-                                child: Text(
-                                  getHelpController.getSpecializationModel.value
-                                          .specializationList![index].name ??
-                                      '',
-                                  style: SolhTextStyles.QS_cap_semi,
-                                ),
-                              ),
-                            ],
+                                Obx(() {
+                                  if (profileController
+                                          .myProfileModel
+                                          .value
+                                          .body!
+                                          .userOrganisations!
+                                          .isNotEmpty &&
+                                      profileController
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .userOrganisations!
+                                              .first
+                                              .status ==
+                                          'Approved')
+                                    Positioned(
+                                      top: -20,
+                                      right: -20,
+                                      child: Transform.rotate(
+                                        angle: math.pi / 5,
+                                        child: Container(
+                                          alignment: Alignment.bottomCenter,
+                                          height: 45,
+                                          width: 75,
+                                          color: Colors.red,
+                                          child: Text(
+                                            '15% off',
+                                            style:
+                                                SolhTextStyles.GreenButtonText
+                                                    .copyWith(fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  return SizedBox();
+                                })
+                              ],
+                            ),
                           ),
                         ),
                       ),

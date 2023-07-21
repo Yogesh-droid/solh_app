@@ -6,12 +6,12 @@ class ButtonLoadingAnimation extends StatelessWidget {
       {Key? key,
       this.ballSizeLowerBound = 3,
       this.ballSizeUpperBound = 8,
-      this.ballColor = SolhColors.primary_green})
+      this.ballColor})
       : super(key: key);
 
   final double? ballSizeUpperBound;
   final double? ballSizeLowerBound;
-  final Color ballColor;
+  final Color? ballColor;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,7 +22,7 @@ class ButtonLoadingAnimation extends StatelessWidget {
         child: BallsRow(
           ballSizeLowerBound: ballSizeLowerBound,
           ballSizeUpperBound: ballSizeUpperBound,
-          ballColor: ballColor,
+          ballColor: ballColor ?? SolhColors.primary_green,
         ));
   }
 }

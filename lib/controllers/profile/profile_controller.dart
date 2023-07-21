@@ -10,10 +10,12 @@ class ProfileController extends GetxController {
   var myProfileModel = MyProfileModel().obs;
   var isProfileLoading = false.obs;
   var isEditProfilePicUploading = false.obs;
+  var orgColor1 = ''.obs;
+  var orgColor2 = ''.obs;
+  var orgColor3 = ''.obs;
 
   Future<bool> getMyProfile() async {
     print('gettting My profile');
-
     try {
       isProfileLoading.value = true;
       //await Future.delayed(Duration(seconds: 30));
@@ -24,6 +26,16 @@ class ProfileController extends GetxController {
         if (myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
             myProfileModel.value.body!.userOrganisations!.first.status ==
                 'Approved') {
+          if (myProfileModel.value.body!.userOrganisations!.first.organisation!
+                  .themeColors !=
+              null) {
+            orgColor1.value = myProfileModel.value.body!.userOrganisations!
+                .first.organisation!.themeColors![0];
+            orgColor2.value = myProfileModel.value.body!.userOrganisations!
+                .first.organisation!.themeColors![1];
+            orgColor3.value = myProfileModel.value.body!.userOrganisations!
+                .first.organisation!.themeColors![2];
+          }
           DefaultOrg.setDefaultOrg(myProfileModel
               .value.body!.userOrganisations!.first.organisation!.sId!);
         } else {

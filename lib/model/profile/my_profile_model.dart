@@ -420,13 +420,20 @@ class Organisation {
   String? sId;
   String? logo;
   String? name;
+  List<String>? themeColors;
 
-  Organisation({this.sId, this.logo, this.name});
+  Organisation({this.sId, this.logo, this.name, this.themeColors});
 
   Organisation.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     logo = json['logo'];
     name = json['name'];
+    if (json['theme'] != null) {
+      themeColors = [];
+      json['theme'].forEach((v) {
+        themeColors!.add(v);
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {

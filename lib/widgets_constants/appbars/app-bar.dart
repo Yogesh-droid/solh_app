@@ -18,6 +18,7 @@ import '../../ui/my_diary/my_diary_list_page.dart';
 import '../../ui/screens/global-search/global_search_page.dart';
 import '../../ui/screens/home/homescreen.dart';
 
+// ignore: must_be_immutable
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
       {required Widget title,
@@ -38,7 +39,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _bottom = bottom,
         _menuButton = menuButton,
         _onbackPressed = callback,
-        _isNotificationPage = isNotificationPage;
+        isNotificationPage = isNotificationPage;
 
   Callback? _onbackPressed;
 
@@ -46,7 +47,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool _isLandingScreen;
   final Widget _title;
   final double? _height;
-  final bool? _isNotificationPage;
+  final bool? isNotificationPage;
   final bool? _isDiaryBtnShown;
   final Color backgroundColor;
   final PreferredSize? _bottom;
@@ -167,6 +168,7 @@ class AssistanceButton extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class SOSButton extends StatelessWidget {
   SOSButton({Key? key}) : super(key: key);
   ProfileController profileController = Get.find();
@@ -305,19 +307,20 @@ class ProfileSetupAppBar extends StatelessWidget
   Size get preferredSize => Size(0, 50);
 }
 
+// ignore: must_be_immutable
 class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
     implements PreferredSizeWidget {
   SolhAppBarTanasparentOnlyBackButton({
     Key? key,
     this.onBackButton,
     this.onSkip,
-    this.skipButtonStyle = SolhTextStyles.GreenBorderButtonText,
+    this.skipButtonStyle,
     this.backButtonColor = Colors.black,
   }) : super(key: key);
 
   final VoidCallback? onBackButton;
   final VoidCallback? onSkip;
-  final TextStyle skipButtonStyle;
+  final TextStyle? skipButtonStyle;
 
   Color backButtonColor;
 
@@ -328,7 +331,8 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
       actions: [
         onSkip != null
             ? SkipButton(
-                buttonstyle: skipButtonStyle,
+                buttonstyle:
+                    skipButtonStyle ?? SolhTextStyles.GreenBorderButtonText,
                 onPressed: onSkip,
               )
             : Container()
