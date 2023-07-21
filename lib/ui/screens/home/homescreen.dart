@@ -2269,30 +2269,6 @@ class SearchByProfesssionUI extends StatelessWidget {
                                           .specializationList![index]
                                           .displayImage ??
                                       ''),
-                              /* child: CachedNetworkImage(
-                                      imageUrl: getHelpController
-                                              .getSpecializationModel
-                                              .value
-                                              .specializationList![index]
-                                              .displayImage ??
-                                          '',
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                              child: Container(
-                                                height: 1.h,
-                                                width: 1.w,
-                                                color: Colors.grey,
-                                              ),
-                                              baseColor: Colors.grey,
-                                              highlightColor: Colors.white),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(
-                                        Icons.person,
-                                        size: 50,
-                                        color: Colors.grey,
-                                      ),
-                                    ), */
                             ),
                           ),
                         ),

@@ -6,7 +6,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
@@ -324,30 +323,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                                                 index]
                                                             .displayImage ??
                                                         ''),
-                                            /* child: CachedNetworkImage(
-                                              imageUrl: getHelpController
-                                                      .getSpecializationModel
-                                                      .value
-                                                      .specializationList![index]
-                                                      .displayImage ??
-                                                  '',
-                                              fit: BoxFit.fill,
-                                              placeholder: (context, url) =>
-                                                  Shimmer.fromColors(
-                                                      child: Container(
-                                                        height: 1.h,
-                                                        width: 1.w,
-                                                        color: Colors.grey,
-                                                      ),
-                                                      baseColor: Colors.grey,
-                                                      highlightColor: Colors.white),
-                                              errorWidget: (context, url, error) =>
-                                                  Icon(
-                                                Icons.person,
-                                                size: 50,
-                                                color: Colors.grey,
-                                              ),
-                                            ), */
                                           ),
                                         ),
                                       ),
@@ -382,23 +357,22 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                                               .first
                                               .status ==
                                           'Approved')
-                                    Positioned(
+                                    return Positioned(
                                       top: -20,
                                       right: -20,
                                       child: Transform.rotate(
                                         angle: math.pi / 5,
                                         child: Container(
-                                          alignment: Alignment.bottomCenter,
-                                          height: 45,
-                                          width: 75,
-                                          color: Colors.red,
-                                          child: Text(
-                                            '15% off',
-                                            style:
-                                                SolhTextStyles.GreenButtonText
-                                                    .copyWith(fontSize: 12),
-                                          ),
-                                        ),
+                                            alignment: Alignment.bottomCenter,
+                                            height: 45,
+                                            width: 75,
+                                            color: Colors.red,
+                                            child: Obx(() => Text(
+                                                  "${getHelpController.getSpecializationModel.value.specializationList![index].orgMarketPlaceOffer} % off",
+                                                  style: SolhTextStyles
+                                                          .GreenButtonText
+                                                      .copyWith(fontSize: 12),
+                                                ))),
                                       ),
                                     );
                                   return SizedBox();
