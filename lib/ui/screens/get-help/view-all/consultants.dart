@@ -82,7 +82,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
 
   void fetchMoreClinician() {
     _doctorsScrollController.addListener(() {
-      log("scroll working");
       if (_doctorsScrollController.position.pixels >
               _doctorsScrollController.position.maxScrollExtent - 100 &&
           searchMarketController.issueModel.value.pagesForProvider!.next !=
