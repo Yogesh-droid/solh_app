@@ -79,7 +79,6 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
 
   getMoreGroupMembers() {
     groupDetailScrollController.addListener(() {
-      log("scroll working");
       if (groupDetailScrollController.position.pixels ==
               groupDetailScrollController.position.maxScrollExtent &&
           discoverGroupController.groupDetailModel.value.pagesForMember!.next !=

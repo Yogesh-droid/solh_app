@@ -81,13 +81,29 @@ class ConsultantsTile extends StatelessWidget {
                           'Starting @'.tr,
                           style: SolhTextStyles.QS_cap_semi,
                         ),
-                        Text(
-                            feeAmount! > 0
-                                ? '${currency} ${feeAmount}'
-                                : (fee == null || fee == 'Paid' || fee == ''
-                                    ? 'Paid'
-                                    : ''),
-                            style: SolhTextStyles.QS_cap_semi),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                                feeAmount! > 0
+                                    ? '${currency} ${feeAmount}'
+                                    : (fee == null || fee == 'Paid' || fee == ''
+                                        ? 'Paid'
+                                        : ''),
+                                style: SolhTextStyles.QS_cap_semi),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              '580',
+                              style: SolhTextStyles.QS_cap_semi.copyWith(
+                                  color: SolhColors.grey_2,
+                                  fontSize: 10,
+                                  decoration: TextDecoration.lineThrough),
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   )
