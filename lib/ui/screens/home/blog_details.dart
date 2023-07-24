@@ -19,7 +19,6 @@ class BlogDetailsPage extends StatefulWidget {
     required this.id,
   }) : super(key: key);
   final int id;
-
   @override
   State<BlogDetailsPage> createState() => _BlogDetailsPageState();
 }

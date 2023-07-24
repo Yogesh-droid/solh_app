@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
+import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -16,8 +17,13 @@ import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/app_rating_status.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/live_blink.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
+import 'package:solh/widgets_constants/text_field_styles.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
@@ -199,42 +205,152 @@ class _MasterScreen2State extends State<MasterScreen2>
       return await showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              actionsPadding: EdgeInsets.all(8.0),
-              content: Text(
-                'Do you really want to exit app?'.tr,
-                style: SolhTextStyles.JournalingDescriptionText,
-              ),
-              actions: [
-                InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Yes'.tr,
-                        style: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.primaryRed),
-                      ),
-                    ),
-                    onTap: () {
-                      exit(0);
-                    }),
-                SizedBox(width: 30),
-                InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'No'.tr,
-                        style: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.primary_green),
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop(false);
-                    }),
+            return Stack(
+              children: [
+                AlertDialog(
+                  actionsPadding: EdgeInsets.all(8.0),
+                  content: Text(
+                    'Do you really want to exit app?'.tr,
+                    style: SolhTextStyles.JournalingDescriptionText,
+                  ),
+                  actions: [
+                    InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Yes'.tr,
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primaryRed),
+                          ),
+                        ),
+                        onTap: () {
+                          exit(0);
+                        }),
+                    SizedBox(width: 30),
+                    InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'No'.tr,
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primary_green),
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pop(false);
+                        }),
+                  ],
+                ),
+                bottomNavigatorController.shouldShowFeedbackForm
+                    ? AlertDialog(content: feedbackForm())
+                    : Container(),
               ],
             );
           });
     }
+  }
+
+  Widget getStarsRow() {
+    return Obx(() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(
+          5,
+          (index) => InkWell(
+            onTap: () {
+              setState(() {
+                bottomNavigatorController.givenStars.value = index;
+              });
+            },
+            child: Icon(
+              bottomNavigatorController.givenStars.value < index
+                  ? Icons.star_border
+                  : Icons.star,
+              size: 10.w,
+              color: Color(0xfff0ba00),
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
+  Widget feedbackForm() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 8,
+          ),
+          decoration: BoxDecoration(
+              color: Colors.black12, borderRadius: BorderRadius.circular(8)),
+          child: Text(
+            'Those who support us want to know if we are supporting you well. Please review us and give feedback.',
+            style: SolhTextStyles.QS_body_2_semi,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        getStarsRow(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [],
+        ),
+        SizedBox(
+          height: 3.h,
+        ),
+        TextField(
+          controller: bottomNavigatorController.feedbackTextEditingController,
+          maxLines: 5,
+          minLines: 2,
+          decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
+            hintText: 'Your feedback :)'.tr,
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5),
+              borderSide: BorderSide(
+                color: SolhColors.grey_3,
+                width: 1.0,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Obx(() => bottomNavigatorController.isSubmittingFeedback.value
+            ? SolhGreenButton(
+                child: ButtonLoadingAnimation(
+                ballColor: SolhColors.white,
+              ))
+            : SolhGreenButton(
+                onPressed: () async {
+                  if (bottomNavigatorController.givenStars.value != 0) {
+                    await bottomNavigatorController.submitRating({
+                      "rating": (bottomNavigatorController.givenStars.value + 1)
+                          .toString(),
+                      "feedBackComment": bottomNavigatorController
+                          .feedbackTextEditingController.text
+                          .trim(),
+                    });
+                    exit(0);
+                  } else {
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: Text(
+                  'Submit',
+                  style: SolhTextStyles.CTA.copyWith(
+                    color: SolhColors.white,
+                  ),
+                ),
+              )),
+      ],
+    );
   }
 
   Widget getBottomBar(BuildContext context) {

@@ -17,6 +17,7 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart' as myProfile;
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
@@ -84,6 +85,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                               ),
                               onPressed: () {
                                 FirebaseAuth.instance.signOut().then((value) {
+                                  Prefs.clear();
                                   clearOneSignalID();
                                   Get.find<BottomNavigatorController>()
                                       .activeIndex

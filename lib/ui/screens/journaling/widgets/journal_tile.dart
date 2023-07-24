@@ -601,7 +601,31 @@ class _JournalTileState extends State<JournalTile> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           InkWell(
-            onTap: () {
+            onTap: () async {
+              if (journalPageController.journalsList[widget.index].isLiked ==
+                  false) {
+                journalPageController.journalsList[widget.index].likes =
+                    journalPageController.journalsList[widget.index].likes! + 1;
+                journalPageController.journalsList[widget.index].isLiked = true;
+                journalPageController.journalsList.refresh();
+              }
+              String message = await journalCommentController.likePost(
+                  journalId: widget._journalModel!.id ?? '',
+                  reaction: '63bd50068bc9de38d95671a8');
+              if (message != 'journal liked successfully' &&
+                  message != "Already liked the journal") {
+                journalPageController.journalsList[widget.index].likes =
+                    journalPageController.journalsList[widget.index].likes! - 1;
+                journalPageController.journalsList[widget.index].isLiked =
+                    false;
+                journalPageController.journalsList.refresh();
+                FirebaseAnalytics.instance.logEvent(
+                    name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+              } else {
+                Utility.showToast(message);
+              }
+            },
+            onLongPress: () {
               journalPageController.getUsersLikedPost(
                   widget._journalModel!.id ?? '', 1);
               showModalBottomSheet(
