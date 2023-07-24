@@ -94,22 +94,22 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                       borderRadius: BorderRadius.horizontal(
                           left: Radius.circular(20),
                           right: Radius.circular(20))),
-                  child: Obx(() => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            bookingButton(),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            detailsContainer(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            aboutContainer(),
-                            Container(
-                              height: 400,
-                            ),
-                          ])),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        bookingButton(),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        detailsContainer(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        aboutContainer(),
+                        Container(
+                          height: 400,
+                        ),
+                      ]),
                 ),
               )
             ]),

@@ -181,6 +181,7 @@ class _HomePageState extends State<HomePage> {
   SearchMarketController searchMarketController = Get.find();
   HomeController homeController = Get.find();
   PsychologyTestController psychologyTestController = Get.find();
+  final ProfileController profileController = Get.find();
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
@@ -231,14 +232,6 @@ class _HomePageState extends State<HomePage> {
             onTapped: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GlobalSearchPage()));
-              // searchMarketController.searchMarketModel.value =
-              //     SearchMarketModel();
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => SearchScreen(),
-              //   ),
-              // );
             },
           ),
 
@@ -378,34 +371,46 @@ class _HomePageState extends State<HomePage> {
           ),
           GetHelpDivider(),
 
-          GetHelpCategory(
-            title: 'Search for Support'.tr,
-            trailing: InkWell(
-              onTap: () {
-                _bottomNavigatorController.activeIndex.value = 2;
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Get Help'.tr,
-                      style: GoogleFonts.signika(
-                        color: SolhColors.primary_green,
-                        fontWeight: FontWeight.w400,
+          Container(
+            color: profileController.orgColor3.value.isNotEmpty
+                ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                : Colors.transparent,
+            child: GetHelpCategory(
+              title: 'Search for Support'.tr,
+              trailing: InkWell(
+                onTap: () {
+                  _bottomNavigatorController.activeIndex.value = 2;
+                },
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Get Help'.tr,
+                        style: GoogleFonts.signika(
+                          color: SolhColors.primary_green,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: SolhColors.primary_green,
-                      size: 14,
-                    ),
-                  ],
+                      Icon(
+                        Icons.arrow_forward,
+                        color: SolhColors.primary_green,
+                        size: 14,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-          getIssueUI(bookAppointmentController, getHelpController, context),
+          Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              color: profileController.orgColor3.value.isNotEmpty
+                  ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                  : Colors.transparent,
+              child: getIssueUI(
+                  bookAppointmentController, getHelpController, context)),
           GetHelpDivider(),
           Padding(
             padding: EdgeInsets.all(4.0.w),
@@ -491,10 +496,19 @@ class _HomePageState extends State<HomePage> {
                 : const SizedBox()),
           ),
           GetHelpDivider(),
-          GetHelpCategory(
-            title: "In-house Experts".tr,
+          Container(
+            color: profileController.orgColor2.value.isNotEmpty
+                ? Color(int.parse("0xFF${profileController.orgColor2}"))
+                : Colors.transparent,
+            child: GetHelpCategory(
+              title: "In-house Experts".tr,
+            ),
           ),
           Container(
+            color: profileController.orgColor2.value.isNotEmpty
+                ? Color(int.parse("0xFF${profileController.orgColor2}"))
+                : Colors.transparent,
+            width: MediaQuery.of(context).size.width,
             height: 35.h,
             margin: EdgeInsets.only(bottom: 2.h),
             child: Obx(() => Container(
@@ -1750,7 +1764,11 @@ class ChatAnonymouslyCard extends StatelessWidget {
                           padding: EdgeInsets.all(2.w),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: SolhColors.primary_green,
+                              color:
+                                  profileController.orgColor1.value.isNotEmpty
+                                      ? Color(int.parse(
+                                          "0xFF${profileController.orgColor1}"))
+                                      : SolhColors.primary_green,
                               border: Border.all(
                                   color: SolhColors.white, width: 1)),
                           child: Center(

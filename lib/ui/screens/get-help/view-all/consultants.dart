@@ -260,6 +260,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                           '',
                                       fee: searchMarketController.issueModel
                                           .value.provider![index].fee,
+                                      discountedPrice: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .afterDiscountPrice,
 
                                       /*  doctorModel: DoctorModel(
                                           specialization: '',

@@ -20,7 +20,7 @@ class ConsultantController extends GetxController {
     var response = await _consultantDataService.getConsultantData(id, currency);
     isLoading(false);
     print(response.toString());
-    consultantModelController.value = ConsultantModel.fromJson(response);
+    consultantModelController.value = response;
   }
 }
 
@@ -33,7 +33,6 @@ class ConsultantDataService {
       print(error);
       return {};
     });
-    print(map.toString());
 
     if (map.isNotEmpty) {
       return ConsultantModel.fromJson(map);

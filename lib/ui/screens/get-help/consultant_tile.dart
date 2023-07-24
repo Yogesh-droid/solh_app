@@ -104,8 +104,7 @@ class ConsultantsTile extends StatelessWidget {
                                         discountedPrice! > 0
                                     ? Row(
                                         children: [
-                                          Text(
-                                              '${discountedPrice} ${feeAmount}',
+                                          Text('${currency} ${discountedPrice}',
                                               style:
                                                   SolhTextStyles.QS_cap_semi),
                                           SizedBox(
