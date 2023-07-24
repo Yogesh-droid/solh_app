@@ -24,7 +24,7 @@ class SearchMarketController extends GetxController {
       url = APIConstants.api +
           '/api/v1/get-help?text=$searchText&country=$country';
     }
-    Map<String, dynamic> map = await Network.makeGetRequest(url);
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
     print("map $map");
     searchMarketModel.value = SearchMarketModel.fromJson(map);
     isLoading.value = false;
@@ -32,7 +32,7 @@ class SearchMarketController extends GetxController {
 
   Future<void> getSuggestions(String searchText) async {
     isLoading.value = true;
-    Map<String, dynamic> map = await Network.makeGetRequest(
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         APIConstants.api + '/api/get-suggestion?text=$searchText');
     suggestionList.clear();
 

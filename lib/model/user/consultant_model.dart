@@ -46,6 +46,7 @@ class Provder {
   String? prefix;
   String? profession;
   String? feeCode;
+  int? afterDiscountPrice;
 
   Provder(
       {this.contactNumber,
@@ -72,6 +73,7 @@ class Provder {
       this.ratingCount,
       this.profession,
       this.feeCode,
+      this.afterDiscountPrice,
       this.prefix});
 
   Provder.fromJson(Map<String, dynamic> json) {
@@ -100,6 +102,7 @@ class Provder {
     prefix = json['prefix'];
     feeCode = json['feeCode'];
     profession = json['profession'];
+    afterDiscountPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {

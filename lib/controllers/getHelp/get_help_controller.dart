@@ -82,6 +82,10 @@ class GetHelpController extends GetxController {
       );
 
       getSpecializationModel.value = GetIssueResponseModel.fromJson(map);
+
+      getSpecializationModel.value.specializationList!.forEach((element) {
+        print("Discount : ${element.orgMarketPlaceOffer}");
+      });
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }
@@ -110,6 +114,9 @@ class GetHelpController extends GetxController {
           "${APIConstants.api}/api/get-app-specialization-all?parent=222");
       getAlliedTherapyModelMore.value = GetIssueResponseModel.fromJson(map);
       print(map);
+      getAlliedTherapyModelMore.value.specializationList!.forEach((element) {
+        print("Discount : ${element.orgMarketPlaceOffer}");
+      });
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }

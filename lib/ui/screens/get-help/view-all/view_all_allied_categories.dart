@@ -6,11 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/view-all/allied_consultants.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
+
+import '../widgets/allied_card_with_discount.dart';
 
 class ViewAlAlliedCategories extends StatelessWidget {
   ViewAlAlliedCategories({super.key, Map<String, dynamic>? args})
@@ -53,9 +56,10 @@ class ViewAlAlliedCategories extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class AlliedTherapyGrid extends StatelessWidget {
   AlliedTherapyGrid({super.key, required this.onTap});
-
+  final ProfileController profileController = Get.find();
   final Function(String slug, String name) onTap;
   GetHelpController getHelpController = Get.find();
   @override
@@ -85,39 +89,57 @@ class AlliedTherapyGrid extends StatelessWidget {
                                   .specializationList![index].name ??
                               '');
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: SolhColors.grey_3,
-                        ),
-                        borderRadius: BorderRadius.circular(9),
-                      ),
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            topRight: Radius.circular(8),
-                          ),
-                          child: CachedNetworkImage(
-                            imageUrl: getHelpController
+                    child: Obx(() => AlliedCardWithDiscount(
+                        image: getHelpController.getAlliedTherapyModelMore.value
+                                .specializationList![index].displayImage ??
+                            '',
+                        name: getHelpController.getAlliedTherapyModelMore.value
+                                .specializationList![index].name ??
+                            '',
+                        discount:
+                            profileController.myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
+                                    profileController.myProfileModel.value.body!
+                                            .userOrganisations!.first.status ==
+                                        'Approved'
+                                ? getHelpController
                                     .getAlliedTherapyModelMore
                                     .value
                                     .specializationList![index]
-                                    .displayImage ??
-                                '',
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Text(
-                          getHelpController.getAlliedTherapyModelMore.value
-                                  .specializationList![index].name ??
-                              '',
-                          style: SolhTextStyles.QS_cap_semi,
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                        )
-                      ]),
-                    ),
+                                    .orgMarketPlaceOffer
+                                : null)),
+                    // child: Container(
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(
+                    //       color: SolhColors.grey_3,
+                    //     ),
+                    //     borderRadius: BorderRadius.circular(9),
+                    //   ),
+                    //   child: Column(mainAxisSize: MainAxisSize.min, children: [
+                    //     ClipRRect(
+                    //       borderRadius: BorderRadius.only(
+                    //         topLeft: Radius.circular(8),
+                    //         topRight: Radius.circular(8),
+                    //       ),
+                    //       child: CachedNetworkImage(
+                    //         imageUrl: getHelpController
+                    //                 .getAlliedTherapyModelMore
+                    //                 .value
+                    //                 .specializationList![index]
+                    //                 .displayImage ??
+                    //             '',
+                    //         fit: BoxFit.cover,
+                    //       ),
+                    //     ),
+                    //     Text(
+                    //       getHelpController.getAlliedTherapyModelMore.value
+                    //               .specializationList![index].name ??
+                    //           '',
+                    //       style: SolhTextStyles.QS_cap_semi,
+                    //       textAlign: TextAlign.center,
+                    //       overflow: TextOverflow.ellipsis,
+                    //     )
+                    //   ]),
+                    // ),
                   );
                 },
               ));

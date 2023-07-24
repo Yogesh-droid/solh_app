@@ -55,16 +55,28 @@ class BookingPriceDetails extends StatelessWidget {
         getSelectedDateTimeWidget(context),
         GetHelpDivider(),
         BillAndCoupon(
-          billAmt: consultantController
-                      .consultantModelController.value.provder!.fee_amount! ==
+          billAmt: consultantController.consultantModelController.value.provder!
+                      .afterDiscountPrice! >
                   0
-              ? 'Paid'
-              : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${consultantController.consultantModelController.value.provder!.fee_amount ?? ''}",
-          total: consultantController
-                      .consultantModelController.value.provder!.fee_amount! ==
+              ? consultantController
+                  .consultantModelController.value.provder!.afterDiscountPrice!
+                  .toString()
+              : consultantController.consultantModelController.value.provder!
+                          .fee_amount! ==
+                      0
+                  ? 'Paid'
+                  : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${consultantController.consultantModelController.value.provder!.fee_amount ?? ''}",
+          total: consultantController.consultantModelController.value.provder!
+                      .afterDiscountPrice! >
                   0
-              ? 'Paid'
-              : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+              ? consultantController
+                  .consultantModelController.value.provder!.afterDiscountPrice!
+                  .toString()
+              : consultantController.consultantModelController.value.provder!
+                          .fee_amount! ==
+                      0
+                  ? 'Paid'
+                  : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
         ),
         SizedBox(
           height: 30,
@@ -124,11 +136,17 @@ class BookingPriceDetails extends StatelessWidget {
                   ))
           ],
         ),
-        totalPayble: consultantController
-                    .consultantModelController.value.provder!.fee_amount! ==
+        totalPayble: consultantController.consultantModelController.value
+                    .provder!.afterDiscountPrice! >
                 0
-            ? 'Paid'
-            : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
+            ? consultantController
+                .consultantModelController.value.provder!.afterDiscountPrice!
+                .toString()
+            : consultantController
+                        .consultantModelController.value.provder!.fee_amount! ==
+                    0
+                ? 'Paid'
+                : "${consultantController.consultantModelController.value.provder!.feeCurrency ?? ''} ${(consultantController.consultantModelController.value.provder!.fee_amount!)} ",
         onContinuePressed: () async {
           print(consultantController
               .consultantModelController.value.provder!.type);
@@ -141,9 +159,15 @@ class BookingPriceDetails extends StatelessWidget {
 
           Map<String, dynamic> map =
               await bookAppointmentController.bookAppointment({
-            'amount': consultantController
-                .consultantModelController.value.provder!.fee_amount!
-                .toString(),
+            'amount': consultantController.consultantModelController.value
+                        .provder!.afterDiscountPrice! >
+                    0
+                ? consultantController.consultantModelController.value.provder!
+                    .afterDiscountPrice!
+                    .toString()
+                : consultantController
+                    .consultantModelController.value.provder!.fee_amount!
+                    .toString(),
             'currency': consultantController
                 .consultantModelController.value.provder!.feeCurrency!,
             'currencyCode': consultantController
@@ -196,9 +220,15 @@ class BookingPriceDetails extends StatelessWidget {
             // Navigator.of(context).pop();
 
             Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
-              "amount": consultantController
-                      .consultantModelController.value.provder!.fee_amount ??
-                  0,
+              "amount": consultantController.consultantModelController.value
+                          .provder!.afterDiscountPrice! >
+                      0
+                  ? consultantController.consultantModelController.value
+                      .provder!.afterDiscountPrice!
+                      .toString()
+                  : consultantController.consultantModelController.value
+                          .provder!.fee_amount ??
+                      0,
               "feeCurrency": consultantController
                       .consultantModelController.value.provder!.feeCurrency ??
                   '',
