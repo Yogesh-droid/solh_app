@@ -368,6 +368,7 @@ class UserOrganisations {
   String? user;
   Organisation? organisation;
   Orgusercategories? orgusercategories;
+  String? selectedLocOption;
   bool? isDefault;
   String? createdAt;
   String? updatedAt;
@@ -382,6 +383,7 @@ class UserOrganisations {
       this.createdAt,
       this.updatedAt,
       this.orgusercategories,
+      this.selectedLocOption,
       this.iV});
 
   UserOrganisations.fromJson(Map<String, dynamic> json) {
@@ -395,6 +397,7 @@ class UserOrganisations {
         ? new Orgusercategories.fromJson(json['Orgusercategories'])
         : null;
     isDefault = json['isDefault'];
+    selectedLocOption = json['selectedLocOption'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -456,6 +459,7 @@ class Orgusercategories {
   String? updatedAt;
   int? iV;
   String? selectedOption;
+  List<OptionsLoc>? optionsLoc;
 
   Orgusercategories(
       {this.sId,
@@ -468,6 +472,7 @@ class Orgusercategories {
       this.createdAt,
       this.updatedAt,
       this.iV,
+      this.optionsLoc,
       this.selectedOption});
 
   Orgusercategories.fromJson(Map<String, dynamic> json) {
@@ -478,6 +483,12 @@ class Orgusercategories {
       options = <Options>[];
       json['options'].forEach((v) {
         options!.add(new Options.fromJson(v));
+      });
+    }
+    if (json['optionsLoc'] != null) {
+      optionsLoc = <OptionsLoc>[];
+      json['optionsLoc'].forEach((v) {
+        optionsLoc!.add(new OptionsLoc.fromJson(v));
       });
     }
     status = json['status'];
@@ -498,6 +509,28 @@ class Options {
   Options({this.name, this.status, this.sId});
 
   Options.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    status = json['status'];
+    sId = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['status'] = this.status;
+    data['_id'] = this.sId;
+    return data;
+  }
+}
+
+class OptionsLoc {
+  String? name;
+  String? status;
+  String? sId;
+
+  OptionsLoc({this.name, this.status, this.sId});
+
+  OptionsLoc.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     status = json['status'];
     sId = json['_id'];

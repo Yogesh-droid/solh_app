@@ -131,15 +131,16 @@ class OrgController extends GetxController {
   }
 
   Future<void> updateOrgTeamController(
-      {required String userOrgId, required String selectedOptionId}) async {
+      {required String userOrgId,
+      required String selectedOptionId,
+      required String type}) async {
     isUpdatingOrgTeam(true);
     try {
       final response = await orgService.updateOrgTeam(
-          selectedOptionId: selectedOptionId, userOrgId: userOrgId);
-      if (response.success == true) {
-        profileController.myProfileModel.value = response;
-        Utility.showToast('Information updated successfully');
-      }
+        selectedOptionId: selectedOptionId,
+        userOrgId: userOrgId,
+        type: type,
+      );
     } catch (e) {
       SolhSnackbar.error('Error', "Opps, something went wrong!");
       throw (e);

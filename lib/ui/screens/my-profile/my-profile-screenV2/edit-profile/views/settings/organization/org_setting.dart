@@ -185,8 +185,6 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
                             return TeamsModelSheetContent(
                               userOrganisations:
                                   myProfileModel.body!.userOrganisations!.first,
-                              label: myProfileModel.body!.userOrganisations!
-                                  .first.orgusercategories!.label!,
                             );
                           },
                         );
@@ -306,7 +304,6 @@ Widget getOtherOrgs(
                   builder: (context) {
                     return TeamsModelSheetContent(
                       userOrganisations: subList[index],
-                      label: subList[index].orgusercategories!.label!,
                     );
                   },
                 );
@@ -333,11 +330,9 @@ Widget getOtherOrgs(
 }
 
 class TeamsModelSheetContent extends StatefulWidget {
-  TeamsModelSheetContent(
-      {super.key, required this.userOrganisations, required this.label});
+  TeamsModelSheetContent({super.key, required this.userOrganisations});
 
   final UserOrganisations userOrganisations;
-  final String label;
 
   @override
   State<TeamsModelSheetContent> createState() => _TeamsModelSheetContentState();
@@ -359,16 +354,77 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
 
   @override
   Widget build(BuildContext context) {
+    return Container(
+      height: 80.h,
+      width: 100.w,
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(0),
+              child: TabBar(indicatorColor: SolhColors.primary_green, tabs: [
+                Text(
+                  'Select Team',
+                  style: SolhTextStyles.CTA,
+                ),
+                Text(
+                  'Select Location',
+                  style: SolhTextStyles.CTA,
+                ),
+              ]),
+            ),
+            Expanded(
+              child: Container(
+                child: TabBarView(children: [
+                  SelectTeamTabContent(
+                    userOrganisations: widget.userOrganisations,
+                  ),
+                  SelectLocationTabContent(
+                    userOrganisations: widget.userOrganisations,
+                  )
+                ]),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SelectTeamTabContent extends StatefulWidget {
+  SelectTeamTabContent({super.key, required this.userOrganisations});
+
+  final UserOrganisations userOrganisations;
+
+  @override
+  State<SelectTeamTabContent> createState() => _SelectTeamTabContentState();
+}
+
+class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
+  final OrgController orgController = Get.find();
+  String groupValue = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    groupValue =
+        widget.userOrganisations.orgusercategories!.selectedOption != null
+            ? widget.userOrganisations.orgusercategories!.selectedOption!
+            : '';
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.label,
-              style: SolhTextStyles.QS_big_body_med_20,
-            ),
-          ),
           widget.userOrganisations.orgusercategories == null
               ? Text('No Category to select')
               : ListView.builder(
@@ -384,7 +440,6 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
                           value: widget.userOrganisations.orgusercategories!
                               .options![index].sId!,
                           onChanged: (value) async {
-                            log("changed");
                             groupValue = widget.userOrganisations
                                 .orgusercategories!.options![index].sId!;
                             setState(() {});
@@ -401,16 +456,22 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
                   itemCount: widget
                       .userOrganisations.orgusercategories!.options!.length,
                 ),
+          SizedBox(
+            height: 15,
+          ),
           Obx(() {
             return orgController.isUpdatingOrgTeam.value
                 ? SolhGreenButton(
                     child: ButtonLoadingAnimation(
-                    ballColor: SolhColors.white,
-                  ))
+                      ballColor: SolhColors.white,
+                    ),
+                  )
                 : SolhGreenButton(
                     onPressed: () async {
                       await orgController.updateOrgTeamController(
-                          userOrgId: widget.userOrganisations.sId!,
+                          userOrgId:
+                              widget.userOrganisations.organisation!.sId!,
+                          type: "team",
                           selectedOptionId: groupValue);
 
                       Navigator.of(context).pop();
@@ -420,6 +481,119 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
                       style:
                           SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                     ));
+          }),
+          SizedBox(
+            height: 2.h,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SelectLocationTabContent extends StatefulWidget {
+  SelectLocationTabContent({super.key, required this.userOrganisations});
+
+  final UserOrganisations userOrganisations;
+
+  @override
+  State<SelectLocationTabContent> createState() =>
+      _SelectLocationTabContentState();
+}
+
+class _SelectLocationTabContentState extends State<SelectLocationTabContent> {
+  @override
+  final OrgController orgController = Get.find();
+  String groupValue = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    groupValue = widget.userOrganisations.selectedLocOption != null
+        ? widget.userOrganisations.selectedLocOption!
+        : '';
+    super.initState();
+  }
+
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          widget.userOrganisations.orgusercategories == null ||
+                  widget
+                      .userOrganisations.orgusercategories!.optionsLoc!.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    'No Category to select',
+                    style: SolhTextStyles.QS_body_2_bold,
+                  ),
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Card(
+                        child: Row(
+                      children: [
+                        Radio(
+                          activeColor: SolhColors.primary_green,
+                          groupValue: groupValue,
+                          value: widget.userOrganisations.orgusercategories!
+                              .optionsLoc![index].sId!,
+                          onChanged: (value) async {
+                            groupValue = widget.userOrganisations
+                                .orgusercategories!.optionsLoc![index].sId!;
+                            setState(() {});
+                          },
+                        ),
+                        Text(
+                          widget.userOrganisations.orgusercategories!
+                              .optionsLoc![index].name!,
+                          style: SolhTextStyles.QS_caption,
+                        ),
+                      ],
+                    ));
+                  },
+                  itemCount: widget
+                      .userOrganisations.orgusercategories!.optionsLoc!.length,
+                ),
+          SizedBox(
+            height: 15,
+          ),
+          Obx(() {
+            return orgController.isUpdatingOrgTeam.value
+                ? SolhGreenButton(
+                    child: ButtonLoadingAnimation(
+                      ballColor: SolhColors.white,
+                    ),
+                  )
+                : (widget.userOrganisations.orgusercategories!.optionsLoc!
+                        .isEmpty
+                    ? SolhGreenButton(
+                        backgroundColor: SolhColors.Grey_1,
+                        child: Text(
+                          'Save',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        ))
+                    : SolhGreenButton(
+                        onPressed: () async {
+                          await orgController.updateOrgTeamController(
+                              userOrgId:
+                                  widget.userOrganisations.organisation!.sId!,
+                              type: "location",
+                              selectedOptionId: groupValue);
+
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Save',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        ),
+                      ));
           }),
           SizedBox(
             height: 2.h,

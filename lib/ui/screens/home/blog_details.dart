@@ -87,14 +87,15 @@ class _BlogDetailsPageState extends State<BlogDetailsPage> {
                             ),
                             Spacer(),
                             IconButton(
-                                onPressed: () async {
-                                  des = await HtmlTranslationService
-                                      .translateDescrition(des ?? '',
-                                          isHtml: true);
-                                  setState(() {});
-                                  print(des);
-                                },
-                                icon: Icon(Icons.translate))
+                              onPressed: () async {
+                                des = await HtmlTranslationService
+                                    .translateDescrition(des ?? '',
+                                        isHtml: true);
+                                setState(() {});
+                                print(des);
+                              },
+                              icon: Icon(Icons.translate),
+                            ),
                           ],
                         ),
                       ),
