@@ -91,6 +91,7 @@ class Doctors {
   String? feeCurrency;
   int? fee_amount;
   String? prefix;
+  int? afterDiscountPrice;
 
   Doctors(
       {this.offlineSession,
@@ -109,6 +110,7 @@ class Doctors {
       this.feeCurrency,
       this.specialization,
       this.profilePicture,
+      this.afterDiscountPrice,
       this.prefix});
 
   Doctors.fromJson(Map<String, dynamic> json) {
@@ -129,6 +131,7 @@ class Doctors {
     profilePicture = json['profilePicture'] ?? '';
     specialization = json['specialization'] ?? '';
     prefix = json['prefix'] ?? '';
+    afterDiscountPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {
@@ -182,6 +185,7 @@ class Provider {
   int? fee_amount;
   String? prefix;
   String? preview;
+  int? afterDiscountPrice;
 
   Provider(
       {this.sId,
@@ -213,6 +217,7 @@ class Provider {
       this.feeCurrency,
       this.prefix,
       this.profilePicture,
+      this.afterDiscountPrice,
       this.preview});
 
   Provider.fromJson(Map<String, dynamic> json) {
@@ -247,6 +252,7 @@ class Provider {
     prefix = json['prefix'];
     profilePicture = json['profilePicture'];
     preview = json['preview'];
+    afterDiscountPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {

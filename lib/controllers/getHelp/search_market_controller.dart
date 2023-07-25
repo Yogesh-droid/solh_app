@@ -24,7 +24,7 @@ class SearchMarketController extends GetxController {
       url = APIConstants.api +
           '/api/v1/get-help?text=$searchText&country=$country';
     }
-    Map<String, dynamic> map = await Network.makeGetRequest(url);
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
     print("map $map");
     searchMarketModel.value = SearchMarketModel.fromJson(map);
     isLoading.value = false;
@@ -32,7 +32,7 @@ class SearchMarketController extends GetxController {
 
   Future<void> getSuggestions(String searchText) async {
     isLoading.value = true;
-    Map<String, dynamic> map = await Network.makeGetRequest(
+    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         APIConstants.api + '/api/get-suggestion?text=$searchText');
     suggestionList.clear();
 
@@ -50,10 +50,10 @@ class SearchMarketController extends GetxController {
     String url;
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
-          '/api/v3/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+          '/api/v4/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
     } else {
       url = APIConstants.api +
-          '/api/v3/get-help?specialization=$slug&country=$country&issue=$issue';
+          '/api/v4/get-help?specialization=$slug&country=$country&issue=$issue';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
@@ -87,10 +87,10 @@ class SearchMarketController extends GetxController {
       String url;
       if (c != null && c.isNotEmpty) {
         url = APIConstants.api +
-            '/api/v3/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+            '/api/v4/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
       } else {
         url = APIConstants.api +
-            '/api/v3/get-help?specialization=$slug&country=$country&issue=$issue&page=$page';
+            '/api/v4/get-help?specialization=$slug&country=$country&issue=$issue&page=$page';
       }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 

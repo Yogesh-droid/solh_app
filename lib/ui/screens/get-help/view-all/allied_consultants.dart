@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -135,6 +136,11 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                                         .alliedProviders![index]
                                         .feeCurrency ??
                                     '',
+                                afterDiscoutedPrice: searchMarketController
+                                    .issueModel
+                                    .value
+                                    .alliedProviders![index]
+                                    .afterDiscountPrice,
                                 experience: searchMarketController.issueModel
                                     .value.alliedProviders![index].experience
                                     .toString(),
@@ -198,7 +204,8 @@ class AlliedConsultantTile extends StatelessWidget {
       required this.feeAmount,
       required this.id,
       required this.preview,
-      required this.feeCurrency});
+      required this.feeCurrency,
+      this.afterDiscoutedPrice});
 
   final String? profilePic;
   final String id;
@@ -207,13 +214,14 @@ class AlliedConsultantTile extends StatelessWidget {
   final String? profession;
   final String experience;
   final int feeAmount;
+  final int? afterDiscoutedPrice;
   final String? preview;
   final String feeCurrency;
 
   final SearchMarketController _searchMarketController = Get.find();
+  final ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
-    print("The preview is $preview");
     return Column(
       children: [
         Column(
@@ -263,28 +271,6 @@ class AlliedConsultantTile extends StatelessWidget {
           SizedBox(
             height: 1.h,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 12),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       Text(
-          //         'Recorded',
-          //         style: SolhTextStyles.QS_cap_2_semi.copyWith(
-          //             color: SolhColors.primaryRed),
-          //       ),
-          //       Text(
-          //         ' + ',
-          //         style: SolhTextStyles.QS_cap_2_semi,
-          //       ),
-          //       Text(
-          //         'Live',
-          //         style: SolhTextStyles.QS_cap_2_semi.copyWith(
-          //             color: SolhColors.primary_green),
-          //       )
-          //     ],
-          //   ),
-          // ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -321,55 +307,91 @@ class AlliedConsultantTile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // Row(
-                      //   children: [
-                      //     SolhDot(),
-                      //     Text(
-                      //       ' 2 plans',
-                      //       style: SolhTextStyles.QS_cap_semi,
-                      //     )
-                      //   ],
-                      // ),
                     ],
                   ),
                   SizedBox(height: 1.h),
                   getInteractionDetailsAllied()
                 ],
               ),
+              Spacer(),
+              if (afterDiscoutedPrice != null && afterDiscoutedPrice! > 0)
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Image.asset("assets/images/get_help/offer_bg.png",
+                        height: 50, width: 50, fit: BoxFit.fill),
+                    Text(
+                      "${(((feeAmount - afterDiscoutedPrice!) / feeAmount) * 100).toInt()} % \noff",
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                )
             ],
           ),
-          Expanded(
+          Align(
+            alignment: Alignment.bottomRight,
             child: Container(
-              width: 100.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
+              height: 13.w,
+              width: 30.w,
+              decoration: BoxDecoration(
+                color: SolhColors.blue_light,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8),
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 13.w,
-                    width: 25.w,
-                    decoration: BoxDecoration(
-                      color: SolhColors.blue_light,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        bottomRight: Radius.circular(8),
+                  Column(
+                    children: [
+                      Text(
+                        'Starting @'.tr,
+                        style: SolhTextStyles.QS_cap_semi,
                       ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              'Starting @'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            ),
-                            Text(feeCurrency + " " + feeAmount.toString(),
-                                style: SolhTextStyles.QS_cap_semi),
-                          ],
-                        ),
-                      ],
-                    ),
+                      // Text(feeCurrency + " " + feeAmount.toString(),
+                      //     style: SolhTextStyles.QS_cap_semi),
+                      Obx(() => Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              profileController.myProfileModel.value.body!
+                                          .userOrganisations!.isNotEmpty &&
+                                      profileController
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .userOrganisations!
+                                              .first
+                                              .status ==
+                                          'Approved' &&
+                                      afterDiscoutedPrice != null &&
+                                      afterDiscoutedPrice! > 0
+                                  ? Row(
+                                      children: [
+                                        Text(
+                                            '${feeCurrency} ${afterDiscoutedPrice}',
+                                            style: SolhTextStyles.QS_cap_semi),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                            feeCurrency +
+                                                " " +
+                                                feeAmount.toString(),
+                                            style: SolhTextStyles.QS_cap_semi
+                                                .copyWith(
+                                                    decoration: TextDecoration
+                                                        .lineThrough)),
+                                      ],
+                                    )
+                                  : Text(
+                                      feeCurrency + " " + feeAmount.toString(),
+                                      style: SolhTextStyles.QS_cap_semi),
+                            ],
+                          ))
+                    ],
                   ),
                 ],
               ),

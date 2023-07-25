@@ -262,11 +262,12 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                           "amount":
                                                               scheduldAppointments[
                                                                       index]
-                                                                  .amount,
+                                                                  .amount
+                                                                  .toString(),
                                                           "feeCurrency":
                                                               scheduldAppointments[
                                                                       index]
-                                                                  .currency,
+                                                                  .currencyCode,
                                                           "alliedOrderId": null,
                                                           "appointmentId":
                                                               scheduldAppointments[
@@ -283,7 +284,7 @@ class _AppointmentScreenState extends State<AppointmentScreen>
                                                           "feeCode":
                                                               scheduldAppointments[
                                                                       index]
-                                                                  .feeCode,
+                                                                  .currencyCode,
                                                         });
                                                   },
                                                   child: Row(
@@ -918,7 +919,11 @@ class AlliedAppointmentList extends StatelessWidget {
 }
 
 Widget getAlliedInHousePackageCard(
-    {e, alliedOrderId, appointmentId, inhouseOrderId, context}) {
+    {required InHousePackageOrders e,
+    alliedOrderId,
+    appointmentId,
+    inhouseOrderId,
+    context}) {
   return Container(
     margin: EdgeInsets.only(bottom: 8),
     padding: EdgeInsets.all(16),
@@ -1001,7 +1006,7 @@ Widget getAlliedInHousePackageCard(
                                     "marketplaceType": "Inhouse",
                                     "paymentGateway": "Stripe",
                                     "paymentSource": "App",
-                                    "feeCode": e.feeCode
+                                    "feeCode": e.feeCode ?? "SGD"
                                   });
                             },
                             child: Row(

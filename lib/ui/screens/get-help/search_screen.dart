@@ -105,6 +105,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                                     .doctors![index]
                                                     .fee_amount ??
                                                 0,
+                                            discountedPrice:
+                                                searchMarketController
+                                                    .searchMarketModel
+                                                    .value
+                                                    .doctors![index]
+                                                    .afterDiscountPrice,
                                             id: searchMarketController
                                                     .searchMarketModel
                                                     .value

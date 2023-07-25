@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/get-help/booking_price_details.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -26,6 +27,7 @@ class ConsultantProfilePage extends StatefulWidget {
 class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   final ConsultantController _controller = Get.find();
   final BookAppointmentController bookAppointmentController = Get.find();
+  final ProfileController profileController = Get.find();
   late final ScrollController _scrollController;
 
   @override
@@ -92,22 +94,22 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                       borderRadius: BorderRadius.horizontal(
                           left: Radius.circular(20),
                           right: Radius.circular(20))),
-                  child: Obx(() => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            bookingButton(),
-                            SizedBox(
-                              height: 40,
-                            ),
-                            detailsContainer(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            aboutContainer(),
-                            Container(
-                              height: 400,
-                            ),
-                          ])),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        bookingButton(),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        detailsContainer(),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        aboutContainer(),
+                        Container(
+                          height: 400,
+                        ),
+                      ]),
                 ),
               )
             ]),
@@ -335,30 +337,45 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
       children: [
         Column(
           children: [
+            Obx(() => profileController.myProfileModel.value.body!
+                        .userOrganisations!.isNotEmpty &&
+                    profileController.myProfileModel.value.body!
+                            .userOrganisations!.first.status ==
+                        'Approved'
+                ? _controller.consultantModelController.value.provder!.afterDiscountPrice != null &&
+                        _controller.consultantModelController.value.provder!
+                                .afterDiscountPrice! >
+                            0
+                    ? Column(
+                        children: [
+                          Text(
+                              '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.afterDiscountPrice}',
+                              style: SolhTextStyles.QS_body_1_bold.copyWith(
+                                  color: SolhColors.primary_green)),
+                          Text(
+                              '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}',
+                              style: SolhTextStyles.QS_body_1_bold.copyWith(
+                                  color: SolhColors.grey_3,
+                                  decoration: TextDecoration.lineThrough))
+                        ],
+                      )
+                    : Text(
+                        _controller.consultantModelController.value.provder!.fee_amount! > 0
+                            ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
+                            : (_controller.consultantModelController.value.provder!.fee == null ||
+                                    _controller.consultantModelController.value.provder!.fee == 'Paid' ||
+                                    _controller.consultantModelController.value.provder!.fee == ''
+                                ? 'Paid'
+                                : ''),
+                        style: SolhTextStyles.QS_body_1_bold.copyWith(color: SolhColors.primary_green))
+                : SizedBox()),
+            // _controller.consultantModelController.value.provder!.fee_amount! > 0
+            //     ?
             Text(
-                _controller.consultantModelController.value.provder!.fee_amount! >
-                        0
-                    ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}'
-                    : (_controller.consultantModelController.value.provder!
-                                    .fee ==
-                                null ||
-                            _controller.consultantModelController.value.provder!
-                                    .fee ==
-                                'Paid' ||
-                            _controller.consultantModelController.value.provder!
-                                    .fee ==
-                                ''
-                        ? 'Paid'
-                        : ''),
-                style: SolhTextStyles.QS_body_1_bold.copyWith(
-                    color: SolhColors.primary_green)),
-            _controller.consultantModelController.value.provder!.fee_amount! > 0
-                ? Text(
-                    'Consultation Fee'.tr,
-                    style: SolhTextStyles.QS_cap_2.copyWith(
-                        color: SolhColors.Grey_1),
-                  )
-                : Container()
+              'Consultation Fee'.tr,
+              style: SolhTextStyles.QS_cap_2.copyWith(color: SolhColors.Grey_1),
+            )
+            // : Container()
           ],
         ),
         Container(
@@ -376,13 +393,6 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
           ),
           onPressed: () {
-            // bookAppointmentController.selectedDayForTimeSlot.value =
-            //     DateTime.now().day;
-            // bookAppointmentController.selectedDate.value = DateTime.now();
-            // bookAppointmentController.getTimeSlot(
-            //     providerId:
-            //         _controller.consultantModelController.value.provder!.sId,
-            //     date: DateFormat('yyyy-MM-dd').format(DateTime.now()));
             openBookingSheet();
             FirebaseAnalytics.instance.logEvent(
                 name: 'BookAppontmentTapped',

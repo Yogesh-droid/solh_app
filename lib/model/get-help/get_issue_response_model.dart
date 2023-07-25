@@ -28,9 +28,15 @@ class SpecializationList {
   String? slug;
   String? id;
   String? displayImage;
+  int? orgMarketPlaceOffer;
 
   SpecializationList(
-      {this.sId, this.name, this.slug, this.id, this.displayImage});
+      {this.sId,
+      this.name,
+      this.slug,
+      this.id,
+      this.displayImage,
+      this.orgMarketPlaceOffer});
 
   SpecializationList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -38,6 +44,7 @@ class SpecializationList {
     slug = json['slug'];
     id = json['id'];
     displayImage = json['displayImage'];
+    orgMarketPlaceOffer = json['orgMarketPlaceOffer'];
   }
 
   Map<String, dynamic> toJson() {

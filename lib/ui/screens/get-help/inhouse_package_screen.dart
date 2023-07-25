@@ -40,6 +40,7 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
         print('id ${widget.args["id"]}');
         _alliedController.selectedPackage.value = '';
         _alliedController.selectedPackagePrice.value = -1;
+        _alliedController.selectedPackageDiscountedPrice.value = -1;
         _alliedController.getInhousePackage(widget.args["id"]);
       },
     );
@@ -105,7 +106,7 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                       children: [
                         Text(
                           _alliedController.selectedPackagePrice.value > 0
-                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackagePrice.toString()}"
+                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackageDiscountedPrice > 0 ? _alliedController.selectedPackageDiscountedPrice : _alliedController.selectedPackagePrice}"
                               : "No Package",
                           style: SolhTextStyles.QS_body_2_semi.copyWith(
                               color: Colors.black),
@@ -401,6 +402,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
       _alliedController.selectedPackage.value = widget.packageList!.first.sId!;
       _alliedController.selectedPackagePrice.value =
           widget.packageList!.first.amount!;
+      _alliedController.selectedPackageDiscountedPrice.value =
+          widget.packageList!.first.discountedPrice ?? -1;
       _alliedController.selectedCurrency.value =
           widget.packageList!.first.currency!;
     });
@@ -457,12 +460,16 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                             _alliedController.selectedPackage.value = id;
                             _alliedController.selectedPackagePrice.value =
                                 price;
+                            _alliedController.selectedPackagePrice.value =
+                                e.discountedPrice ?? -1;
                             _alliedController.selectedPackageIndex =
                                 widget.packageList!.indexOf(e);
                             _alliedController.selectedCurrency.value = currency;
                           } else {
                             _alliedController.selectedPackage.value = "";
                             _alliedController.selectedPackagePrice.value = -1;
+                            _alliedController
+                                .selectedPackageDiscountedPrice.value = -1;
                           }
                         },
                       ))

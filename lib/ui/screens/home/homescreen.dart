@@ -58,6 +58,8 @@ import '../../../controllers/video/video_tutorial_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../get-help/get-help.dart';
+import '../get-help/widgets/allied_card_with_discount.dart';
+import '../get-help/widgets/specialization_card_with_discount.dart';
 import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
@@ -179,6 +181,7 @@ class _HomePageState extends State<HomePage> {
   SearchMarketController searchMarketController = Get.find();
   HomeController homeController = Get.find();
   PsychologyTestController psychologyTestController = Get.find();
+  final ProfileController profileController = Get.find();
 
   // bool _isDrawerOpen = false;
   List<String> feelingList = [];
@@ -229,14 +232,6 @@ class _HomePageState extends State<HomePage> {
             onTapped: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => GlobalSearchPage()));
-              // searchMarketController.searchMarketModel.value =
-              //     SearchMarketModel();
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => SearchScreen(),
-              //   ),
-              // );
             },
           ),
 
@@ -376,34 +371,46 @@ class _HomePageState extends State<HomePage> {
           ),
           GetHelpDivider(),
 
-          GetHelpCategory(
-            title: 'Search for Support'.tr,
-            trailing: InkWell(
-              onTap: () {
-                _bottomNavigatorController.activeIndex.value = 2;
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Get Help'.tr,
-                      style: GoogleFonts.signika(
-                        color: SolhColors.primary_green,
-                        fontWeight: FontWeight.w400,
+          Obx(() => Container(
+                color: profileController.orgColor3.value.isNotEmpty
+                    ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                    : Colors.transparent,
+                child: GetHelpCategory(
+                  title: 'Search for Support'.tr,
+                  trailing: InkWell(
+                    onTap: () {
+                      _bottomNavigatorController.activeIndex.value = 2;
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Get Help'.tr,
+                            style: GoogleFonts.signika(
+                              color: SolhColors.primary_green,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward,
+                            color: SolhColors.primary_green,
+                            size: 14,
+                          ),
+                        ],
                       ),
                     ),
-                    Icon(
-                      Icons.arrow_forward,
-                      color: SolhColors.primary_green,
-                      size: 14,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-          getIssueUI(bookAppointmentController, getHelpController, context),
+              )),
+          Obx(() => Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              color: profileController.orgColor3.value.isNotEmpty
+                  ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                  : Colors.transparent,
+              child: getIssueUI(
+                  bookAppointmentController, getHelpController, context))),
           GetHelpDivider(),
           Padding(
             padding: EdgeInsets.all(4.0.w),
@@ -489,36 +496,48 @@ class _HomePageState extends State<HomePage> {
                 : const SizedBox()),
           ),
           GetHelpDivider(),
-          GetHelpCategory(
-            title: "In-house Experts".tr,
-          ),
-          Container(
-            height: 35.h,
-            margin: EdgeInsets.only(bottom: 2.h),
-            child: Obx(() => Container(
-                child: getHelpController.topConsultantList.value.doctors != null
-                    ? getHelpController.topConsultantList.value.doctors!.isEmpty
-                        ? Center(
-                            child: Text(
-                                'No Consultant available for your country'.tr),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: getHelpController.topConsultantList.value
-                                        .doctors!.length >
-                                    5
-                                ? 5
-                                : getHelpController
-                                    .topConsultantList.value.doctors!.length,
-                            itemBuilder: (_, index) {
-                              return TopConsultantsTile(
-                                doctors: getHelpController
-                                    .topConsultantList.value.doctors![index],
-                              );
-                            })
-                    : Container())),
-          ),
+          Obx(() => Container(
+                color: profileController.orgColor3.value.isNotEmpty
+                    ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                    : Colors.transparent,
+                child: GetHelpCategory(
+                  title: "In-house Experts".tr,
+                ),
+              )),
+          Obx(() => Container(
+                color: profileController.orgColor3.value.isNotEmpty
+                    ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                    : Colors.transparent,
+                width: MediaQuery.of(context).size.width,
+                height: 35.h,
+                margin: EdgeInsets.only(bottom: 2.h),
+                child: Obx(() => Container(
+                    child: getHelpController.topConsultantList.value.doctors !=
+                            null
+                        ? getHelpController
+                                .topConsultantList.value.doctors!.isEmpty
+                            ? Center(
+                                child: Text(
+                                    'No Consultant available for your country'
+                                        .tr),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: getHelpController.topConsultantList
+                                            .value.doctors!.length >
+                                        5
+                                    ? 5
+                                    : getHelpController.topConsultantList.value
+                                        .doctors!.length,
+                                itemBuilder: (_, index) {
+                                  return TopConsultantsTile(
+                                    doctors: getHelpController.topConsultantList
+                                        .value.doctors![index],
+                                  );
+                                })
+                        : Container())),
+              )),
           GetHelpDivider(),
           /* GetHelpCategory(
             title: 'Solh Buddies to Talk',
@@ -1748,7 +1767,11 @@ class ChatAnonymouslyCard extends StatelessWidget {
                           padding: EdgeInsets.all(2.w),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: SolhColors.primary_green,
+                              color:
+                                  profileController.orgColor1.value.isNotEmpty
+                                      ? Color(int.parse(
+                                          "0xFF${profileController.orgColor1}"))
+                                      : SolhColors.primary_green,
                               border: Border.all(
                                   color: SolhColors.white, width: 1)),
                           child: Center(
@@ -1830,6 +1853,7 @@ getIssuesRowItem(Widget widget, String subtext) {
 class AlliedExperts extends StatelessWidget {
   AlliedExperts({super.key, required this.onTap});
   final GetHelpController getHelpController = Get.find();
+  final ProfileController profileController = Get.find();
 
   final Function(String slug, String name) onTap;
 
@@ -1896,53 +1920,76 @@ class AlliedExperts extends StatelessWidget {
                       .getAlliedTherapyModel.value.specializationList!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
-                      onTap: () {
-                        onTap(
-                            getHelpController.getAlliedTherapyModel.value
-                                    .specializationList![index].slug ??
-                                '',
-                            getHelpController.getAlliedTherapyModel.value
-                                    .specializationList![index].name ??
-                                '');
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: SolhColors.grey_3,
-                          ),
-                          borderRadius: BorderRadius.circular(9),
-                        ),
-                        child:
-                            Column(mainAxisSize: MainAxisSize.min, children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(8),
-                              topRight: Radius.circular(8),
-                            ),
-                            child: CachedNetworkImage(
-                              imageUrl: getHelpController
-                                      .getAlliedTherapyModel
-                                      .value
-                                      .specializationList![index]
-                                      .displayImage ??
+                        onTap: () {
+                          onTap(
+                              getHelpController.getAlliedTherapyModel.value
+                                      .specializationList![index].slug ??
                                   '',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(vertical: 2.h),
-                            child: Text(
                               getHelpController.getAlliedTherapyModel.value
                                       .specializationList![index].name ??
-                                  '',
-                              style: SolhTextStyles.QS_cap_semi,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ]),
-                      ),
-                    );
+                                  '');
+                        },
+                        child: Obx(() => AlliedCardWithDiscount(
+                            image: getHelpController.getAlliedTherapyModel.value
+                                    .specializationList![index].displayImage ??
+                                '',
+                            name: getHelpController.getAlliedTherapyModel.value
+                                    .specializationList![index].name ??
+                                '',
+                            discount:
+                                profileController.myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
+                                        profileController
+                                                .myProfileModel
+                                                .value
+                                                .body!
+                                                .userOrganisations!
+                                                .first
+                                                .status ==
+                                            'Approved'
+                                    ? getHelpController
+                                        .getAlliedTherapyModel
+                                        .value
+                                        .specializationList![index]
+                                        .orgMarketPlaceOffer
+                                    : null))
+                        // child: Container(
+                        //   decoration: BoxDecoration(
+                        //     border: Border.all(
+                        //       color: SolhColors.grey_3,
+                        //     ),
+                        //     borderRadius: BorderRadius.circular(9),
+                        //   ),
+                        //   child:
+                        //       Column(mainAxisSize: MainAxisSize.min, children: [
+                        //     ClipRRect(
+                        //       borderRadius: BorderRadius.only(
+                        //         topLeft: Radius.circular(8),
+                        //         topRight: Radius.circular(8),
+                        //       ),
+                        //       child: CachedNetworkImage(
+                        //         imageUrl: getHelpController
+                        //                 .getAlliedTherapyModel
+                        //                 .value
+                        //                 .specializationList![index]
+                        //                 .displayImage ??
+                        //             '',
+                        //         fit: BoxFit.cover,
+                        //       ),
+                        //     ),
+                        //     Padding(
+                        //       padding: EdgeInsets.symmetric(vertical: 2.h),
+                        //       child: Text(
+                        //         getHelpController.getAlliedTherapyModel.value
+                        //                 .specializationList![index].name ??
+                        //             '',
+                        //         style: SolhTextStyles.QS_cap_semi,
+                        //         textAlign: TextAlign.center,
+                        //         overflow: TextOverflow.ellipsis,
+                        //       ),
+                        //     )
+                        //   ]),
+                        // ),
+                        );
                   },
                 )),
         ],
@@ -2071,25 +2118,6 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                             ))
                         .toList(),
                   )
-
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: list
-                  //       .asMap()
-                  //       .entries
-                  //       .map((e) => Container(
-                  //             height: e.key == _current ? 6 : 5,
-                  //             width: e.key == _current ? 6 : 5,
-                  //             margin: EdgeInsets.all(3),
-                  //             decoration: BoxDecoration(
-                  //               shape: BoxShape.circle,
-                  //               color: e.key == _current
-                  //                   ? SolhColors.dark_grey
-                  //                   : SolhColors.grey_3,
-                  //             ),
-                  //           ))
-                  //       .toList(),
-                  // )
                 ],
               ));
   }
@@ -2141,10 +2169,6 @@ class AnonymousDialog extends StatelessWidget {
                           .tr,
                   style: SolhTextStyles.QS_body_2_semi)
             ])),
-        // Text(
-        //   ,
-        //   ,
-        // ),
         SizedBox(
           height: 15.w,
         ),
@@ -2208,6 +2232,7 @@ class SearchByProfesssionUI extends StatelessWidget {
   SearchByProfesssionUI({super.key});
   GetHelpController getHelpController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
+  ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -2227,89 +2252,45 @@ class SearchByProfesssionUI extends StatelessWidget {
                     .getSpecializationModel.value.specializationList!.length,
                 shrinkWrap: true,
                 itemBuilder: (_, index) => GestureDetector(
-                  onTap: () {
-                    bookAppointmentController.query = getHelpController
-                        .getSpecializationModel
-                        .value
-                        .specializationList![index]
-                        .name;
-                    Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                        arguments: {
-                          "slug": getHelpController.getSpecializationModel.value
-                                  .specializationList![index].slug ??
-                              '',
-                          "type": 'specialization',
-                          "name": getHelpController.getSpecializationModel.value
-                                  .specializationList![index].name ??
-                              ''
-                        });
-                    FirebaseAnalytics.instance.logEvent(
-                        name: 'SearhSpecialityTapped',
-                        parameters: {'Page': 'GetHelp'});
-                  },
-                  child: Container(
-                    height: 1.h,
-                    width: 10.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Color(0xFFEFEFEF)),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-                          child: CircleAvatar(
-                            radius: 8.w,
-                            child: CircleAvatar(
-                              radius: 7.8.w,
-                              backgroundColor: Colors.white,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  getHelpController
-                                          .getSpecializationModel
-                                          .value
-                                          .specializationList![index]
-                                          .displayImage ??
-                                      ''),
-                              /* child: CachedNetworkImage(
-                                      imageUrl: getHelpController
-                                              .getSpecializationModel
-                                              .value
-                                              .specializationList![index]
-                                              .displayImage ??
-                                          '',
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          Shimmer.fromColors(
-                                              child: Container(
-                                                height: 1.h,
-                                                width: 1.w,
-                                                color: Colors.grey,
-                                              ),
-                                              baseColor: Colors.grey,
-                                              highlightColor: Colors.white),
-                                      errorWidget: (context, url, error) =>
-                                          Icon(
-                                        Icons.person,
-                                        size: 50,
-                                        color: Colors.grey,
-                                      ),
-                                    ), */
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 2.w),
-                        Container(
-                          width: 25.w,
-                          child: Text(
-                            getHelpController.getSpecializationModel.value
-                                    .specializationList![index].name ??
+                    onTap: () {
+                      bookAppointmentController.query = getHelpController
+                          .getSpecializationModel
+                          .value
+                          .specializationList![index]
+                          .name;
+                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
+                          arguments: {
+                            "slug": getHelpController.getSpecializationModel
+                                    .value.specializationList![index].slug ??
                                 '',
-                            style: SolhTextStyles.QS_cap_semi,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                            "type": 'specialization',
+                            "name": getHelpController.getSpecializationModel
+                                    .value.specializationList![index].name ??
+                                ''
+                          });
+                      FirebaseAnalytics.instance.logEvent(
+                          name: 'SearhSpecialityTapped',
+                          parameters: {'Page': 'GetHelp'});
+                    },
+                    child: Obx(() => SpecializationCardWithDiscount(
+                          image: getHelpController.getSpecializationModel.value
+                                  .specializationList![index].displayImage ??
+                              '',
+                          name: getHelpController.getSpecializationModel.value
+                                  .specializationList![index].name ??
+                              '',
+                          discount: profileController.myProfileModel.value.body!
+                                      .userOrganisations!.isNotEmpty &&
+                                  profileController.myProfileModel.value.body!
+                                          .userOrganisations!.first.status ==
+                                      'Approved'
+                              ? getHelpController
+                                  .getSpecializationModel
+                                  .value
+                                  .specializationList![index]
+                                  .orgMarketPlaceOffer
+                              : null,
+                        ))),
               ),
             )
           : Container();

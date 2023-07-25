@@ -51,6 +51,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
           "";
       _alliedController.selectedPackage.value = '';
       _alliedController.selectedPackagePrice.value = -1;
+      _alliedController.selectedPackageDiscountedPrice.value = -1;
       _scrollController = ScrollController();
       _alliedController.getPackages(widget.args["id"]);
     });
@@ -114,7 +115,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                       children: [
                         Text(
                           _alliedController.selectedPackagePrice.value > 0
-                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackagePrice.toString()}"
+                              ? "${_alliedController.selectedCurrency} ${_alliedController.selectedPackageDiscountedPrice > 0 ? _alliedController.selectedPackageDiscountedPrice : _alliedController.selectedPackagePrice}"
                               : "No Package",
                           style: SolhTextStyles.QS_body_2_semi.copyWith(
                               color: Colors.black),
@@ -498,19 +499,23 @@ class AboutAndPlans extends StatelessWidget {
               children: user!.packages!
                   .map((e) => PackageCard(
                         package: e,
-                        onPackageSelect:
-                            (String id, int price, String currency) {
+                        onPackageSelect: (String id, int price,
+                            int discountedPrice, String currency) {
                           if (!(_alliedController.selectedPackage.value ==
                               id)) {
                             _alliedController.selectedPackage.value = id;
                             _alliedController.selectedPackagePrice.value =
                                 price;
+                            _alliedController.selectedPackageDiscountedPrice
+                                .value = discountedPrice;
                             _alliedController.selectedPackageIndex =
                                 user!.packages!.indexOf(e);
                             _alliedController.selectedCurrency.value = currency;
                           } else {
                             _alliedController.selectedPackage.value = "";
                             _alliedController.selectedPackagePrice.value = -1;
+                            _alliedController
+                                .selectedPackageDiscountedPrice.value = -1;
                           }
                         },
                       ))
@@ -525,14 +530,14 @@ class PackageCard extends StatelessWidget {
   PackageCard({Key? key, this.package, required this.onPackageSelect})
       : super(key: key);
   final Packages? package;
-  final Function(String, int, String) onPackageSelect;
+  final Function(String, int, int, String) onPackageSelect;
   final AlliedController _alliedController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPackageSelect(
-          package!.sId ?? '', package!.amount ?? 0, package!.currency ?? ''),
+      onTap: () => onPackageSelect(package!.sId ?? '', package!.amount ?? 0,
+          package!.afterDiscountPrice!, package!.currency ?? ''),
       child: Obx(() => AnimatedSize(
             duration: Duration(milliseconds: 500),
             curve: Curves.linear,
@@ -622,9 +627,10 @@ class PackageCard extends StatelessWidget {
 
   Widget packageNameAndPrice() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
-            width: 70.w,
+            width: 65.w,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
                 color: SolhColors.tertiary_green,
@@ -637,22 +643,37 @@ class PackageCard extends StatelessWidget {
                     color: SolhColors.black,
                   )),
             )),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "${package!.currency ?? ''} ${package!.amount ?? 0}",
-                style: SolhTextStyles.QS_body_1_bold.copyWith(
-                    color: SolhColors.primary_green),
-              ),
-              Text(
-                'Tax Incl.',
-                style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                    color: SolhColors.Grey_1),
-              )
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  "${package!.currency ?? ''} ${package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",
+                  style: SolhTextStyles.QS_body_1_bold.copyWith(
+                      color: SolhColors.primary_green),
+                ),
+                SizedBox(width: 5),
+                if (package!.afterDiscountPrice! > 0)
+                  Text(
+                    "${package!.currency ?? ''} ${package!.amount ?? 0}",
+                    style: SolhTextStyles.QS_body_1_bold.copyWith(
+                        color: SolhColors.grey,
+                        decoration: TextDecoration.lineThrough),
+                  ),
+              ],
+            ),
+            // Text(
+            //   "${package!.currency ?? ''} ${package!.amount ?? 0}",
+            //   style: SolhTextStyles.QS_body_1_bold.copyWith(
+            //       color: SolhColors.primary_green),
+            // ),
+            Text(
+              'Tax Incl.',
+              style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                  color: SolhColors.Grey_1),
+            )
+          ],
         )
       ],
     );

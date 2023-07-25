@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -15,6 +14,7 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../../controllers/connections/connection_controller.dart';
 import '../../../../controllers/getHelp/get_help_controller.dart';
 import '../consultant_tile.dart';
@@ -177,6 +177,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                               .doctors![index]
                                               .feeCurrency ??
                                           '',
+                                      discountedPrice: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .doctors![index]
+                                          .afterDiscountPrice,
                                       feeAmount: searchMarketController
                                               .issueModel
                                               .value
@@ -255,6 +260,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                           '',
                                       fee: searchMarketController.issueModel
                                           .value.provider![index].fee,
+                                      discountedPrice: searchMarketController
+                                          .issueModel
+                                          .value
+                                          .provider![index]
+                                          .afterDiscountPrice,
 
                                       /*  doctorModel: DoctorModel(
                                           specialization: '',

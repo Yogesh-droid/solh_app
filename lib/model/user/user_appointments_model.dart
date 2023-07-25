@@ -1,3 +1,5 @@
+import '../profile/allied_appoinment_list.dart';
+
 class UserAppointmentModel {
   bool? success;
   List<ScheduldAppointments>? scheduldAppointments;
@@ -62,6 +64,7 @@ class ScheduldAppointments {
   String? apptFor;
   List<Transaction>? transaction;
   String? feeCode;
+  String? currencyCode;
   ScheduldAppointments(
       {this.patient,
       this.appointmentId,
@@ -72,6 +75,7 @@ class ScheduldAppointments {
       this.transaction,
       this.doctor,
       this.apptFor,
+      this.currencyCode,
       this.feeCode});
 
   ScheduldAppointments.fromJson(Map<String, dynamic> json) {
@@ -93,6 +97,7 @@ class ScheduldAppointments {
     doctor =
         json['doctor'] != null ? new Doctor.fromJson(json['doctor']) : null;
     apptFor = json['apptFor'];
+    currencyCode = json['currencyCode'];
     feeCode = json['feeCode'];
   }
 
@@ -262,7 +267,7 @@ class Specialization {
   }
 }
 
-class InHousePackageOrders {
+/* class InHousePackageOrders {
   String? sId;
   String? appointmentId;
   String? status;
@@ -377,7 +382,7 @@ class InHousePackageOrders {
     data['__v'] = this.iV;
     return data;
   }
-}
+} */
 
 class PackageOwner {
   String? sId;

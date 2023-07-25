@@ -132,7 +132,7 @@ class UserPackageOrders {
     packageCategory = json['packageCategory'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    feeCode = json["feeCode"];
+    feeCode = json["packageCurrencyCode"];
     iV = json['__v'];
     if (json['provider'] != null) {
       provider = <Provider>[];
@@ -254,7 +254,7 @@ class InHousePackageOrders {
   String? packagePaymentType;
   String? packagePaymentStatus;
   List<Transaction>? transaction;
-
+  String? feeCode;
   InHousePackageOrders(
       {this.sId,
       this.appointmentId,
@@ -278,6 +278,7 @@ class InHousePackageOrders {
       this.updatedAt,
       this.iV,
       this.packagePaymentType,
+      this.feeCode,
       this.packagePaymentStatus});
 
   InHousePackageOrders.fromJson(Map<String, dynamic> json) {
@@ -312,6 +313,7 @@ class InHousePackageOrders {
     iV = json['__v'];
     packagePaymentType = json['packagePaymentType'];
     packagePaymentStatus = json['packagePaymentStatus'];
+    feeCode = json['packageCurrencyCode'];
   }
 
   Map<String, dynamic> toJson() {

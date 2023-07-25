@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
-import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
+
 import '../../../services/utility.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
 import '../../../widgets_constants/constants/colors.dart';
@@ -14,6 +15,7 @@ import '../../../widgets_constants/loader/my-loader.dart';
 import 'booking_price_details.dart';
 import 'get-help.dart';
 
+// ignore: must_be_immutable
 class InhouseContinueDetail extends StatelessWidget {
   InhouseContinueDetail(
       {Key? key, required this.carousel, required this.packages})
@@ -122,7 +124,9 @@ class InhouseContinueDetail extends StatelessWidget {
 
                 Navigator.pushNamed(context, AppRoutes.paymentscreen,
                     arguments: {
-                      "amount": packages.amount,
+                      "amount": packages.discountedPrice! > 0
+                          ? packages.discountedPrice.toString()
+                          : packages.amount.toString(),
                       "feeCurrency": packages.currency,
                       "alliedOrderId": null,
                       "appointmentId": null,
@@ -152,16 +156,20 @@ class InhouseContinueDetail extends StatelessWidget {
             unitDuration: packages.unitDuration,
             currency: packages.currency,
             benefits: packages.benefits),
-        onPackageSelect: (String id, int price, String currency) {
+        onPackageSelect:
+            (String id, int price, int discountedPrice, String currency) {
           if (!(_alliedController.selectedPackage.value == id)) {
             _alliedController.selectedPackage.value = id;
             _alliedController.selectedPackagePrice.value = price;
+            _alliedController.selectedPackageDiscountedPrice.value =
+                discountedPrice;
             _alliedController.selectedCurrency.value = currency;
             // _alliedController.selectedPackageIndex =
             //     user!.packages!.indexOf(e);
           } else {
             _alliedController.selectedPackage.value = "";
             _alliedController.selectedPackagePrice.value = -1;
+            _alliedController.selectedPackageDiscountedPrice.value = -1;
           }
         });
   }
