@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/get-help/payment/payment_controller.dart';
 import 'package:solh/ui/screens/get-help/payment/payment_management.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -19,7 +19,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 // ignore: must_be_immutable
 class PaymentScreen extends StatelessWidget {
   PaymentScreen({super.key, required Map<dynamic, dynamic> args})
-      : _amount = args["amount"],
+      : _amount = args["amount"].toString(),
         _feeCurrency = args["feeCurrency"] ?? '',
         _alliedOrderId = args["alliedOrderId"] ?? null,
         _appointmentId = args["appointmentId"] ?? null,
@@ -30,7 +30,7 @@ class PaymentScreen extends StatelessWidget {
         _feeCode = args["feeCode"] ?? "INR";
 
   final String _feeCode;
-  final int _amount;
+  final String _amount;
   final String _feeCurrency;
   final String? _alliedOrderId;
   final String? _appointmentId;
@@ -143,6 +143,7 @@ class BillingDetailScection extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class CardPaymentSection extends StatelessWidget {
   CardPaymentSection(
       {super.key,

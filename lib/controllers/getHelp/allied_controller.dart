@@ -6,6 +6,7 @@ import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/services/network/network.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 
 class AlliedController extends GetxController {
@@ -18,6 +19,7 @@ class AlliedController extends GetxController {
   var selectedPackage = "".obs;
   var selectedPackageIndex = 0;
   var selectedPackagePrice = RxInt(-1);
+  var selectedPackageDiscountedPrice = RxInt(-1);
   var selectedCurrency = ''.obs;
   var userEmail = "".obs;
   var isBookingLoading = false.obs;
@@ -36,6 +38,9 @@ class AlliedController extends GetxController {
                   packagesListModel.value.finalResult!.packages![0].sId ?? '';
               selectedPackagePrice.value =
                   packagesListModel.value.finalResult!.packages![0].amount ?? 0;
+              selectedPackageDiscountedPrice.value = packagesListModel
+                      .value.finalResult!.packages![0].afterDiscountPrice ??
+                  0;
               selectedCurrency.value =
                   packagesListModel.value.finalResult!.packages![0].currency ??
                       '';
@@ -74,7 +79,11 @@ class AlliedController extends GetxController {
       "packageEquipment": package.equipment,
       "packageVideoSessions": videoSession,
       "packageCurrency": package.currency,
-      "packageAmount": package.amount,
+      "packageAmount": package.afterDiscountPrice! > 0
+          ? package.afterDiscountPrice
+          : package.amount,
+      "packageAmountOriginal": package.amount,
+      "organisationId": DefaultOrg.defaultOrg ?? '',
       "packageOwner": package.packageOwner,
       "packageType": package.packageType,
       "packageCurrencyCode": package.feeCode,

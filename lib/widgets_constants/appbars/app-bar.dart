@@ -127,12 +127,13 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: ((context) => NotificationScreen())));
                   },
-                  icon: Icon(
-                    Icons.notifications_none,
-                    color: profileController.orgColor1.value.isNotEmpty
-                        ? Color(int.parse("0xFF${profileController.orgColor1}"))
-                        : SolhColors.primary_green,
-                  ))
+                  icon: Obx(() => Icon(
+                        Icons.notifications_none,
+                        color: profileController.orgColor1.value.isNotEmpty
+                            ? Color(
+                                int.parse("0xFF${profileController.orgColor1}"))
+                            : SolhColors.primary_green,
+                      )))
               : Container(),
           _isLandingScreen
               ? IconButton(

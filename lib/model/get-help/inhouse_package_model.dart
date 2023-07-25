@@ -87,6 +87,7 @@ class PackageList {
   MainCategory? mainCategory;
   PackageCarouselId? packageCarouselId;
   String? feeCode;
+  int? discountedPrice;
 
   PackageList(
       {this.sId,
@@ -102,6 +103,7 @@ class PackageList {
       this.currency,
       this.amount,
       this.packageType,
+      this.discountedPrice,
       this.feeCode});
 
   PackageList.fromJson(Map<String, dynamic> json) {
@@ -126,6 +128,7 @@ class PackageList {
         ? new PackageCarouselId.fromJson(json['packageCarouselId'])
         : null;
     feeCode = json['feeCode'];
+    discountedPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {

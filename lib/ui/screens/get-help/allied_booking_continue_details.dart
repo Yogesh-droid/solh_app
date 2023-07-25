@@ -8,11 +8,13 @@ import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import '../../../services/utility.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import '../../../widgets_constants/constants/default_org.dart';
 import '../../../widgets_constants/constants/textstyles.dart';
 import '../../../widgets_constants/loader/my-loader.dart';
 import 'booking_price_details.dart';
 import 'get-help.dart';
 
+// ignore: must_be_immutable
 class AlliedBookingContinueDetail extends StatelessWidget {
   AlliedBookingContinueDetail(
       {Key? key, required this.finalResult, required this.packages})
@@ -52,8 +54,12 @@ class AlliedBookingContinueDetail extends StatelessWidget {
         packageDetails(),
         GetHelpDivider(),
         BillAndCoupon(
-          billAmt: packages.amount == 0 ? 'free' : "${packages.amount}",
-          total: packages.amount == 0 ? 'free' : "${packages.amount} ",
+          billAmt: packages.amount == 0
+              ? 'free'
+              : "${packages.afterDiscountPrice! > 0 ? packages.afterDiscountPrice : packages.amount}",
+          total: packages.amount == 0
+              ? 'free'
+              : "${packages.afterDiscountPrice! > 0 ? packages.afterDiscountPrice : packages.amount} ",
         ),
         SizedBox(
           height: 30,
@@ -79,7 +85,7 @@ class AlliedBookingContinueDetail extends StatelessWidget {
               )),
         totalPayble: packages.amount == 0
             ? 'Free'
-            : "${packages.currency} ${packages.amount} ",
+            : "${packages.currency} ${packages.afterDiscountPrice! > 0 ? packages.afterDiscountPrice : packages.amount} ",
         onContinuePressed: () async {
           try {
             Map<String, dynamic> map =
@@ -87,12 +93,16 @@ class AlliedBookingContinueDetail extends StatelessWidget {
             print('allied**** $map');
             if (map['success']) {
               Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
-                "amount": packages.amount,
+                "amount": packages.afterDiscountPrice! > 0
+                    ? packages.afterDiscountPrice.toString()
+                    : packages.amount.toString(),
                 "feeCurrency": packages.currency,
                 "alliedOrderId": map['data']["alliedOrderId"],
                 "appointmentId": null,
                 "inhouseOrderId": null,
                 "marketplaceType": "Allied",
+                'original_price': packages.amount,
+                'organisation': DefaultOrg.defaultOrg ?? '',
                 "paymentGateway": "Stripe",
                 "paymentSource": "App",
                 "feeCode": packages.feeCode
@@ -113,10 +123,13 @@ class AlliedBookingContinueDetail extends StatelessWidget {
   Widget packageDetails() {
     return PackageCard(
         package: packages,
-        onPackageSelect: (String id, int price, String currency) {
+        onPackageSelect:
+            (String id, int price, int discountedPrice, String currency) {
           if (!(_alliedController.selectedPackage.value == id)) {
             _alliedController.selectedPackage.value = id;
             _alliedController.selectedPackagePrice.value = price;
+            _alliedController.selectedPackageDiscountedPrice.value =
+                discountedPrice;
             _alliedController.selectedCurrency.value = currency;
             // _alliedController.selectedPackageIndex =
             //     user!.packages!.indexOf(e);

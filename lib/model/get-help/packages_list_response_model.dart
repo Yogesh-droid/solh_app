@@ -108,6 +108,7 @@ class Packages {
   String? packageType;
   String? packageCategory;
   String? feeCode;
+  int? afterDiscountPrice;
 
   Packages(
       {this.sId,
@@ -124,6 +125,7 @@ class Packages {
       this.packageCategory,
       this.packageType,
       this.packageOwner,
+      this.afterDiscountPrice,
       this.feeCode});
 
   Packages.fromJson(Map<String, dynamic> json) {
@@ -146,6 +148,7 @@ class Packages {
     packageOwner = json['packageOwner'];
     packageType = json['packageType'];
     packageCategory = json['packageCategory'];
+    afterDiscountPrice = json['afterDiscountPrice'];
     feeCode = json["feeCode"];
   }
 

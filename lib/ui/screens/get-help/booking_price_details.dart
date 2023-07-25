@@ -4,14 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
-import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../controllers/getHelp/book_appointment.dart';
 import '../../../routes/routes.dart';
 import '../../../services/utility.dart';
@@ -170,6 +172,10 @@ class BookingPriceDetails extends StatelessWidget {
                     .toString(),
             'currency': consultantController
                 .consultantModelController.value.provder!.feeCurrency!,
+            'amountOriginal': consultantController
+                .consultantModelController.value.provder!.fee_amount!
+                .toString(),
+            'organisationId': DefaultOrg.defaultOrg ?? '',
             'currencyCode': consultantController
                     .consultantModelController.value.provder!.feeCode ??
                 'INR',
@@ -226,9 +232,9 @@ class BookingPriceDetails extends StatelessWidget {
                   ? consultantController.consultantModelController.value
                       .provder!.afterDiscountPrice!
                       .toString()
-                  : consultantController.consultantModelController.value
-                          .provder!.fee_amount ??
-                      0,
+                  : consultantController
+                      .consultantModelController.value.provder!.fee_amount
+                      .toString(),
               "feeCurrency": consultantController
                       .consultantModelController.value.provder!.feeCurrency ??
                   '',
