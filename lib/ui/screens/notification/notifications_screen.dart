@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
@@ -103,6 +102,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             itemCount: notificaltionColtroller
                                 .notificationModel.length,
                             itemBuilder: ((context, index) {
+                              print(notificaltionColtroller
+                                  .notificationModel.length);
                               return Container(
                                 decoration: BoxDecoration(
                                     color: Colors.white,
@@ -170,12 +171,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       );
     }
-    if (item.routeData == 'annoucement') {
+    if (item.routeData == 'announcement') {
       return Row(
         children: [
           CircleAvatar(
             backgroundColor: SolhColors.white,
-            backgroundImage: NetworkImage(item.senderId!.profilePicture!),
+            backgroundImage: NetworkImage(item.senderId != null
+                ? item.senderId!.profilePicture!
+                : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
             radius: 30,
           ),
           SizedBox(
