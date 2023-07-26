@@ -28,6 +28,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
+import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -106,16 +107,17 @@ class _SolhAppState extends State<SolhApp> {
     init();
     getLoacale();
 
-    DefaultOrg.getDefaultOrg();
-
     super.initState();
   }
 
   Future<void> init() async {
     await initControllers();
+
+    await DefaultOrg.getDefaultOrg();
+    await OrgOnlySetting.getOrgOnly();
   }
 
-  getLoacale() async {
+  Future<void> getLoacale() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var res = await prefs.getString('locale');
     if (res != null) {

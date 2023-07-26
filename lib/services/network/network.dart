@@ -8,6 +8,7 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'dart:developer';
 
 import 'package:solh/widgets_constants/constants/locale.dart';
+import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 
 class Network {
 /*   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
@@ -239,6 +240,7 @@ class Network {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
         "Accept-Language": AppLocale.appLocale.languageCode,
         "organisation": DefaultOrg.defaultOrg ?? "",
+        "orgOnly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);

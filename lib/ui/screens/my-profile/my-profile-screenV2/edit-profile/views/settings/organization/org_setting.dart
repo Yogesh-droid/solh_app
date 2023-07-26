@@ -190,8 +190,9 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
                         );
                       },
                       child: Text(
-                        myProfileModel.body!.userOrganisations!.first
-                            .orgusercategories!.label!,
+                        getTeamLocationText(
+                          myProfileModel.body!.userOrganisations!.first,
+                        ),
                         style: SolhTextStyles.QS_cap_2_semi.copyWith(
                             color: SolhColors.primary_green),
                       ),
@@ -216,7 +217,7 @@ Widget getOtherOrgs(
     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       mainAxisSpacing: 15,
-      childAspectRatio: 2 / 2.2,
+      childAspectRatio: 2 / 2.3,
       crossAxisSpacing: 15,
     ),
     itemCount: subList.length,
@@ -315,7 +316,7 @@ Widget getOtherOrgs(
                           color: SolhColors.primary_green.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(6)),
                       child: Text(
-                        subList[index].orgusercategories!.label!,
+                        getTeamLocationText(subList[index]),
                         style: SolhTextStyles.QS_cap_2_semi.copyWith(
                             color: SolhColors.primary_green),
                       ),
@@ -327,6 +328,43 @@ Widget getOtherOrgs(
       );
     },
   );
+}
+
+String getTeamLocationText(UserOrganisations userOrganisations) {
+  if (userOrganisations.selectedLocOption != null &&
+      userOrganisations.orgusercategories!.selectedOption == null) {
+    return getLocationText(userOrganisations);
+  } else if (userOrganisations.selectedLocOption == null &&
+      userOrganisations.orgusercategories!.selectedOption != null) {
+    return getTeamText(userOrganisations);
+  } else if (userOrganisations.selectedLocOption != null &&
+      userOrganisations.orgusercategories!.selectedOption != null) {
+    return '${getLocationText(userOrganisations)}, ${getTeamText(userOrganisations)}';
+  } else {
+    return 'Select Team and Location';
+  }
+}
+
+String getLocationText(UserOrganisations userOrganisations) {
+  List<OptionsLoc> optionList = userOrganisations.orgusercategories!.optionsLoc!
+      .where((element) => element.sId == userOrganisations.selectedLocOption)
+      .toList();
+
+  if (optionList.isNotEmpty) {
+    return optionList.first.name!;
+  }
+  return '';
+}
+
+String getTeamText(UserOrganisations userOrganisations) {
+  List<Options> optionList = userOrganisations.orgusercategories!.options!
+      .where((element) =>
+          element.sId == userOrganisations.orgusercategories!.selectedOption)
+      .toList();
+  if (optionList.isNotEmpty) {
+    return optionList.first.name!;
+  }
+  return '';
 }
 
 class TeamsModelSheetContent extends StatefulWidget {
@@ -425,8 +463,15 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          widget.userOrganisations.orgusercategories == null
-              ? Text('No Category to select')
+          widget.userOrganisations.orgusercategories == null ||
+                  widget.userOrganisations.orgusercategories!.options!.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    'No Category to select',
+                    style: SolhTextStyles.QS_body_2_bold,
+                  ),
+                )
               : ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -466,21 +511,29 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
                       ballColor: SolhColors.white,
                     ),
                   )
-                : SolhGreenButton(
-                    onPressed: () async {
-                      await orgController.updateOrgTeamController(
-                          userOrgId:
-                              widget.userOrganisations.organisation!.sId!,
-                          type: "team",
-                          selectedOptionId: groupValue);
+                : (widget.userOrganisations.orgusercategories!.options!.isEmpty
+                    ? SolhGreenButton(
+                        backgroundColor: SolhColors.Grey_1,
+                        child: Text(
+                          'Save',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        ))
+                    : SolhGreenButton(
+                        onPressed: () async {
+                          await orgController.updateOrgTeamController(
+                              userOrgId:
+                                  widget.userOrganisations.organisation!.sId!,
+                              type: "team",
+                              selectedOptionId: groupValue);
 
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Save',
-                      style:
-                          SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-                    ));
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          'Save',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
+                        )));
           }),
           SizedBox(
             height: 2.h,

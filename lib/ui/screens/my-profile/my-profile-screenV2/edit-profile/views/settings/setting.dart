@@ -20,19 +20,21 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/cache_manager/cache_manager.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
+import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting-controller/setting_controller.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../../connections/blocked_users.dart';
 
 class Setting extends StatelessWidget {
   Setting({Key? key}) : super(key: key);
-
+  final SettingController _controller = Get.put(SettingController());
   @override
   Widget build(BuildContext context) {
     return ScaffoldWithBackgroundArt(
@@ -121,6 +123,34 @@ class Setting extends StatelessWidget {
             child: getSettingOptions(Image.asset('assets/images/org_icon.png'),
                 'Organization'.tr, null),
           ),
+
+          SizedBox(
+            height: 15,
+          ),
+          DefaultOrg.defaultOrg != null
+              ? Obx(() {
+                  return InkWell(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return defaultViewDialogContent(context, _controller);
+                        },
+                      );
+                    },
+                    child: getSettingOptions(
+                        Icon(
+                          Icons.preview_outlined,
+                          color: SolhColors.primary_green,
+                          size: 22,
+                        ),
+                        'Default View'.tr,
+                        _controller.orgOnly.value
+                            ? "Organization Only"
+                            : "Solh & Organization"),
+                  );
+                })
+              : Container(),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
           SizedBox(
@@ -211,7 +241,7 @@ class GetLogoutButton extends StatelessWidget {
         FirebaseAuth.instance.signOut().then((value) async {
           await Prefs.clear();
           await SolhCacheManager.instance.clearAllCache();
-          await clearOneSignalID();
+          clearOneSignalID();
           Get.find<BottomNavigatorController>().activeIndex.value = 0;
           userBlocNetwork.updateSessionCookie = "";
           Get.delete<NotificationController>();
@@ -261,4 +291,61 @@ void logOut() async {
     globalNavigatorKey.currentState!
         .pushNamedAndRemoveUntil(AppRoutes.getStarted, (route) => false);
   });
+}
+
+Widget defaultViewDialogContent(context, SettingController settingController) {
+  return AlertDialog(
+    insetPadding: EdgeInsets.zero,
+    content: Row(
+      children: [
+        InkWell(
+          onTap: () {
+            settingController.changeOrgOnlySetting(true);
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            decoration: BoxDecoration(
+                color: SolhColors.Grey_1,
+                borderRadius: BorderRadius.circular(4)),
+            child: Text(
+              'Organization Only',
+              style:
+                  SolhTextStyles.QS_caption.copyWith(color: SolhColors.white),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        InkWell(
+          onTap: () {
+            settingController.changeOrgOnlySetting(false);
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            decoration: BoxDecoration(
+                color: SolhColors.primary_green,
+                borderRadius: BorderRadius.circular(4)),
+            child: Text('Solh & Organization',
+                style: SolhTextStyles.QS_caption.copyWith(
+                    color: SolhColors.white)),
+          ),
+        )
+      ],
+    ),
+    actions: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () => Navigator.of(context).pop(),
+          child: Text(
+            'Cancel',
+            style: SolhTextStyles.CTA.copyWith(color: SolhColors.primaryRed),
+          ),
+        ),
+      )
+    ],
+  );
 }

@@ -260,31 +260,18 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: DefaultOrg.defaultOrg != null
-                      ? Switch(
-                          value: switchToggle,
-                          onChanged: (value) {
-                            switchToggle
-                                ? switchToggle = !switchToggle
-                                : switchToggle = !switchToggle;
-                            _journalPageController.getTrendingJournals(
-                                orgToggle: switchToggle);
-
-                            setState(() {});
-                          },
-                        )
-                      : Row(
-                          children: [
-                            Text('Journaling'.tr,
-                                style: SolhTextStyles.CTA
-                                    .copyWith(color: SolhColors.primary_green)),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: SolhColors.primary_green,
-                              size: 14,
-                            )
-                          ],
-                        ),
+                  child: Row(
+                    children: [
+                      Text('Journaling'.tr,
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primary_green)),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: SolhColors.primary_green,
+                        size: 14,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
