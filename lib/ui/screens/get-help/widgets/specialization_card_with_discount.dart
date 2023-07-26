@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/instance_manager.dart';
 import 'dart:math' as math;
 
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 
 import '../../../../widgets_constants/constants/textstyles.dart';
 
@@ -15,6 +18,7 @@ class SpecializationCardWithDiscount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find();
     return ClipRRect(
       borderRadius: BorderRadius.circular(8),
       child: Container(
@@ -49,23 +53,25 @@ class SpecializationCardWithDiscount extends StatelessWidget {
                 ],
               ),
             ),
-            discount != null
+            discount != null && discount! > 0
                 ? Positioned(
                     top: -20,
                     right: -20,
                     child: Transform.rotate(
-                      angle: math.pi / 5,
-                      child: Container(
-                          alignment: Alignment.bottomCenter,
-                          height: 45,
-                          width: 75,
-                          color: Colors.red,
-                          child: Text(
-                            "$discount % off",
-                            style: SolhTextStyles.GreenButtonText.copyWith(
-                                fontSize: 12),
-                          )),
-                    ),
+                        angle: math.pi / 5,
+                        child: Obx(() => Container(
+                            alignment: Alignment.bottomCenter,
+                            height: 45,
+                            width: 75,
+                            color: profileController.orgColor1.value.isNotEmpty
+                                ? Color(int.parse(
+                                    "0xFF${profileController.orgColor1}"))
+                                : Colors.red,
+                            child: Text(
+                              "$discount % off",
+                              style: SolhTextStyles.GreenButtonText.copyWith(
+                                  fontSize: 12),
+                            )))),
                   )
                 : const SizedBox()
           ],

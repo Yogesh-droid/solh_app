@@ -10,15 +10,8 @@ class NotificationController extends GetxController {
 
   var isNotificationListLoading = false.obs;
 
-  // @override
-  // void onInit() {
-  //   // TODO: implement onInit
-  //   getNoificationController(userBlocNetwork.id);
-  //   super.onInit();
-  // }
-
   Future<void> getNoificationController(String sId) async {
-    if (notificationModel.value.length == 0) {
+    if (notificationModel.length == 0) {
       isNotificationListLoading(true);
     } else {
       shouldRefresh(true);
