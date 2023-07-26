@@ -104,7 +104,7 @@ class JournalPageController extends GetxController {
         trendingJournalsList.clear();
       }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          "${APIConstants.api}/api/v1/trending?orgToggle=$orgToggle");
+          "${APIConstants.api}/api/v1/trending");
       journalsResponseModel.value = JournalsResponseModel.fromJson(map['data']);
       trendingJournalsList.addAll(journalsResponseModel.value.journals ?? []);
       log(trendingJournalsList.length.toString(), name: 'trending length');
