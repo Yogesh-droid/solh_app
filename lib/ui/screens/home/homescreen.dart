@@ -360,7 +360,7 @@ class _HomePageState extends State<HomePage> {
           Obx(() {
             return discoverGroupController
                             .discoveredGroupModel.value.groupList !=
-                        null ||
+                        null &&
                     discoverGroupController
                         .discoveredGroupModel.value.groupList!.isNotEmpty
                 ? getRecommendedGroupsUI()
