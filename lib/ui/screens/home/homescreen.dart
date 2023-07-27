@@ -57,6 +57,7 @@ import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
+import '../../../widgets_constants/constants/org_only_setting.dart';
 import '../get-help/get-help.dart';
 import '../get-help/widgets/allied_card_with_discount.dart';
 import '../get-help/widgets/specialization_card_with_discount.dart';
@@ -260,18 +261,32 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(8.0),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: Row(
-                    children: [
-                      Text('Journaling'.tr,
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.primary_green)),
-                      Icon(
-                        Icons.arrow_forward,
-                        color: SolhColors.primary_green,
-                        size: 14,
-                      )
-                    ],
-                  ),
+                  child: DefaultOrg.defaultOrg != null
+                      ? Switch(
+                          value: switchToggle,
+                          onChanged: (value) {
+                            switchToggle
+                                ? switchToggle = !switchToggle
+                                : switchToggle = !switchToggle;
+                            OrgOnlySetting.orgOnly = value;
+                            _journalPageController.getTrendingJournals(
+                                orgToggle: switchToggle);
+
+                            setState(() {});
+                          },
+                        )
+                      : Row(
+                          children: [
+                            Text('Journaling'.tr,
+                                style: SolhTextStyles.CTA
+                                    .copyWith(color: SolhColors.primary_green)),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: SolhColors.primary_green,
+                              size: 14,
+                            )
+                          ],
+                        ),
                 ),
               ),
             ),
