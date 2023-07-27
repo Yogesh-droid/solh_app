@@ -33,15 +33,20 @@ class OrgController extends GetxController {
   Future<void> removeAndUpdateOrg(String id) async {
     isDeletingOrg(true);
     try {
-      MyProfileModel response = await orgService.deleteOrgService(id);
-      profileController.myProfileModel.value = response;
-      if (profileController
-              .myProfileModel.value.body!.userOrganisations!.first.status ==
-          'Approved') {
-        DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
-            .userOrganisations!.first.organisation!.sId!);
-      } else {
-        DefaultOrg.setDefaultOrg(null);
+      await orgService.deleteOrgService(id);
+
+      if (profileController.myProfileModel.value.body!.userOrganisations !=
+              null &&
+          profileController
+              .myProfileModel.value.body!.userOrganisations!.isNotEmpty) {
+        if (profileController
+                .myProfileModel.value.body!.userOrganisations!.first.status ==
+            'Approved') {
+          DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
+              .userOrganisations!.first.organisation!.sId!);
+        } else {
+          DefaultOrg.setDefaultOrg(null);
+        }
       }
     } catch (e) {
       throw (e);

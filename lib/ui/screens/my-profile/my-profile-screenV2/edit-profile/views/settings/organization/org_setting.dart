@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,7 +7,6 @@ import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
-import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/emergency_contacts.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -108,8 +105,8 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Container(
-        height: 220,
         width: 220,
+        height: 265,
         decoration: BoxDecoration(
           color: SolhColors.white,
           boxShadow: [
@@ -138,8 +135,22 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
                 Padding(
                   padding: const EdgeInsets.only(right: 8, top: 8),
                   child: InkWell(
-                    onTap: () => orgController.removeAndUpdateOrg(myProfileModel
-                        .body!.userOrganisations!.first.organisation!.sId!),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return removeOrgAlertDialog(
+                              myProfileModel.body!.userOrganisations!.first
+                                  .organisation!.name!,
+                              orgController,
+                              myProfileModel.body!.userOrganisations!.first
+                                  .organisation!.sId!,
+                              context);
+                        },
+                      );
+                      //  orgController.removeAndUpdateOrg(myProfileModel
+                      //   .body!.userOrganisations!.first.organisation!.sId!);
+                    },
                     child: Icon(
                       Icons.remove_circle_outline,
                       size: 25,
@@ -166,38 +177,36 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
               textAlign: TextAlign.center,
               style: SolhTextStyles.QS_caption,
             ),
+            Expanded(child: SizedBox()),
             myProfileModel.body!.userOrganisations!.first.orgusercategories !=
                     null
-                ? Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    decoration: BoxDecoration(
-                        color: SolhColors.primary_green.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(6)),
-                    child: InkWell(
-                      onTap: () {
-                        showModalBottomSheet(
-                          constraints: BoxConstraints(maxHeight: 80.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          context: context,
-                          builder: (context) {
-                            return TeamsModelSheetContent(
-                              userOrganisations:
-                                  myProfileModel.body!.userOrganisations!.first,
+                ? Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      decoration: BoxDecoration(
+                          color: SolhColors.primary_green.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: InkWell(
+                          onTap: () {
+                            showModalBottomSheet(
+                              constraints: BoxConstraints(maxHeight: 80.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              context: context,
+                              builder: (context) {
+                                return TeamsModelSheetContent(
+                                  userOrganisations: myProfileModel
+                                      .body!.userOrganisations!.first,
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                      child: Text(
-                        getTeamLocationText(
-                          myProfileModel.body!.userOrganisations!.first,
-                        ),
-                        style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                            color: SolhColors.primary_green),
-                      ),
-                    ),
-                  )
+                          child: getTeamLocationText(
+                            myProfileModel.body!.userOrganisations!.first,
+                          )),
+                    ))
                 : Container(),
           ],
         ),
@@ -217,7 +226,7 @@ Widget getOtherOrgs(
     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       mainAxisSpacing: 15,
-      childAspectRatio: 2 / 2.3,
+      childAspectRatio: 2 / 2.6,
       crossAxisSpacing: 15,
     ),
     itemCount: subList.length,
@@ -256,16 +265,30 @@ Widget getOtherOrgs(
                         height: 20,
                         width: 20,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: SolhColors.Grey_1, width: 1.5)),
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(color: SolhColors.Grey_1, width: 1.5),
+                        ),
                       ),
                     )),
                 Padding(
                   padding: const EdgeInsets.only(right: 8, top: 8),
                   child: InkWell(
-                    onTap: () => orgController.removeAndUpdateOrg(
-                        subList[index].organisation!.sId ?? ''),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return removeOrgAlertDialog(
+                              myProfileModel.body!.userOrganisations!.first
+                                  .organisation!.name!,
+                              orgController,
+                              subList[index].organisation!.sId ?? '',
+                              context);
+                        },
+                      );
+                      // orgController.removeAndUpdateOrg(
+                      //     subList[index].organisation!.sId ?? '');
+                    },
                     child: Icon(
                       Icons.remove_circle_outline,
                       size: 25,
@@ -294,6 +317,7 @@ Widget getOtherOrgs(
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            Expanded(child: SizedBox()),
             InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -315,12 +339,7 @@ Widget getOtherOrgs(
                       decoration: BoxDecoration(
                           color: SolhColors.primary_green.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(6)),
-                      child: Text(
-                        getTeamLocationText(subList[index]),
-                        style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                            color: SolhColors.primary_green),
-                      ),
-                    )
+                      child: getTeamLocationText(subList[index]))
                   : Container(),
             ),
           ],
@@ -330,18 +349,100 @@ Widget getOtherOrgs(
   );
 }
 
-String getTeamLocationText(UserOrganisations userOrganisations) {
+Widget getTeamLocationText(UserOrganisations userOrganisations) {
   if (userOrganisations.selectedLocOption != null &&
       userOrganisations.orgusercategories!.selectedOption == null) {
-    return getLocationText(userOrganisations);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.location_on_outlined,
+            color: SolhColors.primary_green,
+            size: 15,
+          ),
+          Text(
+            getLocationText(userOrganisations),
+            style: SolhTextStyles.QS_caption.copyWith(
+                color: SolhColors.primary_green),
+          )
+        ],
+      ),
+    );
   } else if (userOrganisations.selectedLocOption == null &&
       userOrganisations.orgusercategories!.selectedOption != null) {
-    return getTeamText(userOrganisations);
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.card_travel,
+            color: SolhColors.primary_green,
+            size: 15,
+          ),
+          Text(
+            getTeamText(userOrganisations),
+            style: SolhTextStyles.QS_caption.copyWith(
+                color: SolhColors.primary_green),
+          ),
+        ],
+      ),
+    );
   } else if (userOrganisations.selectedLocOption != null &&
       userOrganisations.orgusercategories!.selectedOption != null) {
-    return '${getLocationText(userOrganisations)}, ${getTeamText(userOrganisations)}';
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.card_travel,
+                color: SolhColors.primary_green,
+                size: 15,
+              ),
+              Text(
+                getTeamText(userOrganisations),
+                style: SolhTextStyles.QS_caption.copyWith(
+                  color: SolhColors.primary_green,
+                ),
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.location_on_outlined,
+                color: SolhColors.primary_green,
+                size: 15,
+              ),
+              Text(
+                getLocationText(userOrganisations),
+                style: SolhTextStyles.QS_caption.copyWith(
+                    color: SolhColors.primary_green),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   } else {
-    return 'Select Team and Location';
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        children: [
+          Text(
+            'Select Team and Location',
+            style: SolhTextStyles.QS_caption.copyWith(
+                color: SolhColors.primary_green),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -688,4 +789,37 @@ Color getStatusColor(String label) {
     default:
       return Colors.white;
   }
+}
+
+Widget removeOrgAlertDialog(String orgName, OrgController controller,
+    String orgId, BuildContext context) {
+  return AlertDialog(
+    content: Text(
+      '$orgName Consulting will be permanently removed from your list of organizations. Do you wish to proceed?',
+      style: SolhTextStyles.QS_caption,
+    ),
+    actions: [
+      InkWell(
+        onTap: () {
+          controller.removeAndUpdateOrg(orgId
+              // myProfileModel.body!.userOrganisations!.first.organisation!.sId!
+              );
+          Navigator.of(context).pop();
+        },
+        child: Text("Ok",
+            style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                color: SolhColors.primary_green)),
+      ),
+      InkWell(
+        onTap: () {
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          "Cancel",
+          style: SolhTextStyles.QS_cap_2_semi.copyWith(
+              color: SolhColors.primaryRed),
+        ),
+      )
+    ],
+  );
 }
