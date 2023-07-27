@@ -1,8 +1,5 @@
-import 'dart:ffi';
 import 'dart:developer';
-
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/offer_carouserl_model.dart';
 import 'package:solh/services/network/network.dart';
