@@ -27,7 +27,7 @@ class NotificationModel {
 
 class NotificationList {
   String? sId;
-  List<String>? userIds;
+  // List<String>? userIds;
   String? routeContent;
   SenderId? senderId;
   String? status;
@@ -39,7 +39,7 @@ class NotificationList {
 
   NotificationList(
       {this.sId,
-      this.userIds,
+      // this.userIds,
       this.routeContent,
       this.senderId,
       this.status,
@@ -51,7 +51,7 @@ class NotificationList {
 
   NotificationList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    userIds = json['user_ids'].cast<String>();
+    // userIds = json['user_ids'].cast<String>();
     routeContent = json['routeContent'];
     senderId = json['senderId'] != null
         ? new SenderId.fromJson(json['senderId'])
@@ -67,7 +67,7 @@ class NotificationList {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
-    data['user_ids'] = this.userIds;
+    // data['user_ids'] = this.userIds;
     data['routeContent'] = this.routeContent;
     if (this.senderId != null) {
       data['senderId'] = this.senderId!.toJson();
