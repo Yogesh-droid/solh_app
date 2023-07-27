@@ -240,7 +240,7 @@ class Network {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
         "Accept-Language": AppLocale.appLocale.languageCode,
         "organisation": DefaultOrg.defaultOrg ?? "",
-        "orgOnly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
+        "orgonly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
