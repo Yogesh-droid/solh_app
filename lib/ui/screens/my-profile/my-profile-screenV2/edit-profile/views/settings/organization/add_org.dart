@@ -80,13 +80,13 @@ class AddOrg extends StatelessWidget {
                         )
                       : SolhGreenButton(
                           onPressed: () async {
-                            if (_isAlreadyAdded()) {
-                              await orgController.addOrgs();
-                              Navigator.pop(context);
-                            } else {
-                              Utility.showToast(
-                                  "This organisation is already added");
-                            }
+                            // if (!_isAlreadyAdded()) {
+                            await orgController.addOrgs();
+                            Navigator.pop(context);
+                            // } else {
+                            //   Utility.showToast(
+                            //       "This organisation is already added");
+                            // }
                           },
                           width: 70.w,
                           child: Text(

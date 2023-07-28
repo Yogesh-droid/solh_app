@@ -158,6 +158,7 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
                   padding: const EdgeInsets.only(right: 8, top: 8),
                   child: InkWell(
                     onTap: () {
+                      orgController.lastAddedOrg.value = '';
                       showDialog(
                         context: context,
                         builder: (context) {
