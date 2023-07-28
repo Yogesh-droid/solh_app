@@ -279,8 +279,7 @@ Widget getOtherOrgs(
                         context: context,
                         builder: (context) {
                           return removeOrgAlertDialog(
-                              myProfileModel.body!.userOrganisations!.first
-                                  .organisation!.name!,
+                              subList[index].organisation!.name ?? '',
                               orgController,
                               subList[index].organisation!.sId ?? '',
                               context);
@@ -796,7 +795,9 @@ Widget removeOrgAlertDialog(String orgName, OrgController controller,
   return AlertDialog(
     content: Text(
       '$orgName Consulting will be permanently removed from your list of organizations. Do you wish to proceed?',
-      style: SolhTextStyles.QS_caption,
+      style: SolhTextStyles.QS_caption.copyWith(
+        fontSize: 16,
+      ),
     ),
     actions: [
       InkWell(
@@ -808,7 +809,10 @@ Widget removeOrgAlertDialog(String orgName, OrgController controller,
         },
         child: Text("Ok",
             style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                color: SolhColors.primary_green)),
+                fontSize: 14, color: SolhColors.primary_green)),
+      ),
+      SizedBox(
+        width: 15,
       ),
       InkWell(
         onTap: () {
@@ -817,7 +821,7 @@ Widget removeOrgAlertDialog(String orgName, OrgController controller,
         child: Text(
           "Cancel",
           style: SolhTextStyles.QS_cap_2_semi.copyWith(
-              color: SolhColors.primaryRed),
+              fontSize: 14, color: SolhColors.primaryRed),
         ),
       )
     ],

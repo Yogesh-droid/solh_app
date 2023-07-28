@@ -56,8 +56,8 @@ class Setting extends StatelessWidget {
                 arguments: {}),
             child: getSettingOptions(
               SvgPicture.asset('assets/icons/profile/privacy.svg'),
-              'Account & Privacy'.tr,
-              'Delete account'.tr,
+              '      Account & Privacy'.tr,
+              '        Delete account'.tr,
             ),
           ),
           SizedBox(
@@ -97,7 +97,7 @@ class Setting extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => BlockedUsers())),
             child: getSettingOptions(
                 SvgPicture.asset('assets/images/blocked.svg'),
-                'Blocked Users'.tr,
+                '  Blocked Users'.tr,
                 null),
           ),
           SizedBox(
@@ -112,7 +112,7 @@ class Setting extends StatelessWidget {
                   color: SolhColors.primary_green,
                   size: 20,
                 ),
-                'Languages'.tr,
+                '  Languages'.tr,
                 null),
           ),
           SizedBox(
@@ -144,10 +144,10 @@ class Setting extends StatelessWidget {
                           color: SolhColors.primary_green,
                           size: 22,
                         ),
-                        'Default View'.tr,
+                        '    Default View'.tr,
                         _controller.orgOnly.value
-                            ? "Organization Only"
-                            : "Solh & Organization"),
+                            ? "    Organization Only"
+                            : "    Solh & Organization"),
                   );
                 })
               : Container(),

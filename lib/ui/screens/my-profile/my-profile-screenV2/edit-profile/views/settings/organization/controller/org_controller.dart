@@ -23,6 +23,9 @@ class OrgController extends GetxController {
   var addingOrgs = false.obs;
   var isUpdatingOrgTeam = false.obs;
 
+  var showDefaultSheet = false.obs;
+  var showOthersheet = false.obs;
+
   RxList selectedorgs = [].obs;
 
   var isDeletingOrg = false.obs;
@@ -48,7 +51,7 @@ class OrgController extends GetxController {
           DefaultOrg.setDefaultOrg(null);
         }
       }
-    } catch (e) {
+    } on Exception catch (e) {
       throw (e);
     }
     isDeletingOrg(false);
@@ -109,6 +112,8 @@ class OrgController extends GetxController {
           .editProfile({'organisation': jsonEncode(allOrgs)});
       DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
           .userOrganisations!.first.organisation!.sId!);
+
+      
     } catch (e) {
       throw (e);
     }

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -73,11 +76,13 @@ class AddOrg extends StatelessWidget {
                           width: 70.w,
                           child: ButtonLoadingAnimation(
                             ballColor: SolhColors.white,
-                          ))
+                          ),
+                        )
                       : SolhGreenButton(
                           onPressed: () async {
                             await orgController.addOrgs();
-                            Navigator.pop(context);
+                            Navigator.pushReplacementNamed(
+                                context, AppRoutes.OrgSetting);
                           },
                           width: 70.w,
                           child: Text(
@@ -107,6 +112,8 @@ class AddOrgSuggestion extends StatefulWidget {
 class _AddOrgSuggestionState extends State<AddOrgSuggestion> {
   final OrgController orgController = Get.find();
 
+  String groupValue = '';
+
   @override
   void dispose() {
     orgController.selectedorgs.value = [];
@@ -131,15 +138,17 @@ class _AddOrgSuggestionState extends State<AddOrgSuggestion> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Obx(() {
-                        return Checkbox(
-                          checkColor: SolhColors.white,
+                        return Radio(
+                          groupValue: groupValue,
                           activeColor: SolhColors.primary_green,
-                          value: orgController.selectedorgs.value.contains(
-                              orgController
-                                  .SuggestedOrgs.value.data![index].sId),
+                          value: orgController
+                              .SuggestedOrgs.value.data![index].sId!,
                           onChanged: (value) {
-                            orgController.addRemoveOrgs(orgController
-                                .SuggestedOrgs.value.data![index].sId!);
+                            orgController.selectedorgs.value = [];
+                            groupValue = value.toString();
+                            orgController.selectedorgs.value
+                                .add(value.toString());
+                            log(orgController.selectedorgs.toString());
                             setState(() {});
                           },
                         );
