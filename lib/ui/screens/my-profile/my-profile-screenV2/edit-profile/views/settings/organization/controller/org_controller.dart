@@ -25,6 +25,8 @@ class OrgController extends GetxController {
 
   var showDefaultSheet = false.obs;
   var showOthersheet = false.obs;
+  var showBottomSheet = false.obs;
+  var lastAddedOrg = ''.obs;
 
   RxList selectedorgs = [].obs;
 
@@ -108,12 +110,12 @@ class OrgController extends GetxController {
       selectedorgs.forEach((element) {
         allOrgs.add(element);
       });
+      lastAddedOrg.value = selectedorgs[0];
       await profileController
           .editProfile({'organisation': jsonEncode(allOrgs)});
       DefaultOrg.setDefaultOrg(profileController.myProfileModel.value.body!
           .userOrganisations!.first.organisation!.sId!);
-
-      
+      showBottomSheet.value = true;
     } catch (e) {
       throw (e);
     }

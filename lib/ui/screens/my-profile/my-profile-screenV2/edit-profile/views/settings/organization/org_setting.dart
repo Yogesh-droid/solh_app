@@ -29,6 +29,28 @@ class OrgSetting extends StatelessWidget {
         ),
       ),
       body: Obx(() {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          if (_controller.showBottomSheet.value) {
+            showModalBottomSheet(
+              constraints: BoxConstraints(maxHeight: 80.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              context: context,
+              builder: (context) {
+                return TeamsModelSheetContent(
+                    userOrganisations: profileController
+                        .myProfileModel.value.body!.userOrganisations!
+                        .where((element) =>
+                            element.organisation!.sId ==
+                            _controller.lastAddedOrg.value)
+                        .first);
+              },
+            );
+            _controller.showBottomSheet.value = false;
+          }
+        });
+
         return _controller.isDeletingOrg.value ||
                 profileController.isProfileLoading.value
             ? Center(

@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
-import 'package:solh/routes/routes.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/controller/org_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -80,9 +80,13 @@ class AddOrg extends StatelessWidget {
                         )
                       : SolhGreenButton(
                           onPressed: () async {
-                            await orgController.addOrgs();
-                            Navigator.pushReplacementNamed(
-                                context, AppRoutes.OrgSetting);
+                            if (_isAlreadyAdded()) {
+                              await orgController.addOrgs();
+                              Navigator.pop(context);
+                            } else {
+                              Utility.showToast(
+                                  "This organisation is already added");
+                            }
                           },
                           width: 70.w,
                           child: Text(
@@ -99,6 +103,13 @@ class AddOrg extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _isAlreadyAdded() {
+    ProfileController profileController = Get.find();
+    return profileController.myProfileModel.value.body!.userOrganisations!
+        .every((element) =>
+            element.organisation!.sId == orgController.selectedorgs[0]);
   }
 }
 
@@ -117,7 +128,6 @@ class _AddOrgSuggestionState extends State<AddOrgSuggestion> {
   @override
   void dispose() {
     orgController.selectedorgs.value = [];
-    // TODO: implement dispose
     super.dispose();
   }
 
