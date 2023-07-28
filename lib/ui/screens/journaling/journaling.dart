@@ -18,6 +18,8 @@ import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
+import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../controllers/journals/journal_page_controller.dart';
@@ -40,7 +42,7 @@ class _JournalingState extends State<Journaling> {
   late ScrollController _journalsScrollController;
   late RefreshController _refreshController;
   bool _fetchingMore = false;
-
+  bool _showOrgOnly = false;
   void initState() {
     super.initState();
     print('Running init state of journaling1');
@@ -183,6 +185,26 @@ class _JournalingState extends State<Journaling> {
                     ),
                   ),
                   groupRow(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      DefaultOrg.defaultOrg != null
+                          ? Switch(
+                              activeTrackColor:
+                                  SolhColors.primary_green.withOpacity(0.3),
+                              value: _showOrgOnly,
+                              onChanged: (value) {
+                                OrgOnlySetting.orgOnly = value;
+                                _journalPageController.getAllJournals(1);
+                                _showOrgOnly
+                                    ? _showOrgOnly = !_showOrgOnly
+                                    : _showOrgOnly = !_showOrgOnly;
+                                setState(() {});
+                              },
+                            )
+                          : Container(),
+                    ],
+                  ),
                   Obx(() {
                     return !_journalPageController.isLoading.value
                         ? Obx(() {
