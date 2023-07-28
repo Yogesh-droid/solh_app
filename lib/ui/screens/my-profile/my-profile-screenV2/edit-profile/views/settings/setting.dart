@@ -27,7 +27,6 @@ import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 import '../../../../connections/blocked_users.dart';
@@ -124,33 +123,33 @@ class Setting extends StatelessWidget {
                 'Organization'.tr, null),
           ),
 
-          SizedBox(
-            height: 15,
-          ),
-          DefaultOrg.defaultOrg != null
-              ? Obx(() {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return defaultViewDialogContent(context, _controller);
-                        },
-                      );
-                    },
-                    child: getSettingOptions(
-                        Icon(
-                          Icons.preview_outlined,
-                          color: SolhColors.primary_green,
-                          size: 22,
-                        ),
-                        '    Default View'.tr,
-                        _controller.orgOnly.value
-                            ? "    Organization Only"
-                            : "    Solh & Organization"),
-                  );
-                })
-              : Container(),
+          // SizedBox(
+          //   height: 15,
+          // ),
+          // DefaultOrg.defaultOrg != null
+          //     ? Obx(() {
+          //         return InkWell(
+          //           onTap: () {
+          //             showDialog(
+          //               context: context,
+          //               builder: (context) {
+          //                 return defaultViewDialogContent(context, _controller);
+          //               },
+          //             );
+          //           },
+          //           child: getSettingOptions(
+          //               Icon(
+          //                 Icons.preview_outlined,
+          //                 color: SolhColors.primary_green,
+          //                 size: 22,
+          //               ),
+          //               '    Default View'.tr,
+          //               _controller.orgOnly.value
+          //                   ? "    Organization Only"
+          //                   : "    Solh & Organization"),
+          //         );
+          //       })
+          //     : Container(),
           Expanded(child: SizedBox()),
           GetLogoutButton(),
           SizedBox(

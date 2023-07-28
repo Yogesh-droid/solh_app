@@ -263,6 +263,8 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: DefaultOrg.defaultOrg != null
                       ? Switch(
+                          activeTrackColor:
+                              SolhColors.primary_green.withOpacity(0.3),
                           value: switchToggle,
                           onChanged: (value) {
                             switchToggle
