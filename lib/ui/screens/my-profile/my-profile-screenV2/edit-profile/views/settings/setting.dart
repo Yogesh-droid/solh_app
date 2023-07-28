@@ -54,9 +54,12 @@ class Setting extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, AppRoutes.accountPrivacy,
                 arguments: {}),
             child: getSettingOptions(
-              SvgPicture.asset('assets/icons/profile/privacy.svg'),
-              '      Account & Privacy'.tr,
-              '        Delete account'.tr,
+              Icon(
+                CupertinoIcons.lock_shield,
+                color: SolhColors.primary_green,
+              ),
+              'Account & Privacy'.tr,
+              'Delete account'.tr,
             ),
           ),
           SizedBox(
@@ -95,8 +98,11 @@ class Setting extends StatelessWidget {
             onTap: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => BlockedUsers())),
             child: getSettingOptions(
-                SvgPicture.asset('assets/images/blocked.svg'),
-                '  Blocked Users'.tr,
+                Icon(
+                  CupertinoIcons.minus_circle,
+                  color: SolhColors.primary_green,
+                ),
+                'Blocked Users'.tr,
                 null),
           ),
           SizedBox(
@@ -111,7 +117,7 @@ class Setting extends StatelessWidget {
                   color: SolhColors.primary_green,
                   size: 20,
                 ),
-                '  Languages'.tr,
+                'Languages'.tr,
                 null),
           ),
           SizedBox(
@@ -119,8 +125,13 @@ class Setting extends StatelessWidget {
           ),
           InkWell(
             onTap: () => Navigator.pushNamed(context, AppRoutes.OrgSetting),
-            child: getSettingOptions(Image.asset('assets/images/org_icon.png'),
-                'Organization'.tr, null),
+            child: getSettingOptions(
+                Icon(
+                  Icons.account_balance_outlined,
+                  color: SolhColors.primary_green,
+                ),
+                'Organization'.tr,
+                null),
           ),
 
           // SizedBox(

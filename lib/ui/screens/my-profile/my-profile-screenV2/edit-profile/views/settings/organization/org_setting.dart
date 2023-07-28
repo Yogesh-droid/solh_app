@@ -24,7 +24,7 @@ class OrgSetting extends StatelessWidget {
       appBar: SolhAppBar(
         isLandingScreen: false,
         title: Text(
-          'Organization',
+          'Organization'.tr,
           style: SolhTextStyles.QS_body_1_bold,
         ),
       ),

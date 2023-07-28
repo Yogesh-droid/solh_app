@@ -20,7 +20,7 @@ class AddOrg extends StatelessWidget {
       appBar: SolhAppBar(
         isLandingScreen: false,
         title: Text(
-          'Add Organization',
+          'Add Organization'.tr,
           style: SolhTextStyles.CTA,
         ),
       ),

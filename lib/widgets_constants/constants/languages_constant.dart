@@ -498,6 +498,10 @@ class Languages extends Translations {
               "आपका सेल्फ-असेसमेंट परिणाम नीचे दिया गया है। \n यह सटीक तो नहीं है लेकिन काफी करीब है",
           "Other Self Assessment": "अन्य सेल्फ-असेसमेंट",
           "Result": "परिणाम",
+          "Organization": "संगठन",
+          "Save Organization": "संगठन सहेजें",
+          "Add Organization": "संगठन जोड़ें",
+          "Search Organization": "संगठन खोजे",
           "Welcome to your safe and confidential space for mental wellness. Take the first step and share your feelings here.":
               "मानसिक कल्याण के लिए आपके सुरक्षित और गोपनीय स्थान में आपका स्वागत है। पहला कदम उठाएं और अपनी भावनाओं को यहां साझा करें।"
         },

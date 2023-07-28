@@ -182,7 +182,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
                       ),
                       fillColor: SolhColors.white,
                       filled: true,
-                      hintText: "Search Organisation",
+                      hintText: "Search Organisation".tr,
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: SolhColors.white,
