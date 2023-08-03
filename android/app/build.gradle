@@ -96,4 +96,6 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.browser:browser:1.4.0"
     implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-dynamic-links:16.0.1'
     }

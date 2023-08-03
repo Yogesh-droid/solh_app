@@ -19,6 +19,7 @@ import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/dynamic_link_sevice%20/dynamic_link_provider.dart';
 import 'package:solh/services/errors/controllers/error_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
@@ -49,6 +50,8 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
+
+  DynamicLinkProvider.instance.initDynamicLink();
   Prefs.init();
   await FirebaseAnalytics.instance.logBeginCheckout();
   Get.put(SearchMarketController());
@@ -115,6 +118,8 @@ class _SolhAppState extends State<SolhApp> {
 
     await DefaultOrg.getDefaultOrg();
     await OrgOnlySetting.getOrgOnly();
+    log(await DynamicLinkProvider.instance.createLinkForProvider(),
+        name: "gen link");
   }
 
   Future<void> getLoacale() async {
