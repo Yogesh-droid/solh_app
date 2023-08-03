@@ -305,9 +305,10 @@ class ConnectionController extends GetxController {
     _journalPageController.nextPage = 2;
     _journalPageController.selectedGroupId.value.length > 0
         ? await _journalPageController.getAllJournals(1,
+        orgOnly: false,
             groupId: _journalPageController.selectedGroupId.value)
         : await _journalPageController.getAllJournals(
-            1,
+            1,orgOnly: false
           );
     _journalPageController.journalsList.refresh();
   }

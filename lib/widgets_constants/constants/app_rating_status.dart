@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:solh/services/cache_manager/cache_manager.dart';
-import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 
 class AppRatingStatus {
   static bool appRatingStatus = false;
@@ -10,7 +9,7 @@ class AppRatingStatus {
     await SolhCacheManager.instance.writeJsonCache(
         key: "appRatingReminderTime",
         json: {'appRatingReminderTime': DateTime.now().toString()},
-        duration: Duration(hours: 48));
+        duration: Duration(seconds: 6));
   }
 
   static Future<bool> shouldShowRatingReminder() async {

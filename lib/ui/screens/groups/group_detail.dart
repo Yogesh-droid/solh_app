@@ -465,7 +465,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                       journalPageController.getAllJournals(1,
                           groupId: discoverGroupController
                                   .groupDetailModel.value.groupList!.sId ??
-                              '');
+                              '',
+                          orgOnly: false);
                       journalPageController.journalsList.refresh();
                       journalPageController.selectedGroupIndex =
                           discoverGroupController.groupsShownOnHome.indexOf(

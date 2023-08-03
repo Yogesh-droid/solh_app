@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -233,6 +234,7 @@ class Network {
   static Future<Map<String, dynamic>> makeGetRequestWithToken(
     String url,
   ) async {
+    print("makeGetRequestWithToken ${userBlocNetwork.getSessionCookie}");
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
@@ -244,7 +246,7 @@ class Network {
       };
       print("token: ${userBlocNetwork.getSessionCookie}");
       print(url);
-      log(headers.toString(), name: 'headers');
+      debugPrint(headers.toString());
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
       print(apiResponse.statusCode);

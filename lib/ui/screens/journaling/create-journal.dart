@@ -282,8 +282,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         journalPageController.nextPage = 2;
         journalPageController.selectedGroupId.value != ''
             ? await journalPageController.getAllJournals(1,
-                groupId: journalPageController.selectedGroupId.value)
-            : await journalPageController.getAllJournals(1);
+                groupId: journalPageController.selectedGroupId.value,
+                orgOnly: false)
+            : await journalPageController.getAllJournals(1, orgOnly: false);
         journalPageController.journalsList.refresh();
         setState(() {
           _isPosting = false;
@@ -321,8 +322,9 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         //await journalPageController.getAllJournals(1);
         journalPageController.selectedGroupId.value != ''
             ? await journalPageController.getAllJournals(1,
-                groupId: journalPageController.selectedGroupId.value)
-            : await journalPageController.getAllJournals(1);
+                groupId: journalPageController.selectedGroupId.value,
+                orgOnly: false)
+            : await journalPageController.getAllJournals(1, orgOnly: false);
         journalPageController.journalsList.refresh();
         setState(() {
           _isPosting = false;

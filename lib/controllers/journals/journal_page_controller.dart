@@ -48,17 +48,24 @@ class JournalPageController extends GetxController {
   var dropdownValue = 'Publicaly'.obs;
   ScrollController customeScrollController = ScrollController();
 
-  Future<void> getAllJournals(int pageNo, {String? groupId}) async {
+  Future<void> getAllJournals(int pageNo,
+      {String? groupId, required bool orgOnly}) async {
     print('started gettting all journals $pageNo');
     try {
       if (pageNo == 1) {
         isLoading.value = true;
+        if (journalsResponseModel.value.journals != null) {
+          journalsResponseModel.value.journals!.clear();
+          journalsList.clear();
+          journalsResponseModel.refresh();
+          log("it ran ${nextPage}");
+        }
       }
       if (nextPage != null) {
         print('trying to get all journals');
         Map<String, dynamic> map = groupId != null
             ? await await Network.makeGetRequestWithToken(
-                "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}")
+                "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}&orgonly=$orgOnly")
             : await Network.makeGetRequestWithToken(
                 "${APIConstants.api}/api/v2/posts?pageNumber=$pageNo");
 
@@ -89,6 +96,8 @@ class JournalPageController extends GetxController {
           } else {
             videoPlayerController.add({});
           }
+
+          journalsResponseModel.refresh();
         }
       }
     } on Exception catch (e) {
@@ -231,7 +240,7 @@ class JournalPageController extends GetxController {
 
   @override
   void onInit() {
-    getAllJournals(1);
+    getAllJournals(1, orgOnly: false);
     getTrendingJournals();
     super.onInit();
   }

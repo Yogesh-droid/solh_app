@@ -70,6 +70,7 @@ class _JournalingState extends State<Journaling> {
 
         await _journalPageController.getAllJournals(
             ++_journalPageController.pageNo,
+            orgOnly: false,
             groupId: _journalPageController.selectedGroupId.value != ''
                 ? _journalPageController.selectedGroupId.value
                 : null);
@@ -117,10 +118,9 @@ class _JournalingState extends State<Journaling> {
     _journalPageController.nextPage = 2;
     _journalPageController.selectedGroupId.value.length > 0
         ? await _journalPageController.getAllJournals(1,
-            groupId: _journalPageController.selectedGroupId.value)
-        : await _journalPageController.getAllJournals(
-            1,
-          );
+            groupId: _journalPageController.selectedGroupId.value,
+            orgOnly: false)
+        : await _journalPageController.getAllJournals(1, orgOnly: false);
     _journalPageController.journalsList.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
@@ -194,8 +194,11 @@ class _JournalingState extends State<Journaling> {
                                   SolhColors.primary_green.withOpacity(0.3),
                               value: _showOrgOnly,
                               onChanged: (value) {
+                                _journalPageController.nextPage = 2;
                                 OrgOnlySetting.orgOnly = value;
-                                _journalPageController.getAllJournals(1);
+                                _journalPageController.getAllJournals(1,
+                                    orgOnly: value);
+
                                 _showOrgOnly
                                     ? _showOrgOnly = !_showOrgOnly
                                     : _showOrgOnly = !_showOrgOnly;
@@ -425,7 +428,7 @@ class _JournalingState extends State<Journaling> {
                       _journalPageController.pageNo = 1;
                       _journalPageController.nextPage = 2;
                       await _journalPageController.getAllJournals(1,
-                          groupId: group.sId);
+                          orgOnly: false, groupId: group.sId);
                       _journalPageController.journalsList.refresh();
                       //_customScrollController.jumpTo(_customScrollViewPosition);
                       // _customScrollController.animateTo(200,
@@ -514,7 +517,7 @@ class _JournalingState extends State<Journaling> {
                 _journalPageController.journalsList.clear();
                 _journalPageController.pageNo = 1;
                 _journalPageController.nextPage = 2;
-                await _journalPageController.getAllJournals(1);
+                await _journalPageController.getAllJournals(1, orgOnly: false);
                 _journalPageController.journalsList.refresh();
               },
               child: Padding(
@@ -602,7 +605,8 @@ class _JournalingState extends State<Journaling> {
     await _journalPageController.getAllJournals(1,
         groupId: _journalPageController.selectedGroupId.value.length > 0
             ? _journalPageController.selectedGroupId.value
-            : null);
+            : null,
+        orgOnly: false);
   }
 
   Widget getJournalTile(int index) {
