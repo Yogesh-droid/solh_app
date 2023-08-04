@@ -35,5 +35,6 @@ class SolhCacheManager {
 
   Future<void> clearAllCache() async {
     await DeleteCache.deleteKey("sessionCookie");
+    await DeleteCache.deleteKey("appRatingReminderTime");
   }
 }

@@ -20,7 +20,6 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
-
 import 'package:solh/services/errors/controllers/error_controller.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';

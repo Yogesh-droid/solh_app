@@ -12,7 +12,7 @@ class DynamicLinkProvider {
   final String _packageName = "com.solh.app";
 
   Future<String> createLinkForProvider({String providerId = "123456"}) async {
-    final String url = "https://solh.com/prvider?provider=12345";
+    final String url = "https://solh.com/provider?provider=16755";
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         link: Uri.parse(url),
