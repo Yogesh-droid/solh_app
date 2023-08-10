@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -15,6 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart' as sizer;
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
+import 'package:solh/controllers/getHelp/book_appointment.dart';
+import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/init-app.dart';
@@ -60,6 +62,8 @@ void main() async {
   Get.put(HomeController());
   Get.put(BottomNavigatorController());
   Get.put(LiveStreamController());
+  Get.put(ConsultantController());
+  Get.put(BookAppointmentController());
 
   if (FirebaseAuth.instance.currentUser != null) {
     bool? newUser = await isNewUser();
@@ -106,7 +110,7 @@ class _SolhAppState extends State<SolhApp> {
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    initDynamic();
+    // initDynamic();
     init();
     getLoacale();
 
@@ -118,8 +122,6 @@ class _SolhAppState extends State<SolhApp> {
 
     await DefaultOrg.getDefaultOrg();
     await OrgOnlySetting.getOrgOnly();
-    log(await DynamicLinkProvider.instance.createLinkForProvider(),
-        name: "gen link");
   }
 
   Future<void> getLoacale() async {
@@ -130,7 +132,6 @@ class _SolhAppState extends State<SolhApp> {
       AppLocale.appLocale = Locale(map.keys.first, map.values.first);
       print('map $map');
     }
-    print("locale ${AppLocale.appLocale.languageCode} ,${Get.locale}");
   }
 
   @override
@@ -146,6 +147,7 @@ class _SolhAppState extends State<SolhApp> {
         translations: Languages(),
         fallbackLocale: const Locale('en', 'US'),
         title: 'Solh Wellness',
+
         initialRoute:
             widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
         // initialRoute: AppRoutes.master,
@@ -210,45 +212,45 @@ class _SolhAppState extends State<SolhApp> {
     Get.put(AgeController());
   }
 
-  Future<void> initDynamic() async {
-    final PendingDynamicLinkData? data =
-        await FirebaseDynamicLinks.instance.getInitialLink();
-    if (data != null) {
-      print(data.toString() + '   This is data');
-      print(data.link.data.toString() + '   This is data');
-      print(data.link.query.toString() + '   This is data');
-      print(data.link.queryParameters.toString() + '   This is data');
-      print(data.utmParameters.toString() + '   This is data');
-      print('${data.utmParameters}' + '   This is UTM');
-      utm_name = data.utmParameters['utm_campaign'];
-      utm_source = data.utmParameters['utm_source'];
-      utm_medium = data.utmParameters['utm_medium'];
+//   Future<void> initDynamic() async {
+//     final PendingDynamicLinkData? data =
+//         await FirebaseDynamicLinks.instance.getInitialLink();
+//     if (data != null) {
+//       print(data.toString() + '   This is data');
+//       print(data.link.data.toString() + '   This is data');
+//       print(data.link.query.toString() + '   This is data');
+//       print(data.link.queryParameters.toString() + '   This is data');
+//       print(data.utmParameters.toString() + '   This is data');
+//       print('${data.utmParameters}' + '   This is UTM');
+//       utm_name = data.utmParameters['utm_campaign'];
+//       utm_source = data.utmParameters['utm_source'];
+//       utm_medium = data.utmParameters['utm_medium'];
 
-      final Uri? deepLink = data.link;
+//       final Uri? deepLink = data.link;
 
-      if (deepLink != null) {
-        print(deepLink.path);
-        print(deepLink.query);
-        print(deepLink.queryParameters);
-        print(deepLink);
-        print(deepLink.data);
-        // Utility.showToast(data!.link.query);
-        // Navigator.pushNamed(context, deepLink.path);
-      }
+//       if (deepLink != null) {
+//         print(deepLink.path);
+//         print(deepLink.query);
+//         print(deepLink.queryParameters);
+//         print(deepLink);
+//         print(deepLink.data);
+//         // Utility.showToast(data!.link.query);
+//         // Navigator.pushNamed(context, deepLink.path);
+//       }
 
-      FirebaseDynamicLinks.instance.onLink.listen((event) {
-        // Utility.showToast(data!.link.query);
-        if (deepLink != null) {
-          print(deepLink.toString() + ' This is link');
-          print(deepLink.path + ' This is link');
-          print(deepLink.data.toString() + ' This is link');
-          print(event.utmParameters.toString() + ' This is link');
-        }
+//       FirebaseDynamicLinks.instance.onLink.listen((event) {
+//         // Utility.showToast(data!.link.query);
+//         if (deepLink != null) {
+//           print(deepLink.toString() + ' This is link');
+//           print(deepLink.path + ' This is link');
+//           print(deepLink.data.toString() + ' This is link');
+//           print(event.utmParameters.toString() + ' This is link');
+//         }
 
-        // Navigator.pushNamed(context, event.link.path);
-      }).onError((error) {
-        print(error.message);
-      });
-    }
-  }
+//         // Navigator.pushNamed(context, event.link.path);
+//       }).onError((error) {
+//         print(error.message);
+//       });
+//     }
+//   }
 }

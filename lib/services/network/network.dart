@@ -75,7 +75,10 @@ class Network {
       log(body.toString(), name: "body makeHttpPostRequest");
       log("token: ${userBlocNetwork.getSessionCookie}",
           name: "token makeHttpPostRequest");
-      http.Response apiResponse = await http.post(_uri, body: body);
+      http.Response apiResponse = await http.post(
+        _uri,
+        body: body,
+      );
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));

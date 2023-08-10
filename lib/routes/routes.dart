@@ -8,6 +8,7 @@ import 'package:solh/ui/screens/chat/chat.dart';
 import 'package:solh/ui/screens/connect/connect_screen.dart';
 import 'package:solh/ui/screens/get-help/allied_consultant_screen.dart';
 import 'package:solh/ui/screens/get-help/consultant-allied-parent/consultant_allied_parent.dart';
+import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/inhouse_package_screen.dart';
 import 'package:solh/ui/screens/get-help/payment/payment_screen.dart';
 import 'package:solh/ui/screens/get-help/view-all/consultants.dart';
@@ -96,6 +97,7 @@ class AppRoutes {
   static const String viewAllAlliedCategories = '/viewAllAlliedCategories';
   static const String inhousePackage = '/inhousePackage';
   static const String paymentscreen = '/paymentscreen';
+  static const String consultantProfilePage = '/consultantProfilePage';
 
   /// Goal related  ////
   static const String myGoalScreen = '/myGoalScreen';
@@ -378,14 +380,13 @@ class RouteGenerator {
                 LiveStream(args: args as Map<String, dynamic>)));
       case AppRoutes.liveStreamWaiting:
         return MaterialPageRoute(builder: ((context) => LiveStreamWaiting()));
-
-      default:
+      case AppRoutes.consultantProfilePage:
         return MaterialPageRoute(
-            builder: ((context) => Scaffold(
-                  appBar: AppBar(
-                    title: Text('ERROR'),
-                  ),
-                )));
+            builder: ((context) => ConsultantProfilePage()));
+      case "/":
+        return MaterialPageRoute(builder: ((context) => MasterScreen()));
+      default:
+        break;
     }
   }
 }

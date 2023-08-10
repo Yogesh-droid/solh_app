@@ -15,12 +15,17 @@ class ConsultantController extends GetxController {
 
   getConsultantDataController(id, String currency,
       {String? countrycode}) async {
-    log(currency);
-    isLoading(true);
-    var response = await _consultantDataService.getConsultantData(id, currency);
-    isLoading(false);
-    print(response.toString());
-    consultantModelController.value = response;
+    try {
+      log(currency);
+      isLoading(true);
+      var response =
+          await _consultantDataService.getConsultantData(id, currency);
+      isLoading(false);
+      print(response.toString());
+      consultantModelController.value = response;
+    } on Exception catch (e) {
+      throw (e);
+    }
   }
 }
 

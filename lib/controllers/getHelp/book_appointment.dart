@@ -95,13 +95,15 @@ class BookAppointmentController extends GetxController {
   }
 
   void assignEmailAndMobField() {
-    emailTextEditingController.text =
-        profileController.myProfileModel.value.body!.user != null
-            ? profileController.myProfileModel.value.body!.user!.email ?? ''
-            : '';
-    mobileNotextEditingController.text =
-        profileController.myProfileModel.value.body!.user != null
-            ? profileController.myProfileModel.value.body!.user!.mobile ?? ''
-            : '';
+    if (profileController.myProfileModel.value.body != null) {
+      emailTextEditingController.text =
+          profileController.myProfileModel.value.body!.user != null
+              ? profileController.myProfileModel.value.body!.user!.email ?? ''
+              : '';
+      mobileNotextEditingController.text =
+          profileController.myProfileModel.value.body!.user != null
+              ? profileController.myProfileModel.value.body!.user!.mobile ?? ''
+              : '';
+    }
   }
 }

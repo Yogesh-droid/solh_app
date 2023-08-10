@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/ui/screens/get-help/booking_price_details.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -42,6 +44,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
           print('appbar is expanded');
         }
       });
+
     bookAppointmentController.assignEmailAndMobField();
     super.initState();
   }
@@ -117,6 +120,8 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
   }
 
   Widget expandedWidget() {
+    print(_controller.consultantModelController.value.provder.toString() +
+        "consultantModelController");
     return FlexibleSpaceBar(
       title: collpasedWidget(),
       background: Obx(() => Column(
@@ -385,20 +390,32 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             thickness: 1,
           ),
         ),
-        SolhGreenButton(
-          width: 200,
-          height: 48,
-          child: Text(
-            'Book Appointment'.tr,
-            style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+        Expanded(
+          child: SolhGreenButton(
+            width: 200,
+            height: 48,
+            child: Text(
+              'Book Appointment'.tr,
+              style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+            ),
+            onPressed: () {
+              openBookingSheet();
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'BookAppontmentTapped',
+                  parameters: {'Page': 'ConsultantProfile'});
+            },
           ),
-          onPressed: () {
-            openBookingSheet();
-            FirebaseAnalytics.instance.logEvent(
-                name: 'BookAppontmentTapped',
-                parameters: {'Page': 'ConsultantProfile'});
-          },
-        )
+        ),
+        IconButton(
+            onPressed: () async {
+              Share.share(await DynamicLinkProvider.instance
+                  .createLinkForProvider(
+                      providerId: "12345",
+                      creatorUserId: profileController
+                              .myProfileModel.value.body!.user!.sId ??
+                          ''));
+            },
+            icon: Icon(Icons.share))
       ],
     );
   }

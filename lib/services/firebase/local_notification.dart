@@ -61,22 +61,21 @@ class LocalNotification {
                   "this is sender ID${result.notification.additionalData!['data']["senderId"]}");
               Future.delayed(Duration(milliseconds: 500), () {
                 globalNavigatorKey.currentState!.push(
-                  MaterialPageRoute(builder: (context) => LiveStreamWaiting()
-                      //  VideoCallUser(
-                      //       sId: result.notification.additionalData!['data']
-                      //                   ["senderId"] !=
-                      //               null
-                      //           ? result.notification.additionalData!['data']
-                      //               ["senderId"]
-                      //           : null,
-                      //       channel: result.notification.additionalData!['data']
-                      //           ["channelName"],
-                      //       token: result.notification.additionalData!['data']
-                      //           ['rtcToken'],
-                      //       type:
-                      //           result.notification.additionalData!['callType'],
-                      //     )
-                      ),
+                  MaterialPageRoute(
+                      builder: (context) => VideoCallUser(
+                            sId: result.notification.additionalData!['data']
+                                        ["senderId"] !=
+                                    null
+                                ? result.notification.additionalData!['data']
+                                    ["senderId"]
+                                : null,
+                            channel: result.notification.additionalData!['data']
+                                ["channelName"],
+                            token: result.notification.additionalData!['data']
+                                ['rtcToken'],
+                            type:
+                                result.notification.additionalData!['callType'],
+                          )),
                 );
               });
             } else if (result.action!.actionId == "reject") {
@@ -223,20 +222,20 @@ class LocalNotification {
                             globalNavigatorKey.currentState!.pop();
                             globalNavigatorKey.currentState!.push(
                               MaterialPageRoute(
-                                  builder: (context) => VideoCallUser(
-                                        sId: result.additionalData!['data']
-                                                    ["senderId"] !=
-                                                null
-                                            ? result.additionalData!['data']
-                                                ["senderId"]
-                                            : null,
-                                        channel: result.additionalData!['data']
-                                            ["channelName"],
-                                        token: result.additionalData!['data']
-                                            ["rtcToken"],
-                                        type:
-                                            result.additionalData!['callType'],
-                                      )),
+                                builder: (context) => VideoCallUser(
+                                  sId: result.additionalData!['data']
+                                              ["senderId"] !=
+                                          null
+                                      ? result.additionalData!['data']
+                                          ["senderId"]
+                                      : null,
+                                  channel: result.additionalData!['data']
+                                      ["channelName"],
+                                  token: result.additionalData!['data']
+                                      ["rtcToken"],
+                                  type: result.additionalData!['callType'],
+                                ),
+                              ),
                             );
                           });
                         },
