@@ -20,13 +20,19 @@ class DynamicLinkProvider {
       {required String providerId, String creatorUserId = ''}) async {
     final String url =
         "https://solh.com/provider?provider=$providerId&creatorUserId=$creatorUserId&creationTime=${DateTime.now()}";
+    print('created dynamic link $url');
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
         link: Uri.parse(url),
         uriPrefix: _uriPrefix,
-        androidParameters:
-            AndroidParameters(packageName: _packageName, minimumVersion: 7),
-        iosParameters: IOSParameters(bundleId: _packageName));
+        androidParameters: AndroidParameters(
+          packageName: _packageName,
+          minimumVersion: 7,
+        ),
+        iosParameters: IOSParameters(
+          bundleId: _packageName,
+          appStoreId: '1629858813',
+        ));
 
     final FirebaseDynamicLinks link = FirebaseDynamicLinks.instance;
 
@@ -37,7 +43,7 @@ class DynamicLinkProvider {
 
   Future<void> initDynamicLink() async {
     final instanceLink = await FirebaseDynamicLinks.instance.getInitialLink();
-
+    print("$instanceLink instanceLink");
     if (instanceLink != null) {
       final Uri reflink = instanceLink.link;
       await Get.find<ProfileController>().getMyProfile();
@@ -68,5 +74,11 @@ class DynamicLinkProvider {
         "dynamic path ${reflink.path}",
       );
     }
+
+    Stream<PendingDynamicLinkData> onLink =
+        FirebaseDynamicLinks.instance.onLink;
+    onLink.listen((event) {
+      print("$event dynamic link onlink");
+    });
   }
 }

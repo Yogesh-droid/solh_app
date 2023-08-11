@@ -406,16 +406,32 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
             },
           ),
         ),
-        IconButton(
-            onPressed: () async {
-              Share.share(await DynamicLinkProvider.instance
-                  .createLinkForProvider(
-                      providerId: "12345",
-                      creatorUserId: profileController
-                              .myProfileModel.value.body!.user!.sId ??
-                          ''));
-            },
-            icon: Icon(Icons.share))
+        Obx(() {
+          return _controller.isSharingLink.value
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MyLoader(
+                    radius: 8,
+                    strokeWidth: 2,
+                  ),
+                )
+              : IconButton(
+                  onPressed: () async {
+                    _controller.isSharingLink(true);
+                    Share.share(await DynamicLinkProvider.instance
+                        .createLinkForProvider(
+                            providerId: _controller
+                                .consultantModelController.value.provder!.sId!,
+                            creatorUserId: profileController
+                                    .myProfileModel.value.body!.user!.sId ??
+                                ''));
+                    _controller.isSharingLink(false);
+                  },
+                  icon: Icon(Icons.share),
+                  color: SolhColors.grey,
+                  iconSize: 20,
+                );
+        }),
       ],
     );
   }
