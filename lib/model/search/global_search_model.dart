@@ -87,6 +87,7 @@ class Providers {
   int? feeAmount;
   String? feeCurrency;
   String? status;
+  int? afterDiscountPrice;
 
   Providers(
       {this.sId,
@@ -103,6 +104,7 @@ class Providers {
       this.packageType,
       this.feeAmount,
       this.feeCurrency,
+      this.afterDiscountPrice,
       this.status});
 
   Providers.fromJson(Map<String, dynamic> json) {
@@ -123,6 +125,7 @@ class Providers {
     feeAmount = json['feeAmount'];
     feeCurrency = json['feeCurrency'];
     status = json['status'];
+    afterDiscountPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {

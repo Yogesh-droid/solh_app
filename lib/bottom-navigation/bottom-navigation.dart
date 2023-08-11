@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,23 +9,23 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
-import 'package:solh/ui/screens/chat/chat.dart';
-import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
-import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
+import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
+import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
-import 'package:solh/widgets_constants/constants/app_rating_status.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/guide_toor_widget.dart';
 import 'package:solh/widgets_constants/live_blink.dart';
-import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
+
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
@@ -99,6 +101,21 @@ class _MasterScreen2State extends State<MasterScreen2>
   @override
   void initState() {
     print('init master');
+    Connectivity().checkConnectivity().then((result) {
+      if (result == ConnectivityResult.none) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
+      }
+    });
+    Connectivity().onConnectivityChanged.listen((event) async {
+      print("Listening to connectivity $event");
+      if (event == ConnectivityResult.none) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
+      } else {
+        RestartWidget.restartApp(context);
+      }
+    });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getMyProfile();
     });
@@ -411,45 +428,62 @@ class _MasterScreen2State extends State<MasterScreen2>
               },
               items: [
                 BottomNavigationBarItem(
-                  icon: Obx(
-                    () => bottomNavigatorController.activeIndex.value == 0
-                        ? SvgPicture.asset('assets/images/home_solid.svg')
-                        : SvgPicture.asset('assets/images/home_outlined.svg'),
+                  icon: GuideToorWidget(
+                    description:
+                        'Welcome to your comprehensive mental wellness hub! Tap into your journey to better mental health.',
+                    icon: SvgPicture.asset('assets/images/home_solid.svg'),
+                    id: 'home',
+                    title: 'HOME',
+                    child: Obx(
+                      () => bottomNavigatorController.activeIndex.value == 0
+                          ? SvgPicture.asset('assets/images/home_solid.svg')
+                          : SvgPicture.asset('assets/images/home_outlined.svg'),
+                    ),
                   ),
                   label: "Home".tr,
                 ),
                 BottomNavigationBarItem(
-                  icon: Obx(
-                    () => bottomNavigatorController.activeIndex.value == 1
-                        ? SvgPicture.asset(
-                            'assets/images/journaling.svg',
-                            height: 18,
-                          )
-                        : SvgPicture.asset(
-                            'assets/images/journalling outline.svg',
-                            height: 18,
-                          ),
+                  icon: GuideToorWidget(
+                    description:
+                        'Express yourself publicly, anonymously, or in your personal "My Diary"  in a committed non-judgmental, safe space.',
+                    icon: SvgPicture.asset(
+                      'assets/images/journaling.svg',
+                      height: 18,
+                    ),
+                    id: 'journaling',
+                    title: 'JOURNALING',
+                    child: Obx(
+                      () => bottomNavigatorController.activeIndex.value == 1
+                          ? SvgPicture.asset(
+                              'assets/images/journaling.svg',
+                              height: 18,
+                            )
+                          : SvgPicture.asset(
+                              'assets/images/journalling outline.svg',
+                              height: 18,
+                            ),
+                    ),
                   ),
                   label: "Journaling".tr,
                 ),
                 getHelpItem(),
                 BottomNavigationBarItem(
-                    icon: Obx(() => SvgPicture.asset(
-                          'assets/images/groal tab vector.svg',
-                          color:
-                              bottomNavigatorController.activeIndex.value == 3
-                                  ? SolhColors.primary_green
-                                  : Colors.grey.shade600,
-                        )),
+                    icon: GuideToorWidget(
+                      description:
+                          'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
+                      icon: SvgPicture.asset(
+                          'assets/images/groal tab vector.svg'),
+                      id: 'my_goal',
+                      title: 'MY GOALS',
+                      child: Obx(() => SvgPicture.asset(
+                            'assets/images/groal tab vector.svg',
+                            color:
+                                bottomNavigatorController.activeIndex.value == 3
+                                    ? SolhColors.primary_green
+                                    : Colors.grey.shade600,
+                          )),
+                    ),
                     label: "My Goals".tr),
-                // BottomNavigationBarItem(
-                //     icon: Obx(() => SvgPicture.asset(
-                //           'assets/images/profile.svg',
-                //           color: bottomNavigatorController.activeIndex.value == 4
-                //               ? SolhColors.primary_green
-                //               : Colors.grey.shade600,
-                //         )),
-                //     label: "My Profile".tr)
               ],
             ),
           )),
@@ -467,9 +501,19 @@ class _MasterScreen2State extends State<MasterScreen2>
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.menu,
-                    color: Colors.grey.shade600,
+                  GuideToorWidget(
+                    description:
+                        'Discover diverse resources and dive into the activities that stimulate your well-being',
+                    icon: Icon(
+                      Icons.menu,
+                      color: SolhColors.primary_green,
+                    ),
+                    id: 'more',
+                    title: 'MORE',
+                    child: Icon(
+                      Icons.menu,
+                      color: Colors.grey.shade600,
+                    ),
                   ),
                   Obx(() {
                     return liveStreamController
@@ -490,28 +534,35 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   BottomNavigationBarItem getHelpItem() {
     return BottomNavigationBarItem(
-        icon: Obx(() {
-          return profileController.isProfileLoading.value ||
-                  profileController.myProfileModel.value.body == null
-              ? bottomNavigatorController.activeIndex.value == 2
-                  ? SvgPicture.asset("assets/images/get help tab.svg")
-                  : SvgPicture.asset(
-                      "assets/images/get help. outline.svg",
-                    )
-              : profileController.myProfileModel.value.body!.user!.userType ==
-                      'SolhProvider'
-                  ? Icon(
-                      CupertinoIcons.calendar_badge_plus,
-                      color: bottomNavigatorController.activeIndex.value == 2
-                          ? SolhColors.primary_green
-                          : SolhColors.dark_grey,
-                    )
-                  : bottomNavigatorController.activeIndex.value == 2
-                      ? SvgPicture.asset("assets/images/get help tab.svg")
-                      : SvgPicture.asset(
-                          "assets/images/get help. outline.svg",
-                        );
-        }),
+        icon: GuideToorWidget(
+          description:
+              'Explore personalized therapy packages and connect with a mental health expert (Clinical and Allied Therapists).',
+          icon: SvgPicture.asset("assets/images/get help tab.svg"),
+          id: 'get_help',
+          title: 'GET HELP',
+          child: Obx(() {
+            return profileController.isProfileLoading.value ||
+                    profileController.myProfileModel.value.body == null
+                ? bottomNavigatorController.activeIndex.value == 2
+                    ? SvgPicture.asset("assets/images/get help tab.svg")
+                    : SvgPicture.asset(
+                        "assets/images/get help. outline.svg",
+                      )
+                : profileController.myProfileModel.value.body!.user!.userType ==
+                        'SolhProvider'
+                    ? Icon(
+                        CupertinoIcons.calendar_badge_plus,
+                        color: bottomNavigatorController.activeIndex.value == 2
+                            ? SolhColors.primary_green
+                            : SolhColors.dark_grey,
+                      )
+                    : bottomNavigatorController.activeIndex.value == 2
+                        ? SvgPicture.asset("assets/images/get help tab.svg")
+                        : SvgPicture.asset(
+                            "assets/images/get help. outline.svg",
+                          );
+          }),
+        ),
         label: profileController.isProfileLoading.value ||
                 profileController.myProfileModel.value.body == null
             ? 'Get Help'

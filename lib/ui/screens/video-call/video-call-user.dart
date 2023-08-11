@@ -203,12 +203,6 @@ class _CallState extends State<VideoCallUser> {
                 });
           },
         ),
-        // body: PageView(
-        //   controller: pageController,
-        //   scrollDirection: Axis.vertical,
-        //   children: [getVideocallPage(), getChatPage(widget.sId)],
-        // ),
-
         body: getVideocallPage(),
       ),
     );

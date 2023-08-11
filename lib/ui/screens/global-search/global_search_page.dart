@@ -240,6 +240,8 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                             alliedProviders[index].profession!.name ?? '',
                         preview: alliedProviders[index].preview ?? '',
                         feeCurrency: alliedProviders[index].feeCurrency ?? '',
+                        afterDiscoutedPrice:
+                            alliedProviders[index].afterDiscountPrice,
                       )),
             )
           ]),
@@ -286,6 +288,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                         specialization: '',
                         bio: providers[index].bio ?? "",
                         fee: providers[index].fee ?? "Paid",
+                        discountedPrice: providers[index].afterDiscountPrice,
                       )),
             )
           ]),

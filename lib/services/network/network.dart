@@ -12,30 +12,6 @@ import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 
 class Network {
-/*   static Future<Map<String, dynamic>> makeHttpGetRequest(String url) async {
-  try {
-    Uri _uri = Uri.parse(url);
-    print(url);
-
-    http.Response apiResponse = await http.get(_uri);
-    if (apiResponse.statusCode != 200) {
-      print("📶" * 30);
-
-      print("Status Code: " + apiResponse.statusCode.toString());
-      throw "server-error";
-    } else {
-      print(jsonDecode(apiResponse.body));
-      return jsonDecode(apiResponse.body)["body"];
-    }
-  } on SocketException {
-    // internetConnectivityBloc.noInternet();
-    throw "no-internet";
-  } catch (e) {
-    print(e);
-    throw e;
-  }
-} */
-
   static Future<Map<String, dynamic>> makeHttpGetRequestWithToken(
       String url) async {
     try {
@@ -58,6 +34,8 @@ class Network {
           return {};
       }
     } on SocketException {
+      print(
+          "No Internet????????????????????????????????????????????????????????????????????????????????????");
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
@@ -90,7 +68,6 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -125,7 +102,6 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -156,7 +132,6 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -189,7 +164,6 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -261,35 +235,13 @@ class Network {
           return {};
       }
     } on SocketException {
+      print(
+          "No Internet????????????????????????????????????????????????????????????????????????????????????");
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
       throw e;
     }
-
-    /* // headers: {"Authorization": "Bearer ${authBlocNetwork.token}"});
-
-      print("fetched");
-
-      if (apiResponse.statusCode == 200 || apiResponse.statusCode == 201) {
-        Map<String, dynamic> decodedResponse = jsonDecode(apiResponse.body);
-        print(decodedResponse);
-        if (decodedResponse["success"])
-          return decodedResponse;
-        else
-          throw "invalid token";
-      } else {
-        print(apiResponse.body);
-        print("Status Code: " + apiResponse.statusCode.toString());
-        throw "server-error";
-      }
-    } on SocketException {
-      // internetConnectivityBloc.noInternet();
-      throw "no-internet";
-    } catch (e) {
-      print(e);
-      throw e;
-    }*/
   }
 
   static Future<Map<String, dynamic>> makeGetRequest(String url,
@@ -346,7 +298,7 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
+       
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -403,7 +355,7 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
+       
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -460,7 +412,7 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
+       
       throw "no-internet";
     } catch (e) {
       print(e);
@@ -509,7 +461,7 @@ class Network {
         throw "server-error";
       }
     } on SocketException {
-      // internetConnectivityBloc.noInternet();
+       
       throw "no-internet";
     } catch (e) {
       print(e);

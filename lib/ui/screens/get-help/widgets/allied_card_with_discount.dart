@@ -54,13 +54,13 @@ class AlliedCardWithDiscount extends StatelessWidget {
           discount != null && discount! > 0
               ? Positioned(
                   top: -20,
-                  right: -20,
+                  right: -25,
                   child: Transform.rotate(
                       angle: math.pi / 5,
                       child: Obx(() => Container(
                           alignment: Alignment.bottomCenter,
-                          height: 45,
-                          width: 75,
+                          height: 55,
+                          width: 95,
                           color: profileController.orgColor1.value.isNotEmpty
                               ? Color(int.parse(
                                   "0xFF${profileController.orgColor1}"))

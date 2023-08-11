@@ -11,7 +11,6 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
-import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/animated_refresh_container.dart';
@@ -288,11 +287,6 @@ class ChatAppbar extends StatelessWidget {
           children: [
             Row(
               children: [
-                // InkWell(
-                //     onTap: (() {
-                //       Navigator.of(context).pop();
-                //     }),
-                //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
                   onTap: (() async {
                     if (_isAnonChat == true &&

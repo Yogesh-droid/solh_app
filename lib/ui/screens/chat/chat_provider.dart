@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
+import 'package:solh/controllers/chat-list/appointment_video_call_icon_controller.dart';
 import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
@@ -17,6 +18,8 @@ import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/ui/screens/chat/chat_controller/chat_controller.dart';
 import 'package:solh/ui/screens/chat/chat_services/chat_socket_service.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
+import '../video-call/video-call-user.dart';
 
 class ChatProviderScreen extends StatefulWidget {
   const ChatProviderScreen(
@@ -144,8 +147,11 @@ class ChatAppbar extends StatelessWidget {
   final String _sId;
 
   ChatController _controller = Get.put(ChatController());
+  AppointmentVideoCallIconController appointmentIconController =
+      Get.put(AppointmentVideoCallIconController());
   @override
   Widget build(BuildContext context) {
+    appointmentIconController.getVideoCallIcon(_sId);
     return Container(
       width: double.maxFinite,
       decoration: BoxDecoration(color: Colors.white, boxShadow: [
@@ -162,11 +168,6 @@ class ChatAppbar extends StatelessWidget {
           children: [
             Row(
               children: [
-                // InkWell(
-                //     onTap: (() {
-                //       Navigator.of(context).pop();
-                //     }),
-                //     child: Icon(Icons.arrow_back_ios_new)),
                 InkWell(
                   onTap: (() {
                     Navigator.of(context).pop();
@@ -198,8 +199,6 @@ class ChatAppbar extends StatelessWidget {
                       ),
                     ),
                     Obx(() {
-                      print('seen status ran' +
-                          _controller.seenStatus.toString());
                       return Text(
                         _controller.seenStatus.value,
                         style: GoogleFonts.signika(
@@ -210,46 +209,51 @@ class ChatAppbar extends StatelessWidget {
                 ),
               ],
             ),
-            InkWell(
-              onTap: () async {
-                Map<String, dynamic> body = {
-                  "uid": '0',
-                  "tokentype": "uid",
-                  "expiry": "",
-                  "role": "publisher",
-                  "sender": userBlocNetwork.id.toString(),
-                  "senderType": "seeker",
-                  "receiver": _sId,
-                  "receiverType": "seeker",
-                  "channel":
-                      (userBlocNetwork.id.toString() + '_' + _sId.toString()),
-                  "appointmentId": "",
-                  "callType": "cc",
-                  "callStatus": "initiated"
-                };
-                var value = await _controller.initiateVideoController(body);
-                if (value['success'] == true) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: ((context) {
-                    return LiveStreamWaiting();
-                  }
-                          // VideoCallUser(
-                          //       channel: value['data']['channelName'],
-                          //       token: value['data']['rtcToken'],
-                          //       sId: _sId,
-                          //     )
-                          )));
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 24),
-                // child: Icon(
-                //   Icons.video_call_outlined,
-                //   size: 34,
-                //   color: SolhColors.green,
-                // ),
-              ),
-            ),
+            Obx(() {
+              return appointmentIconController
+                          .appointmentVideoCallIconModel.value.data !=
+                      null
+                  ? InkWell(
+                      onTap: () async {
+                        {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: ((context) {
+                            //return LiveStreamWaiting();
+
+                            return VideoCallUser(
+                              // channel: value['data']['channelName'],
+                              // token: value['data']['rtcToken'],
+                              channel: appointmentIconController
+                                  .appointmentVideoCallIconModel
+                                  .value
+                                  .data!
+                                  .channelName,
+                              token: appointmentIconController
+                                  .appointmentVideoCallIconModel
+                                  .value
+                                  .data!
+                                  .token,
+                              sId: appointmentIconController
+                                  .appointmentVideoCallIconModel
+                                  .value
+                                  .data!
+                                  .sId,
+                              type: 'sc',
+                            );
+                          })));
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 24),
+                        child: Icon(
+                          Icons.video_call_outlined,
+                          size: 34,
+                          color: SolhColors.primary_green,
+                        ),
+                      ),
+                    )
+                  : SizedBox.shrink();
+            })
           ],
         ),
       ),

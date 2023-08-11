@@ -26,43 +26,45 @@ class NoInternetPage extends StatelessWidget {
   // ErrorController errorController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.asset('assets/images/connectionError.png'),
-          Text(
-            'check your Internet Connection or try again later',
-            style: SolhTextStyles.ToggleParaText,
-            textAlign: TextAlign.center,
-          ),
-          Column(
-            children: [
-              SizedBox(
-                height: 3.h,
-              ),
-              enableRetryButton
-                  ? SolhGreenMiniButton(
-                      width: 30.w,
-                      child: Text(
-                        'TRY AGAIN',
-                        style: SolhTextStyles.GreenButtonText,
-                      ),
-                      onPressed: onRetry,
-                    )
-                  : Container(),
-              // Obx(() {
-              //   return errorController.isReconnecting.value
-              //       ? ButtonLoadingAnimation(
-              //           ballSizeLowerBound: 3,
-              //           ballSizeUpperBound: 8,
-              //         )
-              //       : Container();
-              // })
-            ],
-          ),
-        ],
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset('assets/images/connectionError.png'),
+            Text(
+              'check your Internet Connection or try again later',
+              style: SolhTextStyles.ToggleParaText,
+              textAlign: TextAlign.center,
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 3.h,
+                ),
+                enableRetryButton
+                    ? SolhGreenMiniButton(
+                        width: 30.w,
+                        child: Text(
+                          'TRY AGAIN',
+                          style: SolhTextStyles.GreenButtonText,
+                        ),
+                        onPressed: onRetry,
+                      )
+                    : Container(),
+                // Obx(() {
+                //   return errorController.isReconnecting.value
+                //       ? ButtonLoadingAnimation(
+                //           ballSizeLowerBound: 3,
+                //           ballSizeUpperBound: 8,
+                //         )
+                //       : Container();
+                // })
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
