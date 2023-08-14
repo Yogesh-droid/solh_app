@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -118,6 +117,7 @@ class _MasterScreen2State extends State<MasterScreen2>
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getMyProfile();
+      showFeedbackForm();
     });
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 800));
@@ -129,6 +129,22 @@ class _MasterScreen2State extends State<MasterScreen2>
       // MyProfileScreenV2()
     ]);
     super.initState();
+  }
+
+  void showFeedbackForm() {
+    Future.delayed(
+      Duration(seconds: 10),
+      () {
+        bottomNavigatorController.shouldShowFeedbackForm
+            ? showBottomSheet(
+                constraints: BoxConstraints(maxHeight: 60.h),
+                backgroundColor: SolhColors.greenShade5,
+                context: context,
+                builder: (context) => feedbackForm(),
+              )
+            : Container();
+      },
+    );
   }
 
   @override
@@ -172,7 +188,7 @@ class _MasterScreen2State extends State<MasterScreen2>
               appBar: SolhAppBar(
                 title: getDrawer(),
                 isLandingScreen: true,
-              ),
+               ),
               body: IndexedStack(
                   index: bottomNavigatorController.activeIndex.value,
                   children: bottomWidgetList),
@@ -293,80 +309,104 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   Widget feedbackForm() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 8,
-          ),
-          decoration: BoxDecoration(
-              color: Colors.black12, borderRadius: BorderRadius.circular(8)),
-          child: Text(
-            'Those who support us want to know if we are supporting you well. Please review us and give feedback.',
-            style: SolhTextStyles.QS_body_2_semi,
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        getStarsRow(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [],
-        ),
-        SizedBox(
-          height: 3.h,
-        ),
-        TextField(
-          controller: bottomNavigatorController.feedbackTextEditingController,
-          maxLines: 5,
-          minLines: 2,
-          decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
-            hintText: 'Your feedback :)'.tr,
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5),
-              borderSide: BorderSide(
-                color: SolhColors.grey_3,
-                width: 1.0,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Obx(() => bottomNavigatorController.isSubmittingFeedback.value
-            ? SolhGreenButton(
-                child: ButtonLoadingAnimation(
-                ballColor: SolhColors.white,
-              ))
-            : SolhGreenButton(
-                onPressed: () async {
-                  if (bottomNavigatorController.givenStars.value != 0) {
-                    await bottomNavigatorController.submitRating({
-                      "rating": (bottomNavigatorController.givenStars.value + 1)
-                          .toString(),
-                      "feedBackComment": bottomNavigatorController
-                          .feedbackTextEditingController.text
-                          .trim(),
-                    });
-                    exit(0);
-                  } else {
-                    Navigator.of(context).pop();
-                  }
-                },
-                child: Text(
-                  'Submit',
-                  style: SolhTextStyles.CTA.copyWith(
-                    color: SolhColors.white,
+    return Padding(
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          IconButton(
+              onPressed: () => Navigator.of(context).pop(),
+              icon: Icon(
+                Icons.cancel,
+                size: 25,
+                color: SolhColors.grey_2,
+              )),
+          Padding(
+            padding: const EdgeInsets.all(25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  decoration: BoxDecoration(
+                      color: Colors.black12,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Text(
+                    'Those who support us want to know if we are supporting you well. Please review us and give feedback.',
+                    style: SolhTextStyles.QS_body_2_semi,
                   ),
                 ),
-              )),
-      ],
+                SizedBox(
+                  height: 10,
+                ),
+                getStarsRow(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [],
+                ),
+                SizedBox(
+                  height: 3.h,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: TextField(
+                    controller:
+                        bottomNavigatorController.feedbackTextEditingController,
+                    maxLines: 5,
+                    minLines: 2,
+                    decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
+                      hintText: 'Your feedback :)'.tr,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: SolhColors.grey_3,
+                          width: 1.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Obx(() => bottomNavigatorController.isSubmittingFeedback.value
+                    ? SolhGreenButton(
+                        child: ButtonLoadingAnimation(
+                        ballColor: SolhColors.white,
+                      ))
+                    : SolhGreenButton(
+                        onPressed: () async {
+                          if (bottomNavigatorController.givenStars.value != 0) {
+                            await bottomNavigatorController.submitRating({
+                              "rating":
+                                  (bottomNavigatorController.givenStars.value +
+                                          1)
+                                      .toString(),
+                              "feedBackComment": bottomNavigatorController
+                                  .feedbackTextEditingController.text
+                                  .trim(),
+                            });
+                            Navigator.of(context).pop();
+                          } else {
+                            Navigator.of(context).pop();
+                          }
+                        },
+                        child: Text(
+                          'Submit',
+                          style: SolhTextStyles.CTA.copyWith(
+                            color: SolhColors.white,
+                          ),
+                        ),
+                      )),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
