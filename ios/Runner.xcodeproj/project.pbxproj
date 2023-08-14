@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		11F5A672313BD97751D6815F /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8C39D1C71BE5E1D69852622 /* Pods_Runner.framework */; };
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
-		25FE3B70E2212D9BE739ECAF /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99049FB451A7138879A62CE0 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		54EA5EBB28B748800082B489 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA5EBA28B7487F0082B489 /* UserNotifications.framework */; };
 		54EA5EBD28B748800082B489 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54EA5EBC28B748800082B489 /* UserNotificationsUI.framework */; };
 		54EA5EC128B748800082B489 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54EA5EC028B748800082B489 /* NotificationViewController.m */; };
 		54EA5EC428B748800082B489 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 54EA5EC228B748800082B489 /* MainInterface.storyboard */; };
 		54EA5EC828B748800082B489 /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 54EA5EB928B7487F0082B489 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		54F27DD42A863ABF00196EB8 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54F27DD32A863ABF00196EB8 /* Pods_OneSignalNotificationServiceExtension.framework */; };
 		65190FDE2A860A6E00290616 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65190FDD2A860A6E00290616 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
@@ -71,6 +71,7 @@
 		54EA5EC028B748800082B489 /* NotificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		54EA5EC328B748800082B489 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		54EA5EC528B748800082B489 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		54F27DD32A863ABF00196EB8 /* Pods_OneSignalNotificationServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_OneSignalNotificationServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65190FDD2A860A6E00290616 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		65DBBB2F2A84F59000978ADD /* OneSignalNotificationServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OneSignalNotificationServiceExtension.entitlements; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -97,8 +98,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				54EA5EBD28B748800082B489 /* UserNotificationsUI.framework in Frameworks */,
+				54F27DD42A863ABF00196EB8 /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 				54EA5EBB28B748800082B489 /* UserNotifications.framework in Frameworks */,
-				25FE3B70E2212D9BE739ECAF /* Pods_OneSignalNotificationServiceExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +129,7 @@
 		5677A2DC9B24E2B42D0F947F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				54F27DD32A863ABF00196EB8 /* Pods_OneSignalNotificationServiceExtension.framework */,
 				54EA5EBA28B7487F0082B489 /* UserNotifications.framework */,
 				54EA5EBC28B748800082B489 /* UserNotificationsUI.framework */,
 				99049FB451A7138879A62CE0 /* Pods_OneSignalNotificationServiceExtension.framework */,
