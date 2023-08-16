@@ -81,10 +81,6 @@
 	<string>f4e915f5a1cf401e2be8d77e5a268849</string>
 	<key>FacebookDisplayName</key>
 	<string>Solh Wellness</string>
-	<key>FirebaseDynamicLinksCustomDomains</key>
-	<array>
-		<string>https://solh.com</string>
-	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -145,5 +141,10 @@
 	<array>
 		<string>applinks:solh.page.link</string>
 	</array>
+	<key>FirebaseDynamicLinksCustomDomains</key>
+	<array>
+    <string>https://solh.page.link</string>
+    <string>https://solh.com/</string>
+</array>
 </dict>
 </plist>
