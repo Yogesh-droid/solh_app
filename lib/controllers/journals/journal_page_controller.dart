@@ -107,6 +107,7 @@ class JournalPageController extends GetxController {
   }
 
   Future<void> getTrendingJournals({bool orgToggle = false}) async {
+    print(orgToggle);
     isTrendingLoading.value = true;
     try {
       if (orgToggle) {

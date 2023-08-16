@@ -14,6 +14,7 @@ import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/solh_video_player.dart';
 import '../../../../widgets_constants/appbars/app-bar.dart';
 import '../../comment/comment-screen.dart';
+import 'dart:math' as math;
 
 class AlliedConsultant extends StatefulWidget {
   AlliedConsultant({Key? key, Map<dynamic, dynamic>? args})
@@ -144,6 +145,21 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                                 experience: searchMarketController.issueModel
                                     .value.alliedProviders![index].experience
                                     .toString(),
+                                demoPackageCount: searchMarketController
+                                    .issueModel
+                                    .value
+                                    .alliedProviders![index]
+                                    .demoPackageCount,
+                                livePackageCount: searchMarketController
+                                    .issueModel
+                                    .value
+                                    .alliedProviders![index]
+                                    .livePackageCount,
+                                recodedPackageCount: searchMarketController
+                                    .issueModel
+                                    .value
+                                    .alliedProviders![index]
+                                    .recodedPackageCount,
                                 feeAmount: searchMarketController
                                         .issueModel
                                         .value
@@ -205,7 +221,11 @@ class AlliedConsultantTile extends StatelessWidget {
       required this.id,
       required this.preview,
       required this.feeCurrency,
-      this.afterDiscoutedPrice});
+      this.afterDiscoutedPrice,
+      this.demoPackageCount,
+      this.recodedPackageCount,
+      this.livePackageCount,
+      this.totalPackageCount});
 
   final String? profilePic;
   final String id;
@@ -217,6 +237,10 @@ class AlliedConsultantTile extends StatelessWidget {
   final int? afterDiscoutedPrice;
   final String? preview;
   final String feeCurrency;
+  final int? demoPackageCount;
+  final int? recodedPackageCount;
+  final int? livePackageCount;
+  final int? totalPackageCount;
 
   final SearchMarketController _searchMarketController = Get.find();
   final ProfileController profileController = Get.find();
@@ -232,15 +256,39 @@ class AlliedConsultantTile extends StatelessWidget {
                   onTap: () => Navigator.pushNamed(
                       context, AppRoutes.alliedConsultantScreen,
                       arguments: {"id": id}),
-                  child: Container(
-                    height: 24.h,
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                            color: Color.fromRGBO(217, 217, 217, 1)
-                                .withOpacity(0.4))),
-                    child: getProfileDetails(context: context),
+                  child: Stack(
+                    children: [
+                      Container(
+                        // height: 24.h,
+                        // width: 100.w,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                color: Color.fromRGBO(217, 217, 217, 1)
+                                    .withOpacity(0.4))),
+                        child: getProfileDetails(context: context),
+                      ),
+                      if (demoPackageCount != null && demoPackageCount! > 0)
+                        Positioned(
+                            top: 15,
+                            left: -30,
+                            child: Transform.rotate(
+                              angle: -(math.pi / 4),
+                              child: Container(
+                                width: 100,
+                                color: SolhColors.red_shade_1,
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "Demo",
+                                      style: SolhTextStyles.GreenButtonText,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ))
+                    ],
                   ),
                 ),
                 // SvgPicture.asset('assets/images/demo.svg')
@@ -271,6 +319,29 @@ class AlliedConsultantTile extends StatelessWidget {
           SizedBox(
             height: 1.h,
           ),
+          if (recodedPackageCount != null && livePackageCount != null)
+            Align(
+                alignment: Alignment.topRight,
+                child: Container(
+                  height: 5.w,
+                  width: 30.w,
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    if (recodedPackageCount != null && recodedPackageCount! > 0)
+                      Text(
+                        'Recorded',
+                        style: TextStyle(color: SolhColors.red_shade_1),
+                      ),
+                    if (livePackageCount != null &&
+                        recodedPackageCount != null &&
+                        recodedPackageCount! > 0 &&
+                        livePackageCount! > 0)
+                      Text(' + '),
+                    if (livePackageCount != null && livePackageCount! > 0)
+                      Text('Live')
+                  ]),
+                )),
+          SizedBox(height: 10),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

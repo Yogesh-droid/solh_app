@@ -240,6 +240,16 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                             alliedProviders[index].profession!.name ?? '',
                         preview: alliedProviders[index].preview ?? '',
                         feeCurrency: alliedProviders[index].feeCurrency ?? '',
+                        afterDiscoutedPrice:
+                            alliedProviders[index].afterDiscountPrice,
+                        demoPackageCount:
+                            alliedProviders[index].demoPackageCount,
+                        livePackageCount:
+                            alliedProviders[index].livePackageCount,
+                        recodedPackageCount:
+                            alliedProviders[index].recodedPackageCount,
+                        totalPackageCount:
+                            alliedProviders[index].totalPackageCount,
                       )),
             )
           ]),

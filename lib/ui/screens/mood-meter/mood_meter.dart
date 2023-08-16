@@ -145,7 +145,6 @@ class MoodMeter extends StatelessWidget {
                                       moodMeterController.selectedValue.value =
                                           value;
                                       moodMeterController.changeImg(value);
-                                      print(value);
                                     });
                               })),
                         ),

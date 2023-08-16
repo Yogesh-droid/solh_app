@@ -161,6 +161,11 @@ class _ViewAllSearchResultsState extends State<ViewAllSearchResults> {
                 id: allied[index].sId ?? '',
                 preview: allied[index].preview,
                 feeCurrency: allied[index].feeCurrency ?? '',
+                afterDiscoutedPrice: allied[index].afterDiscountPrice,
+                demoPackageCount: allied[index].demoPackageCount,
+                livePackageCount: allied[index].livePackageCount,
+                recodedPackageCount: allied[index].recodedPackageCount,
+                totalPackageCount: allied[index].totalPackageCount,
               ),
               // child: PeopleTile(
               //   connection: allied[index],

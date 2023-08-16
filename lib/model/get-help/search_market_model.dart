@@ -186,6 +186,10 @@ class Provider {
   String? prefix;
   String? preview;
   int? afterDiscountPrice;
+  int? demoPackageCount;
+  int? recodedPackageCount;
+  int? livePackageCount;
+  int? totalPackageCount;
 
   Provider(
       {this.sId,
@@ -218,9 +222,17 @@ class Provider {
       this.prefix,
       this.profilePicture,
       this.afterDiscountPrice,
+      this.demoPackageCount,
+      this.livePackageCount,
+      this.recodedPackageCount,
+      this.totalPackageCount,
       this.preview});
 
   Provider.fromJson(Map<String, dynamic> json) {
+    demoPackageCount = json['demoPackageCount'];
+    livePackageCount = json['livePackageCount'];
+    recodedPackageCount = json['recodedPackageCount'];
+    totalPackageCount = json['totalPackageCount'];
     sId = json['_id'];
     gender = json['gender'];
     fee = json['fee'];

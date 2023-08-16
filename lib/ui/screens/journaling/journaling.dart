@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -111,8 +112,6 @@ class _JournalingState extends State<Journaling> {
   }
 
   void _onRefresh() async {
-    // monitor network fetch
-    //await journalsBloc.getJournalsSnapshot();
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;
@@ -186,26 +185,41 @@ class _JournalingState extends State<Journaling> {
                   ),
                   groupRow(),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      SizedBox(width: 10),
+                      Text(
+                        "Posts",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
                       DefaultOrg.defaultOrg != null
-                          ? Switch(
-                              activeTrackColor:
-                                  SolhColors.primary_green.withOpacity(0.3),
-                              value: _showOrgOnly,
-                              onChanged: (value) {
-                                _journalPageController.nextPage = 2;
+                          ? PopupMenuButton<bool>(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Icon(
+                                  CupertinoIcons.line_horizontal_3_decrease,
+                                  size: 16,
+                                ),
+                              ),
+                              onSelected: (value) {
                                 OrgOnlySetting.orgOnly = value;
-                                _journalPageController.getAllJournals(1,
-                                    orgOnly: value);
-
-                                _showOrgOnly
-                                    ? _showOrgOnly = !_showOrgOnly
-                                    : _showOrgOnly = !_showOrgOnly;
-                                setState(() {});
+                                _journalPageController.getTrendingJournals(
+                                    orgToggle: value);
                               },
-                            )
-                          : Container(),
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem<bool>(
+                                    child: Text("Organization only"),
+                                    value: true,
+                                  ),
+                                  PopupMenuItem<bool>(
+                                    child: Text("All(Solh & Organization)"),
+                                    value: false,
+                                  )
+                                ];
+                              })
+                          : SizedBox(),
                     ],
                   ),
                   Obx(() {

@@ -146,13 +146,6 @@ class _HomeScreenState extends State<HomeScreen> {
         prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
       }
     } else {
-      // await moodMeterController.getMoodList();
-      // showGeneralDialog(
-      //     context: context,
-      //     pageBuilder: (context, animation, secondaryAnimation) {
-      //       return Scaffold(body: MoodMeter());
-      //     });
-
       prefs.setBool('moodMeterShown', true);
       prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
     }
@@ -251,33 +244,44 @@ class _HomePageState extends State<HomePage> {
           GetHelpDivider(),
           GetHelpCategory(
             title: 'Trending Posts'.tr,
-            trailing: InkWell(
-              onTap: () async {
-                _bottomNavigatorController.activeIndex.value = 1;
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'TrendingTapped', parameters: {'Page': 'HomePage'});
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  child: DefaultOrg.defaultOrg != null
-                      ? Switch(
-                          activeTrackColor:
-                              SolhColors.primary_green.withOpacity(0.3),
-                          value: switchToggle,
-                          onChanged: (value) {
-                            switchToggle
-                                ? switchToggle = !switchToggle
-                                : switchToggle = !switchToggle;
+            trailing: Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DefaultOrg.defaultOrg != null
+                      ? PopupMenuButton<bool>(
+                          child:
+                              Icon(CupertinoIcons.line_horizontal_3_decrease),
+                          onSelected: (value) {
                             OrgOnlySetting.orgOnly = value;
                             _journalPageController.getTrendingJournals(
-                                orgToggle: switchToggle);
-
-                            setState(() {});
+                                orgToggle: value);
                           },
-                        )
-                      : Row(
+                          itemBuilder: (context) {
+                            return [
+                              PopupMenuItem<bool>(
+                                child: Text("Organization only"),
+                                value: true,
+                              ),
+                              PopupMenuItem<bool>(
+                                child: Text("All(Solh & Organization)"),
+                                value: false,
+                              )
+                            ];
+                          })
+                      : SizedBox(),
+                  InkWell(
+                    onTap: () async {
+                      _bottomNavigatorController.activeIndex.value = 1;
+                      FirebaseAnalytics.instance.logEvent(
+                          name: 'TrendingTapped',
+                          parameters: {'Page': 'HomePage'});
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                        child: Row(
                           children: [
                             Text('Journaling'.tr,
                                 style: SolhTextStyles.CTA
@@ -289,7 +293,10 @@ class _HomePageState extends State<HomePage> {
                             )
                           ],
                         ),
-                ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -677,19 +684,13 @@ class _HomePageState extends State<HomePage> {
           Navigator.of(context).pop();
           if (value["redirectTo"] != "") {
             await Navigator.pushNamed(
-              context, AppRoutes.videoPlaylist,
-              // arguments: {
-              //   "groupId": value["redirectKey"],
-              //   // "isJoined": false
-              // }
+              context,
+              AppRoutes.videoPlaylist,
             );
           } else {
             await Navigator.pushNamed(
-              context, AppRoutes.videoPlaylist,
-              // arguments: {
-              //   "groupId": value["redirectKey"],
-              //   // "isJoined": false
-              // }
+              context,
+              AppRoutes.videoPlaylist,
             );
           }
         }

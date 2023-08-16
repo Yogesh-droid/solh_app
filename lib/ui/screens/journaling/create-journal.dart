@@ -35,6 +35,7 @@ import '../../../controllers/profile/anon_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../model/profile/my_profile_model.dart';
 import '../../../widgets_constants/buttons/custom_buttons.dart';
+import '../../../widgets_constants/constants/default_org.dart';
 import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
@@ -1184,6 +1185,11 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                         child: Text("Group".tr),
                         value: "Group",
                       ),
+                      if (DefaultOrg.defaultOrg != null)
+                        DropdownMenuItem(
+                          child: Text("Organization".tr),
+                          value: "organization",
+                        ),
                     ]),
               ),
               SizedBox(
