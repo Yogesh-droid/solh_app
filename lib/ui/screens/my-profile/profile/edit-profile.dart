@@ -484,7 +484,8 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
   }
 
   void fillUserDetails() {
-    _dob = '';
+    _dob = profileController.myProfileModel.value.body!.user!.dob ?? '';
+    ;
     _gender = profileController.myProfileModel.value.body!.user!.gender ?? '';
     _firstNameTextEditingController.text =
         profileController.myProfileModel.value.body!.user!.firstName ?? '';

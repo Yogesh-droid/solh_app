@@ -167,22 +167,26 @@ class DOBPicker extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        showCupertinoModalPopup(
+      onTap: () async {
+        DateTime? dateTime = await showDatePicker(
+            builder: (context, child) {
+              return Theme(
+                  data: ThemeData.light().copyWith(
+                      primaryColor: SolhColors.primary_green,
+                      colorScheme:
+                          ColorScheme.light(primary: SolhColors.primary_green)),
+                  child: child!);
+            },
+            helpText: 'Select Your DOB',
             context: context,
-            builder: (BuildContext builder) {
-              return Container(
-                height: MediaQuery.of(context).copyWith().size.height * 0.25,
-                color: Colors.white,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  onDateTimeChanged: onDateChanged,
-                  initialDateTime: DateTime.now(),
-                  minimumYear: 1960,
-                  maximumYear: 2030,
-                ),
-              );
-            });
+            initialDate: _initialDateOfBirth,
+            firstDate: DateTime(1960),
+            lastDate: DateTime.now().subtract(Duration(days: 1460)));
+        if (dateTime != null) {
+          ageController.selectedAge.value =
+              DateFormat('dd MMMM yyyy').format(dateTime);
+          onDateChanged(dateTime);
+        }
       },
       child: Container(
         height: 6.1.h,
@@ -206,21 +210,6 @@ class DOBPicker extends StatelessWidget {
                 )
               ],
             )),
-        // child: DateTimePicker(
-        //   initialValue: _initialDateOfBirth.toString(),
-        //   initialDate: DateTime.now().subtract(Duration(days: 4749)),
-        //   style: SolhTextStyles.ProfileMenuGreyText,
-        //   firstDate: DateTime(1900),
-        //   lastDate: DateTime.now().subtract(Duration(days: 4749)),
-        //   dateLabelText: 'Date',
-        //   onChanged: _onChanged,
-        //   decoration: InputDecoration(border: InputBorder.none),
-        //   validator: (val) {
-        //     print(val);
-        //     return null;
-        //   },
-        //   onSaved: (val) => print(val),
-        // )
       ),
     );
   }

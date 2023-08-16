@@ -186,7 +186,9 @@ class _SolhAppState extends State<SolhApp> {
                 MaterialStateProperty.all<Color>(SolhColors.primary_green),
             trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
           ),
-
+          // datePickerTheme: DatePickerThemeData(
+          //     headerBackgroundColor: SolhColors.primary_green),
+          highlightColor: SolhColors.primary_green,
           scaffoldBackgroundColor: Colors.white,
           fontFamily: GoogleFonts.quicksand().fontFamily,
           primaryColor: SolhColors.primary_green,

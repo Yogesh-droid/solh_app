@@ -181,7 +181,8 @@ class MoodMeter extends StatelessWidget {
                               onPressed: continueAction != null
                                   ? continueAction
                                   : () {
-                                      moodMeterController.saveMoodOfday();
+                                      moodMeterController.saveMoodOfday(
+                                          _reasonController.text);
                                       if (_reasonController.text.isNotEmpty) {
                                         try {
                                           moodMeterController.saveReason(

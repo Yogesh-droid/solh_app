@@ -41,19 +41,6 @@ class GetHelpController extends GetxController {
               ? getIssueResponseModel.value.specializationList!.sublist(0, 8)
               : getIssueResponseModel.value.specializationList!
           : [];
-      /*  if (getIssueResponseModel.value.specializationList != null) {
-        int val = getIssueResponseModel.value.specializationList!.length ~/ 3;
-        issueList.value =
-            getIssueResponseModel.value.specializationList!.take(val).toList();
-        issueList1.value = getIssueResponseModel.value.specializationList!
-            .skip(val)
-            .take(val)
-            .toList();
-        issueList2.value = getIssueResponseModel.value.specializationList!
-            .skip(val + val)
-            .take(val * 3)
-            .toList();
-      } */
     } on Exception catch (e) {
       ErrorHandler.handleException(e.toString());
     }

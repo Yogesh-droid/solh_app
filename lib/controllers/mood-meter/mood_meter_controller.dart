@@ -57,12 +57,13 @@ class MoodMeterController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> saveMoodOfday() async {
+  Future<void> saveMoodOfday(String text) async {
     await Network.makePostRequestWithToken(
         url: '${APIConstants.api}/api/mood-today',
         body: {
           'mood':
-              moodMeterModel.value.moodList![selectedValue.value.toInt()].sId
+              moodMeterModel.value.moodList![selectedValue.value.toInt()].sId,
+          'comment': text
         });
   }
 

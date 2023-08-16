@@ -50,10 +50,10 @@ class SearchMarketController extends GetxController {
     String url;
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
-          '/api/v4/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+          '/api/v5/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
     } else {
       url = APIConstants.api +
-          '/api/v4/get-help?specialization=$slug&country=$country&issue=$issue';
+          '/api/v5/get-help?specialization=$slug&country=$country&issue=$issue';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
@@ -87,10 +87,10 @@ class SearchMarketController extends GetxController {
       String url;
       if (c != null && c.isNotEmpty) {
         url = APIConstants.api +
-            '/api/v4/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+            '/api/v5/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
       } else {
         url = APIConstants.api +
-            '/api/v4/get-help?specialization=$slug&country=$country&issue=$issue&page=$page';
+            '/api/v5/get-help?specialization=$slug&country=$country&issue=$issue&page=$page';
       }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
