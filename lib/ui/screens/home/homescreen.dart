@@ -2358,63 +2358,65 @@ class OrgOfferCaurousel extends StatelessWidget {
           name: '_controller.isGettingOffers.value');
       return _controller.isGettingOffers.value
           ? MyLoader()
-          : (_controller.offerCarouselModel.value.data!.isEmpty
-              ? Container()
-              : Column(
-                  children: [
-                    SizedBox(
-                      height: 12,
-                    ),
-                    Row(
+          : _controller.offerCarouselModel.value.data == null
+              ? SizedBox()
+              : _controller.offerCarouselModel.value.data!.isEmpty
+                  ? Container()
+                  : Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                          ),
-                          child: Text(
-                            'Offers',
-                            style: SolhTextStyles.QS_body_semi_1,
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                              ),
+                              child: Text(
+                                'Offers',
+                                style: SolhTextStyles.QS_body_semi_1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CarouselSlider.builder(
+                          carouselController: carouselController,
+                          itemCount:
+                              _controller.offerCarouselModel.value.data!.length,
+                          itemBuilder: ((context, index, realIndex) {
+                            return Container(
+                                height: 20.h,
+                                width: 100.w,
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(_controller
+                                              .offerCarouselModel
+                                              .value
+                                              .data![index]
+                                              .image ??
+                                          '')),
+                                ));
+                          }),
+                          options: CarouselOptions(
+                            autoPlay: false,
+                            padEnds: true,
+                            viewportFraction: 0.75,
+                            enlargeCenterPage: true,
+                            onPageChanged: ((index, reason) {
+                              // setState(() {
+                              //   _current = index;
+                              // });
+                            }),
                           ),
                         ),
+                        SizedBox(
+                          height: 12,
+                        )
                       ],
-                    ),
-                    CarouselSlider.builder(
-                      carouselController: carouselController,
-                      itemCount:
-                          _controller.offerCarouselModel.value.data!.length,
-                      itemBuilder: ((context, index, realIndex) {
-                        return Container(
-                            height: 20.h,
-                            width: 100.w,
-                            child: FittedBox(
-                              fit: BoxFit.contain,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(_controller
-                                          .offerCarouselModel
-                                          .value
-                                          .data![index]
-                                          .image ??
-                                      '')),
-                            ));
-                      }),
-                      options: CarouselOptions(
-                        autoPlay: false,
-                        padEnds: true,
-                        viewportFraction: 0.75,
-                        enlargeCenterPage: true,
-                        onPageChanged: ((index, reason) {
-                          // setState(() {
-                          //   _current = index;
-                          // });
-                        }),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12,
-                    )
-                  ],
-                ));
+                    );
     });
   }
 }

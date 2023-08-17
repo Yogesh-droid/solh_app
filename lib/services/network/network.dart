@@ -214,6 +214,7 @@ class Network {
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
+      print(url);
       Map<String, String> headers = {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
         "Accept-Language": AppLocale.appLocale.languageCode,
@@ -221,7 +222,6 @@ class Network {
         "orgonly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
 
-      log(headers.toString());
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
       switch (apiResponse.statusCode) {
@@ -235,8 +235,7 @@ class Network {
           return {};
       }
     } on SocketException {
-      print(
-          "No Internet????????????????????????????????????????????????????????????????????????????????????");
+      print("No Internet????");
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
@@ -268,15 +267,6 @@ class Network {
           return {};
       }
     } on SocketException {
-      // globalNavigatorKey.currentState!.push(
-      //   MaterialPageRoute(
-      //     builder: (context) => Scaffold(
-      //         body: NoInternetPage(
-      //       onRetry: () {},
-      //       enableRetryButton: false,
-      //     )),
-      //   ),
-      // );
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
