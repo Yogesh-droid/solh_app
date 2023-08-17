@@ -67,7 +67,7 @@ class JournalPageController extends GetxController {
             ? await await Network.makeGetRequestWithToken(
                 "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}&orgonly=$orgOnly")
             : await Network.makeGetRequestWithToken(
-                "${APIConstants.api}/api/v2/posts?pageNumber=$pageNo");
+                "${APIConstants.api}/api/v2/posts?pageNumber=$pageNo&orgonly=$orgOnly");
 
         print('map: ' + map.toString());
 
