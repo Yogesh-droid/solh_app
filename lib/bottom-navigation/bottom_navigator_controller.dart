@@ -52,7 +52,7 @@ class BottomNavigatorController extends GetxController {
         await AppRatingStatus.shouldShowRatingReminder()) {
       shouldShowFeedbackForm = true;
     } else {
-      shouldShowFeedbackForm = true;
+      shouldShowFeedbackForm = false;
     }
     log('${AppRatingStatus.appRatingStatus} ${await AppRatingStatus.shouldShowRatingReminder()}',
         name: "AppRatingStatus");

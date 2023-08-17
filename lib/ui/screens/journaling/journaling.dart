@@ -204,8 +204,7 @@ class _JournalingState extends State<Journaling> {
                               ),
                               onSelected: (value) {
                                 OrgOnlySetting.orgOnly = value;
-                                _journalPageController.getTrendingJournals(
-                                    orgToggle: value);
+                                _onRefresh();
                               },
                               itemBuilder: (context) {
                                 return [
