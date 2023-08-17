@@ -9,7 +9,7 @@ class AppRatingStatus {
     await SolhCacheManager.instance.writeJsonCache(
         key: "appRatingReminderTime",
         json: {'appRatingReminderTime': DateTime.now().toString()},
-        duration: Duration(seconds: 6));
+        duration: Duration(hours: 48));
   }
 
   static Future<bool> shouldShowRatingReminder() async {
