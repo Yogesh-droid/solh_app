@@ -21,6 +21,7 @@ class ProfileController extends GetxController {
       //await Future.delayed(Duration(seconds: 30));
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-my-profile-details");
+      print('profile map $map');
       myProfileModel.value = MyProfileModel.fromJson(map);
       if (myProfileModel.value.body!.userOrganisations != null) {
         if (myProfileModel.value.body!.userOrganisations!.isNotEmpty &&

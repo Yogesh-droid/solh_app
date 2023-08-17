@@ -1,11 +1,13 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/broken_link.dart';
+import 'package:solh/services/user/session-cookie.dart';
 
 class DynamicLinkProvider {
   DynamicLinkProvider._();
@@ -75,10 +77,52 @@ class DynamicLinkProvider {
       );
     }
 
-    Stream<PendingDynamicLinkData> onLink =
-        FirebaseDynamicLinks.instance.onLink;
-    onLink.listen((event) {
-      print("$event dynamic link onlink");
-    });
+    if (instanceLink == null) {
+      Stream<PendingDynamicLinkData> onLink =
+          FirebaseDynamicLinks.instance.onLink;
+      onLink.listen((event) async {
+        print('onLink ${event.link}');
+        await Get.find<ProfileController>().getMyProfile();
+        String providerId = getProviderIdFromLink(event.link.toString());
+        print('onLink providerId $providerId');
+        if (providerId != '') {
+          print('try ran $providerId');
+          try {
+            await Get.find<ConsultantController>()
+                .getConsultantDataController(providerId, "Rs");
+            if (globalNavigatorKey.currentState != null) {
+              globalNavigatorKey.currentState!
+                  .pushNamed(AppRoutes.consultantProfilePage);
+            } else {
+              print("current State is null");
+            }
+          } catch (e) {
+            globalNavigatorKey.currentState!.push(MaterialPageRoute(
+              builder: (context) => BrokenLinKErrorPage(),
+            ));
+          }
+        }
+      });
+    }
   }
+}
+
+String getProviderIdFromLink(String link) {
+  String providerId = '';
+  List<RegExpMatch> allMatches =
+      RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
+          .allMatches(link)
+          .toList();
+  for (final m in allMatches) {
+    if (m[0] != null) {
+      if (m[0]!.contains('provider')) {
+        List<RegExpMatch> providerMatch =
+            RegExp(r'\b[\w-]+$').allMatches(m[0].toString()).toList();
+        for (final x in providerMatch) {
+          providerId = x[0].toString();
+        }
+      }
+    }
+  }
+  return providerId;
 }

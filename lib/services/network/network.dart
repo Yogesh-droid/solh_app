@@ -237,7 +237,6 @@ class Network {
   static Future<Map<String, dynamic>> makeGetRequestWithToken(
     String url,
   ) async {
-    print("makeGetRequestWithToken ${userBlocNetwork.getSessionCookie}");
     try {
       Uri _uri = Uri.parse(url);
       print("requested");
@@ -247,12 +246,10 @@ class Network {
         "organisation": DefaultOrg.defaultOrg ?? "",
         "orgonly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
-      print("token: ${userBlocNetwork.getSessionCookie}");
-      print(url);
-      debugPrint(headers.toString());
+
+      log(headers.toString());
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
-      print(apiResponse.statusCode);
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);

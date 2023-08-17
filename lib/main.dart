@@ -53,7 +53,6 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   LocalNotification.initOneSignal();
 
-  DynamicLinkProvider.instance.initDynamicLink();
   Prefs.init();
   await FirebaseAnalytics.instance.logBeginCheckout();
   Get.put(SearchMarketController());
@@ -69,6 +68,7 @@ void main() async {
     bool? newUser = await isNewUser();
     log(newUser.toString(), name: "newUser");
     Map<String, dynamic> _initialAppData = await initApp();
+    DynamicLinkProvider.instance.initDynamicLink();
     runApp(RestartWidget(
       child: SolhApp(
         isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
