@@ -1956,45 +1956,7 @@ class AlliedExperts extends StatelessWidget {
                                         .value
                                         .specializationList![index]
                                         .orgMarketPlaceOffer
-                                    : null))
-                        // child: Container(
-                        //   decoration: BoxDecoration(
-                        //     border: Border.all(
-                        //       color: SolhColors.grey_3,
-                        //     ),
-                        //     borderRadius: BorderRadius.circular(9),
-                        //   ),
-                        //   child:
-                        //       Column(mainAxisSize: MainAxisSize.min, children: [
-                        //     ClipRRect(
-                        //       borderRadius: BorderRadius.only(
-                        //         topLeft: Radius.circular(8),
-                        //         topRight: Radius.circular(8),
-                        //       ),
-                        //       child: CachedNetworkImage(
-                        //         imageUrl: getHelpController
-                        //                 .getAlliedTherapyModel
-                        //                 .value
-                        //                 .specializationList![index]
-                        //                 .displayImage ??
-                        //             '',
-                        //         fit: BoxFit.cover,
-                        //       ),
-                        //     ),
-                        //     Padding(
-                        //       padding: EdgeInsets.symmetric(vertical: 2.h),
-                        //       child: Text(
-                        //         getHelpController.getAlliedTherapyModel.value
-                        //                 .specializationList![index].name ??
-                        //             '',
-                        //         style: SolhTextStyles.QS_cap_semi,
-                        //         textAlign: TextAlign.center,
-                        //         overflow: TextOverflow.ellipsis,
-                        //       ),
-                        //     )
-                        //   ]),
-                        // ),
-                        );
+                                    : null)));
                   },
                 )),
         ],
