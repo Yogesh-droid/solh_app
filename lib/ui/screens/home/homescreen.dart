@@ -254,19 +254,31 @@ class _HomePageState extends State<HomePage> {
                           child:
                               Icon(CupertinoIcons.line_horizontal_3_decrease),
                           onSelected: (value) {
-                            OrgOnlySetting.orgOnly = value;
+                            OrgOnlySetting.setOrgOnly(value);
                             _journalPageController.getTrendingJournals(
                                 orgToggle: value);
                           },
                           itemBuilder: (context) {
                             return [
                               PopupMenuItem<bool>(
-                                child: Text("Organization only"),
-                                value: true,
+                                child: Text("All(Solh & Organization)"),
+                                textStyle: TextStyle(
+                                    color: OrgOnlySetting.orgOnly != null
+                                        ? !OrgOnlySetting.orgOnly!
+                                            ? SolhColors.primary_green
+                                            : SolhColors.black
+                                        : SolhColors.black),
+                                value: false,
                               ),
                               PopupMenuItem<bool>(
-                                child: Text("All(Solh & Organization)"),
-                                value: false,
+                                textStyle: TextStyle(
+                                    color: OrgOnlySetting.orgOnly != null
+                                        ? OrgOnlySetting.orgOnly!
+                                            ? SolhColors.primary_green
+                                            : SolhColors.black
+                                        : SolhColors.black),
+                                child: Text("Organization only"),
+                                value: true,
                               )
                             ];
                           })

@@ -9,6 +9,7 @@ class OrgOnlySetting {
 
   static Future<bool?> getOrgOnly() async {
     orgOnly = await Prefs.getBool("orgOnlySetting");
+    print("Org only value is ${OrgOnlySetting.orgOnly}");
     return orgOnly;
   }
 }
