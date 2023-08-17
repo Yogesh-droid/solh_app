@@ -27,6 +27,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
 import '../../../controllers/profile/anon_controller.dart';
 import '../../../routes/routes.dart';
 import '../journaling/create-journal.dart';
@@ -99,38 +100,36 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) { 
-         journalCommentController.commentList.clear();
-    journalCommentController.repliesList.clear();
-    journalCommentController.nextPage = 1;
-    journalCommentController.previousPage = -2;
-       _scrollController.addListener(() async {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        print("current pixels are ${_scrollController.position.pixels}");
-        print("max position is  ${_scrollController.position.maxScrollExtent}");
-        pageNo++;
-        setState(() {
-          isFetchingMore = true;
-        });
-        await getComments();
-        setState(() {
-          isFetchingMore = false;
-        });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      journalCommentController.commentList.clear();
+      journalCommentController.repliesList.clear();
+      journalCommentController.nextPage = 1;
+      journalCommentController.previousPage = -2;
+      _scrollController.addListener(() async {
+        if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+          print("current pixels are ${_scrollController.position.pixels}");
+          print(
+              "max position is  ${_scrollController.position.maxScrollExtent}");
+          pageNo++;
+          setState(() {
+            isFetchingMore = true;
+          });
+          await getComments();
+          setState(() {
+            isFetchingMore = false;
+          });
+        }
+      });
+      getComments();
+      if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
+        _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
+            FirebaseAuth.instance.currentUser!.uid;
       }
+      journalCommentController.repliedTo.value = '';
+      journalCommentController.isReplying.value = false;
     });
-       getComments();
-    if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
-      _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
-          FirebaseAuth.instance.currentUser!.uid;
-    }
-    journalCommentController.repliedTo.value = '';
-    journalCommentController.isReplying.value = false;
-    });
- 
- 
 
- 
     super.initState();
   }
 

@@ -60,7 +60,7 @@ class AlliedCardWithDiscount extends StatelessWidget {
                       child: Obx(() => Container(
                           alignment: Alignment.bottomCenter,
                           height: 55,
-                          width: 100,
+                          width: 95,
                           color: profileController.orgColor1.value.isNotEmpty
                               ? Color(int.parse(
                                   "0xFF${profileController.orgColor1}"))

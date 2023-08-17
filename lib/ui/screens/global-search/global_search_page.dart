@@ -296,6 +296,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                         specialization: '',
                         bio: providers[index].bio ?? "",
                         fee: providers[index].fee ?? "Paid",
+                        discountedPrice: providers[index].afterDiscountPrice,
                       )),
             )
           ]),

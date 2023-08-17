@@ -39,6 +39,7 @@ import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'widgets_constants/constants/textstyles.dart';
+import 'package:feature_discovery/feature_discovery.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -130,70 +131,66 @@ class _SolhAppState extends State<SolhApp> {
     if (res != null) {
       Map map = jsonDecode(res);
       AppLocale.appLocale = Locale(map.keys.first, map.values.first);
-      print('map $map');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log("${widget._isProfileCreated}", name: "isProfileCreated");
-    // connectivityCheck(context);
     return sizer.Sizer(builder: (context, orientation, deviceType) {
-      print('This is First route ${widget._isProfileCreated}');
-      return GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: globalNavigatorKey,
-        locale: AppLocale.appLocale,
-        translations: Languages(),
-        fallbackLocale: const Locale('en', 'US'),
-        title: 'Solh Wellness',
+      return FeatureDiscovery(
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          navigatorKey: globalNavigatorKey,
+          locale: AppLocale.appLocale,
+          translations: Languages(),
+          fallbackLocale: const Locale('en', 'US'),
+          title: 'Solh Wellness',
+          initialRoute: widget._isProfileCreated
+              ? AppRoutes.master
+              : AppRoutes.getStarted,
+          // initialRoute: AppRoutes.master,
+          onGenerateRoute: RouteGenerator.generateRoute,
+          navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
+          theme: ThemeData(
+            // useMaterial3: true,
+            // colorSchemeSeed: Colors.white,
+            progressIndicatorTheme:
+                ProgressIndicatorThemeData(color: SolhColors.primary_green),
+            //using textTheme only for rich text ,else use constant text Styles
+            textTheme: TextTheme(
+                bodyMedium: TextStyle(
+                  color: SolhColors.black666,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                displayLarge: TextStyle(
+                  color: SolhColors.black53,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                displayMedium: TextStyle(
+                  color: SolhColors.primary_green,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+                bodyLarge: TextStyle(
+                  color: SolhColors.black666,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                ),
+                displaySmall: SolhTextStyles.QS_body_1_bold),
+            switchTheme: SwitchThemeData(
+              thumbColor:
+                  MaterialStateProperty.all<Color>(SolhColors.primary_green),
+              trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
+            ),
 
-        initialRoute:
-            widget._isProfileCreated ? AppRoutes.master : AppRoutes.getStarted,
-        // initialRoute: AppRoutes.master,
-        onGenerateRoute: RouteGenerator.generateRoute,
-        navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
-        theme: ThemeData(
-          // useMaterial3: true,
-          // colorSchemeSeed: Colors.white,
-          progressIndicatorTheme:
-              ProgressIndicatorThemeData(color: SolhColors.primary_green),
-          //using textTheme only for rich text ,else use constant text Styles
-          textTheme: TextTheme(
-              bodyMedium: TextStyle(
-                color: SolhColors.black666,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              displayLarge: TextStyle(
-                color: SolhColors.black53,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-              displayMedium: TextStyle(
-                color: SolhColors.primary_green,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
-              bodyLarge: TextStyle(
-                color: SolhColors.black666,
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-              ),
-              displaySmall: SolhTextStyles.QS_body_1_bold),
-          switchTheme: SwitchThemeData(
-            thumbColor:
-                MaterialStateProperty.all<Color>(SolhColors.primary_green),
-            trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
+            scaffoldBackgroundColor: Colors.white,
+            fontFamily: GoogleFonts.quicksand().fontFamily,
+            primaryColor: SolhColors.primary_green,
+            buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+            iconTheme: IconThemeData(color: Colors.black),
           ),
-          // datePickerTheme: DatePickerThemeData(
-          //     headerBackgroundColor: SolhColors.primary_green),
-          highlightColor: SolhColors.primary_green,
-          scaffoldBackgroundColor: Colors.white,
-          fontFamily: GoogleFonts.quicksand().fontFamily,
-          primaryColor: SolhColors.primary_green,
-          buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-          iconTheme: IconThemeData(color: Colors.black),
         ),
       );
     });

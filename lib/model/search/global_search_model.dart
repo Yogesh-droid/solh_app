@@ -138,6 +138,7 @@ class Providers {
     feeCurrency = json['feeCurrency'];
     afterDiscountPrice = json['afterDiscountPrice'];
     status = json['status'];
+    afterDiscountPrice = json['afterDiscountPrice'];
   }
 
   Map<String, dynamic> toJson() {
