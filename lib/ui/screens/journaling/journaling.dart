@@ -111,15 +111,16 @@ class _JournalingState extends State<Journaling> {
     // userBlocNetwork.getMyProfileSnapshot();
   }
 
-  void _onRefresh() async {
+  void _onRefresh({bool? orgOnly}) async {
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;
     _journalPageController.selectedGroupId.value.length > 0
         ? await _journalPageController.getAllJournals(1,
             groupId: _journalPageController.selectedGroupId.value,
-            orgOnly: false)
-        : await _journalPageController.getAllJournals(1, orgOnly: false);
+            orgOnly: orgOnly ?? false)
+        : await _journalPageController.getAllJournals(1,
+            orgOnly: orgOnly ?? false);
     _journalPageController.journalsList.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
@@ -204,7 +205,7 @@ class _JournalingState extends State<Journaling> {
                               ),
                               onSelected: (value) {
                                 OrgOnlySetting.orgOnly = value;
-                                _onRefresh();
+                                _onRefresh(orgOnly: value);
                               },
                               itemBuilder: (context) {
                                 return [
