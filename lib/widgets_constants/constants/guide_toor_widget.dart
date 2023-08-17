@@ -47,6 +47,7 @@ class GuideToorWidget extends StatelessWidget {
               SizedBox(width: 50),
               TextButton(
                   onPressed: () {
+                    FeatureDiscovery.completeCurrentStep(context);
                     FeatureDiscovery.dismissAll(context);
                   },
                   child: Text('Skip',
