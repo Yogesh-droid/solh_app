@@ -110,6 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
       homeController.getHomeCarousel();
       liveStreamController.getLiveStreamForUserData();
       Prefs.setBool("isProfileCreated", true);
+      Get.find<JournalPageController>()
+          .getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
+      Get.find<JournalPageController>()
+          .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
     }
   }
 

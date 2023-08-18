@@ -242,8 +242,6 @@ class JournalPageController extends GetxController {
 
   @override
   void onInit() {
-    getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
-    getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
     super.onInit();
   }
 
