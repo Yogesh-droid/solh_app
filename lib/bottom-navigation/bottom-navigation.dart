@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -8,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/services/network/network.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
@@ -24,6 +27,7 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/guide_toor_widget.dart';
 import 'package:solh/widgets_constants/live_blink.dart';
+import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../controllers/connections/connection_controller.dart';
@@ -275,9 +279,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                         }),
                   ],
                 ),
-                bottomNavigatorController.shouldShowFeedbackForm
-                    ? AlertDialog(content: feedbackForm())
-                    : Container(),
+                // AlertDialog(content: feedbackForm())
+                // bottomNavigatorController.shouldShowFeedbackForm
+                //     ? AlertDialog(content: feedbackForm())
+                //     : Container(),
               ],
             );
           });
@@ -292,8 +297,16 @@ class _MasterScreen2State extends State<MasterScreen2>
           5,
           (index) => InkWell(
             onTap: () {
-              setState(() {
+              setState(() async {
                 bottomNavigatorController.givenStars.value = index;
+
+                await Network.makePostRequestWithToken(
+                    url: '${APIConstants.api}/api/custom/create-feedback',
+                    body: {
+                      "rating": (bottomNavigatorController.givenStars.value + 1)
+                          .toString(),
+                      "feedBackComment": '',
+                    });
               });
             },
             child: Icon(
@@ -381,7 +394,11 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ))
                     : SolhGreenButton(
                         onPressed: () async {
-                          if (bottomNavigatorController.givenStars.value != 0) {
+                          if (bottomNavigatorController.givenStars.value != 0 &&
+                              bottomNavigatorController
+                                  .feedbackTextEditingController.text
+                                  .trim()
+                                  .isNotEmpty) {
                             await bottomNavigatorController.submitRating({
                               "rating":
                                   (bottomNavigatorController.givenStars.value +
@@ -391,9 +408,14 @@ class _MasterScreen2State extends State<MasterScreen2>
                                   .feedbackTextEditingController.text
                                   .trim(),
                             });
+
                             Navigator.of(context).pop();
                           } else {
-                            Navigator.of(context).pop();
+                            SolhSnackbar.error(
+                              "Opps!",
+                              "Can't submit with empty comment. Enter a comment to submit or skip from above",
+                            );
+                            // Navigator.of(context).pop();
                           }
                         },
                         child: Text(
