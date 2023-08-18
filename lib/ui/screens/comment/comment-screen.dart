@@ -1710,7 +1710,30 @@ class _PostForCommentState extends State<PostForComment> {
                 await _likeJournal();
               }
             }, */
-      onTap: () {
+      onTap: () async {
+        if (_journalPageController.journalsList[widget.index].isLiked ==
+            false) {
+          _journalPageController.journalsList[widget.index].likes =
+              _journalPageController.journalsList[widget.index].likes! + 1;
+          _journalPageController.journalsList[widget.index].isLiked = true;
+          _journalPageController.journalsList.refresh();
+        }
+        String message = await journalCommentController.likePost(
+            journalId: widget._journalModel!.id ?? '',
+            reaction: '63bd50068bc9de38d95671a8');
+        if (message != 'journal liked successfully' &&
+            message != "Already liked the journal") {
+          _journalPageController.journalsList[widget.index].likes =
+              _journalPageController.journalsList[widget.index].likes! - 1;
+          _journalPageController.journalsList[widget.index].isLiked = false;
+          _journalPageController.journalsList.refresh();
+          FirebaseAnalytics.instance.logEvent(
+              name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+        } else {
+          Utility.showToast(message);
+        }
+      },
+      onLongPress: () {
         _journalPageController.getUsersLikedPost(
             widget._journalModel!.id ?? '', 1);
         showModalBottomSheet(

@@ -26,14 +26,17 @@ import 'package:solh/widgets_constants/constants/guide_toor_widget.dart';
 import 'package:solh/widgets_constants/live_blink.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
+import '../constants/api.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
+import '../services/network/network.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
+import '../widgets_constants/solh_snackbar.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
@@ -101,17 +104,31 @@ class _MasterScreen2State extends State<MasterScreen2>
   @override
   void initState() {
     print('init master');
-    Connectivity().checkConnectivity().then((result) {
+    Connectivity().checkConnectivity().then((result) async {
       if (result == ConnectivityResult.none) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+          }
+        } on SocketException catch (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Internet is not connected")));
+        }
       }
     });
     Connectivity().onConnectivityChanged.listen((event) async {
       print("Listening to connectivity $event");
       if (event == ConnectivityResult.none) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+          }
+        } on SocketException catch (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Internet is not connected")));
+        }
       } else {
         RestartWidget.restartApp(context);
       }
@@ -292,8 +309,16 @@ class _MasterScreen2State extends State<MasterScreen2>
           5,
           (index) => InkWell(
             onTap: () {
-              setState(() {
+              setState(() async {
                 bottomNavigatorController.givenStars.value = index;
+
+                await Network.makePostRequestWithToken(
+                    url: '${APIConstants.api}/api/custom/create-feedback',
+                    body: {
+                      "rating": (bottomNavigatorController.givenStars.value + 1)
+                          .toString(),
+                      "feedBackComment": '',
+                    });
               });
             },
             child: Icon(
@@ -381,7 +406,11 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ))
                     : SolhGreenButton(
                         onPressed: () async {
-                          if (bottomNavigatorController.givenStars.value != 0) {
+                          if (bottomNavigatorController.givenStars.value != 0 &&
+                              bottomNavigatorController
+                                  .feedbackTextEditingController.text
+                                  .trim()
+                                  .isNotEmpty) {
                             await bottomNavigatorController.submitRating({
                               "rating":
                                   (bottomNavigatorController.givenStars.value +
@@ -391,9 +420,14 @@ class _MasterScreen2State extends State<MasterScreen2>
                                   .feedbackTextEditingController.text
                                   .trim(),
                             });
+
                             Navigator.of(context).pop();
                           } else {
-                            Navigator.of(context).pop();
+                            SolhSnackbar.error(
+                              "Opps!",
+                              "Can't submit with empty comment. Enter a comment to submit or skip from above",
+                            );
+                            // Navigator.of(context).pop();
                           }
                         },
                         child: Text(

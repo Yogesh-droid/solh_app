@@ -101,6 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     print('Running init state of HomeScreen');
     super.initState();
+
     //userBlocNetwork.getMyProfileSnapshot();
     if (FirebaseAuth.instance.currentUser != null) {
       debugPrint('mood meter shown');
@@ -254,6 +255,7 @@ class _HomePageState extends State<HomePage> {
                           child:
                               Icon(CupertinoIcons.line_horizontal_3_decrease),
                           onSelected: (value) {
+                            OrgOnlySetting.orgOnly = value;
                             OrgOnlySetting.setOrgOnly(value);
                             _journalPageController.getTrendingJournals(
                                 orgToggle: value);

@@ -75,7 +75,7 @@ class AppRoutes {
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
-  static const String master = '/master';
+  static const String master = '/';
   static const String introScreen = '/intro';
   static const String homeScreen = '/home';
   static const String journaling = '/journaling';
@@ -187,6 +187,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) => MasterScreen()),
             settings: RouteSettings(name: routeSettings.name));
+
       case AppRoutes.introScreen:
         print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => IntroCrousel()));
@@ -383,8 +384,8 @@ class RouteGenerator {
       case AppRoutes.consultantProfilePage:
         return MaterialPageRoute(
             builder: ((context) => ConsultantProfilePage()));
-      case "/":
-        return MaterialPageRoute(builder: ((context) => MasterScreen()));
+      // case "/":
+      //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
       default:
         break;
     }
