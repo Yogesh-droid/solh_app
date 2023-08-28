@@ -49,19 +49,6 @@ class FindHelpBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // IconButton(
-          //     onPressed: () {
-          //       FeatureDiscovery.clearPreferences(context, <String>{
-          //         'mood_meter',
-          //         'connection_icon',
-          //         'home',
-          //         'journaling',
-          //         'get_help',
-          //         'my_goal',
-          //         'more'
-          //       });
-          //     },
-          //     icon: Icon(Icons.clear)),
           InkWell(
             onTap: () => onMoodMeterTapped(),
             child: GuideToorWidget(

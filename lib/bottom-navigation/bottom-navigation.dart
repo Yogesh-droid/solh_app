@@ -8,8 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
+import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
@@ -27,6 +32,7 @@ import 'package:solh/widgets_constants/live_blink.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../constants/api.dart';
+import '../controllers/chat-list/chat_list_controller.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
@@ -66,12 +72,6 @@ class MasterScreen extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: MasterScreen2(),
-        // child: Stack(
-        //   children: [
-        //     SideDrawer(),
-        //     MasterScreen2(),
-        //   ],
-        // ),
       ),
     );
   }
@@ -112,8 +112,44 @@ class _MasterScreen2State extends State<MasterScreen2>
             print('connected');
           }
         } on SocketException catch (_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Internet is not connected")));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Internet is not connected"),
+              behavior: SnackBarBehavior.floating));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => NoInternetPage(onRetry: () {
+                        Get.find<PsychologyTestController>().getTestList();
+                        Get.find<PsychologyTestController>()
+                            .getAttendedTestList();
+                        Get.find<ChatListController>().sosChatListController(1);
+                        Get.find<ChatListController>().chatListController();
+                        bottomNavigatorController.getFeedbackStatus();
+                        Get.find<MoodMeterController>().getMoodList();
+                        Get.find<ConnectionController>().getMyConnection();
+                        Get.find<ConnectionController>().getAllConnection();
+                        Get.find<ConnectionController>().getRecommendedBlogs();
+                        Get.find<GoalSettingController>().getPersonalGoals();
+                        Get.find<GoalSettingController>().getGoalsCat();
+                        Get.find<GoalSettingController>().getFeaturedGoals();
+                        Get.find<GoalSettingController>()
+                            .task
+                            .add({TextEditingController(): '1'});
+                        Get.find<OfferCarouselController>().getOffers();
+                        Get.find<JournalCommentController>().getReactionList();
+                        Get.find<AppointmentController>().getUserAppointments();
+                        Get.find<DiscoverGroupController>().getJoinedGroups();
+                        Get.find<DiscoverGroupController>().getDiscoverGroups();
+                        Get.find<DiscoverGroupController>().getCreatedGroups();
+                        Get.find<JournalPageController>().getHeaderAnnounce();
+                        Get.find<GetHelpController>().getIssueList();
+                        Get.find<GetHelpController>().getSpecializationList();
+                        Get.find<GetHelpController>().getAlliedTherapyList();
+                        Get.find<GetHelpController>().getTopConsultant();
+                        Get.find<GetHelpController>().getSolhVolunteerList();
+                        Get.find<GetHelpController>().getCountryList();
+                        RestartWidget.restartApp(context);
+                      })));
         }
       }
     });
@@ -130,7 +166,7 @@ class _MasterScreen2State extends State<MasterScreen2>
               SnackBar(content: Text("Internet is not connected")));
         }
       } else {
-        RestartWidget.restartApp(context);
+        //RestartWidget.restartApp(context);
       }
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

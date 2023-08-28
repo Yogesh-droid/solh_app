@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +25,7 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/errors/controllers/error_controller.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -32,6 +35,7 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -65,37 +69,13 @@ void main() async {
   Get.put(ConsultantController());
   Get.put(BookAppointmentController());
 
-  if (FirebaseAuth.instance.currentUser != null) {
-    bool? newUser = await isNewUser();
-    log(newUser.toString(), name: "newUser");
-    Map<String, dynamic> _initialAppData = await initApp();
-    DynamicLinkProvider.instance.initDynamicLink();
-    runApp(RestartWidget(
-      child: SolhApp(
-        isProfileCreated: _initialAppData["isProfileCreated"] && !newUser,
-      ),
-    ));
-    LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
-    log(' ${newUser} ${_initialAppData["isProfileCreated"]}',
-        name: "currentUser");
-  } else {
-    log('${FirebaseAuth.instance.currentUser}', name: "currentUser");
-    runApp(RestartWidget(
-      child: SolhApp(
-        isProfileCreated: false,
-      ),
-    ));
-  }
+  runApp(RestartWidget(child: SolhApp()));
 
   FlutterNativeSplash.remove();
 }
 
 class SolhApp extends StatefulWidget {
-  SolhApp({Key? key, required bool isProfileCreated})
-      : _isProfileCreated = isProfileCreated,
-        super(key: key);
-
-  final bool _isProfileCreated;
+  SolhApp({Key? key}) : super(key: key);
 
   @override
   State<SolhApp> createState() => _SolhAppState();
@@ -103,18 +83,13 @@ class SolhApp extends StatefulWidget {
 
 class _SolhAppState extends State<SolhApp> {
   String? utm_medium;
-
   String? utm_source;
-
   String? utm_name;
+  bool? isProfileCreated;
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   @override
   void initState() {
-    // initDynamic();
-    init();
-    getLoacale();
-
     super.initState();
   }
 
@@ -138,59 +113,81 @@ class _SolhAppState extends State<SolhApp> {
   Widget build(BuildContext context) {
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return FeatureDiscovery(
-        child: GetMaterialApp(
-          debugShowCheckedModeBanner: false,
-          navigatorKey: globalNavigatorKey,
-          locale: AppLocale.appLocale,
-          translations: Languages(),
-          fallbackLocale: const Locale('en', 'US'),
-          title: 'Solh Wellness',
-          initialRoute: widget._isProfileCreated
-              ? AppRoutes.master
-              : AppRoutes.getStarted,
-          // initialRoute: AppRoutes.master,
-          onGenerateRoute: RouteGenerator.generateRoute,
-          navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
-          theme: ThemeData(
-            // useMaterial3: true,
-            // colorSchemeSeed: Colors.white,
-            progressIndicatorTheme:
-                ProgressIndicatorThemeData(color: SolhColors.primary_green),
-            //using textTheme only for rich text ,else use constant text Styles
-            textTheme: TextTheme(
-                bodyMedium: TextStyle(
-                  color: SolhColors.black666,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                displayLarge: TextStyle(
-                  color: SolhColors.black53,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                displayMedium: TextStyle(
-                  color: SolhColors.primary_green,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-                bodyLarge: TextStyle(
-                  color: SolhColors.black666,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                ),
-                displaySmall: SolhTextStyles.QS_body_1_bold),
-            switchTheme: SwitchThemeData(
-              thumbColor:
-                  MaterialStateProperty.all<Color>(SolhColors.primary_green),
-              trackColor: MaterialStateProperty.all<Color>(SolhColors.grey_3),
-            ),
+        child: FutureBuilder<bool>(
+          future: checkConnectivity(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return MaterialApp(
+                home: Scaffold(
+                    body: Center(
+                  child: SolhGradientLoader(),
+                )),
+              );
+            } else if (snapshot.hasData) {
+              return GetMaterialApp(
+                debugShowCheckedModeBanner: false,
+                navigatorKey: globalNavigatorKey,
+                locale: AppLocale.appLocale,
+                translations: Languages(),
+                fallbackLocale: const Locale('en', 'US'),
+                title: 'Solh Wellness',
+                initialRoute:
+                    snapshot.data! ? AppRoutes.master : AppRoutes.getStarted,
+                onGenerateRoute: RouteGenerator.generateRoute,
+                navigatorObservers: [
+                  FirebaseAnalyticsObserver(analytics: analytics)
+                ],
+                theme: ThemeData(
+                  // useMaterial3: true,
+                  // colorSchemeSeed: Colors.white,
+                  progressIndicatorTheme: ProgressIndicatorThemeData(
+                      color: SolhColors.primary_green),
+                  //using textTheme only for rich text ,else use constant text Styles
+                  textTheme: TextTheme(
+                      bodyMedium: TextStyle(
+                        color: SolhColors.black666,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      displayLarge: TextStyle(
+                        color: SolhColors.black53,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      displayMedium: TextStyle(
+                        color: SolhColors.primary_green,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      bodyLarge: TextStyle(
+                        color: SolhColors.black666,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      displaySmall: SolhTextStyles.QS_body_1_bold),
+                  switchTheme: SwitchThemeData(
+                    thumbColor: MaterialStateProperty.all<Color>(
+                        SolhColors.primary_green),
+                    trackColor:
+                        MaterialStateProperty.all<Color>(SolhColors.grey_3),
+                  ),
 
-            scaffoldBackgroundColor: Colors.white,
-            fontFamily: GoogleFonts.quicksand().fontFamily,
-            primaryColor: SolhColors.primary_green,
-            buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-            iconTheme: IconThemeData(color: Colors.black),
-          ),
+                  scaffoldBackgroundColor: Colors.white,
+                  fontFamily: GoogleFonts.quicksand().fontFamily,
+                  primaryColor: SolhColors.primary_green,
+                  buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
+                  iconTheme: IconThemeData(color: Colors.black),
+                ),
+              );
+            } else {
+              return MaterialApp(
+                home: Scaffold(
+                    body: Center(
+                  child: Text("Error Page"),
+                )),
+              );
+            }
+          },
         ),
       );
     });
@@ -198,7 +195,7 @@ class _SolhAppState extends State<SolhApp> {
 
   Future<void> initControllers() async {
     Get.put(ErrorController());
-    if (widget._isProfileCreated) {
+    if (isProfileCreated!) {
       Get.put(BottomNavigatorController());
       Get.put(ProfileController());
       Get.put(ProfileSetupController());
@@ -209,6 +206,74 @@ class _SolhAppState extends State<SolhApp> {
     }
     Get.put(AnonController());
     Get.put(AgeController());
+  }
+
+  Future<bool> checkConnectivity() async {
+    Connectivity().checkConnectivity().then((result) async {
+      if (result == ConnectivityResult.none) {
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+            return initSolhApp();
+          }
+        } on SocketException catch (_) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Internet is not connected"),
+              behavior: SnackBarBehavior.floating));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (_) => NoInternetPage(onRetry: () {
+          //               RestartWidget.restartApp(context);
+          //             })));
+
+          return false;
+        }
+      } else {
+        return initSolhApp();
+      }
+    });
+    Connectivity().onConnectivityChanged.listen((event) async {
+      print("Listening to connectivity $event");
+      if (event == ConnectivityResult.none) {
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+          }
+        } on SocketException catch (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Internet is not connected")));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (_) => NoInternetPage(onRetry: () {
+          //               RestartWidget.restartApp(context);
+          //             })));
+        }
+      } else {
+        // RestartWidget.restartApp(context);
+      }
+    });
+    return initSolhApp();
+  }
+
+  Future<bool> initSolhApp() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      print("Login");
+      bool? newUser = await isNewUser();
+      Map<String, dynamic> _initialAppData = await initApp();
+      DynamicLinkProvider.instance.initDynamicLink();
+      isProfileCreated = await _initialAppData["isProfileCreated"] && !newUser;
+      init();
+      getLoacale();
+      LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
+      return isProfileCreated!;
+    } else {
+      print("not Login");
+      return false;
+    }
   }
 
 //   Future<void> initDynamic() async {

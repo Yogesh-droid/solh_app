@@ -905,11 +905,11 @@ class _CommentScreenState extends State<CommentScreen> {
       case 404:
         return NotFoundPage();
       case 400:
-        return NoInternetPage(
-          onRetry: () {
-            getComments();
-          },
-        );
+        // return NoInternetPage(
+        //   onRetry: () {
+        //     getComments();
+        //   },
+        // );
       default:
         return Container();
     }

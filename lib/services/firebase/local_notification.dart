@@ -5,7 +5,6 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
-import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/video-call/video-call-user.dart';
