@@ -343,7 +343,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                             isReply ?? true);
                                                 getComments();
                                                 _journalPageController
-                                                    .journalsList.value
+                                                    .journalsList
                                                     .forEach((element) {
                                                   if (element.id ==
                                                       widget
@@ -622,7 +622,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           .position.maxScrollExtent);
 
                                       getComments(shouldRefresh: true, page: 1);
-                                      _journalPageController.journalsList.value
+                                      _journalPageController.journalsList
                                           .forEach((element) {
                                         if (element.id ==
                                             widget._journalModel!.id) {
@@ -905,11 +905,11 @@ class _CommentScreenState extends State<CommentScreen> {
       case 404:
         return NotFoundPage();
       case 400:
-        // return NoInternetPage(
-        //   onRetry: () {
-        //     getComments();
-        //   },
-        // );
+      // return NoInternetPage(
+      //   onRetry: () {
+      //     getComments();
+      //   },
+      // );
       default:
         return Container();
     }
@@ -1626,7 +1626,6 @@ class _PostForCommentState extends State<PostForComment> {
   final JournalPageController _journalPageController = Get.find();
   final ConnectionController connectionController = ConnectionController();
   JournalCommentController journalCommentController = Get.find();
-  bool _isLiked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -1914,16 +1913,11 @@ class _PostForCommentState extends State<PostForComment> {
   }
 
   Future<void> _likeJournal() async {
-    setState(() {
-      _isLiked = true;
-    });
+    setState(() {});
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/like-journal",
         body: {"post": widget._journalModel!.id});
-    if (response["status"] == false)
-      setState(() {
-        _isLiked = false;
-      });
+    if (response["status"] == false) setState(() {});
     //return (response["status"]);
   }
 

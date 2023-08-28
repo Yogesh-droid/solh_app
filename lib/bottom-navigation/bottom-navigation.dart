@@ -112,44 +112,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             print('connected');
           }
         } on SocketException catch (_) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Internet is not connected"),
-              behavior: SnackBarBehavior.floating));
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => NoInternetPage(onRetry: () {
-                        Get.find<PsychologyTestController>().getTestList();
-                        Get.find<PsychologyTestController>()
-                            .getAttendedTestList();
-                        Get.find<ChatListController>().sosChatListController(1);
-                        Get.find<ChatListController>().chatListController();
-                        bottomNavigatorController.getFeedbackStatus();
-                        Get.find<MoodMeterController>().getMoodList();
-                        Get.find<ConnectionController>().getMyConnection();
-                        Get.find<ConnectionController>().getAllConnection();
-                        Get.find<ConnectionController>().getRecommendedBlogs();
-                        Get.find<GoalSettingController>().getPersonalGoals();
-                        Get.find<GoalSettingController>().getGoalsCat();
-                        Get.find<GoalSettingController>().getFeaturedGoals();
-                        Get.find<GoalSettingController>()
-                            .task
-                            .add({TextEditingController(): '1'});
-                        Get.find<OfferCarouselController>().getOffers();
-                        Get.find<JournalCommentController>().getReactionList();
-                        Get.find<AppointmentController>().getUserAppointments();
-                        Get.find<DiscoverGroupController>().getJoinedGroups();
-                        Get.find<DiscoverGroupController>().getDiscoverGroups();
-                        Get.find<DiscoverGroupController>().getCreatedGroups();
-                        Get.find<JournalPageController>().getHeaderAnnounce();
-                        Get.find<GetHelpController>().getIssueList();
-                        Get.find<GetHelpController>().getSpecializationList();
-                        Get.find<GetHelpController>().getAlliedTherapyList();
-                        Get.find<GetHelpController>().getTopConsultant();
-                        Get.find<GetHelpController>().getSolhVolunteerList();
-                        Get.find<GetHelpController>().getCountryList();
-                        RestartWidget.restartApp(context);
-                      })));
+          onConnectionFailed();
         }
       }
     });
@@ -157,17 +120,16 @@ class _MasterScreen2State extends State<MasterScreen2>
       print("Listening to connectivity $event");
       if (event == ConnectivityResult.none) {
         try {
-          final result = await InternetAddress.lookup('example.com');
+          final result = await InternetAddress.lookup('solhapp.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
             print('connected');
           }
         } on SocketException catch (_) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text("Internet is not connected")));
+          onConnectionFailed();
         }
-      } else {
-        //RestartWidget.restartApp(context);
-      }
+      } else {}
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getMyProfile();
@@ -1006,6 +968,46 @@ class _MasterScreen2State extends State<MasterScreen2>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  void onConnectionFailed() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Internet is not connected"),
+        behavior: SnackBarBehavior.floating));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => NoInternetPage(onRetry: () {
+                  Get.find<PsychologyTestController>().getTestList();
+                  Get.find<PsychologyTestController>().getAttendedTestList();
+                  Get.find<ChatListController>().sosChatListController(1);
+                  Get.find<ChatListController>().chatListController();
+                  bottomNavigatorController.getFeedbackStatus();
+                  Get.find<MoodMeterController>().getMoodList();
+                  Get.find<ConnectionController>().getMyConnection();
+                  Get.find<ConnectionController>().getAllConnection();
+                  Get.find<ConnectionController>().getRecommendedBlogs();
+                  Get.find<GoalSettingController>().getPersonalGoals();
+                  Get.find<GoalSettingController>().getGoalsCat();
+                  Get.find<GoalSettingController>().getFeaturedGoals();
+                  Get.find<GoalSettingController>()
+                      .task
+                      .add({TextEditingController(): '1'});
+                  Get.find<OfferCarouselController>().getOffers();
+                  Get.find<JournalCommentController>().getReactionList();
+                  Get.find<AppointmentController>().getUserAppointments();
+                  Get.find<DiscoverGroupController>().getJoinedGroups();
+                  Get.find<DiscoverGroupController>().getDiscoverGroups();
+                  Get.find<DiscoverGroupController>().getCreatedGroups();
+                  Get.find<JournalPageController>().getHeaderAnnounce();
+                  Get.find<GetHelpController>().getIssueList();
+                  Get.find<GetHelpController>().getSpecializationList();
+                  Get.find<GetHelpController>().getAlliedTherapyList();
+                  Get.find<GetHelpController>().getTopConsultant();
+                  Get.find<GetHelpController>().getSolhVolunteerList();
+                  Get.find<GetHelpController>().getCountryList();
+                  RestartWidget.restartApp(context);
+                })));
   }
 }
 

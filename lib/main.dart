@@ -1,11 +1,7 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,7 +21,6 @@ import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/errors/controllers/error_controller.dart';
-import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -138,11 +133,8 @@ class _SolhAppState extends State<SolhApp> {
                   FirebaseAnalyticsObserver(analytics: analytics)
                 ],
                 theme: ThemeData(
-                  // useMaterial3: true,
-                  // colorSchemeSeed: Colors.white,
                   progressIndicatorTheme: ProgressIndicatorThemeData(
                       color: SolhColors.primary_green),
-                  //using textTheme only for rich text ,else use constant text Styles
                   textTheme: TextTheme(
                       bodyMedium: TextStyle(
                         color: SolhColors.black666,
@@ -171,7 +163,6 @@ class _SolhAppState extends State<SolhApp> {
                     trackColor:
                         MaterialStateProperty.all<Color>(SolhColors.grey_3),
                   ),
-
                   scaffoldBackgroundColor: Colors.white,
                   fontFamily: GoogleFonts.quicksand().fontFamily,
                   primaryColor: SolhColors.primary_green,
@@ -209,57 +200,6 @@ class _SolhAppState extends State<SolhApp> {
   }
 
   Future<bool> checkConnectivity() async {
-    Connectivity().checkConnectivity().then((result) async {
-      if (result == ConnectivityResult.none) {
-        try {
-          final result = await InternetAddress.lookup('example.com');
-          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
-            return initSolhApp();
-          }
-        } on SocketException catch (_) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Internet is not connected"),
-              behavior: SnackBarBehavior.floating));
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (_) => NoInternetPage(onRetry: () {
-          //               RestartWidget.restartApp(context);
-          //             })));
-
-          return false;
-        }
-      } else {
-        return initSolhApp();
-      }
-    });
-    Connectivity().onConnectivityChanged.listen((event) async {
-      print("Listening to connectivity $event");
-      if (event == ConnectivityResult.none) {
-        try {
-          final result = await InternetAddress.lookup('example.com');
-          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
-          }
-        } on SocketException catch (_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Internet is not connected")));
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (_) => NoInternetPage(onRetry: () {
-          //               RestartWidget.restartApp(context);
-          //             })));
-        }
-      } else {
-        // RestartWidget.restartApp(context);
-      }
-    });
-    return initSolhApp();
-  }
-
-  Future<bool> initSolhApp() async {
     if (FirebaseAuth.instance.currentUser != null) {
       print("Login");
       bool? newUser = await isNewUser();
@@ -276,45 +216,45 @@ class _SolhAppState extends State<SolhApp> {
     }
   }
 
-//   Future<void> initDynamic() async {
-//     final PendingDynamicLinkData? data =
-//         await FirebaseDynamicLinks.instance.getInitialLink();
-//     if (data != null) {
-//       print(data.toString() + '   This is data');
-//       print(data.link.data.toString() + '   This is data');
-//       print(data.link.query.toString() + '   This is data');
-//       print(data.link.queryParameters.toString() + '   This is data');
-//       print(data.utmParameters.toString() + '   This is data');
-//       print('${data.utmParameters}' + '   This is UTM');
-//       utm_name = data.utmParameters['utm_campaign'];
-//       utm_source = data.utmParameters['utm_source'];
-//       utm_medium = data.utmParameters['utm_medium'];
+/*   Future<void> initDynamic() async {
+    final PendingDynamicLinkData? data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    if (data != null) {
+      print(data.toString() + '   This is data');
+      print(data.link.data.toString() + '   This is data');
+      print(data.link.query.toString() + '   This is data');
+      print(data.link.queryParameters.toString() + '   This is data');
+      print(data.utmParameters.toString() + '   This is data');
+      print('${data.utmParameters}' + '   This is UTM');
+      utm_name = data.utmParameters['utm_campaign'];
+      utm_source = data.utmParameters['utm_source'];
+      utm_medium = data.utmParameters['utm_medium'];
 
-//       final Uri? deepLink = data.link;
+      final Uri? deepLink = data.link;
 
-//       if (deepLink != null) {
-//         print(deepLink.path);
-//         print(deepLink.query);
-//         print(deepLink.queryParameters);
-//         print(deepLink);
-//         print(deepLink.data);
-//         // Utility.showToast(data!.link.query);
-//         // Navigator.pushNamed(context, deepLink.path);
-//       }
+      if (deepLink != null) {
+        print(deepLink.path);
+        print(deepLink.query);
+        print(deepLink.queryParameters);
+        print(deepLink);
+        print(deepLink.data);
+        // Utility.showToast(data!.link.query);
+        // Navigator.pushNamed(context, deepLink.path);
+      }
 
-//       FirebaseDynamicLinks.instance.onLink.listen((event) {
-//         // Utility.showToast(data!.link.query);
-//         if (deepLink != null) {
-//           print(deepLink.toString() + ' This is link');
-//           print(deepLink.path + ' This is link');
-//           print(deepLink.data.toString() + ' This is link');
-//           print(event.utmParameters.toString() + ' This is link');
-//         }
+      FirebaseDynamicLinks.instance.onLink.listen((event) {
+        // Utility.showToast(data!.link.query);
+        if (deepLink != null) {
+          print(deepLink.toString() + ' This is link');
+          print(deepLink.path + ' This is link');
+          print(deepLink.data.toString() + ' This is link');
+          print(event.utmParameters.toString() + ' This is link');
+        }
 
-//         // Navigator.pushNamed(context, event.link.path);
-//       }).onError((error) {
-//         print(error.message);
-//       });
-//     }
-//   }
+        // Navigator.pushNamed(context, event.link.path);
+      }).onError((error) {
+        print(error.message);
+      });
+    }
+  } */
 }
