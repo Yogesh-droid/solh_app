@@ -649,12 +649,13 @@ class PackageCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "${package!.currency ?? ''} ${package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",
+                  "${package!.currency ?? ''} ${package!.afterDiscountPrice != null && package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",
                   style: SolhTextStyles.QS_body_1_bold.copyWith(
                       color: SolhColors.primary_green),
                 ),
                 SizedBox(width: 5),
-                if (package!.afterDiscountPrice! > 0)
+                if (package!.afterDiscountPrice != null &&
+                    package!.afterDiscountPrice! > 0)
                   Text(
                     "${package!.currency ?? ''} ${package!.amount ?? 0}",
                     style: SolhTextStyles.QS_body_1_bold.copyWith(

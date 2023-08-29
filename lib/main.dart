@@ -43,6 +43,7 @@ import 'package:feature_discovery/feature_discovery.dart';
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  print("Main is Running");
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
@@ -69,24 +70,15 @@ void main() async {
   FlutterNativeSplash.remove();
 }
 
-class SolhApp extends StatefulWidget {
+// ignore: must_be_immutable
+class SolhApp extends StatelessWidget {
   SolhApp({Key? key}) : super(key: key);
-
-  @override
-  State<SolhApp> createState() => _SolhAppState();
-}
-
-class _SolhAppState extends State<SolhApp> {
   String? utm_medium;
   String? utm_source;
   String? utm_name;
   bool? isProfileCreated;
 
   FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Future<void> init() async {
     await initControllers();
@@ -106,6 +98,7 @@ class _SolhAppState extends State<SolhApp> {
 
   @override
   Widget build(BuildContext context) {
+    print("Build Solh");
     return sizer.Sizer(builder: (context, orientation, deviceType) {
       return FeatureDiscovery(
         child: FutureBuilder<bool>(
