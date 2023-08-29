@@ -9,7 +9,6 @@ import 'package:solh/services/network/error_handling.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:video_player/video_player.dart';
 import '../../constants/api.dart';
-import '../../widgets_constants/constants/org_only_setting.dart';
 
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;

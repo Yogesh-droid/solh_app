@@ -1952,7 +1952,7 @@ class AlliedExperts extends StatelessWidget {
                                       .specializationList![index].name ??
                                   '');
                         },
-                        child: Obx(() => AlliedCardWithDiscount(
+                        child: Obx(() => profileController.myProfileModel.value.body==null ? SizedBox(): AlliedCardWithDiscount(
                             image: getHelpController.getAlliedTherapyModel.value
                                     .specializationList![index].displayImage ??
                                 '',
@@ -2257,25 +2257,43 @@ class SearchByProfesssionUI extends StatelessWidget {
                           name: 'SearhSpecialityTapped',
                           parameters: {'Page': 'GetHelp'});
                     },
-                    child: Obx(() => SpecializationCardWithDiscount(
-                          image: getHelpController.getSpecializationModel.value
-                                  .specializationList![index].displayImage ??
-                              '',
-                          name: getHelpController.getSpecializationModel.value
-                                  .specializationList![index].name ??
-                              '',
-                          discount: profileController.myProfileModel.value.body!
-                                      .userOrganisations!.isNotEmpty &&
-                                  profileController.myProfileModel.value.body!
-                                          .userOrganisations!.first.status ==
-                                      'Approved'
-                              ? getHelpController
-                                  .getSpecializationModel
-                                  .value
-                                  .specializationList![index]
-                                  .orgMarketPlaceOffer
-                              : null,
-                        ))),
+                    child: Obx(() =>
+                        profileController.myProfileModel.value.body == null
+                            ? SizedBox()
+                            : SpecializationCardWithDiscount(
+                                image: getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .displayImage ??
+                                    '',
+                                name: getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .name ??
+                                    '',
+                                discount: profileController
+                                            .myProfileModel
+                                            .value
+                                            .body!
+                                            .userOrganisations!
+                                            .isNotEmpty &&
+                                        profileController
+                                                .myProfileModel
+                                                .value
+                                                .body!
+                                                .userOrganisations!
+                                                .first
+                                                .status ==
+                                            'Approved'
+                                    ? getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .orgMarketPlaceOffer
+                                    : null,
+                              ))),
               ),
             )
           : Container();

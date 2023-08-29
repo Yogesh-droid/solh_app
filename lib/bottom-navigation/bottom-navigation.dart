@@ -40,6 +40,7 @@ import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
 import '../services/network/network.dart';
+import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
 import '../widgets_constants/solh_snackbar.dart';
@@ -119,7 +120,7 @@ class _MasterScreen2State extends State<MasterScreen2>
     Connectivity().onConnectivityChanged.listen((event) async {
       if (event == ConnectivityResult.none) {
         try {
-          final result = await InternetAddress.lookup('solhapp.com');
+          final result = await InternetAddress.lookup('example.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
             print('connected');
           }
@@ -1005,6 +1006,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                   Get.find<GetHelpController>().getTopConsultant();
                   Get.find<GetHelpController>().getSolhVolunteerList();
                   Get.find<GetHelpController>().getCountryList();
+                  Get.find<JournalPageController>().getAllJournals(1,
+                      orgOnly: OrgOnlySetting.orgOnly ?? false);
+                  Get.find<JournalPageController>().getTrendingJournals(
+                      orgToggle: OrgOnlySetting.orgOnly ?? false);
                   RestartWidget.restartApp(context);
                 })));
   }

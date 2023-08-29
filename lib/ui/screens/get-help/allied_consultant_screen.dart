@@ -572,29 +572,32 @@ class PackageCard extends StatelessWidget {
                             height: 20,
                           ),
                           expandedPanle(package),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: SolhGreenButton(
-                              height: 40,
-                              width: 50,
-                              child: AnimatedSwitcher(
-                                duration: Duration(seconds: 5),
-                                child:
-                                    _alliedController.selectedPackage.value ==
-                                            package!.sId
-                                        ? Text(
-                                            'Hide'.tr,
-                                            style: SolhTextStyles.CTA
-                                                .copyWith(color: Colors.white),
-                                          )
-                                        : Text(
-                                            'View'.tr,
-                                            style: SolhTextStyles.CTA
-                                                .copyWith(color: Colors.white),
-                                          ),
+                          if (_alliedController.selectedPackage.value !=
+                              package!.sId)
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: SolhGreenButton(
+                                height: 40,
+                                width: 50,
+                                child: AnimatedSwitcher(
+                                  duration: Duration(seconds: 5),
+                                  child:
+                                      // _alliedController.selectedPackage.value ==
+                                      //         package!.sId
+                                      //     ? Text(
+                                      //         'Hide'.tr,
+                                      //         style: SolhTextStyles.CTA
+                                      //             .copyWith(color: Colors.white),
+                                      //       )
+                                      //     :
+                                      Text(
+                                    'Select'.tr,
+                                    style: SolhTextStyles.CTA
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     )

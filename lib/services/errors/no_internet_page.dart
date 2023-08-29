@@ -37,18 +37,11 @@ class NoInternetPage extends StatelessWidget {
                           style: SolhTextStyles.GreenButtonText,
                         ),
                         onPressed: () {
+                          Navigator.pop(context);
                           onRetry();
                         },
                       )
-                    : Container(),
-                // Obx(() {
-                //   return errorController.isReconnecting.value
-                //       ? ButtonLoadingAnimation(
-                //           ballSizeLowerBound: 3,
-                //           ballSizeUpperBound: 8,
-                //         )
-                //       : Container();
-                // })
+                    : Container()
               ],
             ),
           ],
