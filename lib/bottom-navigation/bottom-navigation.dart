@@ -117,7 +117,6 @@ class _MasterScreen2State extends State<MasterScreen2>
       }
     });
     Connectivity().onConnectivityChanged.listen((event) async {
-      print("Listening to connectivity $event");
       if (event == ConnectivityResult.none) {
         try {
           final result = await InternetAddress.lookup('solhapp.com');
