@@ -178,11 +178,12 @@ class _OtpFieldState extends State<OtpField> {
 
           await initDynamic();
 
-          bool isSessionCookieCreated = await SessionCookie.createSessionCookie(
-              idToken, fcmToken, oneSignalId, deviceType,
-              utm_medium: utm_medium,
-              utm_compaign: utm_name,
-              utm_source: utm_source);
+          bool? isSessionCookieCreated =
+              await SessionCookie.createSessionCookie(
+                  idToken, fcmToken, oneSignalId, deviceType,
+                  utm_medium: utm_medium,
+                  utm_compaign: utm_name,
+                  utm_source: utm_source);
           log(isSessionCookieCreated.toString(),
               name: "isSessionCookieCreated");
           ProfileController profileController = Get.put(ProfileController());
@@ -191,8 +192,10 @@ class _OtpFieldState extends State<OtpField> {
           print("checking is profile created");
           log("${await userBlocNetwork.isProfileCreated()}",
               name: "isProfileCreated");
-          bool isProfileCreated = await userBlocNetwork.isProfileCreated() &&
-              !isSessionCookieCreated;
+          bool isProfileCreated = isSessionCookieCreated != null
+              ? await userBlocNetwork.isProfileCreated() &&
+                  !isSessionCookieCreated
+              : false;
 
           print("profile checking complete");
           print("^" * 30 +

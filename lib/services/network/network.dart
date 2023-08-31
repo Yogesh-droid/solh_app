@@ -24,9 +24,13 @@ class Network {
 
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body)['body'] != null
+              ? jsonDecode(apiResponse.body)['body']
+              : jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body)['body'] != null
+              ? jsonDecode(apiResponse.body)['body']
+              : jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
@@ -59,12 +63,14 @@ class Network {
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));
-        print(
-            "jsonDecode(apiResponse.body)  ${jsonDecode(apiResponse.body)["body"]}");
-        return jsonDecode(apiResponse.body)["body"];
+        return jsonDecode(apiResponse.body)["body"] != null
+            ? jsonDecode(apiResponse.body)["body"]
+            : jsonDecode(apiResponse.body);
       } else if (apiResponse.statusCode == 200) {
         print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body)["body"];
+        return jsonDecode(apiResponse.body)["body"] != null
+            ? jsonDecode(apiResponse.body)["body"]
+            : jsonDecode(apiResponse.body);
       } else {
         print("Status Code: " + apiResponse.statusCode.toString());
         throw "server-error";

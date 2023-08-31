@@ -9,7 +9,7 @@ import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 
 class SessionCookie {
-  static Future<bool> createSessionCookie(
+  static Future<bool?> createSessionCookie(
       String idToken, String? fcmToken, String? onesignalId, String? deviceType,
       {String? utm_compaign, String? utm_source, utm_medium}) async {
     debugPrint("*" * 30 + "\n" + "Id Token: $idToken");
@@ -42,6 +42,9 @@ class SessionCookie {
             "utm_medium": utm_medium ?? ''
           });
       print("Running" + response["userStatus"].toString());
+      if (response["success"] != null) {
+        return response['success'];
+      }
       if (response["userStatus"] == "Block") {
         print("logged out");
         logOut();
@@ -49,11 +52,7 @@ class SessionCookie {
       } else {
         await SolhCacheManager.instance.writeJsonCache(
             duration: Duration(days: 12), json: response, key: "sessionCookie");
-        print("Cached json writter");
       }
-
-      print(
-          "cookieeeee ${await SolhCacheManager.instance.readJsonCache(key: "sessionCookie")}");
 
       debugPrint("*" * 30 + "\n" + "Response: $response");
       userBlocNetwork.updateSessionCookie =
