@@ -67,6 +67,9 @@ void main() async {
   Map<String, dynamic> _initialAppData = await initApp();
   bool isProfileCreated = await _initialAppData["isProfileCreated"] && !newUser;
 
+  await DefaultOrg.getDefaultOrg();
+  await OrgOnlySetting.getOrgOnly();
+
   runApp(RestartWidget(child: SolhApp(isProfileCreated: isProfileCreated)));
 
   FlutterNativeSplash.remove();
@@ -95,9 +98,6 @@ class _SolhAppState extends State<SolhApp> {
 
   Future<void> init() async {
     await initControllers();
-
-    await DefaultOrg.getDefaultOrg();
-    await OrgOnlySetting.getOrgOnly();
   }
 
   Future<void> getLoacale() async {

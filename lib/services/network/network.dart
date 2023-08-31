@@ -221,6 +221,8 @@ class Network {
         "orgonly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
 
+      print(headers);
+
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
       switch (apiResponse.statusCode) {

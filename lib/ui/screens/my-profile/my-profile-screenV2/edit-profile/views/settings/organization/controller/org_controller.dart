@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
-import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/service/org_service.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/orgainsation-model/organisation_model.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/service/part_of_orgination_service.dart';
