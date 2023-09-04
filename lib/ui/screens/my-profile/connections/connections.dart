@@ -1560,6 +1560,7 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
         onRefresh: (() async {
           await chatListController.sosChatListController(1);
           nowRefreshController.refreshCompleted();
+          currentPage = 1;
         }),
         child: ListView.builder(
           controller: sosScrollController,
