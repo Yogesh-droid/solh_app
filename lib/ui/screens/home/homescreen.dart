@@ -1780,7 +1780,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                         SizedBox(
                           width: 60.w,
                           child: Text(
-                            'Overwhelmed with emotions: Talk to a Solh counselor NOW'
+                            'Overwhelmed with emotions? Talk to a Solh counselor NOW'
                                 .tr,
                             style: SolhTextStyles.QS_body_1_bold.copyWith(
                                 color: SolhColors.white),
@@ -1952,29 +1952,33 @@ class AlliedExperts extends StatelessWidget {
                                       .specializationList![index].name ??
                                   '');
                         },
-                        child: Obx(() => profileController.myProfileModel.value.body==null ? SizedBox(): AlliedCardWithDiscount(
-                            image: getHelpController.getAlliedTherapyModel.value
-                                    .specializationList![index].displayImage ??
-                                '',
-                            name: getHelpController.getAlliedTherapyModel.value
-                                    .specializationList![index].name ??
-                                '',
-                            discount:
-                                profileController.myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
-                                        profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .userOrganisations!
-                                                .first
-                                                .status ==
-                                            'Approved'
-                                    ? getHelpController
+                        child: Obx(() => profileController.myProfileModel.value.body == null
+                            ? SizedBox()
+                            : AlliedCardWithDiscount(
+                                image: getHelpController
                                         .getAlliedTherapyModel
                                         .value
                                         .specializationList![index]
-                                        .orgMarketPlaceOffer
-                                    : null)));
+                                        .displayImage ??
+                                    '',
+                                name: getHelpController.getAlliedTherapyModel.value.specializationList![index].name ??
+                                    '',
+                                discount:
+                                    profileController.myProfileModel.value.body!.userOrganisations!.isNotEmpty &&
+                                            profileController
+                                                    .myProfileModel
+                                                    .value
+                                                    .body!
+                                                    .userOrganisations!
+                                                    .first
+                                                    .status ==
+                                                'Approved'
+                                        ? getHelpController
+                                            .getAlliedTherapyModel
+                                            .value
+                                            .specializationList![index]
+                                            .orgMarketPlaceOffer
+                                        : null)));
                   },
                 )),
         ],

@@ -1716,20 +1716,27 @@ class _PostForCommentState extends State<PostForComment> {
               _journalPageController.journalsList[widget.index].likes! + 1;
           _journalPageController.journalsList[widget.index].isLiked = true;
           _journalPageController.journalsList.refresh();
-        }
-        String message = await journalCommentController.likePost(
-            journalId: widget._journalModel!.id ?? '',
-            reaction: '63bd50068bc9de38d95671a8');
-        if (message != 'journal liked successfully' &&
-            message != "Already liked the journal") {
+          String message = await journalCommentController.likePost(
+              journalId: widget._journalModel!.id ?? '',
+              reaction: '63bd50068bc9de38d95671a8');
+          if (message != 'journal liked successfully' &&
+              message != "Already liked the journal") {
+            _journalPageController.journalsList[widget.index].likes =
+                _journalPageController.journalsList[widget.index].likes! - 1;
+            _journalPageController.journalsList[widget.index].isLiked = false;
+            _journalPageController.journalsList.refresh();
+            FirebaseAnalytics.instance.logEvent(
+                name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+          } else {
+            Utility.showToast(message);
+          }
+        } else {
           _journalPageController.journalsList[widget.index].likes =
               _journalPageController.journalsList[widget.index].likes! - 1;
           _journalPageController.journalsList[widget.index].isLiked = false;
           _journalPageController.journalsList.refresh();
-          FirebaseAnalytics.instance.logEvent(
-              name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
-        } else {
-          Utility.showToast(message);
+          journalCommentController.unLikePost(
+              journalId: widget._journalModel!.id ?? '');
         }
       },
       onLongPress: () {

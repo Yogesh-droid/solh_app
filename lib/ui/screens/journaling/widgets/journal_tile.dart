@@ -608,21 +608,28 @@ class _JournalTileState extends State<JournalTile> {
                     journalPageController.journalsList[widget.index].likes! + 1;
                 journalPageController.journalsList[widget.index].isLiked = true;
                 journalPageController.journalsList.refresh();
-              }
-              String message = await journalCommentController.likePost(
-                  journalId: widget._journalModel!.id ?? '',
-                  reaction: '63bd50068bc9de38d95671a8');
-              if (message != 'journal liked successfully' &&
-                  message != "Already liked the journal") {
-                journalPageController.journalsList[widget.index].likes =
+                String message = await journalCommentController.likePost(
+                    journalId: widget._journalModel!.id ?? '',
+                    reaction: '63bd50068bc9de38d95671a8');
+                if (message != 'journal liked successfully' &&
+                    message != "Already liked the journal") {
+                  journalPageController.journalsList[widget.index].likes =
+                      journalPageController.journalsList[widget.index].likes! -
+                          1;
+                  journalPageController.journalsList[widget.index].isLiked =
+                      false;
+                  journalPageController.journalsList.refresh();
+                  FirebaseAnalytics.instance.logEvent(
+                      name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+                } else {
+                  Utility.showToast(message);
+                }
+              } else {  journalPageController.journalsList[widget.index].likes =
                     journalPageController.journalsList[widget.index].likes! - 1;
-                journalPageController.journalsList[widget.index].isLiked =
-                    false;
+                journalPageController.journalsList[widget.index].isLiked = false;
                 journalPageController.journalsList.refresh();
-                FirebaseAnalytics.instance.logEvent(
-                    name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
-              } else {
-                Utility.showToast(message);
+                journalCommentController.unLikePost(
+                    journalId: widget._journalModel!.id ?? '');
               }
             },
             onLongPress: () {
