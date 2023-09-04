@@ -37,7 +37,20 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
     _scrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        print('id ${widget.args["id"]}');
+        _emailTextcontroller.text = Get.find<ProfileController>()
+                .myProfileModel
+                .value
+                .body!
+                .user!
+                .email ??
+            "";
+        _alliedController.userEmail.value = Get.find<ProfileController>()
+                .myProfileModel
+                .value
+                .body!
+                .user!
+                .email ??
+            "";
         _alliedController.selectedPackage.value = '';
         _alliedController.selectedPackagePrice.value = -1;
         _alliedController.selectedPackageDiscountedPrice.value = -1;
@@ -118,10 +131,6 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                       ],
                     ),
                     Spacer(),
-                    // SolhGreenBorderButton(
-                    //     width: 80,
-                    //     height: 40,
-                    //     child: SvgPicture.asset("assets/images/query.svg")),
                     SizedBox(
                       width: 10,
                     ),
@@ -176,15 +185,7 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                                                     .QS_caption_bold),
                                             SizedBox(height: 5),
                                             TextFormField(
-                                              controller: _emailTextcontroller
-                                                ..text = Get.find<
-                                                            ProfileController>()
-                                                        .myProfileModel
-                                                        .value
-                                                        .body!
-                                                        .user!
-                                                        .email ??
-                                                    "",
+                                              controller: _emailTextcontroller,
                                               focusNode: _emailFocusNode,
                                               decoration: TextFieldStyles
                                                       .greenF_greenBroadUF_4R(
@@ -407,7 +408,6 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
       _alliedController.selectedCurrency.value =
           widget.packageList!.first.currency!;
     });
-    // TODO: implement initState
     super.initState();
   }
 
@@ -460,8 +460,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                             _alliedController.selectedPackage.value = id;
                             _alliedController.selectedPackagePrice.value =
                                 price;
-                            _alliedController.selectedPackagePrice.value =
-                                e.discountedPrice ?? -1;
+                            _alliedController.selectedPackageDiscountedPrice
+                                .value = e.discountedPrice ?? -1;
                             _alliedController.selectedPackageIndex =
                                 widget.packageList!.indexOf(e);
                             _alliedController.selectedCurrency.value = currency;

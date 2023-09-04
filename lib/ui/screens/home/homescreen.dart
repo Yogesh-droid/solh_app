@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -101,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     print('Running init state of HomeScreen');
     super.initState();
+
     //userBlocNetwork.getMyProfileSnapshot();
     if (FirebaseAuth.instance.currentUser != null) {
       debugPrint('mood meter shown');
@@ -109,6 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
       homeController.getHomeCarousel();
       liveStreamController.getLiveStreamForUserData();
       Prefs.setBool("isProfileCreated", true);
+      Get.find<JournalPageController>()
+          .getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
+      Get.find<JournalPageController>()
+          .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
     }
   }
 
@@ -255,18 +259,31 @@ class _HomePageState extends State<HomePage> {
                               Icon(CupertinoIcons.line_horizontal_3_decrease),
                           onSelected: (value) {
                             OrgOnlySetting.orgOnly = value;
+                            OrgOnlySetting.setOrgOnly(value);
                             _journalPageController.getTrendingJournals(
                                 orgToggle: value);
                           },
                           itemBuilder: (context) {
                             return [
                               PopupMenuItem<bool>(
-                                child: Text("Organization only"),
-                                value: true,
+                                child: Text("All(Solh & Organization)"),
+                                textStyle: TextStyle(
+                                    color: OrgOnlySetting.orgOnly != null
+                                        ? !OrgOnlySetting.orgOnly!
+                                            ? SolhColors.primary_green
+                                            : SolhColors.black
+                                        : SolhColors.black),
+                                value: false,
                               ),
                               PopupMenuItem<bool>(
-                                child: Text("All(Solh & Organization)"),
-                                value: false,
+                                textStyle: TextStyle(
+                                    color: OrgOnlySetting.orgOnly != null
+                                        ? OrgOnlySetting.orgOnly!
+                                            ? SolhColors.primary_green
+                                            : SolhColors.black
+                                        : SolhColors.black),
+                                child: Text("Organization only"),
+                                value: true,
                               )
                             ];
                           })
@@ -1935,7 +1952,7 @@ class AlliedExperts extends StatelessWidget {
                                       .specializationList![index].name ??
                                   '');
                         },
-                        child: Obx(() => AlliedCardWithDiscount(
+                        child: Obx(() => profileController.myProfileModel.value.body==null ? SizedBox(): AlliedCardWithDiscount(
                             image: getHelpController.getAlliedTherapyModel.value
                                     .specializationList![index].displayImage ??
                                 '',
@@ -2240,25 +2257,43 @@ class SearchByProfesssionUI extends StatelessWidget {
                           name: 'SearhSpecialityTapped',
                           parameters: {'Page': 'GetHelp'});
                     },
-                    child: Obx(() => SpecializationCardWithDiscount(
-                          image: getHelpController.getSpecializationModel.value
-                                  .specializationList![index].displayImage ??
-                              '',
-                          name: getHelpController.getSpecializationModel.value
-                                  .specializationList![index].name ??
-                              '',
-                          discount: profileController.myProfileModel.value.body!
-                                      .userOrganisations!.isNotEmpty &&
-                                  profileController.myProfileModel.value.body!
-                                          .userOrganisations!.first.status ==
-                                      'Approved'
-                              ? getHelpController
-                                  .getSpecializationModel
-                                  .value
-                                  .specializationList![index]
-                                  .orgMarketPlaceOffer
-                              : null,
-                        ))),
+                    child: Obx(() =>
+                        profileController.myProfileModel.value.body == null
+                            ? SizedBox()
+                            : SpecializationCardWithDiscount(
+                                image: getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .displayImage ??
+                                    '',
+                                name: getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .name ??
+                                    '',
+                                discount: profileController
+                                            .myProfileModel
+                                            .value
+                                            .body!
+                                            .userOrganisations!
+                                            .isNotEmpty &&
+                                        profileController
+                                                .myProfileModel
+                                                .value
+                                                .body!
+                                                .userOrganisations!
+                                                .first
+                                                .status ==
+                                            'Approved'
+                                    ? getHelpController
+                                        .getSpecializationModel
+                                        .value
+                                        .specializationList![index]
+                                        .orgMarketPlaceOffer
+                                    : null,
+                              ))),
               ),
             )
           : Container();

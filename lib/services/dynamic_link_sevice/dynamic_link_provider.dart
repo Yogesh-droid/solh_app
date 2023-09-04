@@ -1,13 +1,11 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/broken_link.dart';
-import 'package:solh/services/user/session-cookie.dart';
 
 class DynamicLinkProvider {
   DynamicLinkProvider._();

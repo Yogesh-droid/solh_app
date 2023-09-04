@@ -25,8 +25,8 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   String currentQuestion = '';
   bool isNextActive = false;
   bool isLast = false;
-
   late final PageController controller;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +38,13 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   getBody(BuildContext context) {
     return SafeArea(
       child: Obx(() {
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          setState(() {
+            psychologyTestController.questionList.length == 1
+                ? isLast = true
+                : false;
+          });
+        });
         return psychologyTestController.isQuestionsLoading.value
             ? Center(
                 child: CircularProgressIndicator(),
@@ -49,7 +56,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                     child: PageView(
                       physics: NeverScrollableScrollPhysics(),
                       controller: controller,
-                      children: psychologyTestController.questionList.value
+                      children: psychologyTestController.questionList
                           .map((e) => getQuestionView(context, e))
                           .toList(),
                       onPageChanged: (index) {
@@ -137,7 +144,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Question ${psychologyTestController.questionList.value.indexOf(e) + 1}/${psychologyTestController.questionList.length}",
+            "Question ${psychologyTestController.questionList.indexOf(e) + 1}/${psychologyTestController.questionList.length}",
             style: SolhTextStyles.JournalingHintText,
           ),
           Container(
@@ -177,12 +184,11 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
           child: Container(
             decoration: BoxDecoration(
                 border: Border.all(
-                    color: psychologyTestController
-                                    .selectedQuestion.value.length >
-                                psychologyTestController.questionList.value
+                    color: psychologyTestController.selectedQuestion.length >
+                                psychologyTestController.questionList
                                     .indexOf(testQuestion) &&
-                            psychologyTestController.selectedQuestion.value[
-                                    psychologyTestController.questionList.value
+                            psychologyTestController.selectedQuestion[
+                                    psychologyTestController.questionList
                                         .indexOf(testQuestion)] ==
                                 answer.title
                         ? SolhColors.primary_green
@@ -191,14 +197,13 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
             child: Row(children: [
               Radio(
                   value: answer.title ?? '',
-                  groupValue:
-                      psychologyTestController.selectedQuestion.value.length >
-                              psychologyTestController.questionList.value
-                                  .indexOf(testQuestion)
-                          ? psychologyTestController.selectedQuestion.value[
-                              psychologyTestController.questionList.value
-                                  .indexOf(testQuestion)]
-                          : '',
+                  groupValue: psychologyTestController.selectedQuestion.length >
+                          psychologyTestController.questionList
+                              .indexOf(testQuestion)
+                      ? psychologyTestController.selectedQuestion[
+                          psychologyTestController.questionList
+                              .indexOf(testQuestion)]
+                      : '',
                   onChanged: (value) {
                     saveTestDate(answer, testQuestion);
                   }),

@@ -248,6 +248,7 @@ class GetLogoutButton extends StatelessWidget {
             )),
       ]),
       onPressed: () {
+        print("Sign out is called **********************");
         FirebaseAuth.instance.signOut().then((value) async {
           await Prefs.clear();
           await SolhCacheManager.instance.clearAllCache();

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -19,27 +17,17 @@ class SolhVideoPlayer extends StatefulWidget {
 
 class _SolhVideoPlayerState extends State<SolhVideoPlayer> {
   late VideoPlayerController _controller;
-  late Future<void> _initializeVideoPlayerFuture;
-  bool _isPlaying = true;
-  bool _isVideoEnded = false;
 
   @override
   void initState() {
-    // log(key.currentContext!.findRenderObject().toString());
-    log(widget.videoUrl);
     _controller = VideoPlayerController.network(widget.videoUrl);
-    _initializeVideoPlayerFuture =
-        _controller.initialize().then((value) => setState(() {}));
-
     _controller.addListener(() {
       if (_controller.value.isBuffering) {
         setState(() {});
       }
       if (_controller.value.duration == _controller.value.position &&
           !_controller.value.isPlaying &&
-          _controller.value.isInitialized) {
-        _isVideoEnded = true;
-      }
+          _controller.value.isInitialized) {}
     });
     super.initState();
   }

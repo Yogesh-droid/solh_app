@@ -7,7 +7,10 @@ class RestartWidget extends StatefulWidget {
 
   static void restartApp(BuildContext context) {
     if (context.findAncestorStateOfType<_RestartWidgetState>() != null) {
+      print("Restarting app ");
       context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+    } else {
+      print("Not Restarting app ");
     }
   }
 
@@ -26,6 +29,7 @@ class _RestartWidgetState extends State<RestartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("Build Restart widget");
     return KeyedSubtree(
       key: key,
       child: widget.child!,

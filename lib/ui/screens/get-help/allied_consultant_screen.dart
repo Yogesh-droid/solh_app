@@ -572,29 +572,32 @@ class PackageCard extends StatelessWidget {
                             height: 20,
                           ),
                           expandedPanle(package),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: SolhGreenButton(
-                              height: 40,
-                              width: 50,
-                              child: AnimatedSwitcher(
-                                duration: Duration(seconds: 5),
-                                child:
-                                    _alliedController.selectedPackage.value ==
-                                            package!.sId
-                                        ? Text(
-                                            'Hide'.tr,
-                                            style: SolhTextStyles.CTA
-                                                .copyWith(color: Colors.white),
-                                          )
-                                        : Text(
-                                            'View'.tr,
-                                            style: SolhTextStyles.CTA
-                                                .copyWith(color: Colors.white),
-                                          ),
+                          if (_alliedController.selectedPackage.value !=
+                              package!.sId)
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: SolhGreenButton(
+                                height: 40,
+                                width: 50,
+                                child: AnimatedSwitcher(
+                                  duration: Duration(seconds: 5),
+                                  child:
+                                      // _alliedController.selectedPackage.value ==
+                                      //         package!.sId
+                                      //     ? Text(
+                                      //         'Hide'.tr,
+                                      //         style: SolhTextStyles.CTA
+                                      //             .copyWith(color: Colors.white),
+                                      //       )
+                                      //     :
+                                      Text(
+                                    'Select'.tr,
+                                    style: SolhTextStyles.CTA
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     )
@@ -649,12 +652,13 @@ class PackageCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  "${package!.currency ?? ''} ${package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",
+                  "${package!.currency ?? ''} ${package!.afterDiscountPrice != null && package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",
                   style: SolhTextStyles.QS_body_1_bold.copyWith(
                       color: SolhColors.primary_green),
                 ),
                 SizedBox(width: 5),
-                if (package!.afterDiscountPrice! > 0)
+                if (package!.afterDiscountPrice != null &&
+                    package!.afterDiscountPrice! > 0)
                   Text(
                     "${package!.currency ?? ''} ${package!.amount ?? 0}",
                     style: SolhTextStyles.QS_body_1_bold.copyWith(

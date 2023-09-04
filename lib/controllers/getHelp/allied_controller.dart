@@ -96,11 +96,9 @@ class AlliedController extends GetxController {
           url: "${APIConstants.api}/api/allied/therapies/package/createOrder",
           body: body,
           isEncoded: true);
-      //isPackageListFetching.value = false;
 
       return map;
     } catch (e) {
-      //isPackageListFetching.value = false;
       return {"success": false, "message": "Something went wrong"};
     }
   }

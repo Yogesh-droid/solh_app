@@ -86,6 +86,9 @@ class UserBlocNetwork {
     });
     print("is user profile created: " + response.toString());
     if (response.isNotEmpty) {
+      if (response['success'] != null) {
+        return response['success'];
+      }
       return response["isCreated"];
     } else {
       return false;

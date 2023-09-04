@@ -111,15 +111,16 @@ class _JournalingState extends State<Journaling> {
     // userBlocNetwork.getMyProfileSnapshot();
   }
 
-  void _onRefresh() async {
+  void _onRefresh({bool? orgOnly}) async {
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;
     _journalPageController.selectedGroupId.value.length > 0
         ? await _journalPageController.getAllJournals(1,
             groupId: _journalPageController.selectedGroupId.value,
-            orgOnly: false)
-        : await _journalPageController.getAllJournals(1, orgOnly: false);
+            orgOnly: orgOnly ?? false)
+        : await _journalPageController.getAllJournals(1,
+            orgOnly: orgOnly ?? false);
     _journalPageController.journalsList.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
@@ -187,10 +188,11 @@ class _JournalingState extends State<Journaling> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(width: 10),
+                      SizedBox(width: 20),
                       Text(
                         "Posts",
-                        style: TextStyle(fontWeight: FontWeight.w700),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       DefaultOrg.defaultOrg != null
                           ? PopupMenuButton<bool>(
@@ -204,23 +206,37 @@ class _JournalingState extends State<Journaling> {
                               ),
                               onSelected: (value) {
                                 OrgOnlySetting.orgOnly = value;
-                                _onRefresh();
+                                OrgOnlySetting.setOrgOnly(value);
+                                _onRefresh(orgOnly: value);
                               },
                               itemBuilder: (context) {
                                 return [
                                   PopupMenuItem<bool>(
-                                    child: Text("Organization only"),
-                                    value: true,
-                                  ),
-                                  PopupMenuItem<bool>(
                                     child: Text("All(Solh & Organization)"),
                                     value: false,
+                                    textStyle: TextStyle(
+                                        color: OrgOnlySetting.orgOnly != null
+                                            ? !OrgOnlySetting.orgOnly!
+                                                ? SolhColors.primary_green
+                                                : SolhColors.black
+                                            : SolhColors.black),
+                                  ),
+                                  PopupMenuItem<bool>(
+                                    child: Text("Organization only"),
+                                    value: true,
+                                    textStyle: TextStyle(
+                                        color: OrgOnlySetting.orgOnly != null
+                                            ? OrgOnlySetting.orgOnly!
+                                                ? SolhColors.primary_green
+                                                : SolhColors.black
+                                            : SolhColors.black),
                                   )
                                 ];
                               })
                           : SizedBox(),
                     ],
                   ),
+                  SizedBox(height: 15),
                   Obx(() {
                     return !_journalPageController.isLoading.value
                         ? Obx(() {

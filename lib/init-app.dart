@@ -28,7 +28,10 @@ Future<Map<String, dynamic>> initApp() async {
 Future<bool> isNewUser() async {
   var fcmToken = await FirebaseMessaging.instance.getToken();
   print("*" * 30 + " FCM TOKEN $fcmToken " + "*" * 30);
-  String idToken = await FirebaseAuth.instance.currentUser!.getIdToken();
+  User? currentUser = await FirebaseAuth.instance.currentUser;
+  String? idToken = currentUser != null
+      ? await FirebaseAuth.instance.currentUser!.getIdToken()
+      : null;
 
   String oneSignalId = '';
   await OneSignal.shared.getDeviceState().then((value) {
@@ -44,10 +47,11 @@ Future<bool> isNewUser() async {
   print("##########" * 30 + "\n" + "Id Token: $idToken");
   print("*" * 30 + "\n" + "One Token: $oneSignalId");
 
-  return await SessionCookie.createSessionCookie(
-    idToken,
+  bool? sessionCookie = await SessionCookie.createSessionCookie(
+    idToken ?? '',
     fcmToken,
     oneSignalId,
     deviceType,
   );
+  return sessionCookie ?? false;
 }

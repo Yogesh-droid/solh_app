@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -25,9 +24,13 @@ class Network {
 
       switch (apiResponse.statusCode) {
         case 200:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body)['body'] != null
+              ? jsonDecode(apiResponse.body)['body']
+              : jsonDecode(apiResponse.body);
         case 201:
-          return jsonDecode(apiResponse.body)['body'];
+          return jsonDecode(apiResponse.body)['body'] != null
+              ? jsonDecode(apiResponse.body)['body']
+              : jsonDecode(apiResponse.body);
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
@@ -60,12 +63,14 @@ class Network {
 
       if (apiResponse.statusCode == 201) {
         print(jsonDecode(apiResponse.body));
-        print(
-            "jsonDecode(apiResponse.body)  ${jsonDecode(apiResponse.body)["body"]}");
-        return jsonDecode(apiResponse.body)["body"];
+        return jsonDecode(apiResponse.body)["body"] != null
+            ? jsonDecode(apiResponse.body)["body"]
+            : jsonDecode(apiResponse.body);
       } else if (apiResponse.statusCode == 200) {
         print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body)["body"];
+        return jsonDecode(apiResponse.body)["body"] != null
+            ? jsonDecode(apiResponse.body)["body"]
+            : jsonDecode(apiResponse.body);
       } else {
         print("Status Code: " + apiResponse.statusCode.toString());
         throw "server-error";
@@ -222,6 +227,8 @@ class Network {
         "orgonly": jsonEncode(OrgOnlySetting.orgOnly ?? false),
       };
 
+      print(headers);
+
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
       switch (apiResponse.statusCode) {
@@ -235,7 +242,6 @@ class Network {
           return {};
       }
     } on SocketException {
-      print("No Internet????");
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
@@ -272,28 +278,6 @@ class Network {
       print(e);
       throw e;
     }
-
-    /* // headers: {"Authorization": "Bearer ${authBlocNetwork.token}"});
-
-      print("fetched");
-
-      if (apiResponse.statusCode == 200 || apiResponse.statusCode == 201) {
-        Map<String, dynamic> decodedResponse = jsonDecode(apiResponse.body);
-        print(decodedResponse);
-
-        return decodedResponse;
-      } else {
-        print(apiResponse.body);
-        print("Status Code: " + apiResponse.statusCode.toString());
-        throw "server-error";
-      }
-    } on SocketException {
-       
-      throw "no-internet";
-    } catch (e) {
-      print(e);
-      throw e;
-    } */
   }
 
   static Future<Map<String, dynamic>> makePostRequestWithToken(
@@ -330,27 +314,6 @@ class Network {
       print(e);
       throw e;
     }
-
-    /*  print(apiResponse.statusCode);
-      print(jsonEncode(body));
-
-      if (apiResponse.statusCode == 201) {
-        print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body);
-      } else if (apiResponse.statusCode == 200) {
-        print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body);
-      } else {
-        print("Status Code: " + apiResponse.statusCode.toString());
-        throw "server-error";
-      }
-    } on SocketException {
-       
-      throw "no-internet";
-    } catch (e) {
-      print(e);
-      throw e;
-    } */
   }
 
   static Future<Map<String, dynamic>> makeDeleteRequestWithToken(
@@ -387,27 +350,6 @@ class Network {
       print(e);
       throw e;
     }
-
-    /*  print(apiResponse.statusCode);
-      print(jsonEncode(body));
-
-      if (apiResponse.statusCode == 201) {
-        print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body);
-      } else if (apiResponse.statusCode == 200) {
-        print(jsonDecode(apiResponse.body));
-        return jsonDecode(apiResponse.body);
-      } else {
-        print("Status Code: " + apiResponse.statusCode.toString());
-        throw "server-error";
-      }
-    } on SocketException {
-       
-      throw "no-internet";
-    } catch (e) {
-      print(e);
-      throw e;
-    } */
   }
 
   static Future<Map<String, dynamic>> makePutRequestWithToken({
@@ -441,21 +383,5 @@ class Network {
       print(e);
       throw e;
     }
-
-    /*  if (apiResponse.statusCode == 201) {
-        return jsonDecode(apiResponse.body);
-      } else if (apiResponse.statusCode == 200) {
-        return jsonDecode(apiResponse.body);
-      } else {
-        print("Status Code: " + apiResponse.statusCode.toString());
-        throw "server-error";
-      }
-    } on SocketException {
-       
-      throw "no-internet";
-    } catch (e) {
-      print(e);
-      throw e;
-    } */
   }
 }

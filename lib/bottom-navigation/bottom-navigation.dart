@@ -10,8 +10,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
+import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
+import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -30,14 +35,19 @@ import 'package:solh/widgets_constants/live_blink.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
+import '../constants/api.dart';
+import '../controllers/chat-list/chat_list_controller.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
 import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
+import '../services/network/network.dart';
+import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
+import '../widgets_constants/solh_snackbar.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
@@ -67,12 +77,6 @@ class MasterScreen extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: MasterScreen2(),
-        // child: Stack(
-        //   children: [
-        //     SideDrawer(),
-        //     MasterScreen2(),
-        //   ],
-        // ),
       ),
     );
   }
@@ -105,20 +109,31 @@ class _MasterScreen2State extends State<MasterScreen2>
   @override
   void initState() {
     print('init master');
-    Connectivity().checkConnectivity().then((result) {
+    Connectivity().checkConnectivity().then((result) async {
       if (result == ConnectivityResult.none) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+          }
+        } on SocketException catch (_) {
+          onConnectionFailed();
+        }
       }
     });
     Connectivity().onConnectivityChanged.listen((event) async {
-      print("Listening to connectivity $event");
       if (event == ConnectivityResult.none) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Internet is not connected")));
-      } else {
-        RestartWidget.restartApp(context);
-      }
+        try {
+          final result = await InternetAddress.lookup('example.com');
+          if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+            print('connected');
+          }
+        } on SocketException catch (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Internet is not connected")));
+          onConnectionFailed();
+        }
+      } else {}
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       profileController.getMyProfile();
@@ -292,33 +307,46 @@ class _MasterScreen2State extends State<MasterScreen2>
   Widget getStarsRow() {
     return Obx(() {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List.generate(
-          5,
-          (index) => InkWell(
-            onTap: () {
-              setState(() async {
-                bottomNavigatorController.givenStars.value = index;
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            5,
+            (index) => InkWell(
+              onTap: () {
+                setState(
+                  () async {
+                    setState(() async {
+                      bottomNavigatorController.givenStars.value = index;
 
-                await Network.makePostRequestWithToken(
-                    url: '${APIConstants.api}/api/custom/create-feedback',
-                    body: {
-                      "rating": (bottomNavigatorController.givenStars.value + 1)
-                          .toString(),
-                      "feedBackComment": '',
+                      await Network.makePostRequestWithToken(
+                          url: '${APIConstants.api}/api/custom/create-feedback',
+                          body: {
+                            "rating":
+                                (bottomNavigatorController.givenStars.value + 1)
+                                    .toString(),
+                            "feedBackComment": '',
+                          });
+
+                      await Network.makePostRequestWithToken(
+                          url: '${APIConstants.api}/api/custom/create-feedback',
+                          body: {
+                            "rating":
+                                (bottomNavigatorController.givenStars.value + 1)
+                                    .toString(),
+                            "feedBackComment": '',
+                          });
                     });
-              });
-            },
-            child: Icon(
-              bottomNavigatorController.givenStars.value < index
-                  ? Icons.star_border
-                  : Icons.star,
-              size: 10.w,
-              color: Color(0xfff0ba00),
+                  },
+                );
+              },
+              child: Icon(
+                bottomNavigatorController.givenStars.value < index
+                    ? Icons.star_border
+                    : Icons.star,
+                size: 10.w,
+                color: Color(0xfff0ba00),
+              ),
             ),
-          ),
-        ),
-      );
+          ));
     });
   }
 
@@ -958,6 +986,50 @@ class _MasterScreen2State extends State<MasterScreen2>
   void dispose() {
     animationController.dispose();
     super.dispose();
+  }
+
+  void onConnectionFailed() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Internet is not connected"),
+        behavior: SnackBarBehavior.floating));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => NoInternetPage(onRetry: () {
+                  Get.find<PsychologyTestController>().getTestList();
+                  Get.find<PsychologyTestController>().getAttendedTestList();
+                  Get.find<ChatListController>().sosChatListController(1);
+                  Get.find<ChatListController>().chatListController();
+                  bottomNavigatorController.getFeedbackStatus();
+                  Get.find<MoodMeterController>().getMoodList();
+                  Get.find<ConnectionController>().getMyConnection();
+                  Get.find<ConnectionController>().getAllConnection();
+                  Get.find<ConnectionController>().getRecommendedBlogs();
+                  Get.find<GoalSettingController>().getPersonalGoals();
+                  Get.find<GoalSettingController>().getGoalsCat();
+                  Get.find<GoalSettingController>().getFeaturedGoals();
+                  Get.find<GoalSettingController>()
+                      .task
+                      .add({TextEditingController(): '1'});
+                  Get.find<OfferCarouselController>().getOffers();
+                  Get.find<JournalCommentController>().getReactionList();
+                  Get.find<AppointmentController>().getUserAppointments();
+                  Get.find<DiscoverGroupController>().getJoinedGroups();
+                  Get.find<DiscoverGroupController>().getDiscoverGroups();
+                  Get.find<DiscoverGroupController>().getCreatedGroups();
+                  Get.find<JournalPageController>().getHeaderAnnounce();
+                  Get.find<GetHelpController>().getIssueList();
+                  Get.find<GetHelpController>().getSpecializationList();
+                  Get.find<GetHelpController>().getAlliedTherapyList();
+                  Get.find<GetHelpController>().getTopConsultant();
+                  Get.find<GetHelpController>().getSolhVolunteerList();
+                  Get.find<GetHelpController>().getCountryList();
+                  Get.find<JournalPageController>().getAllJournals(1,
+                      orgOnly: OrgOnlySetting.orgOnly ?? false);
+                  Get.find<JournalPageController>().getTrendingJournals(
+                      orgToggle: OrgOnlySetting.orgOnly ?? false);
+                  RestartWidget.restartApp(context);
+                })));
   }
 }
 

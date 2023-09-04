@@ -28,7 +28,7 @@ class GuideToorWidget extends StatelessWidget {
       ),
       backgroundDismissible: false,
       allowShowingDuplicate: false,
-      barrierDismissible: false,
+      barrierDismissible: true,
       contentLocation: contentLocation ?? ContentLocation.trivial,
       overflowMode: OverflowMode.wrapBackground,
       title: Text(title),

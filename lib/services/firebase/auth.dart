@@ -1,4 +1,3 @@
-
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class FirebaseNetwork {
         UserCredential userCredential =
             await confirmationResult.confirm('123456');
 
-        String idToken = await userCredential.user!.getIdToken();
+        String? idToken = await userCredential.user!.getIdToken();
         print("user idToken: $idToken");
         String? fcmToken = '';
         String oneSignalId = '';
@@ -52,15 +51,17 @@ class FirebaseNetwork {
 
         // await initDynamic();
 
-        bool isSessionCookieCreated = await SessionCookie.createSessionCookie(
-            idToken, fcmToken, oneSignalId, deviceType,
+        bool? isSessionCookieCreated = await SessionCookie.createSessionCookie(
+            idToken!, fcmToken, oneSignalId, deviceType,
             utm_medium: '', utm_compaign: '', utm_source: '');
         ProfileController profileController = Get.put(ProfileController());
         await profileController.getMyProfile();
         print(isSessionCookieCreated);
         print("checking is profile created");
-        bool isProfileCreated =
-            await userBlocNetwork.isProfileCreated() && !isSessionCookieCreated;
+        bool isProfileCreated = isSessionCookieCreated != null
+            ? await userBlocNetwork.isProfileCreated() &&
+                !isSessionCookieCreated
+            : false;
         print("profile checking complete");
         print("^" * 30 +
             "Is Profile Created:" +

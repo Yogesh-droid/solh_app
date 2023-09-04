@@ -338,7 +338,11 @@ class AlliedConsultantTile extends StatelessWidget {
                         livePackageCount! > 0)
                       Text(' + '),
                     if (livePackageCount != null && livePackageCount! > 0)
-                      Text('Live')
+                      Text(
+                        'Live',
+                        style: TextStyle(color: SolhColors.primary_green),
+                      ),
+                    SizedBox(width: 15)
                   ]),
                 )),
           SizedBox(height: 10),
