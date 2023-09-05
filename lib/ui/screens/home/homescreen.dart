@@ -760,7 +760,7 @@ class _HomePageState extends State<HomePage> {
         onTap: () {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) =>
-                  CommentScreen(journalModel: journal, index: 0)));
+                  CommentScreen(journalModel: journal, index: -1)));
         },
         child: Obx(() => Container(
               // height: MediaQuery.of(context).size.height * 0.5,

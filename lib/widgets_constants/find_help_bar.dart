@@ -8,7 +8,6 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import 'constants/guide_toor_widget.dart';
 
 class FindHelpBar extends StatelessWidget {
@@ -35,13 +34,13 @@ class FindHelpBar extends StatelessWidget {
     FeatureDiscovery.discoverFeatures(
       context,
       const <String>{
-        'mood_meter',
-        'connection_icon',
         'home',
         'journaling',
         'get_help',
         'my_goal',
-        'more'
+        'more',
+        'mood_meter',
+        'connection_icon',
       },
     );
     return Padding(

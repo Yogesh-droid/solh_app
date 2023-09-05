@@ -247,9 +247,9 @@ class _SolhAppState extends State<SolhApp> {
       Get.put(BottomNavigatorController());
       Get.put(ChatListController());
       Get.put(ProfileSetupController());
+      Get.put(AnonController());
+      Get.put(AgeController());
     }
-    Get.put(AnonController());
-    Get.put(AgeController());
   }
 
   Future<bool> checkConnectivity() async {

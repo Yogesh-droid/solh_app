@@ -1710,7 +1710,11 @@ class _PostForCommentState extends State<PostForComment> {
               }
             }, */
       onTap: () async {
-        if (_journalPageController.journalsList[widget.index].isLiked ==
+        if (widget.index == -1) {
+          // need to add logic for trnding post
+          widget._journalModel!.isLiked = true;
+          setState(() {});
+        } else if (_journalPageController.journalsList[widget.index].isLiked ==
             false) {
           _journalPageController.journalsList[widget.index].likes =
               _journalPageController.journalsList[widget.index].likes! + 1;
@@ -1776,21 +1780,31 @@ class _PostForCommentState extends State<PostForComment> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Obx(() => SvgPicture.asset(
-                  _journalPageController.journalsList[widget.index].isLiked!
+              widget.index == -1
+                  ? SvgPicture.asset(widget._journalModel!.isLiked!
                       ? 'assets/images/reactions_liked.svg'
-                      : 'assets/images/reactions.svg')),
+                      : 'assets/images/reactions.svg')
+                  : Obx(() => SvgPicture.asset(
+                      _journalPageController.journalsList[widget.index].isLiked!
+                          ? 'assets/images/reactions_liked.svg'
+                          : 'assets/images/reactions.svg')),
               Padding(
                 padding: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width / 40,
                 ),
-                child: Obx(() {
-                  return Text(
-                    _journalPageController.journalsList[widget.index].likes
-                        .toString(),
-                    style: SolhTextStyles.GreenBorderButtonText,
-                  );
-                }),
+                child: widget.index == -1
+                    ? Text(
+                        widget._journalModel!.likes.toString(),
+                        style: SolhTextStyles.GreenBorderButtonText,
+                      )
+                    : Obx(() {
+                        return Text(
+                          _journalPageController
+                              .journalsList[widget.index].likes
+                              .toString(),
+                          style: SolhTextStyles.GreenBorderButtonText,
+                        );
+                      }),
               ),
             ],
           ),
