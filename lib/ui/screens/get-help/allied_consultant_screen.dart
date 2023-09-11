@@ -647,9 +647,9 @@ class PackageCard extends StatelessWidget {
                   )),
             )),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
+            Column(
               children: [
                 Text(
                   "${package!.currency ?? ''} ${package!.afterDiscountPrice != null && package!.afterDiscountPrice! > 0 ? package!.afterDiscountPrice : package!.amount ?? 0}",

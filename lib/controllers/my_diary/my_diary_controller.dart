@@ -14,9 +14,7 @@ class MyDiaryController extends GetxController {
 
   Future<void> getMyJournals(int pageNo) async {
     myJournalsList.clear();
-    //pageNo == 1 ? isLoading.value = true : false;
     try {
-      //if (pageNo <= _endPageLimit) {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/v1/get-my-diary?pageNumber=$pageNo");
 

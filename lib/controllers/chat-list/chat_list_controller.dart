@@ -30,22 +30,27 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future sosChatListController(int pageNo) async {
+  Future sosChatListController(int pageNo, {String? filter}) async {
     pageNo > 1 ? isMorePageLoading(true) : isLoading(true);
-    ChatListModel response = await getSosChat(pageNo);
+    if (filter != null) {
+      sosChatList.clear();
+    }
+    ChatListModel? response = await getSosChat(pageNo, filter: filter);
 
-    if (response.chatList != null && pageNo == 1) {
-      sosChatList.value = response.chatList!;
-    } else if (response.chatList != null &&
-        pageNo > 1 &&
-        response.chatList!.isNotEmpty) {
-      log(response.chatList.toString());
-      response.chatList!.forEach((element) {
-        sosChatList.add(element);
-      });
-      sosChatList.refresh();
-    } else {
-      print(response);
+    if (response != null) {
+      if (response.chatList != null && pageNo == 1) {
+        sosChatList.value = response.chatList!;
+      } else if (response.chatList != null &&
+          pageNo > 1 &&
+          response.chatList!.isNotEmpty) {
+        log(response.chatList.toString());
+        response.chatList!.forEach((element) {
+          sosChatList.add(element);
+        });
+        sosChatList.refresh();
+      } else {
+        print(response);
+      }
     }
     pageNo > 1 ? isMorePageLoading(false) : isLoading(false);
   }
@@ -63,9 +68,9 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future getSosChat(int pageNo) async {
+  Future getSosChat(int pageNo, {String? filter = ''}) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/v1/sosChatList?page=$pageNo')
+            APIConstants.api + '/api/v2/sosChatList?page=$pageNo$filter')
         .onError((error, stackTrace) {
       print(error);
       return {};

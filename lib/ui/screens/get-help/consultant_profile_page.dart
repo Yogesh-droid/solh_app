@@ -348,8 +348,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                             .userOrganisations!.first.status ==
                         'Approved'
                 ? _controller.consultantModelController.value.provder!.afterDiscountPrice != null &&
-                        _controller.consultantModelController.value.provder!
-                                .afterDiscountPrice! >
+                        _controller.consultantModelController.value.provder!.afterDiscountPrice! >
                             0
                     ? Column(
                         children: [
@@ -373,7 +372,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                                 ? 'Paid'
                                 : ''),
                         style: SolhTextStyles.QS_body_1_bold.copyWith(color: SolhColors.primary_green))
-                : SizedBox()),
+                : Text(_controller.consultantModelController.value.provder!.fee_amount! > 0 ? '${_controller.consultantModelController.value.provder!.feeCurrency} ${_controller.consultantModelController.value.provder!.fee_amount}' : (_controller.consultantModelController.value.provder!.fee == null || _controller.consultantModelController.value.provder!.fee == 'Paid' || _controller.consultantModelController.value.provder!.fee == '' ? 'Paid' : ''), style: SolhTextStyles.QS_body_1_bold.copyWith(color: SolhColors.primary_green))),
             // _controller.consultantModelController.value.provder!.fee_amount! > 0
             //     ?
             Text(

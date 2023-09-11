@@ -622,6 +622,13 @@ class _HomePageState extends State<HomePage> {
                       await Navigator.pushNamed(
                           context, AppRoutes.inhousePackage,
                           arguments: {"id": value["redirectKey"]});
+                    } else if (value["redirectTo"] == "blog") {
+                      Navigator.of(context).pop();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BlogDetailsPage(id: value["redirectKey"])));
                     } else if (value["redirectTo"] == "group") {
                       Navigator.of(context).pop();
                       await Navigator.pushNamed(context, AppRoutes.groupDetails,

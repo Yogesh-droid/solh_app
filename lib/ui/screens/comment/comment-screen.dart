@@ -53,7 +53,9 @@ class _CommentScreenState extends State<CommentScreen> {
   bool? _isLoginedUserJournal;
 
   final JournalCommentController journalCommentController = Get.find();
-  final AnonController _anonController = Get.find();
+  final AnonController _anonController = Get.isRegistered<AnonController>()
+      ? Get.find()
+      : Get.put(AnonController());
   final ProfileController profileController = Get.find();
   final FocusNode _commentFocusnode = FocusNode();
   final TextEditingController _commentEditingController =
@@ -63,43 +65,8 @@ class _CommentScreenState extends State<CommentScreen> {
   bool isFetchingMore = false;
   int pageNo = 1;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   journalCommentController.commentList.clear();
-  //   journalCommentController.repliesList.clear();
-  //   journalCommentController.nextPage = 1;
-  //   journalCommentController.previousPage = -2;
-  //   _scrollController.addListener(() async {
-  //     if (_scrollController.position.pixels ==
-  //         _scrollController.position.maxScrollExtent) {
-  //       print("current pixels are ${_scrollController.position.pixels}");
-  //       print("max position is  ${_scrollController.position.maxScrollExtent}");
-  //       pageNo++;
-  //       setState(() {
-  //         isFetchingMore = true;
-  //       });
-  //       await getComments();
-  //       setState(() {
-  //         isFetchingMore = false;
-  //       });
-  //     }
-  //   });
-
-  //     getComments();
-  //     if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
-  //       _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
-  //           FirebaseAuth.instance.currentUser!.uid;
-  //     }
-  //     journalCommentController.repliedTo.value = '';
-  //     journalCommentController.isReplying.value = false;
-  //   }
-
-  // }
-
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       journalCommentController.commentList.clear();
       journalCommentController.repliesList.clear();
@@ -108,9 +75,6 @@ class _CommentScreenState extends State<CommentScreen> {
       _scrollController.addListener(() async {
         if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent) {
-          print("current pixels are ${_scrollController.position.pixels}");
-          print(
-              "max position is  ${_scrollController.position.maxScrollExtent}");
           pageNo++;
           setState(() {
             isFetchingMore = true;
@@ -182,15 +146,11 @@ class _CommentScreenState extends State<CommentScreen> {
                                                 null
                                         ? SliverToBoxAdapter(child: Obx(() {
                                             return CommentBoxWidget(
+                                              // For best comment
                                               journalModel:
                                                   widget._journalModel!,
                                               isUserPost:
                                                   _isLoginedUserJournal!,
-                                              // commentModel: Comments.fromJson(
-                                              //     journalCommentController
-                                              //         .getJouranalsCommentModel
-                                              //         .value
-                                              //         .toJson()),
                                               commentModel: Comments(
                                                 commentBody:
                                                     journalCommentController
@@ -993,54 +953,6 @@ class _CommentScreenState extends State<CommentScreen> {
               Navigator.pop(context);
             }));
   }
-
-  /* Widget getAnonymousIcon() {
-    return Container(
-      height: 50,
-      width: 50,
-      child: Stack(
-        children: [
-          Positioned(
-            top: 15,
-            left: 0,
-            child: Container(
-              height: 20,
-              width: 20,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(profileController
-                              .myProfileModel
-                              .value
-                              .body!
-                              .user!
-                              .profilePicture ??
-                          ''))),
-            ),
-          ),
-          Positioned(
-            top: 10,
-            left: 20,
-            child: Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(profileController
-                              .myProfileModel
-                              .value
-                              .body!
-                              .user!
-                              .anonymous!
-                              .profilePicture ??
-                          ''))),
-            ),
-          ),
-        ],
-      ),
-    );
-  } */
 }
 
 class CommentBoxWidget extends StatelessWidget {
@@ -1138,76 +1050,6 @@ class CommentBoxWidget extends StatelessWidget {
               color: Color.fromRGBO(245, 245, 245, 0.75),
               borderRadius: BorderRadius.circular(10),
             ),
-
-            // child: Row(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Row(
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             Row(
-            //               children: [
-            //                 CircleAvatar(
-            //                   backgroundImage: CachedNetworkImageProvider(
-            //                     _commentModel!.user!.profilePicture!,
-            //                   ),
-            //                 ),
-            //                 SizedBox(
-            //                   height: 6.h,
-            //                   width: 2.w,
-            //                 ),
-            //                 Column(
-            //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //                   children: [
-            //                     Row(
-            //                       children: [
-            //                         Text(
-            //                           _commentModel!.user!.name!,
-            //                           style: TextStyle(color: Color(0xFF666666)),
-            //                         ),
-            //                         SizedBox(
-            //                           width: 1.w,
-            //                         ),
-            //                         SolhExpertBadge()
-            //                       ],
-            //                     ),
-            //                     Text(
-            //                       timeago.format(
-            //                           DateTime.parse(_commentModel!.createdAt!)),
-            //                       style: TextStyle(color: Color(0xFF666666)),
-            //                     )
-            //                   ],
-            //                 ),
-            //               ],
-            //             ),
-            //           ],
-            //         ),
-            //         Divider(),
-            //         Container(
-            //           padding: EdgeInsets.all(2.w),
-            //           child: Text(
-            //             _commentModel!.commentBody!,
-            //             style: TextStyle(height: 1.4, color: Color(0xFF222222)),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //     if (_commentModel!.user!.uid ==
-            //             FirebaseAuth.instance.currentUser!.uid ||
-            //         _journalModel.postedBy!.uid ==
-            //             FirebaseAuth.instance.currentUser!.uid)
-            //       CommentMenuButton(
-            //           makeBestComment: _makeBestComment,
-            //           commentId: _commentModel!.sId!,
-            //           journalModel: _journalModel,
-            //           deleteJournal: _deleteComment),
-            //   ],
-            // ),
-
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
@@ -1369,35 +1211,11 @@ class CommentBoxWidget extends StatelessWidget {
                             Utility.showToast(message);
                           }
                           Navigator.of(context).pop();
-                          // journalCommentController.likePost(
-                          //     journalId: widget._journalModel!.id ?? '',
-                          //     reaction: value);
-                          // journalPageController.journalsList[widget.index]
-                          //     .likes = journalPageController
-                          //         .journalsList[widget.index].likes! +
-                          //     1;
-                          // journalPageController.journalsList.refresh();
-                          // Navigator.of(context).pop();
                         },
                       ),
                     );
                   });
             },
-            /* onTap: () async {
-              bool isTrue = await journalCommentController.likeComment(
-                  commentId: commentModel.sId ?? '');
-              if (isTrue) {
-                journalCommentController.getJouranalsCommentModel.value
-                    .body!.comments![index].likes = journalCommentController
-                        .getJouranalsCommentModel
-                        .value
-                        .body!
-                        .comments![index]
-                        .likes! +
-                    1;
-                journalCommentController.getJouranalsCommentModel.refresh();
-              }
-            }, */
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -1424,7 +1242,7 @@ class CommentBoxWidget extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.reply_outlined),
                 onPressed: () {
-                  print(commentModel!.user!.id!);
+                  print(commentModel!.sId!);
                   onReplyTapped(commentModel!.sId!, commentModel!.user!.name!,
                       commentModel!.user!.id!);
                 },
@@ -1509,54 +1327,6 @@ class CommentBoxWidget extends StatelessWidget {
             ],
           ),
         ),
-        // SizedBox(
-        //   width: 5.w,
-        // ),
-        // InkWell(
-        //   onTap: () {
-        //     Get.find<JournalPageController>()
-        //         .getUsersLikedPost(_commentModel!.sId ?? '', 1);
-        //     showModalBottomSheet(
-        //         context: context,
-        //         builder: (context) {
-        //           return Container(
-        //             child: LikesModalSheet(
-        //               onTap: (value) {
-        //                 journalCommentController.likePost(
-        //                     journalId: widget._journalModel!.id ?? '',
-        //                     reaction: value);
-        //                 journalPageController.journalsList[widget.index].likes =
-        //                     journalPageController
-        //                             .journalsList[widget.index].likes! +
-        //                         1;
-        //                 journalPageController.journalsList.refresh();
-        //                 Navigator.of(context).pop();
-        //               },
-        //             ),
-        //           );
-        //         });
-        //   },
-        //   child: Row(
-        //     children: [
-        //       Text(
-        //         'Likes',
-        //         style: TextStyle(
-        //           color: SolhColors.primary_green,
-        //           fontSize: 12,
-        //           fontWeight: FontWeight.w600,
-        //         ),
-        //       ),
-        //       SizedBox(
-        //         width: 1.w,
-        //       ),
-        //       Icon(
-        //         Icons.keyboard_arrow_down_rounded,
-        //         color: SolhColors.primary_green,
-        //         size: 17,
-        //       ),
-        //     ],
-        //   ),
-        // )
       ],
     );
   }
@@ -1692,27 +1462,22 @@ class _PostForCommentState extends State<PostForComment> {
 
   Widget getLikeBtn() {
     return InkWell(
-      /* onTap: () async {
-              if (journalPageController.journalsList[widget.index].isLiked!) {
-                journalPageController.journalsList[widget.index].isLiked =
-                    false;
-                journalPageController.journalsList[widget.index].likes =
-                    journalPageController.journalsList[widget.index].likes! - 1;
-                journalPageController.journalsList.refresh();
-                await _unlikeJournal();
-                setState(() {});
-              } else {
-                journalPageController.journalsList[widget.index].isLiked = true;
-                journalPageController.journalsList[widget.index].likes =
-                    journalPageController.journalsList[widget.index].likes! + 1;
-                journalPageController.journalsList.refresh();
-                await _likeJournal();
-              }
-            }, */
       onTap: () async {
         if (widget.index == -1) {
-          // need to add logic for trnding post
           widget._journalModel!.isLiked = true;
+          widget._journalModel!.likes = widget._journalModel!.likes! + 1;
+          String message = await journalCommentController.likePost(
+              journalId: widget._journalModel!.id ?? '',
+              reaction: '63bd50068bc9de38d95671a8');
+          if (message != 'journal liked successfully' &&
+              message != "Already liked the journal") {
+            widget._journalModel!.isLiked = false;
+            widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+            FirebaseAnalytics.instance.logEvent(
+                name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+          } else {
+            Utility.showToast(message);
+          }
           setState(() {});
         } else if (_journalPageController.journalsList[widget.index].isLiked ==
             false) {

@@ -1,5 +1,6 @@
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:flutter/material.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 
 class GuideToorWidget extends StatelessWidget {
   const GuideToorWidget(
@@ -41,18 +42,25 @@ class GuideToorWidget extends StatelessWidget {
                   onPressed: () {
                     FeatureDiscovery.completeCurrentStep(context);
                   },
-                  child: Text('Next',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold))),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Next',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  )),
               SizedBox(width: 50),
               TextButton(
                   onPressed: () {
                     FeatureDiscovery.completeCurrentStep(context);
                     FeatureDiscovery.dismissAll(context);
+                    Prefs.setBool("isGuideToorShown", true);
                   },
-                  child: Text('Skip',
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)))
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Skip',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  ))
             ],
           ),
         ],
