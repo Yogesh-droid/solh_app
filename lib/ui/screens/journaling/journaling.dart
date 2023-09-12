@@ -112,6 +112,10 @@ class _JournalingState extends State<Journaling> {
   }
 
   void _onRefresh({bool? orgOnly}) async {
+    if (orgOnly == null) {
+      OrgOnlySetting.orgOnly = false;
+      OrgOnlySetting.setOrgOnly(false);
+    }
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;

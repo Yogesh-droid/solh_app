@@ -47,54 +47,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   HomeController homeController = Get.find();
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //getProfile();
-    });
-
-    super.initState();
-  }
-
-  Widget showInfoDialog(context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.only(top: 14),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(),
-                Container(
-                  height: 6,
-                  width: 30,
-                  decoration: BoxDecoration(
-                      color: SolhColors.grey,
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.cancel_sharp,
-                    size: 30,
-                    color: SolhColors.grey,
-                  ),
-                )
-              ],
-            ),
-            Html(
-                data: AppLocale.appLocale.languageCode == "hi"
-                    ? infoHtmlHindi
-                    : infoHtml),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Obx(() {
       return profileController.isProfileLoading.value
@@ -113,7 +65,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
   Widget getHelpPage(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),

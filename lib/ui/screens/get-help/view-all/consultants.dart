@@ -455,26 +455,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                         ],
                                       ),
                                     )
-                                    /*  DropdownButton<String>(
-                                        underline: Container(),
-                                        icon: Icon(
-                                          Icons.keyboard_arrow_down_rounded,
-                                          color: SolhColors.primary_green,
-                                        ),
-                                        items: getHelpController
-                                            .counsellorsCountryModel
-                                            .value
-                                            .providerCountry!
-                                            .map(
-                                                (e) => DropdownMenuItem<String>(
-                                                      child: Text(e.name!),
-                                                      value: e.code,
-                                                    ))
-                                            .toList(),
-                                        onChanged: (value) {
-                                          issueAndSpecializationFilterController
-                                              .selectedCountry.value = value!;
-                                        }), */
                                   ],
                                 ),
                               ),
@@ -501,13 +481,18 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                         SolhColors.white,
                                                     selected:
                                                         issueAndSpecializationFilterController
-                                                                .selectedIssue
-                                                                .value ==
-                                                            e.name!,
+                                                            .selectedIssueList
+                                                            .contains(e.name),
                                                     onSelected: (value) {
                                                       issueAndSpecializationFilterController
-                                                          .selectedIssue
-                                                          .value = e.name!;
+                                                              .selectedIssueList
+                                                              .contains(e.name)
+                                                          ? issueAndSpecializationFilterController
+                                                              .selectedIssueList
+                                                              .remove(e.name)
+                                                          : issueAndSpecializationFilterController
+                                                              .selectedIssueList
+                                                              .add(e.name);
                                                     },
                                                     selectedColor: SolhColors
                                                         .primary_green,
@@ -519,9 +504,9 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                               .QS_cap_semi
                                                           .copyWith(
                                                               color: issueAndSpecializationFilterController
-                                                                          .selectedIssue
-                                                                          .value ==
-                                                                      e.name!
+                                                                      .selectedIssueList
+                                                                      .contains(e
+                                                                          .name)
                                                                   ? SolhColors
                                                                       .white
                                                                   : SolhColors
@@ -554,12 +539,12 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                     return InkWell(
                                       onTap: () =>
                                           issueAndSpecializationFilterController
-                                                  .selectedSpeciality.value =
-                                              issueAndSpecializationFilterController
+                                              .selectedSpecialityList
+                                              .add(issueAndSpecializationFilterController
                                                   .issueAndSpecializationFilterModel
                                                   .value
                                                   .splList![index]
-                                                  .name!,
+                                                  .name!),
                                       child: ListTile(
                                         title: InkWell(
                                           child: Row(
@@ -577,20 +562,20 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                     SolhTextStyles.QS_cap_semi,
                                               ),
                                               issueAndSpecializationFilterController
-                                                          .selectedSpeciality
-                                                          .value ==
-                                                      issueAndSpecializationFilterController
-                                                          .issueAndSpecializationFilterModel
-                                                          .value
-                                                          .splList![index]
-                                                          .name
+                                                      .selectedSpecialityList
+                                                      .contains(
+                                                          issueAndSpecializationFilterController
+                                                              .issueAndSpecializationFilterModel
+                                                              .value
+                                                              .splList![index]
+                                                              .name)
                                                   ? Icon(
                                                       CupertinoIcons
                                                           .check_mark_circled_solid,
                                                       color: SolhColors
                                                           .primary_green,
                                                     )
-                                                  : Container(),
+                                                  : const SizedBox.shrink(),
                                             ],
                                           ),
                                         ),
@@ -602,75 +587,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               SizedBox(
                                 height: 28,
                               ),
-
-                              // ListView.builder(
-                              //     physics: NeverScrollableScrollPhysics(),
-                              //     shrinkWrap: true,
-                              //     itemCount: getHelpController
-                              //         .counsellorsCountryModel
-                              //         .value
-                              //         .providerCountry!
-                              //         .length,
-                              //     itemBuilder: (context, index) => Obx(() {
-                              //           return ListTile(
-                              //             title: Row(
-                              //               mainAxisAlignment:
-                              //                   MainAxisAlignment.spaceBetween,
-                              //               children: [
-                              //                 Expanded(
-                              //                   child: Text(
-                              //                     getHelpController
-                              //                             .counsellorsCountryModel
-                              //                             .value
-                              //                             .providerCountry![
-                              //                                 index]
-                              //                             .name ??
-                              //                         '',
-                              //                     style: SolhTextStyles
-                              //                         .QS_cap_semi,
-                              //                     overflow:
-                              //                         TextOverflow.ellipsis,
-                              //                   ),
-                              //                 ),
-                              //                 getHelpController
-                              //                             .counsellorsCountryModel
-                              //                             .value
-                              //                             .providerCountry![
-                              //                                 index]
-                              //                             .code !=
-                              //                         issueAndSpecializationFilterController
-                              //                             .selectedCountry.value
-                              //                     ? Container()
-                              //                     : Icon(
-                              //                         CupertinoIcons
-                              //                             .check_mark_circled_solid,
-                              //                         color: SolhColors
-                              //                             .primary_green,
-                              //                       ),
-                              //               ],
-                              //             ),
-                              //             onTap: () {
-                              //               // searchMarketController
-                              //               //         .defaultCountry =
-                              //               //     getHelpController
-                              //               //             .counsellorsCountryModel
-                              //               //             .value
-                              //               //             .providerCountry![index]
-                              //               //             .code ??
-                              //               //         '';
-
-                              //               issueAndSpecializationFilterController
-                              //                   .selectedCountry
-                              //                   .value = getHelpController
-                              //                       .counsellorsCountryModel
-                              //                       .value
-                              //                       .providerCountry![index]
-                              //                       .code ??
-                              //                   '';
-                              //               // setState(() {});
-                              //             },
-                              //           );
-                              //         }))
                               SizedBox(
                                 height: 100,
                               ),
@@ -698,7 +614,8 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                           SolhGreenBorderMiniButton(
                             onPressed: () {
                               issueAndSpecializationFilterController
-                                  .selectedIssue.value = '';
+                                  .selectedIssueList
+                                  .clear();
                               issueAndSpecializationFilterController
                                   .selectedSpeciality.value = widget.slug;
                               getResultByCountry();
@@ -715,23 +632,23 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               widget.type == 'specialization'
                                   ? searchMarketController.getSpecializationList(
                                       issueAndSpecializationFilterController
-                                          .selectedSpeciality.value,
+                                          .selectedSpecialityList
+                                          .join("|"),
                                       c: issueAndSpecializationFilterController
                                           .selectedCountry.value,
-                                      issue:
-                                          issueAndSpecializationFilterController
-                                              .selectedIssue.value)
+                                      issue: issueAndSpecializationFilterController
+                                          .selectedIssueList
+                                          .join("|"))
                                   : widget.type == 'topconsultant'
                                       ? searchMarketController.getTopConsultants(
-                                          issue:
-                                              issueAndSpecializationFilterController
-                                                  .selectedIssue.value,
+                                          issue: issueAndSpecializationFilterController
+                                              .selectedIssueList
+                                              .join("|"),
                                           c: searchMarketController
                                               .defaultCountry)
                                       : searchMarketController.getIssueList(
-                                          issueAndSpecializationFilterController
-                                              .selectedSpeciality.value,
-                                          issue: issueAndSpecializationFilterController.selectedIssue.value,
+                                          issueAndSpecializationFilterController.selectedSpecialityList.join("|"),
+                                          issue: issueAndSpecializationFilterController.selectedIssueList.join("|"),
                                           c: issueAndSpecializationFilterController.selectedCountry.value,
                                           page: 1);
                               Navigator.pop(context);
@@ -763,7 +680,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   }
 
   Future<void> getResultByCountry() async {
-    print("defaultCountry " + searchMarketController.defaultCountry.toString());
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     issueAndSpecializationFilterController.selectedCountry.value =
         await sharedPreferences.getString('userCountry')!;
@@ -772,9 +688,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                 searchMarketController.defaultCountry == ''
             ? sharedPreferences.getString('userCountry')
             : searchMarketController.defaultCountry;
-    print('@' * 30 +
-        'default country is ${searchMarketController.defaultCountry}' +
-        ' &' * 30);
     widget.type == 'specialization'
         ? searchMarketController.getSpecializationList(
             widget.slug,
