@@ -115,11 +115,15 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                   margin: EdgeInsets.only(bottom: 1.5.h),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Obx(() {
                     return Wrap(
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
                       runSpacing: 5,
                       children: getHelpController.issueList.map((issue) {
                         return IssuesTile(
@@ -142,7 +146,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     );
                   })),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7.w),
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: Row(
                   children: [
                     IssuesTile(
