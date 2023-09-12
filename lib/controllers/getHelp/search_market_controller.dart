@@ -46,7 +46,6 @@ class SearchMarketController extends GetxController {
   Future<void> getSpecializationList(String slug,
       {String? c, String issue = '', int? page}) async {
     isSearchingDoctors.value = true;
-    log("it ran1");
     String url;
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +

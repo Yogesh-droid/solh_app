@@ -9,7 +9,9 @@ class IssueAndSpecializationFilterController extends GetxController {
   var isFiltersLoading = false.obs;
 
   var selectedIssue = ''.obs;
+  var selectedIssueList = [].obs;
   var selectedSpeciality = ''.obs;
+  var selectedSpecialityList = [].obs;
   var selectedCountry = ''.obs;
   var selectedCountryName = ''.obs;
 
@@ -20,7 +22,6 @@ class IssueAndSpecializationFilterController extends GetxController {
     isFiltersLoading(true);
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         APIConstants.api + '/api/issue-spl-app?name=$slug');
-    print(map);
     if (map["success"] == true) {
       issueAndSpecializationFilterModel.value =
           IssueAndSpecializationFilterModel.fromJson(map);
