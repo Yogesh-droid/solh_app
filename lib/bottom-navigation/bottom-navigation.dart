@@ -999,7 +999,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                   Get.find<PsychologyTestController>().getTestList();
                   Get.find<PsychologyTestController>().getAttendedTestList();
                   Get.find<ChatListController>().sosChatListController(1);
-                  Get.find<ChatListController>().chatListController();
+                  Get.find<ChatListController>().chatListController(1);
                   bottomNavigatorController.getFeedbackStatus();
                   Get.find<MoodMeterController>().getMoodList();
                   Get.find<ConnectionController>().getMyConnection();

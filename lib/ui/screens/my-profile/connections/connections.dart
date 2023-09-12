@@ -51,7 +51,7 @@ class _ConnectionsState extends State<Connections> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      chatListController.chatListController();
+      chatListController.chatListController(1);
     });
   }
 
@@ -194,7 +194,7 @@ class _ConnectionsState extends State<Connections> {
       child: TabBarView(
           children: gettabBarViews(
         profileController: profileController,
-        getChatsView: getChatsView(),
+        getChatsView: GetChatView(),
         getAllConnectionqView: getAllConnectionqView(),
         getInvitesView: getInvitesView(context),
         getSosSupportView:
@@ -213,283 +213,6 @@ class _ConnectionsState extends State<Connections> {
           // ],
           ),
     );
-  }
-
-  Widget getChatsView() {
-    return Container(
-      child: Column(children: [
-        Expanded(
-          child: Obx(() => chatListController.isLoading.value
-              ? Column(
-                  children: [
-                    CircularProgressIndicator(),
-                  ],
-                )
-              : ListView.builder(
-                  itemCount: chatListController.chatList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ChatScreen(
-                        //               name: chatListController.chatList
-                        //                       .value[index].user!.name ??
-                        //                   '',
-                        //               imageUrl: chatListController
-                        //                       .chatList
-                        //                       .value[index]
-                        //                       .user!
-                        //                       .profilePicture ??
-                        //                   '',
-                        //               sId: chatListController.chatList
-                        //                       .value[index].user!.sId ??
-                        //                   '',
-                        //             )));
-                        Navigator.pushNamed(context, AppRoutes.chatUser,
-                            arguments: {
-                              "name": profileController.myProfileModel.value
-                                              .body!.user!.sosChatSupport ==
-                                          true &&
-                                      chatListController.chatList.value[index]
-                                              .user!.nameAnonymous !=
-                                          ""
-                                  ? chatListController
-                                      .chatList.value[index].user!.nameAnonymous
-                                  : chatListController
-                                          .chatList.value[index].user!.name ??
-                                      '',
-                              "imageUrl": profileController.myProfileModel.value
-                                              .body!.user!.sosChatSupport ==
-                                          true &&
-                                      chatListController.chatList.value[index]
-                                              .user!.profilePictureAnonymous !=
-                                          ""
-                                  ? chatListController.chatList.value[index]
-                                      .user!.profilePictureAnonymous
-                                  : chatListController.chatList.value[index]
-                                          .user!.profilePicture ??
-                                      '',
-                              "sId": chatListController
-                                      .chatList.value[index].user!.sId ??
-                                  '',
-                              "isAnonChat": chatListController.chatList
-                                      .value[index].user!.sosChatSupportGroup!
-                                  ? true
-                                  : false
-                            });
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.white,
-                                  radius:
-                                      MediaQuery.of(context).size.width * 0.06,
-                                  backgroundImage: CachedNetworkImageProvider(
-                                    profileController.myProfileModel.value.body!
-                                                    .user!.sosChatSupport ==
-                                                true &&
-                                            chatListController
-                                                    .chatList
-                                                    .value[index]
-                                                    .user!
-                                                    .profilePictureAnonymous !=
-                                                ""
-                                        ? chatListController
-                                            .chatList
-                                            .value[index]
-                                            .user!
-                                            .profilePictureAnonymous!
-                                        : chatListController
-                                                .chatList
-                                                .value[index]
-                                                .user!
-                                                .profilePicture ??
-                                            '',
-                                  ),
-                                ),
-                                // getUserImg(
-                                //     img: chatListController
-                                //             .chatList
-                                //             .value[index]
-                                //             .user!
-                                //             .profilePicture ??
-                                //         '',
-                                //     context: context,
-                                //     sId: chatListController
-                                //             .chatList.value[index].user!.sId ??
-                                //         '',
-                                //     uid: chatListController
-                                //         .chatList.value[index].user!.uid),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Container(
-                                  width: 60.w,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          profileController
-                                                          .myProfileModel
-                                                          .value
-                                                          .body!
-                                                          .user!
-                                                          .sosChatSupport ==
-                                                      true &&
-                                                  chatListController
-                                                          .chatList
-                                                          .value[index]
-                                                          .user!
-                                                          .nameAnonymous !=
-                                                      ""
-                                              ? chatListController
-                                                  .chatList
-                                                  .value[index]
-                                                  .user!
-                                                  .nameAnonymous!
-                                              : chatListController
-                                                      .chatList
-                                                      .value[index]
-                                                      .user!
-                                                      .name ??
-                                                  '',
-                                          style: SolhTextStyles.QS_body_1_bold),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        chatListController.chatList.value[index]
-                                            .conversation!.body!,
-                                        style: SolhTextStyles.QS_caption,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Expanded(
-                              child: Text(
-                                  timeago.format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          chatListController
-                                              .chatList
-                                              .value[index]
-                                              .conversation!
-                                              .dateTime!)),
-                                  style: SolhTextStyles.QS_caption_bold),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                )),
-        )
-      ]),
-    );
-
-    // return Obx(() => ListView.builder(
-    //       itemCount:
-    //           connectionController.myConnectionModel.value.myConnections != null
-    //               ? connectionController
-    //                   .myConnectionModel.value.myConnections!.length
-    //               : 0,
-    //       shrinkWrap: true,
-    //       itemBuilder: (context, index) {
-    //         // return ListTile(
-    //         //   dense: true,
-    //         //   contentPadding: EdgeInsets.all(0),
-    //         //   leading: CircleAvatar(
-    //         //     radius: 50,
-    //         //     backgroundImage: CachedNetworkImageProvider(
-    //         //         connectionController.myConnectionModel.value
-    //         //                 .myConnections![index].profilePicture ??
-    //         //             ''),
-    //         //   ),
-    //         //   title: Text(
-    //         //     connectionController
-    //         //             .myConnectionModel.value.myConnections![index].name ??
-    //         //         '',
-    //         //     style: TextStyle(
-    //         //         fontSize: 18,
-    //         //         fontWeight: FontWeight.w600,
-    //         //         color: SolhColors.black34),
-    //         //   ),
-    //         //   subtitle: Text(
-    //         //     connectionController
-    //         //             .myConnectionModel.value.myConnections![index].bio ??
-    //         //         '',
-    //         //     style: TextStyle(
-    //         //         fontSize: 14,
-    //         //         fontWeight: FontWeight.w600,
-    //         //         color: SolhColors.grey196),
-    //         //   ),
-    //         // );
-
-    //         return Container(
-    //           padding: EdgeInsets.all(10),
-    //           width: MediaQuery.of(context).size.width,
-    //           child: Row(
-    //             children: [
-    //               CircleAvatar(
-    //                 backgroundColor: Colors.white,
-    //                 radius: 30,
-    //                 backgroundImage: CachedNetworkImageProvider(
-    //                     connectionController.myConnectionModel.value
-    //                             .myConnections![index].profilePicture ??
-    //                         ''),
-    //               ),
-    //               SizedBox(
-    //                 width: 10,
-    //               ),
-    //               Column(
-    //                 mainAxisAlignment: MainAxisAlignment.start,
-    //                 crossAxisAlignment: CrossAxisAlignment.start,
-    //                 children: [
-    //                   Container(
-    //                     width: MediaQuery.of(context).size.width * 0.6,
-    //                     child: Text(
-    //                       connectionController.myConnectionModel.value
-    //                               .myConnections![index].name ??
-    //                           '',
-    //                       style: TextStyle(
-    //                           fontSize: 18,
-    //                           fontWeight: FontWeight.w600,
-    //                           color: SolhColors.black34),
-    //                     ),
-    //                   ),
-    //                   Container(
-    //                     width: MediaQuery.of(context).size.width * 0.6,
-    //                     child: Text(
-    //                       connectionController.myConnectionModel.value
-    //                               .myConnections![index].bio ??
-    //                           '',
-    //                       overflow: TextOverflow.ellipsis,
-    //                       style: TextStyle(
-    //                           fontSize: 14,
-    //                           fontWeight: FontWeight.w600,
-    //                           color: SolhColors.grey196),
-    //                     ),
-    //                   ),
-    //                 ],
-    //               ),
-    //             ],
-    //           ),
-    //         );
-    //       },
-    //     ));
   }
 
   Widget getAllConnectionqView() {
@@ -1519,6 +1242,276 @@ class GetSosSupportView extends StatefulWidget {
 
   @override
   State<GetSosSupportView> createState() => _GetSosSupportViewState();
+}
+
+class GetChatView extends StatefulWidget {
+  const GetChatView({super.key});
+
+  @override
+  State<GetChatView> createState() => _GetChatViewState();
+}
+
+class _GetChatViewState extends State<GetChatView> {
+  ChatListController chatListController = Get.find();
+  ProfileController profileController = Get.find();
+
+  ScrollController scrollController = ScrollController();
+
+  getMoreSosChatList() {
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        log("it ran");
+        if (chatListController.isLoading == false) {
+          if (chatListController.nextPage != null) {
+            chatListController.nextPage;
+            chatListController.chatListController(chatListController.nextPage!);
+          }
+        }
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getMoreSosChatList();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Stack(
+        children: [
+          Column(children: [
+            Expanded(
+              child: Obx(() => chatListController.isLoading.value
+                  ? Column(
+                      children: [
+                        CircularProgressIndicator(),
+                      ],
+                    )
+                  : ListView.builder(
+                      controller: scrollController,
+                      itemCount: chatListController.chatList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => ChatScreen(
+                            //               name: chatListController.chatList
+                            //                       .value[index].user!.name ??
+                            //                   '',
+                            //               imageUrl: chatListController
+                            //                       .chatList
+                            //                       .value[index]
+                            //                       .user!
+                            //                       .profilePicture ??
+                            //                   '',
+                            //               sId: chatListController.chatList
+                            //                       .value[index].user!.sId ??
+                            //                   '',
+                            //             )));
+                            Navigator.pushNamed(context, AppRoutes.chatUser,
+                                arguments: {
+                                  "name": profileController.myProfileModel.value
+                                                  .body!.user!.sosChatSupport ==
+                                              true &&
+                                          chatListController
+                                                  .chatList
+                                                  .value[index]
+                                                  .user!
+                                                  .nameAnonymous !=
+                                              ""
+                                      ? chatListController.chatList.value[index]
+                                          .user!.nameAnonymous
+                                      : chatListController.chatList.value[index]
+                                              .user!.name ??
+                                          '',
+                                  "imageUrl": profileController
+                                                  .myProfileModel
+                                                  .value
+                                                  .body!
+                                                  .user!
+                                                  .sosChatSupport ==
+                                              true &&
+                                          chatListController
+                                                  .chatList
+                                                  .value[index]
+                                                  .user!
+                                                  .profilePictureAnonymous !=
+                                              ""
+                                      ? chatListController.chatList.value[index]
+                                          .user!.profilePictureAnonymous
+                                      : chatListController.chatList.value[index]
+                                              .user!.profilePicture ??
+                                          '',
+                                  "sId": chatListController
+                                          .chatList.value[index].user!.sId ??
+                                      '',
+                                  "isAnonChat": chatListController
+                                          .chatList
+                                          .value[index]
+                                          .user!
+                                          .sosChatSupportGroup!
+                                      ? true
+                                      : false
+                                });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      radius:
+                                          MediaQuery.of(context).size.width *
+                                              0.06,
+                                      backgroundImage:
+                                          CachedNetworkImageProvider(
+                                        profileController
+                                                        .myProfileModel
+                                                        .value
+                                                        .body!
+                                                        .user!
+                                                        .sosChatSupport ==
+                                                    true &&
+                                                chatListController
+                                                        .chatList
+                                                        .value[index]
+                                                        .user!
+                                                        .profilePictureAnonymous !=
+                                                    ""
+                                            ? chatListController
+                                                .chatList
+                                                .value[index]
+                                                .user!
+                                                .profilePictureAnonymous!
+                                            : chatListController
+                                                    .chatList
+                                                    .value[index]
+                                                    .user!
+                                                    .profilePicture ??
+                                                '',
+                                      ),
+                                    ),
+                                    // getUserImg(
+                                    //     img: chatListController
+                                    //             .chatList
+                                    //             .value[index]
+                                    //             .user!
+                                    //             .profilePicture ??
+                                    //         '',
+                                    //     context: context,
+                                    //     sId: chatListController
+                                    //             .chatList.value[index].user!.sId ??
+                                    //         '',
+                                    //     uid: chatListController
+                                    //         .chatList.value[index].user!.uid),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      width: 60.w,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              profileController
+                                                              .myProfileModel
+                                                              .value
+                                                              .body!
+                                                              .user!
+                                                              .sosChatSupport ==
+                                                          true &&
+                                                      chatListController
+                                                              .chatList
+                                                              .value[index]
+                                                              .user!
+                                                              .nameAnonymous !=
+                                                          ""
+                                                  ? chatListController
+                                                      .chatList
+                                                      .value[index]
+                                                      .user!
+                                                      .nameAnonymous!
+                                                  : chatListController
+                                                          .chatList
+                                                          .value[index]
+                                                          .user!
+                                                          .name ??
+                                                      '',
+                                              style: SolhTextStyles
+                                                  .QS_body_1_bold),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            chatListController
+                                                .chatList
+                                                .value[index]
+                                                .conversation!
+                                                .body!,
+                                            style: SolhTextStyles.QS_caption,
+                                            overflow: TextOverflow.ellipsis,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      timeago.format(
+                                          DateTime.fromMillisecondsSinceEpoch(
+                                              chatListController
+                                                  .chatList
+                                                  .value[index]
+                                                  .conversation!
+                                                  .dateTime!)),
+                                      style: SolhTextStyles.QS_caption_bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    )),
+            )
+          ]),
+          Obx(() {
+            return chatListController.isLoadingMoreChat.value
+                ? Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          child: ButtonLoadingAnimation(
+                            ballColor: SolhColors.primary_green,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container();
+          }),
+        ],
+      ),
+    );
+  }
 }
 
 class _GetSosSupportViewState extends State<GetSosSupportView> {

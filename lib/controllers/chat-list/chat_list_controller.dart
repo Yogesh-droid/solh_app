@@ -8,25 +8,39 @@ import 'package:solh/services/network/network.dart';
 class ChatListController extends GetxController {
   var isLoading = false.obs;
   var isMorePageLoading = false.obs;
+  var isLoadingMoreChat = false.obs;
   var chatList = <ChatList>[].obs;
   var sosChatList = <ChatList>[].obs;
 
+  int? nextPage;
+
   @override
   void onInit() {
-    chatListController();
+    chatListController(1);
     sosChatListController(1);
     super.onInit();
   }
 
-  Future chatListController() async {
-    isLoading(true);
-    var response = await getAllChat();
-    isLoading(false);
+  Future chatListController(int pageNo) async {
+    try {
+      print("it called");
+      pageNo > 1 ? isLoadingMoreChat(true) : isLoading(true);
+      var response = await getAllChat(pageNo);
+      pageNo > 1 ? isLoadingMoreChat(false) : isLoading(false);
 
-    if (response.chatList != null) {
-      chatList.value = response.chatList!;
-    } else {
-      print(response);
+      if (response.chatList != null) {
+        if (pageNo > 1) {
+          chatList.addAll(response.chatList!);
+          chatList.refresh();
+        } else {
+          chatList.value = response.chatList!;
+        }
+        nextPage = response.next;
+      } else {
+        print(response);
+      }
+    } on Exception catch (e) {
+      throw (e);
     }
   }
 
@@ -50,16 +64,22 @@ class ChatListController extends GetxController {
     pageNo > 1 ? isMorePageLoading(false) : isLoading(false);
   }
 
-  Future getAllChat() async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/chatList')
-        .onError((error, stackTrace) {
-      print(error);
-      return {};
-    });
+  Future<ChatListModel> getAllChat(int pageNo) async {
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+              APIConstants.api + '/api/v2/chatList?page=$pageNo')
+          .onError((error, stackTrace) {
+        print(error);
+        return {};
+      });
 
-    if (map.isNotEmpty) {
-      return ChatListModel.fromJson(map);
+      if (map.isNotEmpty) {
+        return ChatListModel.fromJson(map);
+      } else {
+        throw ("Thrown in getAllChat" + map.toString());
+      }
+    } on Exception catch (e) {
+      throw (e);
     }
   }
 

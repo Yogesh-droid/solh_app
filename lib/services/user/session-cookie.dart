@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -29,6 +28,16 @@ class SessionCookie {
           response["details"]["sessionCookie"];
       print('Cached json used');
     } else {
+      debugPrint("createSessionCookieeee ${{
+        "idToken": idToken,
+        "deviceId": fcmToken ?? '',
+        "onesignal_device_id": onesignalId,
+        "deviceType": deviceType,
+        "user_country": coutry ?? '',
+        "utm_compaign": utm_compaign ?? '',
+        "utm_source": utm_source ?? '',
+        "utm_medium": utm_medium ?? ''
+      }}");
       response = await Network.makeHttpPostRequest(
           url: "${APIConstants.api}/api/create-session-cookie",
           body: {

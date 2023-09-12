@@ -134,7 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
     _controller.pageController.dispose();
     _controller.selectedStar.value = 0;
     chatAnonController.feedbackTextField.text = '';
-
+    _controller.firstMsgSent = false;
     SocketService.dispose();
     super.dispose();
   }
@@ -143,9 +143,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
+        if (_controller.firstMsgSent == false && widget._isAnonChat) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        }
         if (widget._isAnonChat &&
             profileController.myProfileModel.value.body!.user!.sosChatSupport !=
-                true) {
+                true &&
+            _controller.firstMsgSent) {
           return _onWillPop(context, widget._sId);
         }
         return true;
@@ -292,14 +297,19 @@ class ChatAppbar extends StatelessWidget {
                     if (_isAnonChat == true &&
                         profileController.myProfileModel.value.body!.user!
                                 .sosChatSupport !=
-                            true) {
+                            true &&
+                        _controller.firstMsgSent) {
                       await _onWillPop(context, _sId);
                       service.userLeft();
                     } else {
                       service.userLeft();
-
+                      if (_isAnonChat) {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      }
                       Navigator.of(context).pop();
                     }
+                    _controller.firstMsgSent = false;
                   }),
                   child: Container(
                     width: 50,
@@ -491,6 +501,7 @@ class _MessageBoxState extends State<MessageBox> {
                           '') {
                         return;
                       } else {
+                        _controller.firstMsgSent = true;
                         _controller.sendMessageController(
                             message: _controller.messageEditingController.text,
                             sId: widget._sId,
@@ -506,7 +517,7 @@ class _MessageBoxState extends State<MessageBox> {
                             authorId: profileController
                                 .myProfileModel.value.body!.user!.sId!);
                       }
-                      chatListController.chatListController();
+                      chatListController.chatListController(1);
                     },
                     icon: Icon(
                       Icons.send,
@@ -537,7 +548,7 @@ class _MessageBoxState extends State<MessageBox> {
                         authorId: profileController
                             .myProfileModel.value.body!.user!.sId!);
                   }
-                  chatListController.chatListController();
+                  chatListController.chatListController(1);
                 },
                 child: Container())
           ],
@@ -799,7 +810,7 @@ class RatingBottomSheetChild1 extends StatelessWidget {
                   Text(
                     'Your chat ended, Please rate your experience'.tr,
                     style: SolhTextStyles.QS_cap_2.copyWith(
-                        color: SolhColors.white),
+                        color: SolhColors.white, fontSize: 14),
                   )
                 ],
               ),
@@ -1060,7 +1071,7 @@ Future<bool> _onWillPop(context, sId) async {
         return AlertDialog(
           actionsPadding: EdgeInsets.all(8.0),
           content: Text(
-            'Do you really want to end the chat?'.tr,
+            'Do you want to end the chat?'.tr,
             style: SolhTextStyles.JournalingDescriptionText,
           ),
           actions: [

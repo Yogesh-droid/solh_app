@@ -23,6 +23,8 @@ class ChatController extends GetxController {
 
   var isFileUploading = false.obs;
 
+  var firstMsgSent = false;
+
   String currentLoadingurl = '';
   var scrollOffset = 0.0.obs;
 
@@ -68,7 +70,7 @@ class ChatController extends GetxController {
       }
 
       print(Conversation.fromJson(data));
-      chatListController.chatListController();
+      chatListController.chatListController(1);
     });
     SocketService.socket.on("seenStatus", (data) {
       if (data == null) {
@@ -234,7 +236,7 @@ class ChatController extends GetxController {
         ),
       ),
     );
-    chatListController.chatListController();
+    chatListController.chatListController(1);
     chatListController.sosChatListController(1);
   }
 

@@ -6,7 +6,7 @@ class Languages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
         "hi_IN": {
-          "Do you really want to exit app?":
+          "Do you want to exit app?":
               "क्या आप वाकई ऐप से बाहर निकलना चाहते हैं?",
           "Yes": "हाँ",
           "No": "नहीं",
@@ -46,7 +46,7 @@ class Languages extends Translations {
               "कृपया अपनी प्रतिक्रिया यहाँ लिखें",
           "Submit": "जमा करें",
           "Groups For You": "आपके लिए समूह",
-          "Do you really want to end the chat?":
+          "Do you want to end the chat?":
               "क्या आप वाक़ई चैट समाप्त करना चाहते हैं?",
           "Cancel": "रद्द करें",
           "Leave": "जाने दें",
@@ -552,7 +552,7 @@ Map<String, String> en_us_map = {
   "Please write your feedback here": "Please write your feedback here",
   "Submit": "Submit",
   "Groups For You": "Groups For You",
-  "Do you really want to end the chat?": "Do you really want to end the chat?",
+  "Do you want to end the chat?": "Do you want to end the chat?",
   "Cancel": "Cancel",
   "Leave": "Leave",
   "Comments": "Comments",
@@ -934,8 +934,7 @@ Map<String, String> en_us_map = {
 };
 
 Map<String, String> fr_FR_map = {
-  "Do you really want to exit app?":
-      "Voulez-vous vraiment quitter l'application?",
+  "Do you want to end the chat?": "Voulez-vous vraiment quitter l'application?",
   "Yes": "Oui",
   "No": "Non",
   "ERROR": "ERREUR",
@@ -973,8 +972,7 @@ Map<String, String> fr_FR_map = {
   "Please write your feedback here": "Veuillez écrire vos commentaires ici",
   "Submit": "Soumettre",
   "Groups For You": "Groupes pour vous",
-  "Do you really want to end the chat?":
-      "Voulez-vous vraiment terminer le chat?",
+  "Do you want to end the chat?": "Voulez-vous vraiment terminer le chat?",
   "Cancel": "Annuler",
   "Leave": "Partir",
   "Comments": "commentaires",
@@ -1398,7 +1396,7 @@ Map<String, String> fr_FR_map = {
 };
 
 Map<String, String> ar_sa_map = {
-  "Do you really want to exit app?": "هل تريد حقًا الخروج من التطبيق؟",
+  "Do you want to end the chat?": "هل تريد حقًا الخروج من التطبيق؟",
   "Yes": "نعم",
   "No": "لا",
   "ERROR": "خطأ",
@@ -1860,7 +1858,7 @@ Map<String, String> ar_sa_map = {
 };
 
 Map<String, String> ta_IN_map = {
-  "Do you really want to exit app?":
+  "Do you want to end the chat?":
       "நீங்கள் உண்மையில் பயன்பாட்டிலிருந்து வெளியேற விரும்புகிறீர்களா?",
   "Yes": "ஆம்",
   "No": "இல்லை",
@@ -1899,7 +1897,7 @@ Map<String, String> ta_IN_map = {
   "Please write your feedback here": "உங்கள் கருத்தை இங்கே எழுதுங்கள்",
   "Submit": "சமர்ப்பிக்கவும்",
   "Groups For You": "உங்களுக்கான குழுக்கள்",
-  "Do you really want to end the chat?":
+  "Do you want to end the chat?":
       "நீங்கள் உண்மையில் அரட்டையை முடிக்க விரும்புகிறீர்களா?",
   "Cancel": "ரத்துசெய்",
   "Leave": "விடுப்பு",

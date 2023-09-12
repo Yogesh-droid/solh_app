@@ -388,7 +388,7 @@ class MessageBoxProvider extends StatelessWidget {
                               .myProfileModel.value.body!.user!.sId,
                           conversationType: 'text');
                     }
-                    chatListController.chatListController();
+                    chatListController.chatListController(1);
                   },
                   child: Icon(
                     Icons.send,

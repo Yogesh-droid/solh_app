@@ -18,7 +18,6 @@ import 'package:solh/model/comment.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/model/journals/get_jouranal_comment_model.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
-import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/errors/not_found.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/utility.dart';

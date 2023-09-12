@@ -128,7 +128,7 @@ class AddAvatarText extends StatelessWidget {
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
-          "Upload a pciture or choose one from our library of images that describes you best. "
+          "Upload a picture or choose one from our library of images that describes you best. "
               .tr,
           style: SolhTextStyles.NormalTextWhiteS14W5,
         ),
