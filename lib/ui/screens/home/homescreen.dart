@@ -22,6 +22,7 @@ import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/features/mood_meter/ui/controllers/slider_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
@@ -55,6 +56,7 @@ import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
+import '../../../features/mood_meter/ui/screens/mood_meter_v2.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/org_only_setting.dart';
@@ -79,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController controller = Get.put(CreateGroupController());
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
+  final sliderController = Get.put(SliderController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   FeelingsController feelingsController = Get.put(FeelingsController());
   BookAppointmentController bookAppointmentController = Get.find();
@@ -91,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
+
   final HomeController homeController = Get.find();
   LiveStreamController liveStreamController = Get.find();
 
@@ -223,10 +227,10 @@ class _HomePageState extends State<HomePage> {
             },
             onMoodMeterTapped: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MoodMeter()));
-              FirebaseAnalytics.instance.logEvent(
-                  name: 'MoodMeterOpenTapped',
-                  parameters: {'Page': 'MoodMeter'});
+                  MaterialPageRoute(builder: (context) => MoodMeterV2()));
+              // FirebaseAnalytics.instance.logEvent(
+              //     name: 'MoodMeterOpenTapped',
+              //     parameters: {'Page': 'MoodMeter'});
             },
             onTapped: () {
               Navigator.push(context,
