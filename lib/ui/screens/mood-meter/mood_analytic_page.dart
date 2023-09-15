@@ -5,10 +5,11 @@ import 'package:get/get.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
-import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
+import '../../../features/mood_meter/ui/screens/mood_meter_v2.dart';
 
 class MoodAnalyticPage extends StatelessWidget {
   MoodAnalyticPage({
@@ -63,7 +64,7 @@ class MoodAnalyticPage extends StatelessWidget {
       child: InkWell(
         onTap: () async {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MoodMeter()));
+              context, MaterialPageRoute(builder: (context) => MoodMeterV2()));
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

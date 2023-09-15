@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -45,6 +47,7 @@ import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
+
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -65,9 +68,7 @@ import '../get-help/widgets/specialization_card_with_discount.dart';
 import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
-import '../mood-meter/mood_meter.dart';
 import '../psychology-test/test_question_page.dart';
-import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -142,10 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
           showGeneralDialog(
               context: context,
               pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(
-                    body: MoodMeter(
-                  args: {},
-                ));
+                return Scaffold(body: MoodMeterV2());
               });
         }
 

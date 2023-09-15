@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
+
 import '../../../controllers/profile/anon_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../model/profile/my_profile_model.dart';
@@ -1126,21 +1128,27 @@ class _UsernameHeaderState extends State<UsernameHeader> {
               SizedBox(
                 width: 2.w,
               ),
-              Obx(() => profileController.myProfileModel.value.body != null
-                  ? Text(
-                      journalPageController.isAnonymousSelected == true
-                          ? (profileController.myProfileModel.value.body!.user!
-                                  .anonymous!.userName!.isNotEmpty
-                              ? profileController.myProfileModel.value.body!
-                                  .user!.anonymous!.userName!
-                              : 'Anonymous')
-                          : profileController
-                                  .myProfileModel.value.body!.user!.name ??
-                              "",
-                      style: SolhTextStyles.JournalingUsernameText.copyWith(
-                          fontWeight: FontWeight.normal, fontSize: 14),
-                    )
-                  : Container()),
+              SizedBox(
+                width: 110,
+                child: Obx(
+                    () => profileController.myProfileModel.value.body != null
+                        ? Text(
+                            journalPageController.isAnonymousSelected == true
+                                ? (profileController.myProfileModel.value.body!
+                                        .user!.anonymous!.userName!.isNotEmpty
+                                    ? profileController.myProfileModel.value
+                                        .body!.user!.anonymous!.userName!
+                                    : 'Anonymous')
+                                : profileController.myProfileModel.value.body!
+                                        .user!.name ??
+                                    "",
+                            style:
+                                SolhTextStyles.JournalingUsernameText.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                          )
+                        : Container()),
+              ),
             ],
           ),
           Column(
@@ -1149,7 +1157,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             children: [
               Container(
                 height: 4.5.h,
-                width: 35.w,
+                width: 37.w,
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -1159,7 +1167,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 child: DropdownButton(
                     isExpanded: true,
                     icon: Icon(CupertinoIcons.chevron_down),
-                    iconSize: 18,
+                    iconSize: 14,
                     iconEnabledColor: SolhColors.primary_green,
                     underline: SizedBox(),
                     value: journalPageController.selectedGroupId.value == ''
@@ -1330,15 +1338,6 @@ class GetNormalStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // isAnonymousSelected
-        //     ? GetCircleImg(
-        //         radius: normalRadius,
-        //         imgUrl: userModel!.profilePicture ??
-        //             "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-        //         top: normalTop,
-        //         left: normalLeft,
-        //       )
-        //     :
         GetCircleImg(
           radius: anonRadius,
           imgUrl: userModel!.anonymous != null
@@ -1348,17 +1347,6 @@ class GetNormalStack extends StatelessWidget {
           top: anonTop,
           left: anonLeft,
         ),
-        // isAnonymousSelected
-        //     ? GetCircleImg(
-        //         radius: anonRadius,
-        //         imgUrl: userModel!.anonymous != null
-        //             ? userModel!.anonymous!.profilePicture ??
-        //                 "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-        //             : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
-        //         top: anonTop,
-        //         left: anonLeft,
-        //       )
-        //     :
         GetCircleImg(
           radius: normalRadius,
           imgUrl: userModel!.profilePicture ??
