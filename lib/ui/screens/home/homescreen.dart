@@ -224,9 +224,9 @@ class _HomePageState extends State<HomePage> {
             onMoodMeterTapped: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MoodMeterV2()));
-              // FirebaseAnalytics.instance.logEvent(
-              //     name: 'MoodMeterOpenTapped',
-              //     parameters: {'Page': 'MoodMeter'});
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'MoodMeterOpenTapped',
+                  parameters: {'Page': 'MoodMeter'});
             },
             onTapped: () {
               Navigator.push(context,
@@ -600,9 +600,9 @@ class _HomePageState extends State<HomePage> {
             context: context,
             builder: (context) {
               return Dialog(
+                insetPadding: EdgeInsets.all(8),
                 child: InkWell(
                   onTap: () async {
-                    print('it tapped 1');
                     if (value["redirectTo"] == "gethelp") {
                       Navigator.of(context).pop();
                       Get.find<BottomNavigatorController>().activeIndex.value =
@@ -642,25 +642,28 @@ class _HomePageState extends State<HomePage> {
                           context, AppRoutes.videoPlaylist);
                     }
                   },
-                  child: Container(
-                    height: 595,
-                    width: 375,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                  child: Stack(alignment: Alignment.center, children: [
+                    announcementMedia(value),
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: SolhColors.grey_3, shape: BoxShape.circle),
+                          child: Center(
+                            child: Icon(
+                              Icons.close,
                             ),
                           ),
-                          Expanded(child: announcementMedia(value))
-                        ]),
-                  ),
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
               );
             });
