@@ -438,6 +438,8 @@ Widget getBadge(String userType) {
       return GetBadge(userType: 'SolhVolunteer');
     case 'SolhProvider':
       return GetBadge(userType: 'SolhProvider');
+    case 'solhChampion':
+      return GetBadge(userType: "solhChampion");
     default:
       return Container();
   }

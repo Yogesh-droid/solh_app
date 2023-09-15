@@ -603,12 +603,14 @@ class OptionsColumn extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PrivacyWeb(
-                                title: "Contact Us".tr,
-                                url: "https://solhapp.com/contact-us.html",
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyWeb(
+                        title: "Contact Us".tr,
+                        url: "https://solhapp.com/contact-us.html",
+                      ),
+                    ),
+                  );
                 },
                 child: Text(
                   "Help".tr,

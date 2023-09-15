@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -287,6 +289,7 @@ class GetBadge extends StatelessWidget {
 }
 
 Widget getBadge(String usertype) {
+  log(usertype);
   switch (usertype) {
     case "SolhVolunteer":
       return Row(
@@ -317,6 +320,22 @@ Widget getBadge(String usertype) {
             ),
           ),
           SvgPicture.asset('assets/images/verifiedTick.svg')
+        ],
+      );
+
+    case "solhChampion":
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Solh Champ',
+            style: GoogleFonts.signika(
+              color: SolhColors.primary_green,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+            ),
+          ),
+          Text('🏆')
         ],
       );
 

@@ -1651,6 +1651,7 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
                                               .value[index].user!.sId ??
                                           '',
                                       "isAnonChat": true,
+                                      "nowChat": true,
                                     });
                               },
                               child: Container(

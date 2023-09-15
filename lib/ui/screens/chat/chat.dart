@@ -30,12 +30,14 @@ class ChatScreen extends StatefulWidget {
       : _imageUrl = args['imageUrl'],
         _name = args["name"],
         _sId = args["sId"],
+        _nowChat = args["nowChat"],
         _isAnonChat = args['isAnonChat'] ?? false,
         super(key: key);
 
   final String _imageUrl;
   final String _name;
   final String _sId;
+  final bool? _nowChat;
   final bool _isAnonChat;
 
   @override
@@ -143,11 +145,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_controller.firstMsgSent == false && widget._isAnonChat) {
+        if (widget._nowChat != null) {
+          Navigator.of(context).pop();
+        } else if (_controller.firstMsgSent == false && widget._isAnonChat) {
           Navigator.of(context).pop();
           Navigator.of(context).pop();
-        }
-        if (widget._isAnonChat &&
+        } else if (widget._isAnonChat &&
             profileController.myProfileModel.value.body!.user!.sosChatSupport !=
                 true &&
             _controller.firstMsgSent) {
@@ -168,6 +171,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     imageUrl: widget._imageUrl,
                     name: widget._name,
                     sId: widget._sId,
+                    nowchat: widget._nowChat,
                     isAnonChat: widget._isAnonChat,
                   ),
                 ),
@@ -259,16 +263,19 @@ class ChatAppbar extends StatelessWidget {
       required String imageUrl,
       required name,
       required sId,
+      nowchat,
       required isAnonChat})
       : _imageUrl = imageUrl,
         _name = name,
         _sId = sId,
+        _nowChat = nowchat,
         _isAnonChat = isAnonChat,
         super(key: key);
 
   final String _imageUrl;
   final String _name;
   final String _sId;
+  final bool? _nowChat;
   final bool _isAnonChat;
 
   ChatController _controller = Get.put(ChatController());
@@ -294,7 +301,9 @@ class ChatAppbar extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (() async {
-                    if (_isAnonChat == true &&
+                    if (_nowChat != null) {
+                      Navigator.of(context).pop();
+                    } else if (_isAnonChat == true &&
                         profileController.myProfileModel.value.body!.user!
                                 .sosChatSupport !=
                             true &&
