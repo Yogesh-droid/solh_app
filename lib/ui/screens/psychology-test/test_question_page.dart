@@ -5,6 +5,7 @@ import 'package:solh/controllers/psychology-test/psychology_test_controller.dart
 import 'package:solh/model/psychology-test/submit_answer_model.dart';
 import 'package:solh/model/psychology-test/test_question_model.dart';
 import 'package:solh/ui/screens/psychology-test/test_results.dart';
+import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -29,7 +30,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldWithSelfAssessmentBackgroundArt(
       appBar: getAppbar(),
       body: getBody(context),
     );
@@ -132,7 +133,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
       isLandingScreen: false,
       title: Text(
         widget.testTitle ?? '',
-        style: SolhTextStyles.AppBarText,
+        style: SolhTextStyles.QS_body_1_bold,
       ),
     );
   }

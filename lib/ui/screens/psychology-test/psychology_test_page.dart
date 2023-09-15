@@ -137,7 +137,8 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
             ],
             unselectedLabelColor: SolhColors.grey,
             labelColor: SolhColors.primary_green,
-            labelStyle: TextStyle(fontSize: 20),
+            indicatorColor: SolhColors.primary_green,
+            labelStyle: SolhTextStyles.QS_big_body_med_20,
             labelPadding: EdgeInsets.only(bottom: 16),
             onTap: (value) {
               if (value == 1) {
