@@ -28,8 +28,12 @@ class _MoodMeterV2State extends State<MoodMeterV2> {
   @override
   void initState() {
     if (moodListController.moodList.isEmpty) {
-      moodListController.getMoodList().then((value) => subMoodController
-          .getSubMoodList(moodListController.moodList[0].id ?? ''));
+      moodListController.getMoodList().then((value) {
+        if (moodListController.moodList.isNotEmpty) {
+          subMoodController
+              .getSubMoodList(moodListController.moodList[0].id ?? '');
+        }
+      });
     }
     super.initState();
   }

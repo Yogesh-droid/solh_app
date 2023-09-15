@@ -231,6 +231,8 @@ class Network {
 
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
+      log(apiResponse.statusCode.toString());
+
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);
@@ -239,12 +241,12 @@ class Network {
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
-          return {};
+          throw Exceptions(
+              error: "Some error occeured", statusCode: apiResponse.statusCode);
       }
     } on SocketException {
       throw Exceptions(error: 'No Network', statusCode: 100);
-    } catch (e) {
-      print(e);
+    } on Exception catch (e) {
       throw e;
     }
   }

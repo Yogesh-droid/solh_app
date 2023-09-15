@@ -3,6 +3,7 @@ import 'package:solh/core/request_params/request_params.dart';
 import 'package:solh/features/mood_meter/data/models/mood_meter_model.dart';
 import 'package:solh/features/mood_meter/domain/entities/mood_meter_entity.dart';
 import 'package:solh/features/mood_meter/domain/repo/mood_meter_repo.dart';
+import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/services/network/network.dart';
 
 class MoodMeterRepoImpl implements MoodMeterRepo {
@@ -23,7 +24,11 @@ class MoodMeterRepoImpl implements MoodMeterRepo {
         return DataError(exception: Exception("No Mood List found"));
       }
     } on Exception catch (e) {
-      return DataError(exception: e);
+      if (e is Exceptions) {
+        return DataError(exception: Exception(e.error));
+      } else {
+        return DataError(exception: e);
+      }
     }
   }
 }
