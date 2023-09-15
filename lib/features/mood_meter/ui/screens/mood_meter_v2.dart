@@ -1,11 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/features/mood_meter/ui/controllers/get_mood_list_controller.dart';
+import 'package:solh/features/mood_meter/ui/controllers/get_sub_mood_controller.dart';
+import 'package:solh/features/mood_meter/ui/widgets/continue_btn.dart';
 import 'package:solh/features/mood_meter/ui/widgets/custom_slider.dart';
-import '../../../../widgets_constants/constants/textstyles.dart';
+import 'package:solh/features/mood_meter/ui/widgets/mood_image.dart';
+import 'package:solh/features/mood_meter/ui/widgets/mood_title.dart';
+import 'package:solh/features/mood_meter/ui/widgets/submood_list.dart';
 
-class MoodMeterV2 extends StatelessWidget {
+import '../../../../widgets_constants/constants/textstyles.dart';
+import '../widgets/comment_box.dart';
+
+class MoodMeterV2 extends StatefulWidget {
   const MoodMeterV2({super.key});
+
+  @override
+  State<MoodMeterV2> createState() => _MoodMeterV2State();
+}
+
+class _MoodMeterV2State extends State<MoodMeterV2> {
+  final GetMoodListController moodListController = Get.find();
+  final SubMoodController subMoodController = Get.find();
+
+  @override
+  void initState() {
+    if (moodListController.moodList.isEmpty) {
+      moodListController.getMoodList().then((value) => subMoodController
+          .getSubMoodList(moodListController.moodList[0].id ?? ''));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +83,28 @@ class MoodMeterV2 extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    "Express Yourself".tr,
+                    "How are you feeling today?".tr,
                     style: SolhTextStyles.QS_head_5,
                   ),
                   SizedBox(
                     height: 2.h,
                   ),
-                  CustomSlider()
+                  if (moodListController.error.isEmpty) MoodImage(),
+                  SizedBox(height: 30),
+                  if (moodListController.error.isEmpty) MoodTitle(),
+                  SizedBox(height: 10),
+                  if (moodListController.error.isEmpty) CustomSlider(),
+                  SizedBox(height: 30),
+                  Text(
+                    "Choose your correct mood".tr,
+                    style: SolhTextStyles.QS_body_semi_1,
+                  ),
+                  SizedBox(height: 10),
+                  SubMoodList(),
+                  SizedBox(height: 10),
+                  CommentBox(),
+                  SizedBox(height: 10),
+                  ContinueBtn(),
                 ]))));
   }
 }

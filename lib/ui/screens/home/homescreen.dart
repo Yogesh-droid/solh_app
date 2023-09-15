@@ -22,7 +22,6 @@ import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
 import 'package:solh/controllers/homepage/offer_carousel_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
-import 'package:solh/features/mood_meter/ui/controllers/slider_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/network/network.dart';
@@ -81,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final CreateGroupController controller = Get.put(CreateGroupController());
   final VideoTutorialController videoTutorialController =
       Get.put(VideoTutorialController());
-  final sliderController = Get.put(SliderController());
   MyDiaryController myDiaryController = Get.put(MyDiaryController());
   FeelingsController feelingsController = Get.put(FeelingsController());
   BookAppointmentController bookAppointmentController = Get.find();
