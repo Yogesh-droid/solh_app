@@ -1823,10 +1823,6 @@ class ChatAnonymouslyCard extends StatelessWidget {
                       children: [
                         getIssuesRowItem(
                             Image(
-                                image: AssetImage('assets/images/stress.png')),
-                            'Stress'.tr),
-                        getIssuesRowItem(
-                            Image(
                                 image:
                                     AssetImage('assets/images/saddness.png')),
                             'Sadness'.tr),
@@ -1835,6 +1831,10 @@ class ChatAnonymouslyCard extends StatelessWidget {
                                 image:
                                     AssetImage('assets/images/loneliness.png')),
                             'Loneliness'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image: AssetImage('assets/images/stress.png')),
+                            'Stress'.tr),
                         getIssuesRowItem(
                             Container(
                               decoration: BoxDecoration(
