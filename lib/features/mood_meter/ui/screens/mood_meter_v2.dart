@@ -94,7 +94,7 @@ class _MoodMeterV2State extends State<MoodMeterV2> {
                     height: 2.h,
                   ),
                   if (moodListController.error.isEmpty) MoodImage(),
-                  SizedBox(height: 30),
+                  SizedBox(height: 10),
                   if (moodListController.error.isEmpty) MoodTitle(),
                   SizedBox(height: 10),
                   if (moodListController.error.isEmpty) CustomSlider(),

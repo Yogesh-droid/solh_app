@@ -88,43 +88,13 @@ class InhouseContinueDetail extends StatelessWidget {
                 await _alliedController.createInhousePackageOrder(packages);
             print("inhouse $map");
             if (map['success']) {
-              // showDialog(
-              //     context: context,
-              //     builder: (context) {
-              //       return Card(
-              //         child: Container(
-              //           width: double.infinity,
-              //           decoration: BoxDecoration(
-              //               image: DecorationImage(
-              //                   fit: BoxFit.fill,
-              //                   image: AssetImage(
-              //                       'assets/images/ScaffoldBackgroundGreen.png'))),
-              //           child: Column(children: [
-              //             Image.asset('assets/images/thankripple.png'),
-              //             Text(
-              //               'Thank You',
-              //               style: SolhTextStyles.QS_head_4.copyWith(
-              //                   color: SolhColors.white),
-              //             ),
-              //             Padding(
-              //               padding: const EdgeInsets.all(18.0),
-              //               child: Text(
-              //                 "Your appointment has been successfully booked on ",
-              //                 style: SolhTextStyles.QS_cap_semi.copyWith(
-              //                     color: Colors.white),
-              //                 textAlign: TextAlign.center,
-              //               ),
-              //             ),
-              //           ]),
-              //         ),
-              //       );
-              //     });
               Future.delayed(Duration(seconds: 0), () {
                 Get.find<AppointmentController>().getUserAppointments();
 
                 Navigator.pushNamed(context, AppRoutes.paymentscreen,
                     arguments: {
-                      "amount": packages.discountedPrice! > 0
+                      "amount": packages.discountedPrice != null &&
+                              packages.discountedPrice! > 0
                           ? packages.discountedPrice.toString()
                           : packages.amount.toString(),
                       "feeCurrency": packages.currency,

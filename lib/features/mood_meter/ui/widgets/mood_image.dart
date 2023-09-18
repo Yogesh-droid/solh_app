@@ -12,8 +12,11 @@ class MoodImage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GetMoodListController getMoodListController = Get.find();
     return Obx(() => getMoodListController.selectedMood.value.media != null
-        ? CachedNetworkImage(
-            imageUrl: getMoodListController.selectedMood.value.media!)
+        ? SizedBox(
+            height: 200,
+            child: CachedNetworkImage(
+                imageUrl: getMoodListController.selectedMood.value.media!),
+          )
         : imageLoadingShimmer());
   }
 
@@ -22,7 +25,7 @@ class MoodImage extends StatelessWidget {
       baseColor: Colors.grey,
       highlightColor: Colors.white,
       child: Container(
-        height: 100,
+        height: 200,
         width: 100,
         child: Image.asset("assets/images/logo/solh-logo.png"),
       ),
