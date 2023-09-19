@@ -36,18 +36,6 @@ class TestHistoryDetails extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  // Align(
-                  //   alignment: Alignment.center,
-                  //   child: Text(
-                  //     'Your test result is given below. It is not exact,\n but close enough.'
-                  //         .tr,
-                  //     textAlign: TextAlign.center,
-                  //     style: SolhTextStyles.ProfileMenuGreyText,
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 10,
-                  // ),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     width: double.infinity,
@@ -60,72 +48,64 @@ class TestHistoryDetails extends StatelessWidget {
                           ? Center(
                               child: CircularProgressIndicator(),
                             )
-                          : Column(
-                              children: [
-                                Text(
-                                  // psychologyTestController
-                                  //         .testResultModel.value.result!.testResult ??
-                                  //     '',
-                                  psychologyTestController
-                                          .testHistoryResult.value[0].result ??
-                                      '',
-                                  // style: SolhTextStyles.GreenBorderButtonText,
-                                  style: SolhTextStyles.QS_big_body.copyWith(
-                                      color: SolhColors.primary_green),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                psychologyTestController
-                                            .testHistoryResult.value[0].image !=
-                                        null
-                                    ? ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                            psychologyTestController
-                                                .testHistoryResult
-                                                .value[0]
-                                                .image!),
-                                      )
-                                    : Container(),
-                                SizedBox(
-                                  height: 3.h,
-                                ),
-                                Container(
-                                  child: ReadMoreText(
-                                    psychologyTestController.testHistoryResult
-                                            .value[0].explaination ??
-                                        '',
-                                    style: SolhTextStyles.QS_body_1_bold,
-                                    trimMode: TrimMode.Line,
-                                    trimLines: 15,
-                                    textAlign: TextAlign.center,
-                                    lessStyle: SolhTextStyles
-                                        .JournalingDescriptionReadMoreText,
-                                    moreStyle: SolhTextStyles
-                                        .JournalingDescriptionReadMoreText,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5.h,
-                                )
-                              ],
-                            );
-                      // : Center(
-                      //     child: Text(
-                      //     psychologyTestController.testHistoryResult.isNotEmpty
-                      //         ? psychologyTestController
-                      //                 .testHistoryResult[0].result ??
-                      //             ''
-                      //         : 'No Result found',
-                      //     style: SolhTextStyles.GreenButtonText,
-                      //   ));
+                          : psychologyTestController.testHistoryResult.isEmpty
+                              ? SizedBox()
+                              : Column(
+                                  children: [
+                                    Text(
+                                      psychologyTestController
+                                              .testHistoryResult[0].result ??
+                                          '',
+                                      // style: SolhTextStyles.GreenBorderButtonText,
+                                      style:
+                                          SolhTextStyles.QS_big_body.copyWith(
+                                              color: SolhColors.primary_green),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    psychologyTestController
+                                                .testHistoryResult[0].image !=
+                                            null
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            child: Image.network(
+                                                psychologyTestController
+                                                    .testHistoryResult[0]
+                                                    .image!),
+                                          )
+                                        : Container(),
+                                    SizedBox(
+                                      height: 3.h,
+                                    ),
+                                    Container(
+                                      child: ReadMoreText(
+                                        psychologyTestController
+                                                .testHistoryResult[0]
+                                                .explaination ??
+                                            '',
+                                        style: SolhTextStyles.QS_body_1_bold,
+                                        trimMode: TrimMode.Line,
+                                        trimLines: 15,
+                                        textAlign: TextAlign.center,
+                                        lessStyle: SolhTextStyles
+                                            .JournalingDescriptionReadMoreText,
+                                        moreStyle: SolhTextStyles
+                                            .JournalingDescriptionReadMoreText,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5.h,
+                                    )
+                                  ],
+                                );
                     }),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
                   // Padding(
                   //   padding: const EdgeInsets.only(left: 18.0),
                   //   child: Align(
@@ -151,10 +131,11 @@ class TestHistoryDetails extends StatelessWidget {
                   //     ),
                   //   ),
                   // ),
-                  // Obx(() => psychologyTestController.testHistoryMoreTest.isNotEmpty
-                  //     ? getOtherTestWidget(
-                  //         psychologyTestController.testHistoryMoreTest.value)
-                  //     : Container()),
+                  // Obx(() =>
+                  //     psychologyTestController.testHistoryMoreTest.isNotEmpty
+                  //         ? getOtherTestWidget(
+                  //             psychologyTestController.testHistoryMoreTest)
+                  //         : Container()),
                 ],
               ),
             ),

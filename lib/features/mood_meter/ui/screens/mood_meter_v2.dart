@@ -10,7 +10,6 @@ import 'package:solh/features/mood_meter/ui/widgets/custom_slider.dart';
 import 'package:solh/features/mood_meter/ui/widgets/mood_image.dart';
 import 'package:solh/features/mood_meter/ui/widgets/mood_title.dart';
 import 'package:solh/features/mood_meter/ui/widgets/submood_list.dart';
-
 import '../../../../widgets_constants/constants/textstyles.dart';
 import '../widgets/comment_box.dart';
 

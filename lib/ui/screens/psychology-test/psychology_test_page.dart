@@ -231,14 +231,14 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
     );
   }
 
-  getTestHistoryContainer({required Map<String, Test> map}) {
+  getTestHistoryContainer({required Map<String, TestList> map}) {
     return Padding(
       padding: const EdgeInsets.only(right: 18.0, top: 18),
       child: InkWell(
         onTap: () {
           // psychologyTestController.getTestHistoryDetails(test.sId ?? '');
-          psychologyTestController
-              .getTestHistoryDetails(map.values.first.sId ?? '');
+          psychologyTestController.getTestHistoryDetails(
+              map.values.first.test!.sId ?? '', map.values.first.sId ?? '');
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TestHistoryDetails();
           }));
@@ -256,7 +256,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10)),
                 child: CachedNetworkImage(
-                  imageUrl: map.values.first.testPicture ?? '',
+                  imageUrl: map.values.first.test!.testPicture ?? '',
                   fit: BoxFit.fill,
                 ),
               ),
