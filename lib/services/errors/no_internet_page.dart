@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -37,8 +38,15 @@ class NoInternetPage extends StatelessWidget {
                           style: SolhTextStyles.GreenButtonText,
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
-                          onRetry();
+                          Connectivity()
+                              .checkConnectivity()
+                              .then((result) async {
+                            print(result.toString());
+                            if ((result != ConnectivityResult.none)) {
+                              Navigator.pop(context);
+                              onRetry();
+                            }
+                          });
                         },
                       )
                     : Container()

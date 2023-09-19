@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -35,7 +34,6 @@ import 'package:solh/widgets_constants/live_blink.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
-import '../constants/api.dart';
 import '../controllers/chat-list/chat_list_controller.dart';
 import '../controllers/connections/connection_controller.dart';
 import '../controllers/getHelp/book_appointment.dart';
@@ -43,11 +41,9 @@ import '../controllers/getHelp/get_help_controller.dart';
 import '../controllers/group/discover_group_controller.dart';
 import '../controllers/journals/journal_page_controller.dart';
 import '../routes/routes.dart';
-import '../services/network/network.dart';
 import '../widgets_constants/constants/org_only_setting.dart';
 import '../widgets_constants/constants/textstyles.dart';
 import '../widgets_constants/loader/my-loader.dart';
-import '../widgets_constants/solh_snackbar.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
