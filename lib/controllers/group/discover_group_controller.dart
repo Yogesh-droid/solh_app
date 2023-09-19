@@ -61,7 +61,7 @@ class DiscoverGroupController extends GetxController {
     if (joinedGroupNextPage != null) {
       loadingJoinedGroups.value = true;
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-          '${APIConstants.api}/api/joined-groupsv1?pageNumber=$joinedGroupNextPage&limit=10');
+          '${APIConstants.api}/api/joined-groupsv2?pageNumber=$joinedGroupNextPage&limit=10');
       loadingJoinedGroups.value = false;
       if (map['success']) {
         GetGroupResponseModel groupResponseModel =

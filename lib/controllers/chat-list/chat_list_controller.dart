@@ -11,6 +11,7 @@ class ChatListController extends GetxController {
   var isLoadingMoreChat = false.obs;
   var chatList = <ChatList>[].obs;
   var sosChatList = <ChatList>[].obs;
+  bool fromIDontKnow = false;
 
   int? nextPage;
 

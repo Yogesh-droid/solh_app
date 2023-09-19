@@ -5,10 +5,15 @@ class TestResultModel {
   Result? result;
   List<MoreTests>? moreTests;
 
-  TestResultModel({this.success, this.result, this.moreTests});
+  TestResultModel({
+    this.success,
+    this.result,
+    this.moreTests,
+  });
 
   TestResultModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+
     result =
         json['result'] != null ? new Result.fromJson(json['result']) : null;
     if (json['moreTests'] != null) {
@@ -36,13 +41,15 @@ class Result {
   String? testResult;
   String? explanation;
   int? score;
+  String? image;
 
-  Result({this.testResult, this.explanation, this.score});
+  Result({this.testResult, this.explanation, this.score, this.image});
 
   Result.fromJson(Map<String, dynamic> json) {
     testResult = json['testResult'];
     explanation = json['explanation'];
     score = json['score'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {

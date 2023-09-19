@@ -42,9 +42,15 @@ class TestResult {
   int? score;
   String? explaination;
   String? createdAt;
+  String? image;
 
   TestResult(
-      {this.sId, this.result, this.score, this.createdAt, this.explaination});
+      {this.sId,
+      this.result,
+      this.score,
+      this.createdAt,
+      this.explaination,
+      this.image});
 
   TestResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -52,6 +58,7 @@ class TestResult {
     score = json['score'];
     createdAt = json['createdAt'];
     explaination = json['explaination'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {

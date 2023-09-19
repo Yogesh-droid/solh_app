@@ -13,6 +13,8 @@ import '../../../../widgets_constants/solh_snackbar.dart';
 class ProfileSetupController extends GetxController {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailTextEditingController =
+      TextEditingController();
   var dobDate = DateTime.now().obs;
 
   var needSupportOnModel = NeedSupportOnModel().obs;

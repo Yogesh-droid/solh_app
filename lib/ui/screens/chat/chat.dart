@@ -145,7 +145,11 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (widget._nowChat != null) {
+        if (Get.find<ChatListController>().fromIDontKnow &&
+            _controller.firstMsgSent == false) {
+          Navigator.of(context).pop();
+          Navigator.of(context).pop();
+        } else if (widget._nowChat != null) {
           Navigator.of(context).pop();
         } else if (_controller.firstMsgSent == false && widget._isAnonChat) {
           Navigator.of(context).pop();
@@ -301,7 +305,11 @@ class ChatAppbar extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: (() async {
-                    if (_nowChat != null) {
+                    if (Get.find<ChatListController>().fromIDontKnow &&
+                        _controller.firstMsgSent == false) {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
+                    } else if (_nowChat != null) {
                       Navigator.of(context).pop();
                     } else if (_isAnonChat == true &&
                         profileController.myProfileModel.value.body!.user!

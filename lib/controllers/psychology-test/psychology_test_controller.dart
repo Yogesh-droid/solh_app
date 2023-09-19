@@ -11,7 +11,9 @@ import '../../model/psychology-test/testHistory_result_model.dart';
 class PsychologyTestController extends GetxController {
   var testList = <TestList>[].obs;
   var testHistorylist = <Map<String, Test>>[].obs;
+  PsychologyTestModel? psychologyTest;
   var questionList = <TestQuestionList>[].obs;
+  TestQuestionModel? testQuestionModel;
   var isLoadingList = false.obs;
   var isQuestionsLoading = false.obs;
   var selectedTestname = ''.obs;
@@ -60,10 +62,10 @@ class PsychologyTestController extends GetxController {
     questionList.clear();
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/psychologicalTest?testId=$id");
-    TestQuestionModel testQuestionModel = TestQuestionModel.fromJson(map);
-    selectedTestname.value = testQuestionModel.testDetail!.testTitle ?? '';
+    testQuestionModel = TestQuestionModel.fromJson(map);
+    selectedTestname.value = testQuestionModel?.testDetail!.testTitle ?? '';
 
-    testQuestionModel.testDetail!.testQuestionList!.forEach((element) {
+    testQuestionModel?.testDetail!.testQuestionList!.forEach((element) {
       questionList.add(element);
     });
     questionList.refresh();
@@ -73,10 +75,10 @@ class PsychologyTestController extends GetxController {
   Future<void> submitTest(String id) async {
     isResultLoading.value = true;
     Map<String, dynamic> map = await Network.makePostRequestWithToken(
-        url: '${APIConstants.api}/api/app/submit-test?testId=$id',
+        url: '${APIConstants.api}/api/v1/app/submit-test?testId=$id',
         body: {"score": score, "testData": submitAnswerModelList},
         isEncoded: true);
-
+    print(map);
     testResultModel.value = TestResultModel.fromJson(map);
     isResultLoading.value = false;
   }
@@ -84,7 +86,7 @@ class PsychologyTestController extends GetxController {
   Future<void> getTestHistoryDetails(String id) async {
     isHistoryResultLoading.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-      '${APIConstants.api}/api/track-result?test=$id',
+      '${APIConstants.api}/api/v1/track-result?test=$id',
     );
 
     TestHistoryResultModel testHistoryResultModel =
