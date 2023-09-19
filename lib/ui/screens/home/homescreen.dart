@@ -2198,6 +2198,7 @@ class AnonymousDialog extends StatelessWidget {
                 //             "formAnonChat": true,
                 //             "indexOfpage": 0,
                 //           });
+                Navigator.of(context).pop();
                 profileController.myProfileModel.value.body!.user!.anonymous ==
                         null
                     ? Navigator.pushNamed(context, AppRoutes.anonymousProfile,

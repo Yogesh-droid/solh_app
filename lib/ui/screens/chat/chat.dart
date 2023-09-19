@@ -324,7 +324,7 @@ class ChatAppbar extends StatelessWidget {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
                       }
-                      Navigator.of(context).pop();
+                      // Navigator.of(context).pop();
                     }
                     _controller.firstMsgSent = false;
                   }),
