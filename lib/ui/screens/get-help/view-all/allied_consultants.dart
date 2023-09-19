@@ -88,7 +88,7 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
                                   .issueModel.value.alliedProviders !=
                               null
                           ? Text(
-                              "${searchMarketController.issueModel.value.totalAllied} ${widget.name}",
+                              "${searchMarketController.issueModel.value.totalAllied} Providers",
                               style: SolhTextStyles.QS_cap_2_semi.copyWith(
                                   color: SolhColors.Grey_1),
                             )
