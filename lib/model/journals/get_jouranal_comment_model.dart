@@ -23,6 +23,7 @@ class Body {
   int? totalComments;
   int? previousPage;
   int? nextPage;
+  int? totalLikes;
   List<Comments>? comments;
   BestComment? bestComment;
   Body(
@@ -30,10 +31,12 @@ class Body {
       this.comments,
       this.bestComment,
       this.nextPage,
+      this.totalLikes,
       this.previousPage});
 
   Body.fromJson(Map<String, dynamic> json) {
     totalComments = json['totalComments'];
+    totalLikes = json['totalLikes'];
     previousPage =
         json['previous'] != null ? json['previous']['pageNumber'] : null;
     nextPage = json['next'] != null ? json['next']['pageNumber'] : null;

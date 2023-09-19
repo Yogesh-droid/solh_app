@@ -35,6 +35,7 @@ class JournalCommentController extends GetxController {
   var nomalProfileRadius = 4.w.obs;
   int previousPage = -2;
   int nextPage = 1;
+  var noOfLikes = 0.obs;
 
   Future<void> getJournalComment(
       {required String postId,
@@ -42,19 +43,16 @@ class JournalCommentController extends GetxController {
       bool? shouldRefresh,
       int? page}) async {
     if (nextPage == 0 && shouldRefresh == null && page == null) {
-      print("previousPage is ${previousPage}");
-      print("nextPage is ${nextPage}");
       return;
     }
     if (previousPage == -2) {
       isLoading.value = true;
     }
     try {
-      print("------------------------  ${isLoading.value}");
-      print("------------------------  ${previousPage}");
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/v1/get-parent?journal=$postId&pageNumber=${page ?? pageNo}");
       getJouranalsCommentModel.value = GetJouranalsCommentModel.fromJson(map);
+      noOfLikes.value = getJouranalsCommentModel.value.body!.totalLikes ?? 0;
       if (page == null) {
         commentList.addAll(getJouranalsCommentModel.value.body!.comments ?? []);
       } else {
@@ -66,7 +64,6 @@ class JournalCommentController extends GetxController {
       previousPage = getJouranalsCommentModel.value.body!.previousPage ?? 0;
       getJournalcommentStatus = 0;
     } on Exceptions catch (e) {
-      print(e.getStatus());
       getJournalcommentStatus = e.getStatus();
     }
 

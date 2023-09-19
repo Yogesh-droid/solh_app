@@ -251,7 +251,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                                         isReply: false);
                                                 getComments();
                                                 _journalPageController
-                                                    .journalsList.value
+                                                    .journalsList
                                                     .forEach((element) {
                                                   if (element.id ==
                                                       widget
@@ -344,7 +344,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                 getComments();
                                                                 _journalPageController
                                                                     .journalsList
-                                                                    .value
                                                                     .forEach(
                                                                         (element) {
                                                                   if (element
@@ -450,7 +449,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                       .refresh();
                                                                   _journalPageController
                                                                       .journalsList
-                                                                      .value
                                                                       .forEach(
                                                                           (element) {
                                                                     if (element
@@ -967,18 +965,14 @@ class CommentBoxWidget extends StatelessWidget {
     required this.index,
     required this.onDeleteTapped,
   })  : _commentModel = commentModel,
-        _isUserPost = isUserPost,
         _journalModel = journalModel,
-        _deleteComment = deleteComment,
         _makeBestComment = makeBestComment,
         _bestComment = bestComment,
         super(key: key);
 
-  final VoidCallback? _deleteComment;
   final Journals _journalModel;
   final VoidCallback _makeBestComment;
   final Comments? _commentModel;
-  final bool _isUserPost;
   final BestComment? _bestComment;
   final Function(String id, String userName, String userId) onReplyTapped;
   final Function(String id, bool? isReply) onDeleteTapped;
@@ -1008,18 +1002,17 @@ class CommentBoxWidget extends StatelessWidget {
                               0 &&
                           journalCommentController.hiddenBestCommentReply.value
                       ? getReplyView(
-                          journalCommentController.bestCommentReplyList.value,
+                          journalCommentController.bestCommentReplyList,
                           onReplyTapped,
                           context)
                       : Container();
                 })
               : Obx(() {
-                  return journalCommentController
-                                  .repliesList.value[index].length >
+                  return journalCommentController.repliesList[index].length >
                               0 &&
                           journalCommentController.hiddenReplyList[index]
                       ? getReplyView(
-                          journalCommentController.repliesList.value[index],
+                          journalCommentController.repliesList[index],
                           onReplyTapped,
                           context)
                       : Container();
@@ -1463,7 +1456,45 @@ class _PostForCommentState extends State<PostForComment> {
     return InkWell(
       onTap: () async {
         if (widget.index == -1) {
-          widget._journalModel!.isLiked = true;
+          if (!(widget._journalModel!.isLiked!)) {
+            widget._journalModel!.isLiked = true;
+            widget._journalModel!.likes = widget._journalModel!.likes! + 1;
+            String message = await journalCommentController.likePost(
+                journalId: widget._journalModel!.id ?? '',
+                reaction: '63bd50068bc9de38d95671a8');
+            if (message != 'journal liked successfully' &&
+                message != "Already liked the journal") {
+              widget._journalModel!.isLiked = false;
+              widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+              FirebaseAnalytics.instance.logEvent(
+                  name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
+            } else {
+              Utility.showToast(message);
+            }
+            setState(() {});
+            // update journals on journaling
+            _journalPageController.journalsList.forEach((element) {
+              if (element.id == widget._journalModel!.id) {
+                element.likes = element.likes! + 1;
+                element.isLiked = true;
+                _journalPageController.journalsList.refresh();
+              }
+            });
+          } else {
+            widget._journalModel!.isLiked = false;
+            widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+            await journalCommentController.unLikePost(
+                journalId: widget._journalModel!.id ?? '');
+            setState(() {});
+            _journalPageController.journalsList.forEach((element) {
+              if (element.id == widget._journalModel!.id) {
+                element.likes = element.likes! - 1;
+                element.isLiked = false;
+                _journalPageController.journalsList.refresh();
+              }
+            });
+          }
+          /* widget._journalModel!.isLiked = true;
           widget._journalModel!.likes = widget._journalModel!.likes! + 1;
           String message = await journalCommentController.likePost(
               journalId: widget._journalModel!.id ?? '',
@@ -1477,7 +1508,7 @@ class _PostForCommentState extends State<PostForComment> {
           } else {
             Utility.showToast(message);
           }
-          setState(() {});
+          setState(() {}); */
         } else if (_journalPageController.journalsList[widget.index].isLiked ==
             false) {
           _journalPageController.journalsList[widget.index].likes =
@@ -1676,6 +1707,7 @@ class _PostForCommentState extends State<PostForComment> {
           child: Text(
             widget._journalModel!.group != null
                 ? isGroupJoined
+                    // ignore: dead_code
                     ? 'Go To Group'
                     : 'join'
                 : "Connect",
