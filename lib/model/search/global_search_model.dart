@@ -228,9 +228,9 @@ class Connection {
   String? lastName;
   String? deviceId;
   bool? featured;
-  List<Null>? hiddenPosts;
+  List? hiddenPosts;
   bool? isProvider;
-  List<Null>? reports;
+  List? reports;
   String? onesignalDeviceId;
   String? anonymous;
   String? deviceType;
@@ -407,7 +407,7 @@ class GroupCount {
   List<String>? groupMembers;
   List<String>? groupTags;
   String? groupType;
-  Null journalCount;
+  var journalCount;
   String? groupName;
   String? groupDescription;
   String? groupMediaUrl;

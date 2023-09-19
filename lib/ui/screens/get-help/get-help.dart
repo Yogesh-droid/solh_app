@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
@@ -115,11 +116,15 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
             ),
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                   margin: EdgeInsets.only(bottom: 1.5.h),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Obx(() {
                     return Wrap(
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
                       runSpacing: 5,
                       children: getHelpController.issueList.map((issue) {
                         return IssuesTile(
@@ -142,12 +147,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     );
                   })),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 7.w),
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
                 child: Row(
                   children: [
                     IssuesTile(
                         title: "I don't know".tr,
                         onPressed: (() {
+                          Get.find<ChatListController>().fromIDontKnow = true;
                           profileController.myProfileModel.value.body!.user!
                                       .anonymous ==
                                   null

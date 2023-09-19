@@ -52,7 +52,7 @@ class NameField extends StatelessWidget {
                 });
 
                 if (response) {
-                  Navigator.pushNamed(context, AppRoutes.dobField);
+                  Navigator.pushNamed(context, AppRoutes.addEmailOnboarding);
                   FirebaseAnalytics.instance.logEvent(
                       name: 'OnBoardingNameDone',
                       parameters: {'Page': 'OnBoarding'});
