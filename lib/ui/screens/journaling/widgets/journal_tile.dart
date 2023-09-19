@@ -591,6 +591,7 @@ class _JournalTileState extends State<JournalTile> {
                     journalPageController.journalsList[widget.index].likes! + 1;
                 journalPageController.journalsList[widget.index].isLiked = true;
                 journalPageController.journalsList.refresh();
+                
                 String message = await journalCommentController.likePost(
                     journalId: widget._journalModel!.id ?? '',
                     reaction: '63bd50068bc9de38d95671a8');

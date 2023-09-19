@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,9 +24,10 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
-import '../mood-meter/mood_meter.dart';
+import '../../../features/mood_meter/ui/screens/mood_meter_v2.dart';
 
 class Journaling extends StatefulWidget {
   const Journaling({Key? key}) : super(key: key);
@@ -160,7 +162,7 @@ class _JournalingState extends State<Journaling> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MoodMeter()));
+                                      builder: (context) => MoodMeterV2()));
                               FirebaseAnalytics.instance.logEvent(
                                   name: 'MoodMeterOpenTapped',
                                   parameters: {'Page': 'MoodMeter'});

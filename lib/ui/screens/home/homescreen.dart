@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -45,6 +47,7 @@ import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
+
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -55,6 +58,7 @@ import '../../../controllers/journals/journal_page_controller.dart';
 import '../../../controllers/mood-meter/mood_meter_controller.dart';
 import '../../../controllers/my_diary/my_diary_controller.dart';
 import '../../../controllers/video/video_tutorial_controller.dart';
+import '../../../features/mood_meter/ui/screens/mood_meter_v2.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/org_only_setting.dart';
@@ -64,9 +68,7 @@ import '../get-help/widgets/specialization_card_with_discount.dart';
 import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
-import '../mood-meter/mood_meter.dart';
 import '../psychology-test/test_question_page.dart';
-import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -91,6 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
+
   final HomeController homeController = Get.find();
   LiveStreamController liveStreamController = Get.find();
 
@@ -140,10 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
           showGeneralDialog(
               context: context,
               pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(
-                    body: MoodMeter(
-                  args: {},
-                ));
+                return Scaffold(body: MoodMeterV2());
               });
         }
 
@@ -223,7 +223,7 @@ class _HomePageState extends State<HomePage> {
             },
             onMoodMeterTapped: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MoodMeter()));
+                  MaterialPageRoute(builder: (context) => MoodMeterV2()));
               FirebaseAnalytics.instance.logEvent(
                   name: 'MoodMeterOpenTapped',
                   parameters: {'Page': 'MoodMeter'});
@@ -600,9 +600,9 @@ class _HomePageState extends State<HomePage> {
             context: context,
             builder: (context) {
               return Dialog(
+                insetPadding: EdgeInsets.all(8),
                 child: InkWell(
                   onTap: () async {
-                    print('it tapped 1');
                     if (value["redirectTo"] == "gethelp") {
                       Navigator.of(context).pop();
                       Get.find<BottomNavigatorController>().activeIndex.value =
@@ -642,25 +642,28 @@ class _HomePageState extends State<HomePage> {
                           context, AppRoutes.videoPlaylist);
                     }
                   },
-                  child: Container(
-                    height: 595,
-                    width: 375,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                  child: Stack(alignment: Alignment.center, children: [
+                    announcementMedia(value),
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: SolhColors.grey_3, shape: BoxShape.circle),
+                          child: Center(
+                            child: Icon(
+                              Icons.close,
                             ),
                           ),
-                          Expanded(child: announcementMedia(value))
-                        ]),
-                  ),
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
               );
             });
@@ -1820,10 +1823,6 @@ class ChatAnonymouslyCard extends StatelessWidget {
                       children: [
                         getIssuesRowItem(
                             Image(
-                                image: AssetImage('assets/images/stress.png')),
-                            'Stress'.tr),
-                        getIssuesRowItem(
-                            Image(
                                 image:
                                     AssetImage('assets/images/saddness.png')),
                             'Sadness'.tr),
@@ -1832,6 +1831,10 @@ class ChatAnonymouslyCard extends StatelessWidget {
                                 image:
                                     AssetImage('assets/images/loneliness.png')),
                             'Loneliness'.tr),
+                        getIssuesRowItem(
+                            Image(
+                                image: AssetImage('assets/images/stress.png')),
+                            'Stress'.tr),
                         getIssuesRowItem(
                             Container(
                               decoration: BoxDecoration(

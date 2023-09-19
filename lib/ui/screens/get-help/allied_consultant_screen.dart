@@ -10,14 +10,18 @@ import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
-import 'package:solh/ui/screens/get-help/allied_booking_continue_details.dart';
 import 'package:solh/ui/screens/profile-setup/email.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
+
+import '../../../routes/routes.dart';
 import '../../../widgets_constants/appbars/app-bar.dart';
+import '../../../widgets_constants/constants/default_org.dart';
+import '../../../widgets_constants/loader/my-loader.dart';
+import '../my-profile/appointments/controller/appointment_controller.dart';
 
 class AlliedConsultantScreen extends StatefulWidget {
   AlliedConsultantScreen({super.key, required this.args});
@@ -127,10 +131,6 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                       ],
                     ),
                     Spacer(),
-                    // SolhGreenBorderButton(
-                    //     width: 80,
-                    //     height: 40,
-                    //     child: SvgPicture.asset("assets/images/query.svg")),
                     SizedBox(
                       width: 10,
                     ),
@@ -145,11 +145,6 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                             )
                           ]),
                       onPressed: () {
-                        print(_emailFocusNode.hasFocus);
-                        if (!_emailFocusNode.hasFocus) {
-                          _emailFocusNode.requestFocus();
-                        }
-
                         showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
@@ -227,13 +222,20 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                               .userEmail.value))
                                                   ? SolhColors.dark_grey
                                                   : SolhColors.primary_green,
-                                              child: Text(
-                                                "Continue".tr,
-                                                style: SolhTextStyles.CTA
-                                                    .copyWith(
-                                                        color: Colors.white),
-                                              ),
-                                              onPressed: () {
+                                              child: _alliedController
+                                                      .isAlliedBooking.value
+                                                  ? MyLoader(
+                                                      radius: 8,
+                                                      strokeWidth: 2,
+                                                    )
+                                                  : Text(
+                                                      "Continue".tr,
+                                                      style: SolhTextStyles.CTA
+                                                          .copyWith(
+                                                              color:
+                                                                  Colors.white),
+                                                    ),
+                                              onPressed: () async {
                                                 if (_alliedController.userEmail
                                                     .value.isNotEmpty) {
                                                   if (!emailVarification(
@@ -245,7 +247,109 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                     return;
                                                   } else {
                                                     _emailFocusNode.unfocus();
-                                                    Navigator.push(context,
+                                                    try {
+                                                      Map<String, dynamic> map =
+                                                          await _alliedController
+                                                              .createPackageOrder(_alliedController
+                                                                      .packagesListModel
+                                                                      .value
+                                                                      .finalResult!
+                                                                      .packages![
+                                                                  _alliedController
+                                                                      .selectedPackageIndex]);
+                                                      if (map['success']) {
+                                                        Navigator.pushNamed(
+                                                            context,
+                                                            AppRoutes
+                                                                .paymentscreen,
+                                                            arguments: {
+                                                              "amount": _alliedController
+                                                                          .packagesListModel
+                                                                          .value
+                                                                          .finalResult!
+                                                                          .packages![_alliedController
+                                                                              .selectedPackageIndex]
+                                                                          .afterDiscountPrice! >
+                                                                      0
+                                                                  ? _alliedController
+                                                                      .packagesListModel
+                                                                      .value
+                                                                      .finalResult!
+                                                                      .packages![
+                                                                          _alliedController
+                                                                              .selectedPackageIndex]
+                                                                      .afterDiscountPrice
+                                                                      .toString()
+                                                                  : _alliedController
+                                                                      .packagesListModel
+                                                                      .value
+                                                                      .finalResult!
+                                                                      .packages![
+                                                                          _alliedController
+                                                                              .selectedPackageIndex]
+                                                                      .amount
+                                                                      .toString(),
+                                                              "feeCurrency": _alliedController
+                                                                  .packagesListModel
+                                                                  .value
+                                                                  .finalResult!
+                                                                  .packages![
+                                                                      _alliedController
+                                                                          .selectedPackageIndex]
+                                                                  .currency,
+                                                              "alliedOrderId": map[
+                                                                      'data'][
+                                                                  "alliedOrderId"],
+                                                              "appointmentId":
+                                                                  null,
+                                                              "inhouseOrderId":
+                                                                  null,
+                                                              "marketplaceType":
+                                                                  "Allied",
+                                                              'original_price': _alliedController
+                                                                  .packagesListModel
+                                                                  .value
+                                                                  .finalResult!
+                                                                  .packages![
+                                                                      _alliedController
+                                                                          .selectedPackageIndex]
+                                                                  .amount,
+                                                              'organisation':
+                                                                  DefaultOrg
+                                                                          .defaultOrg ??
+                                                                      '',
+                                                              "paymentGateway":
+                                                                  "Stripe",
+                                                              "paymentSource":
+                                                                  "App",
+                                                              "feeCode": _alliedController
+                                                                  .packagesListModel
+                                                                  .value
+                                                                  .finalResult!
+                                                                  .packages![
+                                                                      _alliedController
+                                                                          .selectedPackageIndex]
+                                                                  .feeCode
+                                                            });
+                                                        _alliedController
+                                                            .isAlliedBooking(
+                                                                false);
+                                                        Future.delayed(
+                                                            Duration(
+                                                                seconds: 2),
+                                                            () {
+                                                          Get.find<
+                                                                  AppointmentController>()
+                                                              .getUserAppointments();
+                                                        });
+                                                      } else {
+                                                        Utility.showToast(
+                                                            map['message']);
+                                                      }
+                                                    } on Exception catch (e) {
+                                                      print(e.toString());
+                                                    }
+                                                    /* Navigator.push(context,
                                                         MaterialPageRoute(
                                                             builder: (context) {
                                                       return AlliedBookingContinueDetail(
@@ -261,7 +365,7 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                                                                   .packages![
                                                               _alliedController
                                                                   .selectedPackageIndex]);
-                                                    }));
+                                                    })); */
                                                   }
                                                 } else {
                                                   Utility.showToast(
@@ -578,19 +682,9 @@ class PackageCard extends StatelessWidget {
                               alignment: Alignment.topRight,
                               child: SolhGreenButton(
                                 height: 40,
-                                width: 50,
                                 child: AnimatedSwitcher(
                                   duration: Duration(seconds: 5),
-                                  child:
-                                      // _alliedController.selectedPackage.value ==
-                                      //         package!.sId
-                                      //     ? Text(
-                                      //         'Hide'.tr,
-                                      //         style: SolhTextStyles.CTA
-                                      //             .copyWith(color: Colors.white),
-                                      //       )
-                                      //     :
-                                      Text(
+                                  child: Text(
                                     'Select'.tr,
                                     style: SolhTextStyles.CTA
                                         .copyWith(color: Colors.white),

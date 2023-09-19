@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/chat-anonymously/chat-anon-controller/chat_anon_controller.dart';
-import 'package:solh/ui/screens/mood-meter/mood_meter.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -14,6 +12,8 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:solh/widgets_constants/solh_snackbar.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
+
+import '../../../../features/mood_meter/ui/screens/mood_meter_v2.dart';
 
 class ChatAnonIssues extends StatefulWidget {
   ChatAnonIssues({Key? key}) : super(key: key);
@@ -56,39 +56,7 @@ class _ChatAnonIssuesState extends State<ChatAnonIssues> {
                     showGeneralDialog(
                         context: context,
                         pageBuilder: (context, animation, secondaryAnimation) {
-                          return Scaffold(
-                              body: MoodMeter(
-                            args: {
-                              "continueAction": () {
-                                if (profileController.myProfileModel.value.body!
-                                        .user!.anonymous ==
-                                    null) {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.anonymousProfile,
-                                      arguments: {
-                                        "indexOfpage": 0,
-                                        "formAnonChat": true,
-                                      });
-                                } else {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.chatUser,
-                                      arguments: {
-                                        "imageUrl": chatAnonController
-                                            .chatAnonModel
-                                            .value
-                                            .sosChatSupport!
-                                            .first
-                                            .profilePicture,
-                                        "name": chatAnonController.chatAnonModel
-                                            .value.sosChatSupport!.first.name,
-                                        "sId": chatAnonController.chatAnonModel
-                                            .value.sosChatSupport!.first.sId,
-                                        "isAnonChat": true
-                                      });
-                                }
-                              }
-                            },
-                          ));
+                          return Scaffold(body: MoodMeterV2());
                         });
                   } else {
                     SolhSnackbar.error('Error', 'Something went wrong');

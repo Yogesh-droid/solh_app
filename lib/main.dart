@@ -17,6 +17,7 @@ import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
+import 'package:solh/core/di/get_it_imports.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
@@ -42,6 +43,7 @@ GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   print("Main is Running");
+  setup();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
@@ -163,78 +165,6 @@ class _SolhAppState extends State<SolhApp> {
             iconTheme: IconThemeData(color: Colors.black),
           ),
         ),
-        /* child: FutureBuilder<bool>(
-          future: checkConnectivity(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return MaterialApp(
-                home: Scaffold(
-                    body: Center(
-                  child: SolhGradientLoader(),
-                )),
-              );
-            } else if (snapshot.hasData) {
-              return GetMaterialApp(
-                debugShowCheckedModeBanner: false,
-                navigatorKey: globalNavigatorKey,
-                locale: AppLocale.appLocale,
-                translations: Languages(),
-                fallbackLocale: const Locale('en', 'US'),
-                title: 'Solh Wellness',
-                initialRoute:
-                    snapshot.data! ? AppRoutes.master : AppRoutes.getStarted,
-                onGenerateRoute: RouteGenerator.generateRoute,
-                navigatorObservers: [
-                  FirebaseAnalyticsObserver(analytics: analytics)
-                ],
-                theme: ThemeData(
-                  progressIndicatorTheme: ProgressIndicatorThemeData(
-                      color: SolhColors.primary_green),
-                  textTheme: TextTheme(
-                      bodyMedium: TextStyle(
-                        color: SolhColors.black666,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      displayLarge: TextStyle(
-                        color: SolhColors.black53,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      displayMedium: TextStyle(
-                        color: SolhColors.primary_green,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      bodyLarge: TextStyle(
-                        color: SolhColors.black666,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w800,
-                      ),
-                      displaySmall: SolhTextStyles.QS_body_1_bold),
-                  switchTheme: SwitchThemeData(
-                    thumbColor: MaterialStateProperty.all<Color>(
-                        SolhColors.primary_green),
-                    trackColor:
-                        MaterialStateProperty.all<Color>(SolhColors.grey_3),
-                  ),
-                  scaffoldBackgroundColor: Colors.white,
-                  fontFamily: GoogleFonts.quicksand().fontFamily,
-                  primaryColor: SolhColors.primary_green,
-                  buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-                  iconTheme: IconThemeData(color: Colors.black),
-                ),
-              );
-            } else {
-              return MaterialApp(
-                home: Scaffold(
-                    body: Center(
-                  child: Text("Error Page"),
-                )),
-              );
-            }
-          },
-        ), */
       );
     });
   }

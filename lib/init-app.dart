@@ -1,11 +1,8 @@
 import 'dart:io';
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:solh/bloc/user-bloc.dart';
-
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'services/user/session-cookie.dart';
 

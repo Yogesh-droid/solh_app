@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,7 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_trimmer/video_trimmer.dart';
+
 import '../../../controllers/profile/anon_controller.dart';
 import '../../../model/journals/journals_response_model.dart';
 import '../../../model/profile/my_profile_model.dart';
@@ -40,6 +42,7 @@ import '../profile-setup/add-profile-photo.dart';
 import '../profile-setup/enter-full-name.dart';
 import 'trimmer_view.dart';
 
+// ignore: must_be_immutable
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen(
       {Key? key, this.croppedFile, this.map, this.isPostedFromDiaryDetails})
@@ -83,7 +86,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       if (widget.isPostedFromDiaryDetails == null) {
         journalPageController.selectedDiary.value = Journals();
         _customFeelingController.clear();
-        feelingsController.selectedFeelingsId.value.clear();
+        feelingsController.selectedFeelingsId.clear();
         _searchController.clear();
         journalPageController.descriptionController.clear();
       }
@@ -209,7 +212,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   if (journalPageController
                                           .descriptionController.text.isEmpty &&
                                       feelingsController
-                                          .selectedFeelingsId.value.isEmpty &&
+                                          .selectedFeelingsId.isEmpty &&
                                       _croppedFile == null) {
                                     Utility.showToast(
                                         "Please fill one of the fields");
@@ -249,7 +252,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     if (_croppedFile != null ||
         journalPageController.selectedDiary.value.mediaType != null) {
       List<String> feelings = [];
-      feelingsController.selectedFeelingsId.value.forEach((element) {
+      feelingsController.selectedFeelingsId.forEach((element) {
         feelings.add(element);
       });
       CreateJournal _createJournal = CreateJournal(
@@ -294,7 +297,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
     } else {
       List<String> feelings = [];
-      feelingsController.selectedFeelingsId.value.forEach((element) {
+      feelingsController.selectedFeelingsId.forEach((element) {
         feelings.add(element);
       });
       CreateJournal _createJournal = CreateJournal(
@@ -1028,11 +1031,11 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                         backgroundColor: Color(0xFFEFEFEF),
                         showCheckmark: false,
                         label: Text(feelingsController
-                                .feelingsList.value[index].feelingName ??
+                                .feelingsList[index].feelingName ??
                             ''),
-                        labelStyle: feelingsController.selectedFeelingsId.value
-                                .contains(feelingsController
-                                    .feelingsList.value[index].sId!)
+                        labelStyle: feelingsController.selectedFeelingsId
+                                .contains(
+                                    feelingsController.feelingsList[index].sId!)
                             ? Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
@@ -1041,18 +1044,15 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
                         onSelected: (value) {
                           widget._onFeelingsChanged.call(_selectedFeeling);
                           feelingsController.selectedFeelingsId.contains(
-                                  feelingsController
-                                      .feelingsList.value[index].sId)
+                                  feelingsController.feelingsList[index].sId)
                               ? feelingsController.selectedFeelingsId.remove(
-                                  feelingsController
-                                      .feelingsList.value[index].sId)
+                                  feelingsController.feelingsList[index].sId)
                               : feelingsController.selectedFeelingsId.add(
-                                  feelingsController
-                                      .feelingsList.value[index].sId);
+                                  feelingsController.feelingsList[index].sId);
                         },
-                        selected: feelingsController.selectedFeelingsId.value
-                            .contains(feelingsController
-                                .feelingsList.value[index].sId!)),
+                        selected: feelingsController.selectedFeelingsId
+                            .contains(
+                                feelingsController.feelingsList[index].sId!)),
                   ),
                 ),
               );
@@ -1081,8 +1081,7 @@ class _FeelingsContainerState extends State<FeelingsContainer> {
               child: Text('Delete'),
               onPressed: () {
                 feelingsController.deleteCustomFeeling(
-                    feelingsController.feelingsList.value[index].sId ?? '',
-                    index);
+                    feelingsController.feelingsList[index].sId ?? '', index);
                 Navigator.of(context).pop();
               },
             ),
@@ -1126,21 +1125,27 @@ class _UsernameHeaderState extends State<UsernameHeader> {
               SizedBox(
                 width: 2.w,
               ),
-              Obx(() => profileController.myProfileModel.value.body != null
-                  ? Text(
-                      journalPageController.isAnonymousSelected == true
-                          ? (profileController.myProfileModel.value.body!.user!
-                                  .anonymous!.userName!.isNotEmpty
-                              ? profileController.myProfileModel.value.body!
-                                  .user!.anonymous!.userName!
-                              : 'Anonymous')
-                          : profileController
-                                  .myProfileModel.value.body!.user!.name ??
-                              "",
-                      style: SolhTextStyles.JournalingUsernameText.copyWith(
-                          fontWeight: FontWeight.normal, fontSize: 14),
-                    )
-                  : Container()),
+              SizedBox(
+                width: 110,
+                child: Obx(
+                    () => profileController.myProfileModel.value.body != null
+                        ? Text(
+                            journalPageController.isAnonymousSelected == true
+                                ? (profileController.myProfileModel.value.body!
+                                        .user!.anonymous!.userName!.isNotEmpty
+                                    ? profileController.myProfileModel.value
+                                        .body!.user!.anonymous!.userName!
+                                    : 'Anonymous')
+                                : profileController.myProfileModel.value.body!
+                                        .user!.name ??
+                                    "",
+                            style:
+                                SolhTextStyles.JournalingUsernameText.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
+                          )
+                        : Container()),
+              ),
             ],
           ),
           Column(
@@ -1149,7 +1154,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
             children: [
               Container(
                 height: 4.5.h,
-                width: 35.w,
+                width: 37.w,
                 padding: EdgeInsets.symmetric(horizontal: 4.w),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -1159,7 +1164,7 @@ class _UsernameHeaderState extends State<UsernameHeader> {
                 child: DropdownButton(
                     isExpanded: true,
                     icon: Icon(CupertinoIcons.chevron_down),
-                    iconSize: 18,
+                    iconSize: 14,
                     iconEnabledColor: SolhColors.primary_green,
                     underline: SizedBox(),
                     value: journalPageController.selectedGroupId.value == ''
@@ -1330,15 +1335,6 @@ class GetNormalStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // isAnonymousSelected
-        //     ? GetCircleImg(
-        //         radius: normalRadius,
-        //         imgUrl: userModel!.profilePicture ??
-        //             "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
-        //         top: normalTop,
-        //         left: normalLeft,
-        //       )
-        //     :
         GetCircleImg(
           radius: anonRadius,
           imgUrl: userModel!.anonymous != null
@@ -1348,17 +1344,6 @@ class GetNormalStack extends StatelessWidget {
           top: anonTop,
           left: anonLeft,
         ),
-        // isAnonymousSelected
-        //     ? GetCircleImg(
-        //         radius: anonRadius,
-        //         imgUrl: userModel!.anonymous != null
-        //             ? userModel!.anonymous!.profilePicture ??
-        //                 "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"
-        //             : "https://solh.s3.amazonaws.com/groupMedia/1653644939579",
-        //         top: anonTop,
-        //         left: anonLeft,
-        //       )
-        //     :
         GetCircleImg(
           radius: normalRadius,
           imgUrl: userModel!.profilePicture ??
