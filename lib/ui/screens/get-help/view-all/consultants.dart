@@ -537,14 +537,30 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                 itemBuilder: (context, index) {
                                   return Obx(() {
                                     return InkWell(
-                                      onTap: () =>
-                                          issueAndSpecializationFilterController
-                                              .selectedSpecialityList
-                                              .add(issueAndSpecializationFilterController
-                                                  .issueAndSpecializationFilterModel
-                                                  .value
-                                                  .splList![index]
-                                                  .name!),
+                                      onTap: () {
+                                        issueAndSpecializationFilterController
+                                                .selectedSpecialityList
+                                                .contains(
+                                                    issueAndSpecializationFilterController
+                                                        .issueAndSpecializationFilterModel
+                                                        .value
+                                                        .splList![index]
+                                                        .name!)
+                                            ? issueAndSpecializationFilterController
+                                                .selectedSpecialityList
+                                                .remove(issueAndSpecializationFilterController
+                                                    .issueAndSpecializationFilterModel
+                                                    .value
+                                                    .splList![index]
+                                                    .name!)
+                                            : issueAndSpecializationFilterController
+                                                .selectedSpecialityList
+                                                .add(issueAndSpecializationFilterController
+                                                    .issueAndSpecializationFilterModel
+                                                    .value
+                                                    .splList![index]
+                                                    .name!);
+                                      },
                                       child: ListTile(
                                         title: InkWell(
                                           child: Row(

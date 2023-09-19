@@ -19,10 +19,10 @@ class SearchMarketController extends GetxController {
     isLoading.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
-      url = APIConstants.api + '/api/v1/get-help?text=$searchText&country=$c';
+      url = APIConstants.api + '/api/v5/get-help?text=$searchText&country=$c';
     } else {
       url = APIConstants.api +
-          '/api/v1/get-help?text=$searchText&country=$country';
+          '/api/v5/get-help?text=$searchText&country=$country';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
     print("map $map");
