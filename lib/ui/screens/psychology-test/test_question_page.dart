@@ -197,9 +197,17 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
               Column(
                 children: [
                   Image.network(answer[index].image ?? ''),
-                  Text(
-                    answer[index].title ?? '',
-                    style: SolhTextStyles.QS_caption,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        answer[index].title ?? '',
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 4,
+                        style: SolhTextStyles.QS_caption.copyWith(
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
                   )
                 ],
               ),
