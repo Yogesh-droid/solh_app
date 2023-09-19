@@ -464,9 +464,9 @@ class OptionsColumn extends StatelessWidget {
             });
           }),
           child: getOption(
-              SvgPicture.asset(
-                'assets/images/post.svg',
-                height: 15,
+              Icon(
+                CupertinoIcons.pencil_circle,
+                color: SolhColors.primary_green,
               ),
               'Posts'.tr),
         ),
@@ -480,7 +480,7 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Icon(
-                Icons.calendar_month_rounded,
+                CupertinoIcons.calendar,
                 color: SolhColors.primary_green,
                 size: 20,
               ),
@@ -496,9 +496,9 @@ class OptionsColumn extends StatelessWidget {
                 arguments: {});
           },
           child: getOption(
-              SvgPicture.asset(
-                'assets/images/wheelOfEmotions.svg',
-                height: 20,
+              Icon(
+                Icons.pie_chart,
+                color: SolhColors.primary_green,
               ),
               'Wheel of Emotions'.tr),
         ),
@@ -513,10 +513,9 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Container(
-                height: 13,
-                child: SvgPicture.asset(
-                  'assets/images/activity_log.svg',
-                  height: 20,
+                child: Icon(
+                  CupertinoIcons.list_bullet,
+                  color: SolhColors.primary_green,
                 ),
               ),
               'Activity Log'.tr),
@@ -531,12 +530,10 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Container(
-                height: 13,
-                child: SvgPicture.asset(
-                  'assets/images/myDiary.svg',
-                  height: 20,
-                ),
-              ),
+                  child: Icon(
+                CupertinoIcons.book,
+                color: SolhColors.primary_green,
+              )),
               "My Diary".tr),
         ),
         SizedBox(
@@ -549,10 +546,10 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Container(
-                height: 13,
-                child: SvgPicture.asset(
-                  'assets/images/groups.svg',
-                  height: 20,
+                child: Icon(
+                  CupertinoIcons.group,
+                  color: SolhColors.primary_green,
+                  size: 28,
                 ),
               ),
               "Groups".tr),
@@ -566,10 +563,9 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Container(
-                height: 13,
-                child: SvgPicture.asset(
-                  'assets/images/appointment.svg',
-                  height: 20,
+                child: Icon(
+                  CupertinoIcons.calendar_badge_plus,
+                  color: SolhColors.primary_green,
                 ),
               ),
               "Self Assessment".tr),
@@ -584,10 +580,10 @@ class OptionsColumn extends StatelessWidget {
           },
           child: getOption(
               Container(
-                height: 13,
-                child: SvgPicture.asset(
-                  'assets/images/psycotests.svg',
-                  height: 20,
+                child: Icon(
+                  CupertinoIcons.video_camera,
+                  color: SolhColors.primary_green,
+                  size: 28,
                 ),
               ),
               "Featured Videos".tr),
@@ -607,34 +603,36 @@ class OptionsColumn extends StatelessWidget {
             TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PrivacyWeb(
-                                title: "Contact Us".tr,
-                                url: "https://solhapp.com/contact-us.html",
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrivacyWeb(
+                        title: "Contact Us".tr,
+                        url: "https://solhapp.com/contact-us.html",
+                      ),
+                    ),
+                  );
                 },
                 child: Text(
                   "Help".tr,
                   style: SolhTextStyles.CTA
                       .copyWith(decoration: TextDecoration.underline),
                 )),
-            getGreenRoundDot(),
-            TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PrivacyWeb(
-                                title: "Contact Us".tr,
-                                url: "https://solhapp.com/contact-us.html",
-                              )));
-                },
-                child: Text(
-                  "Feedback".tr,
-                  style: SolhTextStyles.CTA
-                      .copyWith(decoration: TextDecoration.underline),
-                )),
+            // getGreenRoundDot(),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //               builder: (context) => PrivacyWeb(
+            //                     title: "Contact Us".tr,
+            //                     url: "https://solhapp.com/contact-us.html",
+            //                   )));
+            //     },
+            //     child: Text(
+            //       "Feedback".tr,
+            //       style: SolhTextStyles.CTA
+            //           .copyWith(decoration: TextDecoration.underline),
+            //     )),
             getGreenRoundDot(),
             TextButton(
                 onPressed: () {

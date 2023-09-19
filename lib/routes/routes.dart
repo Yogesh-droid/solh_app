@@ -51,6 +51,7 @@ import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_s
 import 'package:solh/ui/screens/profile-setupV2/Dob-page/dob_page.dart';
 import 'package:solh/ui/screens/profile-setupV2/LetsCreateYourprofile/lets_create_your_profile.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
+import 'package:solh/ui/screens/profile-setupV2/email/email_onborading.dart';
 import 'package:solh/ui/screens/profile-setupV2/name-page/name_field.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/need-support-on/need_support_on.dart';
 import 'package:solh/ui/screens/profile-setupV2/part-of-an-organisation/part_of_an_organisation.dart';
@@ -138,6 +139,7 @@ class AppRoutes {
   static const String needSupportOn = '/needSupportOn';
   static const String partOfAnOrgnisation = '/partOfAnOrgnisation';
   static const String manageGroupPage = "/manageGroupPage";
+  static const String addEmailOnboarding = "/addEmailOnboarding";
 
   //my profile v2
 
@@ -384,6 +386,8 @@ class RouteGenerator {
       case AppRoutes.consultantProfilePage:
         return MaterialPageRoute(
             builder: ((context) => ConsultantProfilePage()));
+      case AppRoutes.addEmailOnboarding:
+        return MaterialPageRoute(builder: ((context) => AddEmailOnboarding()));
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
       default:

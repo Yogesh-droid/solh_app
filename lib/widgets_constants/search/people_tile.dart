@@ -42,28 +42,23 @@ class PeopleTile extends StatelessWidget {
                   SizedBox(
                     width: 6,
                   ),
-                  Container(
-                    height: 12,
-                    width: 1,
-                    color: SolhColors.grey,
-                  ),
+                  _connection!.userType != 'Seeker'
+                      ? Container(
+                          height: 12,
+                          width: 1,
+                          color: SolhColors.grey,
+                        )
+                      : Container(),
                   SizedBox(
                     width: 6,
                   ),
                   Row(
                     children: [
                       Text(
-                        _connection!.userType == 'SolhVolunteer'
-                            ? 'Volunteer'
-                            : _connection!.userType == 'SolhProvider'
-                                ? 'Counsellor'
-                                : '',
+                        getUserType(_connection!.userType ?? ''),
                         style: SolhTextStyles.JournalingBadgeText,
                       ),
-                      _connection!.userType == 'SolhVolunteer' ||
-                              _connection!.userType == 'SolhProvider'
-                          ? SolhExpertBadge()
-                          : Container()
+                      getUserBadge(_connection!.userType!)
                     ],
                   ),
                 ],
@@ -72,16 +67,39 @@ class PeopleTile extends StatelessWidget {
                 height: 5,
               ),
               Container(
-                  width: 200,
-                  child: Text(
-                    _connection!.bio ?? '',
-                    style: SolhTextStyles.JournalingHintText,
-                    overflow: TextOverflow.ellipsis,
-                  ))
+                width: 200,
+                child: Text(
+                  _connection!.bio ?? '',
+                  style: SolhTextStyles.JournalingHintText,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ],
           )
         ],
       ),
     );
   }
+}
+
+String getUserType(String userType) {
+  switch (userType) {
+    case 'SolhVolunteer':
+      return 'Volunteer';
+    case 'SolhProvider':
+      return 'Counsellor';
+    case 'solhChampion':
+      return 'Solh Champ';
+    default:
+      return '';
+  }
+}
+
+Widget getUserBadge(String userType) {
+  if (userType == "solhChampion") {
+    return Text('🏆');
+  } else if (userType == "SolhVolunteer" || userType == 'SolhProvider') {
+    return SolhExpertBadge();
+  }
+  return Container();
 }

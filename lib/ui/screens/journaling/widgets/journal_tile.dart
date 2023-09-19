@@ -20,6 +20,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/services/html_translate.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
+import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/ui/screens/my-profile/profile/edit-profile.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -415,57 +416,16 @@ class _JournalTileState extends State<JournalTile> {
                                           journalPageController.selectedGroupId
                                                   .value.length ==
                                               0
-                                      ? Icon(
-                                          CupertinoIcons.person_3_fill,
-                                          color: Color(0xFFA6A6A6),
+                                      ? Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4),
+                                          child: Icon(
+                                            CupertinoIcons.person_3_fill,
+                                            color: Color(0xFFA6A6A6),
+                                          ),
                                         )
                                       : Container(),
-                                  widget._journalModel!.postedBy != null &&
-                                          widget._journalModel!.anonymousJournal !=
-                                              null &&
-                                          !widget
-                                              ._journalModel!.anonymousJournal! &&
-                                          widget._journalModel!.postedBy!
-                                                  .userType ==
-                                              "Official"
-                                      ? SolhExpertBadge(
-                                          usertype: 'Official',
-                                        )
-                                      : widget._journalModel!.postedBy != null &&
-                                              widget._journalModel!
-                                                      .anonymousJournal !=
-                                                  null &&
-                                              !widget._journalModel!
-                                                  .anonymousJournal! &&
-                                              widget._journalModel!.postedBy!
-                                                      .userType ==
-                                                  "SolhProvider"
-                                          ? SolhExpertBadge(
-                                              usertype: 'Counsellor',
-                                            )
-                                          : widget._journalModel!.postedBy !=
-                                                      null &&
-                                                  widget._journalModel!
-                                                          .anonymousJournal !=
-                                                      null &&
-                                                  !widget._journalModel!
-                                                      .anonymousJournal! &&
-                                                  widget._journalModel!
-                                                          .postedBy!.userType ==
-                                                      "SolhVolunteer"
-                                              ? SolhExpertBadge(
-                                                  usertype: 'Volunteer',
-                                                )
-                                              : widget._journalModel!
-                                                              .postedBy !=
-                                                          null &&
-                                                      widget
-                                                              ._journalModel!
-                                                              .postedBy!
-                                                              .userType ==
-                                                          "Seeker"
-                                                  ? Container()
-                                                  : Container(),
+                                  getUserBadge(),
                                   widget._journalModel!.anonymousJournal !=
                                               null &&
                                           widget._journalModel!
@@ -526,6 +486,29 @@ class _JournalTileState extends State<JournalTile> {
         ),
       ),
     );
+  }
+
+  Widget getUserBadge() {
+    if (widget._journalModel!.postedBy != null &&
+        widget._journalModel!.anonymousJournal != null &&
+        !widget._journalModel!.anonymousJournal!) {
+      if (widget._journalModel!.postedBy!.userType == "Official") {
+        return SolhExpertBadge(
+          usertype: 'Counsellor',
+        );
+      } else if (widget._journalModel!.postedBy!.userType == "SolhProvider") {
+        SolhExpertBadge(
+          usertype: 'Counsellor',
+        );
+      } else if (widget._journalModel!.postedBy!.userType == "SolhVolunteer") {
+        return SolhExpertBadge(
+          usertype: 'Volunteer',
+        );
+      } else if (widget._journalModel!.postedBy!.userType == "solhChampion") {
+        return GetBadge(userType: "solhChampion");
+      }
+    }
+    return Container();
   }
 
   Widget getUserNameBottom() {
@@ -625,9 +608,11 @@ class _JournalTileState extends State<JournalTile> {
                 } else {
                   Utility.showToast(message);
                 }
-              } else {  journalPageController.journalsList[widget.index].likes =
+              } else {
+                journalPageController.journalsList[widget.index].likes =
                     journalPageController.journalsList[widget.index].likes! - 1;
-                journalPageController.journalsList[widget.index].isLiked = false;
+                journalPageController.journalsList[widget.index].isLiked =
+                    false;
                 journalPageController.journalsList.refresh();
                 journalCommentController.unLikePost(
                     journalId: widget._journalModel!.id ?? '');

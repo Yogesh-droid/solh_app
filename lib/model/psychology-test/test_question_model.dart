@@ -34,6 +34,7 @@ class TestDetail {
   List<TestScoreInterpretation>? testScoreInterpretation;
   String? createdAt;
   String? updatedAt;
+  String? testType;
   int? iV;
 
   TestDetail(
@@ -60,6 +61,7 @@ class TestDetail {
     testStatus = json['testStatus'];
     testPicture = json['testPicture'];
     profilePictureType = json['profilePictureType'];
+    testType = json["testType"];
     if (json['testQuestionList'] != null) {
       testQuestionList = <TestQuestionList>[];
       json['testQuestionList'].forEach((v) {
@@ -135,6 +137,7 @@ class Answer {
   String? title;
   int? score;
   String? sId;
+  String? image;
 
   Answer({this.title, this.score, this.sId});
 
@@ -142,6 +145,7 @@ class Answer {
     title = json['title'];
     score = json['score'];
     sId = json['_id'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
