@@ -64,11 +64,11 @@ import '../../../widgets_constants/constants/colors.dart';
 import '../../../widgets_constants/constants/org_only_setting.dart';
 import '../get-help/get-help.dart';
 import '../get-help/widgets/allied_card_with_discount.dart';
-import '../get-help/widgets/specialization_card_with_discount.dart';
 import '../global-search/global_search_page.dart';
 import '../journaling/whats_in_your_mind_section.dart';
 import '../journaling/widgets/solh_expert_badge.dart';
 import '../psychology-test/test_question_page.dart';
+import 'search_by_profession.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -2224,95 +2224,6 @@ class AnonymousDialog extends StatelessWidget {
         )
       ]),
     );
-  }
-}
-
-// ignore: must_be_immutable
-class SearchByProfesssionUI extends StatelessWidget {
-  SearchByProfesssionUI({super.key});
-  GetHelpController getHelpController = Get.find();
-  BookAppointmentController bookAppointmentController = Get.find();
-  ProfileController profileController = Get.find();
-  @override
-  Widget build(BuildContext context) {
-    return Obx(() {
-      return getHelpController
-                  .getSpecializationModel.value.specializationList !=
-              null
-          ? Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 2.5.w,
-                    crossAxisSpacing: 2.5.w,
-                    crossAxisCount: 2,
-                    childAspectRatio: 2),
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: getHelpController
-                    .getSpecializationModel.value.specializationList!.length,
-                shrinkWrap: true,
-                itemBuilder: (_, index) => GestureDetector(
-                    onTap: () {
-                      bookAppointmentController.query = getHelpController
-                          .getSpecializationModel
-                          .value
-                          .specializationList![index]
-                          .name;
-                      Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
-                          arguments: {
-                            "slug": getHelpController.getSpecializationModel
-                                    .value.specializationList![index].slug ??
-                                '',
-                            "type": 'specialization',
-                            "name": getHelpController.getSpecializationModel
-                                    .value.specializationList![index].name ??
-                                ''
-                          });
-                      FirebaseAnalytics.instance.logEvent(
-                          name: 'SearhSpecialityTapped',
-                          parameters: {'Page': 'GetHelp'});
-                    },
-                    child: Obx(() =>
-                        profileController.myProfileModel.value.body == null
-                            ? SizedBox()
-                            : SpecializationCardWithDiscount(
-                                image: getHelpController
-                                        .getSpecializationModel
-                                        .value
-                                        .specializationList![index]
-                                        .displayImage ??
-                                    '',
-                                name: getHelpController
-                                        .getSpecializationModel
-                                        .value
-                                        .specializationList![index]
-                                        .name ??
-                                    '',
-                                discount: profileController
-                                            .myProfileModel
-                                            .value
-                                            .body!
-                                            .userOrganisations!
-                                            .isNotEmpty &&
-                                        profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .userOrganisations!
-                                                .first
-                                                .status ==
-                                            'Approved'
-                                    ? getHelpController
-                                        .getSpecializationModel
-                                        .value
-                                        .specializationList![index]
-                                        .orgMarketPlaceOffer
-                                    : null,
-                              ))),
-              ),
-            )
-          : Container();
-    });
   }
 }
 

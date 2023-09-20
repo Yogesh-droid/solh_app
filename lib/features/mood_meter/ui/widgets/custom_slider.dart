@@ -27,7 +27,7 @@ class CustomSlider extends StatelessWidget {
                   SliderTheme(
                     data: SliderThemeData(thumbShape: LargeThumbShape()),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 28.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Slider(
                         value: sliderController.value.value,
                         onChanged: (value) {

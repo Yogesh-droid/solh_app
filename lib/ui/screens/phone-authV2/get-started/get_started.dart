@@ -15,6 +15,7 @@ class GetStartedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Running init in GetStarted");
     return SafeArea(
       child: ScaffoldWithBackgroundArt(
         body: SizedBox(

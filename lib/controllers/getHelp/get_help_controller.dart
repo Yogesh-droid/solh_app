@@ -138,7 +138,7 @@ class GetHelpController extends GetxController {
   void onInit() {
     super.onInit();
     getIssueList();
-    getSpecializationList();
+    // getSpecializationList();
     getAlliedTherapyList();
     getTopConsultant();
     getSolhVolunteerList();

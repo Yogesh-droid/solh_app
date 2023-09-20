@@ -76,7 +76,7 @@ class AppRoutes {
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
-  static const String master = '/';
+  static const String master = '/master';
   static const String introScreen = '/intro';
   static const String homeScreen = '/home';
   static const String journaling = '/journaling';
@@ -244,6 +244,7 @@ class RouteGenerator {
             settings: RouteSettings(name: routeSettings.name));
 
       case AppRoutes.getStarted:
+        print('Routing to ${routeSettings.name}');
         return MaterialPageRoute(builder: ((context) => GetStartedScreen()));
       case AppRoutes.loginSignup:
         return MaterialPageRoute(
@@ -393,5 +394,6 @@ class RouteGenerator {
       default:
         break;
     }
+    return null;
   }
 }

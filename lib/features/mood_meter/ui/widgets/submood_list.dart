@@ -14,27 +14,27 @@ class SubMoodList extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Obx(() => subMoodController.isLoading.value
             ? loadingShimmer()
             : subMoodController.error.value.isEmpty
                 ? Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
-                    alignment: WrapAlignment.start,
+                    alignment: WrapAlignment.center,
                     spacing: 10,
                     children: subMoodController.subMoodList
                         .map((element) => FilterChip(
-                              label: Text(element.name ?? ''),
+                              label: Text(element.name ?? '',
+                                  style: TextStyle(
+                                      color: subMoodController
+                                                  .selectedSubMood.value ==
+                                              element
+                                          ? Colors.white
+                                          : Colors.black)),
+                              showCheckmark: false,
                               onSelected: (value) {
                                 subMoodController.selectedSubMood.value =
                                     element;
-                                if (element.name == "Other") {
-                                  subMoodController.isCommentActive.value =
-                                      true;
-                                } else {
-                                  subMoodController.isCommentActive.value =
-                                      false;
-                                }
                               },
                               selected:
                                   subMoodController.selectedSubMood.value ==
@@ -53,7 +53,7 @@ class SubMoodList extends StatelessWidget {
 
   Widget loadingShimmer() {
     return Wrap(
-      alignment: WrapAlignment.start,
+      alignment: WrapAlignment.center,
       spacing: 10,
       children: List.generate(
           8,

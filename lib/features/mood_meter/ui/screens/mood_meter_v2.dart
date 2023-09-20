@@ -99,7 +99,7 @@ class _MoodMeterV2State extends State<MoodMeterV2> {
                   if (moodListController.error.isEmpty) CustomSlider(),
                   SizedBox(height: 30),
                   Text(
-                    "Choose your correct mood".tr,
+                    "Choose your emotion".tr,
                     style: SolhTextStyles.QS_body_semi_1,
                   ),
                   SizedBox(height: 10),

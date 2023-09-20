@@ -48,7 +48,6 @@ import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
   MasterScreen({Key? key}) : super(key: key);
-  //ProfileController profileController = Get.put(ProfileController());
 
   final BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
@@ -68,6 +67,7 @@ class MasterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("Running init in bottom ");
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,

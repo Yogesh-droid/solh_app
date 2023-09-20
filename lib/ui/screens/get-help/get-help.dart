@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,10 +17,9 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
 import 'package:solh/ui/screens/get-help/consultant_profile_page.dart';
 import 'package:solh/ui/screens/get-help/search_screen.dart';
-import 'package:solh/ui/screens/get-help/widgets/specialization_card_with_discount.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
+import 'package:solh/ui/screens/home/search_by_profession.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
-import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/solh_search_field.dart';
 
@@ -49,6 +47,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Running init in get-help");
     return Obx(() {
       return profileController.isProfileLoading.value
           ? Center(
@@ -206,7 +205,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
               ],
             ),
           ),
-          Obx(() {
+          SearchByProfesssionUI(),
+          /* Obx(() {
             return getHelpController
                         .getSpecializationModel.value.specializationList !=
                     null
@@ -288,7 +288,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                     ),
                   )
                 : Container();
-          }),
+          }), */
           GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
               ? AlliedExperts(onTap: (value, name) {

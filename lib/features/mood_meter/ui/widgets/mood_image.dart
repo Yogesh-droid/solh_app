@@ -26,7 +26,7 @@ class MoodImage extends StatelessWidget {
       highlightColor: Colors.white,
       child: Container(
         height: 200,
-        width: 100,
+        // width: 150,
         child: Image.asset("assets/images/logo/solh-logo.png"),
       ),
     );

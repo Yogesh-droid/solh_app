@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/journals/my-journal-bloc.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -12,6 +11,7 @@ import 'package:solh/ui/screens/journaling/widgets/journal_tile.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../../controllers/journals/journal_page_controller.dart';
 import '../../../../model/journals/journals_response_model.dart';
 import '../../../../widgets_constants/constants/colors.dart';
@@ -28,15 +28,12 @@ class PostScreen extends StatefulWidget {
 
 class _PostScreenState extends State<PostScreen> {
   JournalPageController _journalPageController = Get.find();
-  late RefreshController _refreshController;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-
     getMyJournals(widget.sId);
-    _refreshController = RefreshController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
