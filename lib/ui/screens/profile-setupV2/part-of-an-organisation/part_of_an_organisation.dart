@@ -100,7 +100,7 @@ class PartOfAnOrganisationtext extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Part of an organisation ?',
+          'Part of an organization ?',
           style: SolhTextStyles.Large2TextWhiteS24W7,
         ),
         Text(
