@@ -9,7 +9,7 @@ class SubMoodListUsecase extends Usecase {
 
   SubMoodListUsecase({required this.subMoodListRepo});
   @override
-  Future<DataState<List<SubMoodEntity>>> call(params) async {
+  Future<DataState<SubMoodEntity>> call(params) async {
     return subMoodListRepo.getSubMoodList(params);
   }
 }

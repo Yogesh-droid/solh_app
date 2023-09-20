@@ -7,7 +7,7 @@ import 'package:solh/services/network/network.dart';
 
 class SubMoodListRepoImpl implements SubMoodListRepo {
   @override
-  Future<DataState<List<SubMoodEntity>>> getSubMoodList(
+  Future<DataState<SubMoodEntity>> getSubMoodList(
       RequestParams requestParams) async {
     try {
       Map<String, dynamic> map =
@@ -15,7 +15,7 @@ class SubMoodListRepoImpl implements SubMoodListRepo {
       if (map.isNotEmpty) {
         final value = SubMoodListModel.fromJson(map);
         if (value.success!) {
-          return DataSuccess(data: value.subMoodList);
+          return DataSuccess(data: value);
         } else {
           return DataError(exception: Exception("Data parsing issue"));
         }

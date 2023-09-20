@@ -21,11 +21,10 @@ class ContinueBtn extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: SolhGreenButton(
               width: MediaQuery.of(context).size.width,
-              backgroundColor:
-                  subMoodController.selectedSubMood.value.id == null
-                      ? SolhColors.grey
-                      : SolhColors.primary_green,
-              onPressed: subMoodController.selectedSubMood.value.id == null
+              backgroundColor: subMoodController.selectedSubMood.isEmpty
+                  ? SolhColors.grey
+                  : SolhColors.primary_green,
+              onPressed: subMoodController.selectedSubMood.isEmpty
                   ? () {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Please Choose Correct Mood First")));
@@ -37,8 +36,10 @@ class ContinueBtn extends StatelessWidget {
                               moodId:
                                   getMoodListController.selectedMood.value.id ??
                                       '',
-                              submoodId:
-                                  subMoodController.selectedSubMood.value.id,
+                              submoodList: List.generate(
+                                  subMoodController.selectedSubMood.length,
+                                  (index) => subMoodController
+                                      .selectedSubMood[index].id),
                               comment: subMoodController.commentText.value);
                           if (addMoodRecordController.error.value.isEmpty) {
                             Navigator.pop(context);

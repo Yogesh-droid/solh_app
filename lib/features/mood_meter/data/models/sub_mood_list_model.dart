@@ -1,18 +1,22 @@
 import 'package:solh/features/mood_meter/domain/entities/sub_mood_entity.dart';
 
-class SubMoodListModel {
-  bool? success;
-  List<SubMoodList>? subMoodList;
+class SubMoodListModel extends SubMoodEntity {
+  SubMoodListModel(
+      {bool? success, List<SubMoodList>? subMoodList, int? defaultIndex})
+      : super(
+            defaultIndex: defaultIndex,
+            subMoodList: subMoodList,
+            success: success);
 
-  SubMoodListModel({this.success, this.subMoodList});
-
-  SubMoodListModel.fromJson(Map<String, dynamic> json) {
-    success = json["success"];
-    subMoodList = json["subMoodList"] == null
-        ? null
-        : (json["subMoodList"] as List)
-            .map((e) => SubMoodList.fromJson(e))
-            .toList();
+  factory SubMoodListModel.fromJson(Map<String, dynamic> json) {
+    return SubMoodListModel(
+        success: json["success"],
+        defaultIndex: json['defaultIndex'],
+        subMoodList: json["subMoodList"] == null
+            ? null
+            : (json["subMoodList"] as List)
+                .map((e) => SubMoodList.fromJson(e))
+                .toList());
   }
 
   Map<String, dynamic> toJson() {
@@ -25,16 +29,18 @@ class SubMoodListModel {
   }
 }
 
-class SubMoodList extends SubMoodEntity {
-  SubMoodList({String? id, dynamic media, String? name, int? energyLevel})
-      : super(energyLevel: energyLevel, id: id, media: media, name: name);
+class SubMoodList {
+  String? id;
+  String? media;
+  String? name;
+  int? energyLevel;
+  SubMoodList({this.id, this.media, this.name, this.energyLevel});
 
-  factory SubMoodList.fromJson(Map<String, dynamic> json) {
-    return SubMoodList(
-        id: json["_id"],
-        media: json["media"],
-        name: json["name"],
-        energyLevel: json["energyLevel"]);
+  SubMoodList.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    media = json["media"];
+    name = json["name"];
+    energyLevel = json["energyLevel"];
   }
 
   Map<String, dynamic> toJson() {

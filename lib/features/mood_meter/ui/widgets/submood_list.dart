@@ -15,30 +15,33 @@ class SubMoodList extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Align(
         alignment: Alignment.center,
-        child: Obx(() => subMoodController.isLoading.value
+        child: Obx(() => subMoodController.isLoading.value ||
+                subMoodController.subMoodList.value.subMoodList == null
             ? loadingShimmer()
             : subMoodController.error.value.isEmpty
                 ? Wrap(
                     crossAxisAlignment: WrapCrossAlignment.start,
                     alignment: WrapAlignment.center,
                     spacing: 10,
-                    children: subMoodController.subMoodList
+                    children: subMoodController.subMoodList.value.subMoodList!
                         .map((element) => FilterChip(
                               label: Text(element.name ?? '',
                                   style: TextStyle(
-                                      color: subMoodController
-                                                  .selectedSubMood.value ==
-                                              element
+                                      color: subMoodController.selectedSubMood
+                                              .contains(element)
                                           ? Colors.white
                                           : Colors.black)),
                               showCheckmark: false,
                               onSelected: (value) {
-                                subMoodController.selectedSubMood.value =
-                                    element;
+                                subMoodController.selectedSubMood
+                                        .contains(element)
+                                    ? subMoodController.selectedSubMood
+                                        .remove(element)
+                                    : subMoodController.selectedSubMood
+                                        .add(element);
                               },
-                              selected:
-                                  subMoodController.selectedSubMood.value ==
-                                      element,
+                              selected: subMoodController.selectedSubMood
+                                  .contains(element),
                               selectedColor: SolhColors.greenShade1,
                               backgroundColor: SolhColors.greenShade4,
                               shape: RoundedRectangleBorder(

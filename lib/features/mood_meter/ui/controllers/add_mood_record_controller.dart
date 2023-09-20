@@ -16,14 +16,15 @@ class AddMoodRecordController extends GetxController {
   var error = ''.obs;
 
   Future<void> addMoodRecord(
-      {required String moodId, String? submoodId, String? comment}) async {
+      {required String moodId, List? submoodList, String? comment}) async {
+    print(submoodList.toString());
     try {
       isLoading.value = true;
       error.value = '';
       DataState<Map<String, dynamic>> dataState = await addMoodRecordUsecase
           .call(RequestParams(url: "${APIConstants.api}/api/mood-today", body: {
         "mood": moodId,
-        "subMoodId": submoodId ?? '',
+        "subMoodId": submoodList ?? [],
         "comment": comment ?? ''
       }));
       if (dataState.data != null) {

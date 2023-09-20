@@ -9,7 +9,7 @@ class AddMoodRecordRepoImpl implements AddMoodRecordRepo {
       RequestParams requestParams) async {
     try {
       Map<String, dynamic> map = await Network.makePostRequestWithToken(
-          url: requestParams.url, body: requestParams.body!);
+          url: requestParams.url, body: requestParams.body!, isEncoded: true);
       if (map.isNotEmpty) {
         if (map['success']) {
           return DataSuccess(data: map);

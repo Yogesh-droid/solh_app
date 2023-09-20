@@ -47,7 +47,6 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Running init in get-help");
     return Obx(() {
       return profileController.isProfileLoading.value
           ? Center(

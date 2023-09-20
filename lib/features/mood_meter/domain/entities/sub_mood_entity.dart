@@ -1,8 +1,9 @@
-class SubMoodEntity {
-  final String? id;
-  final dynamic media;
-  final String? name;
-  final int? energyLevel;
+import '../../data/models/sub_mood_list_model.dart';
 
-  SubMoodEntity({this.id, this.media, this.name, this.energyLevel});
+class SubMoodEntity {
+  final bool? success;
+  final int? defaultIndex;
+  final List<SubMoodList>? subMoodList;
+
+  SubMoodEntity({this.success, this.defaultIndex, this.subMoodList});
 }
