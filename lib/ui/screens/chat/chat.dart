@@ -756,6 +756,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
     pageController.dispose();
     chatController.dispose();
     chatController.firstMsgSent = false;
+    Get.find<ChatListController>().fromIDontKnow = false;
     super.dispose();
   }
 
