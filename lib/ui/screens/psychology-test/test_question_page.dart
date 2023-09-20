@@ -30,6 +30,24 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   int index = 0;
 
   @override
+  void initState() {
+    controller = PageController(initialPage: 0);
+    super.initState();
+
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        psychologyTestController.questionList.length == 1
+            ? isLast = true
+            : false;
+      });
+    });
+
+    Future.delayed(Duration(milliseconds: 200), () {
+      getIsNextAvailable();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     print("build");
     return ScaffoldWithSelfAssessmentBackgroundArt(
@@ -286,23 +304,9 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
         ));
   }
 
-  @override
-  void initState() {
-    controller = PageController(initialPage: 0);
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        psychologyTestController.questionList.length == 1
-            ? isLast = true
-            : false;
-      });
-    });
-    getIsNextAvailable();
-  }
-
   void getIsNextAvailable() {
     Future.delayed(Duration(milliseconds: 300), () {
-      if (psychologyTestController.selectedQuestion.value.length >
+      if (psychologyTestController.selectedQuestion.length >
           controller.page!.round()) {
         setState(() {
           isNextActive = true;
@@ -323,7 +327,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
         questionId: testQuestion.sId,
         image: answer.image);
     psychologyTestController.submitAnswerModelList.insert(
-        psychologyTestController.questionList.value.indexOf(testQuestion),
+        psychologyTestController.questionList.indexOf(testQuestion),
         submitAnswerModel.toJson());
     psychologyTestController.selectedQuestion.insert(
         psychologyTestController.questionList.value.indexOf(testQuestion),

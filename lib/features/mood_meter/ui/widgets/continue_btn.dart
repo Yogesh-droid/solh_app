@@ -34,7 +34,7 @@ class ContinueBtn extends StatelessWidget {
                       ? () {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text("You need to add comment")));
+                                  content: Text("Please add your comment")));
                         }
                       : addMoodRecordController.isLoading.value
                           ? null
@@ -63,6 +63,16 @@ class ContinueBtn extends StatelessWidget {
                                     Get.find<GetMoodListController>()
                                         .resetIndex
                                         .toDouble();
+                                Get.find<GetMoodListController>()
+                                    .selectedMood
+                                    .value = Get.find<GetMoodListController>()
+                                        .moodList
+                                        .value
+                                        .moodList![
+                                    Get.find<GetMoodListController>()
+                                        .defaultIndex
+                                        .value
+                                        .toInt()];
                                 subMoodController.subMoodList.value.subMoodList!
                                     .clear();
                                 print(

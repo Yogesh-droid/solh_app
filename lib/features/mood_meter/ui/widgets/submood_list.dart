@@ -39,16 +39,18 @@ class SubMoodList extends StatelessWidget {
                                         .remove(element)
                                     : subMoodController.selectedSubMood
                                         .add(element);
-                                subMoodController.selectedSubMood
-                                    .forEach((element) {
+
+                                for (var element
+                                    in subMoodController.selectedSubMood) {
                                   if (element.name == "Other") {
                                     subMoodController.isCommentRequired.value =
                                         true;
+                                    break;
                                   } else {
                                     subMoodController.isCommentRequired.value =
                                         false;
                                   }
-                                });
+                                }
                               },
                               selected: subMoodController.selectedSubMood
                                   .contains(element),

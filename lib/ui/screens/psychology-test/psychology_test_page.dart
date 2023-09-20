@@ -382,9 +382,6 @@ class QuestionContainer extends StatelessWidget {
           EdgeInsets.only(right: padding != null ? padding! : 18.0, top: 18),
       child: InkWell(
         onTap: onQuestionTap,
-        // onTap: () {
-
-        // },
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(color: SolhColors.dark_grey, width: 0.5),
