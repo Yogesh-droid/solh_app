@@ -8,7 +8,7 @@ import 'package:solh/services/network/network.dart';
 
 class MoodMeterRepoImpl implements MoodMeterRepo {
   @override
-  Future<DataState<List<MoodMeterEntity>>> getMoodList(
+  Future<DataState<MoodMeterEntity>> getMoodList(
       RequestParams requestParams) async {
     try {
       final Map<String, dynamic> map =
@@ -16,7 +16,7 @@ class MoodMeterRepoImpl implements MoodMeterRepo {
       if (map.isNotEmpty) {
         final value = MoodMeterModel.fromJson(map);
         if (value.success!) {
-          return DataSuccess(data: value.moodList);
+          return DataSuccess(data: value);
         } else {
           return DataError(exception: Exception("Some issue in parsing value"));
         }

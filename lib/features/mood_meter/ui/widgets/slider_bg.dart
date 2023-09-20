@@ -14,7 +14,7 @@ class SliderBg extends StatelessWidget {
       height: 40,
       width: MediaQuery.of(context).size.width,
       child: Obx(() => Row(
-          children: getMoodListController.moodList
+          children: getMoodListController.moodList.value.moodList!
               .map(
                 (element) => Expanded(
                   child: Container(
@@ -22,26 +22,25 @@ class SliderBg extends StatelessWidget {
                       color: Color(
                           int.parse('0xFF${element.hexCode!.split('#')[1]}')),
                       borderRadius: BorderRadius.only(
-                          topLeft:
-                              getMoodListController.moodList.indexOf(element) ==
-                                      0
-                                  ? Radius.circular(10)
-                                  : Radius.zero,
-                          bottomLeft:
-                              getMoodListController.moodList.indexOf(element) ==
-                                      0
-                                  ? Radius.circular(10)
-                                  : Radius.zero,
-                          topRight:
-                              getMoodListController.moodList.indexOf(element) ==
-                                      getMoodListController.moodList.length - 1
-                                  ? Radius.circular(10)
-                                  : Radius.zero,
-                          bottomRight:
-                              getMoodListController.moodList.indexOf(element) ==
-                                      getMoodListController.moodList.length - 1
-                                  ? Radius.circular(10)
-                                  : Radius.zero),
+                          topLeft: getMoodListController.moodList.value.moodList!.indexOf(element) == 0
+                              ? Radius.circular(10)
+                              : Radius.zero,
+                          bottomLeft: getMoodListController.moodList.value.moodList!
+                                      .indexOf(element) ==
+                                  0
+                              ? Radius.circular(10)
+                              : Radius.zero,
+                          topRight: getMoodListController.moodList.value.moodList!
+                                      .indexOf(element) ==
+                                  getMoodListController.moodList.value.moodList!.length -
+                                      1
+                              ? Radius.circular(10)
+                              : Radius.zero,
+                          bottomRight: getMoodListController.moodList.value.moodList!
+                                      .indexOf(element) ==
+                                  getMoodListController.moodList.value.moodList!.length - 1
+                              ? Radius.circular(10)
+                              : Radius.zero),
                     ),
                   ),
                 ),

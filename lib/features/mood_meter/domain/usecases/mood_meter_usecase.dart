@@ -9,7 +9,7 @@ class MoodMeterUsecase extends Usecase {
 
   MoodMeterUsecase({required this.moodMeterRepo});
   @override
-  Future<DataState<List<MoodMeterEntity>>> call(params) {
+  Future<DataState<MoodMeterEntity>> call(params) {
     return moodMeterRepo.getMoodList(params);
   }
 }

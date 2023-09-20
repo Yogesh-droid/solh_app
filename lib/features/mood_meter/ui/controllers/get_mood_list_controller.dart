@@ -6,6 +6,8 @@ import 'package:solh/core/request_params/request_params.dart';
 import 'package:solh/features/mood_meter/domain/entities/mood_meter_entity.dart';
 import 'package:solh/features/mood_meter/domain/usecases/mood_meter_usecase.dart';
 
+import '../../data/models/mood_meter_model.dart';
+
 class GetMoodListController extends GetxController {
   // di
   final MoodMeterUsecase moodMeterUsecase;
@@ -13,24 +15,28 @@ class GetMoodListController extends GetxController {
   GetMoodListController({required this.moodMeterUsecase});
 
   // state variable
-  var moodList = <MoodMeterEntity>[].obs;
+  var moodList = MoodMeterEntity().obs;
   var error = ''.obs;
   var isLoading = false.obs;
-
-  var selectedMood =
-      MoodMeterEntity().obs; // index of selected mood from moodList
+  var defaultIndex = 0.0.obs;
+  int resetIndex = 0;
+  var selectedMood = MoodList().obs; // index of selected mood from moodList
 
   Future<void> getMoodList() async {
     try {
       isLoading.value = true;
       error.value = '';
-      DataState<List<MoodMeterEntity>> dataState = await moodMeterUsecase.call(
+      DataState<MoodMeterEntity> dataState = await moodMeterUsecase.call(
           RequestParams(
               url: "${APIConstants.api}/api/app-mood-list",
               apiMethods: ApiMethods.get));
       if (dataState.data != null) {
+        resetIndex = dataState.data!.defaultIndex!;
+        defaultIndex.value = dataState.data!.defaultIndex!.toDouble();
+
         moodList.value = dataState.data!;
-        selectedMood.value = dataState.data![0];
+        selectedMood.value =
+            dataState.data!.moodList![defaultIndex.value.toInt()];
       } else {
         error.value = dataState.exception.toString();
       }

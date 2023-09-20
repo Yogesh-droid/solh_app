@@ -26,13 +26,24 @@ class _MoodMeterV2State extends State<MoodMeterV2> {
 
   @override
   void initState() {
-    if (moodListController.moodList.isEmpty) {
+    print(subMoodController.subMoodList.value.subMoodList == null);
+    if (moodListController.moodList.value.moodList == null) {
+      print("Mood List is empty");
       moodListController.getMoodList().then((value) {
-        if (moodListController.moodList.isNotEmpty) {
-          subMoodController
-              .getSubMoodList(moodListController.moodList[0].id ?? '');
+        if (subMoodController.subMoodList.value.subMoodList == null) {
+          print("Default index is ${moodListController.defaultIndex}");
+          subMoodController.getSubMoodList(moodListController
+                  .moodList
+                  .value
+                  .moodList![moodListController.defaultIndex.value.toInt()]
+                  .id ??
+              '');
         }
       });
+    } else if (subMoodController.subMoodList.value.subMoodList!.isEmpty) {
+      subMoodController.getSubMoodList(moodListController.moodList.value
+              .moodList![moodListController.defaultIndex.value.toInt()].id ??
+          '');
     }
     super.initState();
   }

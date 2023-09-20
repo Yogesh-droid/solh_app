@@ -19,6 +19,7 @@ class SubMoodController extends GetxController {
   var error = ''.obs;
   var selectedSubMood = <SubMoodList>[].obs;
   var commentText = ''.obs;
+  var isCommentRequired = false.obs;
 
   Future<void> getSubMoodList(String id) async {
     try {

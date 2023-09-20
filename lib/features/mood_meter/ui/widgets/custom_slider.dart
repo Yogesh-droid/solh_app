@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:solh/features/mood_meter/ui/controllers/get_mood_list_controller.dart';
 import 'package:solh/features/mood_meter/ui/controllers/get_sub_mood_controller.dart';
-import 'package:solh/features/mood_meter/ui/controllers/slider_controller.dart';
 import 'package:solh/features/mood_meter/ui/widgets/large_thumb_shape.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+
 import 'slider_bg.dart';
 
 class CustomSlider extends StatelessWidget {
@@ -13,7 +13,6 @@ class CustomSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SliderController sliderController = Get.find();
     final GetMoodListController getMoodListController = Get.find();
     final SubMoodController subMoodController = Get.find();
     return Obx(() => getMoodListController.isLoading.value
@@ -29,22 +28,27 @@ class CustomSlider extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Slider(
-                        value: sliderController.value.value,
+                        value: getMoodListController.defaultIndex.toDouble(),
                         onChanged: (value) {
                           print(value);
-                          sliderController.value.value = value;
+                          getMoodListController.defaultIndex.value = value;
                           getMoodListController.selectedMood.value =
-                              getMoodListController.moodList[value.toInt()];
+                              getMoodListController
+                                  .moodList.value.moodList![value.toInt()];
                         },
                         onChangeEnd: (value) {
                           print(value);
                           subMoodController.getSubMoodList(getMoodListController
-                              .moodList[value.toInt()].id!);
+                              .moodList.value.moodList![value.toInt()].id!);
                         },
-                        divisions: getMoodListController.moodList.length - 1,
+                        divisions: getMoodListController
+                                .moodList.value.moodList!.length -
+                            1,
                         thumbColor: SolhColors.primary_green,
                         min: 0.0,
-                        max: (getMoodListController.moodList.length - 1)
+                        max: (getMoodListController
+                                    .moodList.value.moodList!.length -
+                                1)
                             .toDouble(),
                         activeColor: Colors.transparent,
                         inactiveColor: Colors.transparent,

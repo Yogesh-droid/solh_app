@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/features/mood_meter/ui/controllers/get_sub_mood_controller.dart';
-
 import '../../../../widgets_constants/constants/colors.dart';
 
 class CommentBox extends StatelessWidget {
@@ -15,6 +14,13 @@ class CommentBox extends StatelessWidget {
       controller: textEditingController,
       onTapOutside: (value) {
         subMoodController.commentText.value = textEditingController.text;
+      },
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          subMoodController.isCommentRequired.value = false;
+        } else {
+          subMoodController.isCommentRequired.value = true;
+        }
       },
       maxLines: 3,
       decoration: InputDecoration(

@@ -1,10 +1,8 @@
-class MoodMeterEntity {
-  final String? id;
-  final String? name;
-  final int? energyLevel;
-  final String? media;
-  final String? hexCode;
+import '../../data/models/mood_meter_model.dart';
 
-  MoodMeterEntity(
-      {this.id, this.name, this.energyLevel, this.media, this.hexCode});
+class MoodMeterEntity {
+  final bool? success;
+  final List<MoodList>? moodList;
+  final int? defaultIndex;
+  MoodMeterEntity({this.defaultIndex, this.moodList, this.success});
 }
