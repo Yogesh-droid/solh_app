@@ -49,7 +49,7 @@ class PartOfAnOrganisationPage extends StatelessWidget {
               }
             } else {
               SolhSnackbar.error(
-                  'Error', 'Please select a Organistion or Skip from above');
+                  'Error', 'Please select a organization or Skip from above');
             }
           }),
         );
@@ -127,7 +127,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Organisation Name',
+                  'Organization Name',
                   style: SolhTextStyles.SmallTextWhiteS12W7,
                 ),
                 SizedBox(
@@ -147,7 +147,7 @@ class PartOfAnOrganisationField extends StatelessWidget {
                       ),
                       fillColor: SolhColors.white,
                       filled: true,
-                      hintText: "Search Organisation".tr,
+                      hintText: "Search Organization".tr,
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(
                           color: SolhColors.white,
