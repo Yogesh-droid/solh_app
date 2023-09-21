@@ -64,7 +64,7 @@ class EditProfileOptions extends StatelessWidget {
             child: getSettingOptions(
               SvgPicture.asset('assets/images/other_detail.svg'),
               'Other Detail'.tr,
-              'Issues, Organisation'.tr,
+              'Issues, Organization'.tr,
             ),
           ),
         ]),

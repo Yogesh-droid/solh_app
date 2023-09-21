@@ -108,10 +108,16 @@ class TestResultPage extends StatelessWidget {
                                       style: SolhTextStyles.QS_body_1_bold,
                                       trimMode: TrimMode.Line,
                                       trimLines: 15,
-                                      lessStyle: SolhTextStyles
-                                          .JournalingDescriptionReadMoreText,
-                                      moreStyle: SolhTextStyles
-                                          .JournalingDescriptionReadMoreText,
+                                      lessStyle:
+                                          SolhTextStyles.QS_caption.copyWith(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: SolhColors.primary_green),
+                                      moreStyle:
+                                          SolhTextStyles.QS_caption.copyWith(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                              color: SolhColors.primary_green),
                                     ),
                                   ),
                                   SizedBox(

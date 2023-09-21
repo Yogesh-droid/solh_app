@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
@@ -15,6 +17,7 @@ import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -50,6 +53,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
   ProfileController profileController = Get.find();
   ScrollController groupDetailScrollController = ScrollController();
   int pageNo = 1;
+
   @override
   void initState() {
     // groupList = widget.group;
@@ -111,7 +115,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                             return discoverGroupController.isLoading.value
                                 ? Container()
                                 : getGroupInfo(context);
-                          })
+                          }),
+                          Positioned(
+                              right: 10,
+                              bottom: 10,
+                              child: GetShareButton(
+                                groupId: widget.groupId,
+                              )),
                         ],
                       ),
                       SizedBox(
@@ -256,17 +266,19 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         discoverGroupController
                                 .groupDetailModel.value.groupList!.groupName ??
                             '',
-                        style: TextStyle(
-                          color: SolhColors.white,
-                          fontSize: 20,
-                        ),
+                        style: SolhTextStyles.QS_big_body.copyWith(
+                            color: SolhColors.white),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              Image.asset('assets/images/Earth.png'),
+                              Icon(
+                                Icons.public,
+                                color: SolhColors.white,
+                                size: 10,
+                              ),
                               SizedBox(width: 5),
                               Text(
                                 discoverGroupController.groupDetailModel.value
@@ -288,7 +300,11 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           ),
                           Row(
                             children: [
-                              Image.asset('assets/icons/group/persons.png'),
+                              Icon(
+                                CupertinoIcons.person_3_fill,
+                                color: SolhColors.white,
+                                size: 15,
+                              ),
                               SizedBox(width: 5),
                               Text(
                                   discoverGroupController.groupDetailModel.value
@@ -310,8 +326,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                           ),
                           Row(
                             children: [
-                              Image.asset(
-                                'assets/icons/group/edit.png',
+                              SvgPicture.asset(
+                                'assets/images/get_help/post.svg',
+                                height: 10,
                               ),
                               SizedBox(width: 5),
                               Text(
@@ -347,18 +364,27 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 fontWeight: FontWeight.w600,
                 color: SolhColors.primary_green,
               )),
+          SizedBox(
+            height: 10,
+          ),
           ReadMoreText(
             discoverGroupController
                     .groupDetailModel.value.groupList!.groupDescription ??
                 '',
-            style: TextStyle(
-              color: SolhColors.grey,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
+            style: SolhTextStyles.QS_caption.copyWith(
+                fontSize: 14, fontWeight: FontWeight.w600),
             textAlign: TextAlign.start,
             trimLines: 4,
+            delimiter: '....',
             trimMode: TrimMode.Line,
+            lessStyle: SolhTextStyles.QS_caption.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: SolhColors.primary_green),
+            moreStyle: SolhTextStyles.QS_caption.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: SolhColors.primary_green),
           ),
         ],
       ),
@@ -381,10 +407,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                         ? MyLoader()
                         : Text(
                             'Join Group',
-                            style: TextStyle(
-                              color: SolhColors.white,
-                              fontSize: 16,
-                            ),
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.white),
                           );
                   }),
                   onPressed: () async {
@@ -500,8 +524,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Members',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+          Text('Members', style: SolhTextStyles.QS_body_1_bold),
           SizedBox(
             height: 10,
           ),
@@ -949,6 +972,54 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
           ],
         );
       },
+    );
+  }
+}
+
+class GetShareButton extends StatelessWidget {
+  GetShareButton({super.key, required this.groupId});
+  final String groupId;
+  final DiscoverGroupController discoverGroupController = Get.find();
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        discoverGroupController.isSharingLink(true);
+        String link = await DynamicLinkProvider.instance
+            .createLink(createFor: 'Group', data: {
+          'groupId': groupId,
+          'creatorUserId': Get.find<ProfileController>()
+                  .myProfileModel
+                  .value
+                  .body!
+                  .user!
+                  .sId ??
+              ''
+        });
+        print(link);
+        await Share.share(link);
+
+        discoverGroupController.isSharingLink(false);
+      },
+      child: Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: SolhColors.primary_green.withOpacity(0.5)),
+        child: Builder(builder: (context) {
+          return Obx(() {
+            return discoverGroupController.isSharingLink.value
+                ? MyLoader(
+                    strokeWidth: 2,
+                    radius: 12,
+                  )
+                : Icon(
+                    Icons.share,
+                    color: SolhColors.white,
+                  );
+          });
+        }),
+      ),
     );
   }
 }

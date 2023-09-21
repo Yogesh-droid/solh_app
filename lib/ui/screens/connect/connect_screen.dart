@@ -79,7 +79,7 @@ class _ConnectScreen2State extends State<ConnectScreen2> {
         child: Scaffold(
       appBar: SolhAppBar(
         isLandingScreen: false,
-        title: Text('Connect', style: SolhTextStyles.AppBarText),
+        title: Text('Connect', style: SolhTextStyles.QS_body_1_bold),
         menuButton: getpopUpMenu(
             context,
             widget.sId ??
