@@ -791,7 +791,7 @@ class _JournalTileState extends State<JournalTile> {
                                                     0
                                             ? isGroupJoined
                                                 ? 'Go To Group'
-                                                : 'join'
+                                                : 'Join'
                                             : "Connect",
                                         style: SolhTextStyles
                                             .GreenBorderButtonText,

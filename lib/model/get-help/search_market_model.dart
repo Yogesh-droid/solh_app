@@ -175,7 +175,7 @@ class Provider {
   String? email;
   String? name;
   String? bio;
-  int? experience;
+  dynamic experience;
   String? profession;
   double? score;
   String? id;

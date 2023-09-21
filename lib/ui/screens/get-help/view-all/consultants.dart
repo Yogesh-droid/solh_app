@@ -698,7 +698,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   Future<void> getResultByCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     issueAndSpecializationFilterController.selectedCountry.value =
-        await sharedPreferences.getString('userCountry')!;
+        await sharedPreferences.getString('userCountry') ?? '';
     searchMarketController.defaultCountry =
         searchMarketController.defaultCountry == null ||
                 searchMarketController.defaultCountry == ''
