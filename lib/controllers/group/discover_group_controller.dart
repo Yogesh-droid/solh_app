@@ -26,6 +26,7 @@ class DiscoverGroupController extends GetxController {
   int? nextPage = 1; // used for discover groups
   int? createGroupNextPage = 1; // used for create groups
   int? joinedGroupNextPage = 1; // used for joined groups
+  var isSharingLink = false.obs;
 
   @override
   void onInit() {

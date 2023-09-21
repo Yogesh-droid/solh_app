@@ -417,13 +417,16 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
               : IconButton(
                   onPressed: () async {
                     _controller.isSharingLink(true);
-                    Share.share(await DynamicLinkProvider.instance
-                        .createLinkForProvider(
-                            providerId: _controller
-                                .consultantModelController.value.provder!.sId!,
-                            creatorUserId: profileController
-                                    .myProfileModel.value.body!.user!.sId ??
-                                ''));
+                    Share.share(await DynamicLinkProvider.instance.createLink(
+                      createFor: 'Provider',
+                      data: {
+                        "providerId": _controller
+                            .consultantModelController.value.provder!.sId!,
+                        "creatorUserId": profileController
+                                .myProfileModel.value.body!.user!.sId ??
+                            ''
+                      },
+                    ));
                     _controller.isSharingLink(false);
                   },
                   icon: Icon(Icons.share),

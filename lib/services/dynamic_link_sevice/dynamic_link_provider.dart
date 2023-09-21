@@ -16,10 +16,21 @@ class DynamicLinkProvider {
 
   final String _packageName = "com.solh.app";
 
-  Future<String> createLinkForProvider(
-      {required String providerId, String creatorUserId = ''}) async {
-    final String url =
-        "https://solh.com/provider?provider=$providerId&creatorUserId=$creatorUserId&creationTime=${DateTime.now()}";
+  Future<String> createLink({
+    required String createFor,
+    required Map data,
+  }) async {
+    String url = '';
+    switch (createFor) {
+      case 'Provider':
+        url =
+            "https://solh.com/provider?provider=${data['providerId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+        break;
+      case 'Group':
+        url =
+            "https://solh.com/group?groupId=${data['groupId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+    }
+
     print('created dynamic link $url');
 
     final DynamicLinkParameters parameters = DynamicLinkParameters(
@@ -81,31 +92,77 @@ class DynamicLinkProvider {
       onLink.listen((event) async {
         print('onLink ${event.link}');
         await Get.find<ProfileController>().getMyProfile();
-        String providerId = getProviderIdFromLink(event.link.toString());
-        print('onLink providerId $providerId');
-        if (providerId != '') {
-          print('try ran $providerId');
-          try {
-            await Get.find<ConsultantController>()
-                .getConsultantDataController(providerId, "Rs");
-            if (globalNavigatorKey.currentState != null) {
-              globalNavigatorKey.currentState!
-                  .pushNamed(AppRoutes.consultantProfilePage);
+        final (dataType, data) = getDynamicLinkData(event.link.toString());
+
+        print('onLink providerId $data');
+        switch (dataType) {
+          ///
+          case 'Provider':
+            if (data!["providerId"] != null || data["providerId"] != '') {
+              print('try ran ${data["providerId"]}');
+              try {
+                await Get.find<ConsultantController>()
+                    .getConsultantDataController(data["providerId"], "Rs");
+                if (globalNavigatorKey.currentState != null) {
+                  globalNavigatorKey.currentState!
+                      .pushNamed(AppRoutes.consultantProfilePage);
+                } else {
+                  print("current State is null");
+                }
+              } catch (e) {
+                globalNavigatorKey.currentState!.push(MaterialPageRoute(
+                  builder: (context) => BrokenLinKErrorPage(),
+                ));
+              }
             } else {
-              print("current State is null");
+              throw "data is empty";
             }
-          } catch (e) {
+            break;
+
+          ///
+          case 'Group':
+            if (data!["groupId"] != null || data["groupId"] != '') {
+              print('try ran ${data["groupId"]}');
+              try {
+                if (globalNavigatorKey.currentState != null) {
+                  globalNavigatorKey.currentState!
+                      .pushNamed(AppRoutes.groupDetails, arguments: {
+                    "groupId": data['groupId'],
+                    'isJoined': false
+                  });
+                } else {
+                  print("current State is null");
+                }
+              } catch (e) {
+                globalNavigatorKey.currentState!.push(MaterialPageRoute(
+                  builder: (context) => BrokenLinKErrorPage(),
+                ));
+              }
+            } else {
+              throw "data is empty";
+            }
+            break;
+
+          default:
             globalNavigatorKey.currentState!.push(MaterialPageRoute(
               builder: (context) => BrokenLinKErrorPage(),
             ));
-          }
         }
       });
     }
   }
 }
 
-String getProviderIdFromLink(String link) {
+(String?, Map?) getDynamicLinkData(String link) {
+  if (link.contains("provider")) {
+    return getProviderIdFromLink(link);
+  } else if (link.contains("group")) {
+    return getGroupIdFromLink(link);
+  }
+  return (null, null);
+}
+
+(String, Map) getProviderIdFromLink(String link) {
   String providerId = '';
   List<RegExpMatch> allMatches =
       RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
@@ -122,5 +179,25 @@ String getProviderIdFromLink(String link) {
       }
     }
   }
-  return providerId;
+  return ('Provider', {"providerId": providerId});
+}
+
+(String, Map) getGroupIdFromLink(String link) {
+  String groupId = '';
+  List<RegExpMatch> allMatches =
+      RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
+          .allMatches(link)
+          .toList();
+  for (final m in allMatches) {
+    if (m[0] != null) {
+      if (m[0]!.contains('group')) {
+        List<RegExpMatch> providerMatch =
+            RegExp(r'\b[\w-]+$').allMatches(m[0].toString()).toList();
+        for (final x in providerMatch) {
+          groupId = x[0].toString();
+        }
+      }
+    }
+  }
+  return ('Group', {"groupId": groupId});
 }

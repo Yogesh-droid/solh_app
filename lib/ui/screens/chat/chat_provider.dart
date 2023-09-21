@@ -12,6 +12,7 @@ import 'package:solh/controllers/chat-list/appointment_video_call_icon_controlle
 import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../bloc/user-bloc.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
@@ -538,11 +539,11 @@ class MessageTile extends StatelessWidget {
                       trimCollapsedText: 'Show more'.tr,
                       trimExpandedText: 'Show less'.tr,
                       trimMode: TrimMode.Line,
-                      moreStyle: TextStyle(
+                      lessStyle: SolhTextStyles.QS_caption.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: SolhColors.primary_green),
-                      lessStyle: TextStyle(
+                      moreStyle: SolhTextStyles.QS_caption.copyWith(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: SolhColors.primary_green),

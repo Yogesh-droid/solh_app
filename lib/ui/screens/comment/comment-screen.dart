@@ -1418,6 +1418,14 @@ class _PostForCommentState extends State<PostForComment> {
                     trimExpandedText: ' less',
                     trimLines: 3,
                     trimMode: TrimMode.Line,
+                    lessStyle: SolhTextStyles.QS_caption.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: SolhColors.primary_green),
+                    moreStyle: SolhTextStyles.QS_caption.copyWith(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: SolhColors.primary_green),
                   ),
                   getMedia(widget._journalModel, context),
                   Row(
