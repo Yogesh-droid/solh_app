@@ -58,7 +58,7 @@ class DynamicLinkProvider {
     if (instanceLink != null) {
       final Uri reflink = instanceLink.link;
       await Get.find<ProfileController>().getMyProfile();
-
+      print("reflink ${reflink.path}");
       try {
         switch (reflink.path) {
           case "/provider":
@@ -139,7 +139,7 @@ class DynamicLinkProvider {
                   globalNavigatorKey.currentState!
                       .pushNamed(AppRoutes.groupDetails, arguments: {
                     "groupId": data['groupId'],
-                    'isJoined': false
+                    'isJoined': null
                   });
                 } else {
                   print("current State is null");
