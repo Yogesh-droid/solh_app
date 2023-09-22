@@ -76,7 +76,7 @@ class AppRoutes {
 
   ////  post related  /////
   static const String commentScreen = '/commentScreen';
-  static const String master = '/master';
+  static const String master = '/';
   static const String introScreen = '/intro';
   static const String homeScreen = '/home';
   static const String journaling = '/journaling';

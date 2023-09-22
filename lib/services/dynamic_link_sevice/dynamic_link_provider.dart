@@ -71,6 +71,17 @@ class DynamicLinkProvider {
               print("current State is null");
             }
             break;
+          case "/group":
+            if (globalNavigatorKey.currentState != null) {
+              globalNavigatorKey.currentState!.pushNamed(AppRoutes.groupDetails,
+                  arguments: {
+                    "groupId": reflink.queryParameters["groupId"],
+                    'isJoined': false
+                  });
+            } else {
+              print("current State is null");
+            }
+            break;
         }
       } catch (e) {
         globalNavigatorKey.currentState!.push(MaterialPageRoute(
