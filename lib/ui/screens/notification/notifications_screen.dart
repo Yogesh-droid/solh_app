@@ -195,54 +195,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       );
     }
     if (item.routeData == 'announcement') {
-      return Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: SolhColors.white,
-            backgroundImage: NetworkImage(item.senderId != null
-                ? item.senderId!.profilePicture!
-                : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
-            radius: 30,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Wrap(
-                  children: [
-                    Text(item.content ?? ''),
-                  ],
-                ),
-                Text(
-                  timeago.format(DateTime.parse(item.createdAt!)),
-                  style: GoogleFonts.signika(
-                    color: Color(0xff666666),
-                    fontSize: 12,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      );
-    }
-    if (item.routeData == 'connection') {
-      return InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, AppRoutes.connectScreen, arguments: {
-            "uid": item.senderId!.id ?? '',
-            "sId": item.senderId!.sId ?? ''
-          });
-        },
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Row(
           children: [
-            SimpleImageContainer(
-              imageUrl: item.senderId!.profilePicture!,
-              radius: 60,
+            CircleAvatar(
+              backgroundColor: SolhColors.white,
+              backgroundImage: NetworkImage(item.senderId != null
+                  ? item.senderId!.profilePicture!
+                  : "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y"),
+              radius: 30,
             ),
             SizedBox(
               width: 12,
@@ -268,6 +230,50 @@ class _NotificationScreenState extends State<NotificationScreen> {
               ),
             )
           ],
+        ),
+      );
+    }
+    if (item.routeData == 'connection') {
+      return InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.connectScreen, arguments: {
+            "uid": item.senderId!.id ?? '',
+            "sId": item.senderId!.sId ?? ''
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              SimpleImageContainer(
+                imageUrl: item.senderId!.profilePicture!,
+                radius: 60,
+              ),
+              SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Wrap(
+                      children: [
+                        Text(item.content ?? ''),
+                      ],
+                    ),
+                    Text(
+                      timeago.format(DateTime.parse(item.createdAt!)),
+                      style: GoogleFonts.signika(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     } else {
