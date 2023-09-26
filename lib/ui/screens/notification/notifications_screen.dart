@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
@@ -8,7 +9,11 @@ import 'package:solh/widgets_constants/animated_refresh_container.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/image_container.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../../routes/routes.dart';
+import '../comment/comment-screen.dart';
 
 class NotificationScreen extends StatefulWidget {
   NotificationScreen({Key? key}) : super(key: key);
@@ -19,6 +24,7 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   var notificaltionColtroller = Get.put(NotificationController());
+  final JournalPageController journalPageController = Get.find();
   @override
   void initState() {
     // TODO: implement initState
@@ -134,41 +140,57 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Widget getNotificationTile(NotificationList item) {
     if (item.routeData == 'journal') {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: SolhColors.white,
-              backgroundImage: NetworkImage(item.senderId!.profilePicture!),
-              radius: 30,
-            ),
-            SizedBox(
-              width: 12,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Wrap(
-                    children: [
-                      Text(item.content ?? ''),
-                      // Text(' shared '),
-                      // Text('new Post')
-                    ],
-                  ),
-                  Text(
-                    timeago.format(DateTime.parse(item.createdAt!)),
-                    style: GoogleFonts.signika(
-                      color: Color(0xff666666),
-                      fontSize: 12,
-                    ),
-                  )
-                ],
+      return InkWell(
+        onTap: () async {
+          showDialog(
+              context: context,
+              builder: (_) => Center(child: SolhGradientLoader()));
+          await journalPageController.getJournalDetail(item.routeContent ?? '');
+          Navigator.pop(context);
+          if (journalPageController.journalDetail.value.id != null) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CommentScreen(
+                    journalModel: journalPageController.journalDetail.value,
+                    index: -1)));
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Sorry!! Something went wrong")));
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              CircleAvatar(
+                backgroundColor: SolhColors.white,
+                backgroundImage: NetworkImage(item.senderId!.profilePicture!),
+                radius: 30,
               ),
-            )
-          ],
+              SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Wrap(
+                      children: [
+                        Text(item.content ?? ''),
+                      ],
+                    ),
+                    Text(
+                      timeago.format(DateTime.parse(item.createdAt!)),
+                      style: GoogleFonts.signika(
+                        color: Color(0xff666666),
+                        fontSize: 12,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       );
     }
@@ -193,8 +215,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 Wrap(
                   children: [
                     Text(item.content ?? ''),
-                    // Text(' sent you '),
-                    // Text('connection request')
                   ],
                 ),
                 Text(
@@ -211,38 +231,44 @@ class _NotificationScreenState extends State<NotificationScreen> {
       );
     }
     if (item.routeData == 'connection') {
-      return Row(
-        children: [
-          SimpleImageContainer(
-            imageUrl: item.senderId!.profilePicture!,
-            radius: 60,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Wrap(
-                  children: [
-                    Text(item.content ?? ''),
-                    // Text(' by '),
-                    // Text(item['causedBy'])
-                  ],
-                ),
-                Text(
-                  timeago.format(DateTime.parse(item.createdAt!)),
-                  style: GoogleFonts.signika(
-                    color: Color(0xff666666),
-                    fontSize: 12,
-                  ),
-                )
-              ],
+      return InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, AppRoutes.connectScreen, arguments: {
+            "uid": item.senderId!.id ?? '',
+            "sId": item.senderId!.sId ?? ''
+          });
+        },
+        child: Row(
+          children: [
+            SimpleImageContainer(
+              imageUrl: item.senderId!.profilePicture!,
+              radius: 60,
             ),
-          )
-        ],
+            SizedBox(
+              width: 12,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Wrap(
+                    children: [
+                      Text(item.content ?? ''),
+                    ],
+                  ),
+                  Text(
+                    timeago.format(DateTime.parse(item.createdAt!)),
+                    style: GoogleFonts.signika(
+                      color: Color(0xff666666),
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       );
     } else {
       return Container();

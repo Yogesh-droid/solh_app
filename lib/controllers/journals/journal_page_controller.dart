@@ -6,12 +6,14 @@ import 'package:sizer/sizer.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/model/journals/liked_users_list.dart';
 import 'package:solh/services/network/error_handling.dart';
+import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:video_player/video_player.dart';
 import '../../constants/api.dart';
 
 class JournalPageController extends GetxController {
   var journalsResponseModel = JournalsResponseModel().obs;
+  var journalDetail = Journals().obs;
   var likedUserList = LikedUsersListModel().obs;
   var isLikedUserListLoading = false.obs;
   TextEditingController descriptionController = TextEditingController();
@@ -237,6 +239,25 @@ class JournalPageController extends GetxController {
       print(e);
     }
     isLikedUserListLoading.value = false;
+  }
+
+  Future<void> getJournalDetail(String id) async {
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/get-journal-details?journalId=$id");
+
+      if (map['success']) {
+        journalDetail.value = Journals.fromJson(map['data']);
+      } else {
+        print(map['message'] ?? 'No Data found');
+      }
+    } on Exception catch (e) {
+      if (e is Exceptions) {
+        print(e.error);
+      } else {
+        print(e.toString());
+      }
+    }
   }
 
   @override
