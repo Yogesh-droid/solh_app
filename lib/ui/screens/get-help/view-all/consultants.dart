@@ -51,11 +51,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
     _doctorsScrollController = ScrollController();
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        print('Running init state of Consultant');
-
         getResultByCountry();
-        print("defaultCountry2 " +
-            searchMarketController.defaultCountry.toString());
 
         issueAndSpecializationFilterController
             .getIssueAndSpecializationFilter(widget.slug);
@@ -647,9 +643,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                             onPressed: () {
                               widget.type == 'specialization'
                                   ? searchMarketController.getSpecializationList(
-                                      issueAndSpecializationFilterController
-                                          .selectedSpecialityList
-                                          .join("|"),
+                                      "${widget.slug}\|${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
                                       c: issueAndSpecializationFilterController
                                           .selectedCountry.value,
                                       issue: issueAndSpecializationFilterController
@@ -663,8 +657,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                           c: searchMarketController
                                               .defaultCountry)
                                       : searchMarketController.getIssueList(
-                                          issueAndSpecializationFilterController.selectedSpecialityList.join("|"),
-                                          issue: issueAndSpecializationFilterController.selectedIssueList.join("|"),
+                                          "${widget.slug}\|${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+                                          issue:
+                                              issueAndSpecializationFilterController
+                                                  .selectedIssueList
+                                                  .join("|"),
                                           c: issueAndSpecializationFilterController.selectedCountry.value,
                                           page: 1);
                               Navigator.pop(context);
@@ -698,7 +695,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
   Future<void> getResultByCountry() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     issueAndSpecializationFilterController.selectedCountry.value =
-        await sharedPreferences.getString('userCountry')!;
+        await sharedPreferences.getString('userCountry') ?? '';
     searchMarketController.defaultCountry =
         searchMarketController.defaultCountry == null ||
                 searchMarketController.defaultCountry == ''

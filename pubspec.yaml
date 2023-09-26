@@ -2,7 +2,11 @@ name: solh
 description: Solh App by OMLogic
 
 
+<<<<<<< HEAD
 version: 1.0.36+78
+=======
+version: 1.0.35+79
+>>>>>>> b0cf81f7f528af8ea933669a0ea8ff8241005fdd
 
 
 environment:

@@ -293,55 +293,7 @@ class _EditMyProfileScreenState extends State<EditMyProfileScreen> {
                     ],
                   ),
                 ),
-                /* CountryCodePicker(
-                  favorite: ['IN', 'US', 'AU'],
-                  comparator: (a, b) => b.name!.compareTo(a.name!),
-                  builder: (CountryCode? countryCode) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height / 15,
-                      decoration: BoxDecoration(
-                          color: SolhColors.light_Bg,
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.height / 60),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${country}',
-                            style: TextStyle(color: SolhColors.primary_green),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: SolhColors.primary_green,
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                  // showDropDownButton: true,
-                  // showFlagDialog: true,
-                  showFlagMain: false,
-                  dialogSize: Size(double.infinity, 600),
 
-                  // onChanged: (value) async {
-                  //   print(value.code);
-                  //   country = value.name;
-                  //   SharedPreferences sharedPreferences =
-                  //       await SharedPreferences.getInstance();
-                  //   await sharedPreferences.setString(
-                  //       'userCountry', value.code ?? '');
-                  //   country = value.name;
-                  // },
-                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                  initialSelection: "IN",
-                  // optional. Shows only country name and flag when popup is closed.
-                  showOnlyCountryWhenClosed: false,
-
-                  showCountryOnly: true,
-                  // optional. aligns the flag and the Text left
-                  alignLeft: true,
-                ), */
                 SizedBox(
                   height: 2.25.h,
                 ),
