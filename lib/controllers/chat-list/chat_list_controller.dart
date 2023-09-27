@@ -47,7 +47,7 @@ class ChatListController extends GetxController {
 
   Future sosChatListController(int pageNo, {String? filter}) async {
     pageNo > 1 ? isMorePageLoading(true) : isLoading(true);
-    if (filter != null) {
+    if (pageNo == 1 && filter != null) {
       sosChatList.clear();
     }
     ChatListModel? response = await getSosChat(pageNo, filter: filter);
@@ -89,9 +89,10 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future getSosChat(int pageNo, {String? filter = ''}) async {
+  Future getSosChat(int pageNo, {String? filter}) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/v2/sosChatList?page=$pageNo$filter')
+            APIConstants.api +
+                '/api/v2/sosChatList?page=$pageNo${filter ?? ''}')
         .onError((error, stackTrace) {
       print(error);
       return {};

@@ -1522,6 +1522,7 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
   ScrollController sosScrollController = ScrollController();
 
   int currentPage = 1;
+  String? filter;
 
   @override
   void initState() {
@@ -1535,9 +1536,10 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
     sosScrollController.addListener(() {
       if (sosScrollController.position.pixels ==
           sosScrollController.position.maxScrollExtent) {
-        log("it ran");
-        currentPage++;
-        chatListController.sosChatListController(currentPage);
+        if (!chatListController.isMorePageLoading.value) {
+          currentPage++;
+          chatListController.sosChatListController(currentPage, filter: filter);
+        }
       }
     });
   }
@@ -1556,7 +1558,9 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
                 PopupMenuButton<String>(
                     child: Icon(Icons.filter_alt),
                     onSelected: (value) {
-                      chatListController.sosChatListController(1,
+                      filter = value;
+                      currentPage = 1;
+                      chatListController.sosChatListController(currentPage,
                           filter: value);
                     },
                     itemBuilder: (context) {
@@ -1575,7 +1579,9 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
                           child: Text("This Month"),
                           value:
                               "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 30)))}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
-                        )
+                        ),
+                        PopupMenuItem<String>(
+                            child: Text("Clear All"), value: "")
                       ];
                     })
               ],
