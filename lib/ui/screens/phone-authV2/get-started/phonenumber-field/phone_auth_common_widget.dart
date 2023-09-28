@@ -137,7 +137,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                                     builder: (context) => PrivacyWeb(
                                           title: 'Terms of services',
                                           url:
-                                              "https://solhapp.com/terms-condition.html",
+                                              "https://solhapp.com/termsandcondition.html",
                                         )))),
                       TextSpan(
                           text: '& Privacy Policies ',
@@ -149,7 +149,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                                     builder: (context) => PrivacyWeb(
                                           title: 'Privacy policy',
                                           url:
-                                              "https://solhapp.com/privacy-policy.html",
+                                              "https://solhapp.com/privacypolicy.html",
                                         ))))
                     ]),
               ),
