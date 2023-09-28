@@ -188,7 +188,6 @@ class _SolhAppState extends State<SolhApp> {
       if (profileController.myProfileModel.value.body == null) {
         await profileController.getMyProfile();
       }
-      DynamicLinkProvider.instance.initDynamicLink();
       init();
       getLoacale();
       LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);

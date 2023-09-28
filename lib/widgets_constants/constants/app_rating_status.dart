@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:solh/services/cache_manager/cache_manager.dart';
 
 class AppRatingStatus {
@@ -15,9 +13,8 @@ class AppRatingStatus {
   static Future<bool> shouldShowRatingReminder() async {
     var response = await SolhCacheManager.instance
         .readJsonCache(key: "appRatingReminderTime");
-    log(response.toString(), name: "shouldShowRatingReminder");
+    print(response.toString() + "shouldShowRatingReminder");
     if (response != null) return false;
-
     return true;
   }
 }

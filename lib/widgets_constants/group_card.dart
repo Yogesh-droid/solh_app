@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'constants/colors.dart';
 
 class GroupCard extends StatelessWidget {
@@ -92,11 +94,12 @@ class GroupCard extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.center,
+                begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(0.0),
+                  Colors.black.withOpacity(0.7),
+                  Colors.black.withOpacity(0.4),
+                  Colors.transparent,
                 ],
               ),
               boxShadow: [
@@ -114,10 +117,8 @@ class GroupCard extends StatelessWidget {
                 children: [
                   Text(
                     _groupName ?? '',
-                    style: TextStyle(
-                      color: SolhColors.white,
-                      fontSize: 20,
-                    ),
+                    style: SolhTextStyles.QS_big_body.copyWith(
+                        color: SolhColors.white),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -125,16 +126,19 @@ class GroupCard extends StatelessWidget {
                       Row(
                         children: [
                           //Image.asset('assets/icons/group/lock.png'),
-                          SvgPicture.asset('assets/icons/group/earth.svg',
-                              color: SolhColors.white, height: 10),
+                          Icon(
+                            Icons.public,
+                            color: SolhColors.white,
+                            size: 10,
+                          ),
                           SizedBox(width: 5),
-                          // Text(
-                          //   group.groupType ?? '',
-                          //   style: TextStyle(
-                          //     color: SolhColors.white,
-                          //     fontSize: 12,
-                          //   ),
-                          // ),
+                          Text(
+                            'Public',
+                            style: TextStyle(
+                              color: SolhColors.white,
+                              fontSize: 12,
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(
@@ -146,7 +150,11 @@ class GroupCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Image.asset('assets/icons/group/persons.png'),
+                          Icon(
+                            CupertinoIcons.person_3_fill,
+                            color: SolhColors.white,
+                            size: 15,
+                          ),
                           SizedBox(width: 5),
                           _memberCount != null
                               ? Text(_memberCount!.toString() + ' members',
@@ -166,8 +174,9 @@ class GroupCard extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Image.asset(
-                            'assets/icons/group/edit.png',
+                          SvgPicture.asset(
+                            'assets/images/get_help/post.svg',
+                            height: 10,
                           ),
                           SizedBox(width: 5),
                           _journalCount != null

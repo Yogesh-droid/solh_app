@@ -15,6 +15,7 @@ import 'package:solh/controllers/journals/journal_comment_controller.dart';
 import 'package:solh/controllers/mood-meter/mood_meter_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/errors/no_internet_page.dart';
 import 'package:solh/services/network/network.dart';
 import 'package:solh/services/restart_widget.dart';
@@ -132,7 +133,9 @@ class _MasterScreen2State extends State<MasterScreen2>
       } else {}
     });
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      profileController.getMyProfile();
+      profileController
+          .getMyProfile()
+          .then((value) => DynamicLinkProvider.instance.initDynamicLink());
       showFeedbackForm();
     });
     animationController =
@@ -818,6 +821,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           ],
                         ),
                       ),
+
                       // InkWell(
                       //   onTap: () {
                       //     Navigator.pushNamed(

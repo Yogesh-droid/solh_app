@@ -2,11 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/inhouse_package_model.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/profile-setup/email.dart';
@@ -14,6 +16,7 @@ import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/share_button.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../../../routes/routes.dart';
@@ -94,10 +97,12 @@ class _InhousePackageScreenState extends State<InhousePackageScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: AboutAndPlans(
-                        packageList: _alliedController
-                            .inhousePackageModel.value.packageList,
-                        user: _alliedController
-                            .inhousePackageModel.value.carousel),
+                      packageList: _alliedController
+                          .inhousePackageModel.value.packageList,
+                      user:
+                          _alliedController.inhousePackageModel.value.carousel,
+                      id: widget.args['id'],
+                    ),
                   )
                 ],
               )),
@@ -473,9 +478,10 @@ class ProfileDetails extends StatelessWidget {
 }
 
 class AboutAndPlans extends StatefulWidget {
-  AboutAndPlans({super.key, this.user, this.packageList});
+  AboutAndPlans({super.key, this.user, this.packageList, required this.id});
   final Carousel? user;
   final List<PackageList>? packageList;
+  final String id;
 
   @override
   State<AboutAndPlans> createState() => _AboutAndPlansState();
@@ -519,9 +525,42 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  widget.user!.name ?? '',
-                  style: SolhTextStyles.QS_big_body,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.user!.name ?? '',
+                      style: SolhTextStyles.QS_big_body,
+                    ),
+                    Obx(() {
+                      return _alliedController.isShareingLink.value
+                          ? MyLoader(
+                              radius: 13,
+                              strokeWidth: 2,
+                            )
+                          : ShareButton(
+                              onTap: () async {
+                                _alliedController.isShareingLink(true);
+                                String link = await DynamicLinkProvider.instance
+                                    .createLink(
+                                        createFor: 'inHousePackage',
+                                        data: {
+                                      'inHousePackageId': widget.id,
+                                      "creatorUserId":
+                                          Get.find<ProfileController>()
+                                              .myProfileModel
+                                              .value
+                                              .body!
+                                              .user!
+                                              .id!,
+                                    });
+                                Share.share(link);
+                                _alliedController.isShareingLink(false);
+                              },
+                            );
+                    })
+                  ],
                 ),
                 const SizedBox(
                   height: 5,

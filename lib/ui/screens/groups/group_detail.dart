@@ -106,7 +106,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     discoverGroupController.isLoading.value
                 ? Center(child: MyLoader())
                 : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Stack(
                         children: [
@@ -210,8 +211,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
             'Group Detail'
             // + '(${groupList.groupType})',
             ,
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.w600, color: Colors.black),
+            style: SolhTextStyles.QS_body_1_bold,
           ),
         ),
         // groupList.groupMembers != null
@@ -242,11 +242,12 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    begin: Alignment.center,
+                    begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      Colors.black.withOpacity(0.5),
-                      Colors.black.withOpacity(0.0),
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.4),
+                      Colors.transparent
                     ],
                   ),
                   boxShadow: [
@@ -393,7 +394,10 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
 
   // Padding(
   getPostButton(BuildContext context1) {
-    return isJoined == null
+    return discoverGroupController.groupDetailModel.value.isUserPresent ==
+                null ||
+            discoverGroupController.groupDetailModel.value.isUserPresent ==
+                false
         ? Container(
             height: 50,
             child: Padding(
@@ -458,7 +462,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                   width: MediaQuery.of(context).size.width / 3,
                   child: Text(
                     'Post in group',
-                    style: SolhTextStyles.GreenButtonText,
+                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                   ),
                   onPressed: () {
                     journalPageController.selectedGroupId.value =
@@ -476,7 +480,8 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     width: MediaQuery.of(context).size.width / 3,
                     child: Text(
                       'See Post',
-                      style: SolhTextStyles.GreenBorderButtonText,
+                      style: SolhTextStyles.CTA
+                          .copyWith(color: SolhColors.primary_green),
                     ),
                     onPressed: () {
                       journalPageController.selectedGroupId.value =
@@ -817,46 +822,54 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
     setState(() {});
   }
 
-  getPopUpMenuBtn(BuildContext context) {
-    return PopupMenuButton(
-      icon: Icon(
-        Icons.more_vert,
-        color: SolhColors.primary_green,
-      ),
-      itemBuilder: (context) {
-        return isDefaultAdmin
-            ? [
-                PopupMenuItem(
-                  child: Text('Edit'),
-                  value: 1,
-                ),
-                PopupMenuItem(
-                  child: Text('Delete'),
-                  value: 2,
-                )
-              ]
-            : [
-                PopupMenuItem(
-                  child: Text('Exit group'),
-                  value: 3,
-                )
-              ];
-      },
-      onSelected: (value) async {
-        if (value == 1) {
-          // Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //   return CreateGroup(
-          //     group: widget.group,
-          //   );
-          // }));
-        } else if (value == 2) {
-          // await discoverGroupController.deleteGroups(groupList.id ?? '');
-          Navigator.pop(context);
-        } else if (value == 3) {
-          getExitButtonPopUp(context);
-        }
-      },
-    );
+  Widget getPopUpMenuBtn(BuildContext context) {
+    return discoverGroupController.groupDetailModel.value.isUserPresent ==
+                null ||
+            discoverGroupController.groupDetailModel.value.isUserPresent ==
+                false
+        ? Container()
+        : SizedBox(
+            width: 20,
+            child: PopupMenuButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: SolhColors.primary_green,
+              ),
+              itemBuilder: (context) {
+                return isDefaultAdmin
+                    ? [
+                        PopupMenuItem(
+                          child: Text('Edit', style: SolhTextStyles.CTA),
+                          value: 1,
+                        ),
+                        PopupMenuItem(
+                          child: Text('Delete', style: SolhTextStyles.CTA),
+                          value: 2,
+                        )
+                      ]
+                    : [
+                        PopupMenuItem(
+                          child: Text('Exit group', style: SolhTextStyles.CTA),
+                          value: 3,
+                        )
+                      ];
+              },
+              onSelected: (value) async {
+                if (value == 1) {
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  //   return CreateGroup(
+                  //     group: widget.group,
+                  //   );
+                  // }));
+                } else if (value == 2) {
+                  // await discoverGroupController.deleteGroups(groupList.id ?? '');
+                  Navigator.pop(context);
+                } else if (value == 3) {
+                  getExitButtonPopUp(context);
+                }
+              },
+            ),
+          );
   }
 
   getExitButtonPopUp(BuildContext context1) {

@@ -3,16 +3,18 @@ class GroupDetailModel {
   GroupList? groupList;
   PagesForMember? pagesForMember;
   int? totalGroupMembers;
-
+  bool? isUserPresent;
   GroupDetailModel(
       {this.success,
       this.groupList,
       this.pagesForMember,
-      this.totalGroupMembers});
+      this.totalGroupMembers,
+      this.isUserPresent});
 
   GroupDetailModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     totalGroupMembers = json["totalGroupMembers"];
+    isUserPresent = json['isUserPresent'];
     groupList = json['groupList'] != null
         ? new GroupList.fromJson(json['groupList'])
         : null;
@@ -198,6 +200,7 @@ class DefaultAdmin {
     sId = json['_id'];
     profilePicture = json['profilePicture'];
     uid = json['uid'];
+
     name = json['name'];
     bio = json['bio'];
   }

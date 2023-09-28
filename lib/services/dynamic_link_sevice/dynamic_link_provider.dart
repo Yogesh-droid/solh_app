@@ -1,11 +1,16 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/broken_link.dart';
+import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class DynamicLinkProvider {
   DynamicLinkProvider._();
@@ -24,11 +29,14 @@ class DynamicLinkProvider {
     switch (createFor) {
       case 'Provider':
         url =
-            "https://solh.com/provider?provider=${data['providerId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+            "https://solh.com/provider?provider=${data['providerId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}&ofl=https://www.solhapp.com/";
         break;
       case 'Group':
         url =
             "https://solh.com/group?groupId=${data['groupId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+      case 'inHousePackage':
+        url =
+            "https://solh.com/inHousePackage?inHousePackageId=${data['inHousePackageId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
     }
 
     print('created dynamic link $url');
@@ -47,7 +55,9 @@ class DynamicLinkProvider {
 
     final FirebaseDynamicLinks link = FirebaseDynamicLinks.instance;
 
-    final reflink = await link.buildShortLink(parameters);
+    final reflink = await link
+        .buildShortLink(parameters)
+        .onError((error, stackTrace) => throw (error.toString()));
 
     return reflink.shortUrl.toString();
   }
@@ -56,37 +66,33 @@ class DynamicLinkProvider {
     final instanceLink = await FirebaseDynamicLinks.instance.getInitialLink();
     print("$instanceLink instanceLink");
     if (instanceLink != null) {
+      showWaitingDialog();
       final Uri reflink = instanceLink.link;
-      await Get.find<ProfileController>().getMyProfile();
       print("reflink ${reflink.path}");
       try {
         switch (reflink.path) {
           case "/provider":
             await Get.find<ConsultantController>().getConsultantDataController(
                 reflink.queryParameters["provider"], "Rs");
-            if (globalNavigatorKey.currentState != null) {
-              globalNavigatorKey.currentState!
-                  .pushNamed(AppRoutes.consultantProfilePage);
-            } else {
-              print("current State is null");
-            }
+
+            _routeLinks(routeName: AppRoutes.consultantProfilePage, args: {});
             break;
           case "/group":
-            if (globalNavigatorKey.currentState != null) {
-              globalNavigatorKey.currentState!.pushNamed(AppRoutes.groupDetails,
-                  arguments: {
-                    "groupId": reflink.queryParameters["groupId"],
-                    'isJoined': false
-                  });
-            } else {
-              print("current State is null");
-            }
+            _routeLinks(routeName: AppRoutes.groupDetails, args: {
+              "groupId": reflink.queryParameters["groupId"],
+              'isJoined': false
+            });
             break;
+          case "/inHousePackage":
+            _routeLinks(
+                routeName: AppRoutes.inhousePackage,
+                args: {"id": reflink.queryParameters["inHousePackageId"]});
         }
       } catch (e) {
         globalNavigatorKey.currentState!.push(MaterialPageRoute(
           builder: (context) => BrokenLinKErrorPage(),
         ));
+        throw (e);
       }
 
       print(
@@ -100,10 +106,12 @@ class DynamicLinkProvider {
     if (instanceLink == null) {
       Stream<PendingDynamicLinkData> onLink =
           FirebaseDynamicLinks.instance.onLink;
+
       onLink.listen((event) async {
+        showWaitingDialog();
         print('onLink ${event.link}');
         await Get.find<ProfileController>().getMyProfile();
-        final (dataType, data) = getDynamicLinkData(event.link.toString());
+        final (dataType, data) = _getDynamicLinkData(event.link.toString());
 
         print('onLink providerId $data');
         switch (dataType) {
@@ -114,46 +122,41 @@ class DynamicLinkProvider {
               try {
                 await Get.find<ConsultantController>()
                     .getConsultantDataController(data["providerId"], "Rs");
-                if (globalNavigatorKey.currentState != null) {
-                  globalNavigatorKey.currentState!
-                      .pushNamed(AppRoutes.consultantProfilePage);
-                } else {
-                  print("current State is null");
-                }
               } catch (e) {
                 globalNavigatorKey.currentState!.push(MaterialPageRoute(
                   builder: (context) => BrokenLinKErrorPage(),
                 ));
+                throw (e);
               }
+
+              _routeLinks(routeName: AppRoutes.consultantProfilePage, args: {});
             } else {
-              throw "data is empty";
+              throw "data is empty for provider dynamic link";
             }
             break;
 
           ///
           case 'Group':
             if (data!["groupId"] != null || data["groupId"] != '') {
-              print('try ran ${data["groupId"]}');
-              try {
-                if (globalNavigatorKey.currentState != null) {
-                  globalNavigatorKey.currentState!
-                      .pushNamed(AppRoutes.groupDetails, arguments: {
-                    "groupId": data['groupId'],
-                    'isJoined': null
-                  });
-                } else {
-                  print("current State is null");
-                }
-              } catch (e) {
-                globalNavigatorKey.currentState!.push(MaterialPageRoute(
-                  builder: (context) => BrokenLinKErrorPage(),
-                ));
-              }
+              _routeLinks(
+                  routeName: AppRoutes.groupDetails,
+                  args: {"groupId": data['groupId'], 'isJoined': false});
             } else {
-              throw "data is empty";
+              throw 'data is empty for groups dynamic link';
             }
-            break;
 
+          case 'inHousePackage':
+            if (data!["inHousePackageId"] != null ||
+                data["inHousePackageId"] != '') {
+              _routeLinks(routeName: AppRoutes.master, args: {});
+              _routeLinks(
+                  routeName: AppRoutes.inhousePackage,
+                  args: {"id": data['inHousePackageId']});
+            } else {
+              throw 'data is empty for inHousePackage dynamic link';
+            }
+
+          ///
           default:
             globalNavigatorKey.currentState!.push(MaterialPageRoute(
               builder: (context) => BrokenLinKErrorPage(),
@@ -164,16 +167,72 @@ class DynamicLinkProvider {
   }
 }
 
-(String?, Map?) getDynamicLinkData(String link) {
+void showWaitingDialog() {
+  showDialog(
+    barrierDismissible: false,
+    context: globalNavigatorKey.currentContext!,
+    builder: (context) {
+      return SizedBox(
+        height: 300,
+        child: AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/opening_link.gif',
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                ButtonLoadingAnimation(),
+                Text(
+                  'Loading link data',
+                  style: SolhTextStyles.QS_big_body.copyWith(
+                      color: SolhColors.primary_green),
+                )
+              ],
+            )),
+      );
+    },
+  );
+}
+
+void _routeLinks(
+    {required String routeName, required Map<String, dynamic> args}) {
+  //to pop the link loading screen
+
+  try {
+    if (globalNavigatorKey.currentState != null) {
+      globalNavigatorKey.currentState!.pushNamed(routeName, arguments: args);
+    } else {
+      print("current State is null for route $routeName");
+    }
+  } catch (e) {
+    print("caught a error in route $routeName");
+
+    globalNavigatorKey.currentState!.push(MaterialPageRoute(
+      builder: (context) => BrokenLinKErrorPage(),
+    ));
+    throw (e);
+  }
+}
+
+(String?, Map?) _getDynamicLinkData(String link) {
   if (link.contains("provider")) {
-    return getProviderIdFromLink(link);
+    return _getProviderIdFromLink(link);
   } else if (link.contains("group")) {
-    return getGroupIdFromLink(link);
+    return _getGroupIdFromLink(link);
+  } else if (link.contains('inHousePackage')) {
+    return _getInHousepackageIdFromLink(link);
   }
   return (null, null);
 }
 
-(String, Map) getProviderIdFromLink(String link) {
+// it works don't touch it
+(String, Map) _getProviderIdFromLink(String link) {
   String providerId = '';
   List<RegExpMatch> allMatches =
       RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
@@ -193,7 +252,8 @@ class DynamicLinkProvider {
   return ('Provider', {"providerId": providerId});
 }
 
-(String, Map) getGroupIdFromLink(String link) {
+//it also works
+(String, Map) _getGroupIdFromLink(String link) {
   String groupId = '';
   List<RegExpMatch> allMatches =
       RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
@@ -211,4 +271,24 @@ class DynamicLinkProvider {
     }
   }
   return ('Group', {"groupId": groupId});
+}
+
+(String, Map) _getInHousepackageIdFromLink(String link) {
+  String groupId = '';
+  List<RegExpMatch> allMatches =
+      RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
+          .allMatches(link)
+          .toList();
+  for (final m in allMatches) {
+    if (m[0] != null) {
+      if (m[0]!.contains('inHousePackage')) {
+        List<RegExpMatch> providerMatch =
+            RegExp(r'\b[\w-]+$').allMatches(m[0].toString()).toList();
+        for (final x in providerMatch) {
+          groupId = x[0].toString();
+        }
+      }
+    }
+  }
+  return ('inHousePackage', {"inHousePackageId": groupId});
 }
