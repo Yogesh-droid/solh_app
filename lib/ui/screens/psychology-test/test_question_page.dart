@@ -166,7 +166,6 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
           children: [
             LinearProgressIndicator(
               backgroundColor: SolhColors.primary_green.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(8),
               minHeight: 8,
               value: (index + 1) / psychologyTestController.questionList.length,
             ),

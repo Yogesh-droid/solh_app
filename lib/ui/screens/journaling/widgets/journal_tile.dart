@@ -494,7 +494,7 @@ class _JournalTileState extends State<JournalTile> {
         !widget._journalModel!.anonymousJournal!) {
       if (widget._journalModel!.postedBy!.userType == "Official") {
         return SolhExpertBadge(
-          usertype: 'Counsellor',
+          usertype: widget._journalModel!.postedBy!.userType,
         );
       } else if (widget._journalModel!.postedBy!.userType == "SolhProvider") {
         SolhExpertBadge(
@@ -791,7 +791,7 @@ class _JournalTileState extends State<JournalTile> {
                                                     0
                                             ? isGroupJoined
                                                 ? 'Go To Group'
-                                                : 'join'
+                                                : 'Join'
                                             : "Connect",
                                         style: SolhTextStyles
                                             .GreenBorderButtonText,

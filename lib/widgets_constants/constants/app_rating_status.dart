@@ -14,7 +14,9 @@ class AppRatingStatus {
     var response = await SolhCacheManager.instance
         .readJsonCache(key: "appRatingReminderTime");
     print(response.toString() + "shouldShowRatingReminder");
-    if (response != null) return false;
+    if (response != null) {
+      return false;
+    }
     return true;
   }
 }
