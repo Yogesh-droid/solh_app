@@ -1,13 +1,18 @@
+import 'dart:ffi';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/get-help/packages_list_response_model.dart';
+import 'package:solh/model/profile/my_profile_model.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/comment/comment-screen.dart';
 import 'package:solh/ui/screens/profile-setup/email.dart';
@@ -15,6 +20,7 @@ import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/share_button.dart';
 import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../../../routes/routes.dart';
@@ -94,7 +100,8 @@ class _AlliedConsultantScreenState extends State<AlliedConsultantScreen> {
                   SliverToBoxAdapter(
                     child: AboutAndPlans(
                         user: _alliedController
-                            .packagesListModel.value.finalResult),
+                            .packagesListModel.value.finalResult,
+                        id: widget.args["id"]),
                   )
                 ],
               )),
@@ -554,8 +561,9 @@ class ProfileDetails extends StatelessWidget {
 }
 
 class AboutAndPlans extends StatelessWidget {
-  AboutAndPlans({super.key, this.user});
+  AboutAndPlans({super.key, this.user, required this.id});
   final FinalResult? user;
+  final String id;
   final AlliedController _alliedController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -578,9 +586,42 @@ class AboutAndPlans extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                Text(
-                  'About',
-                  style: SolhTextStyles.QS_body_1_bold,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'About',
+                      style: SolhTextStyles.QS_body_1_bold,
+                    ),
+                    Obx(() {
+                      return _alliedController.isShareingProviderLink.value
+                          ? MyLoader(
+                              strokeWidth: 2,
+                              radius: 10,
+                            )
+                          : ShareButton(onTap: () async {
+                              _alliedController.isShareingProviderLink.value =
+                                  true;
+                              String link = await DynamicLinkProvider.instance
+                                  .createLink(
+                                      createFor: 'alliedProvider',
+                                      data: {
+                                    "alliedProviderId": id,
+                                    "creatorUserId":
+                                        Get.find<ProfileController>()
+                                            .myProfileModel
+                                            .value
+                                            .body!
+                                            .user!
+                                            .sId,
+                                  });
+                              _alliedController.isShareingProviderLink.value =
+                                  false;
+                              Share.share(link);
+                            });
+                    }),
+                  ],
                 ),
                 const SizedBox(
                   height: 5,

@@ -24,6 +24,7 @@ class AlliedController extends GetxController {
   var userEmail = "".obs;
   var isBookingLoading = false.obs;
   var isShareingLink = false.obs;
+  var isShareingProviderLink = false.obs;
 
   Future<void> getPackages(String id) async {
     isPackageListFetching.value = true;

@@ -66,7 +66,6 @@ class BottomNavigatorController extends GetxController {
   void onInit() async {
     // TODO: implement onInit
     await getFeedbackStatus();
-
     super.onInit();
   }
 }

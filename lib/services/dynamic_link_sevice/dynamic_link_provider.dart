@@ -1,13 +1,11 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/broken_link.dart';
-import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -37,6 +35,9 @@ class DynamicLinkProvider {
       case 'inHousePackage':
         url =
             "https://solh.com/inHousePackage?inHousePackageId=${data['inHousePackageId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+      case 'alliedProvider':
+        url =
+            "https://solh.com/alliedProvider?alliedProviderId=${data['alliedProviderId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
     }
 
     print('created dynamic link $url');
@@ -155,6 +156,16 @@ class DynamicLinkProvider {
             } else {
               throw 'data is empty for inHousePackage dynamic link';
             }
+          case 'alliedProvider':
+            if (data!["alliedProviderId"] != null ||
+                data["alliedProviderId"] != '') {
+              _routeLinks(routeName: AppRoutes.master, args: {});
+              _routeLinks(
+                  routeName: AppRoutes.alliedConsultantScreen,
+                  args: {"id": data['alliedProviderId']});
+            } else {
+              throw 'data is empty for inHousePackage dynamic link';
+            }
 
           ///
           default:
@@ -227,6 +238,8 @@ void _routeLinks(
     return _getGroupIdFromLink(link);
   } else if (link.contains('inHousePackage')) {
     return _getInHousepackageIdFromLink(link);
+  } else if (link.contains('alliedProvider')) {
+    return _getAlliedProviderIdFromLink(link);
   }
   return (null, null);
 }
@@ -291,4 +304,24 @@ void _routeLinks(
     }
   }
   return ('inHousePackage', {"inHousePackageId": groupId});
+}
+
+(String, Map) _getAlliedProviderIdFromLink(String link) {
+  String groupId = '';
+  List<RegExpMatch> allMatches =
+      RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
+          .allMatches(link)
+          .toList();
+  for (final m in allMatches) {
+    if (m[0] != null) {
+      if (m[0]!.contains('alliedProvider')) {
+        List<RegExpMatch> providerMatch =
+            RegExp(r'\b[\w-]+$').allMatches(m[0].toString()).toList();
+        for (final x in providerMatch) {
+          groupId = x[0].toString();
+        }
+      }
+    }
+  }
+  return ('alliedProvider', {"alliedProviderId": groupId});
 }
