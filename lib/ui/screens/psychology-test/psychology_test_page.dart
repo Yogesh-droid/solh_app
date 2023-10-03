@@ -9,6 +9,7 @@ import 'package:solh/ui/screens/psychology-test/test_history_details.dart';
 import 'package:solh/ui/screens/psychology-test/test_question_page.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/share_button.dart';
 
 class PsychologyTestPage extends StatefulWidget {
   const PsychologyTestPage({Key? key}) : super(key: key);
@@ -424,10 +425,21 @@ class QuestionContainer extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Text(
-                  test.testQuestionNumber.toString() +
-                      ' Ques (${test.testDuration} min)',
-                  style: SolhTextStyles.GreenBorderButtonText,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      test.testQuestionNumber.toString() +
+                          ' Ques (${test.testDuration} min)',
+                      style: SolhTextStyles.GreenBorderButtonText,
+                    ),
+                    ShareButton(
+                      onTap: () {},
+                      enableBackgroundCircle: false,
+                      iconColor: SolhColors.Grey_1,
+                      iconSize: 18,
+                    ),
+                  ],
                 )
               ],
             )
