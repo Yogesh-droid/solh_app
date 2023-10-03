@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,10 +94,13 @@ class DynamicLinkProvider {
             _routeLinks(
                 routeName: AppRoutes.inhousePackage,
                 args: {"id": reflink.queryParameters["inHousePackageId"]});
+          case "/alliedProvider":
+            _routeLinks(
+                routeName: AppRoutes.alliedConsultantScreen,
+                args: {"id": reflink.queryParameters["alliedProviderId"]});
           case "/selfAssessment":
             await Get.find<PsychologyTestController>()
                 .getQuestion(reflink.queryParameters["assessmentId"] ?? '');
-            ;
 
             globalNavigatorKey.currentState!
                 .push(MaterialPageRoute(builder: (context) {
