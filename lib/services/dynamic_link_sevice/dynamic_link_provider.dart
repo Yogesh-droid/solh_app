@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/main.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/errors/broken_link.dart';
+import 'package:solh/ui/screens/psychology-test/test_question_page.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -38,6 +42,9 @@ class DynamicLinkProvider {
       case 'alliedProvider':
         url =
             "https://solh.com/alliedProvider?alliedProviderId=${data['alliedProviderId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
+      case 'selfAssessment':
+        url =
+            "https://solh.com/selfAssessment?assessmentId=${data['assessmentId']}&creatorUserId=${data['creatorUserId']}&creationTime=${DateTime.now()}";
     }
 
     print('created dynamic link $url');
@@ -88,6 +95,18 @@ class DynamicLinkProvider {
             _routeLinks(
                 routeName: AppRoutes.inhousePackage,
                 args: {"id": reflink.queryParameters["inHousePackageId"]});
+          case "/selfAssessment":
+            await Get.find<PsychologyTestController>()
+                .getQuestion(reflink.queryParameters["assessmentId"] ?? '');
+            ;
+
+            globalNavigatorKey.currentState!
+                .push(MaterialPageRoute(builder: (context) {
+              return TestQuestionsPage(
+                id: reflink.queryParameters["assessmentId"],
+                testTitle: null,
+              );
+            }));
         }
       } catch (e) {
         globalNavigatorKey.currentState!.push(MaterialPageRoute(
@@ -166,6 +185,21 @@ class DynamicLinkProvider {
             } else {
               throw 'data is empty for inHousePackage dynamic link';
             }
+          case 'selfAssessment':
+            if (data!["assessmentId"] != null || data["assessmentId"] != '') {
+              await Get.find<PsychologyTestController>()
+                  .getQuestion(data['assessmentId'] ?? '');
+
+              globalNavigatorKey.currentState!
+                  .push(MaterialPageRoute(builder: (context) {
+                return TestQuestionsPage(
+                  id: data['assessmentId'],
+                  testTitle: null,
+                );
+              }));
+            } else {
+              throw 'data is empty for inHousePackage dynamic link';
+            }
 
           ///
           default:
@@ -240,6 +274,8 @@ void _routeLinks(
     return _getInHousepackageIdFromLink(link);
   } else if (link.contains('alliedProvider')) {
     return _getAlliedProviderIdFromLink(link);
+  } else if (link.contains('selfAssessment')) {
+    return _getSelfAssessmentIdFromLink(link);
   }
   return (null, null);
 }
@@ -324,4 +360,25 @@ void _routeLinks(
     }
   }
   return ('alliedProvider', {"alliedProviderId": groupId});
+}
+
+(String, Map) _getSelfAssessmentIdFromLink(String link) {
+  String groupId = '';
+  List<RegExpMatch> allMatches =
+      RegExp(r'(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)')
+          .allMatches(link)
+          .toList();
+  for (final m in allMatches) {
+    if (m[0] != null) {
+      if (m[0]!.contains('assessmentId')) {
+        List<RegExpMatch> providerMatch =
+            RegExp(r'\b[\w-]+$').allMatches(m[0].toString()).toList();
+        for (final x in providerMatch) {
+          groupId = x[0].toString();
+        }
+      }
+    }
+  }
+  log("${('selfAssessment', {"assessmentId": groupId})}");
+  return ('selfAssessment', {"assessmentId": groupId});
 }

@@ -13,7 +13,7 @@ class PsychologyTestController extends GetxController {
   var testHistorylist = <Map<String, TestList>>[].obs;
   PsychologyTestModel? psychologyTest;
   var questionList = <TestQuestionList>[].obs;
-  TestQuestionModel? testQuestionModel;
+  var testQuestionModel = TestQuestionModel().obs;
   var isLoadingList = false.obs;
   var isQuestionsLoading = false.obs;
   var selectedTestname = ''.obs;
@@ -26,6 +26,8 @@ class PsychologyTestController extends GetxController {
   var isTestResultLoadingList = false.obs;
   var testHistoryResult = <TestResult>[].obs;
   var testHistoryMoreTest = <MoreTests>[].obs;
+  var isSharingTest = false.obs;
+  var currentSharingTest = '';
 
   Future<void> getTestList() async {
     isLoadingList.value = true;
@@ -62,10 +64,11 @@ class PsychologyTestController extends GetxController {
     questionList.clear();
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/psychologicalTest?testId=$id");
-    testQuestionModel = TestQuestionModel.fromJson(map);
-    selectedTestname.value = testQuestionModel?.testDetail!.testTitle ?? '';
+    testQuestionModel.value = TestQuestionModel.fromJson(map);
+    selectedTestname.value =
+        testQuestionModel.value.testDetail!.testTitle ?? '';
 
-    testQuestionModel?.testDetail!.testQuestionList!.forEach((element) {
+    testQuestionModel.value.testDetail!.testQuestionList!.forEach((element) {
       questionList.add(element);
     });
     questionList.refresh();

@@ -147,10 +147,21 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   SolhAppBar getAppbar() {
     return SolhAppBar(
       isLandingScreen: false,
-      title: Text(
-        widget.testTitle ?? '',
-        style: SolhTextStyles.QS_body_1_bold,
-      ),
+      title: widget.testTitle != null
+          ? Text(
+              widget.testTitle ?? '',
+              style: SolhTextStyles.QS_body_1_bold,
+            )
+          : Obx(() {
+              return psychologyTestController.isQuestionsLoading.value
+                  ? Container()
+                  : Text(
+                      psychologyTestController
+                              .testQuestionModel.value.testDetail!.testTitle ??
+                          '',
+                      style: SolhTextStyles.QS_body_1_bold,
+                    );
+            }),
     );
   }
 
@@ -180,7 +191,8 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
             SizedBox(
               height: 20,
             ),
-            psychologyTestController.testQuestionModel!.testDetail!.testType ==
+            psychologyTestController
+                        .testQuestionModel.value.testDetail!.testType ==
                     "TextImage"
                 ? getOptionGrid(e.answer!, e)
                 : ListView.builder(
