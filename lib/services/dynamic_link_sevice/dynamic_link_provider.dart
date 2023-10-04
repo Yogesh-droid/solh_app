@@ -90,10 +90,10 @@ class DynamicLinkProvider {
               'isJoined': false
             });
             break;
-          case "/inHousePackage":
-            _routeLinks(
-                routeName: AppRoutes.inhousePackage,
-                args: {"id": reflink.queryParameters["inHousePackageId"]});
+          // case "/inHousePackage":
+          //   _routeLinks(
+          //       routeName: AppRoutes.inhousePackage,
+          //       args: {"id": reflink.queryParameters["inHousePackageId"]});
           case "/alliedProvider":
             _routeLinks(
                 routeName: AppRoutes.alliedConsultantScreen,
