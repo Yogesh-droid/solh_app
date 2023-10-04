@@ -191,7 +191,7 @@ class DynamicLinkProvider {
             if (data!["assessmentId"] != null || data["assessmentId"] != '') {
               await Get.find<PsychologyTestController>()
                   .getQuestion(data['assessmentId'] ?? '');
-
+              globalNavigatorKey.currentState!.pop();
               globalNavigatorKey.currentState!
                   .push(MaterialPageRoute(builder: (context) {
                 return TestQuestionsPage(
