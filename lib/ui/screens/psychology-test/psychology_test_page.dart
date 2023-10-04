@@ -249,7 +249,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
+              border: Border.all(color: SolhColors.primary_green, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -288,7 +288,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                         ? DateFormat("dd MMM yyyy")
                             .format(DateTime.parse(map.keys.first))
                         : '',
-                    style: SolhTextStyles.JournalingHintText,
+                    style: SolhTextStyles.QS_body_2_semi,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
