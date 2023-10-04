@@ -151,6 +151,7 @@ class DynamicLinkProvider {
                 throw (e);
               }
 
+
               _routeLinks(routeName: AppRoutes.consultantProfilePage, args: {});
             } else {
               throw "data is empty for provider dynamic link";
