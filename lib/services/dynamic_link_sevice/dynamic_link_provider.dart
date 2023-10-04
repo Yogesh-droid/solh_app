@@ -94,10 +94,10 @@ class DynamicLinkProvider {
           //   _routeLinks(
           //       routeName: AppRoutes.inhousePackage,
           //       args: {"id": reflink.queryParameters["inHousePackageId"]});
-          case "/alliedProvider":
-            _routeLinks(
-                routeName: AppRoutes.alliedConsultantScreen,
-                args: {"id": reflink.queryParameters["alliedProviderId"]});
+          // case "/alliedProvider":
+          //   _routeLinks(
+          //       routeName: AppRoutes.alliedConsultantScreen,
+          //       args: {"id": reflink.queryParameters["alliedProviderId"]});
           case "/selfAssessment":
             await Get.find<PsychologyTestController>()
                 .getQuestion(reflink.queryParameters["assessmentId"] ?? '');
