@@ -103,11 +103,8 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                         !getHelpController.isAllIssueShown.value
                             ? "Show More".tr
                             : "Show less".tr,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: SolhColors.primary_green,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.primary_green),
                       );
                     })),
               ),

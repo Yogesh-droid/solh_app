@@ -39,6 +39,7 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
@@ -377,8 +378,7 @@ class _HomePageState extends State<HomePage> {
           ),
           GetHelpDivider(),
           Obx(() =>
-              discoverGroupController.discoveredGroupModel.value.groupList !=
-                      null
+              discoverGroupController.homepageGroupModel.value.groupList != null
                   ? GetHelpCategory(
                       title: 'Groups For You'.tr,
                       onPressed: () {
@@ -387,11 +387,10 @@ class _HomePageState extends State<HomePage> {
                       })
                   : Container()),
           Obx(() {
-            return discoverGroupController
-                            .discoveredGroupModel.value.groupList !=
+            return discoverGroupController.homepageGroupModel.value.groupList !=
                         null &&
                     discoverGroupController
-                        .discoveredGroupModel.value.groupList!.isNotEmpty
+                        .homepageGroupModel.value.groupList!.isNotEmpty
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
@@ -408,38 +407,38 @@ class _HomePageState extends State<HomePage> {
                   title: 'Search for Support'.tr,
                   trailing: InkWell(
                     onTap: () {
-                      _bottomNavigatorController.activeIndex.value = 2;
+                      getHelpController.isAllIssueShown.value
+                          ? getHelpController.showLessIssues()
+                          : getHelpController.showAllIssues();
+                      getHelpController.isAllIssueShown.value =
+                          !getHelpController.isAllIssueShown.value;
                     },
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                      child: Row(
-                        children: [
-                          Text(
-                            'Get Help'.tr,
-                            style: GoogleFonts.signika(
-                              color: SolhColors.primary_green,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_forward,
-                            color: SolhColors.primary_green,
-                            size: 14,
-                          ),
-                        ],
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(
+                            right: 11.0, bottom: 11, top: 11, left: 11),
+                        child: Obx(() {
+                          return Text(
+                            !getHelpController.isAllIssueShown.value
+                                ? "Show More".tr
+                                : "Show less".tr,
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primary_green),
+                          );
+                        })),
                   ),
                 ),
               )),
-          Obx(() => Container(
+          Obx(
+            () => Container(
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               color: profileController.orgColor3.value.isNotEmpty
                   ? Color(int.parse("0xFF${profileController.orgColor3}"))
                   : Colors.transparent,
               child: getIssueUI(
-                  bookAppointmentController, getHelpController, context))),
+                  bookAppointmentController, getHelpController, context),
+            ),
+          ),
           GetHelpDivider(),
           Padding(
             padding: EdgeInsets.all(4.0.w),
@@ -473,30 +472,30 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-                InkWell(
-                  onTap: () {
-                    _bottomNavigatorController.activeIndex.value = 2;
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    child: Row(
-                      children: [
-                        Text(
-                          'Get Help'.tr,
-                          style: GoogleFonts.signika(
-                            color: SolhColors.primary_green,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: SolhColors.primary_green,
-                          size: 14,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                // InkWell(
+                //   onTap: () {
+                //     _bottomNavigatorController.activeIndex.value = 2;
+                //   },
+                //   child: Padding(
+                //     padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                //     child: Row(
+                //       children: [
+                //         Text(
+                //           'Get Help'.tr,
+                //           style: GoogleFonts.signika(
+                //             color: SolhColors.primary_green,
+                //             fontWeight: FontWeight.w400,
+                //           ),
+                //         ),
+                //         Icon(
+                //           Icons.arrow_forward,
+                //           color: SolhColors.primary_green,
+                //           size: 14,
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -1099,9 +1098,9 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.only(bottom: 2.h),
         height: MediaQuery.of(context).size.height * 0.4,
         child: discoverGroupController
-                        .discoveredGroupModel.value.groupList!.length ==
+                        .homepageGroupModel.value.groupList!.length ==
                     0 ||
-                discoverGroupController.discoveredGroupModel.value.groupList ==
+                discoverGroupController.homepageGroupModel.value.groupList ==
                     null
             ? Center(
                 child: Text(
@@ -1122,16 +1121,13 @@ class _HomePageState extends State<HomePage> {
                           ))); */
                       print(
                         discoverGroupController
-                            .discoveredGroupModel.value.groupList
+                            .homepageGroupModel.value.groupList
                             .toString(),
                       );
                       Navigator.pushNamed(context, AppRoutes.groupDetails,
                           arguments: {
                             "groupId": discoverGroupController
-                                .discoveredGroupModel
-                                .value
-                                .groupList![index]
-                                .sId,
+                                .homepageGroupModel.value.groupList![index].sId,
                             // "isJoined": false
                           });
                     }),
@@ -1141,8 +1137,7 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: SolhColors.greyS200,
-                        ),
+                            color: SolhColors.primary_green, width: 0.7),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1157,14 +1152,14 @@ class _HomePageState extends State<HomePage> {
                                 topRight: Radius.circular(10),
                               ),
                               child: discoverGroupController
-                                          .discoveredGroupModel
+                                          .homepageGroupModel
                                           .value
                                           .groupList![index]
                                           .groupMediaUrl !=
                                       null
                                   ? CachedNetworkImage(
                                       imageUrl: discoverGroupController
-                                              .discoveredGroupModel
+                                              .homepageGroupModel
                                               .value
                                               .groupList![index]
                                               .groupMediaUrl ??
@@ -1190,16 +1185,12 @@ class _HomePageState extends State<HomePage> {
                               top: 8,
                             ),
                             child: Text(
-                              discoverGroupController.discoveredGroupModel.value
+                              discoverGroupController.homepageGroupModel.value
                                       .groupList![index].groupName ??
                                   '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.signika(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xff222222),
-                              ),
+                              style: SolhTextStyles.QS_body_2_bold,
                             ),
                           ),
                           Padding(
@@ -1209,15 +1200,16 @@ class _HomePageState extends State<HomePage> {
                                 Icon(
                                   CupertinoIcons.person_3,
                                   color: SolhColors.primary_green,
+                                  size: 20,
                                 ),
                                 SizedBox(
                                   width: 2.w,
                                 ),
                                 Text(
-                                  discoverGroupController.discoveredGroupModel
+                                  discoverGroupController.homepageGroupModel
                                       .value.groupList![index].groupMembers!
                                       .toString(),
-                                  style: SolhTextStyles.JournalingHintText,
+                                  style: SolhTextStyles.QS_caption_bold,
                                 ),
                                 SizedBox(
                                   width: 4.w,
@@ -1225,30 +1217,96 @@ class _HomePageState extends State<HomePage> {
                                 SvgPicture.asset(
                                   'assets/images/eye.svg',
                                   color: SolhColors.primary_green,
+                                  height: 11,
                                 ),
                                 SizedBox(
                                   width: 2.w,
                                 ),
                                 Text(
-                                  discoverGroupController.discoveredGroupModel
+                                  discoverGroupController.homepageGroupModel
                                       .value.groupList![index].journalCount
                                       .toString(),
-                                  style: SolhTextStyles.JournalingHintText,
+                                  style: SolhTextStyles.QS_caption_bold,
                                 ),
                               ],
                             ),
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              discoverGroupController.discoveredGroupModel.value
-                                      .groupList![index].groupDescription ??
-                                  '',
-                              style: SolhTextStyles.JournalingHintText,
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                          // Padding(
+                          //   padding: EdgeInsets.only(left: 8.0),
+                          //   child: Text(
+                          //     discoverGroupController.homepageGroupModel.value
+                          //             .groupList![index].groupDescription ??
+                          //         '',
+                          //     style: SolhTextStyles.JournalingHintText,
+                          //     maxLines: 3,
+                          //     overflow: TextOverflow.ellipsis,
+                          //   ),
+                          // ),
+                          Obx(() {
+                            return discoverGroupController.homepageGroupModel
+                                    .value.groupList![index].isUserJoined!
+                                ? Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SolhGreenBorderMiniButton(
+                                            height: 35,
+                                            child: Text(
+                                              'Joined',
+                                              style: SolhTextStyles.CTA
+                                                  .copyWith(
+                                                      color: SolhColors
+                                                          .primary_green),
+                                            )),
+                                      ],
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SolhGreenMiniButton(
+                                            onPressed: () async {
+                                              await Get.find<
+                                                      CreateGroupController>()
+                                                  .joinGroup(
+                                                      groupId:
+                                                          discoverGroupController
+                                                              .homepageGroupModel
+                                                              .value
+                                                              .groupList![index]
+                                                              .sId!,
+                                                      isAnon: "false");
+                                              discoverGroupController
+                                                  .getHomePageGroup();
+                                              // setState(() {});
+                                            },
+                                            height: 35,
+                                            child: Obx(() {
+                                              return Get.find<CreateGroupController>()
+                                                          .isLoading
+                                                          .value ||
+                                                      discoverGroupController
+                                                          .isHomePageGroupLoading
+                                                          .value
+                                                  ? ButtonLoadingAnimation(
+                                                      ballColor:
+                                                          SolhColors.white,
+                                                    )
+                                                  : Text(
+                                                      'Join',
+                                                      style: SolhTextStyles.CTA
+                                                          .copyWith(
+                                                              color: SolhColors
+                                                                  .white),
+                                                    );
+                                            })),
+                                      ],
+                                    ),
+                                  );
+                          })
                         ],
                       ),
                     ),
@@ -1260,11 +1318,11 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 itemCount: discoverGroupController
-                            .discoveredGroupModel.value.groupList!.length >
+                            .homepageGroupModel.value.groupList!.length >
                         10
                     ? 10
                     : discoverGroupController
-                        .discoveredGroupModel.value.groupList!.length));
+                        .homepageGroupModel.value.groupList!.length));
   }
 
   getInteractionButton(Journals journal) {

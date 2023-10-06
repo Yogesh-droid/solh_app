@@ -935,17 +935,15 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         return AlertDialog(
           title: Text(
             'Do You want to Exit group ?',
-            style: goalFontStyle(
-              18.0,
-              Color(0xff666666),
-            ),
+            style: SolhTextStyles.QS_body_2_semi,
           ),
           actions: <Widget>[
             MaterialButton(
               color: SolhColors.white,
               child: Text(
                 'No',
-                style: TextStyle(color: Colors.grey),
+                style: SolhTextStyles.CTA
+                    .copyWith(color: SolhColors.primary_green),
               ),
               onPressed: () {
                 Navigator.of(context2).pop();
@@ -955,7 +953,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
               color: SolhColors.primary_green,
               child: Text(
                 'Yes',
-                style: TextStyle(color: Colors.white),
+                style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
               ),
               onPressed: () async {
                 Utility.showLoader(context);
@@ -963,6 +961,7 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                     groupId: discoverGroupController
                             .groupDetailModel.value.groupList!.sId ??
                         '');
+                discoverGroupController.getHomePageGroup();
                 discoverGroupController.joinedGroupModel.value.groupList!
                     .remove(discoverGroupController
                         .groupDetailModel.value.groupList!);
@@ -1115,6 +1114,7 @@ getGroupJoinOption({
                             .groupDetailModel.value.groupList!.sId ??
                         '',
                     isAnon: createGroupController.joinAsAnon.value);
+                discoverGroupController.getHomePageGroup();
                 // discoverGroupController.joinedGroupModel.value.groupList!.add(
                 //     discoverGroupController.groupDetailModel.value.groupList!);
                 discoverGroupController.discoveredGroupModel.value.groupList!

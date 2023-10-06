@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:solh/constants/api.dart';
-import 'package:solh/controllers/group/group_detail_model.dart';
+import 'package:solh/model/group/group_detail_model.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
+import 'package:solh/model/group/homepage_group_model.dart';
 import 'package:solh/services/network/network.dart';
 
 class DiscoverGroupController extends GetxController {
@@ -13,6 +14,7 @@ class DiscoverGroupController extends GetxController {
   var joinedGroupModel = GetGroupResponseModel().obs;
   var discoveredGroupModel = GetGroupResponseModel().obs;
   var groupDetailModel = GroupDetailModel().obs;
+  var homepageGroupModel = HomepageGroupModel().obs;
   List<String> groupsShownOnHome =
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
@@ -27,12 +29,14 @@ class DiscoverGroupController extends GetxController {
   int? createGroupNextPage = 1; // used for create groups
   int? joinedGroupNextPage = 1; // used for joined groups
   var isSharingLink = false.obs;
+  var isHomePageGroupLoading = false.obs;
 
   @override
   void onInit() {
     getJoinedGroups();
     getCreatedGroups();
     getDiscoverGroups();
+    getHomePageGroup();
     super.onInit();
   }
 
@@ -140,5 +144,19 @@ class DiscoverGroupController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  Future<void> getHomePageGroup() async {
+    isHomePageGroupLoading(true);
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/homepage-group');
+      if (map['success']) {
+        homepageGroupModel.value = HomepageGroupModel.fromJson(map);
+      }
+    } catch (e) {
+      throw (e);
+    }
+    isHomePageGroupLoading(false);
   }
 }
