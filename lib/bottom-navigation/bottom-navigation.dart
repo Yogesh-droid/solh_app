@@ -293,10 +293,6 @@ class _MasterScreen2State extends State<MasterScreen2>
                         }),
                   ],
                 ),
-                // AlertDialog(content: feedbackForm())
-                // bottomNavigatorController.shouldShowFeedbackForm
-                //     ? AlertDialog(content: feedbackForm())
-                //     : Container(),
               ],
             );
           });

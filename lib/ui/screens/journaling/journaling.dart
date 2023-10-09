@@ -249,7 +249,7 @@ class _JournalingState extends State<Journaling> {
                     return !_journalPageController.isLoading.value
                         ? Obx(() {
                             return _journalPageController
-                                    .journalsList.value.isNotEmpty
+                                    .journalsList.isNotEmpty
                                 ? ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
@@ -257,14 +257,13 @@ class _JournalingState extends State<Journaling> {
                                         .journalsList.length,
                                     itemBuilder:
                                         (BuildContext context, int index) {
-                                      return _journalPageController.journalsList
-                                                      .value[index].id !=
+                                      return _journalPageController
+                                                      .journalsList[index].id !=
                                                   null &&
                                               !userBlocNetwork.hiddenPosts
                                                   .contains(
                                                       _journalPageController
-                                                          .journalsList
-                                                          .value[index]
+                                                          .journalsList[index]
                                                           .id)
                                           ? (index == 2 || index == 25
                                               ? Column(

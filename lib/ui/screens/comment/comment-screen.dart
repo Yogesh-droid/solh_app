@@ -37,7 +37,7 @@ import '../journaling/widgets/solh_expert_badge.dart';
 class CommentScreen extends StatefulWidget {
   const CommentScreen(
       {Key? key, required Journals? journalModel, required this.index})
-      : _journalModel = journalModel,
+      : this._journalModel = journalModel,
         super(key: key);
 
   final Journals? _journalModel;
@@ -71,6 +71,7 @@ class _CommentScreenState extends State<CommentScreen> {
       journalCommentController.repliesList.clear();
       journalCommentController.nextPage = 1;
       journalCommentController.previousPage = -2;
+      getJournalDetails();
       _scrollController.addListener(() async {
         if (_scrollController.position.pixels ==
             _scrollController.position.maxScrollExtent) {
@@ -84,10 +85,11 @@ class _CommentScreenState extends State<CommentScreen> {
           });
         }
       });
-      getComments();
-      if (_isLoginedUserJournal = widget._journalModel!.postedBy != null) {
-        _isLoginedUserJournal = widget._journalModel!.postedBy!.uid ==
-            FirebaseAuth.instance.currentUser!.uid;
+      if (_isLoginedUserJournal =
+          _journalPageController.journalDetail.value.postedBy != null) {
+        _isLoginedUserJournal =
+            _journalPageController.journalDetail.value.postedBy!.uid ==
+                FirebaseAuth.instance.currentUser!.uid;
       }
       journalCommentController.repliedTo.value = '';
       journalCommentController.isReplying.value = false;
@@ -128,7 +130,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                   slivers: [
                                     SliverToBoxAdapter(
                                       child: PostForComment(
-                                        journalModel: widget._journalModel,
+                                        // journalModel: widget._journalModel,
+                                        journalModel: _journalPageController
+                                            .journalDetail.value,
                                         index: widget.index,
                                       ),
                                     ),
@@ -147,7 +151,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                             return CommentBoxWidget(
                                               // For best comment
                                               journalModel:
-                                                  widget._journalModel!,
+                                                  _journalPageController
+                                                      .journalDetail.value,
                                               isUserPost:
                                                   _isLoginedUserJournal!,
                                               commentModel: Comments(
@@ -234,28 +239,31 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     .user,
                                               ),
                                               deleteComment: () async {
-                                                await journalCommentController
-                                                    .deleteComment(
-                                                        journalId: widget
-                                                                ._journalModel!
+                                                await journalCommentController.deleteComment(
+                                                    journalId:
+                                                        _journalPageController
+                                                                .journalDetail
+                                                                .value
                                                                 .id ??
                                                             '',
-                                                        commentId:
-                                                            journalCommentController
-                                                                    .getJouranalsCommentModel
-                                                                    .value
-                                                                    .body!
-                                                                    .bestComment!
-                                                                    .sId ??
-                                                                '',
-                                                        isReply: false);
+                                                    commentId:
+                                                        journalCommentController
+                                                                .getJouranalsCommentModel
+                                                                .value
+                                                                .body!
+                                                                .bestComment!
+                                                                .sId ??
+                                                            '',
+                                                    isReply: false);
                                                 getComments();
                                                 _journalPageController
                                                     .journalsList
                                                     .forEach((element) {
                                                   if (element.id ==
-                                                      widget
-                                                          ._journalModel!.id) {
+                                                      _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .id) {
                                                     element.comments =
                                                         element.comments! - 1;
                                                   }
@@ -293,10 +301,12 @@ class _CommentScreenState extends State<CommentScreen> {
                                                   bool? isReply) async {
                                                 await journalCommentController
                                                     .deleteComment(
-                                                        journalId: widget
-                                                                ._journalModel!
-                                                                .id ??
-                                                            '',
+                                                        journalId:
+                                                            _journalPageController
+                                                                    .journalDetail
+                                                                    .value
+                                                                    .id ??
+                                                                '',
                                                         commentId: id,
                                                         isReply:
                                                             isReply ?? true);
@@ -305,8 +315,10 @@ class _CommentScreenState extends State<CommentScreen> {
                                                     .journalsList
                                                     .forEach((element) {
                                                   if (element.id ==
-                                                      widget
-                                                          ._journalModel!.id) {
+                                                      _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .id) {
                                                     element.comments =
                                                         element.comments! - 1;
                                                   }
@@ -330,8 +342,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               deleteComment:
                                                                   () async {
                                                                 await journalCommentController.deleteComment(
-                                                                    journalId: widget
-                                                                            ._journalModel!
+                                                                    journalId: _journalPageController
+                                                                            .journalDetail
+                                                                            .value
                                                                             .id ??
                                                                         '',
                                                                     commentId: journalCommentController
@@ -348,8 +361,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                         (element) {
                                                                   if (element
                                                                           .id ==
-                                                                      widget
-                                                                          ._journalModel!
+                                                                      _journalPageController
+                                                                          .journalDetail
+                                                                          .value
                                                                           .id) {
                                                                     element.comments =
                                                                         element.comments! -
@@ -366,8 +380,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                               makeBestComment:
                                                                   () async {
                                                                 await journalCommentController.makeBestComment(
-                                                                    journalId: widget
-                                                                            ._journalModel!
+                                                                    journalId: _journalPageController
+                                                                            .journalDetail
+                                                                            .value
                                                                             .id ??
                                                                         '',
                                                                     commentId: journalCommentController
@@ -375,8 +390,10 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                             .sId ??
                                                                         '');
                                                               },
-                                                              journalModel: widget
-                                                                  ._journalModel!,
+                                                              journalModel:
+                                                                  _journalPageController
+                                                                      .journalDetail
+                                                                      .value,
                                                               onReplyTapped:
                                                                   (id, name,
                                                                       sId) {
@@ -414,8 +431,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                       bool?
                                                                           isReply) async {
                                                                 await journalCommentController.deleteComment(
-                                                                    journalId: widget
-                                                                            ._journalModel!
+                                                                    journalId: _journalPageController
+                                                                            .journalDetail
+                                                                            .value
                                                                             .id ??
                                                                         '',
                                                                     commentId:
@@ -453,8 +471,9 @@ class _CommentScreenState extends State<CommentScreen> {
                                                                           (element) {
                                                                     if (element
                                                                             .id ==
-                                                                        widget
-                                                                            ._journalModel!
+                                                                        _journalPageController
+                                                                            .journalDetail
+                                                                            .value
                                                                             .id) {
                                                                       element.comments =
                                                                           element.comments! -
@@ -547,30 +566,27 @@ class _CommentScreenState extends State<CommentScreen> {
                                         _isLoading = true;
                                       });
                                       journalCommentController.isReplying.value
-                                          ? await journalCommentController
-                                              .addReply(
-                                                  parentId:
-                                                      journalCommentController
-                                                          .commentId,
-                                                  journalId:
-                                                      widget._journalModel!.id!,
-                                                  commentBody:
-                                                      _commentEditingController
-                                                          .text,
-                                                  userId:
-                                                      journalCommentController
-                                                          .parentId,
-                                                  index:
-                                                      journalCommentController
-                                                          .hiddenReplyList
-                                                          .indexWhere(
-                                                              (element) =>
-                                                                  element ==
-                                                                  true))
+                                          ? await journalCommentController.addReply(
+                                              parentId: journalCommentController
+                                                  .commentId,
+                                              journalId: _journalPageController
+                                                  .journalDetail.value.id!,
+                                              commentBody: _commentEditingController
+                                                  .text,
+                                              userId: journalCommentController
+                                                  .parentId,
+                                              index: journalCommentController
+                                                  .hiddenReplyList
+                                                  .indexWhere(
+                                                      (element) =>
+                                                          element == true))
                                           : await journalCommentController
                                               .addComment(
                                                   journalId:
-                                                      widget._journalModel!.id!,
+                                                      _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .id!,
                                                   commentBody:
                                                       _commentEditingController
                                                           .text);
@@ -582,7 +598,8 @@ class _CommentScreenState extends State<CommentScreen> {
                                       _journalPageController.journalsList
                                           .forEach((element) {
                                         if (element.id ==
-                                            widget._journalModel!.id) {
+                                            _journalPageController
+                                                .journalDetail.value.id) {
                                           element.comments =
                                               element.comments! + 1;
                                         }
@@ -614,247 +631,292 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Future<void> getComments({bool? shouldRefresh, int? page}) async {
     await journalCommentController.getJournalComment(
-        postId: widget._journalModel!.id!,
+        postId: _journalPageController.journalDetail.value.id!,
         pageNo: pageNo,
         shouldRefresh: shouldRefresh,
         page: page);
   }
 
   getUserNameAndImage() {
-    return Container(
-      child: GestureDetector(
-        onTap: () => widget._journalModel!.group != null &&
-                _journalPageController.selectedGroupId.value.length == 0
-            ? {
-                Navigator.pushNamed(context, AppRoutes.groupDetails,
-                    arguments: {
-                      "group": GroupList(
-                        sId: widget._journalModel!.group!.sId,
-                        groupName: widget._journalModel!.group!.groupName,
-                        groupMediaUrl: widget._journalModel!.group!.groupImage,
-                      ),
-                    }),
-              }
-            : widget._journalModel!.postedBy!.sId !=
-                        null && ////// this case is for user journal
-                    widget._journalModel!.anonymousJournal != null &&
-                    !widget._journalModel!.anonymousJournal!
-                ? {
-                    Navigator.pushNamed(context, AppRoutes.connectScreen,
-                        arguments: {
-                          "uid": widget._journalModel!.postedBy!.uid!,
-                          "sId": widget._journalModel!.postedBy!.sId!
-                        })
-                  }
-                : {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('You can not see this user'),
-                      duration: Duration(milliseconds: 700),
-                      backgroundColor: Colors.black.withOpacity(0.8),
-                    )),
-                  },
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              CircleAvatar(
-                backgroundColor: Color(0xFFD9D9D9),
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: CircleAvatar(
-                    /* backgroundImage: widget._journalModel!.anonymousJournal ==
+    return Obx(() => _journalPageController.journalDetail.value.postedBy == null
+        ? SizedBox()
+        : Container(
+            child: GestureDetector(
+              onTap: () => _journalPageController.journalDetail.value.group !=
+                          null &&
+                      _journalPageController.selectedGroupId.value.length == 0
+                  ? {
+                      Navigator.pushNamed(context, AppRoutes.groupDetails,
+                          arguments: {
+                            "group": GroupList(
+                              sId: _journalPageController
+                                  .journalDetail.value.group!.sId,
+                              groupName: _journalPageController
+                                  .journalDetail.value.group!.groupName,
+                              groupMediaUrl: _journalPageController
+                                  .journalDetail.value.group!.groupImage,
+                            ),
+                          }),
+                    }
+                  : _journalPageController.journalDetail.value.postedBy!.sId !=
+                              null && ////// this case is for user journal
+                          _journalPageController
+                                  .journalDetail.value.anonymousJournal !=
+                              null &&
+                          !_journalPageController
+                              .journalDetail.value.anonymousJournal!
+                      ? {
+                          Navigator.pushNamed(context, AppRoutes.connectScreen,
+                              arguments: {
+                                "uid": _journalPageController
+                                    .journalDetail.value.postedBy!.uid!,
+                                "sId": _journalPageController
+                                    .journalDetail.value.postedBy!.sId!
+                              })
+                        }
+                      : {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('You can not see this user'),
+                            duration: Duration(milliseconds: 700),
+                            backgroundColor: Colors.black.withOpacity(0.8),
+                          )),
+                        },
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Color(0xFFD9D9D9),
+                      child: Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: CircleAvatar(
+                          /* backgroundImage: _journalPageController.journalDetail.value.anonymousJournal ==
                                 null &&
-                            widget._journalModel!.postedBy!.anonymous == null
-                        ? widget._journalModel!.group != null
+                            _journalPageController.journalDetail.value.postedBy!.anonymous == null
+                        ? _journalPageController.journalDetail.value.group != null
                             ? CachedNetworkImageProvider(
-                                widget._journalModel!.group!.groupImage ?? '')
-                            : CachedNetworkImageProvider(widget._journalModel!
+                                _journalPageController.journalDetail.value.group!.groupImage ?? '')
+                            : CachedNetworkImageProvider(_journalPageController.journalDetail.value
                                     .postedBy!.anonymous!.profilePicture ??
                                 '')
-                        : widget._journalModel!.group != null &&
+                        : _journalPageController.journalDetail.value.group != null &&
                                 journalPageController
                                         .selectedGroupId.value.length ==
                                     0
-                            ? widget._journalModel!.group!.groupImage != null
+                            ? _journalPageController.journalDetail.value.group!.groupImage != null
                                 ? CachedNetworkImageProvider(
-                                    widget._journalModel!.group!.groupImage!)
+                                    _journalPageController.journalDetail.value.group!.groupImage!)
                                 : AssetImage(
                                         'assets/images/group_placeholder.png')
                                     as ImageProvider
                             : CachedNetworkImageProvider(
-                                widget._journalModel!.postedBy!.profilePicture!), */
-                    backgroundImage: widget._journalModel!.anonymousJournal != null &&
-                            widget._journalModel!.postedBy!.anonymous != null &&
-                            widget._journalModel!.anonymousJournal!
-                        ? widget._journalModel!.group != null &&
-                                _journalPageController.selectedGroupId.value.length ==
-                                    0
-                            ? CachedNetworkImageProvider(
-                                widget._journalModel!.group!.groupImage!)
-                            : CachedNetworkImageProvider(widget._journalModel!
-                                    .postedBy!.anonymous!.profilePicture ??
-                                '')
-                        : widget._journalModel!.group != null &&
-                                _journalPageController.selectedGroupId.value.length ==
-                                    0
-                            ? CachedNetworkImageProvider(
-                                widget._journalModel!.group!.groupImage!)
-                            : widget._journalModel!.postedBy != null
-                                ? widget._journalModel!.postedBy!.anonymous !=
-                                            null &&
-                                        widget._journalModel!.anonymousJournal!
-                                    ? CachedNetworkImageProvider(widget
-                                        ._journalModel!
-                                        .postedBy!
-                                        .profilePicture!)
-                                    : CachedNetworkImageProvider(
-                                        widget._journalModel!.postedBy!.profilePicture!)
-                                : CachedNetworkImageProvider(widget._journalModel!.postedBy!.profilePicture ?? ''),
-                    backgroundColor: SolhColors.white,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 3.w,
+                                _journalPageController.journalDetail.value.postedBy!.profilePicture!), */
+                          backgroundImage: _journalPageController.journalDetail
+                                          .value.anonymousJournal !=
+                                      null &&
+                                  _journalPageController.journalDetail.value
+                                          .postedBy!.anonymous !=
+                                      null &&
+                                  _journalPageController
+                                      .journalDetail.value.anonymousJournal!
+                              ? _journalPageController.journalDetail.value.group != null &&
+                                      _journalPageController
+                                              .selectedGroupId.value.length ==
+                                          0
+                                  ? CachedNetworkImageProvider(_journalPageController
+                                      .journalDetail.value.group!.groupImage!)
+                                  : CachedNetworkImageProvider(
+                                      _journalPageController
+                                              .journalDetail
+                                              .value
+                                              .postedBy!
+                                              .anonymous!
+                                              .profilePicture ??
+                                          '')
+                              : _journalPageController.journalDetail.value.group != null &&
+                                      _journalPageController.selectedGroupId.value.length == 0
+                                  ? CachedNetworkImageProvider(_journalPageController.journalDetail.value.group!.groupImage!)
+                                  : _journalPageController.journalDetail.value.postedBy != null
+                                      ? _journalPageController.journalDetail.value.postedBy!.anonymous != null && _journalPageController.journalDetail.value.anonymousJournal!
+                                          ? CachedNetworkImageProvider(_journalPageController.journalDetail.value.postedBy!.profilePicture!)
+                                          : CachedNetworkImageProvider(_journalPageController.journalDetail.value.postedBy!.profilePicture!)
+                                      : CachedNetworkImageProvider(_journalPageController.journalDetail.value.postedBy!.profilePicture ?? ''),
+                          backgroundColor: SolhColors.white,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.8,
-                                  child: Text(
-                                    widget._journalModel!.anonymousJournal != null &&
-                                            widget._journalModel!.postedBy!.anonymous !=
-                                                null &&
-                                            widget._journalModel!
-                                                .anonymousJournal!
-                                        ? widget._journalModel!.group != null &&
-                                                _journalPageController
-                                                        .selectedGroupId
-                                                        .value
-                                                        .length ==
-                                                    0
-                                            ? widget._journalModel!.group!.groupName ??
-                                                ''
-                                            : widget._journalModel!.postedBy!
-                                                    .anonymous!.userName ??
-                                                ''
-                                        : widget._journalModel!.group != null &&
-                                                _journalPageController
-                                                        .selectedGroupId
-                                                        .value
-                                                        .length ==
-                                                    0
-                                            ? widget._journalModel!.group!.groupName ??
-                                                ''
-                                            : widget._journalModel!.postedBy !=
-                                                    null
-                                                ? widget._journalModel!.postedBy!.anonymous != null &&
-                                                        widget._journalModel!
-                                                            .anonymousJournal!
-                                                    ? widget
-                                                            ._journalModel!
-                                                            .postedBy!
-                                                            .anonymous!
-                                                            .userName ??
-                                                        ''
-                                                    : widget._journalModel!.postedBy!.name ?? ''
-                                                : '',
-                                    style:
-                                        SolhTextStyles.JournalingUsernameText,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                                SizedBox(width: 1.5.w),
-                                // if (widget._journalModel!.postedBy != null &&
-                                //     widget._journalModel!.postedBy!
-                                //             .userType ==
-                                //         "Expert")
-                                //   SolhExpertBadge(),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                DateTime.tryParse(
-                                            widget._journalModel!.createdAt ??
-                                                '') !=
-                                        null
-                                    ? Text(
-                                        timeago.format(DateTime.parse(
-                                            widget._journalModel!.createdAt ??
-                                                '')),
-                                        style: SolhTextStyles
-                                            .JournalingTimeStampText,
-                                      )
-                                    : Container(),
-                                SizedBox(
-                                  width: 1.5.w,
-                                ),
-                                widget._journalModel!.group != null &&
-                                        _journalPageController
-                                                .selectedGroupId.value.length ==
-                                            0
-                                    ? Icon(
-                                        CupertinoIcons.person_3_fill,
-                                        color: Color(0xFFA6A6A6),
-                                      )
-                                    : Container(),
-                                widget._journalModel!.postedBy!.isProvider! &&
-                                        widget._journalModel!
-                                                .anonymousJournal ==
-                                            false &&
-                                        widget._journalModel!.group == null
-                                    ? SolhExpertBadge(
-                                        usertype: 'Volunteer',
-                                      )
-                                    : Container(),
-                                widget._journalModel!.anonymousJournal !=
-                                            null &&
-                                        widget._journalModel!
-                                                .anonymousJournal ==
-                                            true
-                                    ? Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 3.w,
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 3.w,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                1.8,
+                                        child: Text(
+                                          _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .anonymousJournal !=
+                                                      null &&
+                                                  _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .postedBy!
+                                                          .anonymous !=
+                                                      null &&
+                                                  _journalPageController
+                                                      .journalDetail
+                                                      .value
+                                                      .anonymousJournal!
+                                              ? _journalPageController.journalDetail.value.group != null &&
+                                                      _journalPageController
+                                                              .selectedGroupId
+                                                              .value
+                                                              .length ==
+                                                          0
+                                                  ? _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .group!
+                                                          .groupName ??
+                                                      ''
+                                                  : _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .postedBy!
+                                                          .anonymous!
+                                                          .userName ??
+                                                      ''
+                                              : _journalPageController.journalDetail.value.group !=
+                                                          null &&
+                                                      _journalPageController
+                                                              .selectedGroupId
+                                                              .value
+                                                              .length ==
+                                                          0
+                                                  ? _journalPageController.journalDetail.value.group!.groupName ?? ''
+                                                  : _journalPageController.journalDetail.value.postedBy != null
+                                                      ? _journalPageController.journalDetail.value.postedBy!.anonymous != null && _journalPageController.journalDetail.value.anonymousJournal!
+                                                          ? _journalPageController.journalDetail.value.postedBy!.anonymous!.userName ?? ''
+                                                          : _journalPageController.journalDetail.value.postedBy!.name ?? ''
+                                                      : '',
+                                          style: SolhTextStyles
+                                              .JournalingUsernameText,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                        child: CachedNetworkImage(
-                                          imageUrl: widget
-                                                  ._journalModel!
-                                                  .postedBy!
-                                                  .anonymous!
-                                                  .profilePicture ??
-                                              '',
-                                          fit: BoxFit.fitWidth,
-                                          width: 12,
-                                          height: 12,
-                                          color: SolhColors.grey,
-                                        ))
-                                    : Container(),
-                              ],
-                            )
-                          ],
-                        ),
+                                      ),
+                                      SizedBox(width: 1.5.w),
+                                      // if (_journalPageController.journalDetail.value.postedBy != null &&
+                                      //     _journalPageController.journalDetail.value.postedBy!
+                                      //             .userType ==
+                                      //         "Expert")
+                                      //   SolhExpertBadge(),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: [
+                                      DateTime.tryParse(_journalPageController
+                                                      .journalDetail
+                                                      .value
+                                                      .createdAt ??
+                                                  '') !=
+                                              null
+                                          ? Text(
+                                              timeago.format(DateTime.parse(
+                                                  _journalPageController
+                                                          .journalDetail
+                                                          .value
+                                                          .createdAt ??
+                                                      '')),
+                                              style: SolhTextStyles
+                                                  .JournalingTimeStampText,
+                                            )
+                                          : Container(),
+                                      SizedBox(
+                                        width: 1.5.w,
+                                      ),
+                                      _journalPageController.journalDetail.value
+                                                      .group !=
+                                                  null &&
+                                              _journalPageController
+                                                      .selectedGroupId
+                                                      .value
+                                                      .length ==
+                                                  0
+                                          ? Icon(
+                                              CupertinoIcons.person_3_fill,
+                                              color: Color(0xFFA6A6A6),
+                                            )
+                                          : Container(),
+                                      _journalPageController.journalDetail.value
+                                                  .postedBy!.isProvider! &&
+                                              _journalPageController
+                                                      .journalDetail
+                                                      .value
+                                                      .anonymousJournal ==
+                                                  false &&
+                                              _journalPageController
+                                                      .journalDetail
+                                                      .value
+                                                      .group ==
+                                                  null
+                                          ? SolhExpertBadge(
+                                              usertype: 'Volunteer',
+                                            )
+                                          : Container(),
+                                      _journalPageController.journalDetail.value
+                                                      .anonymousJournal !=
+                                                  null &&
+                                              _journalPageController
+                                                      .journalDetail
+                                                      .value
+                                                      .anonymousJournal ==
+                                                  true
+                                          ? Padding(
+                                              padding: EdgeInsets.only(
+                                                left: 3.w,
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl: _journalPageController
+                                                        .journalDetail
+                                                        .value
+                                                        .postedBy!
+                                                        .anonymous!
+                                                        .profilePicture ??
+                                                    '',
+                                                fit: BoxFit.fitWidth,
+                                                width: 12,
+                                                height: 12,
+                                                color: SolhColors.grey,
+                                              ))
+                                          : Container(),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          ));
   }
 
   Widget getError(int getJournalcommentStatus) {
@@ -949,6 +1011,12 @@ class _CommentScreenState extends State<CommentScreen> {
               await Get.find<ProfileController>().getMyProfile();
               Navigator.pop(context);
             }));
+  }
+
+  Future<void> getJournalDetails() async {
+    await Get.find<JournalPageController>()
+        .getJournalDetail(widget._journalModel!.id ?? '')
+        .then((value) => getComments());
   }
 }
 
@@ -1391,89 +1459,100 @@ class _PostForCommentState extends State<PostForComment> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            Container(
-              child: Column(
+    return Obx(() => _journalPageController.isDetailsLoading.value
+        ? Center(child: CircularProgressIndicator())
+        : _journalPageController.journalDetail.value.description == null
+            ? SizedBox()
+            : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  widget._journalModel!.feelings != null
-                      ? widget._journalModel!.feelings!.isNotEmpty
-                          ? Text(
-                              "Feeling " +
-                                  widget
-                                      ._journalModel!.feelings![0].feelingName!,
-                              style: SolhTextStyles
-                                  .JournalingDescriptionReadMoreText,
-                            )
-                          : Container()
-                      : Container(),
-                  ReadMoreText(
-                    widget._journalModel!.description ?? '',
-                    style: SolhTextStyles.JournalingDescriptionText,
-                    trimCollapsedText: ' Read more'.tr,
-                    trimExpandedText: ' less',
-                    trimLines: 3,
-                    trimMode: TrimMode.Line,
-                    lessStyle: SolhTextStyles.QS_caption.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: SolhColors.primary_green),
-                    moreStyle: SolhTextStyles.QS_caption.copyWith(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: SolhColors.primary_green),
-                  ),
-                  getMedia(widget._journalModel, context),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Column(
                     children: [
-                      getLikeBtn(),
-                      getCommentsBtn(),
-                      getConnectBtn(connectionController),
-                      //getShareBtn(),
+                      Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _journalPageController
+                                        .journalDetail.value.feelings !=
+                                    null
+                                ? _journalPageController.journalDetail.value
+                                        .feelings!.isNotEmpty
+                                    ? Text(
+                                        "Feeling " +
+                                            widget._journalModel!.feelings![0]
+                                                .feelingName!,
+                                        style: SolhTextStyles
+                                            .JournalingDescriptionReadMoreText,
+                                      )
+                                    : Container()
+                                : Container(),
+                            ReadMoreText(
+                              _journalPageController
+                                      .journalDetail.value.description ??
+                                  '',
+                              style: SolhTextStyles.JournalingDescriptionText,
+                              trimCollapsedText: ' Read more'.tr,
+                              trimExpandedText: ' less',
+                              trimLines: 3,
+                              trimMode: TrimMode.Line,
+                              lessStyle: SolhTextStyles.QS_caption.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: SolhColors.primary_green),
+                              moreStyle: SolhTextStyles.QS_caption.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: SolhColors.primary_green),
+                            ),
+                            getMedia(widget._journalModel, context),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                getLikeBtn(),
+                                getCommentsBtn(),
+                                getConnectBtn(connectionController),
+                                //getShareBtn(),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
                     ],
-                  )
+                  ),
+                  Divider(),
+                  Row(
+                    children: [
+                      Text(
+                        "Comments".tr,
+                        style: SolhTextStyles.mostUpvoted,
+                      ),
+                      // Icon(CupertinoIcons.chevron_down, size: 16, color: SolhColors.green)
+                    ],
+                  ),
+                  // if (_bestComment != null)
+                  //   BestCommentWidget(
+                  //     commentModel: _bestComment,
+                  //   )
                 ],
-              ),
-            )
-          ],
-        ),
-        Divider(),
-        Row(
-          children: [
-            Text(
-              "Comments".tr,
-              style: SolhTextStyles.mostUpvoted,
-            ),
-            // Icon(CupertinoIcons.chevron_down, size: 16, color: SolhColors.green)
-          ],
-        ),
-        // if (_bestComment != null)
-        //   BestCommentWidget(
-        //     commentModel: _bestComment,
-        //   )
-      ],
-    );
+              ));
   }
 
   Widget getLikeBtn() {
     return InkWell(
       onTap: () async {
         if (widget.index == -1) {
-          if (!(widget._journalModel!.isLiked!)) {
-            widget._journalModel!.isLiked = true;
-            widget._journalModel!.likes = widget._journalModel!.likes! + 1;
+          if (!(_journalPageController.journalDetail.value.isLiked!)) {
+            _journalPageController.journalDetail.value.isLiked = true;
+            _journalPageController.journalDetail.value.likes =
+                _journalPageController.journalDetail.value.likes! + 1;
             String message = await journalCommentController.likePost(
-                journalId: widget._journalModel!.id ?? '',
+                journalId: _journalPageController.journalDetail.value.id ?? '',
                 reaction: '63bd50068bc9de38d95671a8');
             if (message != 'journal liked successfully' &&
                 message != "Already liked the journal") {
-              widget._journalModel!.isLiked = false;
-              widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+              _journalPageController.journalDetail.value.isLiked = false;
+              _journalPageController.journalDetail.value.likes =
+                  _journalPageController.journalDetail.value.likes! - 1;
               FirebaseAnalytics.instance.logEvent(
                   name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
             } else {
@@ -1482,35 +1561,36 @@ class _PostForCommentState extends State<PostForComment> {
             setState(() {});
             // update journals on journaling
             _journalPageController.journalsList.forEach((element) {
-              if (element.id == widget._journalModel!.id) {
+              if (element.id == _journalPageController.journalDetail.value.id) {
                 element.likes = element.likes! + 1;
                 element.isLiked = true;
                 _journalPageController.journalsList.refresh();
               }
             });
           } else {
-            widget._journalModel!.isLiked = false;
-            widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+            _journalPageController.journalDetail.value.isLiked = false;
+            _journalPageController.journalDetail.value.likes =
+                _journalPageController.journalDetail.value.likes! - 1;
             await journalCommentController.unLikePost(
-                journalId: widget._journalModel!.id ?? '');
+                journalId: _journalPageController.journalDetail.value.id ?? '');
             setState(() {});
             _journalPageController.journalsList.forEach((element) {
-              if (element.id == widget._journalModel!.id) {
+              if (element.id == _journalPageController.journalDetail.value.id) {
                 element.likes = element.likes! - 1;
                 element.isLiked = false;
                 _journalPageController.journalsList.refresh();
               }
             });
           }
-          /* widget._journalModel!.isLiked = true;
-          widget._journalModel!.likes = widget._journalModel!.likes! + 1;
+          /* _journalPageController.journalDetail.value.isLiked = true;
+          _journalPageController.journalDetail.value.likes = _journalPageController.journalDetail.value.likes! + 1;
           String message = await journalCommentController.likePost(
-              journalId: widget._journalModel!.id ?? '',
+              journalId: _journalPageController.journalDetail.value.id ?? '',
               reaction: '63bd50068bc9de38d95671a8');
           if (message != 'journal liked successfully' &&
               message != "Already liked the journal") {
-            widget._journalModel!.isLiked = false;
-            widget._journalModel!.likes = widget._journalModel!.likes! - 1;
+            _journalPageController.journalDetail.value.isLiked = false;
+            _journalPageController.journalDetail.value.likes = _journalPageController.journalDetail.value.likes! - 1;
             FirebaseAnalytics.instance.logEvent(
                 name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
           } else {
@@ -1524,7 +1604,7 @@ class _PostForCommentState extends State<PostForComment> {
           _journalPageController.journalsList[widget.index].isLiked = true;
           _journalPageController.journalsList.refresh();
           String message = await journalCommentController.likePost(
-              journalId: widget._journalModel!.id ?? '',
+              journalId: _journalPageController.journalDetail.value.id ?? '',
               reaction: '63bd50068bc9de38d95671a8');
           if (message != 'journal liked successfully' &&
               message != "Already liked the journal") {
@@ -1543,12 +1623,12 @@ class _PostForCommentState extends State<PostForComment> {
           _journalPageController.journalsList[widget.index].isLiked = false;
           _journalPageController.journalsList.refresh();
           journalCommentController.unLikePost(
-              journalId: widget._journalModel!.id ?? '');
+              journalId: _journalPageController.journalDetail.value.id ?? '');
         }
       },
       onLongPress: () {
         _journalPageController.getUsersLikedPost(
-            widget._journalModel!.id ?? '', 1);
+            _journalPageController.journalDetail.value.id ?? '', 1);
         showModalBottomSheet(
             context: context,
             builder: (context) {
@@ -1557,7 +1637,8 @@ class _PostForCommentState extends State<PostForComment> {
                   onTap: (value) async {
                     Navigator.of(context).pop();
                     String message = await journalCommentController.likePost(
-                        journalId: widget._journalModel!.id ?? '',
+                        journalId:
+                            _journalPageController.journalDetail.value.id ?? '',
                         reaction: value);
                     if (message == 'journal liked successfully') {
                       _journalPageController.journalsList[widget.index].likes =
@@ -1584,9 +1665,10 @@ class _PostForCommentState extends State<PostForComment> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.index == -1
-                  ? SvgPicture.asset(widget._journalModel!.isLiked!
-                      ? 'assets/images/reactions_liked.svg'
-                      : 'assets/images/reactions.svg')
+                  ? SvgPicture.asset(
+                      _journalPageController.journalDetail.value.isLiked!
+                          ? 'assets/images/reactions_liked.svg'
+                          : 'assets/images/reactions.svg')
                   : Obx(() => SvgPicture.asset(
                       _journalPageController.journalsList[widget.index].isLiked!
                           ? 'assets/images/reactions_liked.svg'
@@ -1597,7 +1679,8 @@ class _PostForCommentState extends State<PostForComment> {
                 ),
                 child: widget.index == -1
                     ? Text(
-                        widget._journalModel!.likes.toString(),
+                        _journalPageController.journalDetail.value.likes
+                            .toString(),
                         style: SolhTextStyles.GreenBorderButtonText,
                       )
                     : Obx(() {
@@ -1668,7 +1751,7 @@ class _PostForCommentState extends State<PostForComment> {
           ),
         ),
         Text(
-          widget._journalModel!.comments.toString(),
+          _journalPageController.journalDetail.value.comments.toString(),
           style: TextStyle(color: Colors.grey),
         ),
       ],
@@ -1684,15 +1767,17 @@ class _PostForCommentState extends State<PostForComment> {
             icon: SvgPicture.asset('assets/images/connect.svg')),
         InkWell(
           onTap: () async {
-            widget._journalModel!.group != null
+            _journalPageController.journalDetail.value.group != null
                 ? {
                     Navigator.pushNamed(context, AppRoutes.groupDetails,
                         arguments: {
                           "group": GroupList(
-                            sId: widget._journalModel!.group!.sId,
-                            groupName: widget._journalModel!.group!.groupName,
-                            groupMediaUrl:
-                                widget._journalModel!.group!.groupImage,
+                            sId: _journalPageController
+                                .journalDetail.value.group!.sId,
+                            groupName: _journalPageController
+                                .journalDetail.value.group!.groupName,
+                            groupMediaUrl: _journalPageController
+                                .journalDetail.value.group!.groupImage,
                           ),
                         }),
                     // Navigator.push(context,
@@ -1700,20 +1785,20 @@ class _PostForCommentState extends State<PostForComment> {
                     //   return GroupDetailsPage(
                     //     ///// this case is for group journal
                     //     group: GroupList(
-                    //       sId: widget._journalModel!.group!.sId,
-                    //       groupName: widget._journalModel!.group!.groupName,
+                    //       sId: _journalPageController.journalDetail.value.group!.sId,
+                    //       groupName: _journalPageController.journalDetail.value.group!.groupName,
                     //       groupMediaUrl:
-                    //           widget._journalModel!.group!.groupImage,
+                    //           _journalPageController.journalDetail.value.group!.groupImage,
                     //     ),
                     //   );
                     // }))
                   }
                 : await connectionController.addConnection(
-                    widget._journalModel!.postedBy!.sId!,
+                    _journalPageController.journalDetail.value.postedBy!.sId!,
                   );
           },
           child: Text(
-            widget._journalModel!.group != null
+            _journalPageController.journalDetail.value.group != null
                 ? isGroupJoined
                     // ignore: dead_code
                     ? 'Go To Group'
@@ -1741,14 +1826,14 @@ class _PostForCommentState extends State<PostForComment> {
     setState(() {});
     var response = await Network.makeHttpPostRequestWithToken(
         url: "${APIConstants.api}/api/like-journal",
-        body: {"post": widget._journalModel!.id});
+        body: {"post": _journalPageController.journalDetail.value.id});
     if (response["status"] == false) setState(() {});
     //return (response["status"]);
   }
 
   Future<bool> _unlikeJournal() async {
     var response = await Network.makeHttpDeleteRequestWithToken(
-      body: {"postId": widget._journalModel!.id},
+      body: {"postId": _journalPageController.journalDetail.value.id},
       url: "${APIConstants.api}/api/unlike-journal",
     );
     print(response);

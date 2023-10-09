@@ -49,6 +49,7 @@ class JournalPageController extends GetxController {
   var announcementData = ''.obs;
   var dropdownValue = 'Publicaly'.obs;
   ScrollController customeScrollController = ScrollController();
+  var isDetailsLoading = false.obs;
 
   Future<void> getAllJournals(int pageNo,
       {String? groupId, required bool orgOnly}) async {
@@ -242,6 +243,7 @@ class JournalPageController extends GetxController {
   }
 
   Future<void> getJournalDetail(String id) async {
+    isDetailsLoading.value = true;
     try {
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/get-journal-details?journalId=$id");
@@ -252,12 +254,14 @@ class JournalPageController extends GetxController {
         print(map['message'] ?? 'No Data found');
       }
     } on Exception catch (e) {
+      isDetailsLoading.value = false;
       if (e is Exceptions) {
         print(e.error);
       } else {
         print(e.toString());
       }
     }
+    isDetailsLoading.value = false;
   }
 
   @override
