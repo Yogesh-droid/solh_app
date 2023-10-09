@@ -6,7 +6,7 @@ import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/services/network/exceptions.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'dart:developer';
-
+import 'package:flutter/foundation.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
 
@@ -232,7 +232,9 @@ class Network {
       http.Response apiResponse = await http.get(_uri, headers: headers);
 
       log(apiResponse.statusCode.toString());
-
+      if (kDebugMode) {
+        print('url:$url , response : ${apiResponse.body}');
+      }
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);

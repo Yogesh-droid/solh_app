@@ -108,6 +108,14 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                         trimLines: 2,
                         trimMode: TrimMode.Line,
                         textAlign: TextAlign.left,
+                        lessStyle: SolhTextStyles.QS_caption.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: SolhColors.primary_green),
+                        moreStyle: SolhTextStyles.QS_caption.copyWith(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: SolhColors.primary_green),
                       )),
                 ),
                 Divider(

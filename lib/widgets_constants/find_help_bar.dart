@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -78,23 +79,52 @@ class FindHelpBar extends StatelessWidget {
                     radius: 10,
                     strokeWidth: 2,
                   )
-                : InkWell(
-                    onTap: () => onConnectionTapped(),
-                    child: GuideToorWidget(
-                      description:
-                          'Seamlessly browse through all chats, access your conversations with Solh Buddy, and manage incoming invites.',
-                      icon: SvgPicture.asset(
-                        "assets/images/connections.svg",
-                        height: 30,
+                : Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () => onConnectionTapped(),
+                          child: GuideToorWidget(
+                            description:
+                                'Seamlessly browse through all chats, access your conversations with Solh Buddy, and manage incoming invites.',
+                            icon: SvgPicture.asset(
+                              "assets/images/connections.svg",
+                              height: 30,
+                            ),
+                            id: 'connection_icon',
+                            title: 'Connections',
+                            contentLocation: ContentLocation.below,
+                            child: SvgPicture.asset(
+                              "assets/images/connections.svg",
+                              height: 30,
+                            ),
+                          ),
+                        ),
                       ),
-                      id: 'connection_icon',
-                      title: 'Connections',
-                      contentLocation: ContentLocation.below,
-                      child: SvgPicture.asset(
-                        "assets/images/connections.svg",
-                        height: 30,
-                      ),
-                    ),
+                      // Positioned(
+                      //   right: 0,
+                      //   top: -4,
+                      //   child: Container(
+                      //     margin: EdgeInsets.all(4),
+                      //     padding: EdgeInsets.all(4),
+                      //     decoration: BoxDecoration(
+                      //         color: SolhColors.primaryRed,
+                      //         shape: BoxShape.circle),
+                      //     child: Obx(() {
+                      //       return Text(
+                      //         Get.find<ConnectionController>()
+                      //             .receivedConnections
+                      //             .length
+                      //             .toString(),
+                      //         style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                      //           color: SolhColors.white,
+                      //         ),
+                      //       );
+                      //     }),
+                      //   ),
+                      // ),
+                    ],
                   );
           }),
         ],

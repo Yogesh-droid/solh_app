@@ -11,6 +11,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
+import 'package:solh/controllers/connections/connection_controller.dart';
 import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/services/journal/delete-journal.dart';
@@ -69,6 +70,7 @@ class _JournalingState extends State<Journaling> {
         setState(() {
           _fetchingMore = true;
         });
+
         print("Reached at end");
 
         await _journalPageController.getAllJournals(
@@ -264,7 +266,33 @@ class _JournalingState extends State<Journaling> {
                                                           .journalsList
                                                           .value[index]
                                                           .id)
-                                          ? getJournalTile(index)
+                                          ? (index == 2 || index == 25
+                                              ? Column(
+                                                  children: [
+                                                    Obx(() {
+                                                      return !Get.find<
+                                                                  ConnectionController>()
+                                                              .isRecommnedationLoadingHome
+                                                              .value
+                                                          ? Get.find<ConnectionController>()
+                                                                          .peopleYouMayKnowHome
+                                                                          .value
+                                                                          .reccomendation !=
+                                                                      null &&
+                                                                  Get.find<
+                                                                          ConnectionController>()
+                                                                      .peopleYouMayKnowHome
+                                                                      .value
+                                                                      .reccomendation!
+                                                                      .isNotEmpty
+                                                              ? PeopleYouMayKnowWidget()
+                                                              : Container()
+                                                          : ReconnendedPeopleShimmer();
+                                                    }),
+                                                    getJournalTile(index)
+                                                  ],
+                                                )
+                                              : getJournalTile(index))
                                           : Container();
                                     })
                                 : Center(

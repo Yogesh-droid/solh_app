@@ -1073,10 +1073,22 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                             top: 2.0,
                                             bottom: 8.0),
                                         child: ReadMoreText(
-                                            descriptionTexts[0].trim(),
-                                            trimLines: 5,
-                                            style:
-                                                SolhTextStyles.QS_body_2_semi),
+                                          descriptionTexts[0].trim(),
+                                          trimLines: 5,
+                                          style: SolhTextStyles.QS_body_2_semi,
+                                          lessStyle: SolhTextStyles.QS_caption
+                                              .copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      SolhColors.primary_green),
+                                          moreStyle: SolhTextStyles.QS_caption
+                                              .copyWith(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      SolhColors.primary_green),
+                                        ),
                                       ),
                                       if (Get.locale!.languageCode != 'en')
                                         TextButton(

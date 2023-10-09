@@ -355,15 +355,15 @@ class ChatAppbar extends StatelessWidget {
                         fontSize: 16,
                       ),
                     ),
-                    Obx(() {
-                      print('seen status ran' +
-                          _controller.seenStatus.value.toString());
-                      return Text(
-                        _controller.seenStatus.value,
-                        style: GoogleFonts.signika(
-                            color: SolhColors.primary_green),
-                      );
-                    })
+                    _isAnonChat
+                        ? Container()
+                        : Obx(() {
+                            return Text(
+                              _controller.seenStatus.value,
+                              style: GoogleFonts.signika(
+                                  color: SolhColors.primary_green),
+                            );
+                          })
                   ],
                 ),
               ],

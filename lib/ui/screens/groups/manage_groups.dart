@@ -94,7 +94,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
         children: [
           Text(
             'Groups'.tr,
-            style: SolhTextStyles.LandingParaText,
+            style: SolhTextStyles.QS_body_1_bold,
           ),
           MaterialButton(
             onPressed: () {
@@ -104,7 +104,8 @@ class _ManageGroupPageState extends State<ManageGroupPage>
             },
             child: Text(
               'Create Group'.tr,
-              style: SolhTextStyles.GreenBorderButtonText,
+              style:
+                  SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
             ),
           )
         ],
@@ -119,6 +120,7 @@ class _ManageGroupPageState extends State<ManageGroupPage>
         _groupController.tabController?.animateTo(index);
       },
       controller: _groupController.tabController,
+      labelStyle: SolhTextStyles.CTA,
       labelColor: SolhColors.primary_green,
       unselectedLabelColor: SolhColors.grey,
       indicatorColor: SolhColors.primary_green,

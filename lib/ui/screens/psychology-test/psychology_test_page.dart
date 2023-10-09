@@ -2,13 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/psychology_test_model.dart';
+import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/psychology-test/test_history_details.dart';
 import 'package:solh/ui/screens/psychology-test/test_question_page.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/share_button.dart';
 
 class PsychologyTestPage extends StatefulWidget {
   const PsychologyTestPage({Key? key}) : super(key: key);
@@ -116,7 +121,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                   child: Text(
                     "Our Self Assessment tests help you learn more about yourself."
                         .tr,
-                    style: SolhTextStyles.JournalingDescriptionText,
+                    style: SolhTextStyles.QS_body_2_semi,
                   ),
                 ),
               ],
@@ -135,10 +140,9 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                 'Result History'.tr,
               )
             ],
-            unselectedLabelColor: SolhColors.grey,
             labelColor: SolhColors.primary_green,
             indicatorColor: SolhColors.primary_green,
-            labelStyle: SolhTextStyles.QS_big_body_med_20,
+            labelStyle: SolhTextStyles.QS_body_1_bold,
             labelPadding: EdgeInsets.only(bottom: 16),
             onTap: (value) {
               if (value == 1) {
@@ -178,7 +182,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
+              border: Border.all(color: SolhColors.primary_green, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -245,7 +249,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
         },
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
+              border: Border.all(color: SolhColors.primary_green, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -284,7 +288,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                         ? DateFormat("dd MMM yyyy")
                             .format(DateTime.parse(map.keys.first))
                         : '',
-                    style: SolhTextStyles.JournalingHintText,
+                    style: SolhTextStyles.QS_body_2_semi,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -369,12 +373,14 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
 }
 
 class QuestionContainer extends StatelessWidget {
-  const QuestionContainer(
+  QuestionContainer(
       {Key? key, required this.test, required this.onQuestionTap, this.padding})
       : super(key: key);
   final TestList test;
   final double? padding;
   final Function() onQuestionTap;
+
+  PsychologyTestController psychologyTestController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -384,7 +390,7 @@ class QuestionContainer extends StatelessWidget {
         onTap: onQuestionTap,
         child: Container(
           decoration: BoxDecoration(
-              border: Border.all(color: SolhColors.dark_grey, width: 0.5),
+              border: Border.all(color: SolhColors.primary_green, width: 0.5),
               borderRadius: BorderRadius.circular(10)),
           child: Row(children: [
             Container(
@@ -403,33 +409,82 @@ class QuestionContainer extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 220,
-                  child: Text(
-                    test.testTitle ?? '',
-                    style: SolhTextStyles.GreenBorderButtonText,
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 220,
+                    child: Text(
+                      test.testTitle ?? '',
+                      style: SolhTextStyles.QS_body_1_bold.copyWith(
+                          color: SolhColors.primary_green),
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                    ),
                   ),
-                ),
-                Container(
-                  width: 220,
-                  child: Text(
-                    test.testDescription ?? '',
-                    style: SolhTextStyles.JournalingHintText,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Container(
+                    width: 220,
+                    child: Text(
+                      test.testDescription ?? '',
+                      style: SolhTextStyles.QS_caption_bold,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
-                Text(
-                  test.testQuestionNumber.toString() +
-                      ' Ques (${test.testDuration} min)',
-                  style: SolhTextStyles.GreenBorderButtonText,
-                )
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        test.testQuestionNumber.toString() +
+                            ' Ques (${test.testDuration} min)',
+                        style: SolhTextStyles.QS_caption_bold.copyWith(
+                            color: SolhColors.primary_green),
+                      ),
+                      Obx(() {
+                        return psychologyTestController.isSharingTest.value &&
+                                psychologyTestController.currentSharingTest ==
+                                    test.sId
+                            ? Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: MyLoader(
+                                  strokeWidth: 2,
+                                  radius: 9,
+                                ),
+                              )
+                            : ShareButton(
+                                onTap: () async {
+                                  psychologyTestController.isSharingTest(true);
+                                  psychologyTestController.currentSharingTest =
+                                      test.sId ?? '';
+                                  String link = await DynamicLinkProvider
+                                      .instance
+                                      .createLink(
+                                          createFor: 'selfAssessment',
+                                          data: {
+                                        'assessmentId': test.sId,
+                                        'creatorUserId':
+                                            Get.find<ProfileController>()
+                                                    .myProfileModel
+                                                    .value
+                                                    .body!
+                                                    .user!
+                                                    .id ??
+                                                ''
+                                      });
+                                  psychologyTestController.isSharingTest(false);
+                                  Share.share(link);
+                                },
+                                enableBackgroundCircle: false,
+                                iconColor: SolhColors.Grey_1,
+                                iconSize: 18,
+                              );
+                      }),
+                    ],
+                  )
+                ],
+              ),
             )
           ]),
         ),

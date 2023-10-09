@@ -90,10 +90,18 @@ class TestHistoryDetails extends StatelessWidget {
                                         trimMode: TrimMode.Line,
                                         trimLines: 15,
                                         textAlign: TextAlign.center,
-                                        lessStyle: SolhTextStyles
-                                            .JournalingDescriptionReadMoreText,
-                                        moreStyle: SolhTextStyles
-                                            .JournalingDescriptionReadMoreText,
+                                        lessStyle:
+                                            SolhTextStyles.QS_caption.copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    SolhColors.primary_green),
+                                        moreStyle:
+                                            SolhTextStyles.QS_caption.copyWith(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                                color:
+                                                    SolhColors.primary_green),
                                       ),
                                     ),
                                     SizedBox(

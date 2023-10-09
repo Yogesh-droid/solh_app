@@ -39,6 +39,7 @@ class BottomNavigatorController extends GetxController {
 
         if (response['success']) {
           AppRatingStatus.appRatingStatus = response['status'];
+          print('shouldShowRatingReminder' + response['status']);
         }
         await showRatingForm();
       });
@@ -65,7 +66,6 @@ class BottomNavigatorController extends GetxController {
   void onInit() async {
     // TODO: implement onInit
     await getFeedbackStatus();
-
     super.onInit();
   }
 }
