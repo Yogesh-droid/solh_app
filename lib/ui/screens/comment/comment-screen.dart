@@ -102,7 +102,7 @@ class _CommentScreenState extends State<CommentScreen> {
         appBar: SolhAppBar(
           title: Text(
             "Comments".tr,
-            style: SolhTextStyles.AppBarText,
+            style: SolhTextStyles.QS_body_1_bold,
           ),
           isLandingScreen: false,
         ),

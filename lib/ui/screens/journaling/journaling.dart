@@ -269,26 +269,26 @@ class _JournalingState extends State<Journaling> {
                                           ? (index == 2 || index == 25
                                               ? Column(
                                                   children: [
-                                                    // Obx(() {
-                                                    //   return !Get.find<
-                                                    //               ConnectionController>()
-                                                    //           .isRecommnedationLoadingHome
-                                                    //           .value
-                                                    //       ? Get.find<ConnectionController>()
-                                                    //                       .peopleYouMayKnowHome
-                                                    //                       .value
-                                                    //                       .reccomendation !=
-                                                    //                   null &&
-                                                    //               Get.find<
-                                                    //                       ConnectionController>()
-                                                    //                   .peopleYouMayKnowHome
-                                                    //                   .value
-                                                    //                   .reccomendation!
-                                                    //                   .isNotEmpty
-                                                    //           ? PeopleYouMayKnowWidget()
-                                                    //           : Container()
-                                                    //       : ReconnendedPeopleShimmer();
-                                                    // }),
+                                                    Obx(() {
+                                                      return !Get.find<
+                                                                  ConnectionController>()
+                                                              .isRecommnedationLoadingHome
+                                                              .value
+                                                          ? Get.find<ConnectionController>()
+                                                                          .peopleYouMayKnowHome
+                                                                          .value
+                                                                          .reccomendation !=
+                                                                      null &&
+                                                                  Get.find<
+                                                                          ConnectionController>()
+                                                                      .peopleYouMayKnowHome
+                                                                      .value
+                                                                      .reccomendation!
+                                                                      .isNotEmpty
+                                                              ? PeopleYouMayKnowWidget()
+                                                              : Container()
+                                                          : ReconnendedPeopleShimmer();
+                                                    }),
                                                     getJournalTile(index)
                                                   ],
                                                 )
