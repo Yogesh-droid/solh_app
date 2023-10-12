@@ -1,17 +1,15 @@
 class PeopleYouMayKnowModel {
   bool? success;
-  int? count;
-  List<Reccomendation>? reccomendation;
+  List<Recommendation>? recommendation;
 
-  PeopleYouMayKnowModel({this.success, this.count, this.reccomendation});
+  PeopleYouMayKnowModel({this.success, this.recommendation});
 
   PeopleYouMayKnowModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
-    count = json['count'];
-    if (json['reccomendation'] != null) {
-      reccomendation = <Reccomendation>[];
-      json['reccomendation'].forEach((v) {
-        reccomendation!.add(new Reccomendation.fromJson(v));
+    if (json['recommendation'] != null) {
+      recommendation = <Recommendation>[];
+      json['recommendation'].forEach((v) {
+        recommendation!.add(new Recommendation.fromJson(v));
       });
     }
   }
@@ -19,71 +17,86 @@ class PeopleYouMayKnowModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['success'] = this.success;
-    data['count'] = this.count;
-    if (this.reccomendation != null) {
-      data['reccomendation'] =
-          this.reccomendation!.map((v) => v.toJson()).toList();
+    if (this.recommendation != null) {
+      data['recommendation'] =
+          this.recommendation!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Reccomendation {
-  String? name;
-  String? bio;
-  String? contactNumber;
-  String? email;
-  String? profilePicture;
+class Recommendation {
   String? sId;
-  String? uid;
-  int? likesCount;
-  int? commentCount;
-  bool? featured;
-  int? connectionsCount;
-  int? postCount;
+  Connection? connection;
 
-  Reccomendation(
-      {this.name,
-      this.bio,
-      this.contactNumber,
-      this.email,
-      this.profilePicture,
-      this.sId,
-      this.uid,
-      this.likesCount,
-      this.commentCount,
-      this.featured,
-      this.connectionsCount,
-      this.postCount});
+  Recommendation({this.sId, this.connection});
 
-  Reccomendation.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    bio = json['bio'];
-    contactNumber = json['contactNumber'];
-    email = json['email'];
-    profilePicture = json['profilePicture'];
+  Recommendation.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    uid = json['uid'];
-    likesCount = json['likesCount'];
-    commentCount = json['commentCount'];
-    featured = json['featured'];
-    connectionsCount = json['connectionsCount'];
-    postCount = json['postCount'];
+    connection = json['connection'] != null
+        ? new Connection.fromJson(json['connection'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['bio'] = this.bio;
-    data['contactNumber'] = this.contactNumber;
-    data['email'] = this.email;
-    data['profilePicture'] = this.profilePicture;
     data['_id'] = this.sId;
-    data['uid'] = this.uid;
-    data['likesCount'] = this.likesCount;
-    data['commentCount'] = this.commentCount;
+    if (this.connection != null) {
+      data['connection'] = this.connection!.toJson();
+    }
+    return data;
+  }
+}
+
+class Connection {
+  String? sId;
+  String? name;
+  String? profilePicture;
+  String? bio;
+  bool? featured;
+  String? uid;
+  String? email;
+  int? likesCount;
+  int? postCount;
+  int? connectionsCount;
+
+  Connection(
+      {this.sId,
+      this.name,
+      this.profilePicture,
+      this.bio,
+      this.featured,
+      this.uid,
+      this.email,
+      this.likesCount,
+      this.postCount,
+      this.connectionsCount});
+
+  Connection.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    name = json['name'];
+    profilePicture = json['profilePicture'];
+    bio = json['bio'];
+    featured = json['featured'];
+    uid = json['uid'];
+    email = json['email'];
+    likesCount = json['likesCount'];
+    postCount = json['postCount'];
+    connectionsCount = json['connectionsCount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['_id'] = this.sId;
+    data['name'] = this.name;
+    data['profilePicture'] = this.profilePicture;
+    data['bio'] = this.bio;
     data['featured'] = this.featured;
+    data['uid'] = this.uid;
+    data['email'] = this.email;
+    data['likesCount'] = this.likesCount;
     data['postCount'] = this.postCount;
+    data['connectionsCount'] = this.connectionsCount;
     return data;
   }
 }

@@ -156,8 +156,8 @@ class _ConnectionsState extends State<Connections> {
   getConnectionTabs() {
     return TabBar(
         labelColor: SolhColors.primary_green,
-        unselectedLabelColor: SolhColors.grey,
         indicatorColor: SolhColors.primary_green,
+        labelStyle: SolhTextStyles.QS_body_2,
         indicatorWeight: 3,
         tabs: gettabs(profileController)
         // [
@@ -325,13 +325,8 @@ class _ConnectionsState extends State<Connections> {
                 ? SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 18.0, top: 8),
-                      child: Text(
-                        'sent'.tr,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: SolhColors.black34),
-                      ),
+                      child:
+                          Text('Sent'.tr, style: SolhTextStyles.QS_body_1_bold),
                     ),
                   )
                 : SliverToBoxAdapter(),
@@ -454,11 +449,17 @@ class _ConnectionsState extends State<Connections> {
                                 itemBuilder: (context) {
                                   return [
                                     PopupMenuItem(
-                                      child: Text('See Profile'),
+                                      child: Text(
+                                        'See Profile',
+                                        style: SolhTextStyles.CTA,
+                                      ),
                                       value: '1',
                                     ),
                                     PopupMenuItem(
-                                      child: Text('Cancel'),
+                                      child: Text(
+                                        'Cancel',
+                                        style: SolhTextStyles.CTA,
+                                      ),
                                       value: '2',
                                     ),
                                   ];
@@ -527,13 +528,8 @@ class _ConnectionsState extends State<Connections> {
                 ? SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 18.0, top: 8),
-                      child: Text(
-                        'received',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: SolhColors.black34),
-                      ),
+                      child: Text('Received',
+                          style: SolhTextStyles.QS_body_1_bold),
                     ),
                   )
                 : SliverToBoxAdapter(),
@@ -687,11 +683,17 @@ class _ConnectionsState extends State<Connections> {
                                 itemBuilder: (context) {
                                   return [
                                     PopupMenuItem(
-                                      child: Text('See Profile'),
+                                      child: Text(
+                                        'See Profile',
+                                        style: SolhTextStyles.CTA,
+                                      ),
                                       value: '1',
                                     ),
                                     PopupMenuItem(
-                                      child: Text('Decline'),
+                                      child: Text(
+                                        'Decline',
+                                        style: SolhTextStyles.CTA,
+                                      ),
                                       value: '2',
                                     ),
                                   ];
@@ -911,56 +913,56 @@ class _ConnectionsState extends State<Connections> {
                 child: SizedBox(
               height: 40,
             )),
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Obx(() {
-                    return !connectionController
-                            .isRecommnedationLoadingHome.value
-                        ? connectionController.peopleYouMayKnowHome.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnowHome.value
-                                    .reccomendation!.isNotEmpty
-                            ? GetHelpCategory(
-                                title: 'Solh Mates',
-                                // onPressed: () {
-                                //   Navigator.push(context,
-                                //       MaterialPageRoute(builder: (context) {
-                                //     return ViewAllVolunteers();
-                                //   }));
-                                // },
-                              )
-                            : Container()
-                        : Container();
-                  }),
-                  Obx(() {
-                    return !connectionController
-                            .isRecommnedationLoadingHome.value
-                        ? connectionController.peopleYouMayKnowHome.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnowHome.value
-                                    .reccomendation!.isNotEmpty
-                            ? PeopleYouMayKnowWidget()
-                            : Container()
-                        : ReconnendedPeopleShimmer();
-                  }),
-                  Obx(() {
-                    return !connectionController
-                            .isRecommnedationLoadingHome.value
-                        ? connectionController.peopleYouMayKnowHome.value
-                                        .reccomendation !=
-                                    null &&
-                                connectionController.peopleYouMayKnowHome.value
-                                    .reccomendation!.isNotEmpty
-                            ? GetHelpDivider()
-                            : Container()
-                        : Container();
-                  }),
-                ],
-              ),
-            )
+            // SliverToBoxAdapter(
+            //   child: Column(
+            //     children: [
+            //       Obx(() {
+            //         return !connectionController
+            //                 .isRecommnedationLoadingHome.value
+            //             ? connectionController.peopleYouMayKnowHome.value
+            //                             .recommendation !=
+            //                         null &&
+            //                     connectionController.peopleYouMayKnowHome.value
+            //                         .recommendation!.isNotEmpty
+            //                 ? GetHelpCategory(
+            //                     title: 'Solh Mates',
+            //                     // onPressed: () {
+            //                     //   Navigator.push(context,
+            //                     //       MaterialPageRoute(builder: (context) {
+            //                     //     return ViewAllVolunteers();
+            //                     //   }));
+            //                     // },
+            //                   )
+            //                 : Container()
+            //             : Container();
+            //       }),
+            //       Obx(() {
+            //         return !connectionController
+            //                 .isRecommnedationLoadingHome.value
+            //             ? connectionController.peopleYouMayKnowHome.value
+            //                             .recommendation !=
+            //                         null &&
+            //                     connectionController.peopleYouMayKnowHome.value
+            //                         .recommendation!.isNotEmpty
+            //                 ? PeopleYouMayKnowWidget()
+            //                 : Container()
+            //             : ReconnendedPeopleShimmer();
+            //       }),
+            //       Obx(() {
+            //         return !connectionController
+            //                 .isRecommnedationLoadingHome.value
+            //             ? connectionController.peopleYouMayKnowHome.value
+            //                             .recommendation !=
+            //                         null &&
+            //                     connectionController.peopleYouMayKnowHome.value
+            //                         .recommendation!.isNotEmpty
+            //                 ? GetHelpDivider()
+            //                 : Container()
+            //             : Container();
+            //       }),
+            //     ],
+            //   ),
+            // )
           ],
         ),
       );
@@ -1041,7 +1043,7 @@ class _ConnectionsState extends State<Connections> {
                   )
                 : Text(
                     flag == 'sent' ? 'Waiting' : 'Accept',
-                    style: TextStyle(color: SolhColors.white),
+                    style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
                   );
           }),
         ),
@@ -1830,10 +1832,42 @@ List<Tab> gettabs(ProfileController profileController) {
 
   for (int i = 0; i <= getTabNumber(); i++) {
     tabs.add(Tab(
-        child: Text(
-      tabsString[i],
-      style: TextStyle(fontSize: 16),
-    )));
+        child: tabsString[i] == "Invites".tr
+            ? SizedBox(
+                width: 150,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        tabsString[i],
+                        style: TextStyle(fontSize: 16),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(4),
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color: SolhColors.primaryRed, shape: BoxShape.circle),
+                      child: Obx(() {
+                        return Text(
+                          Get.find<ConnectionController>()
+                              .receivedConnections
+                              .length
+                              .toString(),
+                          style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                            color: SolhColors.white,
+                          ),
+                        );
+                      }),
+                    )
+                  ],
+                ),
+              )
+            : Text(
+                tabsString[i],
+                style: TextStyle(fontSize: 16),
+              )));
   }
 
   return tabs;
@@ -1882,46 +1916,52 @@ class PeopleYouMayKnowWidget extends StatelessWidget {
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
           itemCount: connectionController
-              .peopleYouMayKnowHome.value.reccomendation!.length,
+              .peopleYouMayKnowHome.value.recommendation!.length,
           itemBuilder: (context, index) => SolhVolunteers(
-            bio: connectionController.peopleYouMayKnowHome.value.reccomendation!
+            bio: connectionController.peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .bio,
+                .connection
+                ?.bio,
             name: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
+                .peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .name,
+                .connection
+                ?.name,
             mobile: '',
             imgUrl: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
+                .peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .profilePicture,
-            sId: connectionController.peopleYouMayKnowHome.value.reccomendation!
+                .connection
+                ?.profilePicture,
+            sId: connectionController.peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .sId,
-            uid: connectionController.peopleYouMayKnowHome.value.reccomendation!
-                .elementAt(index)
-                .uid,
+                .connection
+                ?.sId,
+            uid: '',
             comments: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
+                .peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .commentCount
+                .connection
+                ?.postCount
                 .toString(),
             connections: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
+                .peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .connectionsCount
+                .connection
+                ?.connectionsCount
                 .toString(),
             likes: connectionController
-                .peopleYouMayKnowHome.value.reccomendation!
+                .peopleYouMayKnowHome.value.recommendation!
                 .elementAt(index)
-                .likesCount
+                .connection
+                ?.likesCount
                 .toString(),
             userType: null,
             post: connectionController
-                    .peopleYouMayKnowHome.value.reccomendation!
+                    .peopleYouMayKnowHome.value.recommendation!
                     .elementAt(index)
-                    .postCount ??
+                    .connection
+                    ?.postCount ??
                 0,
           ),
         );

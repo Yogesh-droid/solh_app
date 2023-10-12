@@ -13,6 +13,7 @@ class ConsultantController extends GetxController {
   var consultantModelController = ConsultantModel().obs;
   ConsultantDataService _consultantDataService = ConsultantDataService();
   var isSharingLink = false.obs;
+  var showBookingSheet = false;
 
   getConsultantDataController(id, String currency,
       {String? countrycode}) async {

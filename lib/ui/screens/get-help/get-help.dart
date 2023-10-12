@@ -743,9 +743,8 @@ class SolhVolunteers extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text('Request Sent'.tr,
-                            style: GoogleFonts.signika(
-                              fontSize: 12,
-                              color: Color(0xffA6A6A6),
+                            style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                              color: SolhColors.grey,
                             )),
                         Icon(
                           Icons.done,
@@ -808,16 +807,12 @@ class SolhVolunteers extends StatelessWidget {
                                   ),
                                   getConnectionIdBySId(sId ?? '') != ''
                                       ? Text('Cancel'.tr,
-                                          style: GoogleFonts.signika(
-                                            fontSize: 14,
-                                            color: SolhColors.primary_green,
-                                          ))
+                                          style: SolhTextStyles.CTA.copyWith(
+                                              color: SolhColors.primary_green))
                                       : Text(
                                           'Connect'.tr,
-                                          style: GoogleFonts.signika(
-                                            fontSize: 14,
-                                            color: SolhColors.primary_green,
-                                          ),
+                                          style: SolhTextStyles.CTA.copyWith(
+                                              color: SolhColors.primary_green),
                                         ),
                                 ],
                               ),

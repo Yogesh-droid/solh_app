@@ -277,13 +277,13 @@ class _JournalingState extends State<Journaling> {
                                                           ? Get.find<ConnectionController>()
                                                                           .peopleYouMayKnowHome
                                                                           .value
-                                                                          .reccomendation !=
+                                                                          .recommendation !=
                                                                       null &&
                                                                   Get.find<
                                                                           ConnectionController>()
                                                                       .peopleYouMayKnowHome
                                                                       .value
-                                                                      .reccomendation!
+                                                                      .recommendation!
                                                                       .isNotEmpty
                                                               ? PeopleYouMayKnowWidget()
                                                               : Container()
