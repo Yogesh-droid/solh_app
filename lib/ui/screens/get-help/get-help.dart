@@ -12,6 +12,7 @@ import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/model/get-help/get_issue_response_model.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
@@ -129,7 +130,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                             Navigator.pushNamed(
                                 context, AppRoutes.consultantAlliedParent,
                                 arguments: {
-                                  "slug": issue.slug ?? '',
+                                  "slug": issue.sId ?? '',
                                   "type": 'issue',
                                   "enableAppbar": false
                                 });

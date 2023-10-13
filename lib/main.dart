@@ -64,6 +64,7 @@ void main() async {
   Get.put(LiveStreamController());
   Get.put(ConsultantController());
   Get.put(BookAppointmentController());
+  Get.put(ProfileController());
 
   bool? newUser = await isNewUser();
   Map<String, dynamic> _initialAppData = await initApp();
