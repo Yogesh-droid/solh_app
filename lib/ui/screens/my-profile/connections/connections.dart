@@ -1524,7 +1524,6 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
   ScrollController sosScrollController = ScrollController();
 
   int currentPage = 1;
-  String? filter;
 
   @override
   void initState() {
@@ -1540,7 +1539,8 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
           sosScrollController.position.maxScrollExtent) {
         if (!chatListController.isMorePageLoading.value) {
           currentPage++;
-          chatListController.sosChatListController(currentPage, filter: filter);
+          chatListController.sosChatListController(currentPage,
+              filter: chatListController.filter);
         }
       }
     });
@@ -1556,36 +1556,89 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Now"),
-                PopupMenuButton<String>(
-                    child: Icon(Icons.filter_alt),
-                    onSelected: (value) {
-                      filter = value;
-                      currentPage = 1;
-                      chatListController.sosChatListController(currentPage,
-                          filter: value);
-                    },
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem<String>(
-                          child: Text("Today"),
-                          value:
-                              "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now())}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
-                        ),
-                        PopupMenuItem<String>(
-                          child: Text("Last Week"),
-                          value:
-                              "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 7)))}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
-                        ),
-                        PopupMenuItem<String>(
-                          child: Text("This Month"),
-                          value:
-                              "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 30)))}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
-                        ),
-                        PopupMenuItem<String>(
-                            child: Text("Clear All"), value: "")
-                      ];
-                    })
+                Text(
+                  "Now",
+                  style: SolhTextStyles.QS_body_1_bold,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 230,
+                      child: DropdownButtonFormField(
+                          hint: Text('Fliter'),
+                          decoration: InputDecoration(
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: SolhColors.primary_green),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: SolhColors.primary_green))),
+                          iconEnabledColor: SolhColors.primary_green,
+                          items: [
+                            DropdownMenuItem(
+                              value: 'Organization users',
+                              child: Text('Organization users'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Unresponded messages',
+                              child: Text('Unresponded messages'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'All',
+                              child: Text('All'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            if (value == "All") {
+                              chatListController.unrespondedFilter = false;
+                              chatListController.orgOnlyFilter = false;
+                            } else if (value == "Unresponded messages") {
+                              chatListController.unrespondedFilter = true;
+                              chatListController.orgOnlyFilter = false;
+                            } else if (value == "Organization users") {
+                              chatListController.unrespondedFilter = false;
+                              chatListController.orgOnlyFilter = true;
+                            }
+                            chatListController.sosChatListController(
+                              currentPage,
+                            );
+                          }),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    PopupMenuButton<String>(
+                        child: Icon(Icons.filter_alt),
+                        onSelected: (value) {
+                          chatListController.filter = value;
+                          currentPage = 1;
+                          chatListController.sosChatListController(currentPage,
+                              filter: value);
+                        },
+                        itemBuilder: (context) {
+                          return [
+                            PopupMenuItem<String>(
+                              child: Text("Today"),
+                              value:
+                                  "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now())}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
+                            ),
+                            PopupMenuItem<String>(
+                              child: Text("Last Week"),
+                              value:
+                                  "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 7)))}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
+                            ),
+                            PopupMenuItem<String>(
+                              child: Text("This Month"),
+                              value:
+                                  "&startDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().subtract(Duration(days: 30)))}&endDate=${DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: 1)))}",
+                            ),
+                            PopupMenuItem<String>(
+                                child: Text("Clear All"), value: "")
+                          ];
+                        }),
+                  ],
+                )
               ],
             ),
           ),

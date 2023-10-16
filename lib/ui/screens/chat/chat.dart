@@ -345,26 +345,30 @@ class ChatAppbar extends StatelessWidget {
                 SizedBox(
                   width: 6,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _name == '' ? '' : _name,
-                      style: GoogleFonts.signika(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                SizedBox(
+                  width: 50.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _name == '' ? '' : _name,
+                        style: GoogleFonts.signika(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    _isAnonChat
-                        ? Container()
-                        : Obx(() {
-                            return Text(
-                              _controller.seenStatus.value,
-                              style: GoogleFonts.signika(
-                                  color: SolhColors.primary_green),
-                            );
-                          })
-                  ],
+                      _isAnonChat
+                          ? Container()
+                          : Obx(() {
+                              return Text(
+                                _controller.seenStatus.value,
+                                style: GoogleFonts.signika(
+                                    color: SolhColors.primary_green),
+                              );
+                            })
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -376,59 +380,56 @@ class ChatAppbar extends StatelessWidget {
                             .myProfileModel.value.body!.user!.sosChatSupport ==
                         false
                 ? Container()
-                : Expanded(
-                    child: Obx(
-                      () => _controller.isVideoConnecting.value
-                          ? Padding(
+                : Obx(
+                    () => _controller.isVideoConnecting.value
+                        ? Padding(
+                            padding: const EdgeInsets.only(right: 24),
+                            child: Icon(
+                              Icons.video_call,
+                              size: 34,
+                              color: Colors.grey,
+                            ),
+                          )
+                        : InkWell(
+                            onTap: () async {
+                              Map<String, dynamic> body = {
+                                "uid": '0',
+                                "tokentype": "uid",
+                                "expiry": "",
+                                "role": "publisher",
+                                "sender": profileController
+                                    .myProfileModel.value.body!.user!.sId!,
+                                "senderType": "seeker",
+                                "receiver": _sId,
+                                "receiverType": "seeker",
+                                "channel": (profileController
+                                        .myProfileModel.value.body!.user!.sId! +
+                                    '_' +
+                                    _sId.toString()),
+                                "appointmentId": "",
+                                "callType": "cc",
+                                "callStatus": "initiated"
+                              };
+                              var value = await _controller
+                                  .initiateVideoController(body);
+                              if (value['success'] == true) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: ((context) => VideoCallUser(
+                                          channel: value['data']['channelName'],
+                                          token: value['data']['rtcToken'],
+                                          sId: _sId,
+                                        ))));
+                              }
+                            },
+                            child: Padding(
                               padding: const EdgeInsets.only(right: 24),
                               child: Icon(
-                                Icons.video_call,
+                                Icons.video_call_outlined,
                                 size: 34,
-                                color: Colors.grey,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () async {
-                                Map<String, dynamic> body = {
-                                  "uid": '0',
-                                  "tokentype": "uid",
-                                  "expiry": "",
-                                  "role": "publisher",
-                                  "sender": profileController
-                                      .myProfileModel.value.body!.user!.sId!,
-                                  "senderType": "seeker",
-                                  "receiver": _sId,
-                                  "receiverType": "seeker",
-                                  "channel": (profileController.myProfileModel
-                                          .value.body!.user!.sId! +
-                                      '_' +
-                                      _sId.toString()),
-                                  "appointmentId": "",
-                                  "callType": "cc",
-                                  "callStatus": "initiated"
-                                };
-                                var value = await _controller
-                                    .initiateVideoController(body);
-                                if (value['success'] == true) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) => VideoCallUser(
-                                            channel: value['data']
-                                                ['channelName'],
-                                            token: value['data']['rtcToken'],
-                                            sId: _sId,
-                                          ))));
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 24),
-                                child: Icon(
-                                  Icons.video_call_outlined,
-                                  size: 34,
-                                  color: SolhColors.primary_green,
-                                ),
+                                color: SolhColors.primary_green,
                               ),
                             ),
-                    ),
+                          ),
                   ),
           ],
         ),

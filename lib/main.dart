@@ -64,7 +64,6 @@ void main() async {
   Get.put(LiveStreamController());
   Get.put(ConsultantController());
   Get.put(BookAppointmentController());
-  Get.put(ProfileController());
 
   bool? newUser = await isNewUser();
   Map<String, dynamic> _initialAppData = await initApp();
@@ -173,7 +172,7 @@ class _SolhAppState extends State<SolhApp> {
   Future<void> initControllers() async {
     if (widget.isProfileCreated!) {
       Get.put(BottomNavigatorController());
-      Get.put(ProfileController());
+
       Get.put(ProfileSetupController());
       Get.put(BottomNavigatorController());
       Get.put(ChatListController());
