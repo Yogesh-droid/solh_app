@@ -84,8 +84,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
               null &&
           searchMarketController.isLoading.value == false) {
         pageNo++;
-        searchMarketController.getIssueList(widget.slug,
-            c: searchMarketController.defaultCountry, page: pageNo);
+        if (widget.type == "issue") {
+          searchMarketController.getIssueList('',
+              issue: widget.slug,
+              c: searchMarketController.defaultCountry,
+              page: pageNo);
+        } else {
+          searchMarketController.getSpecializationList('',
+              profession: widget.slug,
+              c: searchMarketController.defaultCountry,
+              page: pageNo);
+        }
       }
     });
   }
@@ -478,17 +487,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                     selected:
                                                         issueAndSpecializationFilterController
                                                             .selectedIssueList
-                                                            .contains(e.name),
+                                                            .contains(e.sId),
                                                     onSelected: (value) {
                                                       issueAndSpecializationFilterController
                                                               .selectedIssueList
-                                                              .contains(e.name)
+                                                              .contains(e.sId)
                                                           ? issueAndSpecializationFilterController
                                                               .selectedIssueList
-                                                              .remove(e.name)
+                                                              .remove(e.sId)
                                                           : issueAndSpecializationFilterController
                                                               .selectedIssueList
-                                                              .add(e.name);
+                                                              .add(e.sId);
                                                     },
                                                     selectedColor: SolhColors
                                                         .primary_green,
@@ -501,8 +510,8 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                           .copyWith(
                                                               color: issueAndSpecializationFilterController
                                                                       .selectedIssueList
-                                                                      .contains(e
-                                                                          .name)
+                                                                      .contains(
+                                                                          e.sId)
                                                                   ? SolhColors
                                                                       .white
                                                                   : SolhColors
@@ -646,6 +655,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                       "${widget.slug}\|${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
                                       c: issueAndSpecializationFilterController
                                           .selectedCountry.value,
+                                      page: 1,
                                       issue: issueAndSpecializationFilterController
                                           .selectedIssueList
                                           .join("|"))
@@ -656,13 +666,12 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                               .join("|"),
                                           c: searchMarketController
                                               .defaultCountry)
-                                      : searchMarketController.getIssueList(
-                                          "${widget.slug}\|${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
-                                          issue:
-                                              issueAndSpecializationFilterController
-                                                  .selectedIssueList
-                                                  .join("|"),
-                                          c: issueAndSpecializationFilterController.selectedCountry.value,
+                                      : searchMarketController.getIssueList("",
+                                          issue: issueAndSpecializationFilterController
+                                              .selectedIssueList
+                                              .join("|"),
+                                          c: issueAndSpecializationFilterController
+                                              .selectedCountry.value,
                                           page: 1);
                               Navigator.pop(context);
                             },
@@ -701,16 +710,19 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                 searchMarketController.defaultCountry == ''
             ? sharedPreferences.getString('userCountry')
             : searchMarketController.defaultCountry;
+    print('specialization ${widget.slug} ');
     widget.type == 'specialization'
-        ? searchMarketController.getSpecializationList(
-            widget.slug,
+        ? searchMarketController.getSpecializationList('',
             c: searchMarketController.defaultCountry,
-          )
+            profession: widget.slug,
+            page: 1)
         : widget.type == 'topconsultant'
             ? searchMarketController.getTopConsultants(
                 c: searchMarketController.defaultCountry)
-            : searchMarketController.getIssueList(widget.slug,
-                c: searchMarketController.defaultCountry, page: 1);
+            : searchMarketController.getIssueList('',
+                c: searchMarketController.defaultCountry,
+                issue: widget.slug,
+                page: 1);
   }
 
   @override

@@ -273,7 +273,7 @@ class ConnectionController extends GetxController {
   Future<void> getPeopleYouMayKnow(String limit) async {
     isRecommnedationLoading.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/connection-recommendation?limit=$limit')
+            APIConstants.api + '/api/connection-recommendation-v2')
         .onError((error, stackTrace) {
       print(error);
       return {};
@@ -281,7 +281,7 @@ class ConnectionController extends GetxController {
     if (map.isNotEmpty) {
       peopleYouMayKnow.value = PeopleYouMayKnowModel.fromJson(map);
       print("peopleYouMayKnow" +
-          peopleYouMayKnow.value.reccomendation!.length.toString());
+          peopleYouMayKnow.value.recommendation!.length.toString());
     }
     isRecommnedationLoading.value = false;
   }
@@ -314,7 +314,7 @@ class ConnectionController extends GetxController {
   Future<void> getPeopleYouMayKnowHome(String limit) async {
     isRecommnedationLoadingHome.value = true;
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/connection-recommendation?limit=$limit')
+            APIConstants.api + '/api/connection-recommendation-v2')
         .onError((error, stackTrace) {
       print(error);
       return {};
@@ -322,7 +322,7 @@ class ConnectionController extends GetxController {
     if (map.isNotEmpty) {
       peopleYouMayKnowHome.value = PeopleYouMayKnowModel.fromJson(map);
       print("peopleYouMayKnow" +
-          peopleYouMayKnowHome.value.reccomendation!.length.toString());
+          peopleYouMayKnowHome.value.recommendation!.length.toString());
     }
     isRecommnedationLoadingHome.value = false;
   }

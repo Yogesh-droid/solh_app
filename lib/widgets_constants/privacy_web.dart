@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -15,7 +16,7 @@ class PrivacyWeb extends StatefulWidget {
 
 class _PrivacyWebState extends State<PrivacyWeb> {
   int progress = 0;
-
+  final profileController = Get.put(ProfileController());
   late WebViewController controller;
 
   void setProgress(progress) {

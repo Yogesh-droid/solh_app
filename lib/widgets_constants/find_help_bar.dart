@@ -102,28 +102,28 @@ class FindHelpBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   right: 0,
-                      //   top: -4,
-                      //   child: Container(
-                      //     margin: EdgeInsets.all(4),
-                      //     padding: EdgeInsets.all(4),
-                      //     decoration: BoxDecoration(
-                      //         color: SolhColors.primaryRed,
-                      //         shape: BoxShape.circle),
-                      //     child: Obx(() {
-                      //       return Text(
-                      //         Get.find<ConnectionController>()
-                      //             .receivedConnections
-                      //             .length
-                      //             .toString(),
-                      //         style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                      //           color: SolhColors.white,
-                      //         ),
-                      //       );
-                      //     }),
-                      //   ),
-                      // ),
+                      Positioned(
+                        right: 0,
+                        top: -4,
+                        child: Container(
+                          margin: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              color: SolhColors.primaryRed,
+                              shape: BoxShape.circle),
+                          child: Obx(() {
+                            return Text(
+                              Get.find<ConnectionController>()
+                                  .receivedConnections
+                                  .length
+                                  .toString(),
+                              style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                                color: SolhColors.white,
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
                     ],
                   );
           }),

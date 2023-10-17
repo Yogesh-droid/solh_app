@@ -49,20 +49,33 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.showBookingSheet = false;
+    super.dispose();
+  }
+
   bool get _isAppbarCollpased {
     return _scrollController.hasClients && _scrollController.offset > 200;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldGreenWithBackgroundArt(
-        body: Obx(
-      () => _controller.isLoading.value
-          ? Center(
-              child: MyLoader(),
-            )
-          : CustomScrollView(controller: _scrollController, slivers: [
-              Obx(() => SliverAppBar(
+    return ScaffoldGreenWithBackgroundArt(body: Obx(
+      () {
+        if (!_controller.isLoading.value && _controller.showBookingSheet) {
+          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+            openBookingSheet();
+          });
+        }
+        return _controller.isLoading.value
+            ? Center(
+                child: MyLoader(),
+              )
+            : CustomScrollView(controller: _scrollController, slivers: [
+                Obx(
+                  () => SliverAppBar(
                     snap: false,
                     pinned: true,
                     floating: false,
@@ -88,34 +101,36 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                     elevation: 0.0,
                     expandedHeight: 320,
                     flexibleSpace: expandedWidget(),
-                  )),
-              SliverToBoxAdapter(
-                child: Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: SolhColors.white,
-                      borderRadius: BorderRadius.horizontal(
-                          left: Radius.circular(20),
-                          right: Radius.circular(20))),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        bookingButton(),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        detailsContainer(),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        aboutContainer(),
-                        Container(
-                          height: 400,
-                        ),
-                      ]),
+                  ),
                 ),
-              )
-            ]),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                        color: SolhColors.white,
+                        borderRadius: BorderRadius.horizontal(
+                            left: Radius.circular(20),
+                            right: Radius.circular(20))),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          bookingButton(),
+                          SizedBox(
+                            height: 40,
+                          ),
+                          detailsContainer(),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          aboutContainer(),
+                          Container(
+                            height: 400,
+                          ),
+                        ]),
+                  ),
+                )
+              ]);
+      },
     ));
   }
 

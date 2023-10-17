@@ -345,33 +345,40 @@ class ChatAppbar extends StatelessWidget {
                 SizedBox(
                   width: 6,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _name == '' ? '' : _name,
-                      style: GoogleFonts.signika(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                SizedBox(
+                  width: 50.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _name == '' ? '' : _name,
+                        style: GoogleFonts.signika(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    _isAnonChat
-                        ? Container()
-                        : Obx(() {
-                            return Text(
-                              _controller.seenStatus.value,
-                              style: GoogleFonts.signika(
-                                  color: SolhColors.primary_green),
-                            );
-                          })
-                  ],
+                      _isAnonChat
+                          ? Container()
+                          : Obx(() {
+                              return Text(
+                                _controller.seenStatus.value,
+                                style: GoogleFonts.signika(
+                                    color: SolhColors.primary_green),
+                              );
+                            })
+                    ],
+                  ),
                 ),
               ],
             ),
-            _isAnonChat ||
-                    ifMinor(profileController
-                        .myProfileModel.value.body!.user!.dob!) ||
-                    _sId == '62e125176a858283a925d15c'
+            (_isAnonChat ||
+                        ifMinor(profileController
+                            .myProfileModel.value.body!.user!.dob!) ||
+                        _sId == '62e125176a858283a925d15c') &&
+                    profileController
+                            .myProfileModel.value.body!.user!.sosChatSupport ==
+                        false
                 ? Container()
                 : Obx(
                     () => _controller.isVideoConnecting.value

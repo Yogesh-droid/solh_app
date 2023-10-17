@@ -19,10 +19,10 @@ class SearchMarketController extends GetxController {
     isLoading.value = true;
     String url;
     if (c != null && c.isNotEmpty) {
-      url = APIConstants.api + '/api/v5/get-help?text=$searchText&country=$c';
+      url = APIConstants.api + '/api/v6/get-help?text=$searchText&country=$c';
     } else {
       url = APIConstants.api +
-          '/api/v5/get-help?text=$searchText&country=$country';
+          '/api/v6/get-help?text=$searchText&country=$country';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
     print("map $map");
@@ -44,19 +44,39 @@ class SearchMarketController extends GetxController {
   }
 
   Future<void> getSpecializationList(String slug,
-      {String? c, String issue = '', int? page}) async {
-    isSearchingDoctors.value = true;
+      {String? c,
+      String issue = '',
+      required int page,
+      String profession = ''}) async {
+    page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
     String url;
+
+    print("function name getSpecializationList");
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
-          '/api/v5/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+          '/api/v6/get-help?profession=$profession&=$slug&country=$c&issue=$issue&page=$page';
     } else {
       url = APIConstants.api +
-          '/api/v5/get-help?specialization=$slug&country=$country&issue=$issue';
+          '/api/v6/get-help?profession=$profession&specialization=$slug&country=$country&issue=$issue';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
+    if (page == 1) {
+      log("in if");
 
-    issueModel.value = SearchMarketModel.fromJson(map);
+      issueModel.value = SearchMarketModel.fromJson(map);
+    } else {
+      issueModel.value.provider!
+          .addAll(SearchMarketModel.fromJson(map).provider!.toList());
+      issueModel.value.alliedProviders!
+          .addAll(SearchMarketModel.fromJson(map).alliedProviders!.toList());
+
+      issueModel.value.pagesForAllied =
+          SearchMarketModel.fromJson(map).pagesForAllied;
+      issueModel.refresh();
+    }
+
+    page > 1 ? isLoadingMoreClinician(false) : isSearchingDoctors.value = false;
+
     isSearchingDoctors.value = false;
   }
 
@@ -78,23 +98,29 @@ class SearchMarketController extends GetxController {
   }
 
   Future<void> getIssueList(String slug,
-      {String? c, String issue = '', required int page}) async {
+      {String? c,
+      String issue = '',
+      required int page,
+      String profession = ''}) async {
     isLoading(true);
+
+    print("function ran getIssueList ");
     try {
       log("it ran2 $page");
       page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
       String url;
       if (c != null && c.isNotEmpty) {
         url = APIConstants.api +
-            '/api/v5/get-help?specialization=$slug&country=$c&issue=$issue&page=$page';
+            '/api/v6/get-help?profession=$profession&specialization=$slug&country=$c&issue=$issue&page=$page';
       } else {
         url = APIConstants.api +
-            '/api/v5/get-help?specialization=$slug&country=$country&issue=$issue&page=$page';
+            '/api/v6/get-help?profession=$profession&specialization=$slug&country=$country&issue=$issue&page=$page';
       }
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
 
       if (page == 1) {
         log("in if");
+
         issueModel.value = SearchMarketModel.fromJson(map);
       } else {
         issueModel.value.provider!

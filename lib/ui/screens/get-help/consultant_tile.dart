@@ -69,71 +69,102 @@ class ConsultantsTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   getProfileDetails(context),
-                  Container(
-                    height: 12.w,
-                    width: 25.w,
-                    decoration: BoxDecoration(
-                      color: SolhColors.greenShade3,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Starting @'.tr,
-                          style: SolhTextStyles.QS_cap_semi,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SolhGreenMiniButton(
+                        onPressed: () {
+                          _controller.getConsultantDataController(id, currency);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ConsultantProfilePage();
+                          }));
+                          _controller.showBookingSheet = true;
+                        },
+                        child: Text(
+                          'Book Now',
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white),
                         ),
-                        Obx(() => Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                profileController.myProfileModel.value.body!
-                                            .userOrganisations!.isNotEmpty &&
-                                        profileController
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Container(
+                        height: 12.w,
+                        width: 25.w,
+                        decoration: BoxDecoration(
+                          color: SolhColors.greenShade3,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            bottomRight: Radius.circular(12),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Starting @'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            ),
+                            Obx(() => Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    profileController
                                                 .myProfileModel
                                                 .value
                                                 .body!
                                                 .userOrganisations!
-                                                .first
-                                                .status ==
-                                            'Approved' &&
-                                        discountedPrice != null &&
-                                        discountedPrice! > 0
-                                    ? Row(
-                                        children: [
-                                          Text('${currency} ${discountedPrice}',
-                                              style:
-                                                  SolhTextStyles.QS_cap_semi),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            '${currency} ${feeAmount}',
-                                            style: SolhTextStyles.QS_cap_semi
-                                                .copyWith(
-                                                    color: SolhColors.grey_2,
-                                                    fontSize: 10,
-                                                    decoration: TextDecoration
-                                                        .lineThrough),
+                                                .isNotEmpty &&
+                                            profileController
+                                                    .myProfileModel
+                                                    .value
+                                                    .body!
+                                                    .userOrganisations!
+                                                    .first
+                                                    .status ==
+                                                'Approved' &&
+                                            discountedPrice != null &&
+                                            discountedPrice! > 0
+                                        ? Row(
+                                            children: [
+                                              Text(
+                                                  '${currency} ${discountedPrice}',
+                                                  style: SolhTextStyles
+                                                      .QS_cap_semi),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                '${currency} ${feeAmount}',
+                                                style: SolhTextStyles
+                                                        .QS_cap_semi
+                                                    .copyWith(
+                                                        color:
+                                                            SolhColors.grey_2,
+                                                        fontSize: 10,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough),
+                                              )
+                                            ],
                                           )
-                                        ],
-                                      )
-                                    : Text(
-                                        feeAmount! > 0
-                                            ? '${currency} ${feeAmount}'
-                                            : (fee == null ||
-                                                    fee == 'Paid' ||
-                                                    fee == ''
-                                                ? 'Paid'
-                                                : ''),
-                                        style: SolhTextStyles.QS_cap_semi),
-                              ],
-                            ))
-                      ],
-                    ),
+                                        : Text(
+                                            feeAmount! > 0
+                                                ? '${currency} ${feeAmount}'
+                                                : (fee == null ||
+                                                        fee == 'Paid' ||
+                                                        fee == ''
+                                                    ? 'Paid'
+                                                    : ''),
+                                            style: SolhTextStyles.QS_cap_semi),
+                                  ],
+                                ))
+                          ],
+                        ),
+                      ),
+                    ],
                   )
                 ],
               )),

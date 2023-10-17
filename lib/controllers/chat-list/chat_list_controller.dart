@@ -12,6 +12,9 @@ class ChatListController extends GetxController {
   var chatList = <ChatList>[].obs;
   var sosChatList = <ChatList>[].obs;
   bool fromIDontKnow = false;
+  String? filter;
+  bool unrespondedFilter = false;
+  bool orgOnlyFilter = false;
 
   int? nextPage;
 
@@ -89,10 +92,14 @@ class ChatListController extends GetxController {
     }
   }
 
-  Future getSosChat(int pageNo, {String? filter}) async {
-    Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api +
-                '/api/v2/sosChatList?page=$pageNo${filter ?? ''}')
+  Future getSosChat(int pageNo,
+      {String? filter, bool? unrespondedFilter, bool? orgOnlyFilter}) async {
+    unrespondedFilter = this.unrespondedFilter;
+
+    orgOnlyFilter = this.orgOnlyFilter;
+    Map<String,
+        dynamic> map = await Network.makeGetRequestWithToken(APIConstants.api +
+            '/api/v3/sosChatList?page=$pageNo${filter ?? ''}&unresponded=$unrespondedFilter&orgOnly=$orgOnlyFilter')
         .onError((error, stackTrace) {
       print(error);
       return {};

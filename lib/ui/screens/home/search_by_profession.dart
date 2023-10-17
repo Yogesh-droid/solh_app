@@ -55,11 +55,11 @@ class _SearchByProfesssionUIState extends State<SearchByProfesssionUI> {
                           .value
                           .specializationList![index]
                           .name;
+
                       Navigator.pushNamed(context, AppRoutes.viewAllConsultant,
                           arguments: {
                             "slug": getHelpController.getSpecializationModel
-                                    .value.specializationList![index].slug ??
-                                '',
+                                .value.specializationList![index].id,
                             "type": 'specialization',
                             "name": getHelpController.getSpecializationModel
                                     .value.specializationList![index].name ??
