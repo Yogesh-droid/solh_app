@@ -19,6 +19,7 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import '../../../../model/group/get_group_response_model.dart';
 import '../../../../routes/routes.dart';
@@ -1600,8 +1601,10 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
                               chatListController.unrespondedFilter = false;
                               chatListController.orgOnlyFilter = true;
                             }
+                            currentPage = 1;
+
                             chatListController.sosChatListController(
-                              currentPage,
+                              1,
                             );
                           }),
                     ),
@@ -1837,16 +1840,59 @@ class _GetSosSupportViewState extends State<GetSosSupportView> {
                                       ],
                                     ),
                                     Expanded(
-                                      child: Text(
-                                          timeago.format(DateTime
-                                              .fromMillisecondsSinceEpoch(
-                                                  chatListController
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                                timeago.format(DateTime
+                                                    .fromMillisecondsSinceEpoch(
+                                                        chatListController
+                                                            .sosChatList
+                                                            .value[index]
+                                                            .conversation!
+                                                            .dateTime!)),
+                                                style: SolhTextStyles
+                                                        .QS_caption_bold
+                                                    .copyWith(fontSize: 10)),
+                                          ),
+                                          chatListController
                                                       .sosChatList
                                                       .value[index]
-                                                      .conversation!
-                                                      .dateTime!)),
-                                          style: SolhTextStyles.QS_caption_bold
-                                              .copyWith(fontSize: 10)),
+                                                      .user!
+                                                      .org!
+                                                      .name ==
+                                                  null
+                                              ? Container()
+                                              : IconButton(
+                                                  onPressed: () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return orgInfoDialog(
+                                                            chatListController
+                                                                .sosChatList
+                                                                .value[index]
+                                                                .user!
+                                                                .org!
+                                                                .logo!,
+                                                            chatListController
+                                                                .sosChatList
+                                                                .value[index]
+                                                                .user!
+                                                                .org!
+                                                                .name!);
+                                                      },
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.info,
+                                                    size: 18,
+                                                    color:
+                                                        SolhColors.primaryRed,
+                                                  ),
+                                                )
+                                        ],
+                                      ),
                                     )
                                   ],
                                 ),
@@ -2152,4 +2198,29 @@ class ReconnendedPeopleShimmer extends StatelessWidget {
           }),
     );
   }
+}
+
+Widget orgInfoDialog(String imageUrl, String orgname) {
+  return AlertDialog(
+    content: Container(
+      height: 200,
+      width: 150,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SimpleImageContainer(
+            imageUrl: imageUrl,
+            radius: 150,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            orgname,
+            style: SolhTextStyles.QS_body_1_bold,
+          )
+        ],
+      ),
+    ),
+  );
 }

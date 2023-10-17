@@ -144,6 +144,7 @@ class User {
   String? sId;
   String? uid;
   String? type;
+  Org? org;
   bool? sosChatSupportGroup;
 
   User(
@@ -154,7 +155,8 @@ class User {
       this.sId,
       this.uid,
       this.type,
-      this.sosChatSupportGroup});
+      this.sosChatSupportGroup,
+      this.org});
 
   User.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -165,6 +167,7 @@ class User {
     uid = json['uid'];
     type = json['type'];
     sosChatSupportGroup = json['sosChatSupportGroup'];
+    org = json['org'] != null ? new Org.fromJson(json['org']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -177,6 +180,25 @@ class User {
     data['uid'] = this.uid;
     data['type'] = this.type;
     data['sosChatSupportGroup'] = this.sosChatSupportGroup;
+    return data;
+  }
+}
+
+class Org {
+  String? name;
+  String? logo;
+
+  Org({this.name, this.logo});
+
+  Org.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    logo = json['logo'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['logo'] = this.logo;
     return data;
   }
 }
