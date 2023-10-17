@@ -270,11 +270,13 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: 150,
+                  height: 30,
                   child: Text(
-                    map.values.first.testTitle ?? '',
+                    map.values.first.test!.testTitle ?? '',
                     style: SolhTextStyles.GreenBorderButtonText,
                     maxLines: 1,
                     overflow: TextOverflow.fade,
@@ -284,10 +286,8 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
                   width: 150,
                   child: Text(
                     // test.testDuration.toString(),
-                    map.keys.first != null
-                        ? DateFormat("dd MMM yyyy")
-                            .format(DateTime.parse(map.keys.first))
-                        : '',
+                    DateFormat("dd MMM yyyy")
+                        .format(DateTime.parse(map.keys.first)),
                     style: SolhTextStyles.QS_body_2_semi,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -372,6 +372,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
   }
 }
 
+// ignore: must_be_immutable
 class QuestionContainer extends StatelessWidget {
   QuestionContainer(
       {Key? key, required this.test, required this.onQuestionTap, this.padding})

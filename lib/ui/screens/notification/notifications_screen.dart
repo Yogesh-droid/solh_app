@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/model/journals/journals_response_model.dart';
 import 'package:solh/ui/screens/notification/controller/notification_controller.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/widgets_constants/animated_refresh_container.dart';
@@ -145,12 +146,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
           showDialog(
               context: context,
               builder: (_) => Center(child: SolhGradientLoader()));
-          await journalPageController.getJournalDetail(item.routeContent ?? '');
           Navigator.pop(context);
           if (journalPageController.journalDetail.value.id != null) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CommentScreen(
-                    journalModel: journalPageController.journalDetail.value,
+                    journalModel: Journals(id: item.routeContent ?? ''),
                     index: -1)));
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
