@@ -1,4 +1,8 @@
+import 'dart:isolate';
+
 import 'package:get/get.dart';
+import 'package:solh/constants/api.dart';
+import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/notification/model/notification_model.dart';
 import 'package:solh/ui/screens/notification/services/notification_services.dart';
 
@@ -23,5 +27,34 @@ class NotificationController extends GetxController {
     shouldRefresh(false);
 
     notificationModel.value = response.notificationList!;
+  }
+
+  Future<void> updateStatus(String id) async {
+    Network.makePutRequestWithToken(
+        url:
+            "${APIConstants.api}/api/custom/update-notification-seen-status/$id",
+        body: {"status": "read"});
+
+// final ReceivePort receivePort = ReceivePort();
+//     await Isolate.spawn(
+//         updateNotifStatus, [receivePort.sendPort, notificationModel, id]);
+
+//     receivePort.listen((message) {
+//       notificationModel[message].seenStatus == "read";
+//     });
+//     notificationModel.refresh();
+  }
+}
+
+updateNotifStatus(List args) {
+  String id = args[2];
+  RxList<NotificationList> modelList = args[1];
+  SendPort sendPort = args[0];
+
+  for (var element in modelList) {
+    if (element.sId == id) {
+      sendPort.send(modelList.indexOf(element));
+      break;
+    }
   }
 }
