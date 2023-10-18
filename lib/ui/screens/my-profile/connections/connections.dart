@@ -1932,36 +1932,33 @@ List<Tab> gettabs(ProfileController profileController) {
   for (int i = 0; i <= getTabNumber(); i++) {
     tabs.add(Tab(
         child: tabsString[i] == "Invites".tr
-            ? SizedBox(
-                width: 150,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        tabsString[i],
-                        style: TextStyle(fontSize: 16),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(4),
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          color: SolhColors.primaryRed, shape: BoxShape.circle),
-                      child: Obx(() {
-                        return Text(
-                          Get.find<ConnectionController>()
-                              .receivedConnections
-                              .length
-                              .toString(),
-                          style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                            color: SolhColors.white,
-                          ),
-                        );
-                      }),
-                    )
-                  ],
-                ),
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    tabsString[i],
+                    style: TextStyle(fontSize: 16),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(4),
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        color: SolhColors.primaryRed, shape: BoxShape.circle),
+                    child: Obx(() {
+                      return Text(
+                        Get.find<ConnectionController>()
+                            .receivedConnections
+                            .length
+                            .toString(),
+                        style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                          color: SolhColors.white,
+                        ),
+                      );
+                    }),
+                  )
+                ],
               )
             : Text(
                 tabsString[i],
