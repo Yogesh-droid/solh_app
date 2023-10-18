@@ -6,7 +6,7 @@ import 'package:solh/ui/screens/notification/model/notification_model.dart';
 class NotificationServices implements Notificationinterface {
   Future<NotificationModel> getNotificationList(String sId) async {
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
-            APIConstants.api + '/api/custom/v1/notification-list?userid=$sId')
+            APIConstants.api + '/api/custom/v2/notification-list')
         .onError((error, stackTrace) {
       print(error);
       return {};
