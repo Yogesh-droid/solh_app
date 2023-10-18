@@ -432,7 +432,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
               : IconButton(
                   onPressed: () async {
                     _controller.isSharingLink(true);
-                    Share.share(await DynamicLinkProvider.instance.createLink(
+                    String link = await DynamicLinkProvider.instance.createLink(
                       createFor: 'Provider',
                       data: {
                         "providerId": _controller
@@ -441,7 +441,9 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                                 .myProfileModel.value.body!.user!.sId ??
                             ''
                       },
-                    ));
+                    );
+                    Share.share(
+                        "Book ${_controller.consultantModelController.value.provder!.prefix} ${_controller.consultantModelController.value.provder!.name} for session on Solh Wellness $link");
                     _controller.isSharingLink(false);
                   },
                   icon: Icon(Icons.share),

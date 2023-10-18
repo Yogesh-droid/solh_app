@@ -121,8 +121,13 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
                               right: 10,
                               bottom: 10,
                               child: GetShareButton(
-                                groupId: widget.groupId,
-                              )),
+                                  groupId: widget.groupId,
+                                  groupName: discoverGroupController
+                                          .groupDetailModel
+                                          .value
+                                          .groupList!
+                                          .groupName ??
+                                      '')),
                         ],
                       ),
                       SizedBox(
@@ -989,8 +994,9 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
 }
 
 class GetShareButton extends StatelessWidget {
-  GetShareButton({super.key, required this.groupId});
+  GetShareButton({super.key, required this.groupId, required this.groupName});
   final String groupId;
+  final String groupName;
   final DiscoverGroupController discoverGroupController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -1009,7 +1015,7 @@ class GetShareButton extends StatelessWidget {
               ''
         });
         print(link);
-        await Share.share(link);
+        await Share.share("Join $groupName group on Solh Wellness $link");
 
         discoverGroupController.isSharingLink(false);
       },

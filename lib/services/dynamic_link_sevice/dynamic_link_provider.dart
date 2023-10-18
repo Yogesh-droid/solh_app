@@ -79,12 +79,14 @@ class DynamicLinkProvider {
       try {
         switch (reflink.path) {
           case "/provider":
+            globalNavigatorKey.currentState!.pop();
             await Get.find<ConsultantController>().getConsultantDataController(
                 reflink.queryParameters["provider"], "Rs");
 
             _routeLinks(routeName: AppRoutes.consultantProfilePage, args: {});
             break;
           case "/group":
+            globalNavigatorKey.currentState!.pop();
             _routeLinks(routeName: AppRoutes.groupDetails, args: {
               "groupId": reflink.queryParameters["groupId"],
               'isJoined': false
@@ -151,7 +153,6 @@ class DynamicLinkProvider {
                 throw (e);
               }
 
-
               _routeLinks(routeName: AppRoutes.consultantProfilePage, args: {});
             } else {
               throw "data is empty for provider dynamic link";
@@ -161,6 +162,7 @@ class DynamicLinkProvider {
           ///
           case 'Group':
             if (data!["groupId"] != null || data["groupId"] != '') {
+              globalNavigatorKey.currentState!.pop();
               _routeLinks(
                   routeName: AppRoutes.groupDetails,
                   args: {"groupId": data['groupId'], 'isJoined': false});

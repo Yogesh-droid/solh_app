@@ -555,7 +555,8 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                                               .user!
                                               .id!,
                                     });
-                                Share.share(link);
+                                Share.share(
+                                    "Book ${widget.user!.name} session package on Solh Wellness $link");
                                 _alliedController.isShareingLink(false);
                               },
                             );

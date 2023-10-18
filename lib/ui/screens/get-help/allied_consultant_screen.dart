@@ -559,9 +559,14 @@ class ProfileDetails extends StatelessWidget {
 }
 
 class AboutAndPlans extends StatelessWidget {
-  AboutAndPlans({super.key, this.user, required this.id});
+  AboutAndPlans({
+    super.key,
+    this.user,
+    required this.id,
+  });
   final FinalResult? user;
   final String id;
+
   final AlliedController _alliedController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -616,7 +621,8 @@ class AboutAndPlans extends StatelessWidget {
                                   });
                               _alliedController.isShareingProviderLink.value =
                                   false;
-                              Share.share(link);
+                              Share.share(
+                                  "Book ${user?.prefix ?? ''} ${user?.name ?? ''} for therapy session on Solh Wellness $link");
                             });
                     }),
                   ],
