@@ -10,11 +10,13 @@ class ConsultantAlliedParent extends StatefulWidget {
   ConsultantAlliedParent({Key? key, Map<dynamic, dynamic>? args})
       : type = args!['type'],
         slug = args['slug'],
+        id = args["id"],
         enableAppbar = args['enableAppbar'],
         super(key: key);
 
   final String slug;
   final String? type;
+  final String? id;
   final bool? enableAppbar;
 
   @override
@@ -65,7 +67,7 @@ class _ConsultantAlliedParentState extends State<ConsultantAlliedParent>
             AlliedConsultant(
               args: {
                 "type": widget.type,
-                "slug": widget.slug,
+                "id": widget.id,
                 "enableAppbar": widget.enableAppbar,
               },
             )

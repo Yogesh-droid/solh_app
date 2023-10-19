@@ -21,10 +21,12 @@ class AlliedConsultant extends StatefulWidget {
       : type = args!['type'],
         slug = args['slug'],
         name = args['name'],
+        id = args["id"],
         enableAppbar = args['enableAppbar'] ?? true,
         super(key: key);
 
   final String? slug;
+  final String? id;
   final String? type;
   final String? name;
   final bool enableAppbar;
@@ -200,8 +202,8 @@ class _AlliedConsultantState extends State<AlliedConsultant> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     defaultCountry = sharedPreferences.getString('userCountry');
     widget.type == 'specialization'
-        ? searchMarketController.getSpecializationList(widget.slug ?? '',
-            c: defaultCountry, page: pageNo)
+        ? searchMarketController.getSpecializationList('',
+            c: defaultCountry, page: pageNo, profession: widget.id ?? '')
         : widget.type == 'topconsultant'
             ? searchMarketController.getTopConsultants(c: defaultCountry)
             : searchMarketController.getIssueList(widget.slug ?? '',

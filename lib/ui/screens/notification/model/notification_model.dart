@@ -36,6 +36,7 @@ class NotificationList {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  String? seenStatus;
 
   NotificationList(
       {this.sId,
@@ -47,6 +48,7 @@ class NotificationList {
       this.routeData,
       this.createdAt,
       this.updatedAt,
+      this.seenStatus,
       this.iV});
 
   NotificationList.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,7 @@ class NotificationList {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    seenStatus = json['seenStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,6 +81,7 @@ class NotificationList {
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
+    data['seenStatus'] = this.seenStatus;
     return data;
   }
 }

@@ -52,11 +52,18 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         getResultByCountry();
-
+        issueAndSpecializationFilterController.selectedIssueList.clear();
         issueAndSpecializationFilterController
             .getIssueAndSpecializationFilter(widget.slug);
         issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
-        fetchMoreClinician();
+        issueAndSpecializationFilterController.selectedIssueList.clear();
+        issueAndSpecializationFilterController.selectedSpecialityList.clear();
+
+        if (widget.type == "issue") {
+          issueAndSpecializationFilterController.selectedIssueList
+              .add(widget.slug);
+        }
+
         _doctorsScrollController.addListener(
           () async {
             if (_doctorsScrollController.position.pixels ==
@@ -65,6 +72,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
               setState(() {
                 _fetchingMore = true;
               });
+              await fetchMoreClinician();
               setState(() {
                 _fetchingMore = false;
               });
@@ -76,27 +84,30 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
     super.initState();
   }
 
-  void fetchMoreClinician() {
-    _doctorsScrollController.addListener(() {
-      if (_doctorsScrollController.position.pixels >
-              _doctorsScrollController.position.maxScrollExtent - 100 &&
-          searchMarketController.issueModel.value.pagesForProvider!.next !=
-              null &&
-          searchMarketController.isLoading.value == false) {
-        pageNo++;
-        if (widget.type == "issue") {
-          searchMarketController.getIssueList('',
-              issue: widget.slug,
-              c: searchMarketController.defaultCountry,
-              page: pageNo);
-        } else {
-          searchMarketController.getSpecializationList('',
-              profession: widget.slug,
-              c: searchMarketController.defaultCountry,
-              page: pageNo);
-        }
+  Future<void> fetchMoreClinician() async {
+    if (_doctorsScrollController.position.pixels >
+            _doctorsScrollController.position.maxScrollExtent - 100 &&
+        searchMarketController.issueModel.value.pagesForProvider!.next !=
+            null &&
+        searchMarketController.isLoading.value == false) {
+      pageNo++;
+      if (widget.type == "issue") {
+        await searchMarketController.getIssueList(
+            "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+            issue: issueAndSpecializationFilterController.selectedIssueList
+                .join("|"),
+            c: issueAndSpecializationFilterController.selectedCountry.value,
+            page: 1,
+            profession: "");
+      } else {
+        await searchMarketController.getSpecializationList('',
+            profession: widget.slug,
+            issue: issueAndSpecializationFilterController.selectedIssueList
+                .join("|"),
+            c: searchMarketController.defaultCountry,
+            page: pageNo);
       }
-    });
+    }
   }
 
   @override
@@ -270,36 +281,6 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                           .value
                                           .provider![index]
                                           .afterDiscountPrice,
-
-                                      /*  doctorModel: DoctorModel(
-                                          specialization: '',
-                                          organisation: '',
-                                          name: searchMarketController.issueModel
-                                                  .value.provider![index].name ??
-                                              '',
-                                          mobile: searchMarketController
-                                                  .issueModel
-                                                  .value
-                                                  .provider![index]
-                                                  .contactNumber ??
-                                              '',
-                                          id: searchMarketController.issueModel
-                                                  .value.provider![index].sId ??
-                                              '',
-                                          email: searchMarketController.issueModel
-                                                  .value.provider![index].email ??
-                                              '',
-                                          clinic: '',
-                                          fee: searchMarketController.issueModel.value.provider![index].fee,
-                                          prefix: searchMarketController.issueModel.value.provider![index].prefix,
-                                          feeCurrency: searchMarketController.issueModel.value.provider![index].feeCurrency,
-                                          fee_amount: searchMarketController.issueModel.value.provider![index].fee_amount,
-                                          locality: searchMarketController.issueModel.value.provider![index].addressLineOne ?? '',
-                                          pincode: '',
-                                          city: searchMarketController.issueModel.value.provider![index].addressLineFour ?? '',
-                                          bio: searchMarketController.issueModel.value.provider![index].bio ?? '',
-                                          abbrevations: '',
-                                          profilePicture: searchMarketController.issueModel.value.provider![index].profilePicture ?? ''), */
                                       onTap: () {},
                                     ),
                                     Obx(
@@ -325,6 +306,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               ),
                             )
                           : SliverToBoxAdapter(),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 100,
+                        ),
+                      ),
                     ],
                   )
                 : Center(
@@ -550,21 +536,21 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                         .issueAndSpecializationFilterModel
                                                         .value
                                                         .splList![index]
-                                                        .name!)
+                                                        .sId!)
                                             ? issueAndSpecializationFilterController
                                                 .selectedSpecialityList
                                                 .remove(issueAndSpecializationFilterController
                                                     .issueAndSpecializationFilterModel
                                                     .value
                                                     .splList![index]
-                                                    .name!)
+                                                    .sId!)
                                             : issueAndSpecializationFilterController
                                                 .selectedSpecialityList
                                                 .add(issueAndSpecializationFilterController
                                                     .issueAndSpecializationFilterModel
                                                     .value
                                                     .splList![index]
-                                                    .name!);
+                                                    .sId!);
                                       },
                                       child: ListTile(
                                         title: InkWell(
@@ -589,7 +575,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                                               .issueAndSpecializationFilterModel
                                                               .value
                                                               .splList![index]
-                                                              .name)
+                                                              .sId)
                                                   ? Icon(
                                                       CupertinoIcons
                                                           .check_mark_circled_solid,
@@ -634,6 +620,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                         children: [
                           SolhGreenBorderMiniButton(
                             onPressed: () {
+                              pageNo = 1;
                               issueAndSpecializationFilterController
                                   .selectedIssueList
                                   .clear();
@@ -650,15 +637,17 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                           ),
                           SolhGreenMiniButton(
                             onPressed: () {
+                              pageNo = 1;
                               widget.type == 'specialization'
                                   ? searchMarketController.getSpecializationList(
-                                      "${widget.slug}\|${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+                                      "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
                                       c: issueAndSpecializationFilterController
                                           .selectedCountry.value,
                                       page: 1,
                                       issue: issueAndSpecializationFilterController
                                           .selectedIssueList
-                                          .join("|"))
+                                          .join("|"),
+                                      profession: widget.slug)
                                   : widget.type == 'topconsultant'
                                       ? searchMarketController.getTopConsultants(
                                           issue: issueAndSpecializationFilterController
@@ -666,13 +655,15 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                               .join("|"),
                                           c: searchMarketController
                                               .defaultCountry)
-                                      : searchMarketController.getIssueList("",
-                                          issue: issueAndSpecializationFilterController
-                                              .selectedIssueList
-                                              .join("|"),
-                                          c: issueAndSpecializationFilterController
-                                              .selectedCountry.value,
-                                          page: 1);
+                                      : searchMarketController.getIssueList(
+                                          "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+                                          issue:
+                                              issueAndSpecializationFilterController
+                                                  .selectedIssueList
+                                                  .join("|"),
+                                          c: issueAndSpecializationFilterController.selectedCountry.value,
+                                          page: 1,
+                                          profession: "");
                               Navigator.pop(context);
                             },
                             child: Text(

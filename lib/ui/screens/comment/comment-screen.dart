@@ -1802,7 +1802,7 @@ class _PostForCommentState extends State<PostForComment> {
                 ? isGroupJoined
                     // ignore: dead_code
                     ? 'Go To Group'
-                    : 'join'
+                    : 'Join'
                 : "Connect",
             style: SolhTextStyles.GreenBorderButtonText,
           ),

@@ -50,19 +50,18 @@ class SearchMarketController extends GetxController {
       String profession = ''}) async {
     page > 1 ? isLoadingMoreClinician(true) : isSearchingDoctors.value = true;
     String url;
+    print("this is page $page");
 
     print("function name getSpecializationList");
     if (c != null && c.isNotEmpty) {
       url = APIConstants.api +
-          '/api/v6/get-help?profession=$profession&=$slug&country=$c&issue=$issue&page=$page';
+          '/api/v6/get-help?profession=$profession&specialization=$slug&country=$c&issue=$issue&page=$page';
     } else {
       url = APIConstants.api +
           '/api/v6/get-help?profession=$profession&specialization=$slug&country=$country&issue=$issue';
     }
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(url);
     if (page == 1) {
-      log("in if");
-
       issueModel.value = SearchMarketModel.fromJson(map);
     } else {
       issueModel.value.provider!
