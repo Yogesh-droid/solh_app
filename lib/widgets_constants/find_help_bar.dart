@@ -32,18 +32,18 @@ class FindHelpBar extends StatelessWidget {
     //   'my_goal',
     //   'more'
     // });
-    FeatureDiscovery.discoverFeatures(
-      context,
-      const <String>{
-        'home',
-        'journaling',
-        'get_help',
-        'my_goal',
-        'more',
-        'mood_meter',
-        'connection_icon',
-      },
-    );
+    // FeatureDiscovery.discoverFeatures(
+    //   context,
+    //   const <String>{
+    //     'home',
+    //     'journaling',
+    //     'get_help',
+    //     'my_goal',
+    //     'more',
+    //     'mood_meter',
+    //     'connection_icon',
+    //   },
+    // );
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Row(
@@ -102,28 +102,33 @@ class FindHelpBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Positioned(
-                        right: 0,
-                        top: -4,
-                        child: Container(
-                          margin: EdgeInsets.all(4),
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              color: SolhColors.primaryRed,
-                              shape: BoxShape.circle),
-                          child: Obx(() {
-                            return Text(
-                              Get.find<ConnectionController>()
-                                  .receivedConnections
-                                  .length
-                                  .toString(),
-                              style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                                color: SolhColors.white,
+                      Get.find<ConnectionController>()
+                              .receivedConnections
+                              .isEmpty
+                          ? SizedBox.shrink()
+                          : Positioned(
+                              right: 0,
+                              top: -4,
+                              child: Container(
+                                margin: EdgeInsets.all(4),
+                                padding: EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    color: SolhColors.primaryRed,
+                                    shape: BoxShape.circle),
+                                child: Obx(() {
+                                  return Text(
+                                    Get.find<ConnectionController>()
+                                        .receivedConnections
+                                        .length
+                                        .toString(),
+                                    style: SolhTextStyles.QS_caption_2_bold
+                                        .copyWith(
+                                      color: SolhColors.white,
+                                    ),
+                                  );
+                                }),
                               ),
-                            );
-                          }),
-                        ),
-                      ),
+                            ),
                     ],
                   );
           }),

@@ -57,6 +57,12 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             .getIssueAndSpecializationFilter(widget.slug);
         issueAndSpecializationFilterController.selectedSpeciality(widget.slug);
         issueAndSpecializationFilterController.selectedIssueList.clear();
+        issueAndSpecializationFilterController.selectedSpecialityList.clear();
+
+        if (widget.type == "issue") {
+          issueAndSpecializationFilterController.selectedIssueList
+              .add(widget.slug);
+        }
 
         _doctorsScrollController.addListener(
           () async {
@@ -86,14 +92,13 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
         searchMarketController.isLoading.value == false) {
       pageNo++;
       if (widget.type == "issue") {
-        await searchMarketController.getIssueList('',
-            issue:
-                issueAndSpecializationFilterController.selectedIssueList.isEmpty
-                    ? widget.slug
-                    : issueAndSpecializationFilterController.selectedIssueList
-                        .join("|"),
-            c: searchMarketController.defaultCountry,
-            page: pageNo);
+        await searchMarketController.getIssueList(
+            "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+            issue: issueAndSpecializationFilterController.selectedIssueList
+                .join("|"),
+            c: issueAndSpecializationFilterController.selectedCountry.value,
+            page: 1,
+            profession: "");
       } else {
         await searchMarketController.getSpecializationList('',
             profession: widget.slug,
@@ -301,6 +306,11 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                               ),
                             )
                           : SliverToBoxAdapter(),
+                      SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 100,
+                        ),
+                      ),
                     ],
                   )
                 : Center(
@@ -645,14 +655,15 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                               .join("|"),
                                           c: searchMarketController
                                               .defaultCountry)
-                                      : searchMarketController.getIssueList("",
-                                          issue: issueAndSpecializationFilterController
-                                              .selectedIssueList
-                                              .join("|"),
-                                          c: issueAndSpecializationFilterController
-                                              .selectedCountry.value,
+                                      : searchMarketController.getIssueList(
+                                          "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
+                                          issue:
+                                              issueAndSpecializationFilterController
+                                                  .selectedIssueList
+                                                  .join("|"),
+                                          c: issueAndSpecializationFilterController.selectedCountry.value,
                                           page: 1,
-                                          profession: widget.slug);
+                                          profession: "");
                               Navigator.pop(context);
                             },
                             child: Text(

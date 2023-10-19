@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -47,9 +45,6 @@ class ConsultantsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ProfileController profileController = Get.find();
-    print("Discounted price is $discountedPrice");
-    log("$currency currency");
     return Column(
       children: [
         InkWell(
@@ -65,14 +60,104 @@ class ConsultantsTile extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: SolhColors.grey_2.withOpacity(0.4)),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  getProfileDetails(context),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      SolhGreenMiniButton(
+              child: getProfileDetails(context)),
+        ),
+        GetHelpDivider()
+      ],
+    );
+  }
+
+  getProfileDetails(context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, top: 14),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          getProfileImg(profilePic),
+          SizedBox(width: 3.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                RichText(
+                    text: TextSpan(children: [
+                  TextSpan(
+                      text: prefix != null ? "$prefix " : '',
+                      style: Theme.of(context).textTheme.displaySmall),
+                  TextSpan(
+                      text: "$name",
+                      style: Theme.of(context).textTheme.displaySmall)
+                ])),
+                Container(
+                  width: 50.w,
+                  child: Text(
+                    specialization != '' ? "${specialization}" : "${bio}",
+                    style: SolhTextStyles.QS_cap_semi,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ),
+                SizedBox(height: 10),
+                //// interaction details ////////////////////
+                ///
+                // getInteractionDetails(),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Starting @'.tr,
+                          style: SolhTextStyles.QS_cap_semi,
+                        ),
+                        Obx(() => Get.find<ProfileController>()
+                                    .myProfileModel
+                                    .value
+                                    .body!
+                                    .userOrganisations!
+                                    .isNotEmpty &&
+                                Get.find<ProfileController>()
+                                        .myProfileModel
+                                        .value
+                                        .body!
+                                        .userOrganisations!
+                                        .first
+                                        .status ==
+                                    'Approved' &&
+                                discountedPrice != null &&
+                                discountedPrice! > 0
+                            ? Row(
+                                children: [
+                                  Text('${currency} ${discountedPrice}',
+                                      style: SolhTextStyles.QS_cap_semi),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    '${currency} ${feeAmount}',
+                                    style: SolhTextStyles.QS_cap_semi.copyWith(
+                                        color: SolhColors.grey_2,
+                                        fontSize: 10,
+                                        decoration: TextDecoration.lineThrough),
+                                  )
+                                ],
+                              )
+                            : Text(
+                                feeAmount! > 0
+                                    ? '${currency} ${feeAmount}'
+                                    : (fee == null || fee == 'Paid' || fee == ''
+                                        ? 'Paid'
+                                        : ''),
+                                style: SolhTextStyles.QS_cap_semi))
+                      ],
+                    ),
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: SolhGreenMiniButton(
+                        height: 40,
                         onPressed: () {
                           _controller.getConsultantDataController(id, currency);
                           Navigator.push(context,
@@ -87,163 +172,13 @@ class ConsultantsTile extends StatelessWidget {
                               .copyWith(color: SolhColors.white),
                         ),
                       ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Container(
-                        height: 12.w,
-                        width: 25.w,
-                        decoration: BoxDecoration(
-                          color: SolhColors.greenShade3,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            bottomRight: Radius.circular(12),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Starting @'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            ),
-                            Obx(() => Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    profileController
-                                                .myProfileModel
-                                                .value
-                                                .body!
-                                                .userOrganisations!
-                                                .isNotEmpty &&
-                                            profileController
-                                                    .myProfileModel
-                                                    .value
-                                                    .body!
-                                                    .userOrganisations!
-                                                    .first
-                                                    .status ==
-                                                'Approved' &&
-                                            discountedPrice != null &&
-                                            discountedPrice! > 0
-                                        ? Row(
-                                            children: [
-                                              Text(
-                                                  '${currency} ${discountedPrice}',
-                                                  style: SolhTextStyles
-                                                      .QS_cap_semi),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                '${currency} ${feeAmount}',
-                                                style: SolhTextStyles
-                                                        .QS_cap_semi
-                                                    .copyWith(
-                                                        color:
-                                                            SolhColors.grey_2,
-                                                        fontSize: 10,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough),
-                                              )
-                                            ],
-                                          )
-                                        : Text(
-                                            feeAmount! > 0
-                                                ? '${currency} ${feeAmount}'
-                                                : (fee == null ||
-                                                        fee == 'Paid' ||
-                                                        fee == ''
-                                                    ? 'Paid'
-                                                    : ''),
-                                            style: SolhTextStyles.QS_cap_semi),
-                                  ],
-                                ))
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              )),
-        ),
-        GetHelpDivider()
-      ],
-    );
-  }
-
-  getProfileDetails(context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 12, top: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          getProfileImg(profilePic),
-          SizedBox(width: 3.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 3.h,
-              ),
-
-              RichText(
-                  text: TextSpan(children: [
-                TextSpan(
-                    text: prefix != null ? "$prefix " : '',
-                    style: Theme.of(context).textTheme.displaySmall),
-                TextSpan(
-                    text: "$name",
-                    style: Theme.of(context).textTheme.displaySmall)
-              ]))
-              // Row(
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     prefix != null
-              //         ? Text(
-              //             "${prefix}",
-              //             style: SolhTextStyles.QS_body_1_bold,
-              //             overflow: TextOverflow.ellipsis,
-              //           )
-              //         : Container(),
-              //     prefix != null
-              //         ? prefix!.isNotEmpty
-              //             ? SizedBox(
-              //                 width: 5,
-              //               )
-              //             : Container()
-              //         : Container(),
-              //     Container(
-              //       width: 40.w,
-              //       child: Text(
-              //         "${name}",
-              //         style: SolhTextStyles.QS_body_1_bold,
-              //         overflow: TextOverflow.ellipsis,
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              ,
-              Container(
-                width: 50.w,
-                child: Text(
-                  specialization != '' ? "${specialization}" : "${bio}",
-                  style: SolhTextStyles.QS_cap_semi,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                    ),
+                    SizedBox(width: 10)
+                  ],
                 ),
-              ),
-
-              SizedBox(height: 1.h),
-              //// interaction details ////////////////////
-              ///
-              getInteractionDetails(),
-
-              //// ActivityDetails ////////////////////
-            ],
+                SizedBox(height: 10)
+              ],
+            ),
           ),
         ],
       ),

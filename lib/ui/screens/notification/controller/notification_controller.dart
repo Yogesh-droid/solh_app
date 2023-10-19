@@ -34,27 +34,19 @@ class NotificationController extends GetxController {
         url:
             "${APIConstants.api}/api/custom/update-notification-seen-status/$id",
         body: {"status": "read"});
-
-// final ReceivePort receivePort = ReceivePort();
-//     await Isolate.spawn(
-//         updateNotifStatus, [receivePort.sendPort, notificationModel, id]);
-
-//     receivePort.listen((message) {
-//       notificationModel[message].seenStatus == "read";
-//     });
-//     notificationModel.refresh();
   }
 }
 
-updateNotifStatus(List args) {
+void updateNotifStatus(List args) {
   String id = args[2];
   RxList<NotificationList> modelList = args[1];
   SendPort sendPort = args[0];
-
+  int index = 0;
   for (var element in modelList) {
     if (element.sId == id) {
-      sendPort.send(modelList.indexOf(element));
+      index = modelList.indexOf(element);
       break;
     }
   }
+  sendPort.send(index);
 }

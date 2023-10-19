@@ -10,6 +10,7 @@ import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -124,15 +125,46 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
           _isLandingScreen
               ? IconButton(
                   onPressed: () {
+                    Get.find<HomeController>().noOfNotifications.value = 0;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: ((context) => NotificationScreen())));
                   },
-                  icon: Obx(() => Icon(
-                        Icons.notifications_none,
-                        color: profileController.orgColor1.value.isNotEmpty
-                            ? Color(
-                                int.parse("0xFF${profileController.orgColor1}"))
-                            : SolhColors.primary_green,
+                  icon: Obx(() => Stack(
+                        children: [
+                          Icon(
+                            Icons.notifications_none,
+                            color: profileController.orgColor1.value.isNotEmpty
+                                ? Color(int.parse(
+                                    "0xFF${profileController.orgColor1}"))
+                                : SolhColors.primary_green,
+                          ),
+                          Get.find<HomeController>().noOfNotifications.value ==
+                                  0
+                              ? SizedBox.shrink()
+                              : Positioned(
+                                  right: -4,
+                                  top: -8,
+                                  child: Container(
+                                    margin: EdgeInsets.all(4),
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        color: SolhColors.primaryRed,
+                                        shape: BoxShape.circle),
+                                    child: Obx(() {
+                                      return Text(
+                                        Get.find<HomeController>()
+                                            .noOfNotifications
+                                            .value
+                                            .toString(),
+                                        style: SolhTextStyles.QS_caption_2_bold
+                                            .copyWith(
+                                          color: SolhColors.white,
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                        ],
                       )))
               : Container(),
           _isLandingScreen

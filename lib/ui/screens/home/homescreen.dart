@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:ui';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -48,7 +47,6 @@ import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
-
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -117,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           .getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
       Get.find<JournalPageController>()
           .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
+      homeController.getNotificationCount();
     }
   }
 
@@ -502,9 +501,10 @@ class _HomePageState extends State<HomePage> {
           SearchByProfesssionUI(),
           GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
-              ? AlliedExperts(onTap: (value, name) {
+              ? AlliedExperts(onTap: (value, name, id) {
                   Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
                       arguments: {
+                        "id": id,
                         "slug": value,
                         "name": name,
                         "type": 'specialization',
@@ -1800,6 +1800,7 @@ Widget getIssueUI(
             bookAppointmentController.query = issue.name;
             Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                 arguments: {
+                  "id": issue.sId,
                   "slug": issue.slug ?? '',
                   "type": 'issue',
                   "enableAppbar": false
@@ -1946,7 +1947,7 @@ class AlliedExperts extends StatelessWidget {
   final GetHelpController getHelpController = Get.find();
   final ProfileController profileController = Get.find();
 
-  final Function(String slug, String name) onTap;
+  final Function(String slug, String name, String id) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -2018,6 +2019,9 @@ class AlliedExperts extends StatelessWidget {
                                   '',
                               getHelpController.getAlliedTherapyModel.value
                                       .specializationList![index].name ??
+                                  '',
+                              getHelpController.getAlliedTherapyModel.value
+                                      .specializationList![index].id ??
                                   '');
                         },
                         child: Obx(() => profileController.myProfileModel.value.body == null

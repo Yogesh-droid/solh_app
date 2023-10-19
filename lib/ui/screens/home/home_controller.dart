@@ -10,6 +10,7 @@ class HomeController extends GetxController {
   var dotList = [].obs;
   var hat = ''.obs;
   var line = ''.obs;
+  var noOfNotifications = 0.obs;
 
   Future<void> getTrendingDecoration() async {
     try {
@@ -54,6 +55,18 @@ class HomeController extends GetxController {
       print(e);
       isBannerLoading.value = false;
       return {"success": false, "message": "Something went wrong"};
+    }
+  }
+
+  Future<void> getNotificationCount() async {
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          "${APIConstants.api}/api/custom/notification-count");
+      if (map['success']) {
+        noOfNotifications.value = map["notificationCount"];
+      }
+    } on Exception {
+      // TODO
     }
   }
 

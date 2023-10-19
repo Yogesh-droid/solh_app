@@ -3,7 +3,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/chat-list/chat_list_controller.dart';
 import 'package:solh/controllers/connections/connection_controller.dart';
@@ -12,7 +11,6 @@ import 'package:solh/controllers/getHelp/consultant_controller.dart';
 import 'package:solh/controllers/getHelp/get_help_controller.dart';
 import 'package:solh/controllers/getHelp/search_market_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
-import 'package:solh/model/get-help/get_issue_response_model.dart';
 import 'package:solh/model/get-help/search_market_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/connect/connect_screen_controller/connect_screen_controller.dart';
@@ -130,6 +128,7 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                             Navigator.pushNamed(
                                 context, AppRoutes.consultantAlliedParent,
                                 arguments: {
+                                  "id": issue.sId,
                                   "slug": issue.sId ?? '',
                                   "type": 'issue',
                                   "enableAppbar": false
@@ -284,13 +283,13 @@ class _GetHelpScreenState extends State<GetHelpScreen> {
                               ))),
                     ),
                   )
-                : Container();
           }), */
           GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
-              ? AlliedExperts(onTap: (value, name) {
+              ? AlliedExperts(onTap: (value, name, id) {
                   Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
                       arguments: {
+                        "id": id,
                         "slug": value,
                         "name": name,
                         "type": 'specialization',
