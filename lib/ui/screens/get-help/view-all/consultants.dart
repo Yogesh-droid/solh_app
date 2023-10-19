@@ -97,7 +97,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
             issue: issueAndSpecializationFilterController.selectedIssueList
                 .join("|"),
             c: issueAndSpecializationFilterController.selectedCountry.value,
-            page: 1,
+            page: pageNo,
             profession: "");
       } else {
         await searchMarketController.getSpecializationList('',

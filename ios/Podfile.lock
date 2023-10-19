@@ -338,6 +338,7 @@ PODS:
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
+<<<<<<< HEAD
 DEPENDENCIES:
   - agora_rtc_engine (from `.symlinks/plugins/agora_rtc_engine/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
@@ -556,3 +557,6 @@ SPEC CHECKSUMS:
 PODFILE CHECKSUM: d8d0d407dd2ffcbf7430ddbdef393aae5611596c
 
 COCOAPODS: 1.13.0
+=======
+COCOAPODS: 1.11.3
+>>>>>>> 4f6e3a620c0f697d3080ce031ba81abed4f63f50
