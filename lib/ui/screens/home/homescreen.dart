@@ -1801,7 +1801,7 @@ Widget getIssueUI(
             Navigator.pushNamed(context, AppRoutes.consultantAlliedParent,
                 arguments: {
                   "id": issue.sId,
-                  "slug": issue.slug ?? '',
+                  "slug": issue.sId ?? '',
                   "type": 'issue',
                   "enableAppbar": false
                 });
