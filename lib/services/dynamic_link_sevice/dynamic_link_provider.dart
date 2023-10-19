@@ -144,6 +144,7 @@ class DynamicLinkProvider {
             if (data!["providerId"] != null || data["providerId"] != '') {
               print('try ran ${data["providerId"]}');
               try {
+                globalNavigatorKey.currentState!.pop();
                 await Get.find<ConsultantController>()
                     .getConsultantDataController(data["providerId"], "Rs");
               } catch (e) {

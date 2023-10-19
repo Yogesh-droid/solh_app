@@ -475,6 +475,7 @@ class QuestionContainer extends StatelessWidget {
                                                 ''
                                       });
                                   psychologyTestController.isSharingTest(false);
+
                                   Share.share(
                                       "Hey! I found this ${test.testTitle ?? ""} on the Solh App. Check it out! $link");
                                 },

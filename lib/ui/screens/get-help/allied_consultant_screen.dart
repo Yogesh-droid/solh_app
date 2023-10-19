@@ -622,7 +622,7 @@ class AboutAndPlans extends StatelessWidget {
                               _alliedController.isShareingProviderLink.value =
                                   false;
                               Share.share(
-                                  "Hey! Check out this (name of allied area) package I found on the Solh App $link");
+                                  "Hey! Check out this ${user?.name ?? ''}'s package I found on the Solh App $link");
                             });
                     }),
                   ],
