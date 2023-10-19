@@ -154,23 +154,23 @@ class ConsultantsTile extends StatelessWidget {
                                 style: SolhTextStyles.QS_cap_semi))
                       ],
                     ),
+                    Spacer(),
                     SizedBox(width: 20),
-                    Expanded(
-                      child: SolhGreenMiniButton(
-                        height: 40,
-                        onPressed: () {
-                          _controller.getConsultantDataController(id, currency);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ConsultantProfilePage();
-                          }));
-                          _controller.showBookingSheet = true;
-                        },
-                        child: Text(
-                          'Book Now',
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.white),
-                        ),
+                    SolhGreenMiniButton(
+                      height: 30,
+                      width: 80,
+                      onPressed: () {
+                        _controller.getConsultantDataController(id, currency);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ConsultantProfilePage();
+                        }));
+                        _controller.showBookingSheet = true;
+                      },
+                      child: Text(
+                        'Book Now',
+                        style: SolhTextStyles.Caption_2_semi.copyWith(
+                            color: SolhColors.white),
                       ),
                     ),
                     SizedBox(width: 10)

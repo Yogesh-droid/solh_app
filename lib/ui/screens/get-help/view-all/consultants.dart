@@ -643,7 +643,7 @@ class _ConsultantsScreenState extends State<ConsultantsScreen>
                                       "${issueAndSpecializationFilterController.selectedSpecialityList.join("|")}",
                                       c: issueAndSpecializationFilterController
                                           .selectedCountry.value,
-                                      page: 1,
+                                      page: pageNo,
                                       issue: issueAndSpecializationFilterController
                                           .selectedIssueList
                                           .join("|"),
