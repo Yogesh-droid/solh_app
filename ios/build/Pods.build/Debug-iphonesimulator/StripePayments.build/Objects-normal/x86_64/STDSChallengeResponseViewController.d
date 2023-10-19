@@ -1,0 +1,36 @@
+dependencies: \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePayments.build/module.modulemap \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponseViewController.m \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/Target\ Support\ Files/StripePayments/StripePayments-prefix.pch \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSBundleLocator.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSLocalizedString.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponseViewController.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponse.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponseSelectionInfo.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponseMessageExtension.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeResponseImage.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSUICustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSButtonCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSNavigationBarCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSLabelCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSTextFieldCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSFooterCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/include/STDSSelectionCustomization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSImageLoader.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSDirectoryServer.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSStackView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSBrandingView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeInformationView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSChallengeSelectionView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSTextChallengeView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSWhitelistView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSExpandableInformationView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSWebView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/STDSProcessingView.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/UIView+LayoutSupport.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/NSString+EmptyChecking.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/UIColor+DefaultColors.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/UIButton+CustomInitialization.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/UIFont+DefaultFonts.h \
+  /Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePayments/Stripe3DS2/Stripe3DS2/UIViewController+Stripe3DS2.h

@@ -1,0 +1,36 @@
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Internal/UI/Views/STPValidatedTextField.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPValidatedTextField.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPValidatedTextField.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPValidatedTextField.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPValidatedTextField.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPValidatedTextField.dia"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Helpers/String+Localized.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/String+Localized.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/String+Localized.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/String+Localized.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/String+Localized.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/String+Localized.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Helpers/StripePaymentsBundleLocator.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePaymentsBundleLocator.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePaymentsBundleLocator.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePaymentsBundleLocator.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePaymentsBundleLocator.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePaymentsBundleLocator.d"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Helpers/StripePayments+Export.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePayments+Export.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePayments+Export.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePayments+Export.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePayments+Export.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/StripePayments+Export.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Internal/UI/Views/STPViewWithSeparator.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPViewWithSeparator.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPViewWithSeparator.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPViewWithSeparator.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPViewWithSeparator.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/STPViewWithSeparator.dia"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Internal/Categories/UIButton+Stripe.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/UIButton+Stripe.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/UIButton+Stripe.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/UIButton+Stripe.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/UIButton+Stripe.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/arm64/UIButton+Stripe.swiftdeps"

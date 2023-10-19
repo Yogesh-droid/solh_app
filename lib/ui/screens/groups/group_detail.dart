@@ -1015,7 +1015,8 @@ class GetShareButton extends StatelessWidget {
               ''
         });
         print(link);
-        await Share.share("Join $groupName group on Solh Wellness $link");
+        await Share.share(
+            "Hey! Check out the $groupName support group on the Solh App $link");
 
         discoverGroupController.isSharingLink(false);
       },
