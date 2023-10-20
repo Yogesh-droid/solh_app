@@ -1,0 +1,42 @@
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/StripeAPI.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPI.swiftdeps"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPI.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPI.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPI.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPI.d"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Localization/String+Localized.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+Localized.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+Localized.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+Localized.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+Localized.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+Localized.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Categories/String+StripeCore.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+StripeCore.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+StripeCore.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+StripeCore.swiftdeps"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+StripeCore.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/String+StripeCore.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/StripeAPIConfiguration.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration.swiftdeps"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration.dia"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Coder/StripeCodable.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeCodable.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeCodable.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeCodable.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeCodable.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeCodable.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/StripeAPIConfiguration+Version.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration+Version.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration+Version.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration+Version.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration+Version.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/StripeAPIConfiguration+Version.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/STPURLCallbackHandler.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/STPURLCallbackHandler.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/STPURLCallbackHandler.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/STPURLCallbackHandler.dia"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/STPURLCallbackHandler.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/arm64/STPURLCallbackHandler.d"

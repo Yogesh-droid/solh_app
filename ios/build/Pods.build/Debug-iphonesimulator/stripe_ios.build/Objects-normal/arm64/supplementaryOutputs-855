@@ -1,0 +1,24 @@
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/Stripe Sdk/AddressSheet/AddressSheetUtils.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetUtils.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetUtils.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetUtils.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetUtils.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetUtils.o"
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/Stripe Sdk/AddressSheet/AddressSheetView.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetView.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetView.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetView.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetView.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddressSheetView.d"
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/Stripe Sdk/PushProvisioning/AddToWalletButtonView.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonView.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonView.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonView.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonView.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonView.o"
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/AddToWalletButtonFactory.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonFactory.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonFactory.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonFactory.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonFactory.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/AddToWalletButtonFactory.dia"

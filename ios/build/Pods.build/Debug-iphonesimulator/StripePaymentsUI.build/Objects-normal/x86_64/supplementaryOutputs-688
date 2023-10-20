@@ -1,0 +1,36 @@
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/UI Components/STPMultiFormTextField.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPMultiFormTextField.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPMultiFormTextField.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPMultiFormTextField.dia"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPMultiFormTextField.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPMultiFormTextField.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/UI Components/STPPaymentCardTextField.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/UI Components/STPPaymentCardTextField+SwiftUI.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField+SwiftUI.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField+SwiftUI.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField+SwiftUI.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField+SwiftUI.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextField+SwiftUI.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Helpers/STPPhoneNumberValidator.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPhoneNumberValidator.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPhoneNumberValidator.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPhoneNumberValidator.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPhoneNumberValidator.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPhoneNumberValidator.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Internal/UI/Views/STPPaymentCardTextFieldViewModel.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextFieldViewModel.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextFieldViewModel.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextFieldViewModel.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextFieldViewModel.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPPaymentCardTextFieldViewModel.dia"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripePaymentsUI/StripePaymentsUI/StripePaymentsUI/Source/Internal/UI/Views/Inputs/STPNumericDigitInputTextFormatter.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPNumericDigitInputTextFormatter.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPNumericDigitInputTextFormatter.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPNumericDigitInputTextFormatter.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPNumericDigitInputTextFormatter.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripePaymentsUI.build/Objects-normal/x86_64/STPNumericDigitInputTextFormatter.swiftconstvalues"

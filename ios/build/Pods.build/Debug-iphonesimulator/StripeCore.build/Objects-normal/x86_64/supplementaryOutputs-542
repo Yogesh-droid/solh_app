@@ -1,0 +1,48 @@
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/STPDispatchFunctions.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDispatchFunctions.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDispatchFunctions.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDispatchFunctions.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDispatchFunctions.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDispatchFunctions.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Analytics/STPAnalyticsClient.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticsClient.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticsClient.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticsClient.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticsClient.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticsClient.dia"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/STPAPIClient.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/ServerErrorMapper.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/ServerErrorMapper.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/ServerErrorMapper.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/ServerErrorMapper.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/ServerErrorMapper.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/ServerErrorMapper.dia"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Analytics/STPAnalyticEvent.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticEvent.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticEvent.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticEvent.o"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticEvent.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAnalyticEvent.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/STPAppInfo.swift":
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAppInfo.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAppInfo.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAppInfo.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAppInfo.swiftdeps"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAppInfo.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/STPDeviceUtils.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDeviceUtils.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDeviceUtils.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDeviceUtils.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDeviceUtils.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPDeviceUtils.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/STPAPIClient+FileUpload.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient+FileUpload.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient+FileUpload.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient+FileUpload.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient+FileUpload.swiftdeps"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPAPIClient+FileUpload.dia"

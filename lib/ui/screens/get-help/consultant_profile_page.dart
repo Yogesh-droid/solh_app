@@ -443,7 +443,7 @@ class _ConsultantProfilePageState extends State<ConsultantProfilePage> {
                       },
                     );
                     Share.share(
-                        "Book ${_controller.consultantModelController.value.provder!.prefix} ${_controller.consultantModelController.value.provder!.name} for session on Solh Wellness $link");
+                        "Hey! Check out this mental health professional's profile I found on the Solh App for session on Solh Wellness $link");
                     _controller.isSharingLink(false);
                   },
                   icon: Icon(Icons.share),

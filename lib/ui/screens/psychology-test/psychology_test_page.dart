@@ -475,8 +475,9 @@ class QuestionContainer extends StatelessWidget {
                                                 ''
                                       });
                                   psychologyTestController.isSharingTest(false);
+
                                   Share.share(
-                                      "Take a self assessment test for ${test.testTitle ?? ""} on Solh Wellness app $link");
+                                      "Hey! I found this ${test.testTitle ?? ""} on the Solh App. Check it out! $link");
                                 },
                                 enableBackgroundCircle: false,
                                 iconColor: SolhColors.Grey_1,

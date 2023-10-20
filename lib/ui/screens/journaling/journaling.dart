@@ -267,7 +267,20 @@ class _JournalingState extends State<Journaling> {
                                                           .id)
                                           ? (index == 2 || index == 25
                                               ? Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 12),
+                                                      child: Text(
+                                                        'People You May Know',
+                                                        style: SolhTextStyles
+                                                            .QS_body_1_bold,
+                                                      ),
+                                                    ),
                                                     Obx(() {
                                                       return !Get.find<
                                                                   ConnectionController>()

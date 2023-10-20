@@ -1,0 +1,18 @@
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/Stripe Sdk/StripeContainerView.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripeContainerView.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripeContainerView.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripeContainerView.dia"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripeContainerView.swiftconstvalues"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripeContainerView.swiftdeps"
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/StripePlugin+PayPlugin.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin+PayPlugin.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin+PayPlugin.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin+PayPlugin.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin+PayPlugin.swiftdeps"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin+PayPlugin.swiftconstvalues"
+"/Users/adityadangi/.pub-cache/hosted/pub.dev/stripe_ios-9.4.1/ios/Classes/StripePlugin.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/stripe_ios.build/Objects-normal/arm64/StripePlugin.dia"

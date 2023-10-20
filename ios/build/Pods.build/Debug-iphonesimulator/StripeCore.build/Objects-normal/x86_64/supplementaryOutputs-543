@@ -1,0 +1,42 @@
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Telemetry/STPTelemetryClient.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPTelemetryClient.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPTelemetryClient.swiftconstvalues"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPTelemetryClient.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPTelemetryClient.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPTelemetryClient.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/STPNumericStringValidator.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPNumericStringValidator.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPNumericStringValidator.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPNumericStringValidator.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPNumericStringValidator.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPNumericStringValidator.o"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Localization/STPLocalizationUtils.swift":
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizationUtils.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizationUtils.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizationUtils.swiftconstvalues"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizationUtils.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizationUtils.swiftdeps"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/STPMultipartFormDataPart.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataPart.dia"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataPart.d"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataPart.swiftdeps"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataPart.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataPart.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/API Bindings/STPMultipartFormDataEncoder.swift":
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataEncoder.dia"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataEncoder.o"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataEncoder.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataEncoder.d"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPMultipartFormDataEncoder.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Helpers/STPError.swift":
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPError.swiftdeps"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPError.d"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPError.dia"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPError.o"
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPError.swiftconstvalues"
+"/Users/adityadangi/Developer/flutter_projects/solh_app/ios/Pods/StripeCore/StripeCore/StripeCore/Source/Localization/STPLocalizedString.swift":
+  const-values: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizedString.swiftconstvalues"
+  dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizedString.d"
+  object: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizedString.o"
+  diagnostics: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizedString.dia"
+  swift-dependencies: "/Users/adityadangi/Developer/flutter_projects/solh_app/ios/build/Pods.build/Debug-iphonesimulator/StripeCore.build/Objects-normal/x86_64/STPLocalizedString.swiftdeps"

@@ -622,7 +622,7 @@ class AboutAndPlans extends StatelessWidget {
                               _alliedController.isShareingProviderLink.value =
                                   false;
                               Share.share(
-                                  "Book ${user?.prefix ?? ''} ${user?.name ?? ''} for therapy session on Solh Wellness $link");
+                                  "Hey! Check out this ${user?.name ?? ''}'s package I found on the Solh App $link");
                             });
                     }),
                   ],
