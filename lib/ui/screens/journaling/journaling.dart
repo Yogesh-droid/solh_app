@@ -72,10 +72,9 @@ class _JournalingState extends State<Journaling> {
         });
 
         print("Reached at end");
-
         await _journalPageController.getAllJournals(
             ++_journalPageController.pageNo,
-            orgOnly: false,
+            orgOnly: OrgOnlySetting.orgOnly!,
             groupId: _journalPageController.selectedGroupId.value != ''
                 ? _journalPageController.selectedGroupId.value
                 : null);
@@ -132,6 +131,8 @@ class _JournalingState extends State<Journaling> {
     _journalPageController.journalsList.refresh();
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
+
+    _journalPageController.getTrendingJournals(orgToggle: orgOnly ?? false);
   }
 
   @override

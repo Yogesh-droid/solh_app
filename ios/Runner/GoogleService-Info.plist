@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>729100578162-05sufu3hth1sqn6f9cd4t85mq1d8n67n.apps.googleusercontent.com</string>
+	<string>729100578162-3umf1jem04j2u64tepqkr77b7lgtpkud.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.729100578162-05sufu3hth1sqn6f9cd4t85mq1d8n67n</string>
+	<string>com.googleusercontent.apps.729100578162-3umf1jem04j2u64tepqkr77b7lgtpkud</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>729100578162-3234f20jbagovh1oof2pes65k831r712.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.solh.app</string>
+	<string>com.solh.solhApp</string>
 	<key>PROJECT_ID</key>
 	<string>solh-flutter</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:729100578162:ios:d1c3581e31fb37e516c1eb</string>
+	<string>1:729100578162:ios:d56d6022ae8840e216c1eb</string>
+	<key>DATABASE_URL</key>
+	<string>https://solh-flutter-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>
 </plist>

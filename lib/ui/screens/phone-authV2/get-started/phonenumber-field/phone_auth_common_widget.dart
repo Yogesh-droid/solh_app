@@ -74,8 +74,10 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                   TextField(
                     keyboardType: TextInputType.number,
                     controller: phoneAuthController.phoneNumber,
-                    decoration: TextFieldStyles.greenF_greyUF_4R
-                        .copyWith(hintText: 'Your mobile no.'),
+                    decoration: TextFieldStyles.greenF_greyUF_4R.copyWith(
+                        hintText: 'Your mobile no.',
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 10)),
                   ),
                 ],
               ),
@@ -128,7 +130,7 @@ class PhoneAuthCommonWidget extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                     children: <TextSpan>[
                       TextSpan(
-                          text: ' Terms of service  ',
+                          text: ' Terms of services ',
                           style: Theme.of(context).textTheme.bodyLarge,
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(

@@ -72,6 +72,17 @@
 				<string>solh.page.link</string>
 			</array>
 		</dict>
+
+		<dict>
+        <key>CFBundleIdentifier</key>
+        <string></string>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>app-1-729100578162-ios-d56d6022ae8840e216c1eb</string>
+        </array>
+    </dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>

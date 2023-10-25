@@ -33,8 +33,7 @@ Future<bool> isNewUser() async {
 
   String oneSignalId = '';
   await OneSignal.shared.getDeviceState().then((value) {
-    print(value!.userId);
-    oneSignalId = value.userId ?? '';
+    oneSignalId = value!.userId ?? '';
   });
   String deviceType = '';
   if (Platform.isAndroid) {

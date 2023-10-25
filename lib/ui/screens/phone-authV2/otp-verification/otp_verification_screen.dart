@@ -86,7 +86,7 @@ class VerifyPhoneNo extends StatelessWidget {
         ),
         RichText(
           text: TextSpan(
-            text: 'Please enter the 6 digit code sent to ',
+            text: 'Please enter the 6 digit OTP sent to ',
             style: Theme.of(context).textTheme.bodyMedium,
             children: <TextSpan>[
               TextSpan(
@@ -275,7 +275,7 @@ class ResendButton extends StatelessWidget {
     return Wrap(
       children: [
         Text(
-          "Didn't recieve a code?  ",
+          "Did not receive an OTP?  ",
           style: SolhTextStyles.SmallTextGrey1S12W5,
         ),
         TimerWidget(),

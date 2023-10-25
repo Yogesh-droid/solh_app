@@ -257,11 +257,25 @@ class _HomePageState extends State<HomePage> {
                       ? PopupMenuButton<bool>(
                           child:
                               Icon(CupertinoIcons.line_horizontal_3_decrease),
-                          onSelected: (value) {
+                          onSelected: (value) async {
                             OrgOnlySetting.orgOnly = value;
                             OrgOnlySetting.setOrgOnly(value);
                             _journalPageController.getTrendingJournals(
                                 orgToggle: value);
+
+                            _journalPageController.journalsList.clear();
+                            _journalPageController.pageNo = 1;
+                            _journalPageController.nextPage = 2;
+                            _journalPageController
+                                        .selectedGroupId.value.length >
+                                    0
+                                ? await _journalPageController.getAllJournals(1,
+                                    groupId: _journalPageController
+                                        .selectedGroupId.value,
+                                    orgOnly: value)
+                                : await _journalPageController.getAllJournals(1,
+                                    orgOnly: value);
+                            _journalPageController.journalsList.refresh();
                           },
                           itemBuilder: (context) {
                             return [
