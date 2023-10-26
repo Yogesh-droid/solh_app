@@ -39,6 +39,7 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/products_carousel.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/default_org.dart';
@@ -581,7 +582,9 @@ class _HomePageState extends State<HomePage> {
                                 })
                         : Container())),
               )),
+
           GetHelpDivider(),
+          ProductsCarousel(),
           /* GetHelpCategory(
             title: 'Solh Buddies to Talk',
           ),
