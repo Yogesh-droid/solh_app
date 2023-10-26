@@ -17,7 +17,9 @@ class ProductCategoryRepoImpl implements ProductCategoryRepo {
         print(value);
         return DataSuccess(data: value.subCategory);
       } else {
-        return DataError(exception: Exception("No Response from server"));
+        return DataError(
+            exception:
+                Exception(response['message'] ?? "Something went wrong"));
       }
     } on Exception catch (e) {
       return DataError(exception: Exception(e.toString()));

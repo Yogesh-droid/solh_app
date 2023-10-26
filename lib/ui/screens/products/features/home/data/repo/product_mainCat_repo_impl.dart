@@ -16,7 +16,8 @@ class ProductMainCatRepoImpl implements ProductMainCatRepo {
         final value = ProductMainCatModel.fromJson(map);
         return DataSuccess(data: value.mainCategory);
       } else {
-        return DataError(exception: Exception("No Data From server"));
+        return DataError(
+            exception: Exception(map['message'] ?? "Something went wrong"));
       }
     } on Exception catch (e) {
       return DataError(exception: Exception(e.toString()));
