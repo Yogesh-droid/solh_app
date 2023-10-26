@@ -36,6 +36,7 @@ import 'controllers/profile/profile_controller.dart';
 import 'firebase_options.dart';
 import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
+import 'ui/screens/products/core/di/produts_di_imports.dart';
 import 'widgets_constants/constants/textstyles.dart';
 import 'package:feature_discovery/feature_discovery.dart';
 
@@ -43,11 +44,13 @@ GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   print("Main is Running");
-  setup();
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: '.env');
   Stripe.publishableKey = dotenv.env['STRIPE_PK'] ?? '';
+  setup();
+
+  productControllerSetup();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setPreferredOrientations(
