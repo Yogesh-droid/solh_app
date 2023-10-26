@@ -6,4 +6,12 @@ void productControllerSetup() {
       productCategoryRepo: Get.find<ProductCategoryRepo>()));
   Get.put(ProductsCategoryController(
       productsCategoryUsecase: Get.find<ProductsCategoryUsecase>()));
+
+  // Main category
+
+  Get.put<ProductMainCatRepo>(ProductMainCatRepoImpl());
+  Get.put(ProductMainCatUsecase(
+      productMainCatRepo: Get.find<ProductMainCatRepo>()));
+  Get.put(ProductMainCatController(
+      productMainCatUsecase: Get.find<ProductMainCatUsecase>()));
 }

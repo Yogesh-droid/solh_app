@@ -17,6 +17,7 @@ class ProductsCategoryController extends GetxController {
 
   Future<void> getProductsCategories() async {
     try {
+      isLoading.value = true;
       final ProductDataState<List<ProductCategoryEntity>> dataState =
           await productsCategoryUsecase.call(RequestParams(
               url: '${APIConstants.api}/api/product/sub-main-category'));
@@ -27,15 +28,11 @@ class ProductsCategoryController extends GetxController {
         error.value = dataState.exception.toString();
         log(dataState.exception.toString());
       }
+      isLoading.value = false;
     } on Exception catch (e) {
+      isLoading.value = false;
       error.value = e.toString();
       log(e.toString());
     }
-  }
-
-  @override
-  void onInit() {
-    getProductsCategories();
-    super.onInit();
   }
 }
