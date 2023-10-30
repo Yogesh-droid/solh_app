@@ -28,6 +28,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
       bool? isNotificationPage,
+      bool? isProductsPage,
       Color this.backgroundColor = Colors.white,
       PreferredSize? bottom,
       Widget? menuButton,
@@ -37,6 +38,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
         _isDiaryBtnShown = isDiaryBtnShown,
+        _isProductsPage = isProductsPage,
         _bottom = bottom,
         _menuButton = menuButton,
         _onbackPressed = callback,
@@ -50,6 +52,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? _height;
   final bool? isNotificationPage;
   final bool? _isDiaryBtnShown;
+  final bool? _isProductsPage;
   final Color backgroundColor;
   final PreferredSize? _bottom;
   final Widget? _menuButton;
@@ -106,6 +109,9 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0.5,
         backgroundColor: backgroundColor,
         actions: [
+          _isProductsPage != null || _isProductsPage != false
+              ? CartButton(itemsInCart: 2)
+              : Container(),
           _isDiaryBtnShown != null
               ? IconButton(
                   onPressed: () {
@@ -193,6 +199,44 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size(0, _height ?? 50);
+}
+
+class CartButton extends StatelessWidget {
+  CartButton({super.key, required this.itemsInCart});
+
+  final int itemsInCart;
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Icon(
+                CupertinoIcons.cart,
+                color: SolhColors.primary_green,
+              ),
+            ),
+            Positioned(
+              top: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: SolhColors.primary_green),
+                child: Text(itemsInCart.toString(),
+                    style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                      color: SolhColors.white,
+                    )),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class AssistanceButton extends StatelessWidget {
