@@ -1,12 +1,13 @@
-import 'dart:collection';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/in_cart_product_item_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -17,15 +18,27 @@ class ProductsHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: getAppbar(),
-        body: ListView(
+        body: Stack(
           children: [
-            ProductsSearchBar(),
-            GetHelpDivider(),
-            ProductsCategories(),
-            GetHelpDivider(),
-            ProductsBannerCarousel(),
-            GetHelpDivider(),
-            ProductsSearchCategories(),
+            ListView(
+              children: [
+                ProductsSearchBar(),
+                GetHelpDivider(),
+                ProductsCategories(),
+                GetHelpDivider(),
+                ProductsBannerCarousel(),
+                GetHelpDivider(),
+                ProductsSearchCategories(),
+                GetHelpDivider(),
+                FeatureProductsSection(),
+                GetHelpDivider(),
+                YouMightFindHelpfulSection(),
+                SizedBox(
+                  height: 100,
+                ),
+              ],
+            ),
+            Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
         ));
   }
@@ -265,6 +278,195 @@ class ProductsSearchCategories extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class FeatureProductsSection extends StatelessWidget {
+  const FeatureProductsSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GetHelpCategory(
+          title: "Featured Products",
+          onPressed: () {},
+        ),
+        SizedBox(
+          height: 380,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            shrinkWrap: true,
+            itemCount: 5,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 10,
+              );
+            },
+            itemBuilder: (context, index) {
+              return ProductsCard();
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class YouMightFindHelpfulSection extends StatelessWidget {
+  const YouMightFindHelpfulSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        GetHelpCategory(
+          title: "You Might Find Helpful",
+          onPressed: () {},
+        ),
+        SizedBox(
+          height: 380,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            shrinkWrap: true,
+            itemCount: 5,
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (context, index) {
+              return SizedBox(
+                width: 10,
+              );
+            },
+            itemBuilder: (context, index) {
+              return ProductsCard();
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class NextBottomBar extends StatelessWidget {
+  const NextBottomBar({super.key, this.showShadow = true});
+  final bool showShadow;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      height: 80,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          borderRadius: showShadow
+              ? BorderRadius.only(
+                  topRight: Radius.circular(8), topLeft: Radius.circular(8))
+              : null,
+          color: SolhColors.white,
+          boxShadow: showShadow
+              ? <BoxShadow>[
+                  BoxShadow(
+                      blurRadius: 2, spreadRadius: 2, color: Colors.black26)
+                ]
+              : null),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return InCartItemsBottomSheet();
+                },
+              );
+            },
+            child: Row(
+              children: [
+                Text(
+                  "1 items",
+                  style: SolhTextStyles.CTA,
+                ),
+                Icon(
+                  Icons.arrow_drop_up,
+                  color: SolhColors.primary_green,
+                )
+              ],
+            ),
+          ),
+          SolhGreenMiniButton(
+            child: Text(
+              'Next',
+              style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class InCartItemsBottomSheet extends StatelessWidget {
+  const InCartItemsBottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(),
+                  Container(
+                    height: 8,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: SolhColors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  Icon(
+                    CupertinoIcons.clear_thick,
+                    color: SolhColors.grey,
+                  )
+                ],
+              ),
+            ),
+            GetHelpDivider(),
+            ListView.separated(
+              padding: EdgeInsets.only(right: 12),
+              itemCount: 3,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => GetHelpDivider(),
+              itemBuilder: (context, index) {
+                return InCartProductItemCard();
+              },
+            ),
+            SizedBox(
+              height: 100,
+            )
+          ],
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: NextBottomBar(
+            showShadow: false,
+          ),
+        )
+      ],
     );
   }
 }

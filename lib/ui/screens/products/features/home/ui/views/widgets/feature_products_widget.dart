@@ -16,7 +16,7 @@ class FeatureProductsWidget extends StatelessWidget {
     return Column(
       children: [
         GetHelpCategory(
-          title: "Featured Products",
+          title: "Products",
           onPressed: () {
             Navigator.pushNamed(context, AppRoutes.productsHome);
           },
@@ -64,8 +64,9 @@ class ProductsCard extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(12),
-                      topLeft: Radius.circular(12)),
+                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(12),
+                  ),
                   child: Image.network(
                     "https://picsum.photos/200",
                     fit: BoxFit.cover,
@@ -73,12 +74,13 @@ class ProductsCard extends StatelessWidget {
                     height: 180,
                   )),
               Positioned(
-                  right: 10,
-                  top: 10,
-                  child: Icon(
-                    CupertinoIcons.heart_fill,
-                    color: SolhColors.grey_2,
-                  ))
+                right: 10,
+                top: 10,
+                child: Icon(
+                  CupertinoIcons.heart_fill,
+                  color: SolhColors.grey_2,
+                ),
+              ),
             ],
           ),
           Padding(
