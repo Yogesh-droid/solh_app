@@ -21,4 +21,8 @@ void productControllerSetup() {
   Get.put(ProductListUsecase(productListRepo: Get.find<ProductListRepo>()));
   Get.put(ProductsListController(
       productListUsecase: Get.find<ProductListUsecase>()));
+
+  //products cart
+
+  Get.put<ProductsCartController>(ProductsCartController());
 }

@@ -41,10 +41,16 @@ class InCartProductItemCard extends StatelessWidget {
                     CupertinoIcons.delete,
                     color: SolhColors.primaryRed,
                     size: 20,
-                  )
+                  ),
                 ],
               ),
+              SizedBox(
+                height: 5,
+              ),
               Text('Bottle of 60 Tablets', style: SolhTextStyles.QS_caption),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -125,7 +131,7 @@ class AddRemoveItemFromCart extends StatelessWidget {
               Icons.add,
               size: 15,
             ),
-          )
+          ),
         ],
       ),
     );
