@@ -2,10 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
-import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/in_cart_product_item_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -376,27 +374,18 @@ class NextBottomBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.find<ProductsCartController>().isCartSheetOpen.value
-                  ? Navigator.of(context).pop()
-                  : showModalBottomSheet(
-                      useRootNavigator: false,
-                      isDismissible: false,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(16),
-                        ),
-                      ),
-                      context: context,
-                      builder: (context) {
-                        return InCartItemsBottomSheet();
-                      },
-                    );
-              Get.find<ProductsCartController>().isCartSheetOpen == false
-                  ? Get.find<ProductsCartController>().isCartSheetOpen.value =
-                      true
-                  : Get.find<ProductsCartController>().isCartSheetOpen.value =
-                      false;
+              showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                context: context,
+                builder: (context) {
+                  return InCartItemsBottomSheet();
+                },
+              );
             },
             child: Row(
               children: [
@@ -404,19 +393,10 @@ class NextBottomBar extends StatelessWidget {
                   "1 items",
                   style: SolhTextStyles.CTA,
                 ),
-                Obx(() {
-                  return Get.find<ProductsCartController>()
-                          .isCartSheetOpen
-                          .value
-                      ? Icon(
-                          Icons.arrow_drop_down,
-                          color: SolhColors.primary_green,
-                        )
-                      : Icon(
-                          Icons.arrow_drop_up,
-                          color: SolhColors.primary_green,
-                        );
-                }),
+                Icon(
+                  Icons.arrow_drop_up,
+                  color: SolhColors.primary_green,
+                )
               ],
             ),
           ),
@@ -455,16 +435,9 @@ class InCartItemsBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                      Get.find<ProductsCartController>().isCartSheetOpen.value =
-                          false;
-                    },
-                    child: Icon(
-                      CupertinoIcons.clear_thick,
-                      color: SolhColors.grey,
-                    ),
+                  Icon(
+                    CupertinoIcons.clear_thick,
+                    color: SolhColors.grey,
                   )
                 ],
               ),
@@ -492,7 +465,7 @@ class InCartItemsBottomSheet extends StatelessWidget {
           child: NextBottomBar(
             showShadow: false,
           ),
-        ),
+        )
       ],
     );
   }

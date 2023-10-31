@@ -5,6 +5,7 @@ import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
+import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -312,10 +313,7 @@ class GetProductDeatilAppBar extends StatelessWidget
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Icon(
-            CupertinoIcons.heart_fill,
-            color: SolhColors.Grey_1,
-          ),
+          child: AnimatedAddToWishlistButton(),
         )
       ],
     );

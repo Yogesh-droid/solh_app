@@ -17,23 +17,20 @@ class _AnimatedAddToWishlistButtonState
     extends State<AnimatedAddToWishlistButton>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
-  late Animation colorAnimation;
+
   late Animation sizeAnimation;
 
   @override
   void initState() {
     // TODO: implement initState
     controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    // colorAnimation = TweenSequence([
-    //   TweenSequenceItem(
-    //       tween: ColorTween(begin: Colors.grey, end: Colors.red), weight: 10),
-    //   TweenSequenceItem(
-    //       tween: ColorTween(begin: Colors.red, end: Colors.grey), weight: 10)
-    // ]).animate(controller);
+        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+
     sizeAnimation = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 30, end: 35), weight: 10),
-//       TweenSequenceItem(tween: Tween(begin: 35, end: 30), weight: 10)
+      TweenSequenceItem(
+          tween: Tween(begin: 30.0, end: 35.0)
+              .chain(CurveTween(curve: Curves.easeIn)),
+          weight: 10),
     ]).animate(controller);
 
     controller.addListener(() {
