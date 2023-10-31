@@ -376,7 +376,7 @@ class NextBottomBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Get.find<ProductsCartController>().isCartSheetOpen
+              Get.find<ProductsCartController>().isCartSheetOpen.value
                   ? Navigator.of(context).pop()
                   : showModalBottomSheet(
                       useRootNavigator: false,
@@ -393,8 +393,10 @@ class NextBottomBar extends StatelessWidget {
                       },
                     );
               Get.find<ProductsCartController>().isCartSheetOpen == false
-                  ? Get.find<ProductsCartController>().isCartSheetOpen = true
-                  : Get.find<ProductsCartController>().isCartSheetOpen = false;
+                  ? Get.find<ProductsCartController>().isCartSheetOpen.value =
+                      true
+                  : Get.find<ProductsCartController>().isCartSheetOpen.value =
+                      false;
             },
             child: Row(
               children: [
@@ -402,10 +404,19 @@ class NextBottomBar extends StatelessWidget {
                   "1 items",
                   style: SolhTextStyles.CTA,
                 ),
-                Icon(
-                  Icons.arrow_drop_up,
-                  color: SolhColors.primary_green,
-                )
+                Obx(() {
+                  return Get.find<ProductsCartController>()
+                          .isCartSheetOpen
+                          .value
+                      ? Icon(
+                          Icons.arrow_drop_down,
+                          color: SolhColors.primary_green,
+                        )
+                      : Icon(
+                          Icons.arrow_drop_up,
+                          color: SolhColors.primary_green,
+                        );
+                }),
               ],
             ),
           ),
@@ -447,7 +458,7 @@ class InCartItemsBottomSheet extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pop();
-                      Get.find<ProductsCartController>().isCartSheetOpen =
+                      Get.find<ProductsCartController>().isCartSheetOpen.value =
                           false;
                     },
                     child: Icon(
@@ -481,7 +492,7 @@ class InCartItemsBottomSheet extends StatelessWidget {
           child: NextBottomBar(
             showShadow: false,
           ),
-        )
+        ),
       ],
     );
   }
