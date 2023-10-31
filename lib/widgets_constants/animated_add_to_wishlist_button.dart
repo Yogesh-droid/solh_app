@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 
 class AnimatedAddToWishlistButton extends StatefulWidget {
   AnimatedAddToWishlistButton(
@@ -58,7 +59,7 @@ class _AnimatedAddToWishlistButtonState
           child: Icon(
             CupertinoIcons.heart_fill,
             size: sizeAnimation.value,
-            color: widget.isSelected ? Colors.red : Colors.grey,
+            color: widget.isSelected ? SolhColors.primaryRed : Colors.grey[400],
           ),
         );
       },
