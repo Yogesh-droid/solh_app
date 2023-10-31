@@ -4,6 +4,7 @@ import 'package:readmore/readmore.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -49,11 +50,42 @@ class ReviewsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text('Customer reviews'),
-        ProductStarWidget(rating: 4.0),
-        Text('56 global rating'),
+        GetHelpCategory(title: 'Cusomer reviews'),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ProductStarWidget(rating: 4.0),
+              Text(
+                '56 global rating',
+                style: SolhTextStyles.QS_body_2,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              ListView.builder(
+                itemCount: 3,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ReviewCard();
+                },
+              ),
+              Text(
+                'View all 20 reviews ',
+                style: SolhTextStyles.QS_body_2.copyWith(
+                    color: SolhColors.primary_green),
+              ),
+              SizedBox(
+                height: 15,
+              )
+            ],
+          ),
+        )
       ],
     );
   }

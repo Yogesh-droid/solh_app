@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -79,10 +80,7 @@ class ProductsCard extends StatelessWidget {
                 Positioned(
                   right: 10,
                   top: 10,
-                  child: Icon(
-                    CupertinoIcons.heart_fill,
-                    color: SolhColors.grey_2,
-                  ),
+                  child: AnimatedAddToWishlistButton(),
                 ),
               ],
             ),
