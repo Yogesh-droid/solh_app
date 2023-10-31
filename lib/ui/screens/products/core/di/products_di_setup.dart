@@ -29,4 +29,9 @@ void productControllerSetup() {
       ProductDetailUsecase(productDetailRepo: Get.find<ProductDetailRepo>()));
   Get.put(ProductDetailController(
       productDetailUsecase: Get.find<ProductDetailUsecase>()));
+
+  /// Product List Filter setup
+  Get.put<FilterRepo>(FilterRepoImpl());
+  Get.put(FilterUsecase(filterRepo: Get.find<FilterRepo>()));
+  Get.put(FilterController(filterUsecase: Get.find<FilterUsecase>()));
 }
