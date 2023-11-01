@@ -10,6 +10,7 @@ import 'package:get/instance_manager.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/journals/journal_page_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
@@ -207,32 +208,35 @@ class CartButton extends StatelessWidget {
   final int itemsInCart;
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Icon(
-                CupertinoIcons.cart,
-                color: SolhColors.primary_green,
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed(AppRoutes.checkoutScreen),
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Icon(
+                  CupertinoIcons.cart,
+                  color: SolhColors.primary_green,
+                ),
               ),
-            ),
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: SolhColors.primary_green),
-                child: Text(itemsInCart.toString(),
-                    style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                      color: SolhColors.white,
-                    )),
-              ),
-            )
-          ],
+              Positioned(
+                top: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: SolhColors.primary_green),
+                  child: Text(itemsInCart.toString(),
+                      style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                        color: SolhColors.white,
+                      )),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

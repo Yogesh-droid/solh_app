@@ -67,6 +67,9 @@ class InCartProductItemCard extends StatelessWidget {
                           style: SolhTextStyles.QS_caption_bold,
                         ),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Text('MRP', style: SolhTextStyles.QS_cap_2),
                       SizedBox(
                         width: 5,
