@@ -48,7 +48,9 @@ import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/loginSignup/login_signup.dart';
 import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
+import 'package:solh/ui/screens/products/features/checkout_screen/views/screen/checkout_screen.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/views/screens/product_detail_screen.dart';
 import 'package:solh/ui/screens/profile-setupV2/Dob-page/dob_page.dart';
 import 'package:solh/ui/screens/profile-setupV2/LetsCreateYourprofile/lets_create_your_profile.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
@@ -179,6 +181,8 @@ class AppRoutes {
 
   //products
   static const String productsHome = '/productsHome';
+  static const String productDetailScreen = '/productDetailScreen';
+  static const String checkoutScreen = "/checkoutScreen";
 }
 
 class RouteGenerator {
@@ -395,6 +399,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => AddEmailOnboarding()));
       case AppRoutes.productsHome:
         return MaterialPageRoute(builder: ((context) => ProductsHome()));
+      case AppRoutes.productDetailScreen:
+        return MaterialPageRoute(builder: ((context) => ProductDetailScreen()));
+      case AppRoutes.checkoutScreen:
+        return MaterialPageRoute(builder: ((context) => CheckoutScreen()));
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
       default:

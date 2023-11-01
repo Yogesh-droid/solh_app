@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -48,104 +49,105 @@ class ProductsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 220,
-      decoration: BoxDecoration(
-          border: Border.all(
-            width: 0.5,
-            color: SolhColors.primary_green,
-          ),
-          borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(12),
-                    topLeft: Radius.circular(12),
-                  ),
-                  child: Image.network(
-                    "https://picsum.photos/200",
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 180,
-                  )),
-              Positioned(
-                right: 10,
-                top: 10,
-                child: Icon(
-                  CupertinoIcons.heart_fill,
-                  color: SolhColors.grey_2,
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: Column(
+    return GestureDetector(
+      onTap: () =>
+          Navigator.of(context).pushNamed(AppRoutes.productDetailScreen),
+      child: Container(
+        width: 220,
+        decoration: BoxDecoration(
+            border: Border.all(
+              width: 0.5,
+              color: SolhColors.primary_green,
+            ),
+            borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Stack(
               children: [
-                SizedBox(
-                  height: 50,
-                  child: Text(
-                    "Ashwagandha || 500mg - 60 caps XXL Nutrition  0mg - 60 caps XXL Nutrition - 60 caps XXL Nutrition ",
-                    style: SolhTextStyles.QS_caption_bold,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                  child: Text(
-                    "Hand Foot and Body Massager, Stress Ball For Adults, Trigger - 60 caps XXL Nutrition  - 60 caps XXL Nutrition ",
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: SolhTextStyles.QS_cap_2_semi,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text("MRP", style: SolhTextStyles.QS_cap_2),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                          '₹ 699',
-                          style: SolhTextStyles.QS_caption.copyWith(
-                              decoration: TextDecoration.lineThrough),
-                        )
-                      ],
+                ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(12),
+                      topLeft: Radius.circular(12),
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-                      decoration: BoxDecoration(
-                          color: SolhColors.primary_green,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Text(
-                        '₹ 499',
-                        style: SolhTextStyles.QS_caption_bold.copyWith(
-                            color: SolhColors.white),
-                      ),
-                    ),
-                  ],
+                    child: Image.network(
+                      "https://picsum.photos/200",
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 180,
+                    )),
+                Positioned(
+                  right: 10,
+                  top: 10,
+                  child: AnimatedAddToWishlistButton(),
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          AddRemoveProductButtoon()
-        ],
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    child: Text(
+                      "Ashwagandha || 500mg - 60 caps XXL Nutrition  0mg - 60 caps XXL Nutrition - 60 caps XXL Nutrition ",
+                      style: SolhTextStyles.QS_caption_bold,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: Text(
+                      "Hand Foot and Body Massager, Stress Ball For Adults, Trigger - 60 caps XXL Nutrition  - 60 caps XXL Nutrition ",
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: SolhTextStyles.QS_cap_2_semi,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text("MRP", style: SolhTextStyles.QS_cap_2),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            '₹ 699',
+                            style: SolhTextStyles.QS_caption.copyWith(
+                                decoration: TextDecoration.lineThrough),
+                          )
+                        ],
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                        decoration: BoxDecoration(
+                            color: SolhColors.primary_green,
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Text(
+                          '₹ 499',
+                          style: SolhTextStyles.QS_caption_bold.copyWith(
+                              color: SolhColors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            AddRemoveProductButtoon()
+          ],
+        ),
       ),
     );
   }

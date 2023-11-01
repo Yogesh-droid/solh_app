@@ -13,6 +13,7 @@ import 'package:solh/ui/screens/products/features/home/domain/repo/product_categ
 import 'package:solh/ui/screens/products/features/home/domain/repo/product_mainCat_repo.dart';
 import 'package:solh/ui/screens/products/features/home/domain/usecases/product_mainCat_usecase.dart';
 import 'package:solh/ui/screens/products/features/home/domain/usecases/products_category_usecase.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/repo/product_detail_repo_impl.dart';

@@ -41,10 +41,16 @@ class InCartProductItemCard extends StatelessWidget {
                     CupertinoIcons.delete,
                     color: SolhColors.primaryRed,
                     size: 20,
-                  )
+                  ),
                 ],
               ),
+              SizedBox(
+                height: 5,
+              ),
               Text('Bottle of 60 Tablets', style: SolhTextStyles.QS_caption),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -60,6 +66,9 @@ class InCartProductItemCard extends StatelessWidget {
                           '₹ 499',
                           style: SolhTextStyles.QS_caption_bold,
                         ),
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       Text('MRP', style: SolhTextStyles.QS_cap_2),
                       SizedBox(
@@ -125,7 +134,7 @@ class AddRemoveItemFromCart extends StatelessWidget {
               Icons.add,
               size: 15,
             ),
-          )
+          ),
         ],
       ),
     );
