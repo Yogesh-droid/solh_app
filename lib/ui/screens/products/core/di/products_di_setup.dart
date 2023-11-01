@@ -22,7 +22,46 @@ void productControllerSetup() {
   Get.put(ProductsListController(
       productListUsecase: Get.find<ProductListUsecase>()));
 
-  //products cart
+
 
   Get.put<ProductsCartController>(ProductsCartController());
+
+  /// ProductDetails
+  ///
+  Get.put<ProductDetailRepo>(ProductDetailRepoImpl());
+  Get.put(
+      ProductDetailUsecase(productDetailRepo: Get.find<ProductDetailRepo>()));
+  Get.put(ProductDetailController(
+      productDetailUsecase: Get.find<ProductDetailUsecase>()));
+
+  /// Product List Filter setup
+  Get.put<FilterRepo>(FilterRepoImpl());
+  Get.put(FilterUsecase(filterRepo: Get.find<FilterRepo>()));
+  Get.put(FilterController(filterUsecase: Get.find<FilterUsecase>()));
+
+  // cart setup
+  Get.put<CartRepo>(CartRepoImpl());
+  Get.put<CartUsecase>(CartUsecase(cartRepo: Get.find<CartRepo>()));
+  Get.put(CartController(cartUsecase: Get.find<CartUsecase>()));
+
+  // add to cart
+  Get.put<AddToCartRepo>(AddToCartRepoImpl());
+  Get.put<AddToCartUsecase>(
+      AddToCartUsecase(addToCartRepo: Get.find<AddToCartRepo>()));
+  Get.put<AddToCartController>(
+      AddToCartController(addToCartUsecase: Get.find<AddToCartUsecase>()));
+
+  // add review
+
+  Get.put<AddReviewRepo>(AddReviewRepoImpl());
+  Get.put(AddReviewUsecase(addReviewRepo: Get.find<AddReviewRepo>()));
+  Get.put(AddReviewController(addReviewUsecase: Get.find<AddReviewUsecase>()));
+
+  // get reviews
+
+  Get.put<GetReviewsRepo>(GetReviewsRepoImpl());
+  Get.put(GetReviewsUsecase(getReviewsRepo: Get.find<GetReviewsRepo>()));
+  Get.put(
+      GetReviewsController(getReviewsUsecase: Get.find<GetReviewsUsecase>()));
+
 }
