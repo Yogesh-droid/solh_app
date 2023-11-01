@@ -19,7 +19,7 @@ class ProductDetailController extends GetxController {
 
       final ProductDataState<ProductDetailEntity> dataState =
           await productDetailUsecase.call(RequestParams(
-              url: "${APIConstants.api}/api/product//product-details/$id"));
+              url: "${APIConstants.api}/api/product/product-details/$id"));
 
       if (dataState.data != null) {
         productDetail.value = dataState.data!;
