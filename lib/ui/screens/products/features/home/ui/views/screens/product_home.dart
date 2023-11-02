@@ -1,17 +1,34 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/in_cart_product_item_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-class ProductsHome extends StatelessWidget {
+class ProductsHome extends StatefulWidget {
   const ProductsHome({super.key});
+
+  @override
+  State<ProductsHome> createState() => _ProductsHomeState();
+}
+
+class _ProductsHomeState extends State<ProductsHome> {
+  ProductMainCatController productMainCatController = Get.find();
+
+  @override
+  void initState() {
+    productMainCatController.getMainCat();
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,64 +94,70 @@ class ProductsSearchBar extends StatelessWidget {
 }
 
 class ProductsCategories extends StatelessWidget {
-  const ProductsCategories({super.key});
-
+  ProductsCategories({super.key});
+  final ProductMainCatController productMainCatController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            "Categories",
-            style: SolhTextStyles.QS_body_semi_1,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          SizedBox(
-            height: 120,
-            child: ListView.separated(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              itemCount: 6,
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              separatorBuilder: (context, index) {
-                return SizedBox(
-                  width: 15,
-                );
-              },
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(25),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SolhColors.Tertiary_Red,
-                      ),
-                      child: Icon(
-                        Icons.medical_information,
-                        size: 30,
-                      ),
+    return Obx(() {
+      return productMainCatController.isLoading.value
+          ? ButtonLoadingAnimation(
+              ballColor: SolhColors.primary_green,
+            )
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "Categories",
+                    style: SolhTextStyles.QS_body_semi_1,
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  SizedBox(
+                    height: 120,
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      itemCount: 6,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(
+                          width: 15,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(25),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: SolhColors.Tertiary_Red,
+                              ),
+                              child: Icon(
+                                Icons.medical_information,
+                                size: 30,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Supplements",
+                              style: SolhTextStyles.QS_caption,
+                            )
+                          ],
+                        );
+                      },
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "Supplements",
-                      style: SolhTextStyles.QS_caption,
-                    )
-                  ],
-                );
-              },
-            ),
-          )
-        ],
-      ),
-    );
+                  )
+                ],
+              ),
+            );
+    });
   }
 }
 

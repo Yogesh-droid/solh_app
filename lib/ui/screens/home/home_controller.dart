@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/model/get-help/inhouse_packages_carousel_model.dart';
+import 'package:solh/model/home/home_products_carousel_model.dart';
 import 'package:solh/services/network/network.dart';
 
 class HomeController extends GetxController {
   var homePageCarouselModel = InhousePackagesCarouselModel().obs;
+  var productsHomeCarousel = ProductsHomeCarousel().obs;
   var isBannerLoading = false.obs;
   var isCorouselShown = false.obs;
+  var isHomeProductsCarouselLoading = false.obs;
   var dotList = [].obs;
   var hat = ''.obs;
   var line = ''.obs;
@@ -70,8 +73,23 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> getHomeProductsCarouserl() async {
+    isHomeProductsCarouselLoading(true);
+    try {
+      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
+          "${APIConstants.api}/api/product/main-homepage-product-banner");
+      if (map['success']) {
+        productsHomeCarousel.value = ProductsHomeCarousel.fromJson(map);
+      }
+    } on Exception {
+      // TODO
+    }
+    isHomeProductsCarouselLoading(false);
+  }
+
   @override
   void onInit() {
+    getHomeProductsCarouserl();
     super.onInit();
   }
 }
