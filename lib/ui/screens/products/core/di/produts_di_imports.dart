@@ -7,12 +7,16 @@ import 'package:solh/ui/screens/products/features/cart/domain/usecases/add_to_ca
 import 'package:solh/ui/screens/products/features/cart/domain/usecases/cart_usecase.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/home/data/repo/feature_products_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/home/data/repo/product_category_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/home/data/repo/product_mainCat_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/home/domain/repo/feature_products_repo.dart';
 import 'package:solh/ui/screens/products/features/home/domain/repo/product_category_repo.dart';
 import 'package:solh/ui/screens/products/features/home/domain/repo/product_mainCat_repo.dart';
+import 'package:solh/ui/screens/products/features/home/domain/usecases/feature_products_usecase.dart';
 import 'package:solh/ui/screens/products/features/home/domain/usecases/product_mainCat_usecase.dart';
 import 'package:solh/ui/screens/products/features/home/domain/usecases/products_category_usecase.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -45,7 +46,26 @@ class FeatureProductsWidget extends StatelessWidget {
 }
 
 class ProductsCard extends StatelessWidget {
-  const ProductsCard({super.key});
+  ProductsCard({
+    super.key,
+    this.afterDiscountPrice,
+    this.description,
+    this.price,
+    this.productImage,
+    this.productName,
+    this.productQuantity,
+    this.sId,
+    this.stockAvailable,
+  });
+
+  final String? sId;
+  final String? productName;
+  final List<String>? productImage;
+  final int? price;
+  final int? afterDiscountPrice;
+  final int? stockAvailable;
+  final String? description;
+  final String? productQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +92,7 @@ class ProductsCard extends StatelessWidget {
                       topLeft: Radius.circular(12),
                     ),
                     child: Image.network(
-                      "https://picsum.photos/200",
+                      productImage![0],
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: 180,
@@ -88,24 +108,19 @@ class ProductsCard extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 50,
-                    child: Text(
-                      "Ashwagandha || 500mg - 60 caps XXL Nutrition  0mg - 60 caps XXL Nutrition - 60 caps XXL Nutrition ",
-                      style: SolhTextStyles.QS_caption_bold,
+                  Text(
+                    productName ?? '',
+                    style: SolhTextStyles.QS_caption_bold,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Html(data: description, shrinkWrap: true, style: {
+                    "p": Style(
                       maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                    child: Text(
-                      "Hand Foot and Body Massager, Stress Ball For Adults, Trigger - 60 caps XXL Nutrition  - 60 caps XXL Nutrition ",
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: SolhTextStyles.QS_cap_2_semi,
-                    ),
-                  ),
+                      textOverflow: TextOverflow.ellipsis,
+                      fontSize: FontSize(12),
+                    )
+                  }),
                   SizedBox(
                     height: 5,
                   ),
@@ -119,7 +134,7 @@ class ProductsCard extends StatelessWidget {
                             width: 3,
                           ),
                           Text(
-                            '₹ 699',
+                            '$price',
                             style: SolhTextStyles.QS_caption.copyWith(
                                 decoration: TextDecoration.lineThrough),
                           )
@@ -132,7 +147,7 @@ class ProductsCard extends StatelessWidget {
                             color: SolhColors.primary_green,
                             borderRadius: BorderRadius.circular(12)),
                         child: Text(
-                          '₹ 499',
+                          '$afterDiscountPrice',
                           style: SolhTextStyles.QS_caption_bold.copyWith(
                               color: SolhColors.white),
                         ),
@@ -143,7 +158,7 @@ class ProductsCard extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 4,
             ),
             AddRemoveProductButtoon()
           ],

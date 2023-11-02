@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/in_cart_product_item_card.dart';
@@ -12,6 +14,7 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class ProductsHome extends StatefulWidget {
   const ProductsHome({super.key});
@@ -22,10 +25,13 @@ class ProductsHome extends StatefulWidget {
 
 class _ProductsHomeState extends State<ProductsHome> {
   ProductMainCatController productMainCatController = Get.find();
-
+  ProductsCategoryController productsCategoryController = Get.find();
+  FeatureProductsController featureProductsController = Get.find();
   @override
   void initState() {
     productMainCatController.getMainCat();
+    productsCategoryController.getProductsCategories();
+    featureProductsController.getFeatureProducts();
     // TODO: implement initState
     super.initState();
   }
@@ -100,8 +106,12 @@ class ProductsCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return productMainCatController.isLoading.value
-          ? ButtonLoadingAnimation(
-              ballColor: SolhColors.primary_green,
+          ? Row(
+              children: [
+                ButtonLoadingAnimation(
+                  ballColor: SolhColors.primary_green,
+                ),
+              ],
             )
           : Padding(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
@@ -120,7 +130,7 @@ class ProductsCategories extends StatelessWidget {
                     height: 120,
                     child: ListView.separated(
                       padding: EdgeInsets.symmetric(horizontal: 10),
-                      itemCount: 6,
+                      itemCount: productMainCatController.mainCatList.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, index) {
@@ -137,16 +147,19 @@ class ProductsCategories extends StatelessWidget {
                                 shape: BoxShape.circle,
                                 color: SolhColors.Tertiary_Red,
                               ),
-                              child: Icon(
-                                Icons.medical_information,
-                                size: 30,
+                              child: SizedBox(
+                                height: 30,
+                                width: 30,
+                                child: Image.network(productMainCatController
+                                    .mainCatList[index].categoryImage!),
                               ),
                             ),
                             SizedBox(
                               height: 5,
                             ),
                             Text(
-                              "Supplements",
+                              productMainCatController
+                                  .mainCatList[index].categoryName!,
                               style: SolhTextStyles.QS_caption,
                             )
                           ],
@@ -235,78 +248,86 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
 }
 
 class ProductsSearchCategories extends StatelessWidget {
-  const ProductsSearchCategories({super.key});
+  ProductsSearchCategories({super.key});
+  ProductsCategoryController productsCategoryController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Search by',
-            style: SolhTextStyles.QS_body_semi_1,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-                childAspectRatio: 3 / 4),
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: 9,
-            itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      color: SolhColors.Tertiary_Red.withOpacity(0.5)),
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(8),
-                      topLeft: Radius.circular(8)),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LayoutBuilder(builder: (context, constraints) {
+    return Obx(() {
+      return productsCategoryController.isLoading.value
+          ? MyLoader()
+          : Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Search by',
+                    style: SolhTextStyles.QS_body_semi_1,
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 8.0,
+                        crossAxisSpacing: 8.0,
+                        childAspectRatio: 3 / 4),
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount:
+                        productsCategoryController.productCategoryList.length,
+                    itemBuilder: (context, index) {
                       return Container(
-                        width: constraints.maxWidth,
-                        height: 15.h,
                         decoration: BoxDecoration(
-                          color: SolhColors.Tertiary_Red,
+                          border: Border.all(
+                              color: SolhColors.Tertiary_Red.withOpacity(0.5)),
                           borderRadius: BorderRadius.only(
                               topRight: Radius.circular(8),
                               topLeft: Radius.circular(8)),
                         ),
-                        child: Icon(CupertinoIcons.add),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            LayoutBuilder(builder: (context, constraints) {
+                              return Container(
+                                width: constraints.maxWidth,
+                                height: 15.h,
+                                decoration: BoxDecoration(
+                                  color: SolhColors.Tertiary_Red,
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(8)),
+                                ),
+                                child: Image.network(productsCategoryController
+                                    .productCategoryList[index].categoryImage!),
+                              );
+                            }),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              productsCategoryController
+                                  .productCategoryList[index].categoryName!,
+                              style: SolhTextStyles.QS_cap_semi,
+                            ),
+                          ],
+                        ),
                       );
-                    }),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Mood Stablizers',
-                      style: SolhTextStyles.QS_cap_semi,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
+                    },
+                  ),
+                ],
+              ),
+            );
+    });
   }
 }
 
 class FeatureProductsSection extends StatelessWidget {
-  const FeatureProductsSection({super.key});
-
+  FeatureProductsSection({super.key});
+  final FeatureProductsController featureProductsController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -315,23 +336,45 @@ class FeatureProductsSection extends StatelessWidget {
           title: "Featured Products",
           onPressed: () {},
         ),
-        SizedBox(
-          height: 380,
-          child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            shrinkWrap: true,
-            itemCount: 5,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                width: 10,
-              );
-            },
-            itemBuilder: (context, index) {
-              return ProductsCard();
-            },
-          ),
-        )
+        Obx(() {
+          return featureProductsController.isLoading.value
+              ? MyLoader()
+              : SizedBox(
+                  height: 380,
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    shrinkWrap: true,
+                    itemCount:
+                        featureProductsController.featureProductList.length,
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, index) {
+                      return SizedBox(
+                        width: 10,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      return ProductsCard(
+                        afterDiscountPrice: featureProductsController
+                            .featureProductList[index].afterDiscountPrice,
+                        description: featureProductsController
+                            .featureProductList[index].description,
+                        price: featureProductsController
+                            .featureProductList[index].price,
+                        productImage: featureProductsController
+                            .featureProductList[index].productImage,
+                        productName: featureProductsController
+                            .featureProductList[index].productName,
+                        productQuantity: featureProductsController
+                            .featureProductList[index].productQuantity,
+                        sId: featureProductsController
+                            .featureProductList[index].sId,
+                        stockAvailable: featureProductsController
+                            .featureProductList[index].stockAvailable,
+                      );
+                    },
+                  ),
+                );
+        })
       ],
     );
   }
