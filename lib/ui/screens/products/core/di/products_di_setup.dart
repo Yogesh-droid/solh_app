@@ -22,8 +22,6 @@ void productControllerSetup() {
   Get.put(ProductsListController(
       productListUsecase: Get.find<ProductListUsecase>()));
 
-
-
   Get.put<ProductsCartController>(ProductsCartController());
 
   /// ProductDetails
@@ -33,6 +31,13 @@ void productControllerSetup() {
       ProductDetailUsecase(productDetailRepo: Get.find<ProductDetailRepo>()));
   Get.put(ProductDetailController(
       productDetailUsecase: Get.find<ProductDetailUsecase>()));
+
+  /// Feature products
+  Get.put<FeatureProductsRepo>(FeatureProductsRepoImpl());
+  Get.put(FeatureProductsUsecase(
+      featureProductsRepo: Get.find<FeatureProductsRepo>()));
+  Get.put(FeatureProductsController(
+      featureProductsUsecase: Get.find<FeatureProductsUsecase>()));
 
   /// Product List Filter setup
   Get.put<FilterRepo>(FilterRepoImpl());
@@ -63,5 +68,4 @@ void productControllerSetup() {
   Get.put(GetReviewsUsecase(getReviewsRepo: Get.find<GetReviewsRepo>()));
   Get.put(
       GetReviewsController(getReviewsUsecase: Get.find<GetReviewsUsecase>()));
-
 }
