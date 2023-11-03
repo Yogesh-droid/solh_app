@@ -10,6 +10,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+import '../../../../../../../../routes/routes.dart';
+
 class ProductsHome extends StatelessWidget {
   const ProductsHome({super.key});
 
@@ -109,15 +111,21 @@ class ProductsCategories extends StatelessWidget {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(25),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SolhColors.Tertiary_Red,
-                      ),
-                      child: Icon(
-                        Icons.medical_information,
-                        size: 30,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.productList,
+                            arguments: {"itemName": "Product Name"});
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: SolhColors.Tertiary_Red,
+                        ),
+                        child: Icon(
+                          Icons.medical_information,
+                          size: 30,
+                        ),
                       ),
                     ),
                     SizedBox(

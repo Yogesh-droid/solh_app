@@ -9,12 +9,14 @@ class AddToCartController extends GetxController {
   var addingToCart = false.obs;
   var error = ''.obs;
   var msg = ''.obs;
+  var indexOfItemToBeUpdated = ''.obs;
 
   AddToCartController({required this.addToCartUsecase});
 
   Future<void> addToCart(
       {required String productId, required int quantity}) async {
     try {
+      addingToCart.value = true;
       final ProductDataState<String> dataState = await addToCartUsecase.call(
           RequestParams(
               url: "${APIConstants.api}/api/product/add-to-cart",

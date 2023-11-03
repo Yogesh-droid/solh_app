@@ -20,6 +20,7 @@ class CartController extends GetxController {
       final ProductDataState<CartEntity> dataState = await cartUsecase
           .call(RequestParams(url: "${APIConstants.api}/api/product/get-cart"));
       if (dataState.data != null) {
+        cartEntity.value = CartEntity();
         cartEntity.value = dataState.data!;
         isCartLoading.value = false;
       } else {

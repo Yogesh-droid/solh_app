@@ -45,6 +45,8 @@ class Products {
   int? afterDiscountPrice;
   int? stockAvailable;
   String? productQuantity;
+  bool? isWishlisted;
+  int? inCartCount;
 
   Products(
       {this.id,
@@ -53,6 +55,8 @@ class Products {
       this.price,
       this.afterDiscountPrice,
       this.stockAvailable,
+      this.isWishlisted,
+      this.inCartCount,
       this.productQuantity});
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -65,5 +69,7 @@ class Products {
     afterDiscountPrice = json["afterDiscountPrice"];
     stockAvailable = json["stockAvailable"];
     productQuantity = json["productQuantity"];
+    inCartCount = json['inCartCount'];
+    isWishlisted = json['isWishlisted'];
   }
 }

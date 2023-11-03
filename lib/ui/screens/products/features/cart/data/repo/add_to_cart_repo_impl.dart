@@ -8,7 +8,8 @@ class AddToCartRepoImpl implements AddToCartRepo {
   Future<ProductDataState<String>> addToCart(RequestParams params) async {
     try {
       final Map<String, dynamic> map = await Network.makePostRequestWithToken(
-          url: params.url, body: params.body!);
+          url: params.url, body: params.body!, isEncoded: true);
+      print("This is response $map");
       if (map['success']) {
         return DataSuccess(data: map['message']);
       } else {

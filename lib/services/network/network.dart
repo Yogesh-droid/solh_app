@@ -302,6 +302,8 @@ class Network {
               : {"Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"},
           body: isEncoded != null ? jsonEncode(body) : body);
 
+      print("this is response ${jsonDecode(apiResponse.body)}");
+
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body);
