@@ -10,6 +10,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
+import '../../../../../../../routes/routes.dart';
+
 class ProductListBottomNav extends StatefulWidget {
   const ProductListBottomNav(
       {super.key,
@@ -98,6 +100,43 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
               ),
               Spacer(),
               SolhGreenButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoutes.checkoutScreen,
+                        arguments: {
+                          "onDecrease": (index, id, quantity) {
+                            //  Id saved in controller so that we can check on which item we need to show loader//
+                            Get.find<AddToCartController>()
+                                    .indexOfItemToBeUpdated
+                                    .value =
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].productId!.id!;
+                            //////////////
+
+                            widget.onDecreaseCartCount(
+                                index,
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].productId!.id!,
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].quantity!);
+                          },
+                          "onIncrease": (index, id, quantity) {
+                            //  Id saved in controller so that we can check on which item we need to show loader//
+                            Get.find<AddToCartController>()
+                                    .indexOfItemToBeUpdated
+                                    .value =
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].productId!.id!;
+                            //////////////
+
+                            widget.onIncreaseCartCount(
+                                index,
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].productId!.id!,
+                                cartController.cartEntity.value.cartList!
+                                    .items![index].quantity!);
+                          }
+                        });
+                  },
                   height: 30,
                   width: 100,
                   child: Text(

@@ -11,6 +11,7 @@ class CartController extends GetxController {
   var isCartLoading = false.obs;
   var error = ''.obs;
   var cartEntity = CartEntity().obs;
+  var totalPayblePrice = 0.0.obs;
 
   CartController({required this.cartUsecase});
 
@@ -22,6 +23,12 @@ class CartController extends GetxController {
       if (dataState.data != null) {
         cartEntity.value = CartEntity();
         cartEntity.value = dataState.data!;
+        totalPayblePrice.value = cartEntity.value.cartList!.items!.fold(
+            0,
+            (previousValue, element) =>
+                previousValue +
+                (element.productId!.price! * element.quantity!));
+
         isCartLoading.value = false;
       } else {
         isCartLoading.value = false;

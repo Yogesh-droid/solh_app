@@ -118,6 +118,8 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     );
   }
 
+// To add item to cart
+
   Future<void> onAddedCart(int index) async {
     productsListController.productList[index].inCartCount =
         productsListController.productList[index].inCartCount! + 1;
@@ -131,29 +133,22 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     cartController.getCart();
   }
 
-  Future<void> onDecreaseCartCount(int index, String id, int quantity) async {
-    print("This is index $index");
-    print("This is id $id");
-    print("This is quantity $quantity");
+// To decrease item's quantity
 
+  Future<void> onDecreaseCartCount(int index, String id, int quantity) async {
     if (index >= 0) {
       productsListController.productList[index].inCartCount =
           productsListController.productList[index].inCartCount! - 1;
 
       productsListController.productList.refresh();
     }
-
-    // await addToCartController.addToCart(
-    //     productId: productsListController.productList[index].id!,
-    //     quantity: productsListController.productList[index].inCartCount ?? 0);
     await addToCartController.addToCart(productId: id, quantity: quantity - 1);
     await cartController.getCart();
   }
 
+// to increase item's quantity
+
   Future<void> onIncreaseCartCount(int index, String id, int quantity) async {
-    print("This is index $index");
-    print("This is id $id");
-    print("This is quantity $quantity");
     if (index >= 0) {
       productsListController.productList[index].inCartCount =
           productsListController.productList[index].inCartCount! + 1;
@@ -161,10 +156,6 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     }
 
     await addToCartController.addToCart(productId: id, quantity: quantity + 1);
-
-    // await addToCartController.addToCart(
-    //     productId: productsListController.productList[index].id!,
-    //     quantity: productsListController.productList[index].inCartCount ?? 0);
 
     await cartController.getCart();
   }
