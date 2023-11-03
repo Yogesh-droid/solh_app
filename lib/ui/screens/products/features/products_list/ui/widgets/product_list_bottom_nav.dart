@@ -14,13 +14,11 @@ class ProductListBottomNav extends StatefulWidget {
   const ProductListBottomNav(
       {super.key,
       required this.noOfItemsInCart,
-      required this.onAddedCart,
       required this.onIncreaseCartCount,
       required this.onDecreaseCartCount});
   final int noOfItemsInCart;
-  final Function(int indx) onAddedCart;
-  final Function(int index) onIncreaseCartCount;
-  final Function(int index) onDecreaseCartCount;
+  final Function(int index, String id, int quantity) onIncreaseCartCount;
+  final Function(int index, String id, int quantity) onDecreaseCartCount;
 
   @override
   State<ProductListBottomNav> createState() => _ProductListBottomNavState();
@@ -142,7 +140,12 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                               .items![index].productId!.id!;
                       //////////////
 
-                      widget.onIncreaseCartCount(index);
+                      widget.onIncreaseCartCount(
+                          index,
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.id!,
+                          cartController.cartEntity.value.cartList!
+                              .items![index].quantity!);
                     },
                     onDecreaseCartCount: () {
                       //  Id saved in controller so that we can check on which item we need to show loader//
@@ -153,7 +156,12 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                               .items![index].productId!.id!;
                       //////////////
 
-                      widget.onDecreaseCartCount(index);
+                      widget.onDecreaseCartCount(
+                          index,
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.id!,
+                          cartController.cartEntity.value.cartList!
+                              .items![index].quantity!);
                     },
                     id: cartController.cartEntity.value.cartList!.items![index]
                         .productId!.id!);

@@ -30,15 +30,14 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
   @override
   void initState() {
     pageNo = 1;
-    productsListController.getProductList("651d04985cdf213130fb7358", 1);
+    productsListController.getProductList(widget.args['id'], 1);
 
     scrollController.addListener(() {
       if (scrollController.position.pixels ==
               scrollController.position.maxScrollExtent - 50 &&
           !productsListController.isListEnd) {
         pageNo++;
-        productsListController.getProductList(
-            "651d04985cdf213130fb7358", pageNo);
+        productsListController.getProductList(widget.args['id'], pageNo);
       }
     });
     super.initState();
@@ -51,35 +50,32 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
         title: Text(widget.args['itemName'], style: SolhTextStyles.AppBarText),
         isLandingScreen: false,
       ),
-      bottomNavigationBar: Obx(() =>
-          cartController.cartEntity.value.cartList != null &&
-                  cartController.cartEntity.value.cartList!.items!.isNotEmpty
-              ? ProductListBottomNav(
-                  noOfItemsInCart:
-                      cartController.cartEntity.value.cartList!.items!.length,
-                  onAddedCart: (index) {
-                    onAddedCart(productsListController.productList.indexWhere(
-                        (element) =>
-                            element.id ==
-                            cartController.cartEntity.value.cartList!
-                                .items![index].productId!.id));
-                  },
-                  onDecreaseCartCount: (index) {
-                    onDecreaseCartCount(productsListController.productList
-                        .indexWhere((element) =>
-                            element.id ==
-                            cartController.cartEntity.value.cartList!
-                                .items![index].productId!.id));
-                  },
-                  onIncreaseCartCount: (index) {
-                    onIncreaseCartCount(productsListController.productList
-                        .indexWhere((element) =>
-                            element.id ==
-                            cartController.cartEntity.value.cartList!
-                                .items![index].productId!.id));
-                  },
-                )
-              : SizedBox.shrink()),
+      bottomNavigationBar: Obx(() => cartController.cartEntity.value.cartList !=
+                  null &&
+              cartController.cartEntity.value.cartList!.items!.isNotEmpty
+          ? ProductListBottomNav(
+              noOfItemsInCart:
+                  cartController.cartEntity.value.cartList!.items!.length,
+              onDecreaseCartCount: (index, id, quantity) {
+                onDecreaseCartCount(
+                    productsListController.productList.indexWhere((element) =>
+                        element.id ==
+                        cartController.cartEntity.value.cartList!.items![index]
+                            .productId!.id),
+                    id,
+                    quantity);
+              },
+              onIncreaseCartCount: (index, id, quantity) {
+                onIncreaseCartCount(
+                    productsListController.productList.indexWhere((element) =>
+                        element.id ==
+                        cartController.cartEntity.value.cartList!.items![index]
+                            .productId!.id),
+                    id,
+                    quantity);
+              },
+            )
+          : SizedBox.shrink()),
       body: Obx(() => productsListController.isLoading.value
           ? productsListController.error.value.isNotEmpty
               ? EmptyListWidget()
@@ -102,10 +98,16 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                     onAddedCart(index);
                   },
                   onDecreaseCartCount: () async {
-                    onDecreaseCartCount(index);
+                    onDecreaseCartCount(
+                        index,
+                        productsListController.productList[index].id!,
+                        productsListController.productList[index].inCartCount!);
                   },
                   onIncreaseCartCount: () {
-                    onIncreaseCartCount(index);
+                    onIncreaseCartCount(
+                        index,
+                        productsListController.productList[index].id!,
+                        productsListController.productList[index].inCartCount!);
                   },
                 );
               },
@@ -129,26 +131,40 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     cartController.getCart();
   }
 
-  Future<void> onDecreaseCartCount(int index) async {
-    productsListController.productList[index].inCartCount =
-        productsListController.productList[index].inCartCount! - 1;
+  Future<void> onDecreaseCartCount(int index, String id, int quantity) async {
+    print("This is index $index");
+    print("This is id $id");
+    print("This is quantity $quantity");
 
-    productsListController.productList.refresh();
+    if (index >= 0) {
+      productsListController.productList[index].inCartCount =
+          productsListController.productList[index].inCartCount! - 1;
 
-    await addToCartController.addToCart(
-        productId: productsListController.productList[index].id!,
-        quantity: productsListController.productList[index].inCartCount ?? 0);
+      productsListController.productList.refresh();
+    }
+
+    // await addToCartController.addToCart(
+    //     productId: productsListController.productList[index].id!,
+    //     quantity: productsListController.productList[index].inCartCount ?? 0);
+    await addToCartController.addToCart(productId: id, quantity: quantity - 1);
     await cartController.getCart();
   }
 
-  Future<void> onIncreaseCartCount(int index) async {
-    productsListController.productList[index].inCartCount =
-        productsListController.productList[index].inCartCount! + 1;
-    productsListController.productList.refresh();
+  Future<void> onIncreaseCartCount(int index, String id, int quantity) async {
+    print("This is index $index");
+    print("This is id $id");
+    print("This is quantity $quantity");
+    if (index >= 0) {
+      productsListController.productList[index].inCartCount =
+          productsListController.productList[index].inCartCount! + 1;
+      productsListController.productList.refresh();
+    }
 
-    await addToCartController.addToCart(
-        productId: productsListController.productList[index].id!,
-        quantity: productsListController.productList[index].inCartCount ?? 0);
+    await addToCartController.addToCart(productId: id, quantity: quantity + 1);
+
+    // await addToCartController.addToCart(
+    //     productId: productsListController.productList[index].id!,
+    //     quantity: productsListController.productList[index].inCartCount ?? 0);
 
     await cartController.getCart();
   }

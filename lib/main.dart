@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +22,6 @@ import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/core/di/get_it_imports.dart';
 import 'package:solh/init-app.dart';
 import 'package:solh/routes/routes.dart';
-import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/firebase/local_notification.dart';
 import 'package:solh/services/restart_widget.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
@@ -30,6 +31,7 @@ import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/languages_constant.dart';
 import 'package:solh/widgets_constants/constants/locale.dart';
 import 'package:solh/widgets_constants/constants/org_only_setting.dart';
+
 import 'controllers/chat-list/chat_list_controller.dart';
 import 'controllers/getHelp/search_market_controller.dart';
 import 'controllers/profile/profile_controller.dart';
@@ -38,7 +40,6 @@ import 'services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
 import 'ui/screens/products/core/di/produts_di_imports.dart';
 import 'widgets_constants/constants/textstyles.dart';
-import 'package:feature_discovery/feature_discovery.dart';
 
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
