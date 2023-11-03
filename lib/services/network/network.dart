@@ -21,7 +21,10 @@ class Network {
       http.Response apiResponse = await http.get(_uri, headers: {
         "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}",
       });
-
+      if (kDebugMode) {
+        print('url:$url , response : ${apiResponse.body}');
+        print('url:$url , token : Bearer ${userBlocNetwork.getSessionCookie}');
+      }
       switch (apiResponse.statusCode) {
         case 200:
           return jsonDecode(apiResponse.body)['body'] != null
@@ -234,6 +237,7 @@ class Network {
       log(apiResponse.statusCode.toString());
       if (kDebugMode) {
         print('url:$url , response : ${apiResponse.body}');
+        print('url:$url , token : Bearer ${userBlocNetwork.getSessionCookie}');
       }
       switch (apiResponse.statusCode) {
         case 200:
