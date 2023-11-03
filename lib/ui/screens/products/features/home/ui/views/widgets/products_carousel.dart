@@ -15,7 +15,7 @@ class ProductsCarousel extends StatelessWidget {
     return Obx(() {
       return _controller.isHomeProductsCarouselLoading.value
           ? Container()
-          : CarouselSlider(
+          : (CarouselSlider(
               items: _controller
                   .homePageCarouselModel.value.packageCarouselList!
                   .map((e) => Image.network(e.image ?? ''))
@@ -27,7 +27,7 @@ class ProductsCarousel extends StatelessWidget {
                 enlargeCenterPage: true,
                 initialPage: 1,
               ),
-            );
+            ));
     });
   }
 }
