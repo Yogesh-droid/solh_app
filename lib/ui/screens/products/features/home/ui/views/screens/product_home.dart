@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/products_home_carousel_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/in_cart_product_item_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -27,11 +29,13 @@ class _ProductsHomeState extends State<ProductsHome> {
   ProductMainCatController productMainCatController = Get.find();
   ProductsCategoryController productsCategoryController = Get.find();
   FeatureProductsController featureProductsController = Get.find();
+  ProductsHomeCarouselController productsHomeCarouselController = Get.find();
   @override
   void initState() {
     productMainCatController.getMainCat();
     productsCategoryController.getProductsCategories();
     featureProductsController.getFeatureProducts();
+    productsHomeCarouselController.getBanners();
     // TODO: implement initState
     super.initState();
   }
@@ -107,6 +111,7 @@ class ProductsCategories extends StatelessWidget {
     return Obx(() {
       return productMainCatController.isLoading.value
           ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonLoadingAnimation(
                   ballColor: SolhColors.primary_green,
@@ -161,7 +166,7 @@ class ProductsCategories extends StatelessWidget {
                               productMainCatController
                                   .mainCatList[index].categoryName!,
                               style: SolhTextStyles.QS_caption,
-                            )
+                            ),
                           ],
                         );
                       },
@@ -183,7 +188,7 @@ class ProductsBannerCarousel extends StatefulWidget {
 
 class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
   final CarouselController buttonCarouselController = CarouselController();
-
+  ProductsHomeCarouselController productsHomeCarouselController = Get.find();
   int pageIndex = 0;
 
   final List imageArray = [
@@ -200,11 +205,11 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
       child: Column(
         children: [
           CarouselSlider(
-            items: imageArray
+            items: productsHomeCarouselController.homeCarouselBanners
                 .map(
                   (e) => ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(e)),
+                      child: Image.network(e.bannerImage ?? '')),
                 )
                 .toList(),
             carouselController: buttonCarouselController,
@@ -226,14 +231,25 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: imageArray.map((e) {
+            children:
+                productsHomeCarouselController.homeCarouselBanners.map((e) {
               print(" $pageIndex  ${imageArray.indexOf(e)}");
               return Container(
                 margin: EdgeInsets.all(2),
-                height: pageIndex == imageArray.indexOf(e) ? 7 : 5,
-                width: pageIndex == imageArray.indexOf(e) ? 7 : 5,
+                height: pageIndex ==
+                        productsHomeCarouselController.homeCarouselBanners
+                            .indexOf(e)
+                    ? 7
+                    : 5,
+                width: pageIndex ==
+                        productsHomeCarouselController.homeCarouselBanners
+                            .indexOf(e)
+                    ? 7
+                    : 5,
                 decoration: BoxDecoration(
-                  color: pageIndex == imageArray.indexOf(e)
+                  color: pageIndex ==
+                          productsHomeCarouselController.homeCarouselBanners
+                              .indexOf(e)
                       ? SolhColors.Grey_1
                       : SolhColors.grey_2,
                   shape: BoxShape.circle,
@@ -414,7 +430,9 @@ class YouMightFindHelpfulSection extends StatelessWidget {
 }
 
 class NextBottomBar extends StatelessWidget {
-  const NextBottomBar({super.key, this.showShadow = true});
+  NextBottomBar({super.key, this.showShadow = true});
+
+  final ProductsCartController productsCartController = Get.find();
   final bool showShadow;
   @override
   Widget build(BuildContext context) {
@@ -439,18 +457,24 @@ class NextBottomBar extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              showModalBottomSheet(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                ),
-                context: context,
-                builder: (context) {
-                  return InCartItemsBottomSheet();
-                },
-              );
+              productsCartController.isCartSheetOpen.value
+                  ? Navigator.of(context).pop()
+                  : showModalBottomSheet(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16),
+                        ),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return InCartItemsBottomSheet();
+                      },
+                    );
+              productsCartController.isCartSheetOpen.value =
+                  productsCartController.isCartSheetOpen.value
+                      ? !productsCartController.isCartSheetOpen.value
+                      : !productsCartController.isCartSheetOpen.value;
             },
             child: Row(
               children: [
@@ -458,10 +482,17 @@ class NextBottomBar extends StatelessWidget {
                   "1 items",
                   style: SolhTextStyles.CTA,
                 ),
-                Icon(
-                  Icons.arrow_drop_up,
-                  color: SolhColors.primary_green,
-                )
+                Obx(() {
+                  return productsCartController.isCartSheetOpen.value
+                      ? Icon(
+                          Icons.arrow_drop_down,
+                          color: SolhColors.primary_green,
+                        )
+                      : Icon(
+                          Icons.arrow_drop_up,
+                          color: SolhColors.primary_green,
+                        );
+                })
               ],
             ),
           ),
@@ -500,9 +531,16 @@ class InCartItemsBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  Icon(
-                    CupertinoIcons.clear_thick,
-                    color: SolhColors.grey,
+                  GestureDetector(
+                    onTap: () {
+                      Get.find<ProductsCartController>().isCartSheetOpen.value =
+                          false;
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      CupertinoIcons.clear_thick,
+                      color: SolhColors.grey,
+                    ),
                   )
                 ],
               ),

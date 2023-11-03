@@ -37,7 +37,7 @@ class CheckoutScreen extends StatelessWidget {
                       "+ Add more items",
                       style: SolhTextStyles.QS_body_2_semi.copyWith(
                           color: SolhColors.primary_green),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -107,9 +107,11 @@ class PaymentSummarySection extends StatelessWidget {
               Text('Items discount',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
-              Text('- ₹ 50',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: SolhColors.dark_grey)),
+              Text(
+                '- ₹ 50',
+                style: SolhTextStyles.QS_body_semi_1.copyWith(
+                    color: SolhColors.dark_grey),
+              ),
             ],
           ),
           Divider(),
