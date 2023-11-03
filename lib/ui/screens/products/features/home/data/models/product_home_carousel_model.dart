@@ -1,3 +1,5 @@
+import 'package:solh/ui/screens/products/features/home/domain/entities/product_home_carousel_entity.dart';
+
 class HomeProductCarouselModel {
   bool? success;
   List<Banners>? banners;
@@ -24,13 +26,19 @@ class HomeProductCarouselModel {
   }
 }
 
-class Banners {
+class Banners extends ProductHomeCarouselEntity {
   String? routeKey;
   String? sId;
   String? bannerImage;
   String? routeName;
 
-  Banners({this.routeKey, this.sId, this.bannerImage, this.routeName});
+  Banners({this.routeKey, this.sId, this.bannerImage, this.routeName})
+      : super(
+          bannerImage: bannerImage,
+          routeKey: routeKey,
+          routeName: routeName,
+          sId: sId,
+        );
 
   Banners.fromJson(Map<String, dynamic> json) {
     routeKey = json['routeKey'];
