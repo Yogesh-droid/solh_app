@@ -16,8 +16,6 @@ import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-
-import '../../../../../../../../routes/routes.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class ProductsHome extends StatefulWidget {
