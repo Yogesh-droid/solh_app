@@ -662,19 +662,6 @@ class _JournalingState extends State<Journaling> {
     DeleteJournal _deleteJournal = DeleteJournal(
         journalId: _journalPageController.journalsList.value[index].id!);
     await _deleteJournal.deletePost();
-    // _journalPageController
-    //     .videoPlayerController
-    //     .value
-    //     .removeAt(index - 1);
-    // _journalPageController
-    //     .journalsList.value
-    //     .removeAt(index - 1);
-    // _journalPageController
-    //     .videoPlayerController
-    //     .refresh();
-    // _journalPageController
-    //     .journalsList
-    //     .refresh();
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;

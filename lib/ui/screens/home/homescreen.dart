@@ -38,6 +38,7 @@ import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/products_carousel.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
@@ -119,6 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Get.find<JournalPageController>()
           .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
       homeController.getNotificationCount();
+      Get.find<CartController>().getCart();
     }
   }
 

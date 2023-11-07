@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
@@ -144,30 +145,41 @@ class ProductsCategories extends StatelessWidget {
                         );
                       },
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(25),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: SolhColors.Tertiary_Red,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRoutes.productList,
+                                arguments: {
+                                  "itemName": productMainCatController
+                                      .mainCatList[index].categoryName,
+                                  "id": productMainCatController
+                                      .mainCatList[index].id
+                                });
+                          },
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(25),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: SolhColors.Tertiary_Red,
+                                ),
+                                child: SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: Image.network(productMainCatController
+                                      .mainCatList[index].categoryImage!),
+                                ),
                               ),
-                              child: SizedBox(
-                                height: 30,
-                                width: 30,
-                                child: Image.network(productMainCatController
-                                    .mainCatList[index].categoryImage!),
+                              SizedBox(
+                                height: 5,
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              productMainCatController
-                                  .mainCatList[index].categoryName!,
-                              style: SolhTextStyles.QS_caption,
-                            ),
-                          ],
+                              Text(
+                                productMainCatController
+                                    .mainCatList[index].categoryName!,
+                                style: SolhTextStyles.QS_caption,
+                              ),
+                            ],
+                          ),
                         );
                       },
                     ),
