@@ -207,7 +207,6 @@ class GetProductStatsAndImage extends StatelessWidget {
             children: [
               Container(
                 height: 200,
-                width: 100.w,
                 child: PageView(
                   controller: pageController,
                   children: productDetailController
