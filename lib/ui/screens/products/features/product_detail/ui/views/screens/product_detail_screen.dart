@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:html/parser.dart';
 
 import 'package:readmore/readmore.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
@@ -192,6 +193,7 @@ class RelatedProductsSection extends StatelessWidget {
 class GetProductStatsAndImage extends StatelessWidget {
   GetProductStatsAndImage({super.key});
   ProductDetailController productDetailController = Get.find();
+  PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -203,8 +205,17 @@ class GetProductStatsAndImage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.network(productDetailController
-                  .productDetail.value.product!.productImage![0]),
+              Container(
+                height: 200,
+                width: 100.w,
+                child: PageView(
+                  controller: pageController,
+                  children: productDetailController
+                      .productDetail.value.product!.productImage!
+                      .map((e) => Image.network(e))
+                      .toList(),
+                ),
+              ),
             ],
           ),
           SizedBox(
