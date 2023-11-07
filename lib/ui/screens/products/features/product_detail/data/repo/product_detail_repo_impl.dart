@@ -9,14 +9,14 @@ import '../model/product_details_model.dart';
 
 class ProductDetailRepoImpl implements ProductDetailRepo {
   @override
-  Future<ProductDataState<ProductDetailEntity>> getProductDetail(
+  Future<ProductDataState<ProductDetailsModel>> getProductDetail(
       RequestParams params) async {
     try {
       final Map<String, dynamic> map =
           await Network.makeGetRequestWithToken(params.url);
       if (map['success']) {
         final value = ProductDetailsModel.fromJson(map);
-        return DataSuccess(data: value.product);
+        return DataSuccess(data: value);
       } else {
         return DataError(
             exception: Exception(map['messsge'] ?? "Something went wrong"));
