@@ -110,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
       debugPrint('mood meter shown');
       openMoodMeter();
       getTrendingDecoration();
+      homeController.getHomeProductsCarouserl();
       homeController.getHomeCarousel();
       liveStreamController.getLiveStreamForUserData();
       Prefs.setBool("isProfileCreated", true);

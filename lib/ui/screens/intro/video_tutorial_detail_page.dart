@@ -33,6 +33,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       getVideosPlaylist();
     });
+    print('currentVideo ${widget.videoTutorialModel.videoUrl}');
     videoTutorialController.currentVideo.value = widget.videoTutorialModel;
     controller = YoutubePlayerController(
         params: const YoutubePlayerParams(
@@ -42,6 +43,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       loop: false,
       enableCaption: true,
     ));
+    controller.loadVideo(widget.videoTutorialModel.videoUrl!);
     //  = () {
     //   controller.loadVideo(
     //       videoTutorialController.currentVideo.value.videoUrl ?? '');
@@ -134,11 +136,13 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                               '',
                           description: videoTutorialController
                                   .remainingVideos[index].description ??
-                              '',
+                              '', 
                           videoThumb: videoTutorialController
                                   .remainingVideos[index].videoThumbnail ??
                               '',
                           onTap: () {
+                            print(
+                                "ytVideo ${videoTutorialController.remainingVideos[index].videoUrl}");
                             controller.loadVideo(videoTutorialController
                                     .remainingVideos[index].videoUrl ??
                                 '');

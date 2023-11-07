@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 
 class ProductsCarousel extends StatelessWidget {
@@ -15,19 +16,32 @@ class ProductsCarousel extends StatelessWidget {
     return Obx(() {
       return _controller.isHomeProductsCarouselLoading.value
           ? Container()
-          : (CarouselSlider(
-              items: _controller
-                  .homePageCarouselModel.value.packageCarouselList!
-                  .map((e) => Image.network(e.image ?? ''))
-                  .toList(),
-              carouselController: buttonCarouselController,
-              options: CarouselOptions(
-                autoPlay: false,
-                enableInfiniteScroll: true,
-                enlargeCenterPage: true,
-                initialPage: 1,
-              ),
-            ));
+          : (_controller.productsHomeCarousel.value.banner!.length == 1
+              ? GestureDetector(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(AppRoutes.productsHome),
+                  child: AspectRatio(
+                    aspectRatio: 3 / 2,
+                    child: Image.network(_controller.productsHomeCarousel.value
+                            .banner![0].bannerImage ??
+                        ''),
+                  ),
+                )
+              : CarouselSlider(
+                  items: _controller.productsHomeCarousel.value.banner!
+                      .map((e) => GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(AppRoutes.productsHome),
+                          child: Image.network(e.bannerImage ?? '')))
+                      .toList(),
+                  carouselController: buttonCarouselController,
+                  options: CarouselOptions(
+                    autoPlay: false,
+                    enableInfiniteScroll: true,
+                    enlargeCenterPage: true,
+                    initialPage: 1,
+                  ),
+                ));
     });
   }
 }

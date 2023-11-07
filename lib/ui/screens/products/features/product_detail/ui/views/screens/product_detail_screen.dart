@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
@@ -10,8 +12,24 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatefulWidget {
+  ProductDetailScreen({Key? key, required Map<dynamic, dynamic> args})
+      : _id = args['id'],
+        super(key: key);
+
+  final String _id;
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  ProductDetailController productDetailController = Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    productDetailController.getProductDetail(widget._id);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
