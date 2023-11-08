@@ -398,6 +398,16 @@ class FeatureProductsSection extends StatelessWidget {
                             .featureProductList[index].sId,
                         stockAvailable: featureProductsController
                             .featureProductList[index].stockAvailable,
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.productDetailScreen,
+                              arguments: {
+                                "id": featureProductsController
+                                    .featureProductList[index].sId,
+                                'key': ObjectKey(featureProductsController
+                                    .featureProductList[index].sId)
+                              });
+                        },
                       );
                     },
                   ),
@@ -432,7 +442,9 @@ class YouMightFindHelpfulSection extends StatelessWidget {
               );
             },
             itemBuilder: (context, index) {
-              return ProductsCard();
+              return ProductsCard(
+                onPressed: null,
+              );
             },
           ),
         )

@@ -33,7 +33,9 @@ class FeatureProductsWidget extends StatelessWidget {
               );
             },
             itemBuilder: (context, index) {
-              return ProductsCard();
+              return ProductsCard(
+                onPressed: null,
+              );
             },
           ),
         )
@@ -53,6 +55,7 @@ class ProductsCard extends StatelessWidget {
     this.productQuantity,
     this.sId,
     this.stockAvailable,
+    required this.onPressed,
   });
 
   final String? sId;
@@ -63,12 +66,14 @@ class ProductsCard extends StatelessWidget {
   final int? stockAvailable;
   final String? description;
   final String? productQuantity;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .pushNamed(AppRoutes.productDetailScreen, arguments: {"id": sId}),
+      // onTap: () => Navigator.of(context)
+      //     .pushNamed(AppRoutes.productDetailScreen, arguments: {"id": sId}),
+      onTap: onPressed,
       child: Container(
         width: 220,
         decoration: BoxDecoration(

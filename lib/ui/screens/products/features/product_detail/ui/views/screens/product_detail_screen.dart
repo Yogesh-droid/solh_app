@@ -2,26 +2,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
-
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
-import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
+import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
-import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  ProductDetailScreen({Key? key, required Map<dynamic, dynamic> args})
+  ProductDetailScreen({required Map<dynamic, dynamic> args})
       : _id = args['id'],
-        super(key: key);
+        super(key: args['key']);
 
   final String _id;
   @override
@@ -30,11 +29,13 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   ProductDetailController productDetailController = Get.find();
+  late ProductDetailsModel productDetailsModel;
+  bool isLoading = false;
+
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      productDetailController.getProductDetail(widget._id);
+      getProductDetails();
     });
 
     super.initState();
@@ -44,9 +45,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget build(BuildContext context) {
     print("screen buid ${widget._id}");
     return Scaffold(
-      appBar: GetProductDeatilAppBar(),
-      body: Obx(() {
-        return productDetailController.isLoading.value
+        key: widget.key,
+        appBar: GetProductDeatilAppBar(),
+        body: isLoading
             ? Center(
                 child: MyLoader(),
               )
@@ -54,13 +55,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 children: [
                   ListView(
                     children: [
-                      GetProductStatsAndImage(),
+                      GetProductStatsAndImage(
+                          productDetailsModel: productDetailsModel),
                       GetHelpDivider(),
-                      ProductDetails(),
+                      ProductDetails(productDetailsModel: productDetailsModel),
                       GetHelpDivider(),
-                      ReviewsSection(),
+                      ReviewsSection(productDetailsModel: productDetailsModel),
                       GetHelpDivider(),
-                      RelatedProductsSection(),
+                      RelatedProductsSection(
+                          productDetailsModel: productDetailsModel),
                       SizedBox(
                         height: 90,
                       ),
@@ -73,15 +76,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: AddToCartBuyNowButton(),
                   )
                 ],
-              );
-      }),
-    );
+              ));
+  }
+
+  Future<void> getProductDetails() async {
+    isLoading = true;
+    setState(() {});
+    await productDetailController.getProductDetail(widget._id);
+    productDetailsModel = productDetailController.productDetail.value;
+    isLoading = false;
+    setState(() {});
   }
 }
 
 class ReviewsSection extends StatelessWidget {
-  ReviewsSection({super.key});
-  final ProductDetailController productDetailController = Get.find();
+  ReviewsSection({super.key, required this.productDetailsModel});
+  final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -95,39 +105,33 @@ class ReviewsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProductStarWidget(
-                  rating: productDetailController
-                      .productDetail.value.product!.overAllRating!
-                      .toDouble()),
+                  rating:
+                      productDetailsModel.product!.overAllRating!.toDouble()),
               Text(
-                '${productDetailController.productDetail.value.totalReview} global rating',
+                '${productDetailsModel.totalReview} global rating',
                 style: SolhTextStyles.QS_body_2,
               ),
               SizedBox(
                 height: 15,
               ),
               ListView.builder(
-                itemCount:
-                    productDetailController.productDetail.value.reviews!.length,
+                itemCount: productDetailsModel.reviews!.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ReviewCard(
-                    imageUrl: productDetailController.productDetail.value
+                    imageUrl: productDetailsModel
                         .reviews![index].userId!.profilePicture,
-                    name: productDetailController
-                            .productDetail.value.reviews![index].userId!.name ??
-                        '',
-                    rating: productDetailController
-                        .productDetail.value.reviews![index].rating!
-                        .toDouble(),
-                    review: productDetailController
-                        .productDetail.value.reviews![index].review,
-                    reviewedAt: productDetailController
-                        .productDetail.value.reviews![index].createdAt,
+                    name:
+                        productDetailsModel.reviews![index].userId!.name ?? '',
+                    rating:
+                        productDetailsModel.reviews![index].rating!.toDouble(),
+                    review: productDetailsModel.reviews![index].review,
+                    reviewedAt: productDetailsModel.reviews![index].createdAt,
                   );
                 },
               ),
-              productDetailController.productDetail.value.reviews!.length < 3
+              productDetailsModel.reviews!.length < 3
                   ? Container()
                   : Text(
                       'View all 20 reviews ',
@@ -146,8 +150,8 @@ class ReviewsSection extends StatelessWidget {
 }
 
 class RelatedProductsSection extends StatelessWidget {
-  RelatedProductsSection({super.key});
-  final ProductDetailController productDetailController = Get.find();
+  RelatedProductsSection({super.key, required this.productDetailsModel});
+  final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -161,8 +165,7 @@ class RelatedProductsSection extends StatelessWidget {
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
-            itemCount: productDetailController
-                .productDetail.value.product!.relatedProducts!.length,
+            itemCount: productDetailsModel.product!.relatedProducts!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
               return SizedBox(
@@ -171,22 +174,30 @@ class RelatedProductsSection extends StatelessWidget {
             },
             itemBuilder: (context, index) {
               return ProductsCard(
-                afterDiscountPrice: productDetailController.productDetail.value
+                afterDiscountPrice: productDetailsModel
                     .product!.relatedProducts![index].afterDiscountPrice,
-                description: productDetailController.productDetail.value
+                description: productDetailsModel
                     .product!.relatedProducts![index].description,
-                price: productDetailController
-                    .productDetail.value.product!.relatedProducts![index].price,
-                productName: productDetailController.productDetail.value
+                price:
+                    productDetailsModel.product!.relatedProducts![index].price,
+                productName: productDetailsModel
                     .product!.relatedProducts![index].productName,
-                productImage: productDetailController.productDetail.value
+                productImage: productDetailsModel
                     .product!.relatedProducts![index].productImage,
-                productQuantity: productDetailController.productDetail.value
+                productQuantity: productDetailsModel
                     .product!.relatedProducts![index].productQuantity,
-                sId: productDetailController
-                    .productDetail.value.product!.relatedProducts![index].sId,
-                stockAvailable: productDetailController.productDetail.value
+                sId: productDetailsModel.product!.relatedProducts![index].sId,
+                stockAvailable: productDetailsModel
                     .product!.relatedProducts![index].stockAvailable,
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(AppRoutes.productDetailScreen, arguments: {
+                    "id": productDetailsModel
+                        .product!.relatedProducts![index].sId,
+                    'key': ObjectKey(
+                        "${productDetailsModel.product!.relatedProducts![index].sId}")
+                  });
+                },
               );
             },
           ),
@@ -197,8 +208,9 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  GetProductStatsAndImage({super.key});
-  final ProductDetailController productDetailController = Get.find();
+  GetProductStatsAndImage({super.key, required this.productDetailsModel});
+  // final ProductDetailController productDetailController = Get.find();
+  final ProductDetailsModel productDetailsModel;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +220,9 @@ class GetProductStatsAndImage extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [GetProductImages()],
+          children: [
+            GetProductImages(productDetailsModel: productDetailsModel)
+          ],
         ),
         SizedBox(
           height: 10,
@@ -219,9 +233,7 @@ class GetProductStatsAndImage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                productDetailController
-                        .productDetail.value.product!.productName ??
-                    '',
+                productDetailsModel.product!.productName ?? '',
                 style: SolhTextStyles.QS_body_1_med,
               ),
               SizedBox(
@@ -233,9 +245,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        productDetailController
-                                .productDetail.value.product!.productQuantity ??
-                            '',
+                        productDetailsModel.product!.productQuantity ?? '',
                         style: SolhTextStyles.QS_body_2,
                       ),
                       SizedBox(
@@ -249,10 +259,8 @@ class GetProductStatsAndImage extends StatelessWidget {
                             color: Colors.yellow[700],
                           ),
                           Text(
-                            productDetailController
-                                    .productDetail.value.product!.overAllRating
-                                    .toString() ??
-                                '0',
+                            productDetailsModel.product!.overAllRating
+                                .toString(),
                             style: SolhTextStyles.QS_body_2,
                           ),
                         ],
@@ -260,7 +268,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Available in stock ${productDetailController.productDetail.value.product!.stockAvailable}',
+                    'Available in stock ${productDetailsModel.product!.stockAvailable}',
                     style: SolhTextStyles.QS_body_2,
                   )
                 ],
@@ -274,7 +282,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                          '${productDetailController.productDetail.value.product!.currency} ${productDetailController.productDetail.value.product!.afterDiscountPrice} ',
+                          '${productDetailsModel.product!.currency} ${productDetailsModel.product!.afterDiscountPrice} ',
                           style: SolhTextStyles.QS_big_body),
                       SizedBox(
                         width: 20,
@@ -290,7 +298,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            '${productDetailController.productDetail.value.product!.currency} ${productDetailController.productDetail.value.product!.price} ',
+                            '${productDetailsModel.product!.currency} ${productDetailsModel.product!.price} ',
                             style: SolhTextStyles.QS_big_body.copyWith(
                                 color: SolhColors.dark_grey,
                                 decoration: TextDecoration.lineThrough),
@@ -300,7 +308,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '${(100 - (productDetailController.productDetail.value.product!.afterDiscountPrice! / productDetailController.productDetail.value.product!.price!) * 100).toInt()}% OFF',
+                    '${(100 - (productDetailsModel.product!.afterDiscountPrice! / productDetailsModel.product!.price!) * 100).toInt()}% OFF',
                     style: SolhTextStyles.QS_body_2_semi.copyWith(
                         color: SolhColors.primary_green),
                   )
@@ -330,8 +338,8 @@ class GetProductStatsAndImage extends StatelessWidget {
 }
 
 class ProductDetails extends StatelessWidget {
-  ProductDetails({super.key});
-  final ProductDetailController productDetailController = Get.find();
+  ProductDetails({super.key, required this.productDetailsModel});
+  final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -341,8 +349,7 @@ class ProductDetails extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: productDetailController
-                .productDetail.value.product!.specification!
+            children: productDetailsModel.product!.specification!
                 .map((e) => Row(
                       children: [
                         Text(
@@ -363,11 +370,7 @@ class ProductDetails extends StatelessWidget {
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
               moreStyle:
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
-              parse(productDetailController
-                          .productDetail.value.product!.description ??
-                      '')
-                  .body!
-                  .text),
+              parse(productDetailsModel.product!.description ?? '').body!.text),
         ),
         SizedBox(
           height: 24,
@@ -408,14 +411,16 @@ class AddToCartBuyNowButton extends StatelessWidget {
 class GetProductImages extends StatefulWidget {
   const GetProductImages({
     super.key,
+    required this.productDetailsModel,
   });
+
+  final ProductDetailsModel productDetailsModel;
 
   @override
   State<GetProductImages> createState() => _GetProductImagesState();
 }
 
 class _GetProductImagesState extends State<GetProductImages> {
-  ProductDetailController productDetailController = Get.find();
   PageController pageController = PageController();
   int imageIndex = 0;
   @override
@@ -431,8 +436,7 @@ class _GetProductImagesState extends State<GetProductImages> {
               setState(() {});
             },
             controller: pageController,
-            children: productDetailController
-                .productDetail.value.product!.productImage!
+            children: widget.productDetailsModel.product!.productImage!
                 .map((e) => Image.network(e))
                 .toList(),
           ),
@@ -443,8 +447,7 @@ class _GetProductImagesState extends State<GetProductImages> {
           right: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: productDetailController
-                .productDetail.value.product!.productImage!
+            children: widget.productDetailsModel.product!.productImage!
                 .map((e) => Container(
                       child: Container(
                         margin: EdgeInsets.all(3),
@@ -453,8 +456,8 @@ class _GetProductImagesState extends State<GetProductImages> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: imageIndex ==
-                                  productDetailController.productDetail.value
-                                      .product!.productImage!
+                                  widget.productDetailsModel.product!
+                                      .productImage!
                                       .indexOf(e)
                               ? SolhColors.grey
                               : SolhColors.grey_3,
