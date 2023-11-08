@@ -402,7 +402,9 @@ class RouteGenerator {
       case AppRoutes.productsHome:
         return MaterialPageRoute(builder: ((context) => ProductsHome()));
       case AppRoutes.productDetailScreen:
-        return MaterialPageRoute(builder: ((context) => ProductDetailScreen()));
+        return MaterialPageRoute(
+            builder: ((context) =>
+                ProductDetailScreen(args: args as Map<String, dynamic>)));
       case AppRoutes.checkoutScreen:
         return MaterialPageRoute(
             builder: ((context) =>

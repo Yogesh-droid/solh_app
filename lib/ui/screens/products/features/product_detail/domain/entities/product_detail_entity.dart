@@ -1,46 +1,42 @@
-import '../../data/model/product_details_model.dart';
+// import '../../data/model/product_details_model.dart';
 
-class ProductDetailEntity {
-  final String? id;
-  final String? productName;
-  final List<String>? productImage;
-  final ProductCategory? productCategory;
-  final List<ProductSubCategory>? productSubCategory;
-  final List<RelatedProducts>? relatedProducts;
-  final int? price;
-  final int? afterDiscountPrice;
-  final String? slug;
-  final String? authorName;
-  final String? publisherName;
-  final String? language;
-  final String? isbn;
-  final int? rating;
-  final String? currency;
-  final int? stockAvailable;
-  final String? description;
-  final String? medicineType;
-  final String? productQuantity;
-  final int? v;
+// class ProductDetailEntity {
+//   String? sId;
+//   String? productName;
+//   List<String>? productImage;
+//   ProductCategory? productCategory;
+//   List<ProductSubCategory>? productSubCategory;
+//   List<RelatedProducts>? relatedProducts;
+//   int? price;
+//   int? afterDiscountPrice;
+//   String? language;
+//   int? rating;
+//   String? currency;
+//   int? stockAvailable;
+//   String? description;
+//   String? medicineType;
+//   String? productQuantity;
+//   List<Specification>? specification;
+//   int? iV;
+//   String? skuOrIsbn;
 
-  ProductDetailEntity(
-      {this.id,
-      this.relatedProducts,
-      this.afterDiscountPrice,
-      this.slug,
-      this.medicineType,
-      this.productName,
-      this.productImage,
-      this.productCategory,
-      this.productSubCategory,
-      this.price,
-      this.authorName,
-      this.publisherName,
-      this.language,
-      this.isbn,
-      this.rating,
-      this.currency,
-      this.stockAvailable,
-      this.description,
-      this.productQuantity,
-      this.v});
-}
+//   ProductDetailEntity(
+//       {this.sId,
+//       this.productName,
+//       this.productImage,
+//       this.productCategory,
+//       this.productSubCategory,
+//       this.relatedProducts,
+//       this.price,
+//       this.afterDiscountPrice,
+//       this.language,
+//       this.rating,
+//       this.currency,
+//       this.stockAvailable,
+//       this.description,
+//       this.medicineType,
+//       this.productQuantity,
+//       this.specification,
+//       this.iV,
+//       this.skuOrIsbn});
+// }

@@ -1,53 +1,87 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:html/parser.dart';
+
 import 'package:readmore/readmore.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
+import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
+import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatefulWidget {
+  ProductDetailScreen({Key? key, required Map<dynamic, dynamic> args})
+      : _id = args['id'],
+        super(key: key);
+
+  final String _id;
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  ProductDetailController productDetailController = Get.find();
+  @override
+  void initState() {
+    // TODO: implement initState
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      productDetailController.getProductDetail(widget._id);
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    print("screen buid ${widget._id}");
     return Scaffold(
       appBar: GetProductDeatilAppBar(),
-      body: Stack(
-        children: [
-          ListView(
-            children: [
-              GetProductStatsAndImage(),
-              GetHelpDivider(),
-              ProductDetails(),
-              GetHelpDivider(),
-              ReviewsSection(),
-              GetHelpDivider(),
-              RelatedProductsSection(),
-              SizedBox(
-                height: 90,
-              ),
-            ],
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: AddToCartBuyNowButton(),
-          )
-        ],
-      ),
+      body: Obx(() {
+        return productDetailController.isLoading.value
+            ? Center(
+                child: MyLoader(),
+              )
+            : Stack(
+                children: [
+                  ListView(
+                    children: [
+                      GetProductStatsAndImage(),
+                      GetHelpDivider(),
+                      ProductDetails(),
+                      GetHelpDivider(),
+                      ReviewsSection(),
+                      GetHelpDivider(),
+                      RelatedProductsSection(),
+                      SizedBox(
+                        height: 90,
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: AddToCartBuyNowButton(),
+                  )
+                ],
+              );
+      }),
     );
   }
 }
 
 class ReviewsSection extends StatelessWidget {
-  const ReviewsSection({super.key});
-
+  ReviewsSection({super.key});
+  final ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -60,27 +94,46 @@ class ReviewsSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ProductStarWidget(rating: 4.0),
+              ProductStarWidget(
+                  rating: productDetailController
+                      .productDetail.value.product!.overAllRating!
+                      .toDouble()),
               Text(
-                '56 global rating',
+                '${productDetailController.productDetail.value.totalReview} global rating',
                 style: SolhTextStyles.QS_body_2,
               ),
               SizedBox(
                 height: 15,
               ),
               ListView.builder(
-                itemCount: 3,
+                itemCount:
+                    productDetailController.productDetail.value.reviews!.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return ReviewCard();
+                  return ReviewCard(
+                    imageUrl: productDetailController.productDetail.value
+                        .reviews![index].userId!.profilePicture,
+                    name: productDetailController
+                            .productDetail.value.reviews![index].userId!.name ??
+                        '',
+                    rating: productDetailController
+                        .productDetail.value.reviews![index].rating!
+                        .toDouble(),
+                    review: productDetailController
+                        .productDetail.value.reviews![index].review,
+                    reviewedAt: productDetailController
+                        .productDetail.value.reviews![index].createdAt,
+                  );
                 },
               ),
-              Text(
-                'View all 20 reviews ',
-                style: SolhTextStyles.QS_body_2.copyWith(
-                    color: SolhColors.primary_green),
-              ),
+              productDetailController.productDetail.value.reviews!.length < 3
+                  ? Container()
+                  : Text(
+                      'View all 20 reviews ',
+                      style: SolhTextStyles.QS_body_2.copyWith(
+                          color: SolhColors.primary_green),
+                    ),
               SizedBox(
                 height: 15,
               )
@@ -93,8 +146,8 @@ class ReviewsSection extends StatelessWidget {
 }
 
 class RelatedProductsSection extends StatelessWidget {
-  const RelatedProductsSection({super.key});
-
+  RelatedProductsSection({super.key});
+  final ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -108,7 +161,8 @@ class RelatedProductsSection extends StatelessWidget {
           child: ListView.separated(
             padding: EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
-            itemCount: 5,
+            itemCount: productDetailController
+                .productDetail.value.product!.relatedProducts!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
               return SizedBox(
@@ -116,7 +170,24 @@ class RelatedProductsSection extends StatelessWidget {
               );
             },
             itemBuilder: (context, index) {
-              return ProductsCard();
+              return ProductsCard(
+                afterDiscountPrice: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].afterDiscountPrice,
+                description: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].description,
+                price: productDetailController
+                    .productDetail.value.product!.relatedProducts![index].price,
+                productName: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].productName,
+                productImage: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].productImage,
+                productQuantity: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].productQuantity,
+                sId: productDetailController
+                    .productDetail.value.product!.relatedProducts![index].sId,
+                stockAvailable: productDetailController.productDetail.value
+                    .product!.relatedProducts![index].stockAvailable,
+              );
             },
           ),
         )
@@ -126,127 +197,164 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  const GetProductStatsAndImage({super.key});
+  GetProductStatsAndImage({super.key});
+  final ProductDetailController productDetailController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Image.network("https://picsum.photos/200"),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-            'Ashwagandha Gummies - Promotes stress reduction',
-            style: SolhTextStyles.QS_body_1_med,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [GetProductImages()],
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Text(
-                    'Bottle of 60 Tablets',
-                    style: SolhTextStyles.QS_body_2,
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        size: 15,
-                        color: Colors.yellow[700],
-                      ),
-                      Text(
-                        '4.0',
-                        style: SolhTextStyles.QS_body_2,
-                      ),
-                    ],
-                  )
-                ],
-              ),
               Text(
-                'Available in stock 20',
-                style: SolhTextStyles.QS_body_2,
-              )
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+                productDetailController
+                        .productDetail.value.product!.productName ??
+                    '',
+                style: SolhTextStyles.QS_body_1_med,
+              ),
+              SizedBox(
+                height: 10,
+              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('₹ 499', style: SolhTextStyles.QS_big_body),
-                  SizedBox(
-                    width: 20,
-                  ),
                   Row(
                     children: [
                       Text(
-                        'MRP',
-                        style: SolhTextStyles.QS_big_body.copyWith(
-                            color: SolhColors.grey_2),
+                        productDetailController
+                                .productDetail.value.product!.productQuantity ??
+                            '',
+                        style: SolhTextStyles.QS_body_2,
                       ),
                       SizedBox(
                         width: 5,
                       ),
-                      Text(
-                        '₹ 699',
-                        style: SolhTextStyles.QS_big_body.copyWith(
-                            color: SolhColors.dark_grey,
-                            decoration: TextDecoration.lineThrough),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            size: 15,
+                            color: Colors.yellow[700],
+                          ),
+                          Text(
+                            productDetailController
+                                    .productDetail.value.product!.overAllRating
+                                    .toString() ??
+                                '0',
+                            style: SolhTextStyles.QS_body_2,
+                          ),
+                        ],
                       )
                     ],
+                  ),
+                  Text(
+                    'Available in stock ${productDetailController.productDetail.value.product!.stockAvailable}',
+                    style: SolhTextStyles.QS_body_2,
                   )
                 ],
               ),
-              Text(
-                '40% OFF',
-                style: SolhTextStyles.QS_body_2_semi.copyWith(
-                    color: SolhColors.primary_green),
-              )
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'Mfr: Dabar Pharmaceuticals India Pvt Ltd',
-                style: SolhTextStyles.QS_caption,
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                          '${productDetailController.productDetail.value.product!.currency} ${productDetailController.productDetail.value.product!.afterDiscountPrice} ',
+                          style: SolhTextStyles.QS_big_body),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'MRP',
+                            style: SolhTextStyles.QS_big_body.copyWith(
+                                color: SolhColors.grey_2),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            '${productDetailController.productDetail.value.product!.currency} ${productDetailController.productDetail.value.product!.price} ',
+                            style: SolhTextStyles.QS_big_body.copyWith(
+                                color: SolhColors.dark_grey,
+                                decoration: TextDecoration.lineThrough),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                  Text(
+                    '${(100 - (productDetailController.productDetail.value.product!.afterDiscountPrice! / productDetailController.productDetail.value.product!.price!) * 100).toInt()}% OFF',
+                    style: SolhTextStyles.QS_body_2_semi.copyWith(
+                        color: SolhColors.primary_green),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Mfr: Dabar Pharmaceuticals India Pvt Ltd',
+                    style: SolhTextStyles.QS_caption,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 15,
               ),
             ],
           ),
-          SizedBox(
-            height: 15,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
 
 class ProductDetails extends StatelessWidget {
-  const ProductDetails({super.key});
-
+  ProductDetails({super.key});
+  final ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         GetHelpCategory(title: 'Product Details'),
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: productDetailController
+                .productDetail.value.product!.specification!
+                .map((e) => Row(
+                      children: [
+                        Text(
+                          e.label ?? '',
+                          style: SolhTextStyles.CTA,
+                        ),
+                        Text(' : ${e.value}')
+                      ],
+                    ))
+                .toList(),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ReadMoreText(
@@ -255,7 +363,11 @@ class ProductDetails extends StatelessWidget {
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
               moreStyle:
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
-              "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+              parse(productDetailController
+                          .productDetail.value.product!.description ??
+                      '')
+                  .body!
+                  .text),
         ),
         SizedBox(
           height: 24,
@@ -289,6 +401,70 @@ class AddToCartBuyNowButton extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class GetProductImages extends StatefulWidget {
+  const GetProductImages({
+    super.key,
+  });
+
+  @override
+  State<GetProductImages> createState() => _GetProductImagesState();
+}
+
+class _GetProductImagesState extends State<GetProductImages> {
+  ProductDetailController productDetailController = Get.find();
+  PageController pageController = PageController();
+  int imageIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 200,
+          width: 100.w,
+          child: PageView(
+            onPageChanged: (value) {
+              imageIndex = value;
+              setState(() {});
+            },
+            controller: pageController,
+            children: productDetailController
+                .productDetail.value.product!.productImage!
+                .map((e) => Image.network(e))
+                .toList(),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: productDetailController
+                .productDetail.value.product!.productImage!
+                .map((e) => Container(
+                      child: Container(
+                        margin: EdgeInsets.all(3),
+                        height: 6,
+                        width: 6,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: imageIndex ==
+                                  productDetailController.productDetail.value
+                                      .product!.productImage!
+                                      .indexOf(e)
+                              ? SolhColors.grey
+                              : SolhColors.grey_3,
+                        ),
+                      ),
+                    ))
+                .toList(),
+          ),
+        )
+      ],
     );
   }
 }

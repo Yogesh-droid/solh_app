@@ -10,11 +10,11 @@ class ProductStarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _getStars(4.3),
+        _getStars(rating),
         SizedBox(
           width: 5,
         ),
-        Text('4.0 out of 5', style: SolhTextStyles.QS_body_2),
+        Text('$rating out of 5', style: SolhTextStyles.QS_body_2),
       ],
     );
   }
