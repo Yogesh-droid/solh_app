@@ -7,7 +7,10 @@ import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/default_org.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
+import '../../../../../../../../routes/routes.dart';
 
 class CheckoutScreen extends StatefulWidget {
   CheckoutScreen({Key? key, required Map<String, dynamic> args})
@@ -73,46 +76,49 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       return Padding(
                           padding: const EdgeInsets.only(right: 12),
                           child: SheetCartItem(
-                              image: cartController.cartEntity.value.cartList!
-                                  .items![index].productId!.productImage![0],
-                              id: cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id ??
-                                  '',
-                              discountedPrice: cartController
-                                  .cartEntity
-                                  .value
-                                  .cartList!
-                                  .items![index]
-                                  .productId!
-                                  .afterDiscountPrice,
-                              currency: 'Rs',
-                              inCartNo: cartController.cartEntity.value
-                                  .cartList!.items![index].quantity,
-                              itemPrice: cartController.cartEntity.value
-                                  .cartList!.items![index].productId!.price,
-                              productName: cartController
-                                  .cartEntity
-                                  .value
-                                  .cartList!
-                                  .items![index]
-                                  .productId!
-                                  .productName,
-                              onIncreaseCartCount: () {
-                                widget.onIncreaseCartCount(
-                                    index,
-                                    cartController.cartEntity.value.cartList!
-                                        .items![index].productId!.id!,
-                                    cartController.cartEntity.value.cartList!
-                                        .items![index].quantity!);
-                              },
-                              onDecreaseCartCount: () {
-                                widget.onDecreaseCartCount(
-                                    index,
-                                    cartController.cartEntity.value.cartList!
-                                        .items![index].productId!.id!,
-                                    cartController.cartEntity.value.cartList!
-                                        .items![index].quantity!);
-                              }));
+                            image: cartController.cartEntity.value.cartList!
+                                .items![index].productId!.productImage![0],
+                            id: cartController.cartEntity.value.cartList!
+                                    .items![index].productId!.id ??
+                                '',
+                            discountedPrice: cartController
+                                .cartEntity
+                                .value
+                                .cartList!
+                                .items![index]
+                                .productId!
+                                .afterDiscountPrice,
+                            currency: 'Rs',
+                            inCartNo: cartController.cartEntity.value.cartList!
+                                .items![index].quantity,
+                            itemPrice: cartController.cartEntity.value.cartList!
+                                .items![index].productId!.price,
+                            productName: cartController.cartEntity.value
+                                .cartList!.items![index].productId!.productName,
+                            onIncreaseCartCount: () {
+                              widget.onIncreaseCartCount(
+                                  index,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].quantity!);
+                            },
+                            onDecreaseCartCount: () {
+                              widget.onDecreaseCartCount(
+                                  index,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].quantity!);
+                            },
+                            onDeleteItem: () {
+                              widget.onDecreaseCartCount(
+                                  index,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!,
+                                  1);
+                            },
+                          ));
                     },
                   )),
               GetHelpDivider(),
@@ -247,6 +253,22 @@ class CheckoutButton extends StatelessWidget {
             ],
           ),
           SolhGreenMiniButton(
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
+                "amount":
+                    "${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}",
+                "feeCurrency": "Rs",
+                // "alliedOrderId": map['data']["alliedOrderId"],
+                "appointmentId": null,
+                "inhouseOrderId": null,
+                "marketplaceType": "Allied",
+                // 'original_price': packages.amount,
+                'organisation': DefaultOrg.defaultOrg ?? '',
+                "paymentGateway": "Stripe",
+                "paymentSource": "App",
+                "feeCode": "INR"
+              });
+            },
             child: Text(
               'Checkout',
               style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),

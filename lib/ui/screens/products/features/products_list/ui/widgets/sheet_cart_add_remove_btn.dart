@@ -28,7 +28,7 @@ class SheetCartAddRemoveBtn extends StatelessWidget {
     return Container(
       width: 70,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: SolhColors.grey_2),
+          borderRadius: BorderRadius.circular(20), color: SolhColors.grey_3),
       height: 25,
       child: Obx(() => addToCartController.addingToCart.value ||
               cartController.isCartLoading.value

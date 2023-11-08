@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
@@ -47,106 +48,113 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                     isExpaded ? MediaQuery.of(context).size.height / 2 : 5,
                 blurStyle: BlurStyle.normal)
           ]),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: Column(
-          children: [
-            isExpaded
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(),
-                      SizedBox(
-                        height: 40,
-                        child: Icon(Icons.remove, size: 30, color: Colors.grey),
+      child: InkWell(
+        onTap: () {
+          if (!isExpaded) {
+            isExpaded = !isExpaded;
+            setState(() {});
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
+          child: Column(
+            children: [
+              isExpaded
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(),
+                          Container(
+                            height: 8,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: SolhColors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              isExpaded = false;
+                              setState(() {});
+                            },
+                            child: Icon(
+                              CupertinoIcons.clear_thick,
+                              color: SolhColors.grey,
+                            ),
+                          )
+                        ],
                       ),
-                      Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: SolhColors.grey_2),
-                        child: Center(
-                          child: IconButton.filled(
-                              onPressed: () {
-                                isExpaded = false;
-                                setState(() {});
-                              },
-                              icon: Icon(Icons.close,
-                                  color: Colors.black, size: 15)),
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox.shrink(),
-            Expanded(child: isExpaded ? itemList() : SizedBox()),
-            Row(children: [
-              SizedBox(
-                child: Row(children: [
-                  Text(
-                    "${widget.noOfItemsInCart} items",
-                    style: GoogleFonts.quicksand(
-                        textStyle:
-                            SolhTextStyles.CTA.copyWith(color: Colors.black)),
-                  ),
-                  IconButton.filled(
-                      onPressed: () {
-                        isExpaded = !isExpaded;
-                        setState(() {});
-                      },
-                      icon: Icon(
-                        Icons.arrow_drop_up,
-                        color: SolhColors.primary_green,
-                      ))
-                ]),
-              ),
-              Spacer(),
-              SolhGreenButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.checkoutScreen,
-                        arguments: {
-                          "onDecrease": (index, id, quantity) {
-                            //  Id saved in controller so that we can check on which item we need to show loader//
-                            Get.find<AddToCartController>()
-                                    .indexOfItemToBeUpdated
-                                    .value =
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].productId!.id!;
-                            //////////////
+                    )
+                  : SizedBox.shrink(),
+              Expanded(child: isExpaded ? itemList() : SizedBox()),
+              Row(children: [
+                SizedBox(
+                  child: Row(children: [
+                    Text(
+                      "${widget.noOfItemsInCart} items",
+                      style: GoogleFonts.quicksand(
+                          textStyle:
+                              SolhTextStyles.CTA.copyWith(color: Colors.black)),
+                    ),
+                    SizedBox(width: 15),
+                    Icon(
+                      Icons.arrow_drop_up,
+                      color: SolhColors.primary_green,
+                    )
+                  ]),
+                ),
+                Spacer(),
+                SolhGreenButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.checkoutScreen,
+                          arguments: {
+                            "onDecrease": (index, id, quantity) {
+                              //  Id saved in controller so that we can check on which item we need to show loader//
+                              Get.find<AddToCartController>()
+                                      .indexOfItemToBeUpdated
+                                      .value =
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!;
+                              //////////////
 
-                            widget.onDecreaseCartCount(
-                                index,
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].productId!.id!,
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].quantity!);
-                          },
-                          "onIncrease": (index, id, quantity) {
-                            //  Id saved in controller so that we can check on which item we need to show loader//
-                            Get.find<AddToCartController>()
-                                    .indexOfItemToBeUpdated
-                                    .value =
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].productId!.id!;
-                            //////////////
+                              widget.onDecreaseCartCount(
+                                  index,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].quantity!);
+                            },
+                            "onIncrease": (index, id, quantity) {
+                              //  Id saved in controller so that we can check on which item we need to show loader//
+                              Get.find<AddToCartController>()
+                                      .indexOfItemToBeUpdated
+                                      .value =
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!;
+                              //////////////
 
-                            widget.onIncreaseCartCount(
-                                index,
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].productId!.id!,
-                                cartController.cartEntity.value.cartList!
-                                    .items![index].quantity!);
-                          }
-                        });
-                  },
-                  height: 30,
-                  width: 100,
-                  child: Text(
-                    "Next",
-                    style: GoogleFonts.quicksand(
-                        textStyle: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.white)),
-                  ))
-            ]),
-          ],
+                              widget.onIncreaseCartCount(
+                                  index,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].productId!.id!,
+                                  cartController.cartEntity.value.cartList!
+                                      .items![index].quantity!);
+                            }
+                          });
+                    },
+                    height: 30,
+                    width: 100,
+                    child: Text(
+                      "Next",
+                      style: GoogleFonts.quicksand(
+                          textStyle: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.white)),
+                    ))
+              ]),
+            ],
+          ),
         ),
       ),
     );
@@ -201,6 +209,21 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                               .items![index].productId!.id!,
                           cartController.cartEntity.value.cartList!
                               .items![index].quantity!);
+                    },
+                    onDeleteItem: () {
+                      //  Id saved in controller so that we can check on which item we need to show loader//
+                      Get.find<AddToCartController>()
+                              .indexOfItemToBeUpdated
+                              .value =
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.id!;
+                      //////////////
+
+                      widget.onDecreaseCartCount(
+                          index,
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.id!,
+                          1);
                     },
                     id: cartController.cartEntity.value.cartList!.items![index]
                         .productId!.id!);

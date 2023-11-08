@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/item_widget.dart';
@@ -20,7 +21,8 @@ class SheetCartItem extends StatelessWidget {
       this.isWishListed,
       required this.id,
       required this.onIncreaseCartCount,
-      required this.onDecreaseCartCount});
+      required this.onDecreaseCartCount,
+      required this.onDeleteItem});
 
   final String image;
   final String? productName;
@@ -33,6 +35,7 @@ class SheetCartItem extends StatelessWidget {
   final String id;
   final Function() onIncreaseCartCount;
   final Function() onDecreaseCartCount;
+  final Function() onDeleteItem;
 
   @override
   Widget build(BuildContext context) {
@@ -58,12 +61,32 @@ class SheetCartItem extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(productName ?? '',
-                        style: SolhTextStyles.QS_body_2_bold.copyWith(
-                            color: SolhColors.black,
-                            fontFamily: GoogleFonts.quicksand().fontFamily),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Text(productName ?? '',
+                              style: SolhTextStyles.QS_body_2_bold.copyWith(
+                                  color: SolhColors.black,
+                                  fontFamily:
+                                      GoogleFonts.quicksand().fontFamily),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                        Spacer(),
+                        Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: onDeleteItem,
+                              child: Icon(
+                                CupertinoIcons.delete,
+                                color: SolhColors.primaryRed,
+                                size: 20,
+                              ),
+                            ))
+                      ],
+                    ),
                     SizedBox(height: 10),
                     Spacer(),
                     Row(
