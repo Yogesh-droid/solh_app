@@ -598,7 +598,7 @@ class _HomePageState extends State<HomePage> {
           ),
           getRecommendedReadsUI(),
           GetHelpDivider(),
-          FeatureProductsWidget(),
+          //FeatureProductsWidget(),
           SizedBox(
             height: 70,
           ),
