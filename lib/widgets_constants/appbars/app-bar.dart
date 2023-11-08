@@ -451,9 +451,13 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(
           width: 10,
         ),
-        Icon(
-          CupertinoIcons.heart_fill,
-          color: SolhColors.primaryRed,
+        GestureDetector(
+          onTap: () =>
+              Navigator.of(context).pushNamed(AppRoutes.productWishlistScreen),
+          child: Icon(
+            CupertinoIcons.heart_fill,
+            color: SolhColors.primaryRed,
+          ),
         ),
         SizedBox(
           width: 10,

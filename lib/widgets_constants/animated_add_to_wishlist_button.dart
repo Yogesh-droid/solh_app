@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
+// ignore: must_be_immutable
 class AnimatedAddToWishlistButton extends StatefulWidget {
   AnimatedAddToWishlistButton(
       {super.key, this.isSelected = false, this.onClick});
@@ -23,7 +22,7 @@ class _AnimatedAddToWishlistButtonState
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 100));
 

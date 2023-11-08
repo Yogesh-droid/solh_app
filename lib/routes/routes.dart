@@ -52,6 +52,7 @@ import 'package:solh/ui/screens/products/features/cart/ui/views/screen/checkout_
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/screens/product_detail_screen.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/screens/product_listing.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/view/screen/product_wishlist_screen.dart';
 import 'package:solh/ui/screens/profile-setupV2/Dob-page/dob_page.dart';
 import 'package:solh/ui/screens/profile-setupV2/LetsCreateYourprofile/lets_create_your_profile.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/profile_completion/gender-page/gender_field.dart';
@@ -402,6 +403,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => AddEmailOnboarding()));
       case AppRoutes.productsHome:
         return MaterialPageRoute(builder: ((context) => ProductsHome()));
+      case AppRoutes.productWishlistScreen:
+        return MaterialPageRoute(
+            builder: ((context) => ProductWishlistScreen()));
       case AppRoutes.productDetailScreen:
         return MaterialPageRoute(
             builder: ((context) =>

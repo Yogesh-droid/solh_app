@@ -4,7 +4,6 @@ import 'package:solh/constants/api.dart';
 import 'package:solh/ui/screens/products/core/data_state/product_data_state.dart';
 import 'package:solh/ui/screens/products/core/request_params/request_params.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
-import 'package:solh/ui/screens/products/features/product_detail/domain/entities/product_detail_entity.dart';
 import 'package:solh/ui/screens/products/features/product_detail/domain/usecases/product_detail_usecase.dart';
 
 class ProductDetailController extends GetxController {

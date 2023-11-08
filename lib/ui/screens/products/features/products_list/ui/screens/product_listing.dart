@@ -137,8 +137,12 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
 
   Future<void> onDecreaseCartCount(int index, String id, int quantity) async {
     if (index >= 0) {
-      productsListController.productList[index].inCartCount =
-          productsListController.productList[index].inCartCount! - 1;
+      if (quantity > 1) {
+        productsListController.productList[index].inCartCount =
+            productsListController.productList[index].inCartCount! - 1;
+      } else {
+        productsListController.productList[index].inCartCount = 0;
+      }
 
       productsListController.productList.refresh();
     }
