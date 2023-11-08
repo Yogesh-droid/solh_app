@@ -110,9 +110,9 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0.5,
         backgroundColor: backgroundColor,
         actions: [
-          _isProductsPage != null || _isProductsPage != false
-              ? CartButton(itemsInCart: 2)
-              : Container(),
+          // _isProductsPage != null || _isProductsPage != false
+          //     ? CartButton(itemsInCart: 2)
+          //     : Container(),
           _isDiaryBtnShown != null
               ? IconButton(
                   onPressed: () {
@@ -428,6 +428,45 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
           color: backButtonColor,
         ),
         onPressed: onBackButton,
+      ),
+    );
+  }
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size(0, 50);
+}
+
+class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
+  ProductsAppBar({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      actions: [
+        CartButton(itemsInCart: 2),
+        SizedBox(
+          width: 10,
+        ),
+        Icon(
+          CupertinoIcons.heart_fill,
+          color: SolhColors.primaryRed,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        SOSButton()
+      ],
+      elevation: 0,
+      leading: IconButton(
+        icon: Icon(
+          CupertinoIcons.back,
+          color: SolhColors.black,
+        ),
+        onPressed: () => Navigator.of(context).pop(),
       ),
     );
   }

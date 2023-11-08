@@ -47,7 +47,7 @@ class Product {
   int? price;
   int? afterDiscountPrice;
   String? language;
-  int? rating;
+  double? rating;
   String? currency;
   int? stockAvailable;
   String? description;
@@ -101,7 +101,7 @@ class Product {
     price = json['price'];
     afterDiscountPrice = json['afterDiscountPrice'];
     language = json['language'];
-    rating = json['rating'];
+
     currency = json['currency'];
     stockAvailable = json['stockAvailable'];
     description = json['description'];

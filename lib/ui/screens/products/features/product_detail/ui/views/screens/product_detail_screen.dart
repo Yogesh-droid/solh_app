@@ -36,7 +36,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       productDetailController.getProductDetail(widget._id);
     });
-
     super.initState();
   }
 

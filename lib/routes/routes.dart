@@ -185,6 +185,7 @@ class AppRoutes {
   static const String productDetailScreen = '/productDetailScreen';
   static const String checkoutScreen = "/checkoutScreen";
   static const String productList = "/productList";
+  static const String productWishlistScreen = "/productWishlistScreen";
 }
 
 class RouteGenerator {
