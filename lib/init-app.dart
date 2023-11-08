@@ -44,8 +44,10 @@ Future<bool> isNewUser() async {
   print("##########" * 30 + "\n" + "Id Token: $idToken");
   print("*" * 30 + "\n" + "One Token: $oneSignalId");
 
+  String phone = await Prefs.getString('phone') ?? '';
+
   bool? sessionCookie = await SessionCookie.createSessionCookie(
-    idToken ?? '',
+    phone,
     fcmToken,
     oneSignalId,
     deviceType,

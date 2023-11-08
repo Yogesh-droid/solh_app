@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -6,9 +8,9 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
-import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/privacy_web.dart';
@@ -17,6 +19,7 @@ import 'package:solh/widgets_constants/text_field_styles.dart';
 
 import '../../../../../controllers/getHelp/search_market_controller.dart';
 
+// ignore: must_be_immutable
 class PhoneAuthCommonWidget extends StatelessWidget {
   PhoneAuthCommonWidget({Key? key, required this.isLogin}) : super(key: key);
 
@@ -31,13 +34,23 @@ class PhoneAuthCommonWidget extends StatelessWidget {
 
   signInWithPhoneNumber(context, String country) async {
     phoneAuthController.isRequestingAuth.value = true;
-    firebaseNetwork.signInWithPhoneNumber(
-      context,
-      phoneAuthController.countryCode + phoneAuthController.phoneNumber.text,
-    );
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences.setString('userCountry', country);
-    Get.find<SearchMarketController>().country = country;
+    await phoneAuthController.login(
+        phoneAuthController.countryCode, phoneAuthController.phoneNumber.text);
+
+    if (phoneAuthController.map['success']) {
+      log(phoneAuthController.map['message']);
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setString('userCountry', country);
+      Get.find<SearchMarketController>().country = country;
+      Navigator.pushNamed(context, AppRoutes.otpVerification, arguments: {
+        "phoneNumber": phoneAuthController.phoneNumber.text,
+        "dialCode": phoneAuthController.countryCode
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(phoneAuthController.map['message'])));
+    }
   }
 
   @override
@@ -94,32 +107,31 @@ class PhoneAuthCommonWidget extends StatelessWidget {
               SizedBox(
                 height: 2.h,
               ),
-              Obx(() {
-                return phoneAuthController.isRequestingAuth.value
-                    ? SolhGreenBorderButton(
-                        child: ButtonLoadingAnimation(
-                          ballColor: SolhColors.primary_green,
-                          ballSizeLowerBound: 3,
-                          ballSizeUpperBound: 8,
-                        ),
-                      )
-                    : SolhGreenButton(
-                        width: double.maxFinite,
-                        child: Text(
-                          'Continue'.tr,
-                        ),
-                        onPressed: (() {
-                          if (phoneAuthController.phoneNumber.text
-                              .trim()
-                              .isEmpty) {
-                            SolhSnackbar.error(
-                                'Opps !!', 'Enter a valid number');
-                          } else {
-                            signInWithPhoneNumber(context, country ?? 'IN');
-                          }
-                        }),
-                      );
-              }),
+              // Obx(() {
+              //   return
+              // phoneAuthController.isRequestingAuth.value
+              //     ? SolhGreenBorderButton(
+              //         child: ButtonLoadingAnimation(
+              //           ballColor: SolhColors.primary_green,
+              //           ballSizeLowerBound: 3,
+              //           ballSizeUpperBound: 8,
+              //         ),
+              //       )
+              //     :
+              SolhGreenButton(
+                width: double.maxFinite,
+                child: Text(
+                  'Continue'.tr,
+                ),
+                onPressed: (() {
+                  if (phoneAuthController.phoneNumber.text.trim().isEmpty) {
+                    SolhSnackbar.error('Opps !!', 'Enter a valid number');
+                  } else {
+                    signInWithPhoneNumber(context, country ?? 'IN');
+                  }
+                }),
+              ),
+              // }),
               SizedBox(
                 height: 1.h,
               ),
