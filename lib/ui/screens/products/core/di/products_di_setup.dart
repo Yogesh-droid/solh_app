@@ -74,4 +74,12 @@ void productControllerSetup() {
   Get.put(GetReviewsUsecase(getReviewsRepo: Get.find<GetReviewsRepo>()));
   Get.put(
       GetReviewsController(getReviewsUsecase: Get.find<GetReviewsUsecase>()));
+
+  //wishlist
+  Get.put<GetWishlistItemsRepo>(GetWishlistItemsRepoImpl());
+
+  Get.put<ProductWishlistUsecase>(ProductWishlistUsecase(
+      getWishlistItemsRepo: Get.find<GetWishlistItemsRepo>()));
+  Get.put<ProductWishlistController>(ProductWishlistController(
+      productWishlistUsecase: Get.find<ProductWishlistUsecase>()));
 }

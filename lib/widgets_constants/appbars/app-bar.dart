@@ -438,10 +438,11 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
 }
 
 class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  ProductsAppBar({
-    Key? key,
-  }) : super(key: key);
-
+  ProductsAppBar({Key? key, this.enableWishlist = true})
+      : super(
+          key: key,
+        );
+  bool enableWishlist;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -451,14 +452,16 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(
           width: 10,
         ),
-        GestureDetector(
-          onTap: () =>
-              Navigator.of(context).pushNamed(AppRoutes.productWishlistScreen),
-          child: Icon(
-            CupertinoIcons.heart_fill,
-            color: SolhColors.primaryRed,
-          ),
-        ),
+        enableWishlist
+            ? GestureDetector(
+                onTap: () => Navigator.of(context)
+                    .pushNamed(AppRoutes.productWishlistScreen),
+                child: Icon(
+                  CupertinoIcons.heart_fill,
+                  color: SolhColors.primaryRed,
+                ),
+              )
+            : Container(),
         SizedBox(
           width: 10,
         ),
