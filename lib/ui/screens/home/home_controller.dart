@@ -76,7 +76,7 @@ class HomeController extends GetxController {
   Future<void> getHomeProductsCarouserl() async {
     isHomeProductsCarouselLoading(true);
     try {
-      Map<String, dynamic> map = await Network.makeHttpGetRequestWithToken(
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           "${APIConstants.api}/api/product/main-homepage-product-banner");
       if (map['success']) {
         productsHomeCarousel.value = ProductsHomeCarousel.fromJson(map);
@@ -89,7 +89,6 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    getHomeProductsCarouserl();
     super.onInit();
   }
 }

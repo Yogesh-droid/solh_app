@@ -59,7 +59,7 @@ class _ProductsHomeState extends State<ProductsHome> {
                 GetHelpDivider(),
                 FeatureProductsSection(),
                 GetHelpDivider(),
-                YouMightFindHelpfulSection(),
+                // YouMightFindHelpfulSection(),
                 SizedBox(
                   height: 100,
                 ),

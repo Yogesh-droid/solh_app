@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:solh/ui/screens/psychology-test/test_history_details.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ReviewCard extends StatelessWidget {
-  const ReviewCard({super.key});
-
+  const ReviewCard({
+    super.key,
+    required this.imageUrl,
+    required this.name,
+    required this.rating,
+    required this.review,
+    this.reviewedAt,
+  });
+  final String? imageUrl;
+  final String? name;
+  final double? rating;
+  final String? reviewedAt;
+  final String? review;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +29,7 @@ class ReviewCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SimpleImageContainer(
-                imageUrl: 'https://picsum.photos/200',
+                imageUrl: imageUrl ?? '',
                 radius: 45,
               ),
               SizedBox(
@@ -26,13 +39,13 @@ class ReviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Amit Kumar',
+                    name ?? '',
                     style: SolhTextStyles.QS_body_1_med,
                   ),
                   SizedBox(
                     height: 2,
                   ),
-                  _getReviewContainer(3.6)
+                  _getReviewContainer(rating ?? 0)
                 ],
               )
             ],
@@ -40,12 +53,12 @@ class ReviewCard extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Text('Reviewed on 23 August 2023'),
+          Text('Reviewed ${timeago.format(DateTime.parse(reviewedAt!))}'),
           SizedBox(
             height: 10,
           ),
           Text(
-            'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            review ?? '',
             style: SolhTextStyles.QS_body_2.copyWith(color: SolhColors.black),
           ),
           SizedBox(
