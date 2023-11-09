@@ -33,7 +33,6 @@ class PhoneAuthCommonWidget extends StatelessWidget {
   final isLogin;
 
   signInWithPhoneNumber(context, String country) async {
-    phoneAuthController.isRequestingAuth.value = true;
     await phoneAuthController.login(
         phoneAuthController.countryCode, phoneAuthController.phoneNumber.text);
 
