@@ -4,7 +4,24 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class WishlistCard extends StatelessWidget {
-  const WishlistCard({super.key});
+  const WishlistCard({
+    super.key,
+    required this.currency,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.productImage,
+    required this.productName,
+    required this.productQuantity,
+    required this.sId,
+  });
+
+  final String productImage;
+  final String productName;
+  final String productQuantity;
+  final String currency;
+  final String price;
+  final String priceAfterDiscount;
+  final String sId;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +30,7 @@ class WishlistCard extends StatelessWidget {
         Container(
           height: 120,
           child: Image.network(
-            "https://picsum.photos/200",
+            productImage,
           ),
         ),
         SizedBox(
@@ -29,7 +46,7 @@ class WishlistCard extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Ashwagandha Gummies - Promotes stress reduction',
+                      productName,
                       style: SolhTextStyles.QS_body_2_bold,
                     ),
                   ),
@@ -46,7 +63,7 @@ class WishlistCard extends StatelessWidget {
               SizedBox(
                 height: 5,
               ),
-              Text('Bottle of 60 Tablets', style: SolhTextStyles.QS_caption),
+              Text(productQuantity, style: SolhTextStyles.QS_caption),
               SizedBox(
                 height: 5,
               ),
@@ -62,25 +79,25 @@ class WishlistCard extends StatelessWidget {
                             color: SolhColors.greenShade4,
                             borderRadius: BorderRadius.circular(12)),
                         child: Text(
-                          '₹ 499',
+                          '$currency $priceAfterDiscount',
                           style: SolhTextStyles.QS_caption_bold,
                         ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      Text('MRP', style: SolhTextStyles.QS_cap_2),
+                      // Text(, style: SolhTextStyles.QS_cap_2),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
-                        '₹ 699',
+                        '$currency $price',
                         style: SolhTextStyles.QS_caption.copyWith(
                             decoration: TextDecoration.lineThrough),
                       )
                     ],
                   ),
-                  AddRemoveProductButtoon(),
+                  AddRemoveProductButtoon(productId: sId),
                 ],
               )
             ],

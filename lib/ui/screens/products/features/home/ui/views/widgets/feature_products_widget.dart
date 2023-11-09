@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get/get.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -162,7 +165,9 @@ class ProductsCard extends StatelessWidget {
             SizedBox(
               height: 4,
             ),
-            AddRemoveProductButtoon()
+            AddRemoveProductButtoon(
+              productId: sId ?? '',
+            )
           ],
         ),
       ),
@@ -171,8 +176,21 @@ class ProductsCard extends StatelessWidget {
 }
 
 class AddRemoveProductButtoon extends StatelessWidget {
-  AddRemoveProductButtoon({super.key});
+  AddRemoveProductButtoon({
+    super.key,
+    required this.productId,
+  });
+
+  CartController cartController = Get.find();
+  AddToCartController addToCartController = Get.find();
   final ValueNotifier<int> poductNumber = ValueNotifier(0);
+  final String productId;
+  Future<void> onValueChange() async {
+    addToCartController.addToCart(
+        productId: productId, quantity: poductNumber.value);
+    cartController.getCart();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -232,7 +250,7 @@ class AddRemoveProductButtoon extends StatelessWidget {
                             child: Icon(Icons.add, color: SolhColors.white),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 );
