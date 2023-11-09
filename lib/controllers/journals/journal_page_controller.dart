@@ -67,7 +67,7 @@ class JournalPageController extends GetxController {
       if (nextPage != null) {
         print('trying to get all journals');
         Map<String, dynamic> map = groupId != null
-            ? await await Network.makeGetRequestWithToken(
+            ? await Network.makeGetRequestWithToken(
                 "${APIConstants.api}/api/v1/get-group-journal?pageNumber=$pageNo&group=${groupId}&orgonly=$orgOnly")
             : await Network.makeGetRequestWithToken(
                 "${APIConstants.api}/api/v2/posts?pageNumber=$pageNo&orgonly=$orgOnly");

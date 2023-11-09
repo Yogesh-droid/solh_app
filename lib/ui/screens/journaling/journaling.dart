@@ -46,7 +46,6 @@ class _JournalingState extends State<Journaling> {
   late ScrollController _journalsScrollController;
   late RefreshController _refreshController;
   bool _fetchingMore = false;
-  bool _showOrgOnly = false;
   void initState() {
     super.initState();
     print('Running init state of journaling1');
@@ -103,15 +102,6 @@ class _JournalingState extends State<Journaling> {
         }
       }
     });
-
-    // if (_journalPageController.selectedGroupId.value != '') {
-    //   _customScrollController.jumpTo(80 *
-    //       _groupsShownOnHome
-    //           .indexOf(_journalPageController.selectedGroupId.value)
-    //           .toDouble());
-    // }
-
-    // userBlocNetwork.getMyProfileSnapshot();
   }
 
   void _onRefresh({bool? orgOnly}) async {
@@ -660,7 +650,7 @@ class _JournalingState extends State<Journaling> {
   Future<void> deletePost(int index) async {
     print("deleting post");
     DeleteJournal _deleteJournal = DeleteJournal(
-        journalId: _journalPageController.journalsList.value[index].id!);
+        journalId: _journalPageController.journalsList[index].id!);
     await _deleteJournal.deletePost();
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
@@ -674,7 +664,7 @@ class _JournalingState extends State<Journaling> {
 
   Widget getJournalTile(int index) {
     return JournalTile(
-      journalModel: _journalPageController.journalsList.value[index],
+      journalModel: _journalPageController.journalsList[index],
       index: index,
       deletePost: () async {
         deletePost(index);
