@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/ui/screens/products/core/data_state/product_data_state.dart';
@@ -13,14 +12,14 @@ class ProductWishlistController extends GetxController {
   var isLoading = false.obs;
   var error = ''.obs;
 
-  var wishlistItems = [].obs;
+  var wishlistItems = <ProductWishlistEntity>[].obs;
 
   Future<void> getWishlistProducts() async {
     try {
       isLoading.value = true;
       final ProductDataState<List<ProductWishlistEntity>> dataState =
           await productWishlistUsecase.call(RequestParams(
-              url: 'http://192.168.1.12:3000/api/product/get-wishlist'));
+              url: '${APIConstants.api}/api/product/get-wishlist'));
 
       if (dataState.data != null) {
         wishlistItems.value = dataState.data!;

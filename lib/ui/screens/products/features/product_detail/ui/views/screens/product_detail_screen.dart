@@ -72,7 +72,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    child: AddToCartBuyNowButton(),
+                    child: AddToCartBuyNowButton(
+                        productId: productDetailsModel.product!.sId ?? ''),
                   )
                 ],
               ));
@@ -380,8 +381,8 @@ class ProductDetails extends StatelessWidget {
 }
 
 class AddToCartBuyNowButton extends StatelessWidget {
-  const AddToCartBuyNowButton({super.key});
-
+  const AddToCartBuyNowButton({super.key, required this.productId});
+  final String productId;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -393,7 +394,7 @@ class AddToCartBuyNowButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          AddRemoveProductButtoon(),
+          AddRemoveProductButtoon(productId: productId),
           SolhGreenMiniButton(
             backgroundColor: SolhColors.primaryRed,
             child: Text(
