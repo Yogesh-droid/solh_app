@@ -18,8 +18,9 @@ class ProductWishlistController extends GetxController {
     try {
       isLoading.value = true;
       final ProductDataState<List<ProductWishlistEntity>> dataState =
-          await productWishlistUsecase.call(RequestParams(
-              url: '${APIConstants.api}/api/product/get-wishlist'));
+          await productWishlistUsecase.call(
+        RequestParams(url: '${APIConstants.api}/api/product/get-wishlist'),
+      );
 
       if (dataState.data != null) {
         wishlistItems.value = dataState.data!;
