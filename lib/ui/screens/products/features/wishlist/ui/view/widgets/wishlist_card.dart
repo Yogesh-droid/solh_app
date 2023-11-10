@@ -87,9 +87,7 @@ class WishlistCard extends StatelessWidget {
                         width: 10,
                       ),
                       // Text(, style: SolhTextStyles.QS_cap_2),
-                      SizedBox(
-                        width: 5,
-                      ),
+
                       Text(
                         '$currency $price',
                         style: SolhTextStyles.QS_caption.copyWith(
@@ -97,7 +95,7 @@ class WishlistCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  AddRemoveProductButtoon(productId: sId),
+                  Expanded(child: AddRemoveProductButtoon(productId: sId)),
                 ],
               )
             ],

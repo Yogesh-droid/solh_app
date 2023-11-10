@@ -8,9 +8,7 @@ class ProductWishlistUsecase extends Usecase {
   GetWishlistItemsRepo getWishlistItemsRepo;
   ProductWishlistUsecase({required this.getWishlistItemsRepo});
   @override
-  Future call(params) async {
-    Future<ProductDataState<List<ProductWishlistEntity>>> call(params) async {
-      return await getWishlistItemsRepo.getWishlistItems(params);
-    }
+  Future<ProductDataState<List<ProductWishlistEntity>>> call(params) async {
+    return await getWishlistItemsRepo.getWishlistItems(params);
   }
 }

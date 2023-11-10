@@ -36,42 +36,47 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                 appBar: ProductsAppBar(
                   enableWishlist: false,
                 ),
-                body: ListView(
-                  children: [
-                    Row(
-                      children: [
-                        Text('6 Items in your Wishlist '),
-                      ],
-                    ),
-                    ListView.builder(
-                      itemCount: productWishlistController.wishlistItems.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return WishlistCard(
-                          currency: productWishlistController
-                                  .wishlistItems[index].currency ??
-                              '',
-                          price: productWishlistController
-                              .wishlistItems[index].price
-                              .toString(),
-                          priceAfterDiscount: productWishlistController
-                              .wishlistItems[index].afterDiscountPrice
-                              .toString(),
-                          productImage: productWishlistController
-                              .wishlistItems[index].productImage![0],
-                          productName: productWishlistController
-                                  .wishlistItems[index].productName ??
-                              '',
-                          productQuantity: productWishlistController
-                                  .wishlistItems[index].productQuantity ??
-                              '',
-                          sId: productWishlistController
-                                  .wishlistItems[index].productQuantity ??
-                              '',
-                        );
-                      },
-                    )
-                  ],
+                body: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                              '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
+                        ],
+                      ),
+                      ListView.builder(
+                        itemCount:
+                            productWishlistController.wishlistItems.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return WishlistCard(
+                            currency: productWishlistController
+                                    .wishlistItems[index].currency ??
+                                '',
+                            price: productWishlistController
+                                .wishlistItems[index].price
+                                .toString(),
+                            priceAfterDiscount: productWishlistController
+                                .wishlistItems[index].afterDiscountPrice
+                                .toString(),
+                            productImage: productWishlistController
+                                .wishlistItems[index].productImage![0],
+                            productName: productWishlistController
+                                    .wishlistItems[index].productName ??
+                                '',
+                            productQuantity: productWishlistController
+                                    .wishlistItems[index].productQuantity ??
+                                '',
+                            sId: productWishlistController
+                                    .wishlistItems[index].productQuantity ??
+                                '',
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
               );
       }),
