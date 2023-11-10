@@ -432,4 +432,37 @@ class Network {
       throw e;
     }
   }
+
+  static Future<Map<String, dynamic>> makePatchRequestWithToken({
+    required String url,
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      Uri _uri = Uri.parse(url);
+      print(url);
+      print(body);
+      print("token: ${userBlocNetwork.getSessionCookie}");
+      http.Response apiResponse = await http.put(_uri,
+          headers: {
+            "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
+          },
+          body: body);
+      print('send sucessfully' + apiResponse.body);
+      switch (apiResponse.statusCode) {
+        case 200:
+          return jsonDecode(apiResponse.body);
+        case 201:
+          return jsonDecode(apiResponse.body);
+        case 404:
+          throw Exceptions(error: 'Data Not Found', statusCode: 404);
+        default:
+          return {};
+      }
+    } on SocketException {
+      throw Exceptions(error: 'No Network', statusCode: 100);
+    } catch (e) {
+      print(e);
+      throw e;
+    }
+  }
 }

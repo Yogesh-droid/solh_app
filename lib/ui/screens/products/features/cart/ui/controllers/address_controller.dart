@@ -7,6 +7,7 @@ import 'package:solh/ui/screens/products/features/cart/domain/usecases/address_u
 
 class AddressController extends GetxController {
   final AddressUsecase addressUsecase;
+
   var addressEntity = AddressEntity().obs;
   var isAddressLoading = false.obs;
   var addressErr = ''.obs;
