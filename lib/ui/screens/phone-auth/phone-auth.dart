@@ -111,34 +111,32 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        false
-                            ? CircularProgressIndicator()
-                            : Container(
-                                height: 5.8.h,
-                                width: 80.w,
-                                child: TextButton(
-                                  onPressed: () async {
-                                    print(country);
-                                    print("Phone no: " +
-                                        _countryCode! +
-                                        _phoneController.text);
-                                    if (_phoneController.text.trim() == '') {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                              content: Text(
-                                                  'Enter a valid phone No.')));
-                                    } else {
-                                      _signInWithPhone(
-                                          "${_countryCode.toString()}${_phoneController.text}",
-                                          country ?? '');
-                                    }
-                                  },
-                                  child: Text(
-                                    "Continue",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                        Container(
+                          height: 5.8.h,
+                          width: 80.w,
+                          child: TextButton(
+                            onPressed: () async {
+                              print(country);
+                              print("Phone no: " +
+                                  _countryCode! +
+                                  _phoneController.text);
+                              if (_phoneController.text.trim() == '') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('Enter a valid phone No.')));
+                              } else {
+                                _signInWithPhone(
+                                    "${_countryCode.toString()}${_phoneController.text}",
+                                    country ?? '');
+                              }
+                            },
+                            child: Text(
+                              "Continue",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: 2.h,
                         ),

@@ -10,6 +10,7 @@ class GetWishlistItemsRepoImpl implements GetWishlistItemsRepo {
   Future<ProductDataState<List<ProductWishlistEntity>>> getWishlistItems(
       RequestParams requestParams) async {
     try {
+      print('repo ran');
       final Map<String, dynamic> response =
           await Network.makeGetRequestWithToken(requestParams.url);
       if (response['success']) {

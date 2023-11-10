@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:facebook_app_events/facebook_app_events.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,7 @@ import 'package:solh/bloc/user-bloc.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/firebase/auth.dart';
+import 'package:solh/services/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh/services/user/session-cookie.dart';
 import 'package:solh/ui/screens/phone-authV2/phone-auth-controller/phone_auth_controller.dart';
 import 'package:solh/widgets_constants/ScaffoldWithBackgroundArt.dart';
@@ -26,11 +27,11 @@ import 'package:solh/widgets_constants/loader/my-loader.dart';
 class OtpVerificationScreen extends StatelessWidget {
   OtpVerificationScreen({Key? key, required Map<dynamic, dynamic> args})
       : _phoneNumber = args['phoneNumber'],
-        _verificationId = args['verificationId'],
+        _dialCode = args['dialCode'],
         super(key: key);
 
   final String _phoneNumber;
-  final String? _verificationId;
+  final String _dialCode;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +52,9 @@ class OtpVerificationScreen extends StatelessWidget {
                 SizedBox(
                   width: 1.w,
                 ),
-                Expanded(child: OtpField(verificationId: _verificationId)),
+                Expanded(
+                    child: OtpField(
+                        dialCode: _dialCode, phone: "$_dialCode$_phoneNumber")),
                 SizedBox(
                   width: 1.w,
                 ),
@@ -102,8 +105,10 @@ class VerifyPhoneNo extends StatelessWidget {
 }
 
 class OtpField extends StatefulWidget {
-  OtpField({Key? key, required this.verificationId}) : super(key: key);
-  final verificationId;
+  OtpField({Key? key, required this.dialCode, required this.phone})
+      : super(key: key);
+  final String dialCode;
+  final String phone;
 
   @override
   State<OtpField> createState() => _OtpFieldState();
@@ -123,12 +128,8 @@ class _OtpFieldState extends State<OtpField> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    // phoneAuthController.otpCode.clear();
     phoneAuthController.isRequestingAuth.value = false;
-
     phoneAuthController.dispose();
-
     super.dispose();
   }
 
@@ -149,13 +150,69 @@ class _OtpFieldState extends State<OtpField> {
       onCompleted: (String value) async {
         phoneAuthController.isRequestingAuth.value = true;
 
-        PhoneAuthCredential _phoneAuthCredential = PhoneAuthProvider.credential(
-            verificationId: widget.verificationId,
-            smsCode: phoneAuthController.otpCode.text
-            // otpVerificationController.otpController.text
-            );
+        final Map<String, dynamic> map = await phoneAuthController.verifyCode(
+            widget.dialCode, widget.phone, phoneAuthController.otpCode.text);
 
-        await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)
+        if (map['success']) {
+          // To save phone no in local storage
+          Prefs.setString("phone",
+              "${phoneAuthController.countryCode}${phoneAuthController.phoneNumber.text}");
+          //
+          String? fcmToken = await FirebaseMessaging.instance.getToken();
+          String oneSignalId = '';
+          String deviceType = '';
+          await OneSignal.shared.getDeviceState().then((value) {
+            print(value!.userId);
+            oneSignalId = value.userId ?? '';
+
+            FirebaseAnalytics.instance.logLogin(
+                loginMethod: 'PhoneAuth',
+                callOptions: AnalyticsCallOptions(global: true));
+          });
+          if (Platform.isAndroid) {
+            deviceType = 'Android';
+          } else {
+            deviceType = 'IOS';
+          }
+
+          await initDynamic();
+
+          bool? isSessionCookieCreated = await SessionCookie.createSessionCookie(
+              "${phoneAuthController.countryCode}${phoneAuthController.phoneNumber.text}",
+              fcmToken,
+              oneSignalId,
+              deviceType,
+              utm_medium: utm_medium,
+              utm_compaign: utm_name,
+              utm_source: utm_source);
+          log(isSessionCookieCreated.toString(),
+              name: "isSessionCookieCreated");
+          ProfileController profileController = Get.put(ProfileController());
+          await profileController.getMyProfile();
+          bool isProfileCreated = isSessionCookieCreated != null
+              ? await userBlocNetwork.isProfileCreated() &&
+                  !isSessionCookieCreated
+              : false;
+
+          if (isProfileCreated) {
+            Navigator.pushNamed(context, AppRoutes.master);
+          } else {
+            facebookAppEvents.logEvent(
+              name: 'signup',
+              parameters: {
+                'method': 'Phone Auth',
+              },
+            );
+            //// .  Firebase Signup event //////
+            FirebaseAnalytics.instance.logSignUp(signUpMethod: 'PhoneAuth');
+            Navigator.pushNamed(context, AppRoutes.nameField);
+          }
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(map['message'])));
+        }
+
+        /*  await FirebaseNetwork.signInWithPhoneCredential(_phoneAuthCredential)
             .then((value) async {
           String? idToken = await value.user!.getIdToken();
           print("user idToken: $idToken");
@@ -221,7 +278,7 @@ class _OtpFieldState extends State<OtpField> {
           phoneAuthController.isRequestingAuth.value = false;
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(error.toString())));
-        });
+        }); */
       },
     );
   }
@@ -230,39 +287,9 @@ class _OtpFieldState extends State<OtpField> {
     final PendingDynamicLinkData? data =
         await FirebaseDynamicLinks.instance.getInitialLink();
     if (data != null) {
-      print(data.toString() + '   This is data');
-      print(data.link.data.toString() + '   This is data');
-      print(data.link.query.toString() + '   This is data');
-      print(data.link.queryParameters.toString() + '   This is data');
-      print(data.utmParameters.toString() + '   This is data');
-      print('${data.utmParameters}' + '   This is UTM');
       utm_name = data.utmParameters['utm_campaign'];
       utm_source = data.utmParameters['utm_source'];
       utm_medium = data.utmParameters['utm_medium'];
-
-      final Uri? deepLink = data.link;
-
-      if (deepLink != null) {
-        print(deepLink.path);
-        print(deepLink);
-        print(deepLink.data);
-        // Utility.showToast(data!.link.query);
-        // Navigator.pushNamed(context, deepLink.path);
-      }
-
-      FirebaseDynamicLinks.instance.onLink.listen((event) {
-        // Utility.showToast(data!.link.query);
-        if (deepLink != null) {
-          print(deepLink.toString() + ' This is link');
-          print(deepLink.path + ' This is link');
-          print(deepLink.data.toString() + ' This is link');
-          print(event.utmParameters.toString() + ' This is link');
-        }
-
-        // Navigator.pushNamed(context, event.link.path);
-      }).onError((error) {
-        print(error.message);
-      });
     }
   }
 }

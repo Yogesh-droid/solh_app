@@ -453,7 +453,7 @@ class _JournalTileState extends State<JournalTile> {
                       Spacer(),
                       widget._journalModel!.postedBy != null
                           ? widget._journalModel!.postedBy!.uid ==
-                                      FirebaseAuth.instance.currentUser!.uid ||
+                                      userBlocNetwork.id ||
                                   widget._journalModel!.anonymousJournal !=
                                           null &&
                                       widget._journalModel!.anonymousJournal ==
@@ -728,8 +728,7 @@ class _JournalTileState extends State<JournalTile> {
                       widget._journalModel!.anonymousJournal == true &&
                       widget._journalModel!.group == null
                   ? SizedBox()
-                  : widget._journalModel!.postedBy!.uid !=
-                          FirebaseAuth.instance.currentUser!.uid
+                  : widget._journalModel!.postedBy!.uid != userBlocNetwork.id
                       ? journalPageController
                                   .selectedGroupId.value.isNotEmpty &&
                               widget._journalModel!.anonymousJournal != null &&
@@ -749,20 +748,6 @@ class _JournalTileState extends State<JournalTile> {
                                                   ._journalModel!.group!.sId,
                                               "isJoined": true,
                                             })
-                                        // Navigator.pushNamed(
-                                        //     context, AppRoutes.groupDetails,
-                                        //     arguments: {
-                                        //       "group": GroupList(
-                                        //         sId: widget
-                                        //             ._journalModel!.group!.sId,
-                                        //         groupName: widget._journalModel!
-                                        //             .group!.groupName,
-                                        //         groupMediaUrl: widget
-                                        //             ._journalModel!
-                                        //             .group!
-                                        //             .groupImage,
-                                        //       ),
-                                        //     })
                                       }
                                     : await connectionController.addConnection(
                                         widget._journalModel!.postedBy!.sId!,
