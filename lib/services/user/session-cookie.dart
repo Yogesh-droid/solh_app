@@ -9,9 +9,8 @@ import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/view
 
 class SessionCookie {
   static Future<bool?> createSessionCookie(
-      String idToken, String? fcmToken, String? onesignalId, String? deviceType,
+      String phone, String? fcmToken, String? onesignalId, String? deviceType,
       {String? utm_compaign, String? utm_source, utm_medium}) async {
-    debugPrint("*" * 30 + "\n" + "Id Token: $idToken");
     debugPrint("*" * 30 + "\n" + "onesignal Token: $onesignalId");
 
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -29,7 +28,6 @@ class SessionCookie {
       print('Cached json used');
     } else {
       debugPrint("createSessionCookieeee ${{
-        "idToken": idToken,
         "deviceId": fcmToken ?? '',
         "onesignal_device_id": onesignalId,
         "deviceType": deviceType,
@@ -39,9 +37,9 @@ class SessionCookie {
         "utm_medium": utm_medium ?? ''
       }}");
       response = await Network.makeHttpPostRequest(
-          url: "${APIConstants.api}/api/create-session-cookie",
+          url: "${APIConstants.api}/api/create-session-cookie-v2",
           body: {
-            "idToken": idToken,
+            "phone": phone,
             "deviceId": fcmToken ?? '',
             "onesignal_device_id": onesignalId,
             "deviceType": deviceType,
@@ -76,8 +74,9 @@ class SessionCookie {
       //     : null;
       debugPrint("New session cookie: " + userBlocNetwork.getSessionCookie);
       debugPrint("*" * 30 + "\n");
+      // }
+      log(response["newProfile"].toString(), name: "newProfile");
+      return response["newProfile"] ?? false;
     }
-    log(response["newProfile"].toString(), name: "newProfile");
-    return response["newProfile"] ?? false;
   }
 }

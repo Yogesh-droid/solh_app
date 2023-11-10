@@ -71,7 +71,8 @@ void main() async {
 
   bool? newUser = await isNewUser();
   Map<String, dynamic> _initialAppData = await initApp();
-  bool isProfileCreated = await _initialAppData["isProfileCreated"] && !newUser;
+  bool isProfileCreated = true;
+  //await _initialAppData["isProfileCreated"] && !newUser;
 
   await DefaultOrg.getDefaultOrg();
   await OrgOnlySetting.getOrgOnly();

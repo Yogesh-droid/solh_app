@@ -44,7 +44,7 @@ class _ProductsHomeState extends State<ProductsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: getAppbar(),
+        appBar: ProductsAppBar(),
         body: Stack(
           children: [
             ListView(

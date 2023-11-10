@@ -453,7 +453,7 @@ class _JournalTileState extends State<JournalTile> {
                       Spacer(),
                       widget._journalModel!.postedBy != null
                           ? widget._journalModel!.postedBy!.uid ==
-                                      FirebaseAuth.instance.currentUser!.uid ||
+                                      userBlocNetwork.id ||
                                   widget._journalModel!.anonymousJournal !=
                                           null &&
                                       widget._journalModel!.anonymousJournal ==
@@ -728,8 +728,7 @@ class _JournalTileState extends State<JournalTile> {
                       widget._journalModel!.anonymousJournal == true &&
                       widget._journalModel!.group == null
                   ? SizedBox()
-                  : widget._journalModel!.postedBy!.uid !=
-                          FirebaseAuth.instance.currentUser!.uid
+                  : widget._journalModel!.postedBy!.uid != userBlocNetwork.id
                       ? journalPageController
                                   .selectedGroupId.value.isNotEmpty &&
                               widget._journalModel!.anonymousJournal != null &&

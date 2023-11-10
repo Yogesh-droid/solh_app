@@ -52,7 +52,7 @@ class FirebaseNetwork {
         // await initDynamic();
 
         bool? isSessionCookieCreated = await SessionCookie.createSessionCookie(
-            idToken!, fcmToken, oneSignalId, deviceType,
+            '', fcmToken, oneSignalId, deviceType,
             utm_medium: '', utm_compaign: '', utm_source: '');
         ProfileController profileController = Get.put(ProfileController());
         await profileController.getMyProfile();
