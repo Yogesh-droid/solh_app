@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/view/widgets/wishlist_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
@@ -15,6 +17,7 @@ class ProductWishlistScreen extends StatefulWidget {
 
 class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
   ProductWishlistController productWishlistController = Get.find();
+  AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
   @override
   void initState() {
     // TODO: implement initState
@@ -28,7 +31,8 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() {
-        return productWishlistController.isLoading.value
+        return productWishlistController.isLoading.value ||
+                addDeleteWishlistItemController.isLoading.value
             ? Center(
                 child: MyLoader(),
               )
@@ -46,10 +50,14 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                               '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
                         ],
                       ),
-                      ListView.builder(
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ListView.separated(
                         itemCount:
                             productWishlistController.wishlistItems.length,
                         shrinkWrap: true,
+                        separatorBuilder: (context, index) => GetHelpDivider(),
                         itemBuilder: (context, index) {
                           return WishlistCard(
                             currency: productWishlistController
@@ -70,8 +78,10 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                                     .wishlistItems[index].productQuantity ??
                                 '',
                             sId: productWishlistController
-                                    .wishlistItems[index].productQuantity ??
+                                    .wishlistItems[index].sId ??
                                 '',
+                            productsInCart: productWishlistController
+                                .wishlistItems[index].inCartCount!,
                           );
                         },
                       )

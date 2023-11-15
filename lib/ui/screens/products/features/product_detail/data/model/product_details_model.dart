@@ -57,6 +57,8 @@ class Product {
   int? iV;
   String? skuOrIsbn;
   int? overAllRating;
+  int? inCartCount;
+  bool? isWishlisted;
 
   Product(
       {this.sId,
@@ -77,6 +79,8 @@ class Product {
       this.specification,
       this.iV,
       this.overAllRating,
+      this.inCartCount,
+      this.isWishlisted,
       this.skuOrIsbn});
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -115,6 +119,8 @@ class Product {
     }
     iV = json['__v'];
     skuOrIsbn = json['sku_or_isbn'];
+    isWishlisted = json['isWishlisted'];
+    inCartCount = json['inCartCount'];
     overAllRating = json['overAllRating'];
   }
 
@@ -181,16 +187,21 @@ class RelatedProducts {
   int? stockAvailable;
   String? productQuantity;
   String? description;
+  int? inCartCount;
+  bool? isWishlisted;
 
-  RelatedProducts(
-      {this.sId,
-      this.productName,
-      this.productImage,
-      this.price,
-      this.afterDiscountPrice,
-      this.stockAvailable,
-      this.description,
-      this.productQuantity});
+  RelatedProducts({
+    this.sId,
+    this.productName,
+    this.productImage,
+    this.price,
+    this.afterDiscountPrice,
+    this.stockAvailable,
+    this.description,
+    this.inCartCount,
+    this.isWishlisted,
+    this.productQuantity,
+  });
 
   RelatedProducts.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -201,6 +212,8 @@ class RelatedProducts {
     stockAvailable = json['stockAvailable'];
     description = json['description'];
     productQuantity = json['productQuantity'];
+    isWishlisted = json['isWishlisted'];
+    inCartCount = json['inCartCount'];
   }
 
   Map<String, dynamic> toJson() {

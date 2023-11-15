@@ -1,13 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 // ignore: must_be_immutable
 class AnimatedAddToWishlistButton extends StatefulWidget {
-  AnimatedAddToWishlistButton(
-      {super.key, this.isSelected = false, this.onClick});
+  AnimatedAddToWishlistButton({
+    super.key,
+    this.isSelected = false,
+    required this.onClick,
+  });
   bool isSelected;
-  final VoidCallback? onClick;
+  final VoidCallback onClick;
+
   @override
   State<AnimatedAddToWishlistButton> createState() =>
       _AnimatedAddToWishlistButtonState();
@@ -16,6 +23,7 @@ class AnimatedAddToWishlistButton extends StatefulWidget {
 class _AnimatedAddToWishlistButtonState
     extends State<AnimatedAddToWishlistButton>
     with SingleTickerProviderStateMixin {
+  FeatureProductsController featureProductsController = Get.find();
   late AnimationController controller;
 
   late Animation sizeAnimation;
@@ -47,6 +55,7 @@ class _AnimatedAddToWishlistButtonState
       builder: (context, child) {
         return GestureDetector(
           onTap: () {
+            widget.onClick();
             setState(() {
               widget.onClick;
               widget.isSelected

@@ -11,6 +11,7 @@ import 'package:solh/ui/screens/products/features/product_detail/data/model/prod
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -189,6 +190,11 @@ class RelatedProductsSection extends StatelessWidget {
                 sId: productDetailsModel.product!.relatedProducts![index].sId,
                 stockAvailable: productDetailsModel
                     .product!.relatedProducts![index].stockAvailable,
+                inCartItems: productDetailsModel
+                    .product!.relatedProducts![index].inCartCount,
+                isInWishlist: productDetailsModel
+                        .product!.relatedProducts![index].isWishlisted ??
+                    false,
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(AppRoutes.productDetailScreen, arguments: {
@@ -381,8 +387,10 @@ class ProductDetails extends StatelessWidget {
 }
 
 class AddToCartBuyNowButton extends StatelessWidget {
-  const AddToCartBuyNowButton({super.key, required this.productId});
+  AddToCartBuyNowButton({super.key, required this.productId});
   final String productId;
+
+  ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -394,7 +402,12 @@ class AddToCartBuyNowButton extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          AddRemoveProductButtoon(productId: productId),
+          AddRemoveProductButtoon(
+            productId: productId,
+            productsInCart: productDetailController
+                    .productDetail.value.product!.inCartCount ??
+                0,
+          ),
           SolhGreenMiniButton(
             backgroundColor: SolhColors.primaryRed,
             child: Text(
@@ -474,8 +487,10 @@ class _GetProductImagesState extends State<GetProductImages> {
 
 class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const GetProductDeatilAppBar({super.key});
-
+  GetProductDeatilAppBar({super.key});
+  final ProductDetailController productDetailController = Get.find();
+  final AddDeleteWishlistItemController addDeleteWishlistItemController =
+      Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -492,7 +507,18 @@ class GetProductDeatilAppBar extends StatelessWidget
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: AnimatedAddToWishlistButton(),
+          child: Obx(() {
+            return AnimatedAddToWishlistButton(
+              onClick: () {
+                addDeleteWishlistItemController.addDeleteWhishlist({
+                  "id": productDetailController.productDetail.value.product!.sId
+                });
+              },
+              isSelected: productDetailController
+                      .productDetail.value.product!.isWishlisted ??
+                  false,
+            );
+          }),
         )
       ],
     );

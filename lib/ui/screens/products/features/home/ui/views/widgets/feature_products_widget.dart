@@ -5,6 +5,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -58,6 +59,8 @@ class ProductsCard extends StatelessWidget {
     this.productQuantity,
     this.sId,
     this.stockAvailable,
+    this.isInWishlist = false,
+    this.inCartItems = 0,
     required this.onPressed,
   });
 
@@ -68,8 +71,12 @@ class ProductsCard extends StatelessWidget {
   final int? afterDiscountPrice;
   final int? stockAvailable;
   final String? description;
+  final bool isInWishlist;
   final String? productQuantity;
+  final int? inCartItems;
   final Function()? onPressed;
+
+  AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +87,12 @@ class ProductsCard extends StatelessWidget {
       child: Container(
         width: 220,
         decoration: BoxDecoration(
-            border: Border.all(
-              width: 0.5,
-              color: SolhColors.primary_green,
-            ),
-            borderRadius: BorderRadius.circular(12)),
+          border: Border.all(
+            width: 0.5,
+            color: SolhColors.primary_green,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -105,7 +113,13 @@ class ProductsCard extends StatelessWidget {
                 Positioned(
                   right: 10,
                   top: 10,
-                  child: AnimatedAddToWishlistButton(),
+                  child: AnimatedAddToWishlistButton(
+                    isSelected: isInWishlist,
+                    onClick: () {
+                      addDeleteWishlistItemController
+                          .addDeleteWhishlist({"productId": sId});
+                    },
+                  ),
                 ),
               ],
             ),
@@ -167,6 +181,7 @@ class ProductsCard extends StatelessWidget {
             ),
             AddRemoveProductButtoon(
               productId: sId ?? '',
+              productsInCart: inCartItems ?? 0,
             )
           ],
         ),
@@ -175,20 +190,38 @@ class ProductsCard extends StatelessWidget {
   }
 }
 
-class AddRemoveProductButtoon extends StatelessWidget {
-  AddRemoveProductButtoon({
-    super.key,
-    required this.productId,
-  });
+class AddRemoveProductButtoon extends StatefulWidget {
+  AddRemoveProductButtoon(
+      {super.key, required this.productId, required this.productsInCart});
 
-  CartController cartController = Get.find();
-  AddToCartController addToCartController = Get.find();
-  final ValueNotifier<int> poductNumber = ValueNotifier(0);
   final String productId;
-  Future<void> onValueChange() async {
+  final int productsInCart;
+
+  @override
+  State<AddRemoveProductButtoon> createState() =>
+      _AddRemoveProductButtoonState();
+}
+
+class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
+  CartController cartController = Get.find();
+
+  AddToCartController addToCartController = Get.find();
+
+  late ValueNotifier<int> poductNumber;
+
+  Future<void> onValueChange(int quantity) async {
     addToCartController.addToCart(
-        productId: productId, quantity: poductNumber.value);
+        productId: widget.productId, quantity: quantity);
     cartController.getCart();
+  }
+
+  @override
+  void initState() {
+    print("productsInCart" + widget.productsInCart.toString());
+    // TODO: implement initState
+    poductNumber = ValueNotifier(widget.productsInCart);
+
+    super.initState();
   }
 
   @override
@@ -201,7 +234,12 @@ class AddRemoveProductButtoon extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SolhGreenMiniButton(
-                      onPressed: () => poductNumber.value++,
+                      height: 35,
+                      width: 100,
+                      onPressed: () {
+                        poductNumber.value++;
+                        onValueChange(1);
+                      },
                       child: Text(
                         'Add To Cart',
                         style: SolhTextStyles.CTA
@@ -215,9 +253,10 @@ class AddRemoveProductButtoon extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () => poductNumber.value > 0
-                            ? poductNumber.value--
-                            : null,
+                        onTap: () {
+                          poductNumber.value > 0 ? poductNumber.value-- : null;
+                          onValueChange(poductNumber.value);
+                        },
                         child: Container(
                           height: 30,
                           width: 30,
@@ -229,19 +268,23 @@ class AddRemoveProductButtoon extends StatelessWidget {
                       ),
                       Container(
                         height: 30,
-                        width: 90,
+                        width: 50,
                         decoration: BoxDecoration(
                             border:
                                 Border.all(color: SolhColors.primary_green)),
                         child: Center(
-                            child: Text(
-                          "$value",
-                          style: SolhTextStyles.CTA
-                              .copyWith(color: SolhColors.primary_green),
-                        )),
+                          child: Text(
+                            "$value",
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primary_green),
+                          ),
+                        ),
                       ),
                       GestureDetector(
-                        onTap: () => poductNumber.value++,
+                        onTap: () {
+                          poductNumber.value++;
+                          onValueChange(poductNumber.value);
+                        },
                         child: Container(
                           height: 30,
                           width: 30,

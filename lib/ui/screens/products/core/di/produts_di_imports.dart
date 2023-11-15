@@ -43,9 +43,13 @@ import 'package:solh/ui/screens/products/features/reviews/domain/usecases/add_re
 import 'package:solh/ui/screens/products/features/reviews/domain/usecases/get_review_usecase.dart';
 import 'package:solh/ui/screens/products/features/reviews/ui/controllers/add_review_controller.dart';
 import 'package:solh/ui/screens/products/features/reviews/ui/controllers/get_reviews_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/data/repo/add_delete_wishlist_item_impl.dart';
 import 'package:solh/ui/screens/products/features/wishlist/data/repo/get_wishlist_items_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/wishlist/domain/repo/add_delete_wishlist_item_repo.dart';
 import 'package:solh/ui/screens/products/features/wishlist/domain/repo/get_wishlist_items_repo.dart';
+import 'package:solh/ui/screens/products/features/wishlist/domain/usecase/add_delete_wishlist_item_usecase.dart';
 import 'package:solh/ui/screens/products/features/wishlist/domain/usecase/product_wishlist_usecase.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 
 import '../../features/reviews/domain/repo/get_reviews_repo.dart';
