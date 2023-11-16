@@ -1,4 +1,3 @@
-
 class AddAddressReqModel {
   String? fullName;
   String? phoneNumber;
@@ -8,9 +7,18 @@ class AddAddressReqModel {
   String? state;
   String? postalCode;
   String? landmark;
-  bool? isDefault;
+  String? isDefault;
 
-  AddAddressReqModel({this.fullName, this.phoneNumber, this.buildingName, this.street, this.city, this.state, this.postalCode, this.landmark, this.isDefault});
+  AddAddressReqModel(
+      {this.fullName,
+      this.phoneNumber,
+      this.buildingName,
+      this.street,
+      this.city,
+      this.state,
+      this.postalCode,
+      this.landmark,
+      this.isDefault});
 
   AddAddressReqModel.fromJson(Map<String, dynamic> json) {
     fullName = json["fullName"];

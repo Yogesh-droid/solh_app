@@ -19,6 +19,7 @@ import 'package:solh/model/group/get_group_response_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/dynamic_link_sevice/dynamic_link_provider.dart';
 import 'package:solh/services/utility.dart';
+import 'package:solh/ui/screens/groups/create_group.dart';
 import 'package:solh/ui/screens/journaling/side_drawer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -26,10 +27,11 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../bottom-navigation/bottom_navigator_controller.dart';
 import '../journaling/create-journal.dart';
-import '../my-goals/my-goals-screen.dart';
 
+// ignore: must_be_immutable
 class GroupDetailsPage extends StatefulWidget {
   GroupDetailsPage({Key? key, Map<dynamic, dynamic>? args})
       : groupId = args!['groupId'],
@@ -213,26 +215,16 @@ class _GroupDetailsPageState extends State<GroupDetailsPage> {
         Container(
           width: MediaQuery.of(context).size.width * 0.55,
           child: Text(
-            'Group Detail'
-            // + '(${groupList.groupType})',
-            ,
+            'Group Detail',
             style: SolhTextStyles.QS_body_1_bold,
           ),
         ),
-        // groupList.groupMembers != null
-        //     ?
         isDefaultAdmin || isJoined != null && isJoined!
             ? getPopUpMenuBtn(context)
             : Container()
-        // : Container()
-        // : Obx(() {
-        //     return discoverGroupController.isLoading.value
-        //         ? Container()
-        //         // : getPopUpMenuBtn(context);
-        //         : Container();
-        //   })
       ]),
       isLandingScreen: false,
+      isCartShown: false,
     );
   }
 

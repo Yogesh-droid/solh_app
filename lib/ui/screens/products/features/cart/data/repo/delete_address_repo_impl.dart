@@ -8,8 +8,8 @@ class DeleteAddressRepoImpl implements DeleteAddressRepo {
   Future<ProductDataState<Map<String, dynamic>>> deleteAddress(
       RequestParams params) async {
     try {
-      final Map<String, dynamic> map = await Network.makeDeleteRequestWithToken(
-          url: params.url, body: params.body!);
+      final Map<String, dynamic> map =
+          await Network.makeDeleteRequestWithToken(url: params.url);
 
       if (map['success']) {
         return DataSuccess(data: map);

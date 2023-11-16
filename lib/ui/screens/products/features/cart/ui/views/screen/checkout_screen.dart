@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/cart_address.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -46,6 +47,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         children: [
           ListView(
             children: [
+              CartAddress(),
+              GetHelpDivider(),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -55,12 +58,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     Text(
                       "${cartController.cartEntity.value.cartList!.items!.length} Items in your cart",
                       style: SolhTextStyles.QS_body_2_semi,
-                    ),
-                    Text(
-                      "+ Add more items",
-                      style: SolhTextStyles.QS_body_2_semi.copyWith(
-                          color: SolhColors.primary_green),
-                    ),
+                    )
                   ],
                 ),
               ),

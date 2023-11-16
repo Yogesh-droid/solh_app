@@ -74,4 +74,28 @@ void productControllerSetup() {
   Get.put(GetReviewsUsecase(getReviewsRepo: Get.find<GetReviewsRepo>()));
   Get.put(
       GetReviewsController(getReviewsUsecase: Get.find<GetReviewsUsecase>()));
+
+  // Add Address
+  Get.put<AddAddressRepo>(AddAddressRepoImpl());
+  Get.put(AddAddressUsecase(addAddressRepo: Get.find<AddAddressRepo>()));
+  Get.put(
+      AddAddressController(addAddressUsecase: Get.find<AddAddressUsecase>()));
+
+  // Edit Address
+  Get.put<EditAddressRepo>(EditAddressRepoImpl());
+  Get.put(EditAddressUsecase(editAddressRepo: Get.find<EditAddressRepo>()));
+  Get.put(EditAddressController(
+      editAddressUsecase: Get.find<EditAddressUsecase>()));
+
+  // delete Address
+  Get.put<DeleteAddressRepo>(DeleteAddressRepoImpl());
+  Get.put(
+      DeleteAddressUsecase(deleteAddressRepo: Get.find<DeleteAddressRepo>()));
+  Get.put(DeleteAddressController(
+      deleteAddressUsecase: Get.find<DeleteAddressUsecase>()));
+
+  // Get Address
+  Get.put<AddressRepo>(AddressRepoImpl());
+  Get.put(AddressUsecase(addressRepo: Get.find<AddressRepo>()));
+  Get.put(AddressController(addressUsecase: Get.find<AddressUsecase>()));
 }
