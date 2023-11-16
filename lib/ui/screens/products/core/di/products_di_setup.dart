@@ -89,4 +89,12 @@ void productControllerSetup() {
       addDeleteWishlistItemRepo: Get.find<AddDeleteWishlistItemRepo>()));
   Get.put<AddDeleteWishlistItemController>(AddDeleteWishlistItemController(
       addDeleteWishlistItemUsecase: Get.find<AddDeleteWishlistItemUsecase>()));
+
+  //Order summary
+
+  Get.put<GetOrderListRepo>(GetOrderListRepoImpl());
+  Get.put<OrderListUsecase>(
+      OrderListUsecase(getOrderListRepo: Get.find<GetOrderListRepo>()));
+  Get.put<OrderListController>(
+      OrderListController(orderListUsecase: Get.find<OrderListUsecase>()));
 }

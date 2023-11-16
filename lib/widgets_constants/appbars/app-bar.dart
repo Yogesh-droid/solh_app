@@ -448,6 +448,14 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       actions: [
+        IconButton(
+          icon: Icon(
+            Icons.local_mall,
+            color: SolhColors.primary_green,
+          ),
+          onPressed: () =>
+              Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
+        ),
         CartButton(itemsInCart: 2),
         SizedBox(
           width: 10,
