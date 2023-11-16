@@ -7,6 +7,8 @@ class FeatureProductsEntity {
   int? stockAvailable;
   String? description;
   String? productQuantity;
+  int? inCartCount;
+  bool? isWishlisted;
 
   FeatureProductsEntity({
     this.sId,
@@ -16,6 +18,8 @@ class FeatureProductsEntity {
     this.productImage,
     this.productName,
     this.productQuantity,
+    this.inCartCount,
+    this.isWishlisted,
     this.stockAvailable,
   });
 }

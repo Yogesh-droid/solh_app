@@ -44,6 +44,8 @@ class Products extends FeatureProductsEntity {
   int? stockAvailable;
   String? description;
   String? productQuantity;
+  bool? isWishlisted;
+  int? inCartCount;
 
   Products(
       {this.sId,
@@ -53,6 +55,8 @@ class Products extends FeatureProductsEntity {
       this.afterDiscountPrice,
       this.stockAvailable,
       this.description,
+      this.isWishlisted,
+      this.inCartCount,
       this.productQuantity})
       : super(
           afterDiscountPrice: afterDiscountPrice,
@@ -62,6 +66,8 @@ class Products extends FeatureProductsEntity {
           productName: productName,
           productQuantity: productQuantity,
           sId: sId,
+          isWishlisted: isWishlisted,
+          inCartCount: inCartCount,
           stockAvailable: stockAvailable,
         );
 
@@ -74,6 +80,8 @@ class Products extends FeatureProductsEntity {
     stockAvailable = json['stockAvailable'];
     description = json['description'];
     productQuantity = json['productQuantity'];
+    inCartCount = json['inCartCount'];
+    isWishlisted = json['isWishlisted'];
   }
 
   Map<String, dynamic> toJson() {

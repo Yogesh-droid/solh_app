@@ -1,22 +1,22 @@
 import 'package:solh/services/network/network.dart';
 import 'package:solh/ui/screens/products/core/data_state/product_data_state.dart';
 import 'package:solh/ui/screens/products/core/request_params/request_params.dart';
-import 'package:solh/ui/screens/products/features/wishlist/data/model/product_wishlist_model.dart';
-import 'package:solh/ui/screens/products/features/wishlist/domain/entity/product_wishlist_items_entity.dart';
-import 'package:solh/ui/screens/products/features/wishlist/domain/repo/get_wishlist_items_repo.dart';
+import 'package:solh/ui/screens/products/features/order_summary/data/model/order_list_model.dart';
 
-class GetWishlistItemsRepoImpl implements GetWishlistItemsRepo {
+import 'package:solh/ui/screens/products/features/order_summary/domain/entity/user_order_list_entity.dart';
+import 'package:solh/ui/screens/products/features/order_summary/domain/repo/get_order_list_repo.dart';
+
+class GetOrderListRepoImpl extends GetOrderListRepo {
   @override
-  Future<ProductDataState<List<ProductWishlistEntity>>> getWishlistItems(
+  Future<ProductDataState<OrderListModel>> getOrderList(
       RequestParams requestParams) async {
     try {
-      print('repo ran');
       final Map<String, dynamic> response =
           await Network.makeGetRequestWithToken(requestParams.url);
       if (response['success']) {
-        final value = ProductWishlistModel.fromJson(response);
+        final value = OrderListModel.fromJson(response);
         print(value);
-        return DataSuccess(data: value.wishlist);
+        return DataSuccess(data: value);
       } else {
         return DataError(
             exception:

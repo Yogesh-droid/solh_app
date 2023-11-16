@@ -36,6 +36,7 @@ class Wishlist extends ProductWishlistEntity {
   int? stockAvailable;
   String? description;
   String? productQuantity;
+  int? inCartCount;
 
   Wishlist(
       {this.sId,
@@ -46,7 +47,8 @@ class Wishlist extends ProductWishlistEntity {
       this.currency,
       this.stockAvailable,
       this.description,
-      this.productQuantity})
+      this.productQuantity,
+      this.inCartCount})
       : super(
           afterDiscountPrice: afterDiscountPrice,
           currency: currency,
@@ -57,6 +59,7 @@ class Wishlist extends ProductWishlistEntity {
           productQuantity: productQuantity,
           sId: sId,
           stockAvailable: stockAvailable,
+          inCartCount: inCartCount,
         );
 
   Wishlist.fromJson(Map<String, dynamic> json) {
@@ -69,6 +72,7 @@ class Wishlist extends ProductWishlistEntity {
     stockAvailable = json['stockAvailable'];
     description = json['description'];
     productQuantity = json['productQuantity'];
+    inCartCount = json['inCartCount'];
   }
 
   Map<String, dynamic> toJson() {

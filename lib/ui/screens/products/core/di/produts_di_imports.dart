@@ -30,6 +30,10 @@ import 'package:solh/ui/screens/products/features/home/ui/controllers/product_ca
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/products_home_carousel_controller.dart';
+import 'package:solh/ui/screens/products/features/order_summary/data/repo/get_order_list_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/order_summary/domain/repo/get_order_list_repo.dart';
+import 'package:solh/ui/screens/products/features/order_summary/domain/usecase/order_list_usecase.dart';
+import 'package:solh/ui/screens/products/features/order_summary/ui/controller/order_list_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/repo/product_detail_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/product_detail/domain/repo/product_detail_repo.dart';
 import 'package:solh/ui/screens/products/features/product_detail/domain/usecases/product_detail_usecase.dart';
@@ -49,9 +53,13 @@ import 'package:solh/ui/screens/products/features/reviews/domain/usecases/add_re
 import 'package:solh/ui/screens/products/features/reviews/domain/usecases/get_review_usecase.dart';
 import 'package:solh/ui/screens/products/features/reviews/ui/controllers/add_review_controller.dart';
 import 'package:solh/ui/screens/products/features/reviews/ui/controllers/get_reviews_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/data/repo/add_delete_wishlist_item_impl.dart';
 import 'package:solh/ui/screens/products/features/wishlist/data/repo/get_wishlist_items_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/wishlist/domain/repo/add_delete_wishlist_item_repo.dart';
 import 'package:solh/ui/screens/products/features/wishlist/domain/repo/get_wishlist_items_repo.dart';
+import 'package:solh/ui/screens/products/features/wishlist/domain/usecase/add_delete_wishlist_item_usecase.dart';
 import 'package:solh/ui/screens/products/features/wishlist/domain/usecase/product_wishlist_usecase.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 
 import '../../features/cart/data/repo/address_repo_impl.dart';

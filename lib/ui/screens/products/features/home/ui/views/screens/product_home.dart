@@ -398,6 +398,11 @@ class FeatureProductsSection extends StatelessWidget {
                             .featureProductList[index].sId,
                         stockAvailable: featureProductsController
                             .featureProductList[index].stockAvailable,
+                        isInWishlist: featureProductsController
+                                .featureProductList[index].isWishlisted ??
+                            false,
+                        inCartItems: featureProductsController
+                            .featureProductList[index].inCartCount,
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                               AppRoutes.productDetailScreen,

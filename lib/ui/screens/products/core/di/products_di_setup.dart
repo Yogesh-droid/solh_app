@@ -83,6 +83,22 @@ void productControllerSetup() {
   Get.put<ProductWishlistController>(ProductWishlistController(
       productWishlistUsecase: Get.find<ProductWishlistUsecase>()));
 
+
+  //add remove item from wishlist
+  Get.put<AddDeleteWishlistItemRepo>(AddDeleteWishlistItemRepoImpl());
+  Get.put<AddDeleteWishlistItemUsecase>(AddDeleteWishlistItemUsecase(
+      addDeleteWishlistItemRepo: Get.find<AddDeleteWishlistItemRepo>()));
+  Get.put<AddDeleteWishlistItemController>(AddDeleteWishlistItemController(
+      addDeleteWishlistItemUsecase: Get.find<AddDeleteWishlistItemUsecase>()));
+
+  //Order summary
+
+  Get.put<GetOrderListRepo>(GetOrderListRepoImpl());
+  Get.put<OrderListUsecase>(
+      OrderListUsecase(getOrderListRepo: Get.find<GetOrderListRepo>()));
+  Get.put<OrderListController>(
+      OrderListController(orderListUsecase: Get.find<OrderListUsecase>()));
+
   // Add Address
   Get.put<AddAddressRepo>(AddAddressRepoImpl());
   Get.put(AddAddressUsecase(addAddressRepo: Get.find<AddAddressRepo>()));
@@ -106,4 +122,5 @@ void productControllerSetup() {
   Get.put<AddressRepo>(AddressRepoImpl());
   Get.put(AddressUsecase(addressRepo: Get.find<AddressRepo>()));
   Get.put(AddressController(addressUsecase: Get.find<AddressUsecase>()));
+
 }

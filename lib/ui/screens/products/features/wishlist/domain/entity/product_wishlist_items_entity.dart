@@ -8,15 +8,18 @@ class ProductWishlistEntity {
   int? stockAvailable;
   String? description;
   String? productQuantity;
+  int? inCartCount;
 
-  ProductWishlistEntity(
-      {this.sId,
-      this.productName,
-      this.productImage,
-      this.price,
-      this.afterDiscountPrice,
-      this.currency,
-      this.stockAvailable,
-      this.description,
-      this.productQuantity});
+  ProductWishlistEntity({
+    this.sId,
+    this.productName,
+    this.productImage,
+    this.price,
+    this.afterDiscountPrice,
+    this.currency,
+    this.stockAvailable,
+    this.description,
+    this.inCartCount,
+    this.productQuantity,
+  });
 }

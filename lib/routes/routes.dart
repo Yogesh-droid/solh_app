@@ -51,6 +51,7 @@ import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_s
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/add_address_page.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/checkout_screen.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
+import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_list.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/screens/product_detail_screen.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/screens/product_listing.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/view/screen/product_wishlist_screen.dart';
@@ -188,7 +189,11 @@ class AppRoutes {
   static const String checkoutScreen = "/checkoutScreen";
   static const String productList = "/productList";
   static const String productWishlistScreen = "/productWishlistScreen";
+
+  static const String orderListScreen = "/orderListScreen";
+
   static const String addAddressPage = '/addAddressPage';
+
 }
 
 class RouteGenerator {
@@ -412,6 +417,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: ((context) => AddEmailOnboarding()));
       case AppRoutes.productsHome:
         return MaterialPageRoute(builder: ((context) => ProductsHome()));
+      case AppRoutes.orderListScreen:
+        return MaterialPageRoute(builder: ((context) => OrderListScreen()));
       case AppRoutes.productWishlistScreen:
         return MaterialPageRoute(
             builder: ((context) => ProductWishlistScreen()));
