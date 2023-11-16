@@ -366,7 +366,7 @@ class Network {
 
   static Future<Map<String, dynamic>> makeDeleteRequestWithToken(
       {required String url,
-      required Map<String, dynamic> body,
+      Map<String, dynamic>? body,
       bool? isEncoded}) async {
     try {
       Uri _uri = Uri.parse(url);
@@ -429,6 +429,40 @@ class Network {
       throw Exceptions(error: 'No Network', statusCode: 100);
     } catch (e) {
       print(e);
+      throw e;
+    }
+  }
+
+  static Future<Map<String, dynamic>> makePatchRequestWithToken({
+    required String url,
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      Uri _uri = Uri.parse(url);
+      print(url);
+      print(jsonEncode(body));
+      print("token: ${userBlocNetwork.getSessionCookie}");
+      http.Response apiResponse = await http.patch(_uri,
+          headers: {
+            "Authorization": "Bearer ${userBlocNetwork.getSessionCookie}"
+          },
+          body: body);
+      print('send sucessfully' + apiResponse.body);
+      log(apiResponse.body);
+      switch (apiResponse.statusCode) {
+        case 200:
+          return jsonDecode(apiResponse.body);
+        case 201:
+          return jsonDecode(apiResponse.body);
+        case 404:
+          throw Exceptions(error: 'Data Not Found', statusCode: 404);
+        default:
+          return {};
+      }
+    } on SocketException {
+      throw Exceptions(error: 'No Network', statusCode: 100);
+    } catch (e) {
+      log(e.toString());
       throw e;
     }
   }

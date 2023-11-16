@@ -28,6 +28,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
       double? height,
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
+      bool? isCartShown,
       bool? isNotificationPage,
       bool? isProductsPage,
       Color this.backgroundColor = Colors.white,
@@ -39,6 +40,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
         _isDiaryBtnShown = isDiaryBtnShown,
+        _isCartShown = isCartShown,
         _isProductsPage = isProductsPage,
         _bottom = bottom,
         _menuButton = menuButton,
@@ -49,6 +51,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
+  final bool? _isCartShown;
   final Widget _title;
   final double? _height;
   final bool? isNotificationPage;
@@ -110,9 +113,10 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0.5,
         backgroundColor: backgroundColor,
         actions: [
-          // _isProductsPage != null || _isProductsPage != false
-          //     ? CartButton(itemsInCart: 2)
-          //     : Container(),
+          // if (_isCartShown == null)
+          //   _isProductsPage != null || _isProductsPage != false
+          //       ? CartButton(itemsInCart: 2)
+          //       : SizedBox.shrink(),
           _isDiaryBtnShown != null
               ? IconButton(
                   onPressed: () {

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:feature_discovery/feature_discovery.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +16,6 @@ import 'package:solh/bottom-navigation/bottom_navigator_controller.dart';
 import 'package:solh/controllers/getHelp/allied_controller.dart';
 import 'package:solh/controllers/getHelp/book_appointment.dart';
 import 'package:solh/controllers/getHelp/consultant_controller.dart';
-import 'package:solh/controllers/profile/age_controller.dart';
 import 'package:solh/controllers/profile/anon_controller.dart';
 import 'package:solh/core/di/get_it_imports.dart';
 import 'package:solh/init-app.dart';
@@ -183,23 +181,17 @@ class _SolhAppState extends State<SolhApp> {
       Get.put(ChatListController());
       Get.put(ProfileSetupController());
       Get.put(AnonController());
-      Get.put(AgeController());
     }
   }
 
   Future<bool> checkConnectivity() async {
-    if (FirebaseAuth.instance.currentUser != null) {
-      ProfileController profileController = Get.find();
-      if (profileController.myProfileModel.value.body == null) {
-        await profileController.getMyProfile();
-      }
-      init();
-      getLoacale();
-      LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
-      return widget.isProfileCreated!;
-    } else {
-      print("not Login");
-      return false;
+    ProfileController profileController = Get.find();
+    if (profileController.myProfileModel.value.body == null) {
+      await profileController.getMyProfile();
     }
+    init();
+    getLoacale();
+    LocalNotification().initializeOneSignalHandlers(globalNavigatorKey);
+    return widget.isProfileCreated!;
   }
 }

@@ -748,20 +748,6 @@ class _JournalTileState extends State<JournalTile> {
                                                   ._journalModel!.group!.sId,
                                               "isJoined": true,
                                             })
-                                        // Navigator.pushNamed(
-                                        //     context, AppRoutes.groupDetails,
-                                        //     arguments: {
-                                        //       "group": GroupList(
-                                        //         sId: widget
-                                        //             ._journalModel!.group!.sId,
-                                        //         groupName: widget._journalModel!
-                                        //             .group!.groupName,
-                                        //         groupMediaUrl: widget
-                                        //             ._journalModel!
-                                        //             .group!
-                                        //             .groupImage,
-                                        //       ),
-                                        //     })
                                       }
                                     : await connectionController.addConnection(
                                         widget._journalModel!.postedBy!.sId!,

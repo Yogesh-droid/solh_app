@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -39,7 +39,6 @@ import 'package:solh/ui/screens/my-goals/select_goal.dart';
 import 'package:solh/ui/screens/my-profile/connections/connections.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/setting.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
-import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/products_carousel.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -50,6 +49,7 @@ import 'package:solh/widgets_constants/find_help_bar.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:upgrader/upgrader.dart';
+
 import '../../../controllers/connections/connection_controller.dart';
 import '../../../controllers/getHelp/get_help_controller.dart';
 import '../../../controllers/group/create_group_controller.dart';
@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoalSettingController goalSettingController =
       Get.put(GoalSettingController());
   final MoodMeterController moodMeterController = Get.find();
+  final ProfileController profileController = Get.find();
 
   final HomeController homeController = Get.find();
   LiveStreamController liveStreamController = Get.find();
@@ -106,22 +107,27 @@ class _HomeScreenState extends State<HomeScreen> {
     print('Running init state of HomeScreen');
     super.initState();
 
-    //userBlocNetwork.getMyProfileSnapshot();
-    if (FirebaseAuth.instance.currentUser != null) {
-      debugPrint('mood meter shown');
-      openMoodMeter();
-      getTrendingDecoration();
-      homeController.getHomeProductsCarouserl();
-      homeController.getHomeCarousel();
-      liveStreamController.getLiveStreamForUserData();
-      Prefs.setBool("isProfileCreated", true);
-      Get.find<JournalPageController>()
-          .getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
-      Get.find<JournalPageController>()
-          .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
-      homeController.getNotificationCount();
-      Get.find<CartController>().getCart();
-    }
+    profileController.myProfileModel.listen((profile) {
+      if (profile.body!.user!.sId != null) {
+        debugPrint('mood meter shown');
+        openMoodMeter();
+        getTrendingDecoration();
+        homeController.getHomeProductsCarouserl();
+        homeController.getHomeCarousel();
+        liveStreamController.getLiveStreamForUserData();
+        Prefs.setBool("isProfileCreated", true);
+        Get.find<JournalPageController>()
+            .getAllJournals(1, orgOnly: OrgOnlySetting.orgOnly ?? false);
+        Get.find<JournalPageController>()
+            .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
+        homeController.getNotificationCount();
+        Get.find<CartController>().getCart();
+      }
+    });
+
+    /*  if (userBlocNetwork.id.isNotEmpty) {
+
+    } */
   }
 
   @override

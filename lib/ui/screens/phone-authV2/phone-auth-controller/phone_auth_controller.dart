@@ -12,12 +12,14 @@ class PhoneAuthController extends GetxController {
   TextEditingController otpCode = TextEditingController();
 
   Future<void> login(String countryCode, String phoneNo) async {
+    isRequestingAuth.value = true;
     map.value = await Network.makePostRequest(
         url: "${APIConstants.api}/api/user/send-auth-code",
         body: {
           "countryCode": "$countryCode",
           "phone": "${countryCode}${phoneNo}"
         });
+    isRequestingAuth.value = false;
   }
 
   Future<Map<String, dynamic>> verifyCode(
@@ -25,6 +27,7 @@ class PhoneAuthController extends GetxController {
     map.value = await Network.makePostRequest(
         url: "${APIConstants.api}/api/user/verify-auth-code",
         body: {"dialCode": "$dialCode", "phone": "$phoneNo", "code": "$code"});
-    return map.value;
+
+    return map;
   }
 }
