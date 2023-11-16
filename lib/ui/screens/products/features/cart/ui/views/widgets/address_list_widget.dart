@@ -1,0 +1,53 @@
+import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_controller.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/address_tile_sheet.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
+
+class AddressListWidget extends StatelessWidget {
+  const AddressListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final AddressController _addressController = Get.find();
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 2,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text("Choose Delivery Address",
+                style: GoogleFonts.signika(
+                    textStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black))),
+            ..._addressController.addressEntity.value.addressList!
+                .map((e) => AddressTileSheet(addressList: e))
+                .toList(),
+            SolhGreenButton(
+              height: 40,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Icon(Icons.add),
+                SizedBox(width: 5),
+                Text(
+                  "Add New",
+                  style: SolhTextStyles.QS_body_2_semi.copyWith(
+                      color: Colors.white),
+                )
+              ]),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, AppRoutes.addAddressPage,
+                    arguments: {"addressList": null});
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

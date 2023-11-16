@@ -1,10 +1,16 @@
 import 'package:get/get.dart';
+import 'package:solh/ui/screens/products/features/cart/data/repo/add_address_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/cart/data/repo/add_to_cart_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/cart/data/repo/cart_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/cart/data/repo/edit_address_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/cart/domain/repo/add_address_repo.dart';
 import 'package:solh/ui/screens/products/features/cart/domain/repo/add_to_cart_repo.dart';
 import 'package:solh/ui/screens/products/features/cart/domain/repo/cart_repo.dart';
+import 'package:solh/ui/screens/products/features/cart/domain/repo/edit_address_repo.dart';
+import 'package:solh/ui/screens/products/features/cart/domain/usecases/add_address_usecase.dart';
 import 'package:solh/ui/screens/products/features/cart/domain/usecases/add_to_cart_usecase.dart';
 import 'package:solh/ui/screens/products/features/cart/domain/usecases/cart_usecase.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_address_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/data/repo/feature_products_repo_impl.dart';
@@ -56,6 +62,16 @@ import 'package:solh/ui/screens/products/features/wishlist/domain/usecase/produc
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 
+import '../../features/cart/data/repo/address_repo_impl.dart';
+import '../../features/cart/data/repo/delete_address_repo_impl.dart';
+import '../../features/cart/domain/repo/address_repo.dart';
+import '../../features/cart/domain/repo/delete_address_repo.dart';
+import '../../features/cart/domain/usecases/address_usecase.dart';
+import '../../features/cart/domain/usecases/delete_address_usecase.dart';
+import '../../features/cart/domain/usecases/edit_address_usecase.dart';
+import '../../features/cart/ui/controllers/address_controller.dart';
+import '../../features/cart/ui/controllers/delete_address_controller.dart';
+import '../../features/cart/ui/controllers/edit_address_controller.dart';
 import '../../features/reviews/domain/repo/get_reviews_repo.dart';
 
 part 'products_di_setup.dart';

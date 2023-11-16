@@ -1,6 +1,7 @@
 part of 'get_it_imports.dart';
 
 void setup() {
+  Get.put(AgeController());
   // mood meter
   Get.put<MoodMeterRepo>(MoodMeterRepoImpl());
   Get.put<MoodMeterUsecase>(

@@ -48,6 +48,7 @@ import 'package:solh/ui/screens/phone-auth/phone-auth.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/get_started.dart';
 import 'package:solh/ui/screens/phone-authV2/get-started/phonenumber-field/loginSignup/login_signup.dart';
 import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_screen.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/views/screen/add_address_page.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/checkout_screen.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_list.dart';
@@ -188,7 +189,11 @@ class AppRoutes {
   static const String checkoutScreen = "/checkoutScreen";
   static const String productList = "/productList";
   static const String productWishlistScreen = "/productWishlistScreen";
+
   static const String orderListScreen = "/orderListScreen";
+
+  static const String addAddressPage = '/addAddressPage';
+
 }
 
 class RouteGenerator {
@@ -225,6 +230,13 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: ((context) => PostScreen(args: args as Map)),
             settings: RouteSettings(name: routeSettings.name));
+
+      // Add Address
+      case AppRoutes.addAddressPage:
+        return MaterialPageRoute(
+            builder: ((context) => AddAddressPage(args: args as Map)),
+            settings: RouteSettings(name: routeSettings.name));
+
       case AppRoutes.viewAllConsultant:
         return MaterialPageRoute(
             builder: ((context) => ConsultantsScreen(args: args as Map)),
