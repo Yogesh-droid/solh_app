@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:video_trimmer/video_trimmer.dart';
 
 class OrderListCard extends StatelessWidget {
   OrderListCard(
@@ -32,10 +34,13 @@ class OrderListCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                image,
-                height: 130,
-                fit: BoxFit.fitHeight,
+              SizedBox(
+                width: 120,
+                child: Image.network(
+                  image,
+                  height: 130,
+                  fit: BoxFit.contain,
+                ),
               ),
               SizedBox(
                 width: 10,
@@ -59,21 +64,21 @@ class OrderListCard extends StatelessWidget {
                         style: SolhTextStyles.QS_caption,
                       ),
                       Text(
-                        expectedDeliveryDate,
+                        getDeliveryString(expectedDeliveryDate),
                         style: SolhTextStyles.QS_caption,
                       ),
                     ],
                   ),
                 ),
               ),
-              Container(
-                height: 100,
-                child: Center(
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                  ),
-                ),
-              )
+              // Container(
+              //   height: 100,
+              //   child: Center(
+              //     child: Icon(
+              //       Icons.arrow_forward_ios_rounded,
+              //     ),
+              //   ),
+              // )
             ],
           ),
           Divider(),
@@ -110,6 +115,14 @@ class OrderListCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+String getDeliveryString(String date) {
+  if (DateTime.parse(date).isAfter(DateTime.now())) {
+    return 'Delivery by ${DateFormat('dd-MMM-yyyy').format(DateTime.parse(date))}';
+  } else {
+    return 'Delivered on ${DateFormat('dd-MMM-yyyy').format(DateTime.parse(date))}';
   }
 }
 
