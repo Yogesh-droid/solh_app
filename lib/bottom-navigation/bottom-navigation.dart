@@ -152,7 +152,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   void showFeedbackForm() {
     Future.delayed(
-      Duration(seconds: 10),
+      Duration(seconds: 40),
       () {
         bottomNavigatorController.shouldShowFeedbackForm
             ? showBottomSheet(

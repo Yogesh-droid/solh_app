@@ -33,12 +33,14 @@ class BottomNavigatorController extends GetxController {
 
   Future<void> getFeedbackStatus() async {
     try {
-      Future.delayed(Duration(seconds: 2), () async {
+      Future.delayed(Duration(seconds: 20), () async {
         var response = await Network.makeGetRequestWithToken(
             '${APIConstants.api}/api/custom/get-feedback');
 
         if (response['success']) {
           AppRatingStatus.appRatingStatus = response['status'];
+        } else {
+          AppRatingStatus.appRatingStatus = true;
         }
         await showRatingForm();
       });
@@ -64,7 +66,7 @@ class BottomNavigatorController extends GetxController {
   @override
   void onInit() async {
     // TODO: implement onInit
-    await getFeedbackStatus();
+
     super.onInit();
   }
 }

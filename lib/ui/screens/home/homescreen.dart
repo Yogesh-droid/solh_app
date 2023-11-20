@@ -122,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .getTrendingJournals(orgToggle: OrgOnlySetting.orgOnly ?? false);
         homeController.getNotificationCount();
         Get.find<CartController>().getCart();
+        Get.find<BottomNavigatorController>().getFeedbackStatus();
       }
     });
 
@@ -157,7 +158,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Scaffold(body: MoodMeterV2());
               });
         }
-
         prefs.setBool('moodMeterShown', true);
         prefs.setInt('lastDateShown', DateTime.now().millisecondsSinceEpoch);
       }
@@ -1649,30 +1649,44 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: EdgeInsets.all(4.0.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Self Assessment'.tr,
-                      style: SolhTextStyles.QS_body_semi_1,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          constraints: BoxConstraints(maxHeight: 70.h),
-                          isScrollControlled: true,
-                          context: context,
-                          enableDrag: true,
-                          isDismissible: true,
-                          builder: (context) {
-                            return showSelfAssessmentDisclaimer(context);
+                    Row(
+                      children: [
+                        Text(
+                          'Self Assessment'.tr,
+                          style: SolhTextStyles.QS_body_semi_1,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            showModalBottomSheet(
+                              constraints: BoxConstraints(maxHeight: 70.h),
+                              isScrollControlled: true,
+                              context: context,
+                              enableDrag: true,
+                              isDismissible: true,
+                              builder: (context) {
+                                return showSelfAssessmentDisclaimer(context);
+                              },
+                            );
                           },
-                        );
-                      },
-                      icon: Icon(
-                        Icons.info,
-                        size: 15,
-                        color: SolhColors.grey,
+                          icon: Icon(
+                            Icons.info,
+                            size: 15,
+                            color: SolhColors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                    InkWell(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(AppRoutes.psychologyTest),
+                      child: Text(
+                        "View all",
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.primary_green),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -1682,14 +1696,25 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(left: 10),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
-                  children: psychologyTestController.testList
-                      .map((element) => PsychoTestContainer(
-                            test: element,
-                            psychologyTestController: psychologyTestController,
-                          ))
-                      .toList(),
+                  children: psychologyTestController.testList.length > 5
+                      ? List.generate(
+                          5,
+                          (index) => PsychoTestContainer(
+                                test: psychologyTestController.testList[index],
+                                psychologyTestController:
+                                    psychologyTestController,
+                              ))
+                      : psychologyTestController.testList
+                          .map(
+                            (element) => PsychoTestContainer(
+                              test: element,
+                              psychologyTestController:
+                                  psychologyTestController,
+                            ),
+                          )
+                          .toList(),
                 ),
-              )
+              ),
             ],
           ));
   }
