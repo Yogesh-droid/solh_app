@@ -73,7 +73,7 @@ class _JournalingState extends State<Journaling> {
         print("Reached at end");
         await _journalPageController.getAllJournals(
             ++_journalPageController.pageNo,
-            orgOnly: OrgOnlySetting.orgOnly!,
+            orgOnly: OrgOnlySetting.orgOnly ?? false,
             groupId: _journalPageController.selectedGroupId.value != ''
                 ? _journalPageController.selectedGroupId.value
                 : null);
