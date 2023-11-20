@@ -160,7 +160,6 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     }
 
     await addToCartController.addToCart(productId: id, quantity: quantity + 1);
-
     await cartController.getCart();
   }
 }
