@@ -116,7 +116,9 @@ class CreateJournal {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) {});
+          }).then((value) {
+        print("post response" + value.body);
+      });
 
       return "posted";
     }
@@ -158,6 +160,7 @@ class CreateJournal {
       return "posted";
     } else {
       print('${APIConstants.api}/api/pick-from-diary');
+
       await http.put(Uri.parse("${APIConstants.api}/api/pick-from-diary"),
           body: groupId != ''
               ? jsonEncode({
@@ -179,7 +182,7 @@ class CreateJournal {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) => print(value.body));
+          }).then((value) => print("post response" + value.body));
 
       return "posted";
     }

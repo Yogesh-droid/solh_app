@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -220,8 +221,7 @@ class _HomePageState extends State<HomePage> {
       upgrader: Upgrader(
           showIgnore: false,
           onLater: () {
-            SystemNavigator.pop();
-            return true;
+            exit(0);
           }),
       child: SingleChildScrollView(
         child: Column(children: [
