@@ -295,7 +295,7 @@ class Network {
     try {
       Uri _uri = Uri.parse(url);
       print(url);
-      print(body);
+      log(body.toString());
       print("token: ${userBlocNetwork.getSessionCookie}");
       http.Response apiResponse = await http.post(_uri,
           headers: isEncoded != null
