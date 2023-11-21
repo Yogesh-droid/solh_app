@@ -112,10 +112,6 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         elevation: 0.5,
         backgroundColor: backgroundColor,
         actions: [
-          // if (_isCartShown == null)
-          //   _isProductsPage != null || _isProductsPage != false
-          //       ? CartButton(itemsInCart: 2)
-          //       : SizedBox.shrink(),
           _isDiaryBtnShown != null
               ? IconButton(
                   onPressed: () {
@@ -399,24 +395,27 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
 }
 
 class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  ProductsAppBar({Key? key, this.enableWishlist = true})
+  ProductsAppBar(
+      {Key? key, this.enableWishlist = true, this.title, this.popupMenu})
       : super(
           key: key,
         );
   final bool enableWishlist;
+  final Widget? popupMenu;
+  final Widget? title;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
       actions: [
-        IconButton(
+        /*  IconButton(
           icon: Icon(
             Icons.local_mall,
             color: SolhColors.primary_green,
           ),
           onPressed: () =>
               Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
-        ),
+        ), */
         Obx(() => CartButton(
             itemsInCart: Get.find<CartController>()
                 .cartEntity
@@ -440,16 +439,17 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
         SizedBox(
           width: 10,
         ),
-        SOSButton()
+        popupMenu ?? SizedBox.shrink()
       ],
       elevation: 0,
-      leading: IconButton(
-        icon: Icon(
-          CupertinoIcons.back,
-          color: SolhColors.black,
-        ),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      leading: title ??
+          IconButton(
+            icon: Icon(
+              CupertinoIcons.back,
+              color: SolhColors.black,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
     );
   }
 

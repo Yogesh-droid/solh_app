@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
@@ -21,6 +23,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
+import '../../../../../../my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import '../../../../products_list/ui/widgets/product_list_bottom_nav.dart';
 
 class ProductsHome extends StatefulWidget {
@@ -49,7 +52,7 @@ class _ProductsHomeState extends State<ProductsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ProductsAppBar(),
+        appBar: ProductsAppBar(title: getDrawer(), popupMenu: getMorePopMenu()),
         bottomNavigationBar: Obx(() =>
             cartController.cartEntity.value.cartList != null &&
                     cartController.cartEntity.value.cartList!.items!.isNotEmpty
@@ -91,6 +94,72 @@ class _ProductsHomeState extends State<ProductsHome> {
             //Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
         ));
+  }
+
+  Widget getDrawer() {
+    final ProfileController profileController = Get.find();
+    return Container(
+        decoration: BoxDecoration(shape: BoxShape.circle),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MyProfileScreenV2()));
+          },
+          child: Obx(() {
+            return profileController.isProfileLoading.value
+                ? Center(
+                    child: SizedBox(
+                        height: 15, width: 15, child: MyLoader(strokeWidth: 2)),
+                  )
+                : profileController.myProfileModel.value.body == null
+                    ? InkWell(
+                        onTap: () {
+                          profileController.getMyProfile();
+                        },
+                        splashColor: Colors.transparent,
+                        child: Container(
+                          // height: 30,
+                          // width: 30,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SolhColors.primary_green),
+                          child: Icon(
+                            Icons.refresh_rounded,
+                            color: SolhColors.white,
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          radius: 4.8.w,
+                          backgroundColor: SolhColors.primary_green,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 4.5.w,
+                            backgroundImage: CachedNetworkImageProvider(
+                              profileController.myProfileModel.value.body!.user!
+                                      .profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            ),
+                          ),
+                        ),
+                      );
+          }),
+        ));
+  }
+
+  Widget getMorePopMenu() {
+    return PopupMenuButton(
+        child: Icon(Icons.more_vert, color: SolhColors.primary_green),
+        itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text("My Orders"),
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
+              )
+            ]);
   }
 }
 

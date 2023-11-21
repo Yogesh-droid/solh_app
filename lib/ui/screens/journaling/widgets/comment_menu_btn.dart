@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/journals/journals_response_model.dart';
 import '../../../../widgets_constants/constants/colors.dart';
 import '../../../../widgets_constants/constants/textstyles.dart';
@@ -29,6 +30,7 @@ class CommentMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController profileController = Get.find();
     return PopupMenuButton(
         icon: Icon(
           Icons.more_vert,
@@ -48,7 +50,7 @@ class CommentMenuButton extends StatelessWidget {
                     vertical: MediaQuery.of(context).size.height / 80,
                   ),
                   decoration: _journalModel.postedBy!.uid ==
-                          FirebaseAuth.instance.currentUser!.uid
+                          profileController.myProfileModel.value.body!.user!.sId
                       ? BoxDecoration(
                           border: Border(
                           bottom: BorderSide(color: SolhColors.grey239),
@@ -66,7 +68,7 @@ class CommentMenuButton extends StatelessWidget {
                 padding: EdgeInsets.zero,
               ),
               if (_journalModel.postedBy!.uid ==
-                  FirebaseAuth.instance.currentUser!.uid)
+                  profileController.myProfileModel.value.body!.user!.sId)
                 PopupMenuItem(
                   child: Container(
                     alignment: Alignment.centerLeft,
