@@ -220,7 +220,7 @@ class _HomePageState extends State<HomePage> {
     return UpgradeAlert(
       upgrader: Upgrader(
           showIgnore: false,
-          durationUntilAlertAgain: const Duration(seconds: 10000),
+          durationUntilAlertAgain: const Duration(seconds: 10),
           onLater: () {
             exit(0);
           }),
