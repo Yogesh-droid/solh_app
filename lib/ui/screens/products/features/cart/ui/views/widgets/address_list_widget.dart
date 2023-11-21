@@ -8,7 +8,8 @@ import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class AddressListWidget extends StatelessWidget {
-  const AddressListWidget({super.key});
+  const AddressListWidget({super.key, required this.wantToChangeBilling});
+  final bool wantToChangeBilling;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +19,17 @@ class AddressListWidget extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Text("Choose Delivery Address",
+            Text("Choose Address",
                 style: GoogleFonts.signika(
                     textStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.black))),
             ..._addressController.addressEntity.value.addressList!
-                .map((e) => AddressTileSheet(addressList: e))
+                .map((e) => AddressTileSheet(
+                      addressList: e,
+                      wantToChangeBilling: wantToChangeBilling,
+                    ))
                 .toList(),
             SolhGreenButton(
               height: 40,
