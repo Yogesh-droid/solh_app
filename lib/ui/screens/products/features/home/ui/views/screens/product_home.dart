@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_category_controller.dart';
@@ -19,6 +21,8 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
+import '../../../../products_list/ui/widgets/product_list_bottom_nav.dart';
+
 class ProductsHome extends StatefulWidget {
   const ProductsHome({super.key});
 
@@ -31,13 +35,14 @@ class _ProductsHomeState extends State<ProductsHome> {
   ProductsCategoryController productsCategoryController = Get.find();
   FeatureProductsController featureProductsController = Get.find();
   ProductsHomeCarouselController productsHomeCarouselController = Get.find();
+  final AddToCartController addToCartController = Get.find();
+  final CartController cartController = Get.find();
   @override
   void initState() {
     productMainCatController.getMainCat();
     productsCategoryController.getProductsCategories();
     featureProductsController.getFeatureProducts();
     productsHomeCarouselController.getBanners();
-    // TODO: implement initState
     super.initState();
   }
 
@@ -45,6 +50,24 @@ class _ProductsHomeState extends State<ProductsHome> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: ProductsAppBar(),
+        bottomNavigationBar: Obx(() =>
+            cartController.cartEntity.value.cartList != null &&
+                    cartController.cartEntity.value.cartList!.items!.isNotEmpty
+                ? ProductListBottomNav(
+                    noOfItemsInCart:
+                        cartController.cartEntity.value.cartList!.items!.length,
+                    onDecreaseCartCount: (index, id, quantity) async {
+                      await addToCartController.addToCart(
+                          productId: id, quantity: quantity - 1);
+                      await cartController.getCart();
+                    },
+                    onIncreaseCartCount: (index, id, quantity) async {
+                      await addToCartController.addToCart(
+                          productId: id, quantity: quantity + 1);
+                      await cartController.getCart();
+                    },
+                  )
+                : SizedBox.shrink()),
         body: Stack(
           children: [
             ListView(
@@ -65,18 +88,10 @@ class _ProductsHomeState extends State<ProductsHome> {
                 ),
               ],
             ),
-            Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
+            //Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
         ));
   }
-}
-
-PreferredSizeWidget getAppbar() {
-  return SolhAppBar(
-    title: Text(""),
-    isLandingScreen: false,
-    isProductsPage: true,
-  );
 }
 
 class ProductsSearchBar extends StatelessWidget {
@@ -277,7 +292,7 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
 
 class ProductsSearchCategories extends StatelessWidget {
   ProductsSearchCategories({super.key});
-  ProductsCategoryController productsCategoryController = Get.find();
+  final ProductsCategoryController productsCategoryController = Get.find();
 
   @override
   Widget build(BuildContext context) {

@@ -252,20 +252,21 @@ class CheckoutButton extends StatelessWidget {
           ),
           SolhGreenMiniButton(
             onPressed: () {
-              Navigator.pushNamed(context, AppRoutes.paymentscreen, arguments: {
-                "amount":
-                    "${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}",
-                "feeCurrency": "Rs",
-                // "alliedOrderId": map['data']["alliedOrderId"],
-                "appointmentId": null,
-                "inhouseOrderId": null,
-                "marketplaceType": "Allied",
-                // 'original_price': packages.amount,
-                'organisation': DefaultOrg.defaultOrg ?? '',
-                "paymentGateway": "Stripe",
-                "paymentSource": "App",
-                "feeCode": "INR"
-              });
+              Navigator.pushNamed(context, AppRoutes.productPaymentPage,
+                  //  + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)
+                  arguments: {
+                    "totalPrice": cartController.totalPayblePrice.value,
+                    "shipping": cartController.cartEntity.value.shippingAmount,
+                    "discount": cartController.cartEntity.value.discount,
+                    "feeCurrency": "Rs",
+                    "appointmentId": null,
+                    "inhouseOrderId": null,
+                    "marketplaceType": "Allied",
+                    'organisation': DefaultOrg.defaultOrg ?? '',
+                    "paymentGateway": "Stripe",
+                    "paymentSource": "App",
+                    "feeCode": "INR"
+                  });
             },
             child: Text(
               'Checkout',

@@ -14,8 +14,11 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/home/home_controller.dart';
 import 'package:solh/ui/screens/intro/intro-crousel.dart';
 import 'package:solh/ui/screens/notification/notifications_screen.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/app_bar_cart_icon.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+
 import '../../ui/my_diary/my_diary_list_page.dart';
 import '../../ui/screens/global-search/global_search_page.dart';
 import '../../ui/screens/home/homescreen.dart';
@@ -40,8 +43,6 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _isVideoCallScreen = isVideoCallScreen,
         _height = height,
         _isDiaryBtnShown = isDiaryBtnShown,
-        _isCartShown = isCartShown,
-        _isProductsPage = isProductsPage,
         _bottom = bottom,
         _menuButton = menuButton,
         _onbackPressed = callback,
@@ -51,12 +52,10 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
-  final bool? _isCartShown;
   final Widget _title;
   final double? _height;
   final bool? isNotificationPage;
   final bool? _isDiaryBtnShown;
-  final bool? _isProductsPage;
   final Color backgroundColor;
   final PreferredSize? _bottom;
   final Widget? _menuButton;
@@ -204,47 +203,6 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size(0, _height ?? 50);
-}
-
-class CartButton extends StatelessWidget {
-  CartButton({super.key, required this.itemsInCart});
-
-  final int itemsInCart;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(AppRoutes.checkoutScreen),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: Icon(
-                  CupertinoIcons.cart,
-                  color: SolhColors.primary_green,
-                ),
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: SolhColors.primary_green),
-                  child: Text(itemsInCart.toString(),
-                      style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                        color: SolhColors.white,
-                      )),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class AssistanceButton extends StatelessWidget {
@@ -437,7 +395,6 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size(0, 50);
 }
 
@@ -446,7 +403,7 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
       : super(
           key: key,
         );
-  bool enableWishlist;
+  final bool enableWishlist;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -460,12 +417,18 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
           onPressed: () =>
               Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
         ),
-        CartButton(itemsInCart: 2),
+        Obx(() => CartButton(
+            itemsInCart: Get.find<CartController>()
+                .cartEntity
+                .value
+                .cartList!
+                .items!
+                .length)),
         SizedBox(
           width: 10,
         ),
         enableWishlist
-            ? GestureDetector(
+            ? InkWell(
                 onTap: () => Navigator.of(context)
                     .pushNamed(AppRoutes.productWishlistScreen),
                 child: Icon(
@@ -491,6 +454,5 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size(0, 50);
 }
