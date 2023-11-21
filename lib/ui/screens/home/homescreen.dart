@@ -220,6 +220,7 @@ class _HomePageState extends State<HomePage> {
     return UpgradeAlert(
       upgrader: Upgrader(
           showIgnore: false,
+          durationUntilAlertAgain: const Duration(seconds: 10000),
           onLater: () {
             exit(0);
           }),
@@ -549,14 +550,16 @@ class _HomePageState extends State<HomePage> {
                 : const SizedBox()),
           ),
           GetHelpDivider(),
-          Obx(() => Container(
-                color: profileController.orgColor3.value.isNotEmpty
-                    ? Color(int.parse("0xFF${profileController.orgColor3}"))
-                    : Colors.transparent,
-                child: GetHelpCategory(
-                  title: "In-house Experts".tr,
-                ),
-              )),
+          Obx(
+            () => Container(
+              color: profileController.orgColor3.value.isNotEmpty
+                  ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                  : Colors.transparent,
+              child: GetHelpCategory(
+                title: "In-house Experts".tr,
+              ),
+            ),
+          ),
           Obx(() => Container(
                 color: profileController.orgColor3.value.isNotEmpty
                     ? Color(int.parse("0xFF${profileController.orgColor3}"))
@@ -1678,15 +1681,15 @@ class _HomePageState extends State<HomePage> {
                         )
                       ],
                     ),
-                    InkWell(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(AppRoutes.psychologyTest),
-                      child: Text(
-                        "View all",
-                        style: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.primary_green),
-                      ),
-                    ),
+                    // InkWell(
+                    //   onTap: () => Navigator.of(context)
+                    //       .pushNamed(AppRoutes.psychologyTest),
+                    //   child: Text(
+                    //     "View all",
+                    //     style: SolhTextStyles.CTA
+                    //         .copyWith(color: SolhColors.primary_green),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
