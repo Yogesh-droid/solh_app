@@ -1,5 +1,3 @@
-import 'package:solh/ui/screens/products/features/order_summary/domain/entity/user_order_list_entity.dart';
-
 class OrderListModel {
   bool? success;
   String? message;

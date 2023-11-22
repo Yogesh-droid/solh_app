@@ -76,7 +76,8 @@ class ProductsCard extends StatelessWidget {
   final int? inCartItems;
   final Function()? onPressed;
 
-  AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
+  final AddDeleteWishlistItemController addDeleteWishlistItemController =
+      Get.find();
 
   @override
   Widget build(BuildContext context) {

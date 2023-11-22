@@ -48,7 +48,7 @@ class SessionCookie {
             "utm_source": utm_source ?? '',
             "utm_medium": utm_medium ?? ''
           });
-      print("Running" + response["userStatus"].toString());
+      print("Running${response["userStatus"]}");
       if (response["success"] != null) {
         return response['success'];
       }
@@ -58,14 +58,15 @@ class SessionCookie {
         return false;
       } else {
         await SolhCacheManager.instance.writeJsonCache(
-            duration: Duration(days: 12), json: response, key: "sessionCookie");
+            duration: const Duration(days: 12),
+            json: response,
+            key: "sessionCookie");
       }
 
-      debugPrint("*" * 30 + "\n" + "Response: $response");
+      debugPrint("${"*" * 30}\nResponse: $response");
       userBlocNetwork.updateSessionCookie =
           response["details"]["sessionCookie"];
-      userBlocNetwork.updateUserType =
-          response["userType"] != null ? response["userType"] : "";
+      userBlocNetwork.updateUserType = response["userType"] ?? "";
       // response["hiddenPosts"] != null
       //     ? response["hiddenPosts"].forEach((post) {
       //         print("*" * 30 + "\n" + "Hidden Post: $post");
@@ -78,5 +79,6 @@ class SessionCookie {
       log(response["newProfile"].toString(), name: "newProfile");
       return response["newProfile"] ?? false;
     }
+    return null;
   }
 }

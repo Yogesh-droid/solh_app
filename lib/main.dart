@@ -68,8 +68,8 @@ void main() async {
   Get.put(BookAppointmentController());
 
   bool? newUser = await isNewUser();
-  Map<String, dynamic> _initialAppData = await initApp();
-  bool isProfileCreated = await _initialAppData["isProfileCreated"] && !newUser;
+  Map<String, dynamic> initialAppData = await initApp();
+  bool isProfileCreated = await initialAppData["isProfileCreated"] && !newUser;
 
   await DefaultOrg.getDefaultOrg();
   await OrgOnlySetting.getOrgOnly();
@@ -81,7 +81,7 @@ void main() async {
 
 // ignore: must_be_immutable
 class SolhApp extends StatefulWidget {
-  SolhApp({Key? key, this.isProfileCreated}) : super(key: key);
+  SolhApp({super.key, this.isProfileCreated});
   bool? isProfileCreated;
 
   @override

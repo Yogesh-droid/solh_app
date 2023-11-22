@@ -390,7 +390,7 @@ class AddToCartBuyNowButton extends StatelessWidget {
   AddToCartBuyNowButton({super.key, required this.productId});
   final String productId;
 
-  ProductDetailController productDetailController = Get.find();
+  final ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(

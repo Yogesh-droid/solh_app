@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class OrderListCard extends StatelessWidget {
@@ -14,14 +13,14 @@ class OrderListCard extends StatelessWidget {
       required this.refId,
       required this.salePrice});
 
-  String status;
-  String name;
-  int salePrice;
-  int originalPrice;
-  int quantity;
-  String image;
-  String expectedDeliveryDate;
-  String refId;
+  final String status;
+  final String name;
+  final int salePrice;
+  final int originalPrice;
+  final int quantity;
+  final String image;
+  final String expectedDeliveryDate;
+  final String refId;
 
   @override
   Widget build(BuildContext context) {

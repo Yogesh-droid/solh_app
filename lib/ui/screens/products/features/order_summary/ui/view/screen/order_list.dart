@@ -52,7 +52,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
 class OrderSearchBar extends StatelessWidget {
   OrderSearchBar({super.key});
-  OrderListController orderListController = Get.find();
+  final OrderListController orderListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -163,7 +163,7 @@ class OrderSearchBar extends StatelessWidget {
 
 class OrderList extends StatelessWidget {
   OrderList({super.key});
-  OrderListController orderListController = Get.find();
+  final OrderListController orderListController = Get.find();
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
