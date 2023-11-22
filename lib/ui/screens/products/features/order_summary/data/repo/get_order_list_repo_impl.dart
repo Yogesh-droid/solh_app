@@ -13,7 +13,6 @@ class GetOrderListRepoImpl extends GetOrderListRepo {
           await Network.makeGetRequestWithToken(requestParams.url);
       if (response['success']) {
         final value = OrderListModel.fromJson(response);
-        print(value);
         return DataSuccess(data: value);
       } else {
         return DataError(

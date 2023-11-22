@@ -11,18 +11,17 @@ class OrderListModel {
     if (json['userOrderList'] != null) {
       userOrderList = <UserOrderList>[];
       json['userOrderList'].forEach((v) {
-        userOrderList!.add(new UserOrderList.fromJson(v));
+        userOrderList!.add(UserOrderList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    data['message'] = this.message;
-    if (this.userOrderList != null) {
-      data['userOrderList'] =
-          this.userOrderList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['message'] = message;
+    if (userOrderList != null) {
+      data['userOrderList'] = userOrderList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -39,16 +38,16 @@ class UserOrderList {
     sId = json['_id'];
     orderId = json['orderId'];
     orderItems = json['orderItems'] != null
-        ? new OrderItems.fromJson(json['orderItems'])
+        ? OrderItems.fromJson(json['orderItems'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['orderId'] = this.orderId;
-    if (this.orderItems != null) {
-      data['orderItems'] = this.orderItems!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['orderId'] = orderId;
+    if (orderItems != null) {
+      data['orderItems'] = orderItems!.toJson();
     }
     return data;
   }
@@ -86,15 +85,15 @@ class OrderItems {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    data['name'] = this.name;
-    data['salePrice'] = this.salePrice;
-    data['originalPrice'] = this.originalPrice;
-    data['quantity'] = this.quantity;
-    data['image'] = this.image;
-    data['expectedDeliveryDate'] = this.expectedDeliveryDate;
-    data['refId'] = this.refId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['name'] = name;
+    data['salePrice'] = salePrice;
+    data['originalPrice'] = originalPrice;
+    data['quantity'] = quantity;
+    data['image'] = image;
+    data['expectedDeliveryDate'] = expectedDeliveryDate;
+    data['refId'] = refId;
     return data;
   }
 }

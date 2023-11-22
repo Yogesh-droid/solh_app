@@ -57,14 +57,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       GetProductStatsAndImage(
                           productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       ProductDetails(productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       ReviewsSection(productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       RelatedProductsSection(
                           productDetailsModel: productDetailsModel),
-                      SizedBox(
+                      const SizedBox(
                         height: 90,
                       ),
                     ],
@@ -91,7 +91,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 class ReviewsSection extends StatelessWidget {
-  ReviewsSection({super.key, required this.productDetailsModel});
+  const ReviewsSection({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -112,13 +112,13 @@ class ReviewsSection extends StatelessWidget {
                 '${productDetailsModel.totalReview} global rating',
                 style: SolhTextStyles.QS_body_2,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ListView.builder(
                 itemCount: productDetailsModel.reviews!.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ReviewCard(
                     imageUrl: productDetailsModel
@@ -139,7 +139,7 @@ class ReviewsSection extends StatelessWidget {
                       style: SolhTextStyles.QS_body_2.copyWith(
                           color: SolhColors.primary_green),
                     ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               )
             ],
@@ -151,7 +151,7 @@ class ReviewsSection extends StatelessWidget {
 }
 
 class RelatedProductsSection extends StatelessWidget {
-  RelatedProductsSection({super.key, required this.productDetailsModel});
+  const RelatedProductsSection({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -164,12 +164,12 @@ class RelatedProductsSection extends StatelessWidget {
         SizedBox(
           height: 380,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
             itemCount: productDetailsModel.product!.relatedProducts!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return const SizedBox(
                 width: 10,
               );
             },
@@ -214,7 +214,7 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  GetProductStatsAndImage({super.key, required this.productDetailsModel});
+  const GetProductStatsAndImage({super.key, required this.productDetailsModel});
   // final ProductDetailController productDetailController = Get.find();
   final ProductDetailsModel productDetailsModel;
 
@@ -230,7 +230,7 @@ class GetProductStatsAndImage extends StatelessWidget {
             GetProductImages(productDetailsModel: productDetailsModel)
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Padding(
@@ -242,7 +242,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                 productDetailsModel.product!.productName ?? '',
                 style: SolhTextStyles.QS_body_1_med,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -254,7 +254,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                         productDetailsModel.product!.productQuantity ?? '',
                         style: SolhTextStyles.QS_body_2,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Row(
@@ -279,7 +279,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -290,7 +290,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                       Text(
                           '${productDetailsModel.product!.currency} ${productDetailsModel.product!.afterDiscountPrice} ',
                           style: SolhTextStyles.QS_big_body),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Row(
@@ -300,7 +300,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                             style: SolhTextStyles.QS_big_body.copyWith(
                                 color: SolhColors.grey_2),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(
@@ -320,10 +320,10 @@ class GetProductStatsAndImage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
@@ -332,7 +332,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
             ],
@@ -344,7 +344,7 @@ class GetProductStatsAndImage extends StatelessWidget {
 }
 
 class ProductDetails extends StatelessWidget {
-  ProductDetails({super.key, required this.productDetailsModel});
+  const ProductDetails({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -378,7 +378,7 @@ class ProductDetails extends StatelessWidget {
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
               parse(productDetailsModel.product!.description ?? '').body!.text),
         ),
-        SizedBox(
+        const SizedBox(
           height: 24,
         )
       ],
@@ -394,9 +394,11 @@ class AddToCartBuyNowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, boxShadow: <BoxShadow>[
-        BoxShadow(blurRadius: 2, spreadRadius: 2, color: Colors.black26)
-      ]),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(blurRadius: 2, spreadRadius: 2, color: Colors.black26)
+          ]),
       width: double.infinity,
       height: 80,
       child: Row(
@@ -440,7 +442,7 @@ class _GetProductImagesState extends State<GetProductImages> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 200,
           width: 100.w,
           child: PageView(
@@ -462,19 +464,17 @@ class _GetProductImagesState extends State<GetProductImages> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.productDetailsModel.product!.productImage!
                 .map((e) => Container(
-                      child: Container(
-                        margin: EdgeInsets.all(3),
-                        height: 6,
-                        width: 6,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: imageIndex ==
-                                  widget.productDetailsModel.product!
-                                      .productImage!
-                                      .indexOf(e)
-                              ? SolhColors.grey
-                              : SolhColors.grey_3,
-                        ),
+                      margin: const EdgeInsets.all(3),
+                      height: 6,
+                      width: 6,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: imageIndex ==
+                                widget
+                                    .productDetailsModel.product!.productImage!
+                                    .indexOf(e)
+                            ? SolhColors.grey
+                            : SolhColors.grey_3,
                       ),
                     ))
                 .toList(),
@@ -496,14 +496,14 @@ class GetProductDeatilAppBar extends StatelessWidget
     return AppBar(
       elevation: 0.5,
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           CupertinoIcons.back,
           size: 30,
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       backgroundColor: SolhColors.white,
-      iconTheme: IconThemeData(color: SolhColors.black),
+      iconTheme: const IconThemeData(color: SolhColors.black),
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -526,5 +526,5 @@ class GetProductDeatilAppBar extends StatelessWidget
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => const Size(0, 50);
 }

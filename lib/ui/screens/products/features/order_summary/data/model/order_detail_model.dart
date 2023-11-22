@@ -2,15 +2,7 @@ import 'package:solh/ui/screens/products/features/order_summary/domain/entity/or
 
 class OrderDetailModel extends OrderDetailEntity {
   OrderDetailModel(
-      {bool? success,
-      String? message,
-      UserOrderDetails? userOrderDetails,
-      List<OtherItems>? otherItems})
-      : super(
-            message: message,
-            otherItems: otherItems,
-            success: success,
-            userOrderDetails: userOrderDetails);
+      {super.success, super.message, super.userOrderDetails, super.otherItems});
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(

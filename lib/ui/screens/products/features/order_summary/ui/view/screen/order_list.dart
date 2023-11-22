@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/controller/order_list_controller.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/view/widgets/order_list_card.dart';
@@ -20,7 +21,6 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     orderListController.getOrderList();
     super.initState();
   }
@@ -29,7 +29,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SolhAppBar(
-          title: Text(
+          title: const Text(
             'My Order',
             style: SolhTextStyles.QS_body_1_bold,
           ),
@@ -96,10 +96,10 @@ class OrderSearchBar extends StatelessWidget {
                         orderListController.orderFilterStatus.value == ''
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: Text('All'),
+                    label: const Text('All'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 InkWell(
@@ -113,10 +113,10 @@ class OrderSearchBar extends StatelessWidget {
                         orderListController.orderFilterStatus.value == 'placed'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: Text('Ordered'),
+                    label: const Text('Ordered'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 InkWell(
@@ -131,10 +131,10 @@ class OrderSearchBar extends StatelessWidget {
                                 'delivered'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: Text('Delivered'),
+                    label: const Text('Delivered'),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 InkWell(
@@ -149,7 +149,7 @@ class OrderSearchBar extends StatelessWidget {
                                 'cancelled'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: Text('Cancelled'),
+                    label: const Text('Cancelled'),
                   ),
                 ),
               ],
@@ -167,30 +167,40 @@ class OrderList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 50),
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return OrderListCard(
-          expectedDeliveryDate: orderListController.orderListModel.value
-              .userOrderList![index].orderItems!.expectedDeliveryDate!,
-          image: orderListController
-              .orderListModel.value.userOrderList![index].orderItems!.image!,
-          name: orderListController
-              .orderListModel.value.userOrderList![index].orderItems!.name!,
-          originalPrice: orderListController.orderListModel.value
-              .userOrderList![index].orderItems!.originalPrice!,
-          quantity: orderListController
-              .orderListModel.value.userOrderList![index].orderItems!.quantity!,
-          refId: orderListController
-              .orderListModel.value.userOrderList![index].orderItems!.refId!,
-          salePrice: orderListController.orderListModel.value
-              .userOrderList![index].orderItems!.salePrice!,
-          status: orderListController
-              .orderListModel.value.userOrderList![index].orderItems!.status!,
+        return InkWell(
+          onTap: () {
+            Navigator.pushNamed(context, AppRoutes.orderdetails, arguments: {
+              'orderId': orderListController
+                  .orderListModel.value.userOrderList![index].sId,
+              'refId': orderListController
+                  .orderListModel.value.userOrderList![index].orderItems!.refId
+            });
+          },
+          child: OrderListCard(
+            expectedDeliveryDate: orderListController.orderListModel.value
+                .userOrderList![index].orderItems!.expectedDeliveryDate!,
+            image: orderListController
+                .orderListModel.value.userOrderList![index].orderItems!.image!,
+            name: orderListController
+                .orderListModel.value.userOrderList![index].orderItems!.name!,
+            originalPrice: orderListController.orderListModel.value
+                .userOrderList![index].orderItems!.originalPrice!,
+            quantity: orderListController.orderListModel.value
+                .userOrderList![index].orderItems!.quantity!,
+            refId: orderListController
+                .orderListModel.value.userOrderList![index].orderItems!.refId!,
+            salePrice: orderListController.orderListModel.value
+                .userOrderList![index].orderItems!.salePrice!,
+            status: orderListController
+                .orderListModel.value.userOrderList![index].orderItems!.status!,
+          ),
         );
       },
       separatorBuilder: (context, index) {
-        return GetHelpDivider();
+        return const GetHelpDivider();
       },
       itemCount: orderListController.orderListModel.value.userOrderList!.length,
     );
