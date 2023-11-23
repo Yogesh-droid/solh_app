@@ -1681,15 +1681,15 @@ class _HomePageState extends State<HomePage> {
                         )
                       ],
                     ),
-                    // InkWell(
-                    //   onTap: () => Navigator.of(context)
-                    //       .pushNamed(AppRoutes.psychologyTest),
-                    //   child: Text(
-                    //     "View all",
-                    //     style: SolhTextStyles.CTA
-                    //         .copyWith(color: SolhColors.primary_green),
-                    //   ),
-                    // ),
+                    InkWell(
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(AppRoutes.psychologyTest),
+                      child: Text(
+                        "View all",
+                        style: SolhTextStyles.CTA
+                            .copyWith(color: SolhColors.primary_green),
+                      ),
+                    ),
                   ],
                 ),
               ),
