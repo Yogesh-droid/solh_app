@@ -40,46 +40,43 @@ class OrderTrackingWidget extends StatelessWidget {
   }
 
   Widget step({required Tracker e, required bool isLast}) {
-    return e.isShow!
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  const SizedBox(height: 5),
-                  Container(
-                      height: 15,
-                      width: 15,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: e.isShow!
-                              ? SolhColors.primary_green
-                              : SolhColors.grey)),
-                  if (!isLast)
-                    Container(
-                      height: 60,
-                      width: 3,
-                      color: e.isShow!
-                          ? SolhColors.primary_green
-                          : SolhColors.grey,
-                    )
-                ],
-              ),
-              const SizedBox(width: 20),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    e.status ?? '',
-                    style: SolhTextStyles.QS_body_2_semi.copyWith(
-                        color: Colors.black),
-                  ),
-                  Text(DateFormat('hh:mm a, dd MMMM, yyyy').format(
-                      DateTime.tryParse(e.createdAt ?? '') ?? DateTime.now())),
-                ],
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            const SizedBox(height: 5),
+            Container(
+                height: 15,
+                width: 15,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: e.isShow!
+                        ? SolhColors.primary_green
+                        : SolhColors.grey)),
+            if (!isLast)
+              Container(
+                height: 60,
+                width: 3,
+                color: e.isShow! ? SolhColors.primary_green : SolhColors.grey,
               )
-            ],
-          )
-        : const SizedBox.shrink();
+          ],
+        ),
+        const SizedBox(width: 20),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              e.status ?? '',
+              style:
+                  SolhTextStyles.QS_body_2_semi.copyWith(color: Colors.black),
+            ),
+            if (e.createdAt != null)
+              Text(DateFormat('hh:mm a, dd MMMM, yyyy').format(
+                  DateTime.tryParse(e.createdAt ?? '') ?? DateTime.now())),
+          ],
+        )
+      ],
+    );
   }
 }

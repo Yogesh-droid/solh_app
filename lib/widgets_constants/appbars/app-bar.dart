@@ -26,15 +26,16 @@ import '../../ui/screens/home/homescreen.dart';
 // ignore: must_be_immutable
 class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
   SolhAppBar(
-      {required Widget title,
+      {super.key,
+      required Widget title,
       required bool isLandingScreen,
       double? height,
       bool isVideoCallScreen = false,
       bool? isDiaryBtnShown,
       bool? isCartShown,
-      bool? isNotificationPage,
+      this.isNotificationPage,
       bool? isProductsPage,
-      Color this.backgroundColor = Colors.white,
+      this.backgroundColor = Colors.white,
       PreferredSize? bottom,
       Widget? menuButton,
       Callback? callback})
@@ -45,10 +46,9 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         _isDiaryBtnShown = isDiaryBtnShown,
         _bottom = bottom,
         _menuButton = menuButton,
-        _onbackPressed = callback,
-        isNotificationPage = isNotificationPage;
+        _onbackPressed = callback;
 
-  Callback? _onbackPressed;
+  final Callback? _onbackPressed;
 
   final bool _isVideoCallScreen;
   final bool _isLandingScreen;
@@ -75,7 +75,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
             _isLandingScreen
                 ? Obx(() {
                     return Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
+                      padding: const EdgeInsets.only(left: 5, right: 5),
                       // decoration: BoxDecoration(
                       //     border: Border.all(color: Colors.black)),
                       height: 45,
@@ -95,17 +95,13 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
         leadingWidth: _isLandingScreen ? 0 : 60,
         leading: !_isLandingScreen
             ? InkWell(
-                onTap: _onbackPressed != null
-                    ? _onbackPressed
-                    : (() => Navigator.pop(context)),
-                child: Container(
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: backgroundColor == Colors.transparent
-                        ? Colors.white
-                        : SolhColors.black,
-                    size: 24,
-                  ),
+                onTap: _onbackPressed ?? (() => Navigator.pop(context)),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: backgroundColor == Colors.transparent
+                      ? Colors.white
+                      : SolhColors.black,
+                  size: 24,
                 ),
               )
             : null,
@@ -146,14 +142,14 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                           ),
                           Get.find<HomeController>().noOfNotifications.value ==
                                   0
-                              ? SizedBox.shrink()
+                              ? const SizedBox.shrink()
                               : Positioned(
                                   right: -4,
                                   top: -8,
                                   child: Container(
-                                    margin: EdgeInsets.all(4),
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
+                                    margin: const EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
                                         color: SolhColors.primaryRed,
                                         shape: BoxShape.circle),
                                     child: Obx(() {
@@ -183,14 +179,14 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
                     FirebaseAnalytics.instance.logEvent(
                         name: 'SearchTapped', parameters: {'Page': 'AppBar'});
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.search,
                     color: SolhColors.primary_green,
                   ))
               : Container(),
 
           /// SOS Button
-          if (!_isVideoCallScreen) AssistanceButton(),
+          if (!_isVideoCallScreen) const AssistanceButton(),
 
           ////
           if (_menuButton != null) _menuButton!,
@@ -202,7 +198,7 @@ class SolhAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class AssistanceButton extends StatelessWidget {
-  const AssistanceButton({Key? key}) : super(key: key);
+  const AssistanceButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +208,7 @@ class AssistanceButton extends StatelessWidget {
 
 // ignore: must_be_immutable
 class SOSButton extends StatelessWidget {
-  SOSButton({Key? key}) : super(key: key);
+  SOSButton({super.key});
   ProfileController profileController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -239,7 +235,7 @@ class SOSButton extends StatelessWidget {
         backgroundColor: SolhColors.pink224,
         child: Text(
           "Now".tr,
-          style: TextStyle(
+          style: const TextStyle(
             color: SolhColors.white,
             fontSize: 10,
             fontWeight: FontWeight.w400,
@@ -253,12 +249,11 @@ class SOSButton extends StatelessWidget {
 
 class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AuthAppBar({
-    Key? key,
+    super.key,
     required String primaryTitle,
     required String secondaryTitle,
   })  : _primaryTitle = primaryTitle,
-        _secondaryTitle = secondaryTitle,
-        super(key: key);
+        _secondaryTitle = secondaryTitle;
   final String _primaryTitle;
   final String _secondaryTitle;
 
@@ -272,11 +267,11 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
           SizedBox(height: 2.h),
           Text(
             _primaryTitle,
-            style: TextStyle(fontSize: 20, color: SolhColors.black34),
+            style: const TextStyle(fontSize: 20, color: SolhColors.black34),
           ),
           Text(
             _secondaryTitle,
-            style: TextStyle(fontSize: 16, color: SolhColors.grey),
+            style: const TextStyle(fontSize: 16, color: SolhColors.grey),
           ),
         ],
       ),
@@ -288,13 +283,13 @@ class AuthAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size(0, 60);
+  Size get preferredSize => const Size(0, 60);
 }
 
 class ProfileSetupAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const ProfileSetupAppBar({
-    Key? key,
+    super.key,
     required String title,
     VoidCallback? onBackButton,
     VoidCallback? onSkip,
@@ -303,10 +298,7 @@ class ProfileSetupAppBar extends StatelessWidget
   })  : _title = title,
         _enableSkip = enableSkip,
         _onSkip = onSkip,
-        _onBackButton = onBackButton,
-
-        // _subHeading = subHeading,
-        super(key: key);
+        _onBackButton = onBackButton;
 
   final String _title;
   final bool? _enableSkip;
@@ -318,7 +310,7 @@ class ProfileSetupAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        icon: Icon(CupertinoIcons.back),
+        icon: const Icon(CupertinoIcons.back),
         onPressed: _onBackButton,
       ),
       actions: [
@@ -346,19 +338,19 @@ class ProfileSetupAppBar extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => const Size(0, 50);
 }
 
 // ignore: must_be_immutable
 class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
     implements PreferredSizeWidget {
   SolhAppBarTanasparentOnlyBackButton({
-    Key? key,
+    super.key,
     this.onBackButton,
     this.onSkip,
     this.skipButtonStyle,
     this.backButtonColor = Colors.black,
-  }) : super(key: key);
+  });
 
   final VoidCallback? onBackButton;
   final VoidCallback? onSkip;
@@ -391,52 +383,47 @@ class SolhAppBarTanasparentOnlyBackButton extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => const Size(0, 50);
 }
 
 class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  ProductsAppBar(
-      {Key? key, this.enableWishlist = true, this.title, this.popupMenu})
-      : super(
-          key: key,
-        );
+  const ProductsAppBar(
+      {super.key, this.enableWishlist = true, this.title, this.popupMenu});
   final bool enableWishlist;
   final Widget? popupMenu;
   final Widget? title;
   @override
   Widget build(BuildContext context) {
+    final CartController cartController = Get.find<CartController>();
     return AppBar(
       backgroundColor: Colors.transparent,
       actions: [
         Obx(() => CartButton(
-            itemsInCart: Get.find<CartController>()
-                .cartEntity
-                .value
-                .cartList!
-                .items!
-                .length)),
-        SizedBox(
+            itemsInCart: cartController.cartEntity.value.cartList != null
+                ? cartController.cartEntity.value.cartList!.items!.length
+                : 0)),
+        const SizedBox(
           width: 10,
         ),
         enableWishlist
             ? InkWell(
                 onTap: () => Navigator.of(context)
                     .pushNamed(AppRoutes.productWishlistScreen),
-                child: Icon(
+                child: const Icon(
                   CupertinoIcons.heart_fill,
                   color: SolhColors.primaryRed,
                 ),
               )
             : Container(),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
-        popupMenu ?? SizedBox.shrink()
+        popupMenu ?? const SizedBox.shrink()
       ],
       elevation: 0,
       leading: title ??
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.back,
               color: SolhColors.black,
             ),
@@ -446,5 +433,5 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => const Size(0, 50);
 }

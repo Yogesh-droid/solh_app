@@ -7,12 +7,18 @@ class CartEntity {
   final int? discount;
   final int? shippingAmount;
   final int? finalPrice;
+  final String? currency;
+  final String? code;
+  final String? symbol;
 
   CartEntity(
       {this.success,
+      this.code,
+      this.symbol,
       this.cartList,
       this.totalPrice,
       this.discount,
       this.shippingAmount,
-      this.finalPrice});
+      this.finalPrice,
+      this.currency});
 }

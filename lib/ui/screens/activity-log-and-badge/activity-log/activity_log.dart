@@ -85,9 +85,9 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
                             : Container();
                       }),
                       ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        padding: EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 10),
                         itemCount: activityLogContoller
                             .activityLogModel.value.result!.activityLog!.length,
                         itemBuilder: (context, index) {
@@ -110,7 +110,7 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
                       ),
                       Obx(() {
                         return activityLogContoller.isFeatchingMoreLog.value
-                            ? Column(
+                            ? const Column(
                                 children: [
                                   ButtonLoadingAnimation(
                                     ballColor: SolhColors.primary_green,
@@ -186,14 +186,14 @@ Widget getListItem(var time, content, subContent, activityType, isAnon,
         ),
         Container(
           height: 80,
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   getIcon(activityType, true),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Row(
@@ -225,7 +225,7 @@ Widget getListItem(var time, content, subContent, activityType, isAnon,
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     CupertinoIcons.arrow_down_left,
                     color: SolhColors.primary_green,
                     size: 16,
@@ -286,7 +286,7 @@ String getDay(DateTime date) {
       DateFormat('MM/dd/yyyy').format(DateTime.now())) {
     return 'Today'.tr;
   } else if (DateFormat('MM/dd/yyyy')
-          .format(DateTime.now().subtract(Duration(days: 1))) ==
+          .format(DateTime.now().subtract(const Duration(days: 1))) ==
       DateFormat('MM/dd/yyyy').format(date)) {
     return 'Yesterday'.tr;
   } else {
@@ -311,11 +311,11 @@ Container getIcon(String activityType, bool timelineCurved) {
                   color: SolhColors.grey_2,
                   borderRadius: BorderRadius.only(
                     topLeft: timelineCurved
-                        ? Radius.circular(8)
-                        : Radius.circular(0),
+                        ? const Radius.circular(8)
+                        : const Radius.circular(0),
                     topRight: timelineCurved
-                        ? Radius.circular(8)
-                        : Radius.circular(0),
+                        ? const Radius.circular(8)
+                        : const Radius.circular(0),
                   ),
                 ),
               ),
@@ -327,15 +327,15 @@ Container getIcon(String activityType, bool timelineCurved) {
           child: Container(
             height: 11.w,
             width: 11.w,
-            padding: EdgeInsets.all(3),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.all(3),
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: SolhColors.white,
             ),
             child: Center(
               child: Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: SolhColors.primary_green),
                   child: getContainerIcon(activityType)),
             ),
@@ -352,14 +352,14 @@ Widget getLogItem(var time, content, subContent, activityType, isAnon,
 
   return Container(
     height: 80,
-    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 0),
+    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
           children: [
             getIcon(activityType, false),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Row(
@@ -391,7 +391,7 @@ Widget getLogItem(var time, content, subContent, activityType, isAnon,
         ),
         Row(
           children: [
-            Icon(
+            const Icon(
               CupertinoIcons.arrow_down_left,
               color: SolhColors.primary_green,
               size: 16,
@@ -450,7 +450,7 @@ Widget getContainerIcon(String activityType) {
       height: 6.w,
     );
   } else if (activityType == "group") {
-    return Icon(
+    return const Icon(
       CupertinoIcons.group,
       color: SolhColors.white,
       size: 16,
@@ -462,13 +462,13 @@ Widget getContainerIcon(String activityType) {
       height: 6.w,
     );
   } else if (activityType == "connection") {
-    return Icon(
+    return const Icon(
       CupertinoIcons.arrow_down,
       color: SolhColors.white,
       size: 16,
     );
   } else if (activityType == "psychometricTest") {
-    return Icon(
+    return const Icon(
       CupertinoIcons.doc_text_search,
       color: SolhColors.white,
       size: 16,

@@ -47,7 +47,7 @@ class _CartAddressState extends State<CartAddress> {
                               ? () {
                                   showModalBottomSheet(
                                       context: context,
-                                      builder: (_) => AddressListWidget(
+                                      builder: (_) => const AddressListWidget(
                                           wantToChangeBilling: false),
                                       showDragHandle: true);
                                 }
@@ -84,7 +84,7 @@ class _CartAddressState extends State<CartAddress> {
                                         .selectedAddress.value.fullName ??
                                     '',
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black))),
@@ -92,7 +92,7 @@ class _CartAddressState extends State<CartAddress> {
                             Text(
                                 "${_addressController.selectedAddress.value.buildingName} ${_addressController.selectedAddress.value.street}\n${_addressController.selectedAddress.value.landmark} ${_addressController.selectedAddress.value.city} ${_addressController.selectedAddress.value.state} ${_addressController.selectedAddress.value.postalCode}",
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: SolhColors.dark_grey))),
@@ -102,7 +102,7 @@ class _CartAddressState extends State<CartAddress> {
                                         .selectedAddress.value.phoneNumber ??
                                     '',
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: SolhColors.dark_grey)))
@@ -110,16 +110,16 @@ class _CartAddressState extends State<CartAddress> {
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
-              GetHelpDivider(),
+                  : const SizedBox.shrink(),
+              const GetHelpDivider(),
               Column(
                 children: [
                   ListTile(
                       onTap: () {
                         showModalBottomSheet(
                             context: context,
-                            builder: (_) =>
-                                AddressListWidget(wantToChangeBilling: true),
+                            builder: (_) => const AddressListWidget(
+                                wantToChangeBilling: true),
                             showDragHandle: true);
                       },
                       title: Text("Same as shipping address!",
@@ -131,14 +131,14 @@ class _CartAddressState extends State<CartAddress> {
                               onTap: () => _addressController
                                       .selectedBillingAddress.value =
                                   _addressController.selectedAddress.value,
-                              child: Icon(Icons.check_box_outline_blank,
+                              child: const Icon(Icons.check_box_outline_blank,
                                   color: SolhColors.primary_green),
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.check_box_rounded,
                               color: SolhColors.primary_green,
                             )),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
 
                   // If Billing address is different than Shipping then Show it else hide it
 
@@ -162,7 +162,7 @@ class _CartAddressState extends State<CartAddress> {
                                               .value.fullName ??
                                           '',
                                       style: GoogleFonts.signika(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600,
                                               color: Colors.black))),
@@ -170,7 +170,7 @@ class _CartAddressState extends State<CartAddress> {
                                   Text(
                                       "${_addressController.selectedBillingAddress.value.buildingName} ${_addressController.selectedBillingAddress.value.street}\n${_addressController.selectedBillingAddress.value.landmark} ${_addressController.selectedBillingAddress.value.city} ${_addressController.selectedBillingAddress.value.state} ${_addressController.selectedBillingAddress.value.postalCode}",
                                       style: GoogleFonts.signika(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: SolhColors.dark_grey))),
@@ -180,7 +180,7 @@ class _CartAddressState extends State<CartAddress> {
                                               .value.phoneNumber ??
                                           '',
                                       style: GoogleFonts.signika(
-                                          textStyle: TextStyle(
+                                          textStyle: const TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
                                               color: SolhColors.dark_grey)))
@@ -188,12 +188,12 @@ class _CartAddressState extends State<CartAddress> {
                               ),
                             ),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                 ],
               )
             ],
           )
-        : SolhAddressShimmer());
+        : const SolhAddressShimmer());
   }
 
   Future<void> getAddress() async {

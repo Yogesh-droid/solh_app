@@ -26,10 +26,10 @@ class AddressController extends GetxController {
       if (dataState.data != null) {
         addressEntity.value = dataState.data!;
 
-        if (dataState.data!.addressList!.isNotEmpty)
+        if (dataState.data!.addressList!.isNotEmpty) {
           selectedAddress.value = dataState.data!.addressList![0];
-        selectedBillingAddress.value = dataState.data!.addressList![0];
-
+          selectedBillingAddress.value = dataState.data!.addressList![0];
+        }
         isAddressLoading.value = false;
       } else {
         isAddressLoading.value = false;

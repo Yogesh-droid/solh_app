@@ -80,7 +80,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           OrderProductDetailsWidget(orderDetailEntity),
           OrderTrackingWidget(orderDetailEntity),
           const GetHelpDivider(),
-          otherItemsWidget(orderDetailEntity),
+          if (orderDetailController
+              .orderDetailEntity.value.otherItems!.isNotEmpty)
+            otherItemsWidget(orderDetailEntity),
         ],
       ),
     );

@@ -70,23 +70,23 @@ class _ProductsHomeState extends State<ProductsHome> {
                       await cartController.getCart();
                     },
                   )
-                : SizedBox.shrink()),
+                : const SizedBox.shrink()),
         body: Stack(
           children: [
             ListView(
               children: [
-                ProductsSearchBar(),
-                GetHelpDivider(),
+                const ProductsSearchBar(),
+                const GetHelpDivider(),
                 ProductsCategories(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 ProductsBannerCarousel(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 ProductsSearchCategories(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 FeatureProductsSection(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 // YouMightFindHelpfulSection(),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
               ],
@@ -99,7 +99,7 @@ class _ProductsHomeState extends State<ProductsHome> {
   Widget getDrawer() {
     final ProfileController profileController = Get.find();
     return Container(
-        decoration: BoxDecoration(shape: BoxShape.circle),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: InkWell(
           onTap: () {
             Navigator.of(context).push(
@@ -120,10 +120,10 @@ class _ProductsHomeState extends State<ProductsHome> {
                         child: Container(
                           // height: 30,
                           // width: 30,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: SolhColors.primary_green),
-                          child: Icon(
+                          child: const Icon(
                             Icons.refresh_rounded,
                             color: SolhColors.white,
                             size: 20,
@@ -152,10 +152,10 @@ class _ProductsHomeState extends State<ProductsHome> {
 
   Widget getMorePopMenu() {
     return PopupMenuButton(
-        child: Icon(Icons.more_vert, color: SolhColors.primary_green),
+        child: const Icon(Icons.more_vert, color: SolhColors.primary_green),
         itemBuilder: (_) => [
               PopupMenuItem(
-                child: Text("My Orders"),
+                child: const Text("My Orders"),
                 onTap: () =>
                     Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
               )
@@ -169,13 +169,13 @@ class ProductsSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: SearchBar(
         hintText: "Search for Mental wellness Products",
         hintStyle: MaterialStateProperty.resolveWith(
-            (states) => TextStyle(color: SolhColors.Grey_1)),
+            (states) => const TextStyle(color: SolhColors.Grey_1)),
         trailing: [
-          Icon(
+          const Icon(
             Icons.search,
             color: SolhColors.primary_green,
           )
@@ -195,7 +195,7 @@ class ProductsCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return productMainCatController.isLoading.value
-          ? Row(
+          ? const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonLoadingAnimation(
@@ -204,27 +204,27 @@ class ProductsCategories extends StatelessWidget {
               ],
             )
           : Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     "Categories",
                     style: SolhTextStyles.QS_body_semi_1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   SizedBox(
                     height: 120,
                     child: ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       itemCount: productMainCatController.mainCatList.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, index) {
-                        return SizedBox(
+                        return const SizedBox(
                           width: 15,
                         );
                       },
@@ -242,8 +242,8 @@ class ProductsCategories extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(25),
-                                decoration: BoxDecoration(
+                                padding: const EdgeInsets.all(25),
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: SolhColors.Tertiary_Red,
                                 ),
@@ -254,7 +254,7 @@ class ProductsCategories extends StatelessWidget {
                                       .mainCatList[index].categoryImage!),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(
@@ -322,7 +322,7 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
               initialPage: 0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -331,7 +331,7 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
                 productsHomeCarouselController.homeCarouselBanners.map((e) {
               print(" $pageIndex  ${imageArray.indexOf(e)}");
               return Container(
-                margin: EdgeInsets.all(2),
+                margin: const EdgeInsets.all(2),
                 height: pageIndex ==
                         productsHomeCarouselController.homeCarouselBanners
                             .indexOf(e)
@@ -369,25 +369,26 @@ class ProductsSearchCategories extends StatelessWidget {
       return productsCategoryController.isLoading.value
           ? MyLoader()
           : Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     'Search by',
                     style: SolhTextStyles.QS_body_semi_1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 8.0,
-                        crossAxisSpacing: 8.0,
-                        childAspectRatio: 3 / 4),
-                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 8.0,
+                            crossAxisSpacing: 8.0,
+                            childAspectRatio: 3 / 4),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount:
                         productsCategoryController.productCategoryList.length,
@@ -396,7 +397,7 @@ class ProductsSearchCategories extends StatelessWidget {
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: SolhColors.Tertiary_Red.withOpacity(0.5)),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(8),
                               topLeft: Radius.circular(8)),
                         ),
@@ -407,7 +408,7 @@ class ProductsSearchCategories extends StatelessWidget {
                               return Container(
                                 width: constraints.maxWidth,
                                 height: 15.h,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: SolhColors.Tertiary_Red,
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(8),
@@ -417,7 +418,7 @@ class ProductsSearchCategories extends StatelessWidget {
                                     .productCategoryList[index].categoryImage!),
                               );
                             }),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
@@ -454,13 +455,13 @@ class FeatureProductsSection extends StatelessWidget {
               : SizedBox(
                   height: 380,
                   child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
                     itemCount:
                         featureProductsController.featureProductList.length,
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) {
-                      return SizedBox(
+                      return const SizedBox(
                         width: 10,
                       );
                     },
@@ -521,12 +522,12 @@ class YouMightFindHelpfulSection extends StatelessWidget {
         SizedBox(
           height: 380,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
             itemCount: 5,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return const SizedBox(
                 width: 10,
               );
             },
@@ -550,18 +551,18 @@ class NextBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       height: 80,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: showShadow
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   topRight: Radius.circular(8), topLeft: Radius.circular(8))
               : null,
           color: SolhColors.white,
           boxShadow: showShadow
               ? <BoxShadow>[
-                  BoxShadow(
+                  const BoxShadow(
                       blurRadius: 2, spreadRadius: 2, color: Colors.black26)
                 ]
               : null),
@@ -573,7 +574,7 @@ class NextBottomBar extends StatelessWidget {
               productsCartController.isCartSheetOpen.value
                   ? Navigator.of(context).pop()
                   : showModalBottomSheet(
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
@@ -581,7 +582,7 @@ class NextBottomBar extends StatelessWidget {
                       ),
                       context: context,
                       builder: (context) {
-                        return InCartItemsBottomSheet();
+                        return const InCartItemsBottomSheet();
                       },
                     );
               productsCartController.isCartSheetOpen.value =
@@ -591,17 +592,17 @@ class NextBottomBar extends StatelessWidget {
             },
             child: Row(
               children: [
-                Text(
+                const Text(
                   "1 items",
                   style: SolhTextStyles.CTA,
                 ),
                 Obx(() {
                   return productsCartController.isCartSheetOpen.value
-                      ? Icon(
+                      ? const Icon(
                           Icons.arrow_drop_down,
                           color: SolhColors.primary_green,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.arrow_drop_up,
                           color: SolhColors.primary_green,
                         );
@@ -650,7 +651,7 @@ class InCartItemsBottomSheet extends StatelessWidget {
                           false;
                       Navigator.of(context).pop();
                     },
-                    child: Icon(
+                    child: const Icon(
                       CupertinoIcons.clear_thick,
                       color: SolhColors.grey,
                     ),
@@ -658,18 +659,18 @@ class InCartItemsBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            GetHelpDivider(),
+            const GetHelpDivider(),
             ListView.separated(
-              padding: EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.only(right: 12),
               itemCount: 3,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => GetHelpDivider(),
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => const GetHelpDivider(),
               itemBuilder: (context, index) {
-                return InCartProductItemCard();
+                return const InCartProductItemCard();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             )
           ],
