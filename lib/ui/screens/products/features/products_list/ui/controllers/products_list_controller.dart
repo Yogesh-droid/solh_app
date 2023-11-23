@@ -16,6 +16,7 @@ class ProductsListController extends GetxController {
   var isLoadingMore = false.obs;
   var productList = <Products>[].obs;
   var error = ''.obs;
+  String query = '';
 
   bool isListEnd = false;
 
@@ -25,7 +26,7 @@ class ProductsListController extends GetxController {
       return;
     }
     final String url =
-        "${APIConstants.api}/api/product/product-list?category=$categoryId&page=$pageNo$queryParams&limit=$limit";
+        "${APIConstants.api}/api/product/product-list?category=$categoryId&page=$pageNo$query&limit=$limit";
     try {
       if (pageNo > 1) {
         isLoadingMore.value = true;

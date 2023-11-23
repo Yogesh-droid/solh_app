@@ -38,6 +38,7 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     pageNo = 1;
     productsListController.getProductList(widget.args['id'], 1);
     productSubCatController.getProductSubCat(widget.args['id']);
+    productsListController.query = '';
 
     scrollController.addListener(() {
       if (!productsListController.isLoadingMore.value &&

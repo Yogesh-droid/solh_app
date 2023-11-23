@@ -43,9 +43,9 @@ class ProductSubCatWidget extends StatelessWidget {
                         children: [
                           InkWell(
                             onTap: () {
-                              productsListController.getProductList(catId!, 1,
-                                  queryParams:
-                                      "&subcategory=${productSubCatController.productSubCatEntity.value.subCategory![index].id}");
+                              productsListController.query =
+                                  "&subcategory=${productSubCatController.productSubCatEntity.value.subCategory![index].id}";
+                              productsListController.getProductList(catId!, 1);
                             },
                             child: CircleAvatar(
                               radius: 35,
