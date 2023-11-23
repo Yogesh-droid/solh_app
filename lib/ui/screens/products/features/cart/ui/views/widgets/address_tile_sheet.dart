@@ -8,8 +8,12 @@ import 'package:solh/ui/screens/products/features/cart/ui/controllers/delete_add
 import 'package:solh/widgets_constants/constants/colors.dart';
 
 class AddressTileSheet extends StatelessWidget {
-  const AddressTileSheet({super.key, required this.addressList});
+  const AddressTileSheet(
+      {super.key,
+      required this.addressList,
+      required this.wantToChangeBilling});
   final AddressList addressList;
+  final bool wantToChangeBilling;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +22,17 @@ class AddressTileSheet extends StatelessWidget {
     return Obx(() => Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
-            onTap: () {
-              print(_addressController.selectedAddress.value.id);
-              print(addressList.id);
-              _addressController.selectedAddress.value = addressList;
-            },
+            onTap:
+                wantToChangeBilling // if want different billing than shipping
+                    ? () {
+                        _addressController.selectedBillingAddress.value =
+                            addressList;
+                      }
+                    : () {
+                        _addressController.selectedAddress.value = addressList;
+                        _addressController.selectedBillingAddress.value =
+                            addressList;
+                      },
             child: Container(
               padding: const EdgeInsets.all(8.0),
               width: MediaQuery.of(context).size.width,
@@ -44,8 +54,10 @@ class AddressTileSheet extends StatelessWidget {
                       Radio(
                           activeColor: SolhColors.primary_green,
                           value: addressList.id,
-                          groupValue:
-                              _addressController.selectedAddress.value.id,
+                          groupValue: wantToChangeBilling
+                              ? _addressController
+                                  .selectedBillingAddress.value.id
+                              : _addressController.selectedAddress.value.id,
                           onChanged: (_) {})
                     ],
                   ),
@@ -64,39 +76,41 @@ class AddressTileSheet extends StatelessWidget {
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: SolhColors.dark_grey))),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            _addressController.selectedAddress.value =
-                                addressList;
-                            Navigator.pushNamed(
-                                context, AppRoutes.addAddressPage,
-                                arguments: {"addressList": addressList});
-                          },
-                          child: Text("Edit",
-                              style: GoogleFonts.signika(
-                                  textStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: SolhColors.primary_green)))),
-                      TextButton(
-                          onPressed: () {
-                            _addressController.selectedAddress.value =
-                                addressList;
-                            _deleteAddressController.deleteAddress(
-                                id: addressList.id ?? '');
-                            _addressController.getAddress();
-                            Navigator.pop(context);
-                          },
-                          child: Text("Delete",
-                              style: GoogleFonts.signika(
-                                  textStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: SolhColors.primaryRed)))),
-                    ],
-                  )
+                  // if you want to change billing, edit or delete not allowed
+                  if (!wantToChangeBilling)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _addressController.selectedAddress.value =
+                                  addressList;
+                              Navigator.pushNamed(
+                                  context, AppRoutes.addAddressPage,
+                                  arguments: {"addressList": addressList});
+                            },
+                            child: Text("Edit",
+                                style: GoogleFonts.signika(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: SolhColors.primary_green)))),
+                        TextButton(
+                            onPressed: () {
+                              _addressController.selectedAddress.value =
+                                  addressList;
+                              _deleteAddressController.deleteAddress(
+                                  id: addressList.id ?? '');
+                              _addressController.getAddress();
+                              Navigator.pop(context);
+                            },
+                            child: Text("Delete",
+                                style: GoogleFonts.signika(
+                                    textStyle: TextStyle(
+                                        fontSize: 14,
+                                        color: SolhColors.primaryRed)))),
+                      ],
+                    )
                 ],
               ),
             ),

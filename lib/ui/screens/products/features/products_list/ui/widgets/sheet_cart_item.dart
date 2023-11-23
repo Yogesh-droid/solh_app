@@ -40,7 +40,7 @@ class SheetCartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       height: 120,
       child: Row(
         children: [
@@ -55,7 +55,7 @@ class SheetCartItem extends StatelessWidget {
                   return Image.asset("assets/icons/app-bar/no-image.png");
                 },
               )),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Expanded(
               flex: 2,
               child: Column(
@@ -74,12 +74,12 @@ class SheetCartItem extends StatelessWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis),
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Expanded(
                             flex: 1,
                             child: InkWell(
                               onTap: onDeleteItem,
-                              child: Icon(
+                              child: const Icon(
                                 CupertinoIcons.delete,
                                 color: SolhColors.primaryRed,
                                 size: 20,
@@ -87,20 +87,23 @@ class SheetCartItem extends StatelessWidget {
                             ))
                       ],
                     ),
-                    SizedBox(height: 10),
-                    Spacer(),
+                    const SizedBox(height: 10),
+                    const Spacer(),
                     Row(
                       children: [
                         discountedPrice! > 0
                             ? PriceContainer(
                                 discountedPrice: discountedPrice ?? 0,
                                 currency: currency)
-                            : SizedBox.shrink(),
-                        SizedBox(width: 10),
+                            : const SizedBox.shrink(),
+                        const SizedBox(width: 10),
                         discountedPrice! > 0
-                            ? MrpContainer(mrp: itemPrice ?? 0)
-                            : SizedBox.shrink(),
-                        Spacer(),
+                            ? MrpContainer(
+                                mrp: itemPrice ?? 0,
+                                currency: currency,
+                              )
+                            : const SizedBox.shrink(),
+                        const Spacer(),
                         SheetCartAddRemoveBtn(
                           decreaseCartCount: onDecreaseCartCount,
                           increaseCartCount: onIncreaseCartCount,

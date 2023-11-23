@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,8 +27,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:video_player/video_player.dart';
+
 import 'solh_expert_badge.dart';
 
+// ignore: must_be_immutable
 class JournalTile extends StatefulWidget {
   JournalTile({
     Key? key,
@@ -210,27 +211,8 @@ class _JournalTileState extends State<JournalTile> {
     );
   }
 
-  /*  Future<bool> _likeJournal() async {
-    setState(() {});
-    var response = await Network.makeHttpPostRequestWithToken(
-        url: "${APIConstants.api}/api/like-journal",
-        body: {"post": widget._journalModel!.id});
-    if (response["status"] == false) setState(() {});
-    FirebaseAnalytics.instance
-        .logEvent(name: 'LikeTapped', parameters: {'Page': 'JournalTile'});
-    return (response["status"]);
-  }
-
-  Future<bool> _unlikeJournal() async {
-    var response = await Network.makeHttpDeleteRequestWithToken(
-      body: {"postId": widget._journalModel!.id},
-      url: "${APIConstants.api}/api/unlike-journal",
-    );
-    print(response);
-    return true;
-  } */
-
   Widget getUserImageAndName() {
+    final ProfileController profileController = Get.find();
     return Container(
       child: Padding(
         padding: EdgeInsets.only(
@@ -241,15 +223,7 @@ class _JournalTileState extends State<JournalTile> {
                   journalPageController.selectedGroupId.value.length == 0
               ? {
                   Navigator.pushNamed(context, AppRoutes.groupDetails,
-                      arguments: {
-                        "groupId": widget._journalModel!.group!.sId,
-                        //  GroupList(
-                        //   sId: widget._journalModel!.group!.sId,
-                        //   groupName: widget._journalModel!.group!.groupName,
-                        //   groupMediaUrl:
-                        //       widget._journalModel!.group!.groupImage,
-                        // ),
-                      })
+                      arguments: {"groupId": widget._journalModel!.group!.sId})
                 }
               : widget._journalModel!.postedBy!.sId !=
                           null && ////// this case is for user journal
@@ -453,13 +427,15 @@ class _JournalTileState extends State<JournalTile> {
                       Spacer(),
                       widget._journalModel!.postedBy != null
                           ? widget._journalModel!.postedBy!.uid ==
-                                      userBlocNetwork.id ||
+                                      profileController.myProfileModel.value
+                                          .body!.user!.sId ||
                                   widget._journalModel!.anonymousJournal !=
                                           null &&
                                       widget._journalModel!.anonymousJournal ==
                                           true &&
                                       widget._journalModel!.postedBy!.uid ==
-                                          FirebaseAuth.instance.currentUser!.uid
+                                          profileController.myProfileModel.value
+                                              .body!.user!.sId
                               ? PostMenuButton(
                                   journalId: widget._journalModel!.id ?? '',
                                   deletePost: widget._deletePost,
@@ -728,7 +704,13 @@ class _JournalTileState extends State<JournalTile> {
                       widget._journalModel!.anonymousJournal == true &&
                       widget._journalModel!.group == null
                   ? SizedBox()
-                  : widget._journalModel!.postedBy!.uid != userBlocNetwork.id
+                  : widget._journalModel!.postedBy!.uid !=
+                          Get.find<ProfileController>()
+                              .myProfileModel
+                              .value
+                              .body!
+                              .user!
+                              .sId
                       ? journalPageController
                                   .selectedGroupId.value.isNotEmpty &&
                               widget._journalModel!.anonymousJournal != null &&
@@ -1229,27 +1211,25 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                     child: VideoPlayer(
                                       widget.isMyJournal
                                           ? journalPageController
-                                                  .myVideoPlayerControllers
-                                                  .value[widget.index]
-                                              [widget.index]!
+                                                  .myVideoPlayerControllers[
+                                              widget.index][widget.index]!
                                           : journalPageController
-                                                  .videoPlayerController
-                                                  .value[widget.index]
-                                              [widget.index]!,
+                                                  .videoPlayerController[
+                                              widget.index][widget.index]!,
                                     ),
                                   ),
                                   Obx(() {
                                     return !widget.isMyJournal &&
                                                 !journalPageController
-                                                    .videoPlayerController
-                                                    .value[widget.index]
+                                                    .videoPlayerController[
+                                                        widget.index]
                                                         [widget.index]!
                                                     .value
                                                     .isPlaying ||
                                             widget.isMyJournal &&
                                                 !journalPageController
-                                                    .myVideoPlayerControllers
-                                                    .value[widget.index]
+                                                    .myVideoPlayerControllers[
+                                                        widget.index]
                                                         [widget.index]!
                                                     .value
                                                     .isPlaying
@@ -1265,15 +1245,15 @@ class _PostContentWidgetState extends State<PostContentWidget> {
                                   Obx(() {
                                     return !widget.isMyJournal &&
                                                 !journalPageController
-                                                    .videoPlayerController
-                                                    .value[widget.index]
+                                                    .videoPlayerController[
+                                                        widget.index]
                                                         [widget.index]!
                                                     .value
                                                     .isPlaying ||
                                             widget.isMyJournal &&
                                                 !journalPageController
-                                                    .myVideoPlayerControllers
-                                                    .value[widget.index]
+                                                    .myVideoPlayerControllers[
+                                                        widget.index]
                                                         [widget.index]!
                                                     .value
                                                     .isPlaying

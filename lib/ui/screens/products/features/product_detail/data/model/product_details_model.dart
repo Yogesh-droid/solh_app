@@ -1,6 +1,3 @@
-import 'package:solh/ui/screens/products/features/home/domain/entities/product_category_entity.dart';
-import 'package:solh/ui/screens/products/features/product_detail/domain/entities/product_detail_entity.dart';
-
 class ProductDetailsModel {
   bool? success;
   Product? product;

@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
@@ -21,6 +23,7 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
+import '../../../../../../my-profile/my-profile-screenV2/my_profile_screenV2.dart';
 import '../../../../products_list/ui/widgets/product_list_bottom_nav.dart';
 
 class ProductsHome extends StatefulWidget {
@@ -49,7 +52,7 @@ class _ProductsHomeState extends State<ProductsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ProductsAppBar(),
+        appBar: ProductsAppBar(title: getDrawer(), popupMenu: getMorePopMenu()),
         bottomNavigationBar: Obx(() =>
             cartController.cartEntity.value.cartList != null &&
                     cartController.cartEntity.value.cartList!.items!.isNotEmpty
@@ -67,23 +70,23 @@ class _ProductsHomeState extends State<ProductsHome> {
                       await cartController.getCart();
                     },
                   )
-                : SizedBox.shrink()),
+                : const SizedBox.shrink()),
         body: Stack(
           children: [
             ListView(
               children: [
-                ProductsSearchBar(),
-                GetHelpDivider(),
+                const ProductsSearchBar(),
+                const GetHelpDivider(),
                 ProductsCategories(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 ProductsBannerCarousel(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 ProductsSearchCategories(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 FeatureProductsSection(),
-                GetHelpDivider(),
+                const GetHelpDivider(),
                 // YouMightFindHelpfulSection(),
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
               ],
@@ -91,6 +94,72 @@ class _ProductsHomeState extends State<ProductsHome> {
             //Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
         ));
+  }
+
+  Widget getDrawer() {
+    final ProfileController profileController = Get.find();
+    return Container(
+        decoration: const BoxDecoration(shape: BoxShape.circle),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MyProfileScreenV2()));
+          },
+          child: Obx(() {
+            return profileController.isProfileLoading.value
+                ? Center(
+                    child: SizedBox(
+                        height: 15, width: 15, child: MyLoader(strokeWidth: 2)),
+                  )
+                : profileController.myProfileModel.value.body == null
+                    ? InkWell(
+                        onTap: () {
+                          profileController.getMyProfile();
+                        },
+                        splashColor: Colors.transparent,
+                        child: Container(
+                          // height: 30,
+                          // width: 30,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SolhColors.primary_green),
+                          child: const Icon(
+                            Icons.refresh_rounded,
+                            color: SolhColors.white,
+                            size: 20,
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: CircleAvatar(
+                          radius: 4.8.w,
+                          backgroundColor: SolhColors.primary_green,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 4.5.w,
+                            backgroundImage: CachedNetworkImageProvider(
+                              profileController.myProfileModel.value.body!.user!
+                                      .profilePicture ??
+                                  "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+                            ),
+                          ),
+                        ),
+                      );
+          }),
+        ));
+  }
+
+  Widget getMorePopMenu() {
+    return PopupMenuButton(
+        child: const Icon(Icons.more_vert, color: SolhColors.primary_green),
+        itemBuilder: (_) => [
+              PopupMenuItem(
+                child: const Text("My Orders"),
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.orderListScreen),
+              )
+            ]);
   }
 }
 
@@ -100,13 +169,13 @@ class ProductsSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
       child: SearchBar(
         hintText: "Search for Mental wellness Products",
         hintStyle: MaterialStateProperty.resolveWith(
-            (states) => TextStyle(color: SolhColors.Grey_1)),
+            (states) => const TextStyle(color: SolhColors.Grey_1)),
         trailing: [
-          Icon(
+          const Icon(
             Icons.search,
             color: SolhColors.primary_green,
           )
@@ -126,7 +195,7 @@ class ProductsCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() {
       return productMainCatController.isLoading.value
-          ? Row(
+          ? const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ButtonLoadingAnimation(
@@ -135,27 +204,27 @@ class ProductsCategories extends StatelessWidget {
               ],
             )
           : Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     "Categories",
                     style: SolhTextStyles.QS_body_semi_1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   SizedBox(
                     height: 120,
                     child: ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
                       itemCount: productMainCatController.mainCatList.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
                       separatorBuilder: (context, index) {
-                        return SizedBox(
+                        return const SizedBox(
                           width: 15,
                         );
                       },
@@ -173,8 +242,8 @@ class ProductsCategories extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                padding: EdgeInsets.all(25),
-                                decoration: BoxDecoration(
+                                padding: const EdgeInsets.all(25),
+                                decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: SolhColors.Tertiary_Red,
                                 ),
@@ -185,7 +254,7 @@ class ProductsCategories extends StatelessWidget {
                                       .mainCatList[index].categoryImage!),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 5,
                               ),
                               Text(
@@ -253,7 +322,7 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
               initialPage: 0,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -262,7 +331,7 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
                 productsHomeCarouselController.homeCarouselBanners.map((e) {
               print(" $pageIndex  ${imageArray.indexOf(e)}");
               return Container(
-                margin: EdgeInsets.all(2),
+                margin: const EdgeInsets.all(2),
                 height: pageIndex ==
                         productsHomeCarouselController.homeCarouselBanners
                             .indexOf(e)
@@ -300,25 +369,26 @@ class ProductsSearchCategories extends StatelessWidget {
       return productsCategoryController.isLoading.value
           ? MyLoader()
           : Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  const Text(
                     'Search by',
                     style: SolhTextStyles.QS_body_semi_1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 24,
                   ),
                   GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 8.0,
-                        crossAxisSpacing: 8.0,
-                        childAspectRatio: 3 / 4),
-                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 8.0,
+                            crossAxisSpacing: 8.0,
+                            childAspectRatio: 3 / 4),
+                    physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount:
                         productsCategoryController.productCategoryList.length,
@@ -327,7 +397,7 @@ class ProductsSearchCategories extends StatelessWidget {
                         decoration: BoxDecoration(
                           border: Border.all(
                               color: SolhColors.Tertiary_Red.withOpacity(0.5)),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topRight: Radius.circular(8),
                               topLeft: Radius.circular(8)),
                         ),
@@ -338,7 +408,7 @@ class ProductsSearchCategories extends StatelessWidget {
                               return Container(
                                 width: constraints.maxWidth,
                                 height: 15.h,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: SolhColors.Tertiary_Red,
                                   borderRadius: BorderRadius.only(
                                       topRight: Radius.circular(8),
@@ -348,7 +418,7 @@ class ProductsSearchCategories extends StatelessWidget {
                                     .productCategoryList[index].categoryImage!),
                               );
                             }),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Text(
@@ -385,13 +455,13 @@ class FeatureProductsSection extends StatelessWidget {
               : SizedBox(
                   height: 380,
                   child: ListView.separated(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
                     itemCount:
                         featureProductsController.featureProductList.length,
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) {
-                      return SizedBox(
+                      return const SizedBox(
                         width: 10,
                       );
                     },
@@ -452,12 +522,12 @@ class YouMightFindHelpfulSection extends StatelessWidget {
         SizedBox(
           height: 380,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
             itemCount: 5,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return const SizedBox(
                 width: 10,
               );
             },
@@ -481,18 +551,18 @@ class NextBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       height: 80,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: showShadow
-              ? BorderRadius.only(
+              ? const BorderRadius.only(
                   topRight: Radius.circular(8), topLeft: Radius.circular(8))
               : null,
           color: SolhColors.white,
           boxShadow: showShadow
               ? <BoxShadow>[
-                  BoxShadow(
+                  const BoxShadow(
                       blurRadius: 2, spreadRadius: 2, color: Colors.black26)
                 ]
               : null),
@@ -504,7 +574,7 @@ class NextBottomBar extends StatelessWidget {
               productsCartController.isCartSheetOpen.value
                   ? Navigator.of(context).pop()
                   : showModalBottomSheet(
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(16),
                           topRight: Radius.circular(16),
@@ -512,7 +582,7 @@ class NextBottomBar extends StatelessWidget {
                       ),
                       context: context,
                       builder: (context) {
-                        return InCartItemsBottomSheet();
+                        return const InCartItemsBottomSheet();
                       },
                     );
               productsCartController.isCartSheetOpen.value =
@@ -522,17 +592,17 @@ class NextBottomBar extends StatelessWidget {
             },
             child: Row(
               children: [
-                Text(
+                const Text(
                   "1 items",
                   style: SolhTextStyles.CTA,
                 ),
                 Obx(() {
                   return productsCartController.isCartSheetOpen.value
-                      ? Icon(
+                      ? const Icon(
                           Icons.arrow_drop_down,
                           color: SolhColors.primary_green,
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.arrow_drop_up,
                           color: SolhColors.primary_green,
                         );
@@ -581,7 +651,7 @@ class InCartItemsBottomSheet extends StatelessWidget {
                           false;
                       Navigator.of(context).pop();
                     },
-                    child: Icon(
+                    child: const Icon(
                       CupertinoIcons.clear_thick,
                       color: SolhColors.grey,
                     ),
@@ -589,18 +659,18 @@ class InCartItemsBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-            GetHelpDivider(),
+            const GetHelpDivider(),
             ListView.separated(
-              padding: EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.only(right: 12),
               itemCount: 3,
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) => GetHelpDivider(),
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) => const GetHelpDivider(),
               itemBuilder: (context, index) {
-                return InCartProductItemCard();
+                return const InCartProductItemCard();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             )
           ],

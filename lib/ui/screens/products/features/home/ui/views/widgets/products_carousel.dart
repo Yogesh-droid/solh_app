@@ -9,7 +9,7 @@ class ProductsCarousel extends StatelessWidget {
   ProductsCarousel({super.key});
 
   final CarouselController buttonCarouselController = CarouselController();
-  HomeController _controller = Get.find();
+  final HomeController _controller = Get.find();
 
   @override
   Widget build(BuildContext context) {

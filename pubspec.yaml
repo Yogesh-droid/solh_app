@@ -68,6 +68,7 @@ dependencies:
   #alt_sms_autofill: ^1.0.0
 
 dev_dependencies:
+  flutter_lints: ^3.0.1
   build_runner:
   dart_code_metrics: ^5.7.6
   flutter_test:

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/cart_address.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/empty_cart_widget.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -14,10 +16,9 @@ import 'package:solh/widgets_constants/constants/textstyles.dart';
 import '../../../../../../../../routes/routes.dart';
 
 class CheckoutScreen extends StatefulWidget {
-  CheckoutScreen({Key? key, required Map<String, dynamic> args})
+  CheckoutScreen({super.key, required Map<String, dynamic> args})
       : onDecreaseCartCount = args['onDecrease'],
-        onIncreaseCartCount = args['onIncrease'],
-        super(key: key);
+        onIncreaseCartCount = args['onIncrease'];
 
   final Function(int index, String id, int quantity) onIncreaseCartCount;
   final Function(int index, String id, int quantity) onDecreaseCartCount;
@@ -36,100 +37,154 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     final CartController cartController = Get.find();
     return Scaffold(
-      appBar: SolhAppBar(
-        isLandingScreen: false,
-        title: Text(
-          'Your Cart',
-          style: SolhTextStyles.QS_body_1_bold,
-        ),
-      ),
-      body: Stack(
-        children: [
-          ListView(
-            children: [
-              CartAddress(),
-              GetHelpDivider(),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${cartController.cartEntity.value.cartList!.items!.length} Items in your cart",
-                      style: SolhTextStyles.QS_body_2_semi,
-                    )
-                  ],
-                ),
-              ),
-              Obx(() => ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount:
-                        cartController.cartEntity.value.cartList!.items!.length,
-                    separatorBuilder: (context, index) {
-                      return GetHelpDivider();
-                    },
-                    itemBuilder: (context, index) {
-                      return Padding(
-                          padding: const EdgeInsets.only(right: 12),
-                          child: SheetCartItem(
-                            image: cartController.cartEntity.value.cartList!
-                                .items![index].productId!.productImage![0],
-                            id: cartController.cartEntity.value.cartList!
-                                    .items![index].productId!.id ??
-                                '',
-                            discountedPrice: cartController
-                                .cartEntity
-                                .value
-                                .cartList!
-                                .items![index]
-                                .productId!
-                                .afterDiscountPrice,
-                            currency: 'Rs',
-                            inCartNo: cartController.cartEntity.value.cartList!
-                                .items![index].quantity,
-                            itemPrice: cartController.cartEntity.value.cartList!
-                                .items![index].productId!.price,
-                            productName: cartController.cartEntity.value
-                                .cartList!.items![index].productId!.productName,
-                            onIncreaseCartCount: () {
-                              widget.onIncreaseCartCount(
-                                  index,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].quantity!);
-                            },
-                            onDecreaseCartCount: () {
-                              widget.onDecreaseCartCount(
-                                  index,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].quantity!);
-                            },
-                            onDeleteItem: () {
-                              widget.onDecreaseCartCount(
-                                  index,
-                                  cartController.cartEntity.value.cartList!
-                                      .items![index].productId!.id!,
-                                  1);
-                            },
-                          ));
-                    },
-                  )),
-              GetHelpDivider(),
-              PaymentSummarySection(),
-              SizedBox(
-                height: 80,
-              ),
-            ],
+        appBar: SolhAppBar(
+          isLandingScreen: false,
+          title: const Text(
+            'Your Cart',
+            style: SolhTextStyles.QS_body_1_bold,
           ),
-          Positioned(bottom: 0, right: 0, left: 0, child: CheckoutButton())
-        ],
-      ),
-    );
+        ),
+        body: Obx(() => cartController.cartEntity.value.cartList != null
+            ? cartController.cartEntity.value.cartList!.items!.isNotEmpty
+                ? Stack(
+                    children: [
+                      ListView(
+                        children: [
+                          const CartAddress(),
+                          const GetHelpDivider(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "${cartController.cartEntity.value.cartList!.items!.length} Items in your cart",
+                                  style: SolhTextStyles.QS_body_2_semi,
+                                )
+                              ],
+                            ),
+                          ),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: cartController
+                                .cartEntity.value.cartList!.items!.length,
+                            separatorBuilder: (context, index) {
+                              return const GetHelpDivider();
+                            },
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                  padding: const EdgeInsets.only(right: 12),
+                                  child: SheetCartItem(
+                                    image: cartController
+                                            .cartEntity
+                                            .value
+                                            .cartList!
+                                            .items![index]
+                                            .productId!
+                                            .defaultImage ??
+                                        '',
+                                    id: cartController
+                                            .cartEntity
+                                            .value
+                                            .cartList!
+                                            .items![index]
+                                            .productId!
+                                            .id ??
+                                        '',
+                                    discountedPrice: cartController
+                                        .cartEntity
+                                        .value
+                                        .cartList!
+                                        .items![index]
+                                        .productId!
+                                        .afterDiscountPrice,
+                                    currency: cartController
+                                        .cartEntity
+                                        .value
+                                        .cartList!
+                                        .items![index]
+                                        .productId!
+                                        .currency,
+                                    inCartNo: cartController.cartEntity.value
+                                        .cartList!.items![index].quantity,
+                                    itemPrice: cartController
+                                        .cartEntity
+                                        .value
+                                        .cartList!
+                                        .items![index]
+                                        .productId!
+                                        .price,
+                                    productName: cartController
+                                        .cartEntity
+                                        .value
+                                        .cartList!
+                                        .items![index]
+                                        .productId!
+                                        .productName,
+                                    onIncreaseCartCount: () {
+                                      widget.onIncreaseCartCount(
+                                          index,
+                                          cartController
+                                              .cartEntity
+                                              .value
+                                              .cartList!
+                                              .items![index]
+                                              .productId!
+                                              .id!,
+                                          cartController
+                                              .cartEntity
+                                              .value
+                                              .cartList!
+                                              .items![index]
+                                              .quantity!);
+                                    },
+                                    onDecreaseCartCount: () {
+                                      widget.onDecreaseCartCount(
+                                          index,
+                                          cartController
+                                              .cartEntity
+                                              .value
+                                              .cartList!
+                                              .items![index]
+                                              .productId!
+                                              .id!,
+                                          cartController
+                                              .cartEntity
+                                              .value
+                                              .cartList!
+                                              .items![index]
+                                              .quantity!);
+                                    },
+                                    onDeleteItem: () {
+                                      widget.onDecreaseCartCount(
+                                          index,
+                                          cartController
+                                              .cartEntity
+                                              .value
+                                              .cartList!
+                                              .items![index]
+                                              .productId!
+                                              .id!,
+                                          1);
+                                    },
+                                  ));
+                            },
+                          ),
+                          const GetHelpDivider(),
+                          const PaymentSummarySection(),
+                          const SizedBox(
+                            height: 80,
+                          ),
+                        ],
+                      ),
+                      const Positioned(
+                          bottom: 0, right: 0, left: 0, child: CheckoutButton())
+                    ],
+                  )
+                : const EmptyCartWidget()
+            : const EmptyCartWidget()));
   }
 }
 
@@ -150,7 +205,7 @@ class PaymentSummarySection extends StatelessWidget {
               style: SolhTextStyles.QS_body_semi_1.copyWith(
                   color: SolhColors.black),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -162,13 +217,13 @@ class PaymentSummarySection extends StatelessWidget {
                       color: SolhColors.dark_grey),
                 ),
                 Text(
-                  "₹ ${cartController.totalPayblePrice}",
+                  "${cartController.cartEntity.value.currency} ${cartController.totalPayblePrice}",
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey),
                 )
               ],
             ),
-            Divider(),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -176,25 +231,26 @@ class PaymentSummarySection extends StatelessWidget {
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey)),
                 Text(
-                  '- ₹ ${cartController.cartEntity.value.discount}',
+                  '- ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount}',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey),
                 ),
               ],
             ),
-            Divider(),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Shipping Charge',
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey)),
-                Text('₹ ${cartController.cartEntity.value.shippingAmount}',
+                Text(
+                    '${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.shippingAmount}',
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey)),
               ],
             ),
-            Divider(),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -204,7 +260,7 @@ class PaymentSummarySection extends StatelessWidget {
                       color: SolhColors.black),
                 ),
                 Text(
-                  '₹ ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}',
+                  '${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.black),
                 ),
@@ -220,13 +276,15 @@ class PaymentSummarySection extends StatelessWidget {
 class CheckoutButton extends StatelessWidget {
   const CheckoutButton({super.key});
 
+  @override
   Widget build(BuildContext context) {
     final CartController cartController = Get.find();
+    final AddressController addressController = Get.find();
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       height: 80,
       width: double.infinity,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(8), topLeft: Radius.circular(8)),
           color: SolhColors.white,
@@ -239,12 +297,12 @@ class CheckoutButton extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Total Price",
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Obx(() => Text(
-                    "₹ ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}",
+                    "${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}",
                     style: SolhTextStyles.QS_head_5.copyWith(
                         color: SolhColors.black),
                   )),
@@ -252,20 +310,29 @@ class CheckoutButton extends StatelessWidget {
           ),
           SolhGreenMiniButton(
             onPressed: () {
+              if (addressController.addressEntity.value.addressList == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Please add your address")));
+                return;
+              }
+              if (addressController.addressEntity.value.addressList!.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Please choose your address")));
+                return;
+              }
               Navigator.pushNamed(context, AppRoutes.productPaymentPage,
-                  //  + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)
                   arguments: {
                     "totalPrice": cartController.totalPayblePrice.value,
                     "shipping": cartController.cartEntity.value.shippingAmount,
                     "discount": cartController.cartEntity.value.discount,
-                    "feeCurrency": "Rs",
+                    "feeCurrency": cartController.cartEntity.value.symbol,
                     "appointmentId": null,
                     "inhouseOrderId": null,
                     "marketplaceType": "Allied",
                     'organisation': DefaultOrg.defaultOrg ?? '',
                     "paymentGateway": "Stripe",
                     "paymentSource": "App",
-                    "feeCode": "INR"
+                    "feeCode": cartController.cartEntity.value.code
                   });
             },
             child: Text(

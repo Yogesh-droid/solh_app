@@ -47,6 +47,9 @@ class Products {
   String? productQuantity;
   bool? isWishlisted;
   int? inCartCount;
+  String? currency;
+  String? description;
+  String? defaultImage;
 
   Products(
       {this.id,
@@ -57,6 +60,9 @@ class Products {
       this.stockAvailable,
       this.isWishlisted,
       this.inCartCount,
+      this.currency,
+      this.description,
+      this.defaultImage,
       this.productQuantity});
 
   Products.fromJson(Map<String, dynamic> json) {
@@ -71,5 +77,8 @@ class Products {
     productQuantity = json["productQuantity"];
     inCartCount = json['inCartCount'];
     isWishlisted = json['isWishlisted'];
+    currency = json['currency'];
+    defaultImage = json['defaultImage'];
+    description = json['description'];
   }
 }

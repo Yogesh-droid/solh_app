@@ -51,6 +51,7 @@ import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_s
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/add_address_page.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/checkout_screen.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
+import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_detail_page.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_list.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/screens/product_detail_screen.dart';
 import 'package:solh/ui/screens/products/features/product_payment/ui/screens/product_payment_page.dart';
@@ -194,321 +195,340 @@ class AppRoutes {
   static const String orderListScreen = "/orderListScreen";
   static const String productPaymentPage = "/productPaymentPage";
   static const String addAddressPage = '/addAddressPage';
+  static const String orderdetails = '/orderDetails';
 }
 
 class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings routeSettings) {
     final Object? args = routeSettings.arguments;
 
-    print('Current Route is ${routeSettings.name}');
+    debugPrint('Current Route is ${routeSettings.name}');
 
     switch (routeSettings.name) {
       case AppRoutes.master:
-        print('Routing to ${routeSettings.name}');
+        debugPrint('Routing to ${routeSettings.name}');
         return MaterialPageRoute(
             builder: ((context) => MasterScreen()),
-            settings: RouteSettings(name: AppRoutes.master));
+            settings: const RouteSettings(name: AppRoutes.master));
 
       case AppRoutes.introScreen:
-        print('Routing to ${routeSettings.name}');
+        debugPrint('Routing to ${routeSettings.name}');
         return MaterialPageRoute(
-            builder: ((context) => IntroCrousel()),
-            settings: RouteSettings(name: AppRoutes.introScreen));
+            builder: ((context) => const IntroCrousel()),
+            settings: const RouteSettings(name: AppRoutes.introScreen));
       case AppRoutes.phoneAuthScreen:
-        print('Routing to ${routeSettings.name}');
+        debugPrint('Routing to ${routeSettings.name}');
         return MaterialPageRoute(
-            builder: ((context) => PhoneAuthScreen()),
-            settings: RouteSettings(name: AppRoutes.phoneAuthScreen));
+            builder: ((context) => const PhoneAuthScreen()),
+            settings: const RouteSettings(name: AppRoutes.phoneAuthScreen));
 
       case AppRoutes.psychologyTest:
         return MaterialPageRoute(
-            builder: ((context) => PsychologyTestPage()),
-            settings: RouteSettings(name: AppRoutes.psychologyTest));
+            builder: ((context) => const PsychologyTestPage()),
+            settings: const RouteSettings(name: AppRoutes.psychologyTest));
 
       case AppRoutes.userPostScreen:
         return MaterialPageRoute(
             builder: ((context) => PostScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.userPostScreen));
+            settings: const RouteSettings(name: AppRoutes.userPostScreen));
 
       // Add Address
       case AppRoutes.addAddressPage:
         return MaterialPageRoute(
             builder: ((context) => AddAddressPage(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.addAddressPage));
+            settings: const RouteSettings(name: AppRoutes.addAddressPage));
 
       case AppRoutes.viewAllConsultant:
         return MaterialPageRoute(
             builder: ((context) => ConsultantsScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.viewAllConsultant));
+            settings: const RouteSettings(name: AppRoutes.viewAllConsultant));
       case AppRoutes.viewAllAlliedExpert:
         return MaterialPageRoute(
             builder: ((context) => AlliedConsultant(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.viewAllAlliedExpert));
+            settings: const RouteSettings(name: AppRoutes.viewAllAlliedExpert));
       case AppRoutes.inviteGroupMemberPage:
         return MaterialPageRoute(
             builder: ((context) => InviteMembersUI(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.inviteGroupMemberPage));
+            settings:
+                const RouteSettings(name: AppRoutes.inviteGroupMemberPage));
       case AppRoutes.createProfile:
         return MaterialPageRoute(
-            builder: ((context) => CreateProfileScreen()),
-            settings: RouteSettings(name: AppRoutes.createProfile));
+            builder: ((context) => const CreateProfileScreen()),
+            settings: const RouteSettings(name: AppRoutes.createProfile));
       case AppRoutes.chatUser:
         return MaterialPageRoute(
             builder: ((context) => ChatScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.chatUser));
+            settings: const RouteSettings(name: AppRoutes.chatUser));
       case AppRoutes.connectScreen:
         return MaterialPageRoute(
             builder: ((context) => ConnectScreen2(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.connectScreen));
+            settings: const RouteSettings(name: AppRoutes.connectScreen));
       case AppRoutes.accountPrivacy:
         return MaterialPageRoute(
             builder: ((context) => AccountPrivacyScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.accountPrivacy));
+            settings: const RouteSettings(name: AppRoutes.accountPrivacy));
       case AppRoutes.appointmentPage:
         return MaterialPageRoute(
             builder: ((context) => AppointmentScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.appointmentPage));
+            settings: const RouteSettings(name: AppRoutes.appointmentPage));
 
       case AppRoutes.getStarted:
-        print('Routing to ${routeSettings.name}');
+        debugPrint('Routing to ${routeSettings.name}');
         return MaterialPageRoute(
             builder: ((context) => GetStartedScreen()),
-            settings: RouteSettings(name: AppRoutes.getStarted));
+            settings: const RouteSettings(name: AppRoutes.getStarted));
       case AppRoutes.loginSignup:
         return MaterialPageRoute(
             builder: ((context) => LoginSignup(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.loginSignup));
+            settings: const RouteSettings(name: AppRoutes.loginSignup));
       case AppRoutes.otpVerification:
         return MaterialPageRoute(
             builder: ((context) => OtpVerificationScreen(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.otpVerification));
+            settings: const RouteSettings(name: AppRoutes.otpVerification));
 
       case AppRoutes.groupDetails:
         return MaterialPageRoute(
             builder: ((context) => GroupDetailsPage(args: args as Map)),
-            settings: RouteSettings(name: AppRoutes.groupDetails));
+            settings: const RouteSettings(name: AppRoutes.groupDetails));
       case AppRoutes.letsCreateYourProfile:
         return MaterialPageRoute(
             builder: ((context) => LetsCreateYourProfile()),
-            settings: RouteSettings(name: AppRoutes.letsCreateYourProfile));
+            settings:
+                const RouteSettings(name: AppRoutes.letsCreateYourProfile));
       case AppRoutes.nameField:
         return MaterialPageRoute(
             builder: ((context) => NameField()),
-            settings: RouteSettings(name: AppRoutes.nameField));
+            settings: const RouteSettings(name: AppRoutes.nameField));
       case AppRoutes.dobField:
         return MaterialPageRoute(
             builder: ((context) => DobField()),
-            settings: RouteSettings(name: AppRoutes.dobField));
+            settings: const RouteSettings(name: AppRoutes.dobField));
       case AppRoutes.genderField:
         return MaterialPageRoute(
             builder: ((context) =>
                 GenderField(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.genderField));
+            settings: const RouteSettings(name: AppRoutes.genderField));
       case AppRoutes.roleField:
         return MaterialPageRoute(
             builder: ((context) => RoleSection()),
-            settings: RouteSettings(name: AppRoutes.roleField));
+            settings: const RouteSettings(name: AppRoutes.roleField));
       case AppRoutes.needSupportOn:
         return MaterialPageRoute(
             builder: ((context) =>
                 NeedSupportOn(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.needSupportOn));
+            settings: const RouteSettings(name: AppRoutes.needSupportOn));
       case AppRoutes.moodAnalytics:
         return MaterialPageRoute(
             builder: ((context) => MoodAnalyticPage()),
-            settings: RouteSettings(name: AppRoutes.moodAnalytics));
+            settings: const RouteSettings(name: AppRoutes.moodAnalytics));
       case AppRoutes.partOfAnOrgnisation:
         return MaterialPageRoute(
             builder: ((context) => PartOfAnOrganisationPage()),
-            settings: RouteSettings(name: AppRoutes.partOfAnOrgnisation));
+            settings: const RouteSettings(name: AppRoutes.partOfAnOrgnisation));
       case AppRoutes.editProfileOption:
         return MaterialPageRoute(
             builder: ((context) => EditProfileOptions()),
-            settings: RouteSettings(name: AppRoutes.editProfileOption));
+            settings: const RouteSettings(name: AppRoutes.editProfileOption));
       case AppRoutes.editProfilePage:
         return MaterialPageRoute(
-            builder: ((context) => EditMyProfileScreen()),
-            settings: RouteSettings(name: AppRoutes.editProfilePage));
+            builder: ((context) => const EditMyProfileScreen()),
+            settings: const RouteSettings(name: AppRoutes.editProfilePage));
       case AppRoutes.editAnonymousProfile:
         return MaterialPageRoute(
-            builder: ((context) => EditAnonymousProfile()),
-            settings: RouteSettings(name: AppRoutes.editAnonymousProfile));
+            builder: ((context) => const EditAnonymousProfile()),
+            settings:
+                const RouteSettings(name: AppRoutes.editAnonymousProfile));
       case AppRoutes.userType:
         return MaterialPageRoute(
             builder: ((context) => UserType()),
-            settings: RouteSettings(name: AppRoutes.userType));
+            settings: const RouteSettings(name: AppRoutes.userType));
       case AppRoutes.addAvatar:
         return MaterialPageRoute(
             builder: ((context) =>
                 AddAvatar(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.addAvatar));
+            settings: const RouteSettings(name: AppRoutes.addAvatar));
       case AppRoutes.bio:
         return MaterialPageRoute(
             builder: ((context) => Bio(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.bio));
+            settings: const RouteSettings(name: AppRoutes.bio));
       case AppRoutes.anonymousProfile:
         return MaterialPageRoute(
             builder: ((context) =>
                 AnonymousProfile(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.anonymousProfile));
+            settings: const RouteSettings(name: AppRoutes.anonymousProfile));
       case AppRoutes.addEmail:
         return MaterialPageRoute(
             builder: ((context) =>
                 AddEmail(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.addEmail));
+            settings: const RouteSettings(name: AppRoutes.addEmail));
       case AppRoutes.emergencyContact:
         return MaterialPageRoute(
             builder: ((context) =>
                 EmergencyContacts(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.emergencyContact));
+            settings: const RouteSettings(name: AppRoutes.emergencyContact));
       case AppRoutes.partOfOrg:
         return MaterialPageRoute(
             builder: ((context) =>
                 PartOfOrg(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.partOfOrg));
+            settings: const RouteSettings(name: AppRoutes.partOfOrg));
       case AppRoutes.editNeedSupportOn:
         return MaterialPageRoute(
             builder: ((context) => EditNeedSupportOn()),
-            settings: RouteSettings(name: AppRoutes.editNeedSupportOn));
+            settings: const RouteSettings(name: AppRoutes.editNeedSupportOn));
       case AppRoutes.chatAnonIssues:
         return MaterialPageRoute(
             builder: ((context) => ChatAnonIssues()),
-            settings: RouteSettings(name: AppRoutes.chatAnonIssues));
+            settings: const RouteSettings(name: AppRoutes.chatAnonIssues));
 
       case AppRoutes.activityLog:
         return MaterialPageRoute(
-            builder: ((context) => ActivityLogScreen()),
-            settings: RouteSettings(name: AppRoutes.activityLog));
+            builder: ((context) => const ActivityLogScreen()),
+            settings: const RouteSettings(name: AppRoutes.activityLog));
       case AppRoutes.activityBadgeParent:
         return MaterialPageRoute(
-            builder: ((context) => ActivityBadgeParent()),
-            settings: RouteSettings(name: AppRoutes.activityBadgeParent));
+            builder: ((context) => const ActivityBadgeParent()),
+            settings: const RouteSettings(name: AppRoutes.activityBadgeParent));
       case AppRoutes.connections:
         return MaterialPageRoute(
             builder: ((context) => Connections()),
-            settings: RouteSettings(name: AppRoutes.connections));
+            settings: const RouteSettings(name: AppRoutes.connections));
       case AppRoutes.createJournal:
         return MaterialPageRoute(
             builder: ((context) => CreatePostScreen()),
-            settings: RouteSettings(name: AppRoutes.createJournal));
+            settings: const RouteSettings(name: AppRoutes.createJournal));
       case AppRoutes.psychologicalCapital:
         return MaterialPageRoute(
-            builder: ((context) => PsychologicalCapital()),
-            settings: RouteSettings(name: AppRoutes.psychologicalCapital));
+            builder: ((context) => const PsychologicalCapital()),
+            settings:
+                const RouteSettings(name: AppRoutes.psychologicalCapital));
       case AppRoutes.alliedConsultantScreen:
         return MaterialPageRoute(
             builder: ((context) =>
                 AlliedConsultantScreen(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.alliedConsultantScreen));
+            settings:
+                const RouteSettings(name: AppRoutes.alliedConsultantScreen));
       case AppRoutes.consultantAlliedParent:
         return MaterialPageRoute(
             builder: ((context) =>
                 ConsultantAlliedParent(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.consultantAlliedParent));
+            settings:
+                const RouteSettings(name: AppRoutes.consultantAlliedParent));
       case AppRoutes.waitingScreen:
         return MaterialPageRoute(
-            builder: ((context) => WaitingScreen()),
-            settings: RouteSettings(name: AppRoutes.waitingScreen));
+            builder: ((context) => const WaitingScreen()),
+            settings: const RouteSettings(name: AppRoutes.waitingScreen));
       case AppRoutes.viewAllAlliedCategories:
         return MaterialPageRoute(
             builder: ((context) =>
                 ViewAlAlliedCategories(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.viewAllAlliedCategories));
+            settings:
+                const RouteSettings(name: AppRoutes.viewAllAlliedCategories));
       case AppRoutes.languageSettingPage:
         return MaterialPageRoute(
-            builder: ((context) => LanguageSettingPage()),
-            settings: RouteSettings(name: AppRoutes.languageSettingPage));
+            builder: ((context) => const LanguageSettingPage()),
+            settings: const RouteSettings(name: AppRoutes.languageSettingPage));
       case AppRoutes.inhousePackage:
         return MaterialPageRoute(
             builder: ((context) =>
                 InhousePackageScreen(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.inhousePackage));
+            settings: const RouteSettings(name: AppRoutes.inhousePackage));
       case AppRoutes.paymentscreen:
         return MaterialPageRoute(
             builder: ((context) =>
                 PaymentScreen(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.paymentscreen));
+            settings: const RouteSettings(name: AppRoutes.paymentscreen));
       case AppRoutes.videoPlaylist:
         return MaterialPageRoute(
             builder: ((context) => VideoPlaylist()),
-            settings: RouteSettings(name: AppRoutes.videoPlaylist));
+            settings: const RouteSettings(name: AppRoutes.videoPlaylist));
 
       case AppRoutes.manageGroupPage:
         return MaterialPageRoute(
             builder: ((context) => ManageGroupPage()),
-            settings: RouteSettings(name: AppRoutes.manageGroupPage));
+            settings: const RouteSettings(name: AppRoutes.manageGroupPage));
       case AppRoutes.appointmentMenu:
         return MaterialPageRoute(
-            builder: ((context) => AppointmentMenu()),
-            settings: RouteSettings(name: AppRoutes.appointmentMenu));
+            builder: ((context) => const AppointmentMenu()),
+            settings: const RouteSettings(name: AppRoutes.appointmentMenu));
       case AppRoutes.profileTransfer:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransfer()),
-            settings: RouteSettings(name: AppRoutes.profileTransfer));
+            settings: const RouteSettings(name: AppRoutes.profileTransfer));
       case AppRoutes.addOrg:
         return MaterialPageRoute(
             builder: ((context) => AddOrg()),
-            settings: RouteSettings(name: AppRoutes.addOrg));
+            settings: const RouteSettings(name: AppRoutes.addOrg));
       case AppRoutes.profileTransferDetail:
         return MaterialPageRoute(
             builder: ((context) => ProfileTransferDetail()),
-            settings: RouteSettings(name: AppRoutes.profileTransferDetail));
+            settings:
+                const RouteSettings(name: AppRoutes.profileTransferDetail));
       case AppRoutes.OrgSetting:
         return MaterialPageRoute(
             builder: ((context) => OrgSetting()),
-            settings: RouteSettings(name: AppRoutes.OrgSetting));
+            settings: const RouteSettings(name: AppRoutes.OrgSetting));
       case AppRoutes.liveStream:
         return MaterialPageRoute(
             builder: ((context) =>
                 LiveStream(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.liveStream));
+            settings: const RouteSettings(name: AppRoutes.liveStream));
       case AppRoutes.liveStreamWaiting:
         return MaterialPageRoute(
-            builder: ((context) => LiveStreamWaiting()),
-            settings: RouteSettings(name: AppRoutes.liveStreamWaiting));
+            builder: ((context) => const LiveStreamWaiting()),
+            settings: const RouteSettings(name: AppRoutes.liveStreamWaiting));
       case AppRoutes.consultantProfilePage:
         return MaterialPageRoute(
             builder: ((context) => ConsultantProfilePage()),
-            settings: RouteSettings(name: AppRoutes.consultantProfilePage));
+            settings:
+                const RouteSettings(name: AppRoutes.consultantProfilePage));
       case AppRoutes.addEmailOnboarding:
         return MaterialPageRoute(
             builder: ((context) => AddEmailOnboarding()),
-            settings: RouteSettings(name: AppRoutes.addEmailOnboarding));
+            settings: const RouteSettings(name: AppRoutes.addEmailOnboarding));
       case AppRoutes.productsHome:
         return MaterialPageRoute(
-            builder: ((context) => ProductsHome()),
-            settings: RouteSettings(name: AppRoutes.productsHome));
+            builder: ((context) => const ProductsHome()),
+            settings: const RouteSettings(name: AppRoutes.productsHome));
       case AppRoutes.orderListScreen:
         return MaterialPageRoute(
-            builder: ((context) => OrderListScreen()),
-            settings: RouteSettings(name: AppRoutes.orderListScreen));
+            builder: ((context) => const OrderListScreen()),
+            settings: const RouteSettings(name: AppRoutes.orderListScreen));
       case AppRoutes.productWishlistScreen:
         return MaterialPageRoute(
-            builder: ((context) => ProductWishlistScreen()),
-            settings: RouteSettings(name: AppRoutes.productWishlistScreen));
+            builder: ((context) => const ProductWishlistScreen()),
+            settings:
+                const RouteSettings(name: AppRoutes.productWishlistScreen));
       case AppRoutes.productDetailScreen:
         return MaterialPageRoute(
             builder: ((context) =>
                 ProductDetailScreen(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.productDetailScreen));
+            settings: const RouteSettings(name: AppRoutes.productDetailScreen));
       case AppRoutes.checkoutScreen:
         return MaterialPageRoute(
             builder: ((context) =>
                 CheckoutScreen(args: args as Map<String, dynamic>)),
-            settings: RouteSettings(name: AppRoutes.checkoutScreen));
+            settings: const RouteSettings(name: AppRoutes.checkoutScreen));
       case AppRoutes.productList:
         return MaterialPageRoute(
             builder: ((context) => ProductLisingPage(
                   args: args as Map<String, dynamic>,
                 )),
-            settings: RouteSettings(name: AppRoutes.productList));
+            settings: const RouteSettings(name: AppRoutes.productList));
 
       case AppRoutes.productPaymentPage:
         return MaterialPageRoute(
             builder: ((context) => ProductPaymentPage(
                   args: args as Map<String, dynamic>,
                 )),
-            settings: RouteSettings(name: AppRoutes.productPaymentPage));
+            settings: const RouteSettings(name: AppRoutes.productPaymentPage));
+
+      case AppRoutes.orderdetails:
+        return MaterialPageRoute(
+            builder: ((context) => OrderDetailPage(
+                  args: args as Map<String, dynamic>,
+                )),
+            settings: const RouteSettings(name: AppRoutes.orderdetails));
+
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));
       default:

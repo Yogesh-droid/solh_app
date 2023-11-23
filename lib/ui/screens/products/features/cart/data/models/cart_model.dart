@@ -2,30 +2,29 @@ import 'package:solh/ui/screens/products/features/cart/domain/entities/cart_enti
 
 class CartModel extends CartEntity {
   CartModel(
-      {bool? success,
-      CartList? cartList,
-      int? totalPrice,
-      int? discount,
-      int? shippingAmount,
-      int? finalPrice})
-      : super(
-            cartList: cartList,
-            discount: discount,
-            finalPrice: finalPrice,
-            shippingAmount: shippingAmount,
-            success: success,
-            totalPrice: totalPrice);
+      {super.success,
+      super.cartList,
+      super.totalPrice,
+      super.discount,
+      super.shippingAmount,
+      super.finalPrice,
+      super.currency,
+      super.code,
+      super.symbol});
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-      success: json["success"],
-      cartList:
-          json["cartList"] == null ? null : CartList.fromJson(json["cartList"]),
-      totalPrice: json["totalPrice"],
-      discount: json["discount"],
-      shippingAmount: json["shippingAmount"],
-      finalPrice: json["finalPrice"],
-    );
+        success: json["success"],
+        cartList: json["cartList"] == null
+            ? null
+            : CartList.fromJson(json["cartList"]),
+        totalPrice: json["totalPrice"],
+        discount: json["discount"],
+        shippingAmount: json["shippingAmount"],
+        finalPrice: json["finalPrice"],
+        currency: json["currency"],
+        symbol: json['symbol'],
+        code: json['code']);
   }
 }
 
@@ -80,6 +79,8 @@ class ProductId {
   int? price;
   int? afterDiscountPrice;
   int? stockAvailable;
+  String? defaultImage;
+  String? currency;
 
   ProductId(
       {this.id,
@@ -87,6 +88,8 @@ class ProductId {
       this.productImage,
       this.price,
       this.afterDiscountPrice,
+      this.defaultImage,
+      this.currency,
       this.stockAvailable});
 
   ProductId.fromJson(Map<String, dynamic> json) {
@@ -98,5 +101,7 @@ class ProductId {
     price = json["price"];
     afterDiscountPrice = json["afterDiscountPrice"];
     stockAvailable = json["stockAvailable"];
+    currency = json["currency"];
+    defaultImage = json["defaultImage"];
   }
 }

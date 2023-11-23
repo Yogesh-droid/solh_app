@@ -3,11 +3,10 @@ import 'package:solh/widgets_constants/constants/colors.dart';
 
 class ButtonLoadingAnimation extends StatelessWidget {
   const ButtonLoadingAnimation(
-      {Key? key,
+      {super.key,
       this.ballSizeLowerBound = 3,
       this.ballSizeUpperBound = 8,
-      this.ballColor})
-      : super(key: key);
+      this.ballColor});
 
   final double? ballSizeUpperBound;
   final double? ballSizeLowerBound;
@@ -15,7 +14,7 @@ class ButtonLoadingAnimation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 70,
           maxHeight: 40,
         ),
@@ -55,7 +54,7 @@ class _BallsRowState extends State<BallsRow>
   void initState() {
     // TODO: implement initState
     _controller =
-        AnimationController(vsync: this, duration: Duration(seconds: 1))
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..repeat();
 
     ball1Animation = TweenSequence(<TweenSequenceItem<double>>[
@@ -71,7 +70,7 @@ class _BallsRowState extends State<BallsRow>
       ),
     ]).animate(CurvedAnimation(
       parent: _controller!,
-      curve: Interval(0, 0.6, curve: Curves.easeOut),
+      curve: const Interval(0, 0.6, curve: Curves.easeOut),
     ));
 
     ball2Animation = TweenSequence(<TweenSequenceItem<double>>[
@@ -87,7 +86,7 @@ class _BallsRowState extends State<BallsRow>
       ),
     ]).animate(CurvedAnimation(
         parent: _controller!,
-        curve: Interval(0.2, 0.8, curve: Curves.easeOut)));
+        curve: const Interval(0.2, 0.8, curve: Curves.easeOut)));
 
     ball3Animation = TweenSequence(<TweenSequenceItem<double>>[
       TweenSequenceItem<double>(
@@ -101,7 +100,8 @@ class _BallsRowState extends State<BallsRow>
         weight: 50,
       ),
     ]).animate(CurvedAnimation(
-        parent: _controller!, curve: Interval(0.4, 1, curve: Curves.easeOut)));
+        parent: _controller!,
+        curve: const Interval(0.4, 1, curve: Curves.easeOut)));
 
     _controller!.addStatusListener((value) {
       if (value == AnimationStatus.completed) {

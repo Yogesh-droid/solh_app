@@ -48,7 +48,6 @@ class _JournalingState extends State<Journaling> {
   bool _fetchingMore = false;
   void initState() {
     super.initState();
-    print('Running init state of journaling1');
     _journalsScrollController = ScrollController();
     _refreshController = RefreshController();
 
@@ -57,7 +56,6 @@ class _JournalingState extends State<Journaling> {
     _journalsScrollController.addListener(() async {
       if (_journalsScrollController.position.pixels ==
           _journalsScrollController.position.minScrollExtent) {
-        print("refreshing");
         _journalPageController.isScrollingStarted.value = false;
       }
       if (_journalsScrollController.position.pixels > 600) {
@@ -70,10 +68,9 @@ class _JournalingState extends State<Journaling> {
           _fetchingMore = true;
         });
 
-        print("Reached at end");
         await _journalPageController.getAllJournals(
             ++_journalPageController.pageNo,
-            orgOnly: OrgOnlySetting.orgOnly!,
+            orgOnly: OrgOnlySetting.orgOnly ?? false,
             groupId: _journalPageController.selectedGroupId.value != ''
                 ? _journalPageController.selectedGroupId.value
                 : null);
@@ -112,7 +109,7 @@ class _JournalingState extends State<Journaling> {
     _journalPageController.journalsList.clear();
     _journalPageController.pageNo = 1;
     _journalPageController.nextPage = 2;
-    _journalPageController.selectedGroupId.value.length > 0
+    _journalPageController.selectedGroupId.value.isNotEmpty
         ? await _journalPageController.getAllJournals(1,
             groupId: _journalPageController.selectedGroupId.value,
             orgOnly: orgOnly ?? false)
@@ -155,14 +152,15 @@ class _JournalingState extends State<Journaling> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => MoodMeterV2()));
+                                      builder: (context) =>
+                                          const MoodMeterV2()));
                               FirebaseAnalytics.instance.logEvent(
                                   name: 'MoodMeterOpenTapped',
                                   parameters: {'Page': 'MoodMeter'});
                             },
                             child: SvgPicture.asset(
                                 'assets/icons/app-bar/mood-meter.svg')),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         WhatsOnYourMindSection(w: 65.w),
@@ -187,17 +185,16 @@ class _JournalingState extends State<Journaling> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(width: 20),
-                      Text(
+                      const SizedBox(width: 20),
+                      const Text(
                         "Posts",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       DefaultOrg.defaultOrg != null
                           ? PopupMenuButton<bool>(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Icon(
                                   CupertinoIcons.line_horizontal_3_decrease,
                                   size: 16,
@@ -211,7 +208,6 @@ class _JournalingState extends State<Journaling> {
                               itemBuilder: (context) {
                                 return [
                                   PopupMenuItem<bool>(
-                                    child: Text("All(Solh & Organization)"),
                                     value: false,
                                     textStyle: TextStyle(
                                         color: OrgOnlySetting.orgOnly != null
@@ -219,9 +215,10 @@ class _JournalingState extends State<Journaling> {
                                                 ? SolhColors.primary_green
                                                 : SolhColors.black
                                             : SolhColors.black),
+                                    child:
+                                        const Text("All(Solh & Organization)"),
                                   ),
                                   PopupMenuItem<bool>(
-                                    child: Text("Organization only"),
                                     value: true,
                                     textStyle: TextStyle(
                                         color: OrgOnlySetting.orgOnly != null
@@ -229,20 +226,22 @@ class _JournalingState extends State<Journaling> {
                                                 ? SolhColors.primary_green
                                                 : SolhColors.black
                                             : SolhColors.black),
+                                    child: const Text("Organization only"),
                                   )
                                 ];
                               })
-                          : SizedBox(),
+                          : const SizedBox(),
                     ],
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   Obx(() {
                     return !_journalPageController.isLoading.value
                         ? Obx(() {
                             return _journalPageController
                                     .journalsList.isNotEmpty
                                 ? ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: _journalPageController
                                         .journalsList.length,
@@ -261,11 +260,11 @@ class _JournalingState extends State<Journaling> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 12,
-                                                          vertical: 12),
+                                                    const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              horizontal: 12,
+                                                              vertical: 12),
                                                       child: Text(
                                                         'People You May Know',
                                                         style: SolhTextStyles
@@ -290,7 +289,7 @@ class _JournalingState extends State<Journaling> {
                                                                       .isNotEmpty
                                                               ? PeopleYouMayKnowWidget()
                                                               : Container()
-                                                          : ReconnendedPeopleShimmer();
+                                                          : const ReconnendedPeopleShimmer();
                                                     }),
                                                     getJournalTile(index)
                                                   ],
@@ -312,7 +311,7 @@ class _JournalingState extends State<Journaling> {
                                                     ''
                                                 ? "No Journals"
                                                 : 'No Post',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w500,
                                                 color: Color(0xFFD9D9D9)),
@@ -328,7 +327,7 @@ class _JournalingState extends State<Journaling> {
               ),
               if (_fetchingMore) Center(child: MyLoader()),
               SizedBox(height: Platform.isIOS ? 80 : 50),
-              SizedBox(
+              const SizedBox(
                 height: 200,
               ),
             ],
@@ -345,11 +344,11 @@ class _JournalingState extends State<Journaling> {
                   child: IconButton(
                       onPressed: () {
                         _journalsScrollController.animateTo(0.0,
-                            duration: Duration(seconds: 1),
+                            duration: const Duration(seconds: 1),
                             curve: Curves.easeIn);
                       },
                       iconSize: 40,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.keyboard_arrow_up,
                         color: SolhColors.primary_green,
                       )))
@@ -363,21 +362,19 @@ class _JournalingState extends State<Journaling> {
       title: Row(
         children: [
           Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
+            decoration: const BoxDecoration(shape: BoxShape.circle),
             child: InkWell(
               onTap: () {
-                print("side bar tapped");
                 bottomNavigatorController.isDrawerOpen.value = true;
                 // setState(() {
                 //   _isDrawerOpen = !_isDrawerOpen;
                 // });
-                print("opened");
               },
               child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle),
+                decoration: const BoxDecoration(shape: BoxShape.circle),
                 height: 40,
                 width: 40,
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                 child: SvgPicture.asset(
                   "assets/icons/app-bar/app-bar-menu.svg",
                   width: 26,
@@ -397,20 +394,21 @@ class _JournalingState extends State<Journaling> {
         ],
       ),
       bottom: PreferredSize(
-          preferredSize: Size.fromHeight(0), child: WhatsOnYourMindSection()),
+          preferredSize: const Size.fromHeight(0),
+          child: WhatsOnYourMindSection()),
       isLandingScreen: true,
     );
   }
 
   Widget groupRow() {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.13,
       child: Obx(() {
         return CustomScrollView(
           controller: _journalPageController.customeScrollController,
           scrollDirection: Axis.horizontal,
           slivers: [
-            SliverToBoxAdapter(
+            const SliverToBoxAdapter(
               child: Divider(),
             ),
             SliverToBoxAdapter(
@@ -442,7 +440,7 @@ class _JournalingState extends State<Journaling> {
             Obx(
               () => discoverGroupController.loadingCreatedGroups.value ||
                       discoverGroupController.loadingJoinedGroups.value
-                  ? SliverToBoxAdapter(
+                  ? const SliverToBoxAdapter(
                       child: Column(
                         children: [
                           SizedBox(height: 15),
@@ -451,7 +449,7 @@ class _JournalingState extends State<Journaling> {
                         ],
                       ),
                     )
-                  : SliverToBoxAdapter(),
+                  : const SliverToBoxAdapter(),
             )
           ],
         );
@@ -480,7 +478,7 @@ class _JournalingState extends State<Journaling> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ))
-                    : BoxDecoration(),
+                    : const BoxDecoration(),
             child: InkWell(
               borderRadius: BorderRadius.circular(50),
               onTap: !_journalPageController.isLoading.value
@@ -509,7 +507,7 @@ class _JournalingState extends State<Journaling> {
                     shape: BoxShape.circle,
                     border: _journalPageController.selectedGroupId.value ==
                             group.sId
-                        ? Border()
+                        ? const Border()
                         : Border.all(
                             color: SolhColors.primary_green,
                             width: 2,
@@ -518,7 +516,8 @@ class _JournalingState extends State<Journaling> {
                       image: group.groupMediaUrl != null
                           ? CachedNetworkImageProvider(group.groupMediaUrl ??
                               "https://picsum.photos/200/200")
-                          : AssetImage("assets/images/group_placeholder.png")
+                          : const AssetImage(
+                                  "assets/images/group_placeholder.png")
                               as ImageProvider,
                       fit: BoxFit.fill,
                     ),
@@ -528,10 +527,10 @@ class _JournalingState extends State<Journaling> {
             ),
           );
         }),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
-        Container(
+        SizedBox(
             width: 70,
             child: Obx(() {
               return Text(
@@ -541,8 +540,8 @@ class _JournalingState extends State<Journaling> {
                   fontWeight: FontWeight.w400,
                   color:
                       _journalPageController.selectedGroupId.value == group.sId
-                          ? Color(0xFF222222)
-                          : Color(0xFF666666),
+                          ? const Color(0xFF222222)
+                          : const Color(0xFF666666),
                 ),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
@@ -573,7 +572,7 @@ class _JournalingState extends State<Journaling> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                     ))
-                : BoxDecoration(),
+                : const BoxDecoration(),
             child: InkWell(
               borderRadius: BorderRadius.circular(50),
               onTap: () async {
@@ -593,7 +592,7 @@ class _JournalingState extends State<Journaling> {
                     color: Colors.white,
                     shape: BoxShape.circle,
                     border: _journalPageController.selectedGroupId == ''
-                        ? Border()
+                        ? const Border()
                         : Border.all(
                             color: SolhColors.primary_green,
                             width: 2,
@@ -611,10 +610,10 @@ class _JournalingState extends State<Journaling> {
             ),
           );
         }),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
-        Container(
+        SizedBox(
           width: 70,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -625,8 +624,8 @@ class _JournalingState extends State<Journaling> {
                   style: TextStyle(
                     fontSize: 14,
                     color: _journalPageController.selectedGroupId == ''
-                        ? Color(0xFF222222)
-                        : Color(0xFF666666),
+                        ? const Color(0xFF222222)
+                        : const Color(0xFF666666),
                     fontWeight: FontWeight.w400,
                     height: 1.23, //Figma Line Height 17.25
                   ),
@@ -634,7 +633,7 @@ class _JournalingState extends State<Journaling> {
                   textAlign: TextAlign.center,
                 );
               }),
-              SizedBox(
+              const SizedBox(
                 width: 5,
               ),
               Image.asset(
@@ -648,7 +647,6 @@ class _JournalingState extends State<Journaling> {
   }
 
   Future<void> deletePost(int index) async {
-    print("deleting post");
     DeleteJournal _deleteJournal = DeleteJournal(
         journalId: _journalPageController.journalsList[index].id!);
     await _deleteJournal.deletePost();
@@ -675,7 +673,7 @@ class _JournalingState extends State<Journaling> {
 
   getShimmer(BuildContext context) {
     return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, index) {
@@ -693,7 +691,7 @@ class _JournalingState extends State<Journaling> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Container(
@@ -704,7 +702,7 @@ class _JournalingState extends State<Journaling> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Container(
@@ -715,7 +713,7 @@ class _JournalingState extends State<Journaling> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Container(
@@ -747,7 +745,7 @@ class _JournalingState extends State<Journaling> {
               color: Colors.grey[300],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Container(
@@ -794,7 +792,7 @@ class _JournalingState extends State<Journaling> {
                     width: 2,
                   ),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: SolhColors.primary_green,
                   size: 30,
@@ -803,10 +801,10 @@ class _JournalingState extends State<Journaling> {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
-        Text(
+        const Text(
           "Discover",
           style: SolhTextStyles.QS_cap_semi,
           overflow: TextOverflow.ellipsis,

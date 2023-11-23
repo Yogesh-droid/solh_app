@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:readmore/readmore.dart';
 import 'package:solh/controllers/chat-list/appointment_video_call_icon_controller.dart';
-import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -24,14 +23,13 @@ import '../video-call/video-call-user.dart';
 
 class ChatProviderScreen extends StatefulWidget {
   const ChatProviderScreen(
-      {Key? key,
+      {super.key,
       required String imageUrl,
       required String name,
       required String sId})
       : _imageUrl = imageUrl,
         _name = name,
-        _sId = sId,
-        super(key: key);
+        _sId = sId;
 
   final String _imageUrl;
   final String _name;
@@ -42,8 +40,8 @@ class ChatProviderScreen extends StatefulWidget {
 }
 
 class _ChatProviderScreenState extends State<ChatProviderScreen> {
-  SocketService _service = SocketService();
-  var _controller = Get.put(ChatController());
+  final SocketService _service = SocketService();
+  final _controller = Get.put(ChatController());
 
   @override
   void initState() {
@@ -57,7 +55,6 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
         _controller.getChatController(widget._sId);
 
         SocketService.setUserName(userBlocNetwork.myData.name!);
-        print('author ${userBlocNetwork.myData.userName!}');
       });
     }
 
@@ -75,7 +72,7 @@ class _ChatProviderScreenState extends State<ChatProviderScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: double.maxFinite,
           child: Stack(
