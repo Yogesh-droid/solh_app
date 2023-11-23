@@ -36,6 +36,7 @@ class TestDetail {
   String? updatedAt;
   String? testType;
   int? iV;
+  String? testDisclaimer;
 
   TestDetail(
       {this.sId,
@@ -50,6 +51,7 @@ class TestDetail {
       this.testScoreInterpretation,
       this.createdAt,
       this.updatedAt,
+      this.testDisclaimer,
       this.iV});
 
   TestDetail.fromJson(Map<String, dynamic> json) {
@@ -77,6 +79,7 @@ class TestDetail {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    testDisclaimer = json['testDisclaimer'];
   }
 
   Map<String, dynamic> toJson() {

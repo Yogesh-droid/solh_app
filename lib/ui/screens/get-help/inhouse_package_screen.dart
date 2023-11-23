@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
@@ -566,9 +567,20 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                 const SizedBox(
                   height: 5,
                 ),
-                Text(
-                  widget.user!.description ?? '',
-                  style: SolhTextStyles.QS_body_2,
+                Html(
+                  data: widget.user!.description ?? '',
+                  style: {
+                    'p': Style(
+                      fontSize: FontSize(14),
+                      color: SolhColors.dark_grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    'li': Style(
+                      fontSize: FontSize(14),
+                      color: SolhColors.dark_grey,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  },
                 ),
                 const SizedBox(
                   height: 30,

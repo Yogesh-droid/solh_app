@@ -24,85 +24,118 @@ class PackageCard extends StatelessWidget {
     return InkWell(
       onTap: () => onPackageSelect(
           package!.sId ?? '', package!.amount ?? 0, package!.currency ?? ''),
-      child: Obx(() => AnimatedSize(
-            duration: Duration(milliseconds: 500),
-            curve: Curves.linear,
-            alignment: Alignment.topCenter,
-            child: Stack(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: SolhColors.light_Bg_2,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                        color: _alliedController.selectedPackage.value ==
-                                package!.sId
+      child: Obx(
+        () => Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                    color:
+                        _alliedController.selectedPackage.value == package!.sId
                             ? SolhColors.primary_green
-                            : Colors.white,
-                        width: _alliedController.selectedPackage.value ==
-                                package!.sId
+                            : Colors.grey,
+                    width:
+                        _alliedController.selectedPackage.value == package!.sId
                             ? 3
                             : 0),
-                  ),
-                  child: Column(children: [
-                    const SizedBox(height: 20),
+              ),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const SizedBox(height: 20),
                     packageNameAndPrice(),
-                    SizedBox(height: 20),
+                    // SizedBox(height: 20),
                     Container(
-                      padding: EdgeInsets.all(10),
+                      // padding: EdgeInsets.all(10),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           packageDetails(),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          expandedPanle(package),
-                          _alliedController.selectedPackage.value ==
-                                  package!.sId
-                              ? SizedBox()
-                              : Align(
-                                  alignment: Alignment.topRight,
-                                  child: SolhGreenButton(
-                                    height: 40,
-                                    width: 70,
-                                    child: AnimatedSwitcher(
-                                      duration: Duration(seconds: 5),
-                                      child: Text(
-                                        'Select'.tr,
-                                        style: SolhTextStyles.CTA
-                                            .copyWith(color: Colors.white),
+                          // SizedBox(
+                          //   height: 20,
+                          // ),
+                          // expandedPanle(package),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: SolhColors.blue_light),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${package!.currency} ${package!.amount ?? 0}",
+                                      style: SolhTextStyles.QS_body_1_bold
+                                          .copyWith(
+                                              color: SolhColors.primary_green),
+                                    ),
+                                    Text(
+                                      'Tax Incl.',
+                                      style:
+                                          SolhTextStyles.QS_cap_2_semi.copyWith(
+                                              color: SolhColors.Grey_1),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              _alliedController.selectedPackage.value ==
+                                      package!.sId
+                                  ? Positioned(
+                                      // right: 0,
+                                      // bottom: 10,
+                                      child: Container(
+                                      margin: EdgeInsets.all(8),
+                                      padding: const EdgeInsets.all(3.0),
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: SolhColors.Grey_1,
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                          shape: BoxShape.circle),
+                                      child: SvgPicture.asset(
+                                        "assets/images/check.svg",
+                                        height: 30,
+                                      ),
+                                    ))
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Align(
+                                        alignment: Alignment.topRight,
+                                        child: SolhGreenButton(
+                                          height: 40,
+                                          width: 70,
+                                          child: AnimatedSwitcher(
+                                            duration: Duration(seconds: 5),
+                                            child: Text(
+                                              'Select'.tr,
+                                              style: SolhTextStyles.CTA
+                                                  .copyWith(
+                                                      color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ),
+                            ],
+                          ),
                         ],
                       ),
                     )
                   ]),
-                ),
-                if (_alliedController.selectedPackage.value == package!.sId)
-                  Positioned(
-                      right: 0,
-                      top: 0,
-                      height: 40,
-                      width: 40,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: SolhColors.Grey_1,
-                                blurRadius: 4,
-                              ),
-                            ],
-                            shape: BoxShape.circle),
-                        child: SvgPicture.asset("assets/images/check.svg"),
-                      )),
-              ],
             ),
-          )),
+          ],
+        ),
+      ),
     );
   }
 
@@ -110,67 +143,54 @@ class PackageCard extends StatelessWidget {
     return Row(
       children: [
         Container(
-            width: 70.w,
             padding: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: SolhColors.tertiary_green,
-                borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(8),
-                    topRight: Radius.circular(8))),
             child: Center(
               child: Text(package!.name ?? '',
                   style: SolhTextStyles.QS_body_2_semi.copyWith(
                     color: SolhColors.black,
                   )),
             )),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "${package!.currency} ${package!.amount ?? 0}",
-                style: SolhTextStyles.QS_body_1_bold.copyWith(
-                    color: SolhColors.primary_green),
-              ),
-              Text(
-                'Tax Incl.',
-                style: SolhTextStyles.QS_cap_2_semi.copyWith(
-                    color: SolhColors.Grey_1),
-              )
-            ],
-          ),
-        )
+        // Expanded(
+        //   child: Column(
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       Text(
+        //         "${package!.currency} ${package!.amount ?? 0}",
+        //         style: SolhTextStyles.QS_body_1_bold.copyWith(
+        //             color: SolhColors.primary_green),
+        //       ),
+        //       Text(
+        //         'Tax Incl.',
+        //         style: SolhTextStyles.QS_cap_2_semi.copyWith(
+        //             color: SolhColors.Grey_1),
+        //       )
+        //     ],
+        //   ),
+        // )
       ],
     );
   }
 
   Widget packageDetails() {
-    return Column(children: [
-      aboutPackage(package!.aboutPackage ?? '', true),
-      // aboutPackage(
-      //     "Duration: ${package!.duration} ${package!.unitDuration}", false)
-    ]);
+    return aboutPackage(package!.aboutPackage ?? '', true);
   }
 
   Widget aboutPackage(String s, bool isHtml) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        isHtml ? const SizedBox() : SvgPicture.asset("assets/images/check.svg"),
-        SizedBox(
-          width: 10,
-        ),
-        Container(
-          width: 75.w,
-          child: isHtml
-              ? Html(data: s)
-              : Text(
-                  s,
-                  style: SolhTextStyles.QS_cap_semi,
-                ),
-        )
-      ]),
-    );
+    return isHtml
+        ? Html(
+            data: s,
+            style: {
+              "li": Style(
+                fontSize: FontSize(14),
+                color: SolhColors.dark_grey,
+                fontWeight: FontWeight.w600,
+              )
+            },
+          )
+        : Text(
+            s,
+            style: SolhTextStyles.QS_cap_2_semi,
+          );
   }
 
   Widget expandedPanle(PackageList? package) {
