@@ -4,14 +4,17 @@ import 'package:get/instance_manager.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/products_list/ui/controllers/product_sub_cat_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/controllers/products_list_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/empty_list_widget.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/item_widget.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_bottom_nav.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_shimmer.dart';
+import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_sub_cat_widget.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+
 import '../../../../../../../routes/routes.dart';
 
 class ProductLisingPage extends StatefulWidget {
@@ -26,6 +29,7 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
   final ProductsListController productsListController = Get.find();
   final CartController cartController = Get.find();
   final AddToCartController addToCartController = Get.find();
+  final ProductSubCatController productSubCatController = Get.find();
   final ScrollController scrollController = ScrollController();
   late int pageNo;
 
@@ -33,6 +37,8 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
   void initState() {
     pageNo = 1;
     productsListController.getProductList(widget.args['id'], 1);
+    productSubCatController.getProductSubCat(widget.args['id']);
+    productsListController.query = '';
 
     scrollController.addListener(() {
       if (!productsListController.isLoadingMore.value &&
@@ -90,6 +96,7 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
           : ListView(
               controller: scrollController,
               children: [
+                ProductSubCatWidget(catId: widget.args['id']),
                 ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
