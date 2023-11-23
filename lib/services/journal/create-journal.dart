@@ -1,6 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:solh/constants/api.dart';
 import 'package:http/http.dart' as http;
+import 'package:solh/main.dart';
+import 'package:solh/model/journals/journals_response_model.dart';
+
+import 'package:solh/ui/screens/comment/comment-screen.dart';
 import '../../bloc/user-bloc.dart';
 
 class CreateJournal {
@@ -116,7 +121,18 @@ class CreateJournal {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) {});
+          }).then((value) {
+        // print("post response" + json.decode(value.body).toString());
+        if (json.decode(value.body)['body']['inGroup']) {
+          globalNavigatorKey.currentState!.push(
+            MaterialPageRoute(
+                builder: (context) => CommentScreen(
+                    journalModel:
+                        Journals(id: json.decode(value.body)['body']['postId']),
+                    index: -1)),
+          );
+        }
+      });
 
       return "posted";
     }
@@ -158,6 +174,7 @@ class CreateJournal {
       return "posted";
     } else {
       print('${APIConstants.api}/api/pick-from-diary');
+
       await http.put(Uri.parse("${APIConstants.api}/api/pick-from-diary"),
           body: groupId != ''
               ? jsonEncode({
@@ -179,7 +196,7 @@ class CreateJournal {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) => print(value.body));
+          }).then((value) => print("post response" + value.body));
 
       return "posted";
     }

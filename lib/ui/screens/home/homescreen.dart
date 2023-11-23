@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -219,9 +220,9 @@ class _HomePageState extends State<HomePage> {
     return UpgradeAlert(
       upgrader: Upgrader(
           showIgnore: false,
+          durationUntilAlertAgain: const Duration(seconds: 10),
           onLater: () {
-            SystemNavigator.pop();
-            return true;
+            exit(0);
           }),
       child: SingleChildScrollView(
         child: Column(children: [
@@ -549,14 +550,16 @@ class _HomePageState extends State<HomePage> {
                 : const SizedBox()),
           ),
           GetHelpDivider(),
-          Obx(() => Container(
-                color: profileController.orgColor3.value.isNotEmpty
-                    ? Color(int.parse("0xFF${profileController.orgColor3}"))
-                    : Colors.transparent,
-                child: GetHelpCategory(
-                  title: "In-house Experts".tr,
-                ),
-              )),
+          Obx(
+            () => Container(
+              color: profileController.orgColor3.value.isNotEmpty
+                  ? Color(int.parse("0xFF${profileController.orgColor3}"))
+                  : Colors.transparent,
+              child: GetHelpCategory(
+                title: "In-house Experts".tr,
+              ),
+            ),
+          ),
           Obx(() => Container(
                 color: profileController.orgColor3.value.isNotEmpty
                     ? Color(int.parse("0xFF${profileController.orgColor3}"))

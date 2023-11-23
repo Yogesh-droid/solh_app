@@ -336,12 +336,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         });
       }
       //journalsBloc.getJournalsSnapshot();
-    }
-    if (bottomNavigatorController.activeIndex == 1) {
-      Navigator.pop(context);
-    } else {
-      bottomNavigatorController.activeIndex.value = 1;
-      Navigator.pop(context);
+      if (_createJournal.groupId == '') {
+        if (bottomNavigatorController.activeIndex == 1) {
+          Navigator.pop(context);
+        } else {
+          bottomNavigatorController.activeIndex.value = 1;
+          Navigator.pop(context);
+        }
+      }
     }
   }
 

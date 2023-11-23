@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:sizer/sizer.dart';
 import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
 import 'package:solh/model/psychology-test/submit_answer_model.dart';
 import 'package:solh/model/psychology-test/test_question_model.dart';
@@ -10,6 +12,7 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class TestQuestionsPage extends StatefulWidget {
   const TestQuestionsPage({Key? key, this.id, this.testTitle})
@@ -32,6 +35,16 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   @override
   void initState() {
     controller = PageController(initialPage: 0);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.delayed(Duration(seconds: 2), () {
+        showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => disclaimerContent(),
+        );
+      });
+    });
     super.initState();
 
     Future.delayed(Duration(seconds: 1), () {
@@ -70,10 +83,12 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                     child: PageView(
                       controller: controller,
                       children: psychologyTestController.questionList
-                          .map((e) => getQuestionView(
-                                context,
-                                e,
-                              ))
+                          .map(
+                            (e) => getQuestionView(
+                              context,
+                              e,
+                            ),
+                          )
                           .toList(),
                       onPageChanged: (index) {
                         this.index = index;
@@ -328,6 +343,50 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
         });
       }
     });
+  }
+
+  Widget disclaimerContent() {
+    final PsychologyTestController psychologyTestController = Get.find();
+    return AlertDialog(
+      content: Obx(() {
+        return psychologyTestController.isQuestionsLoading.value
+            ? Center(
+                child: MyLoader(),
+              )
+            : Container(
+                width: 100.w,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Disclaimer',
+                      style: SolhTextStyles.QS_head_5.copyWith(
+                          color: SolhColors.primary_green),
+                    ),
+                    Html(
+                      data: psychologyTestController.testQuestionModel.value
+                              .testDetail!.testDisclaimer ??
+                          '',
+                      style: {
+                        "p": Style(
+                          fontSize: FontSize(16),
+                          color: SolhColors.dark_grey,
+                          fontWeight: FontWeight.w500,
+                        )
+                      },
+                    ),
+                    SolhGreenMiniButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text('Accept',
+                          style: SolhTextStyles.CTA.copyWith(
+                            color: SolhColors.white,
+                          )),
+                    )
+                  ],
+                ),
+              );
+      }),
+    );
   }
 
   void saveTestDate(Answer answer, TestQuestionList testQuestion) {
