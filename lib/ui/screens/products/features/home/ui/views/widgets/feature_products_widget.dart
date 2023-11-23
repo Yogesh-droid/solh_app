@@ -61,6 +61,7 @@ class ProductsCard extends StatelessWidget {
     this.stockAvailable,
     this.isInWishlist = false,
     this.inCartItems = 0,
+    this.currency,
     required this.onPressed,
   });
 
@@ -74,6 +75,7 @@ class ProductsCard extends StatelessWidget {
   final bool isInWishlist;
   final String? productQuantity;
   final int? inCartItems;
+  final String? currency;
   final Function()? onPressed;
 
   AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
@@ -126,7 +128,11 @@ class ProductsCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     productName ?? '',
                     style: SolhTextStyles.QS_caption_bold,
@@ -134,6 +140,8 @@ class ProductsCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Html(data: description, shrinkWrap: true, style: {
+                    "body":
+                        Style(padding: HtmlPaddings.zero, margin: Margins.zero),
                     "p": Style(
                       maxLines: 3,
                       textOverflow: TextOverflow.ellipsis,
@@ -148,7 +156,7 @@ class ProductsCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text("MRP", style: SolhTextStyles.QS_cap_2),
+                          Text("$currency", style: SolhTextStyles.QS_cap_2),
                           SizedBox(
                             width: 3,
                           ),
@@ -163,12 +171,11 @@ class ProductsCard extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                         decoration: BoxDecoration(
-                            color: SolhColors.primary_green,
+                            color: SolhColors.greenShade3,
                             borderRadius: BorderRadius.circular(12)),
                         child: Text(
-                          '$afterDiscountPrice',
-                          style: SolhTextStyles.QS_caption_bold.copyWith(
-                              color: SolhColors.white),
+                          '$currency $afterDiscountPrice',
+                          style: SolhTextStyles.QS_caption_bold,
                         ),
                       ),
                     ],
@@ -210,9 +217,9 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
-    addToCartController.addToCart(
+    await addToCartController.addToCart(
         productId: widget.productId, quantity: quantity);
-    cartController.getCart();
+    await cartController.getCart();
   }
 
   @override
@@ -238,7 +245,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                       width: 100,
                       onPressed: () {
                         poductNumber.value++;
-                        onValueChange(1);
+                        onValueChange(poductNumber.value);
                       },
                       child: Text(
                         'Add To Cart',
