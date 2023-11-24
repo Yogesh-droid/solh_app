@@ -17,6 +17,8 @@ class ProductsListController extends GetxController {
   var productList = <Products>[].obs;
   var error = ''.obs;
   String query = '';
+  var selectedSubCat = ''.obs;
+  var selectedSubCatName = ''.obs;
 
   bool isListEnd = false;
 

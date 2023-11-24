@@ -73,24 +73,28 @@ class _ProductsHomeState extends State<ProductsHome> {
                 : const SizedBox.shrink()),
         body: Stack(
           children: [
-            ListView(
-              children: [
-                const ProductsSearchBar(),
-                const GetHelpDivider(),
-                ProductsCategories(),
-                const GetHelpDivider(),
-                ProductsBannerCarousel(),
-                const GetHelpDivider(),
-                ProductsSearchCategories(),
-                const GetHelpDivider(),
-                FeatureProductsSection(),
-                const GetHelpDivider(),
-                // YouMightFindHelpfulSection(),
-                const SizedBox(
-                  height: 100,
-                ),
-              ],
-            ),
+            Obx(() => ListView(
+                  children: [
+                    const ProductsSearchBar(),
+                    const GetHelpDivider(),
+                    ProductsCategories(),
+                    const GetHelpDivider(),
+                    if (productsHomeCarouselController
+                        .homeCarouselBanners.isNotEmpty)
+                      const ProductsBannerCarousel(),
+                    if (productsHomeCarouselController
+                        .homeCarouselBanners.isNotEmpty)
+                      const GetHelpDivider(),
+                    // ProductsSearchCategories(),
+                    // const GetHelpDivider(),
+                    FeatureProductsSection(),
+                    const GetHelpDivider(),
+                    // YouMightFindHelpfulSection(),
+                    const SizedBox(
+                      height: 100,
+                    ),
+                  ],
+                )),
             //Positioned(bottom: 0, left: 0, right: 0, child: NextBottomBar())
           ],
         ));
@@ -276,7 +280,7 @@ class ProductsCategories extends StatelessWidget {
 }
 
 class ProductsBannerCarousel extends StatefulWidget {
-  ProductsBannerCarousel({super.key});
+  const ProductsBannerCarousel({super.key});
 
   @override
   State<ProductsBannerCarousel> createState() => _ProductsBannerCarouselState();
@@ -303,9 +307,34 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
           CarouselSlider(
             items: productsHomeCarouselController.homeCarouselBanners
                 .map(
-                  (e) => ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(e.bannerImage ?? '')),
+                  (e) => InkWell(
+                    onTap: () {
+                      if (e.routeName == "productcategory") {
+                        Navigator.pushNamed(context, AppRoutes.productList,
+                            arguments: {
+                              "itemName": e.bannerName,
+                              "id": e.routeKey
+                            });
+                      }
+                      if (e.routeName == "product") {
+                        Navigator.of(context).pushNamed(
+                            AppRoutes.productDetailScreen,
+                            arguments: {
+                              "id": e.routeKey,
+                            });
+                      }
+                      if (e.routeName == "subcategory") {
+                        Navigator.pushNamed(context, AppRoutes.productList,
+                            arguments: {
+                              "itemName": e.bannerName,
+                              "subCat": e.routeKey
+                            });
+                      }
+                    },
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(e.bannerImage ?? '')),
+                  ),
                 )
                 .toList(),
             carouselController: buttonCarouselController,
@@ -329,7 +358,6 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
             mainAxisAlignment: MainAxisAlignment.center,
             children:
                 productsHomeCarouselController.homeCarouselBanners.map((e) {
-              print(" $pageIndex  ${imageArray.indexOf(e)}");
               return Container(
                 margin: const EdgeInsets.all(2),
                 height: pageIndex ==
@@ -447,7 +475,7 @@ class FeatureProductsSection extends StatelessWidget {
       children: [
         GetHelpCategory(
           title: "Featured Products",
-          onPressed: () {},
+          //onPressed: () {},
         ),
         Obx(() {
           return featureProductsController.isLoading.value

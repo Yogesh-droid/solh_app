@@ -13,7 +13,6 @@ import 'package:solh/ui/screens/products/features/product_detail/ui/views/widget
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
-import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
@@ -295,14 +294,6 @@ class GetProductStatsAndImage extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            'MRP',
-                            style: SolhTextStyles.QS_big_body.copyWith(
-                                color: SolhColors.grey_2),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
                             '${productDetailsModel.product!.currency} ${productDetailsModel.product!.price} ',
                             style: SolhTextStyles.QS_big_body.copyWith(
                                 color: SolhColors.dark_grey,
@@ -322,11 +313,11 @@ class GetProductStatsAndImage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Mfr: Dabar Pharmaceuticals India Pvt Ltd',
+                    productDetailsModel.product!.skuOrIsbn ?? '',
                     style: SolhTextStyles.QS_caption,
                   ),
                 ],
@@ -409,13 +400,13 @@ class AddToCartBuyNowButton extends StatelessWidget {
                     .productDetail.value.product!.inCartCount ??
                 0,
           ),
-          SolhGreenMiniButton(
-            backgroundColor: SolhColors.primaryRed,
-            child: Text(
-              'Buy Now',
-              style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
-            ),
-          )
+          // SolhGreenMiniButton(
+          //   backgroundColor: SolhColors.primaryRed,
+          //   child: Text(
+          //     'Buy Now',
+          //     style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+          //   ),
+          // )
         ],
       ),
     );
