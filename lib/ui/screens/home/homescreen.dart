@@ -546,7 +546,7 @@ class _HomePageState extends State<HomePage> {
                 ? const AlliedCarousel()
                 : const SizedBox()),
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           Obx(
             () => Container(
               color: profileController.orgColor3.value.isNotEmpty
@@ -1643,35 +1643,48 @@ class _HomePageState extends State<HomePage> {
         : Column(
             children: [
               Padding(
-                padding: EdgeInsets.all(4.0.w),
-                child: Row(
-                  children: [
-                    Text(
-                      'Self Assessment'.tr,
-                      style: SolhTextStyles.QS_body_semi_1,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          constraints: BoxConstraints(maxHeight: 70.h),
-                          isScrollControlled: true,
-                          context: context,
-                          enableDrag: true,
-                          isDismissible: true,
-                          builder: (context) {
-                            return showSelfAssessmentDisclaimer(context);
-                          },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.info,
-                        size: 15,
-                        color: SolhColors.grey,
+                  padding: EdgeInsets.all(4.0.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Self Assessment'.tr,
+                            style: SolhTextStyles.QS_body_semi_1,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                constraints: BoxConstraints(maxHeight: 70.h),
+                                isScrollControlled: true,
+                                context: context,
+                                enableDrag: true,
+                                isDismissible: true,
+                                builder: (context) {
+                                  return showSelfAssessmentDisclaimer(context);
+                                },
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.info,
+                              size: 15,
+                              color: SolhColors.grey,
+                            ),
+                          )
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      InkWell(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(AppRoutes.psychologyTest),
+                        child: Text(
+                          "View all",
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primary_green),
+                        ),
+                      ),
+                    ],
+                  )),
               SizedBox(
                 height: 180,
                 child: ListView(
