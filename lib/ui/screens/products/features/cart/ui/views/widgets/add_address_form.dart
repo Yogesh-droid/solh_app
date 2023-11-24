@@ -13,8 +13,10 @@ import '../../../../../../../../widgets_constants/constants/textstyles.dart';
 import '../../../data/models/address_model.dart';
 
 class AddAddressForm extends StatefulWidget {
-  const AddAddressForm({super.key, this.addressList});
+  const AddAddressForm(
+      {super.key, this.addressList, required this.isAddingBilling});
   final AddressList? addressList;
+  final bool isAddingBilling;
 
   @override
   State<AddAddressForm> createState() => _AddAddressFormState();
@@ -137,7 +139,7 @@ class _AddAddressFormState extends State<AddAddressForm> {
                   label: "Landmark",
                   onFieldSubmitted: (value) => _fullNameNode.requestFocus(),
                   focusNode: _landMarkNode),
-              GetHelpDivider(),
+              const GetHelpDivider(),
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text('Contact Person',
@@ -171,10 +173,76 @@ class _AddAddressFormState extends State<AddAddressForm> {
                   child: SolhGreenButton(
                     height: 48,
                     width: MediaQuery.of(context).size.width,
+                    onPressed: widget.isAddingBilling
+                        ? () {
+                            if (_formKey.currentState!.validate()) {
+                              addressController.selectedBillingAddress.value =
+                                  AddressList(
+                                      buildingName: _houseNameController.text,
+                                      city: _cityController.text,
+                                      fullName: _fullNameController.text,
+                                      landmark: _landMarkController.text,
+                                      phoneNumber: _mobileController.text,
+                                      postalCode: _pinController.text,
+                                      state: _stateController.text,
+                                      street: _roadNameController.text);
+                              Navigator.pop(context);
+                            }
+                          }
+                        : widget.addressList != null
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await editAddressController.editAddress(
+                                      addAddressReqModel: AddAddressReqModel(
+                                          buildingName:
+                                              _houseNameController.text,
+                                          city: _cityController.text,
+                                          fullName: _fullNameController.text,
+                                          isDefault: "true",
+                                          landmark: _landMarkController.text,
+                                          phoneNumber: _mobileController.text,
+                                          postalCode: _pinController.text,
+                                          state: _stateController.text,
+                                          street: _roadNameController.text),
+                                      id: widget.addressList!.id!);
+                                  if (editAddressController
+                                      .editAddressErr.value.isEmpty) {
+                                    Utility.showToast(editAddressController
+                                        .editAddressSuccessMessage.value);
+                                  }
+                                  addressController.getAddress();
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pop(context);
+                                }
+                              }
+                            : () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await addAddressController.addAddress(
+                                      AddAddressReqModel(
+                                          buildingName:
+                                              _houseNameController.text,
+                                          city: _cityController.text,
+                                          fullName: _fullNameController.text,
+                                          isDefault: "true",
+                                          landmark: _landMarkController.text,
+                                          phoneNumber: _mobileController.text,
+                                          postalCode: _pinController.text,
+                                          state: _stateController.text,
+                                          street: _roadNameController.text));
+                                  if (addAddressController
+                                      .addAddressErr.value.isEmpty) {
+                                    Utility.showToast(addAddressController
+                                        .successMessage.value);
+                                  }
+                                  addressController.getAddress();
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pop(context);
+                                }
+                              },
                     child: Obx(() =>
                         addAddressController.isAddingAddress.value ||
                                 editAddressController.editAddressLoading.value
-                            ? SolhGradientLoader(
+                            ? const SolhGradientLoader(
                                 radius: 15,
                                 strokeWidth: 3,
                               )
@@ -183,54 +251,8 @@ class _AddAddressFormState extends State<AddAddressForm> {
                                 style: SolhTextStyles.CTA
                                     .copyWith(color: Colors.white),
                               )),
-                    onPressed: widget.addressList != null
-                        ? () async {
-                            if (_formKey.currentState!.validate()) {
-                              await editAddressController.editAddress(
-                                  addAddressReqModel: AddAddressReqModel(
-                                      buildingName: _houseNameController.text,
-                                      city: _cityController.text,
-                                      fullName: _fullNameController.text,
-                                      isDefault: "true",
-                                      landmark: _landMarkController.text,
-                                      phoneNumber: _mobileController.text,
-                                      postalCode: _pinController.text,
-                                      state: _stateController.text,
-                                      street: _roadNameController.text),
-                                  id: widget.addressList!.id!);
-                              if (editAddressController
-                                  .editAddressErr.value.isEmpty) {
-                                Utility.showToast(editAddressController
-                                    .editAddressSuccessMessage.value);
-                              }
-                              addressController.getAddress();
-                              Navigator.pop(context);
-                            }
-                          }
-                        : () async {
-                            if (_formKey.currentState!.validate()) {
-                              await addAddressController.addAddress(
-                                  AddAddressReqModel(
-                                      buildingName: _houseNameController.text,
-                                      city: _cityController.text,
-                                      fullName: _fullNameController.text,
-                                      isDefault: "true",
-                                      landmark: _landMarkController.text,
-                                      phoneNumber: _mobileController.text,
-                                      postalCode: _pinController.text,
-                                      state: _stateController.text,
-                                      street: _roadNameController.text));
-                              if (addAddressController
-                                  .addAddressErr.value.isEmpty) {
-                                Utility.showToast(
-                                    addAddressController.successMessage.value);
-                              }
-                              addressController.getAddress();
-                              Navigator.pop(context);
-                            }
-                          },
                   )),
-              SizedBox(height: 50)
+              const SizedBox(height: 50)
             ],
           ),
         ));

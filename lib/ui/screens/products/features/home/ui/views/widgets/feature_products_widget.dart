@@ -177,13 +177,12 @@ class ProductsCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 4,
-            ),
+            const Spacer(),
             AddRemoveProductButtoon(
               productId: sId ?? '',
               productsInCart: inCartItems ?? 0,
-            )
+            ),
+            const SizedBox(height: 10)
           ],
         ),
       ),

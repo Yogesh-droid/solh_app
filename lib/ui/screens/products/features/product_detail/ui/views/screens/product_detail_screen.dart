@@ -93,58 +93,62 @@ class ReviewsSection extends StatelessWidget {
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GetHelpCategory(title: 'Cusomer reviews'),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
+    return productDetailsModel.product!.overAllRating! < 1
+        ? const SizedBox.shrink()
+        : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              ProductStarWidget(
-                  rating:
-                      productDetailsModel.product!.overAllRating!.toDouble()),
-              Text(
-                '${productDetailsModel.totalReview} global rating',
-                style: SolhTextStyles.QS_body_2,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              ListView.builder(
-                itemCount: productDetailsModel.reviews!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return ReviewCard(
-                    imageUrl: productDetailsModel
-                        .reviews![index].userId!.profilePicture,
-                    name:
-                        productDetailsModel.reviews![index].userId!.name ?? '',
-                    rating:
-                        productDetailsModel.reviews![index].rating!.toDouble(),
-                    review: productDetailsModel.reviews![index].review,
-                    reviewedAt: productDetailsModel.reviews![index].createdAt,
-                  );
-                },
-              ),
-              productDetailsModel.reviews!.length < 3
-                  ? Container()
-                  : Text(
-                      'View all 20 reviews ',
-                      style: SolhTextStyles.QS_body_2.copyWith(
-                          color: SolhColors.primary_green),
+              GetHelpCategory(title: 'Customer Reviews'),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProductStarWidget(
+                        rating: productDetailsModel.product!.overAllRating!
+                            .toDouble()),
+                    Text(
+                      '${productDetailsModel.totalReview} global rating',
+                      style: SolhTextStyles.QS_body_2,
                     ),
-              const SizedBox(
-                height: 15,
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ListView.builder(
+                      itemCount: productDetailsModel.reviews!.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return ReviewCard(
+                          imageUrl: productDetailsModel
+                              .reviews![index].userId!.profilePicture,
+                          name: productDetailsModel
+                                  .reviews![index].userId!.name ??
+                              '',
+                          rating: productDetailsModel.reviews![index].rating!
+                              .toDouble(),
+                          review: productDetailsModel.reviews![index].review,
+                          reviewedAt:
+                              productDetailsModel.reviews![index].createdAt,
+                        );
+                      },
+                    ),
+                    productDetailsModel.reviews!.length < 3
+                        ? Container()
+                        : Text(
+                            'View all 20 reviews ',
+                            style: SolhTextStyles.QS_body_2.copyWith(
+                                color: SolhColors.primary_green),
+                          ),
+                    const SizedBox(
+                      height: 15,
+                    )
+                  ],
+                ),
               )
             ],
-          ),
-        )
-      ],
-    );
+          );
   }
 }
 
@@ -153,61 +157,66 @@ class RelatedProductsSection extends StatelessWidget {
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        GetHelpCategory(
-          title: "Related products",
-          onPressed: () {},
-        ),
-        SizedBox(
-          height: 380,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            shrinkWrap: true,
-            itemCount: productDetailsModel.product!.relatedProducts!.length,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) {
-              return const SizedBox(
-                width: 10,
-              );
-            },
-            itemBuilder: (context, index) {
-              return ProductsCard(
-                afterDiscountPrice: productDetailsModel
-                    .product!.relatedProducts![index].afterDiscountPrice,
-                description: productDetailsModel
-                    .product!.relatedProducts![index].description,
-                price:
-                    productDetailsModel.product!.relatedProducts![index].price,
-                productName: productDetailsModel
-                    .product!.relatedProducts![index].productName,
-                productImage: productDetailsModel
-                    .product!.relatedProducts![index].productImage,
-                productQuantity: productDetailsModel
-                    .product!.relatedProducts![index].productQuantity,
-                sId: productDetailsModel.product!.relatedProducts![index].sId,
-                stockAvailable: productDetailsModel
-                    .product!.relatedProducts![index].stockAvailable,
-                inCartItems: productDetailsModel
-                    .product!.relatedProducts![index].inCartCount,
-                isInWishlist: productDetailsModel
-                        .product!.relatedProducts![index].isWishlisted ??
-                    false,
-                onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(AppRoutes.productDetailScreen, arguments: {
-                    "id": productDetailsModel
-                        .product!.relatedProducts![index].sId,
-                    'key': ObjectKey(
-                        "${productDetailsModel.product!.relatedProducts![index].sId}")
-                  });
-                },
-              );
-            },
-          ),
-        )
-      ],
-    );
+    return productDetailsModel.product!.relatedProducts!.isEmpty
+        ? const SizedBox.shrink()
+        : Column(
+            children: [
+              GetHelpCategory(
+                title: "Related Products",
+                // onPressed: () {},
+              ),
+              SizedBox(
+                height: 380,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  shrinkWrap: true,
+                  itemCount:
+                      productDetailsModel.product!.relatedProducts!.length,
+                  scrollDirection: Axis.horizontal,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                  itemBuilder: (context, index) {
+                    return ProductsCard(
+                      afterDiscountPrice: productDetailsModel
+                          .product!.relatedProducts![index].afterDiscountPrice,
+                      description: productDetailsModel
+                          .product!.relatedProducts![index].description,
+                      price: productDetailsModel
+                          .product!.relatedProducts![index].price,
+                      productName: productDetailsModel
+                          .product!.relatedProducts![index].productName,
+                      productImage: productDetailsModel
+                          .product!.relatedProducts![index].productImage,
+                      productQuantity: productDetailsModel
+                          .product!.relatedProducts![index].productQuantity,
+                      sId: productDetailsModel
+                          .product!.relatedProducts![index].sId,
+                      stockAvailable: productDetailsModel
+                          .product!.relatedProducts![index].stockAvailable,
+                      inCartItems: productDetailsModel
+                          .product!.relatedProducts![index].inCartCount,
+                      isInWishlist: productDetailsModel
+                              .product!.relatedProducts![index].isWishlisted ??
+                          false,
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                            AppRoutes.productDetailScreen,
+                            arguments: {
+                              "id": productDetailsModel
+                                  .product!.relatedProducts![index].sId,
+                              'key': ObjectKey(
+                                  "${productDetailsModel.product!.relatedProducts![index].sId}")
+                            });
+                      },
+                    );
+                  },
+                ),
+              )
+            ],
+          );
   }
 }
 
