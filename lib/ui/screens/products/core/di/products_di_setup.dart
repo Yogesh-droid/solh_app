@@ -128,4 +128,11 @@ void productControllerSetup() {
   Get.put(OrderDetailUsecase(orderDetailRepo: Get.find<OrderDetailRepo>()));
   Get.put(OrderDetailController(
       orderDetailUsecase: Get.find<OrderDetailUsecase>()));
+
+  // Get Product Sub cat
+  Get.put<ProductSubCatRepo>(ProductSubCatRepoImpl());
+  Get.put(
+      ProductSubCatUsecase(productSubCatRepo: Get.find<ProductSubCatRepo>()));
+  Get.put(ProductSubCatController(
+      productSubCatUsecase: Get.find<ProductSubCatUsecase>()));
 }

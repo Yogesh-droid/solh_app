@@ -212,7 +212,7 @@ class PaymentSummarySection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Order total',
+                  'Order Total',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey),
                 ),
@@ -227,7 +227,7 @@ class PaymentSummarySection extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Items discount',
+                Text('Items Discount',
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey)),
                 Text(

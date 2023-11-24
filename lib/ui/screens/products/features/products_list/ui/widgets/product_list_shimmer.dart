@@ -7,6 +7,7 @@ class ProductListShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
       children: List.generate(
           10,
           (index) => SizedBox(

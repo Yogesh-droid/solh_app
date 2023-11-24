@@ -184,13 +184,12 @@ class ProductsCard extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 4,
-            ),
+            const Spacer(),
             AddRemoveProductButtoon(
               productId: sId ?? '',
               productsInCart: inCartItems ?? 0,
-            )
+            ),
+            const SizedBox(height: 10)
           ],
         ),
       ),
@@ -199,7 +198,7 @@ class ProductsCard extends StatelessWidget {
 }
 
 class AddRemoveProductButtoon extends StatefulWidget {
-  AddRemoveProductButtoon(
+  const AddRemoveProductButtoon(
       {super.key, required this.productId, required this.productsInCart});
 
   final String productId;
@@ -218,16 +217,13 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
-    print("${widget.productId} $quantity");
-    await addToCartController.addToCart(
+    addToCartController.addToCart(
         productId: widget.productId, quantity: quantity);
     await cartController.getCart();
   }
 
   @override
   void initState() {
-    print("productsInCart" + widget.productsInCart.toString());
-    // TODO: implement initState
     poductNumber = ValueNotifier(widget.productsInCart);
 
     super.initState();
@@ -244,7 +240,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                   children: [
                     SolhGreenButton(
                       height: 35,
-                      width: 100,
+                      // width: 100,
                       onPressed: () {
                         poductNumber.value++;
                         onValueChange(poductNumber.value);
@@ -257,54 +253,51 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                     ),
                   ],
                 )
-              : Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          poductNumber.value > 0 ? poductNumber.value-- : null;
-                          onValueChange(poductNumber.value);
-                        },
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          color: SolhColors.primary_green,
-                          child: const Center(
-                            child: Icon(Icons.remove, color: SolhColors.white),
-                          ),
-                        ),
-                      ),
-                      Container(
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        poductNumber.value > 0 ? poductNumber.value-- : null;
+                        onValueChange(poductNumber.value);
+                      },
+                      child: Container(
                         height: 30,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: SolhColors.primary_green)),
-                        child: Center(
-                          child: Text(
-                            "$value",
-                            style: SolhTextStyles.CTA
-                                .copyWith(color: SolhColors.primary_green),
-                          ),
+                        width: 30,
+                        color: SolhColors.primary_green,
+                        child: const Center(
+                          child: Icon(Icons.remove, color: SolhColors.white),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          poductNumber.value++;
-                          onValueChange(poductNumber.value);
-                        },
-                        child: Container(
-                          height: 30,
-                          width: 30,
-                          color: SolhColors.primary_green,
-                          child: const Center(
-                            child: Icon(Icons.add, color: SolhColors.white),
-                          ),
+                    ),
+                    Container(
+                      height: 30,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: SolhColors.primary_green)),
+                      child: Center(
+                        child: Text(
+                          "$value",
+                          style: SolhTextStyles.CTA
+                              .copyWith(color: SolhColors.primary_green),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        poductNumber.value++;
+                        onValueChange(poductNumber.value);
+                      },
+                      child: Container(
+                        height: 30,
+                        width: 30,
+                        color: SolhColors.primary_green,
+                        child: const Center(
+                          child: Icon(Icons.add, color: SolhColors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
         });
   }

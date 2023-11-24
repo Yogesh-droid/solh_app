@@ -113,32 +113,69 @@ class _CartAddressState extends State<CartAddress> {
                   : const SizedBox.shrink(),
               const GetHelpDivider(),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ListTile(
+                  if (_addressController.selectedAddress !=
+                      _addressController.selectedBillingAddress)
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text("Billing Address",
+                                style: GoogleFonts.quicksand(
+                                    textStyle: SolhTextStyles.QS_body_semi_1)),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            child: TextButton(
+                                onPressed: _addressController
+                                            .selectedBillingAddress
+                                            .value
+                                            .buildingName !=
+                                        null
+                                    ? () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.addAddressPage,
+                                            arguments: {
+                                              "addressList": _addressController
+                                                  .selectedBillingAddress.value,
+                                              'title': 'Add Billing Address'
+                                            });
+                                      }
+                                    : () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.addAddressPage,
+                                            arguments: {
+                                              "addressList": null,
+                                              'title': 'Add Billing Address'
+                                            });
+                                      },
+                                child: Text("Change Address",
+                                    style: GoogleFonts.quicksand(
+                                        textStyle: SolhTextStyles.QS_body_2_bold
+                                            .copyWith(
+                                                color: SolhColors
+                                                    .primary_green)))),
+                          )
+                        ]),
+                  if (_addressController.selectedAddress ==
+                      _addressController.selectedBillingAddress)
+                    ListTile(
                       onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (_) => const AddressListWidget(
-                                wantToChangeBilling: true),
-                            showDragHandle: true);
+                        Navigator.pushNamed(context, AppRoutes.addAddressPage,
+                            arguments: {
+                              "addressList": null,
+                              'title': 'Add Billing Address'
+                            });
                       },
-                      title: Text("Same as shipping address!",
+                      title: Text("Billing  to a different address?",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
-                      leading: _addressController.selectedAddress !=
-                              _addressController.selectedBillingAddress
-                          ? InkWell(
-                              onTap: () => _addressController
-                                      .selectedBillingAddress.value =
-                                  _addressController.selectedAddress.value,
-                              child: const Icon(Icons.check_box_outline_blank,
-                                  color: SolhColors.primary_green),
-                            )
-                          : const Icon(
-                              Icons.check_box_rounded,
-                              color: SolhColors.primary_green,
-                            )),
-                  const SizedBox(height: 10),
+                      trailing:
+                          Radio(value: 1, groupValue: 0, onChanged: (_) {}),
+                    ),
 
                   // If Billing address is different than Shipping then Show it else hide it
 
