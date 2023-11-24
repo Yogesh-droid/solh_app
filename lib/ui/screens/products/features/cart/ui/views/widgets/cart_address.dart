@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/routes/routes.dart';
+import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/address_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/address_list_widget.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -37,7 +38,7 @@ class _CartAddressState extends State<CartAddress> {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Delivery Address",
+                      Text("Shipping Address",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
                       TextButton(
@@ -46,7 +47,8 @@ class _CartAddressState extends State<CartAddress> {
                               ? () {
                                   showModalBottomSheet(
                                       context: context,
-                                      builder: (_) => AddressListWidget(),
+                                      builder: (_) => const AddressListWidget(
+                                          wantToChangeBilling: false),
                                       showDragHandle: true);
                                 }
                               : () {
@@ -82,7 +84,7 @@ class _CartAddressState extends State<CartAddress> {
                                         .selectedAddress.value.fullName ??
                                     '',
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
                                         color: Colors.black))),
@@ -90,7 +92,7 @@ class _CartAddressState extends State<CartAddress> {
                             Text(
                                 "${_addressController.selectedAddress.value.buildingName} ${_addressController.selectedAddress.value.street}\n${_addressController.selectedAddress.value.landmark} ${_addressController.selectedAddress.value.city} ${_addressController.selectedAddress.value.state} ${_addressController.selectedAddress.value.postalCode}",
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: SolhColors.dark_grey))),
@@ -100,7 +102,7 @@ class _CartAddressState extends State<CartAddress> {
                                         .selectedAddress.value.phoneNumber ??
                                     '',
                                 style: GoogleFonts.signika(
-                                    textStyle: TextStyle(
+                                    textStyle: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         color: SolhColors.dark_grey)))
@@ -108,10 +110,90 @@ class _CartAddressState extends State<CartAddress> {
                         ),
                       ),
                     )
-                  : SizedBox.shrink(),
+                  : const SizedBox.shrink(),
+              const GetHelpDivider(),
+              Column(
+                children: [
+                  ListTile(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (_) => const AddressListWidget(
+                                wantToChangeBilling: true),
+                            showDragHandle: true);
+                      },
+                      title: Text("Same as shipping address!",
+                          style: GoogleFonts.quicksand(
+                              textStyle: SolhTextStyles.QS_body_semi_1)),
+                      leading: _addressController.selectedAddress !=
+                              _addressController.selectedBillingAddress
+                          ? InkWell(
+                              onTap: () => _addressController
+                                      .selectedBillingAddress.value =
+                                  _addressController.selectedAddress.value,
+                              child: const Icon(Icons.check_box_outline_blank,
+                                  color: SolhColors.primary_green),
+                            )
+                          : const Icon(
+                              Icons.check_box_rounded,
+                              color: SolhColors.primary_green,
+                            )),
+                  const SizedBox(height: 10),
+
+                  // If Billing address is different than Shipping then Show it else hide it
+
+                  if (_addressController.selectedAddress !=
+                      _addressController.selectedBillingAddress)
+                    _addressController
+                            .addressEntity.value.addressList!.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: SolhColors.grey_2),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      _addressController.selectedBillingAddress
+                                              .value.fullName ??
+                                          '',
+                                      style: GoogleFonts.signika(
+                                          textStyle: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.black))),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                      "${_addressController.selectedBillingAddress.value.buildingName} ${_addressController.selectedBillingAddress.value.street}\n${_addressController.selectedBillingAddress.value.landmark} ${_addressController.selectedBillingAddress.value.city} ${_addressController.selectedBillingAddress.value.state} ${_addressController.selectedBillingAddress.value.postalCode}",
+                                      style: GoogleFonts.signika(
+                                          textStyle: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: SolhColors.dark_grey))),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                      _addressController.selectedBillingAddress
+                                              .value.phoneNumber ??
+                                          '',
+                                      style: GoogleFonts.signika(
+                                          textStyle: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                              color: SolhColors.dark_grey)))
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                ],
+              )
             ],
           )
-        : SolhAddressShimmer());
+        : const SolhAddressShimmer());
   }
 
   Future<void> getAddress() async {

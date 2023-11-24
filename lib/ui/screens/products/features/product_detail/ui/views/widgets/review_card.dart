@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:solh/ui/screens/psychology-test/test_history_details.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/image_container.dart';

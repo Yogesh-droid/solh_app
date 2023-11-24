@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/cart_count_btn.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -19,8 +20,10 @@ class ItemWidget extends StatelessWidget {
       this.inCartNo,
       this.isWishListed,
       required this.onIncreaseCartCount,
-      required this.onDecreaseCartCount});
+      required this.onDecreaseCartCount,
+      this.descrition});
 
+  final String? descrition;
   final String image;
   final String? productName;
   final String? quantity;
@@ -36,8 +39,8 @@ class ItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 180,
-        padding: EdgeInsets.all(12),
+        height: 195,
+        padding: const EdgeInsets.all(12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,7 +55,7 @@ class ItemWidget extends StatelessWidget {
                     return Image.asset("assets/icons/app-bar/no-image.png");
                   },
                 )),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
                 flex: 2,
                 child: Column(
@@ -64,24 +67,29 @@ class ItemWidget extends StatelessWidget {
                               fontFamily: GoogleFonts.quicksand().fontFamily),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 10),
-                      Spacer(),
+                      Html(data: descrition, style: {
+                        "p": Style(
+                          maxLines: 1,
+                          textOverflow: TextOverflow.ellipsis,
+                          fontSize: FontSize(12),
+                        )
+                      }),
+                      const Spacer(),
                       Row(
                         children: [
                           discountedPrice! > 0
                               ? PriceContainer(
                                   discountedPrice: discountedPrice ?? 0,
                                   currency: currency)
-                              : SizedBox.shrink(),
-                          SizedBox(width: 10),
+                              : const SizedBox.shrink(),
+                          const SizedBox(width: 10),
                           discountedPrice! > 0
                               ? MrpContainer(
-                                  mrp: itemPrice ?? 0,
-                                )
-                              : SizedBox.shrink(),
+                                  mrp: itemPrice ?? 0, currency: currency)
+                              : const SizedBox.shrink(),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       inCartNo != null && inCartNo! > 0
                           ? CartCountBtn(
                               decreaseCartCount: onDecreaseCartCount,
@@ -113,30 +121,31 @@ class PriceContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: SolhColors.greenShade4),
-      child: Text("${currency ?? "Rs."} $discountedPrice",
+      child: Text("$currency $discountedPrice",
           style: GoogleFonts.quicksand(
               textStyle: SolhTextStyles.QS_caption_2_bold.copyWith(
-                  color: Color(0xFF666666), fontSize: 12))),
+                  color: const Color(0xFF666666), fontSize: 12))),
     );
   }
 }
 
 class MrpContainer extends StatelessWidget {
-  const MrpContainer({super.key, required this.mrp});
+  const MrpContainer({super.key, required this.mrp, this.currency});
   final int mrp;
+  final String? currency;
 
   @override
   Widget build(BuildContext context) {
     return Row(children: [
-      Text("MPR",
+      Text("$currency",
           style: GoogleFonts.quicksand(
               textStyle:
                   SolhTextStyles.QS_cap_2.copyWith(color: SolhColors.Grey_1))),
-      SizedBox(width: 5),
+      const SizedBox(width: 5),
       Text(
         mrp.toString(),
         style: GoogleFonts.quicksand(

@@ -9,7 +9,6 @@ import 'package:solh/ui/screens/products/features/cart/ui/controllers/edit_addre
 import 'package:solh/ui/screens/products/features/cart/ui/views/widgets/address_text_field.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
-
 import '../../../../../../../../widgets_constants/constants/textstyles.dart';
 import '../../../data/models/address_model.dart';
 
@@ -22,6 +21,7 @@ class AddAddressForm extends StatefulWidget {
 }
 
 class _AddAddressFormState extends State<AddAddressForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _houseNameController = TextEditingController();
   final TextEditingController _roadNameController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
@@ -61,114 +61,178 @@ class _AddAddressFormState extends State<AddAddressForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+        key: _formKey,
         child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Address',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: Colors.black))),
-          AddressTextField(
-              textEditingController: _houseNameController,
-              label: "House no. / Building Name",
-              focusNode: _houseNameNode,
-              initialValue: "State"),
-          AddressTextField(
-              textEditingController: _roadNameController,
-              label: "Road Name / Area / Colony",
-              focusNode: _roadNameNode),
-          AddressTextField(
-              textEditingController: _pinController,
-              label: "Pincode",
-              focusNode: _pinNode),
-          AddressTextField(
-              textEditingController: _cityController,
-              label: "City",
-              focusNode: _cityNode),
-          AddressTextField(
-              textEditingController: _stateController,
-              label: "State",
-              focusNode: _stateNode),
-          AddressTextField(
-              textEditingController: _landMarkController,
-              label: "Landmark",
-              focusNode: _landMarkNode),
-          GetHelpDivider(),
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Contact Person',
-                  style: SolhTextStyles.QS_body_semi_1.copyWith(
-                      color: Colors.black))),
-          AddressTextField(
-              textEditingController: _fullNameController,
-              label: "Full Name",
-              focusNode: _fullNameNode),
-          AddressTextField(
-              textEditingController: _mobileController,
-              label: "Mobile Number",
-              focusNode: _mobileNode),
-          Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: SolhGreenButton(
-                height: 48,
-                width: MediaQuery.of(context).size.width,
-                child: Obx(() => addAddressController.isAddingAddress.value ||
-                        editAddressController.editAddressLoading.value
-                    ? SolhGradientLoader(
-                        radius: 15,
-                        strokeWidth: 3,
-                      )
-                    : Text(
-                        "Save and Continue",
-                        style: SolhTextStyles.CTA.copyWith(color: Colors.white),
-                      )),
-                onPressed: widget.addressList != null
-                    ? () async {
-                        await editAddressController.editAddress(
-                            addAddressReqModel: AddAddressReqModel(
-                                buildingName: _houseNameController.text,
-                                city: _cityController.text,
-                                fullName: _fullNameController.text,
-                                isDefault: "true",
-                                landmark: _landMarkController.text,
-                                phoneNumber: _mobileController.text,
-                                postalCode: _pinController.text,
-                                state: _stateController.text,
-                                street: _roadNameController.text),
-                            id: widget.addressList!.id!);
-                        if (editAddressController
-                            .editAddressErr.value.isEmpty) {
-                          Utility.showToast(editAddressController
-                              .editAddressSuccessMessage.value);
-                        }
-                        addressController.getAddress();
-                        Navigator.pop(context);
-                      }
-                    : () async {
-                        await addAddressController.addAddress(
-                            AddAddressReqModel(
-                                buildingName: _houseNameController.text,
-                                city: _cityController.text,
-                                fullName: _fullNameController.text,
-                                isDefault: "true",
-                                landmark: _landMarkController.text,
-                                phoneNumber: _mobileController.text,
-                                postalCode: _pinController.text,
-                                state: _stateController.text,
-                                street: _roadNameController.text));
-                        if (addAddressController.addAddressErr.value.isEmpty) {
-                          Utility.showToast(
-                              addAddressController.successMessage.value);
-                        }
-                        addressController.getAddress();
-                        Navigator.pop(context);
-                      },
-              )),
-          SizedBox(height: 50)
-        ],
-      ),
-    ));
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Address',
+                      style: SolhTextStyles.QS_body_semi_1.copyWith(
+                          color: Colors.black))),
+              AddressTextField(
+                  textEditingController: _houseNameController,
+                  label: "House no. / Building Name *",
+                  focusNode: _houseNameNode,
+                  onFieldSubmitted: (value) => _roadNameNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  initialValue: "State"),
+              AddressTextField(
+                  textEditingController: _roadNameController,
+                  label: "Road Name / Area / Colony*",
+                  onFieldSubmitted: (value) => _pinNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _roadNameNode),
+              AddressTextField(
+                  textEditingController: _pinController,
+                  label: "Pincode *",
+                  onFieldSubmitted: (value) => _cityNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _pinNode),
+              AddressTextField(
+                  textEditingController: _cityController,
+                  label: "City *",
+                  onFieldSubmitted: (value) => _stateNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _cityNode),
+              AddressTextField(
+                  textEditingController: _stateController,
+                  label: "State *",
+                  onFieldSubmitted: (value) => _landMarkNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _stateNode),
+              AddressTextField(
+                  textEditingController: _landMarkController,
+                  label: "Landmark",
+                  onFieldSubmitted: (value) => _fullNameNode.requestFocus(),
+                  focusNode: _landMarkNode),
+              GetHelpDivider(),
+              Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Contact Person',
+                      style: SolhTextStyles.QS_body_semi_1.copyWith(
+                          color: Colors.black))),
+              AddressTextField(
+                  textEditingController: _fullNameController,
+                  label: "Full Name *",
+                  onFieldSubmitted: (value) => _mobileNode.requestFocus(),
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _fullNameNode),
+              AddressTextField(
+                  textEditingController: _mobileController,
+                  label: "Mobile  *",
+                  onValidate: (value) {
+                    if (value!.isEmpty) {
+                      return "Required";
+                    } else {
+                      return null;
+                    }
+                  },
+                  focusNode: _mobileNode),
+              Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: SolhGreenButton(
+                    height: 48,
+                    width: MediaQuery.of(context).size.width,
+                    child: Obx(() =>
+                        addAddressController.isAddingAddress.value ||
+                                editAddressController.editAddressLoading.value
+                            ? SolhGradientLoader(
+                                radius: 15,
+                                strokeWidth: 3,
+                              )
+                            : Text(
+                                "Save and Continue",
+                                style: SolhTextStyles.CTA
+                                    .copyWith(color: Colors.white),
+                              )),
+                    onPressed: widget.addressList != null
+                        ? () async {
+                            if (_formKey.currentState!.validate()) {
+                              await editAddressController.editAddress(
+                                  addAddressReqModel: AddAddressReqModel(
+                                      buildingName: _houseNameController.text,
+                                      city: _cityController.text,
+                                      fullName: _fullNameController.text,
+                                      isDefault: "true",
+                                      landmark: _landMarkController.text,
+                                      phoneNumber: _mobileController.text,
+                                      postalCode: _pinController.text,
+                                      state: _stateController.text,
+                                      street: _roadNameController.text),
+                                  id: widget.addressList!.id!);
+                              if (editAddressController
+                                  .editAddressErr.value.isEmpty) {
+                                Utility.showToast(editAddressController
+                                    .editAddressSuccessMessage.value);
+                              }
+                              addressController.getAddress();
+                              Navigator.pop(context);
+                            }
+                          }
+                        : () async {
+                            if (_formKey.currentState!.validate()) {
+                              await addAddressController.addAddress(
+                                  AddAddressReqModel(
+                                      buildingName: _houseNameController.text,
+                                      city: _cityController.text,
+                                      fullName: _fullNameController.text,
+                                      isDefault: "true",
+                                      landmark: _landMarkController.text,
+                                      phoneNumber: _mobileController.text,
+                                      postalCode: _pinController.text,
+                                      state: _stateController.text,
+                                      street: _roadNameController.text));
+                              if (addAddressController
+                                  .addAddressErr.value.isEmpty) {
+                                Utility.showToast(
+                                    addAddressController.successMessage.value);
+                              }
+                              addressController.getAddress();
+                              Navigator.pop(context);
+                            }
+                          },
+                  )),
+              SizedBox(height: 50)
+            ],
+          ),
+        ));
   }
 }

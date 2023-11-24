@@ -89,7 +89,7 @@ class _CommentScreenState extends State<CommentScreen> {
           _journalPageController.journalDetail.value.postedBy != null) {
         _isLoginedUserJournal =
             _journalPageController.journalDetail.value.postedBy!.uid ==
-                FirebaseAuth.instance.currentUser!.uid;
+                profileController.myProfileModel.value.body!.user!.sId;
       }
       journalCommentController.repliedTo.value = '';
       journalCommentController.isReplying.value = false;
@@ -1092,6 +1092,7 @@ class CommentBoxWidget extends StatelessWidget {
 
   Widget getCommentBody(Comments commentModel, BestComment? bestComment,
       BuildContext context, bool? isReply) {
+    final ProfileController profileController = Get.find();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1172,10 +1173,12 @@ class CommentBoxWidget extends StatelessWidget {
                               : SizedBox()
                           : SizedBox(),
                       if (commentModel.user!.uid ==
-                              FirebaseAuth.instance.currentUser!.uid ||
+                              profileController
+                                  .myProfileModel.value.body!.user!.sId ||
                           _journalModel.postedBy != null &&
                               _journalModel.postedBy!.uid ==
-                                  FirebaseAuth.instance.currentUser!.uid)
+                                  profileController
+                                      .myProfileModel.value.body!.user!.sId)
                         CommentMenuButton(
                           makeBestComment: _makeBestComment,
                           commentId: commentModel.sId!,

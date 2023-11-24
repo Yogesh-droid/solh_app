@@ -147,15 +147,19 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
             "country": "6242b1b86fabd390bf0063fc"
           },
           "billingAddress": {
-            "fullName": _addressController.selectedAddress.value.fullName,
-            "phoneNumber": _addressController.selectedAddress.value.phoneNumber,
+            "fullName":
+                _addressController.selectedBillingAddress.value.fullName,
+            "phoneNumber":
+                _addressController.selectedBillingAddress.value.phoneNumber,
             "buildingName":
-                _addressController.selectedAddress.value.buildingName,
-            "street": _addressController.selectedAddress.value.street,
-            "city": _addressController.selectedAddress.value.city,
-            "state": _addressController.selectedAddress.value.state,
-            "postalCode": _addressController.selectedAddress.value.postalCode,
-            "landmark": _addressController.selectedAddress.value.landmark,
+                _addressController.selectedBillingAddress.value.buildingName,
+            "street": _addressController.selectedBillingAddress.value.street,
+            "city": _addressController.selectedBillingAddress.value.city,
+            "state": _addressController.selectedBillingAddress.value.state,
+            "postalCode":
+                _addressController.selectedBillingAddress.value.postalCode,
+            "landmark":
+                _addressController.selectedBillingAddress.value.landmark,
             "country": "6242b1b86fabd390bf0063fc"
           },
           "paymentGateway": "UPI",
@@ -258,9 +262,10 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
             builder: (_) {
               Future.delayed(Duration(seconds: 3), (() {
                 Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    AppRoutes.orderListScreen,
-                    (route) => route.settings.name == AppRoutes.productsHome);
+                    context, AppRoutes.orderListScreen, (route) {
+                  log("This is route ${route.settings.name}");
+                  return route.settings.name == AppRoutes.master;
+                });
               }));
 
               return AlertDialog(

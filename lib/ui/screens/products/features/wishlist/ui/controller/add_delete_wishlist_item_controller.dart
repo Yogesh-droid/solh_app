@@ -17,6 +17,7 @@ class AddDeleteWishlistItemController extends GetxController {
   Future<void> addDeleteWhishlist(Map<String, dynamic> body) async {
     try {
       isLoading.value = true;
+      log(body.toString());
       final ProductDataState dataState =
           await addDeleteWishlistItemUsecase.call(RequestParams(
               url: '${APIConstants.api}/api/product/add-to-wishlist',

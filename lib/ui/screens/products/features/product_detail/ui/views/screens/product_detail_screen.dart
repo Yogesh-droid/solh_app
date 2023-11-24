@@ -12,6 +12,7 @@ import 'package:solh/ui/screens/products/features/product_detail/ui/controller/p
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -43,7 +44,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("screen buid ${widget._id}");
     return Scaffold(
         key: widget.key,
         appBar: GetProductDeatilAppBar(),
@@ -57,14 +57,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     children: [
                       GetProductStatsAndImage(
                           productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       ProductDetails(productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       ReviewsSection(productDetailsModel: productDetailsModel),
-                      GetHelpDivider(),
+                      const GetHelpDivider(),
                       RelatedProductsSection(
                           productDetailsModel: productDetailsModel),
-                      SizedBox(
+                      const SizedBox(
                         height: 90,
                       ),
                     ],
@@ -91,7 +91,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 }
 
 class ReviewsSection extends StatelessWidget {
-  ReviewsSection({super.key, required this.productDetailsModel});
+  const ReviewsSection({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -112,13 +112,13 @@ class ReviewsSection extends StatelessWidget {
                 '${productDetailsModel.totalReview} global rating',
                 style: SolhTextStyles.QS_body_2,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               ListView.builder(
                 itemCount: productDetailsModel.reviews!.length,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return ReviewCard(
                     imageUrl: productDetailsModel
@@ -139,7 +139,7 @@ class ReviewsSection extends StatelessWidget {
                       style: SolhTextStyles.QS_body_2.copyWith(
                           color: SolhColors.primary_green),
                     ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               )
             ],
@@ -151,7 +151,7 @@ class ReviewsSection extends StatelessWidget {
 }
 
 class RelatedProductsSection extends StatelessWidget {
-  RelatedProductsSection({super.key, required this.productDetailsModel});
+  const RelatedProductsSection({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -164,12 +164,12 @@ class RelatedProductsSection extends StatelessWidget {
         SizedBox(
           height: 380,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
             itemCount: productDetailsModel.product!.relatedProducts!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return const SizedBox(
                 width: 10,
               );
             },
@@ -195,6 +195,9 @@ class RelatedProductsSection extends StatelessWidget {
                 isInWishlist: productDetailsModel
                         .product!.relatedProducts![index].isWishlisted ??
                     false,
+                currency: productDetailsModel
+                        .product!.relatedProducts![index].currency ??
+                    '',
                 onPressed: () {
                   Navigator.of(context)
                       .pushNamed(AppRoutes.productDetailScreen, arguments: {
@@ -214,7 +217,7 @@ class RelatedProductsSection extends StatelessWidget {
 }
 
 class GetProductStatsAndImage extends StatelessWidget {
-  GetProductStatsAndImage({super.key, required this.productDetailsModel});
+  const GetProductStatsAndImage({super.key, required this.productDetailsModel});
   // final ProductDetailController productDetailController = Get.find();
   final ProductDetailsModel productDetailsModel;
 
@@ -230,7 +233,7 @@ class GetProductStatsAndImage extends StatelessWidget {
             GetProductImages(productDetailsModel: productDetailsModel)
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Padding(
@@ -242,7 +245,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                 productDetailsModel.product!.productName ?? '',
                 style: SolhTextStyles.QS_body_1_med,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -254,7 +257,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                         productDetailsModel.product!.productQuantity ?? '',
                         style: SolhTextStyles.QS_body_2,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       Row(
@@ -279,7 +282,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
@@ -290,23 +293,23 @@ class GetProductStatsAndImage extends StatelessWidget {
                       Text(
                           '${productDetailsModel.product!.currency} ${productDetailsModel.product!.afterDiscountPrice} ',
                           style: SolhTextStyles.QS_big_body),
-                      SizedBox(
-                        width: 20,
+                      const SizedBox(
+                        width: 15,
                       ),
                       Row(
                         children: [
-                          Text(
-                            'MRP',
-                            style: SolhTextStyles.QS_big_body.copyWith(
-                                color: SolhColors.grey_2),
-                          ),
-                          SizedBox(
-                            width: 5,
+                          // Text(
+                          //   'MRP',
+                          //   style: SolhTextStyles.QS_big_body.copyWith(
+                          //       color: SolhColors.grey_2),
+                          // ),
+                          const SizedBox(
+                            width: 0,
                           ),
                           Text(
                             '${productDetailsModel.product!.currency} ${productDetailsModel.product!.price} ',
                             style: SolhTextStyles.QS_big_body.copyWith(
-                                color: SolhColors.dark_grey,
+                                color: SolhColors.grey,
                                 decoration: TextDecoration.lineThrough),
                           )
                         ],
@@ -320,10 +323,10 @@ class GetProductStatsAndImage extends StatelessWidget {
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
@@ -332,7 +335,7 @@ class GetProductStatsAndImage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
             ],
@@ -344,7 +347,7 @@ class GetProductStatsAndImage extends StatelessWidget {
 }
 
 class ProductDetails extends StatelessWidget {
-  ProductDetails({super.key, required this.productDetailsModel});
+  const ProductDetails({super.key, required this.productDetailsModel});
   final ProductDetailsModel productDetailsModel;
   @override
   Widget build(BuildContext context) {
@@ -378,7 +381,7 @@ class ProductDetails extends StatelessWidget {
                   SolhTextStyles.CTA.copyWith(color: SolhColors.primary_green),
               parse(productDetailsModel.product!.description ?? '').body!.text),
         ),
-        SizedBox(
+        const SizedBox(
           height: 24,
         )
       ],
@@ -390,13 +393,15 @@ class AddToCartBuyNowButton extends StatelessWidget {
   AddToCartBuyNowButton({super.key, required this.productId});
   final String productId;
 
-  ProductDetailController productDetailController = Get.find();
+  final ProductDetailController productDetailController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: Colors.white, boxShadow: <BoxShadow>[
-        BoxShadow(blurRadius: 2, spreadRadius: 2, color: Colors.black26)
-      ]),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(blurRadius: 2, spreadRadius: 2, color: Colors.black26)
+          ]),
       width: double.infinity,
       height: 80,
       child: Row(
@@ -440,7 +445,7 @@ class _GetProductImagesState extends State<GetProductImages> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Container(
+        SizedBox(
           height: 200,
           width: 100.w,
           child: PageView(
@@ -462,19 +467,17 @@ class _GetProductImagesState extends State<GetProductImages> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: widget.productDetailsModel.product!.productImage!
                 .map((e) => Container(
-                      child: Container(
-                        margin: EdgeInsets.all(3),
-                        height: 6,
-                        width: 6,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: imageIndex ==
-                                  widget.productDetailsModel.product!
-                                      .productImage!
-                                      .indexOf(e)
-                              ? SolhColors.grey
-                              : SolhColors.grey_3,
-                        ),
+                      margin: const EdgeInsets.all(3),
+                      height: 6,
+                      width: 6,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: imageIndex ==
+                                widget
+                                    .productDetailsModel.product!.productImage!
+                                    .indexOf(e)
+                            ? SolhColors.grey
+                            : SolhColors.grey_3,
                       ),
                     ))
                 .toList(),
@@ -491,28 +494,32 @@ class GetProductDeatilAppBar extends StatelessWidget
   final ProductDetailController productDetailController = Get.find();
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
+  final ProductWishlistController productWishlistController = Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
       elevation: 0.5,
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           CupertinoIcons.back,
           size: 30,
         ),
         onPressed: () => Navigator.of(context).pop(),
       ),
       backgroundColor: SolhColors.white,
-      iconTheme: IconThemeData(color: SolhColors.black),
+      iconTheme: const IconThemeData(color: SolhColors.black),
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Obx(() {
             return AnimatedAddToWishlistButton(
-              onClick: () {
-                addDeleteWishlistItemController.addDeleteWhishlist({
-                  "id": productDetailController.productDetail.value.product!.sId
+              onClick: () async {
+                await addDeleteWishlistItemController.addDeleteWhishlist({
+                  "productId":
+                      productDetailController.productDetail.value.product!.sId
                 });
+
+                await productWishlistController.getWishlistProducts();
               },
               isSelected: productDetailController
                       .productDetail.value.product!.isWishlisted ??
@@ -526,5 +533,5 @@ class GetProductDeatilAppBar extends StatelessWidget
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize => Size(0, 50);
+  Size get preferredSize => const Size(0, 50);
 }

@@ -31,8 +31,12 @@ import 'package:solh/ui/screens/products/features/home/ui/controllers/product_ca
 import 'package:solh/ui/screens/products/features/home/ui/controllers/product_mainCat_controller.dart';
 import 'package:solh/ui/screens/products/features/home/ui/controllers/products_home_carousel_controller.dart';
 import 'package:solh/ui/screens/products/features/order_summary/data/repo/get_order_list_repo_impl.dart';
+import 'package:solh/ui/screens/products/features/order_summary/data/repo/order_detail_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/order_summary/domain/repo/get_order_list_repo.dart';
+import 'package:solh/ui/screens/products/features/order_summary/domain/repo/order_detail_repo.dart';
+import 'package:solh/ui/screens/products/features/order_summary/domain/usecase/order_detail_usecase.dart';
 import 'package:solh/ui/screens/products/features/order_summary/domain/usecase/order_list_usecase.dart';
+import 'package:solh/ui/screens/products/features/order_summary/ui/controller/order_detail_controller.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/controller/order_list_controller.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/repo/product_detail_repo_impl.dart';
 import 'package:solh/ui/screens/products/features/product_detail/domain/repo/product_detail_repo.dart';

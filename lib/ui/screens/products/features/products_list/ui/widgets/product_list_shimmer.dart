@@ -9,7 +9,7 @@ class ProductListShimmer extends StatelessWidget {
     return ListView(
       children: List.generate(
           10,
-          (index) => Container(
+          (index) => SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: 150,
                 child: Padding(
@@ -33,57 +33,59 @@ class ProductListShimmer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ShimmerWidget(
+                                    height: 20,
                                     child: Container(
                                         height: 10,
                                         decoration: BoxDecoration(
                                             color: Colors.grey,
                                             borderRadius:
-                                                BorderRadius.circular(20))),
-                                    height: 20),
-                                SizedBox(height: 10),
+                                                BorderRadius.circular(20)))),
+                                const SizedBox(height: 10),
                                 ShimmerWidget(
+                                    height: 20,
                                     child: Container(
                                         height: 40,
                                         width: 120,
                                         decoration: BoxDecoration(
                                             color: Colors.grey,
                                             borderRadius:
-                                                BorderRadius.circular(20))),
-                                    height: 20),
-                                SizedBox(height: 10),
+                                                BorderRadius.circular(20)))),
+                                const SizedBox(height: 10),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
                                     ShimmerWidget(
+                                        height: 20,
                                         child: Container(
                                             height: 20,
                                             width: 70,
                                             decoration: BoxDecoration(
                                                 color: Colors.grey,
                                                 borderRadius:
-                                                    BorderRadius.circular(20))),
-                                        height: 20),
+                                                    BorderRadius.circular(
+                                                        20)))),
                                     ShimmerWidget(
+                                        height: 20,
                                         child: Container(
                                             height: 20,
                                             width: 70,
                                             decoration: BoxDecoration(
                                                 color: Colors.grey,
                                                 borderRadius:
-                                                    BorderRadius.circular(20))),
-                                        height: 20),
+                                                    BorderRadius.circular(
+                                                        20)))),
                                   ],
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 ShimmerWidget(
+                                  height: 20,
                                   child: Container(
                                       height: 20,
                                       decoration: BoxDecoration(
                                           color: Colors.grey,
                                           borderRadius:
                                               BorderRadius.circular(20))),
-                                  height: 20,
                                 ),
                               ],
                             ),

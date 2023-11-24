@@ -11,6 +11,8 @@ import 'package:solh/ui/screens/products/features/products_list/ui/widgets/produ
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/product_list_shimmer.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
+import '../../../../../../../routes/routes.dart';
 
 class ProductLisingPage extends StatefulWidget {
   const ProductLisingPage({super.key, required this.args});
@@ -33,11 +35,16 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
     productsListController.getProductList(widget.args['id'], 1);
 
     scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-              scrollController.position.maxScrollExtent - 50 &&
+      if (!productsListController.isLoadingMore.value &&
           !productsListController.isListEnd) {
-        pageNo++;
-        productsListController.getProductList(widget.args['id'], pageNo);
+        double maxScroll = scrollController.position.maxScrollExtent;
+        double currentScroll = scrollController.position.pixels;
+        double delta = 200.0;
+
+        if (maxScroll - currentScroll <= delta) {
+          pageNo++;
+          productsListController.getProductList(widget.args['id'], pageNo);
+        }
       }
     });
     super.initState();
@@ -75,46 +82,72 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                     quantity);
               },
             )
-          : SizedBox.shrink()),
+          : const SizedBox.shrink()),
       body: Obx(() => productsListController.isLoading.value
           ? productsListController.error.value.isNotEmpty
-              ? EmptyListWidget()
-              : ProductListShimmer()
-          : ListView.separated(
-              itemBuilder: (context, index) {
-                return ItemWidget(
-                  image: productsListController
-                      .productList[index].productImage![0],
-                  productName:
-                      productsListController.productList[index].productName,
-                  itemPrice: productsListController.productList[index].price,
-                  discountedPrice: productsListController
-                      .productList[index].afterDiscountPrice,
-                  inCartNo:
-                      productsListController.productList[index].inCartCount,
-                  isWishListed:
-                      productsListController.productList[index].isWishlisted,
-                  onAddedCart: () {
-                    onAddedCart(index);
-                  },
-                  onDecreaseCartCount: () async {
-                    onDecreaseCartCount(
-                        index,
-                        productsListController.productList[index].id!,
-                        productsListController.productList[index].inCartCount!);
-                  },
-                  onIncreaseCartCount: () {
-                    onIncreaseCartCount(
-                        index,
-                        productsListController.productList[index].id!,
-                        productsListController.productList[index].inCartCount!);
-                  },
-                );
-              },
-              separatorBuilder: (_, __) {
-                return GetHelpDivider();
-              },
-              itemCount: productsListController.productList.length)),
+              ? const EmptyListWidget()
+              : const ProductListShimmer()
+          : ListView(
+              controller: scrollController,
+              children: [
+                ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              AppRoutes.productDetailScreen,
+                              arguments: {
+                                "id":
+                                    productsListController.productList[index].id
+                              });
+                        },
+                        child: ItemWidget(
+                          image: productsListController
+                                  .productList[index].defaultImage ??
+                              '',
+                          currency: productsListController
+                              .productList[index].currency,
+                          descrition: productsListController
+                              .productList[index].description,
+                          productName: productsListController
+                              .productList[index].productName,
+                          itemPrice:
+                              productsListController.productList[index].price,
+                          discountedPrice: productsListController
+                              .productList[index].afterDiscountPrice,
+                          inCartNo: productsListController
+                              .productList[index].inCartCount,
+                          isWishListed: productsListController
+                              .productList[index].isWishlisted,
+                          onAddedCart: () {
+                            onAddedCart(index);
+                          },
+                          onDecreaseCartCount: () async {
+                            onDecreaseCartCount(
+                                index,
+                                productsListController.productList[index].id!,
+                                productsListController
+                                    .productList[index].inCartCount!);
+                          },
+                          onIncreaseCartCount: () {
+                            onIncreaseCartCount(
+                                index,
+                                productsListController.productList[index].id!,
+                                productsListController
+                                    .productList[index].inCartCount!);
+                          },
+                        ),
+                      );
+                    },
+                    separatorBuilder: (_, __) {
+                      return const GetHelpDivider();
+                    },
+                    itemCount: productsListController.productList.length),
+                if (productsListController.isLoadingMore.value) MyLoader()
+              ],
+            )),
     );
   }
 

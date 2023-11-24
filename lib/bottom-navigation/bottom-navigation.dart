@@ -23,9 +23,9 @@ import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/home/homescreen.dart';
 import 'package:solh/ui/screens/journaling/journaling.dart';
 import 'package:solh/ui/screens/live_stream/live-stream-controller.dart/live_stream_controller.dart';
-import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/appointments/controller/appointment_controller.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/my_profile_screenV2.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttonLoadingAnimation.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -118,6 +118,7 @@ class _MasterScreen2State extends State<MasterScreen2>
         }
       }
     });
+
     Connectivity().onConnectivityChanged.listen((event) async {
       if (event == ConnectivityResult.none) {
         try {
@@ -144,7 +145,7 @@ class _MasterScreen2State extends State<MasterScreen2>
       HomeScreen(),
       Journaling(),
       GetHelpScreen(),
-      MyGoalsScreen(),
+      ProductsHome(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -172,16 +173,18 @@ class _MasterScreen2State extends State<MasterScreen2>
       onWillPop: () {
         return _onWillPop(context);
       },
-      child: Scaffold(
+      child: Obx(() => Scaffold(
           key: _scaffoldKey,
-          appBar: SolhAppBar(
-            title: getDrawer(),
-            isLandingScreen: true,
-          ),
-          body: Obx(() => IndexedStack(
+          appBar: bottomNavigatorController.activeIndex.value != 3
+              ? SolhAppBar(
+                  title: getDrawer(),
+                  isLandingScreen: true,
+                )
+              : null,
+          body: IndexedStack(
               index: bottomNavigatorController.activeIndex.value,
-              children: bottomWidgetList)),
-          bottomNavigationBar: getBottomBar(context)),
+              children: bottomWidgetList),
+          bottomNavigationBar: getBottomBar(context))),
       /* child: Obx(() {
       return AnimatedPositioned(
         duration: Duration(milliseconds: 300),
@@ -417,11 +420,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ))
                     : SolhGreenButton(
                         onPressed: () async {
-                          if (bottomNavigatorController.givenStars.value != 0 &&
-                              bottomNavigatorController
-                                  .feedbackTextEditingController.text
-                                  .trim()
-                                  .isNotEmpty) {
+                          if (bottomNavigatorController
+                              .feedbackTextEditingController.text
+                              .trim()
+                              .isNotEmpty) {
                             await bottomNavigatorController.submitRating({
                               "rating":
                                   (bottomNavigatorController.givenStars.value +
@@ -505,10 +507,6 @@ class _MasterScreen2State extends State<MasterScreen2>
                         name: 'MyGoalPageOpened',
                         parameters: {'Page': 'My Goal'});
                     break;
-                  // case 4:
-                  //   FirebaseAnalytics.instance.logEvent(
-                  //       name: 'MyProfileOpened', parameters: {'Page': 'MyProfile'});
-                  //   break;
                   default:
                 }
               },
@@ -560,7 +558,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                       icon: SvgPicture.asset(
                           'assets/images/groal tab vector.svg'),
                       id: 'my_goal',
-                      title: 'MY GOALS',
+                      title: 'PRODUCTS',
                       child: Obx(() => SvgPicture.asset(
                             'assets/images/groal tab vector.svg',
                             color:
@@ -569,7 +567,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                     : Colors.grey.shade600,
                           )),
                     ),
-                    label: "My Goals".tr),
+                    label: "Products".tr),
               ],
             ),
           )),

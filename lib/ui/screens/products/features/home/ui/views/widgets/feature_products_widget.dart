@@ -27,12 +27,12 @@ class FeatureProductsWidget extends StatelessWidget {
         SizedBox(
           height: 380,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
             itemCount: 5,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) {
-              return SizedBox(
+              return const SizedBox(
                 width: 10,
               );
             },
@@ -78,7 +78,8 @@ class ProductsCard extends StatelessWidget {
   final String? currency;
   final Function()? onPressed;
 
-  AddDeleteWishlistItemController addDeleteWishlistItemController = Get.find();
+  final AddDeleteWishlistItemController addDeleteWishlistItemController =
+      Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +103,7 @@ class ProductsCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(12),
                       topLeft: Radius.circular(12),
                     ),
@@ -126,7 +127,7 @@ class ProductsCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -148,7 +149,7 @@ class ProductsCard extends StatelessWidget {
                       fontSize: FontSize(12),
                     )
                   }),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Row(
@@ -168,8 +169,8 @@ class ProductsCard extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 4),
                         decoration: BoxDecoration(
                             color: SolhColors.greenShade3,
                             borderRadius: BorderRadius.circular(12)),
@@ -183,7 +184,7 @@ class ProductsCard extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 4,
             ),
             AddRemoveProductButtoon(
@@ -217,6 +218,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
+    print("${widget.productId} $quantity");
     await addToCartController.addToCart(
         productId: widget.productId, quantity: quantity);
     await cartController.getCart();
@@ -240,7 +242,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SolhGreenMiniButton(
+                    SolhGreenButton(
                       height: 35,
                       width: 100,
                       onPressed: () {
@@ -268,7 +270,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                           height: 30,
                           width: 30,
                           color: SolhColors.primary_green,
-                          child: Center(
+                          child: const Center(
                             child: Icon(Icons.remove, color: SolhColors.white),
                           ),
                         ),
@@ -296,7 +298,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                           height: 30,
                           width: 30,
                           color: SolhColors.primary_green,
-                          child: Center(
+                          child: const Center(
                             child: Icon(Icons.add, color: SolhColors.white),
                           ),
                         ),
