@@ -42,7 +42,6 @@ import 'widgets_constants/constants/textstyles.dart';
 GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  print("Main is Running");
   await dotenv.load(fileName: '.env');
   Stripe.publishableKey = dotenv.env['STRIPE_PK'] ?? '';
   setup();
@@ -131,9 +130,9 @@ class _SolhAppState extends State<SolhApp> {
           onGenerateRoute: RouteGenerator.generateRoute,
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
           theme: ThemeData(
-            progressIndicatorTheme:
-                ProgressIndicatorThemeData(color: SolhColors.primary_green),
-            textTheme: TextTheme(
+            progressIndicatorTheme: const ProgressIndicatorThemeData(
+                color: SolhColors.primary_green),
+            textTheme: const TextTheme(
                 bodyMedium: TextStyle(
                   color: SolhColors.black666,
                   fontSize: 14,
@@ -163,8 +162,8 @@ class _SolhAppState extends State<SolhApp> {
             scaffoldBackgroundColor: Colors.white,
             fontFamily: GoogleFonts.quicksand().fontFamily,
             primaryColor: SolhColors.primary_green,
-            buttonTheme: ButtonThemeData(buttonColor: SolhColors.white),
-            iconTheme: IconThemeData(color: Colors.black),
+            buttonTheme: const ButtonThemeData(buttonColor: SolhColors.white),
+            iconTheme: const IconThemeData(color: Colors.black),
           ),
         ),
       );
