@@ -31,7 +31,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
-        title: Text(
+        title: const Text(
           "Payment Mode",
           style: SolhTextStyles.QS_body_1_bold,
         ),
@@ -43,10 +43,10 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
             total: double.parse(widget.args['totalPrice'].toString()),
             discount: double.parse(widget.args['discount'].toString()),
             shipping: double.parse(widget.args['shipping'].toString())),
-        SizedBox(height: 10),
-        GetHelpDivider(),
-        PaymentOptionsTile(),
-        Spacer(),
+        const SizedBox(height: 10),
+        const GetHelpDivider(),
+        const PaymentOptionsTile(),
+        const Spacer(),
         Padding(
           padding: const EdgeInsets.all(24),
           child: SolhGreenButton(
@@ -64,12 +64,12 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                   paymentGateway: "Stripe",
                   paymentSource: "App");
             },
+            height: 40,
+            width: MediaQuery.of(context).size.width,
             child: Text(
               "Make Payment",
               style: SolhTextStyles.CTA.copyWith(color: Colors.white),
             ),
-            height: 40,
-            width: MediaQuery.of(context).size.width,
           ),
         ),
       ]),
@@ -85,20 +85,19 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   }) async {
     // paymentController.isgettingPaymentIntent(true);
     try {
-      print(feeCode);
-      var paymentIntent = await createPaymentIntent(amount, "$feeCode");
+      var paymentIntent = await createPaymentIntent(amount, feeCode);
       log(paymentIntent.toString());
 
-      final CartController _cartController = Get.find();
-      final AddressController _addressController = Get.find();
+      final CartController cartController = Get.find();
+      final AddressController addressController = Get.find();
 
       await Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
-              appearance: PaymentSheetAppearance(
+              appearance: const PaymentSheetAppearance(
                   primaryButton: PaymentSheetPrimaryButtonAppearance()),
               paymentIntentClientSecret: paymentIntent!['client_secret'],
               style: ThemeMode.dark,
-              billingDetails: BillingDetails(
+              billingDetails: const BillingDetails(
                   address: Address(
                       city: null,
                       country: 'IN',
@@ -108,7 +107,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                       state: null)),
               merchantDisplayName: 'Solh'));
 
-      Map<String, dynamic> _body = {
+      Map<String, dynamic> body = {
         "transaction": {
           "pgTransactionId": paymentIntent['id'],
           "currency": currency,
@@ -120,11 +119,10 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         },
         "order": {
           "shippingCharges": (widget.args['shipping']),
-          "totalItems":
-              _cartController.cartEntity.value.cartList!.items!.length,
+          "totalItems": cartController.cartEntity.value.cartList!.items!.length,
           "totalBill": widget.args['totalPrice'],
           "source": "App",
-          "orderItems": _cartController.cartEntity.value.cartList!.items!
+          "orderItems": cartController.cartEntity.value.cartList!.items!
               .map((e) => {
                     "name": e.productId!.productName ?? '',
                     "product_id": e.productId!.id ?? '',
@@ -135,31 +133,29 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                   })
               .toList(),
           "shippingAddress": {
-            "fullName": _addressController.selectedAddress.value.fullName,
-            "phoneNumber": _addressController.selectedAddress.value.phoneNumber,
+            "fullName": addressController.selectedAddress.value.fullName,
+            "phoneNumber": addressController.selectedAddress.value.phoneNumber,
             "buildingName":
-                _addressController.selectedAddress.value.buildingName,
-            "street": _addressController.selectedAddress.value.street,
-            "city": _addressController.selectedAddress.value.city,
-            "state": _addressController.selectedAddress.value.state,
-            "postalCode": _addressController.selectedAddress.value.postalCode,
-            "landmark": _addressController.selectedAddress.value.landmark,
+                addressController.selectedAddress.value.buildingName,
+            "street": addressController.selectedAddress.value.street,
+            "city": addressController.selectedAddress.value.city,
+            "state": addressController.selectedAddress.value.state,
+            "postalCode": addressController.selectedAddress.value.postalCode,
+            "landmark": addressController.selectedAddress.value.landmark,
             "country": "6242b1b86fabd390bf0063fc"
           },
           "billingAddress": {
-            "fullName":
-                _addressController.selectedBillingAddress.value.fullName,
+            "fullName": addressController.selectedBillingAddress.value.fullName,
             "phoneNumber":
-                _addressController.selectedBillingAddress.value.phoneNumber,
+                addressController.selectedBillingAddress.value.phoneNumber,
             "buildingName":
-                _addressController.selectedBillingAddress.value.buildingName,
-            "street": _addressController.selectedBillingAddress.value.street,
-            "city": _addressController.selectedBillingAddress.value.city,
-            "state": _addressController.selectedBillingAddress.value.state,
+                addressController.selectedBillingAddress.value.buildingName,
+            "street": addressController.selectedBillingAddress.value.street,
+            "city": addressController.selectedBillingAddress.value.city,
+            "state": addressController.selectedBillingAddress.value.state,
             "postalCode":
-                _addressController.selectedBillingAddress.value.postalCode,
-            "landmark":
-                _addressController.selectedBillingAddress.value.landmark,
+                addressController.selectedBillingAddress.value.postalCode,
+            "landmark": addressController.selectedBillingAddress.value.landmark,
             "country": "6242b1b86fabd390bf0063fc"
           },
           "paymentGateway": "UPI",
@@ -168,7 +164,8 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         }
       };
 
-      displayPaymentSheet(context, _body);
+      // ignore: use_build_context_synchronously
+      displayPaymentSheet(context, body);
     } catch (err) {
       throw Exception(err);
     }
@@ -211,7 +208,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                 .email ??
             '',
       };
-      print("requested");
       //Make post request to Stripe
       var response = await Network.makePostRequestWithToken(
           url: '${APIConstants.api}/api/custom/payment/createPaymentIntent',
@@ -219,7 +215,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
 
       return response['data'];
     } on SocketException {
-      print("No Internet");
     } catch (err) {
       throw Exception(err.toString());
     }
@@ -238,10 +233,9 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         throw Exception(error);
       });
     } on StripeException catch (e) {
-      print("In Stripe Exception");
       Utility.showToast(e.error.message ?? '');
     } catch (e) {
-      print('$e');
+      debugPrint(e.toString());
     }
   }
 
@@ -257,10 +251,11 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         cartController.cartEntity.value.cartList!.items!.clear();
         cartController.cartEntity.refresh();
 
+        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (_) {
-              Future.delayed(Duration(seconds: 3), (() {
+              Future.delayed(const Duration(seconds: 3), (() {
                 Navigator.pushNamedAndRemoveUntil(
                     context, AppRoutes.orderListScreen, (route) {
                   log("This is route ${route.settings.name}");
@@ -272,10 +267,10 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image(
+                    const Image(
                         image:
                             AssetImage("assets/images/payment_successful.gif")),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Text(
                       response['message'],
                       style: SolhTextStyles.QS_body_2_bold,
@@ -285,6 +280,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
               );
             });
       } else {
+        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (_) {
@@ -298,8 +294,8 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.warning_amber_rounded, size: 40),
-                    SizedBox(height: 10.0),
+                    const Icon(Icons.warning_amber_rounded, size: 40),
+                    const SizedBox(height: 10.0),
                     Text(
                       response['message'],
                       style: SolhTextStyles.QS_body_2_bold,

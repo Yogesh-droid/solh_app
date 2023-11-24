@@ -9,8 +9,9 @@ import '../../../../../../../widgets_constants/constants/textstyles.dart';
 import 'product_sub_cat_shimmer.dart';
 
 class ProductSubCatWidget extends StatelessWidget {
-  const ProductSubCatWidget({super.key, this.catId});
+  const ProductSubCatWidget({super.key, this.catId, this.img});
   final String? catId;
+  final String? img;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class ProductSubCatWidget extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                     subcatContainer(
-                        image:
+                        image: img ??
                             "https://play-lh.googleusercontent.com/FzEj7FZTGxObAJcbG3yDCsboBKudZCCsBixOGY8aTuovcDdv10Nyqsma1z-CXdsw1A=w480-h960-rw",
                         title: "All",
                         isActive:

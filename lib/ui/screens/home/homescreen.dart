@@ -74,7 +74,7 @@ import '../psychology-test/test_question_page.dart';
 import 'search_by_profession.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -105,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    print('Running init state of HomeScreen');
     super.initState();
 
     profileController.myProfileModel.listen((profile) {
@@ -134,29 +133,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return HomePage();
+    return const HomePage();
   }
 
   Future<void> openMoodMeter() async {
-    log("${await Prefs.getBool("isProfileCreated")}",
-        name: "isProfileCreatedd");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (moodMeterController.moodList.isEmpty) {
       await moodMeterController.getMoodList();
     }
-    print("Opening Mood Meter" +
-        (moodMeterController.moodList.length).toString());
     if (prefs.getInt('lastDateShown') != null) {
       if (DateTime.fromMillisecondsSinceEpoch(prefs.getInt('lastDateShown')!)
               .day ==
           DateTime.now().day) {
         return;
       } else {
-        if (moodMeterController.moodList.length > 0) {
+        if (moodMeterController.moodList.isNotEmpty) {
+          // ignore: use_build_context_synchronously
           showGeneralDialog(
               context: context,
               pageBuilder: (context, animation, secondaryAnimation) {
-                return Scaffold(body: MoodMeterV2());
+                return const Scaffold(body: MoodMeterV2());
               });
         }
         prefs.setBool('moodMeterShown', true);
@@ -174,17 +170,17 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  JournalPageController _journalPageController = Get.find();
+  final JournalPageController _journalPageController = Get.find();
   GetHelpController getHelpController = Get.find();
   DiscoverGroupController discoverGroupController = Get.find();
-  BottomNavigatorController _bottomNavigatorController = Get.find();
+  final BottomNavigatorController _bottomNavigatorController = Get.find();
   BookAppointmentController bookAppointmentController = Get.find();
   GoalSettingController goalSettingController = Get.find();
   ConnectionController connectionController = Get.find();
@@ -226,7 +222,7 @@ class _HomePageState extends State<HomePage> {
           }),
       child: SingleChildScrollView(
         child: Column(children: [
-          GetHelpDivider(),
+          const GetHelpDivider(),
           FindHelpBar(
             onConnectionTapped: () {
               Get.find<ChatListController>().sosChatListController(1);
@@ -235,7 +231,7 @@ class _HomePageState extends State<HomePage> {
             },
             onMoodMeterTapped: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MoodMeterV2()));
+                  MaterialPageRoute(builder: (context) => const MoodMeterV2()));
               FirebaseAnalytics.instance.logEvent(
                   name: 'MoodMeterOpenTapped',
                   parameters: {'Page': 'MoodMeter'});
@@ -248,17 +244,17 @@ class _HomePageState extends State<HomePage> {
 
           // LiveStreamForUserCard(),
 
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ChatAnonymouslyCard(),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           GetHelpCategory(
             title: 'Trending Posts'.tr,
             trailing: Expanded(
@@ -267,8 +263,8 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   DefaultOrg.defaultOrg != null
                       ? PopupMenuButton<bool>(
-                          child:
-                              Icon(CupertinoIcons.line_horizontal_3_decrease),
+                          child: const Icon(
+                              CupertinoIcons.line_horizontal_3_decrease),
                           onSelected: (value) async {
                             OrgOnlySetting.orgOnly = value;
                             OrgOnlySetting.setOrgOnly(value);
@@ -279,8 +275,7 @@ class _HomePageState extends State<HomePage> {
                             _journalPageController.pageNo = 1;
                             _journalPageController.nextPage = 2;
                             _journalPageController
-                                        .selectedGroupId.value.length >
-                                    0
+                                    .selectedGroupId.value.isNotEmpty
                                 ? await _journalPageController.getAllJournals(1,
                                     groupId: _journalPageController
                                         .selectedGroupId.value,
@@ -292,7 +287,6 @@ class _HomePageState extends State<HomePage> {
                           itemBuilder: (context) {
                             return [
                               PopupMenuItem<bool>(
-                                child: Text("All(Solh & Organization)"),
                                 textStyle: TextStyle(
                                     color: OrgOnlySetting.orgOnly != null
                                         ? !OrgOnlySetting.orgOnly!
@@ -300,6 +294,7 @@ class _HomePageState extends State<HomePage> {
                                             : SolhColors.black
                                         : SolhColors.black),
                                 value: false,
+                                child: const Text("All(Solh & Organization)"),
                               ),
                               PopupMenuItem<bool>(
                                 textStyle: TextStyle(
@@ -308,12 +303,12 @@ class _HomePageState extends State<HomePage> {
                                             ? SolhColors.primary_green
                                             : SolhColors.black
                                         : SolhColors.black),
-                                child: Text("Organization only"),
                                 value: true,
+                                child: const Text("Organization only"),
                               )
                             ];
                           })
-                      : SizedBox(),
+                      : const SizedBox(),
                   InkWell(
                     onTap: () async {
                       _bottomNavigatorController.activeIndex.value = 1;
@@ -330,7 +325,7 @@ class _HomePageState extends State<HomePage> {
                             Text('Journaling'.tr,
                                 style: SolhTextStyles.CTA
                                     .copyWith(color: SolhColors.primary_green)),
-                            Icon(
+                            const Icon(
                               Icons.arrow_forward,
                               color: SolhColors.primary_green,
                               size: 14,
@@ -350,14 +345,14 @@ class _HomePageState extends State<HomePage> {
                 : getTrendingPostUI();
           }),
           WhatsOnYourMindSection(),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           getTestUI(),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           OrgOfferCaurousel(),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           GetHelpCategory(
             title: 'Goals'.tr,
             trailing: InkWell(
@@ -375,7 +370,7 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.arrow_forward,
                       color: SolhColors.primary_green,
                       size: 14,
@@ -389,19 +384,21 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SolhGreenButton(
-              child: Text('Add Goals +'.tr),
               height: 32,
               width: 100,
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SelectGoal()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SelectGoal()));
               },
+              child: Text('Add Goals +'.tr),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           Obx(() =>
               discoverGroupController.homepageGroupModel.value.groupList != null
                   ? GetHelpCategory(
@@ -419,10 +416,10 @@ class _HomePageState extends State<HomePage> {
                 ? getRecommendedGroupsUI()
                 : Container();
           }),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
 
           Obx(() => Container(
                 color: profileController.orgColor3.value.isNotEmpty
@@ -464,7 +461,7 @@ class _HomePageState extends State<HomePage> {
                   bookAppointmentController, getHelpController, context),
             ),
           ),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           Padding(
             padding: EdgeInsets.all(4.0.w),
             child: Row(
@@ -489,7 +486,7 @@ class _HomePageState extends State<HomePage> {
                           },
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.info,
                         size: 15,
                         color: SolhColors.grey,
@@ -525,7 +522,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           SearchByProfesssionUI(),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           Obx((() => getHelpController.isAlliedShown.value
               ? AlliedExperts(onTap: (value, name, id) {
                   Navigator.pushNamed(context, AppRoutes.viewAllAlliedExpert,
@@ -538,15 +535,15 @@ class _HomePageState extends State<HomePage> {
                       });
                 })
               : const SizedBox())),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Obx(() => getHelpController.isAlliedShown.value
-              ? GetHelpDivider()
+              ? const GetHelpDivider()
               : const SizedBox()),
           Obx(
             (() => homeController.isCorouselShown.value
-                ? AlliedCarousel()
+                ? const AlliedCarousel()
                 : const SizedBox()),
           ),
           GetHelpDivider(),
@@ -595,7 +592,7 @@ class _HomePageState extends State<HomePage> {
                         : Container())),
               )),
 
-          GetHelpDivider(),
+          const GetHelpDivider(),
           ProductsCarousel(),
           /* GetHelpCategory(
             title: 'Solh Buddies to Talk',
@@ -606,9 +603,9 @@ class _HomePageState extends State<HomePage> {
             title: 'Latest Reads'.tr,
           ),
           getRecommendedReadsUI(),
-          GetHelpDivider(),
+          const GetHelpDivider(),
           //FeatureProductsWidget(),
-          SizedBox(
+          const SizedBox(
             height: 70,
           ),
         ]),
@@ -627,11 +624,12 @@ class _HomePageState extends State<HomePage> {
       } else if (value['media'] == null) {
         return;
       } else {
+        // ignore: use_build_context_synchronously
         showDialog(
             context: context,
             builder: (context) {
               return Dialog(
-                insetPadding: EdgeInsets.all(8),
+                insetPadding: const EdgeInsets.all(8),
                 child: InkWell(
                   onTap: () async {
                     if (value["redirectTo"] == "gethelp") {
@@ -683,10 +681,10 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pop(context);
                         },
                         child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.all(5),
+                          decoration: const BoxDecoration(
                               color: SolhColors.grey_3, shape: BoxShape.circle),
-                          child: Center(
+                          child: const Center(
                             child: Icon(
                               Icons.close,
                             ),
@@ -716,8 +714,6 @@ class _HomePageState extends State<HomePage> {
   announcementMedia(Map<String, dynamic> value) {
     return InkWell(
       onTap: () async {
-        print('it tapped 3');
-        print(value["redirectKey"]);
         if (value["redirectTo"] == "gethelp") {
           Navigator.of(context).pop();
           Get.find<BottomNavigatorController>().activeIndex.value = 2;
@@ -768,7 +764,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget getTrendingPostUI() {
     return _journalPageController.trendingJournalsList.isNotEmpty
-        ? Container(
+        ? SizedBox(
             height: 340,
             child: Obx(() {
               return Stack(
@@ -797,57 +793,6 @@ class _HomePageState extends State<HomePage> {
     return Draggable(
       affinity: Axis.horizontal,
       data: "data",
-      child: InkWell(
-        onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  CommentScreen(journalModel: journal, index: -1)));
-        },
-        child: Obx(() => Container(
-              // height: MediaQuery.of(context).size.height * 0.5,
-              height: 300,
-              width: MediaQuery.of(context).size.width * 0.8,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      colorFilter: ColorFilter.mode(
-                          Get.find<ProfileController>()
-                                  .orgColor1
-                                  .value
-                                  .isNotEmpty
-                              ? Color(int.parse(
-                                  "0xFF${Get.find<ProfileController>().orgColor2}"))
-                              : SolhColors.primary_green,
-                          BlendMode.color),
-                      image: AssetImage('assets/images/trending_bg.png')),
-                  gradient: journal.postedBy!.userType == 'Official'
-                      ? LinearGradient(
-                          stops: [0.1, 0.9],
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            Color.fromARGB(255, 173, 215, 204),
-                            Color.fromARGB(255, 201, 156, 157),
-                          ],
-                        )
-                      : LinearGradient(colors: [
-                          SolhColors.greenShade4,
-                          SolhColors.greenShade4,
-                        ]),
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromRGBO(0, 0, 0, 0.1),
-                      blurRadius: 5.0,
-                      spreadRadius: 2,
-                    )
-                  ],
-                  border: Border.all(
-                    color: SolhColors.greyS200,
-                  )),
-              child: getPostContent(journal, 12),
-            )),
-      ),
       feedback: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -858,7 +803,7 @@ class _HomePageState extends State<HomePage> {
           width: MediaQuery.of(context).size.width * 0.8,
           decoration: BoxDecoration(
               color: Colors.white,
-              image: DecorationImage(
+              image: const DecorationImage(
                   fit: BoxFit.fill,
                   // image: journal.mediaUrl != null
                   //     ? CachedNetworkImageProvider(journal.mediaUrl ?? '')
@@ -867,7 +812,7 @@ class _HomePageState extends State<HomePage> {
                   //       ) as ImageProvider),
                   image: AssetImage('assets/images/backgroundScaffold.png')),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Color.fromRGBO(0, 0, 0, 0.1),
                   blurRadius: 5.0,
@@ -890,6 +835,57 @@ class _HomePageState extends State<HomePage> {
         _journalPageController.trendingJournalsList.refresh();
         print("dragged");
       },
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  CommentScreen(journalModel: journal, index: -1)));
+        },
+        child: Obx(() => Container(
+              // height: MediaQuery.of(context).size.height * 0.5,
+              height: 300,
+              width: MediaQuery.of(context).size.width * 0.8,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      colorFilter: ColorFilter.mode(
+                          Get.find<ProfileController>()
+                                  .orgColor1
+                                  .value
+                                  .isNotEmpty
+                              ? Color(int.parse(
+                                  "0xFF${Get.find<ProfileController>().orgColor2}"))
+                              : SolhColors.primary_green,
+                          BlendMode.color),
+                      image: const AssetImage('assets/images/trending_bg.png')),
+                  gradient: journal.postedBy!.userType == 'Official'
+                      ? const LinearGradient(
+                          stops: [0.1, 0.9],
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            Color.fromARGB(255, 173, 215, 204),
+                            Color.fromARGB(255, 201, 156, 157),
+                          ],
+                        )
+                      : const LinearGradient(colors: [
+                          SolhColors.greenShade4,
+                          SolhColors.greenShade4,
+                        ]),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.1),
+                      blurRadius: 5.0,
+                      spreadRadius: 2,
+                    )
+                  ],
+                  border: Border.all(
+                    color: SolhColors.greyS200,
+                  )),
+              child: getPostContent(journal, 12),
+            )),
+      ),
     );
   }
 
@@ -900,14 +896,14 @@ class _HomePageState extends State<HomePage> {
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.1),
               blurRadius: 5.0,
               spreadRadius: 2,
             )
           ],
-          image: DecorationImage(
+          image: const DecorationImage(
               fit: BoxFit.fill,
               image: AssetImage(
                 'assets/images/trending_bg.png',
@@ -925,14 +921,14 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey[200]!),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Color.fromRGBO(0, 0, 0, 0.1),
               blurRadius: 5.0,
               spreadRadius: 2,
             )
           ],
-          image: DecorationImage(
+          image: const DecorationImage(
               fit: BoxFit.fill,
               image: AssetImage(
                 'assets/images/trending_bg.png',
@@ -974,14 +970,14 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: double.infinity,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Color.fromRGBO(255, 255, 255, 0.9)),
+                color: const Color.fromRGBO(255, 255, 255, 0.9)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                journal.feelings!.length > 0
+                journal.feelings!.isNotEmpty
                     ? Padding(
                         padding: const EdgeInsets.only(
                           top: 8.0,
@@ -1011,25 +1007,23 @@ class _HomePageState extends State<HomePage> {
                       )
                     : Container(),
                 journal.description!.trim().isEmpty
-                    ? SizedBox(
+                    ? const SizedBox(
                         height: 0,
                       )
-                    : Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0, right: 8.0, bottom: 8.0),
-                          child: Text(
-                            journal.description ?? '',
-                            style: SolhTextStyles.QS_cap_semi,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                    : Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0, right: 8.0, bottom: 8.0),
+                        child: Text(
+                          journal.description ?? '',
+                          style: SolhTextStyles.QS_cap_semi,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                 journal.mediaUrl == null
-                    ? SizedBox()
+                    ? const SizedBox()
                     : journal.mediaUrl!.trim().isEmpty
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Expanded(
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(12),
@@ -1066,7 +1060,7 @@ class _HomePageState extends State<HomePage> {
       margin: EdgeInsets.only(bottom: 2.h),
       child: Obx(() {
         return getHelpController.solhVolunteerList.value.provider != null &&
-                getHelpController.solhVolunteerList.value.provider!.length > 0
+                getHelpController.solhVolunteerList.value.provider!.isNotEmpty
             ? ListView.separated(
                 padding: EdgeInsets.only(left: 2.h),
                 separatorBuilder: (_, __) => SizedBox(width: 2.w),
@@ -1113,7 +1107,7 @@ class _HomePageState extends State<HomePage> {
   Widget getGoalSettingUI(GoalSettingController goalSettingController) {
     return Obx(() {
       return goalSettingController.pesonalGoalModel.value.goalList != null
-          ? (goalSettingController.pesonalGoalModel.value.goalList!.length == 0
+          ? (goalSettingController.pesonalGoalModel.value.goalList!.isEmpty
               ? Text('Take the first step'.tr,
                   style: GoogleFonts.signika(
                     color: Colors.grey,
@@ -1130,11 +1124,10 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.only(bottom: 2.h),
         height: MediaQuery.of(context).size.height * 0.4,
         child: discoverGroupController
-                        .homepageGroupModel.value.groupList!.length ==
-                    0 ||
+                    .homepageGroupModel.value.groupList!.isEmpty ||
                 discoverGroupController.homepageGroupModel.value.groupList ==
                     null
-            ? Center(
+            ? const Center(
                 child: Text(
                 "No groups to explore !",
                 style: SolhTextStyles.QS_body_1_bold,
@@ -1175,11 +1168,11 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Container(
+                          SizedBox(
                             height: MediaQuery.of(context).size.height * 0.2,
                             width: MediaQuery.of(context).size.width,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(10),
                                 topRight: Radius.circular(10),
                               ),
@@ -1229,7 +1222,7 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Row(
                               children: [
-                                Icon(
+                                const Icon(
                                   CupertinoIcons.person_3,
                                   color: SolhColors.primary_green,
                                   size: 20,
@@ -1323,7 +1316,7 @@ class _HomePageState extends State<HomePage> {
                                                       discoverGroupController
                                                           .isHomePageGroupLoading
                                                           .value
-                                                  ? ButtonLoadingAnimation(
+                                                  ? const ButtonLoadingAnimation(
                                                       ballColor:
                                                           SolhColors.white,
                                                     )
@@ -1345,7 +1338,7 @@ class _HomePageState extends State<HomePage> {
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 10,
                   );
                 },
@@ -1359,7 +1352,7 @@ class _HomePageState extends State<HomePage> {
 
   getInteractionButton(Journals journal) {
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
@@ -1367,10 +1360,10 @@ class _HomePageState extends State<HomePage> {
           height: 50,
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.7),
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10)),
-            border: Border.fromBorderSide(
+            border: const Border.fromBorderSide(
               BorderSide(
                 color: SolhColors.greyS200,
                 width: 1,
@@ -1382,7 +1375,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.thumb_up_alt_outlined,
                     color: SolhColors.primary_green,
                   ),
@@ -1391,7 +1384,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     journal.likes.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       color: SolhColors.primary_green,
                     ),
@@ -1405,7 +1398,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     CupertinoIcons.chat_bubble,
                     color: SolhColors.primary_green,
                   ),
@@ -1414,7 +1407,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text(
                     journal.comments.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: SolhColors.primary_green,
                       fontSize: 18,
                     ),
@@ -1429,14 +1422,14 @@ class _HomePageState extends State<HomePage> {
   }
 
   solhBuddiesShimmer(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 270,
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: 10,
         scrollDirection: Axis.horizontal,
         separatorBuilder: (context, index) {
-          return SizedBox(
+          return const SizedBox(
             width: 10,
           );
         },
@@ -1494,7 +1487,7 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(10),
                               topRight: Radius.circular(10),
                             ),
@@ -1522,18 +1515,18 @@ class _HomePageState extends State<HomePage> {
                                   connectionController.bloglist[index].name ??
                                       '',
                                   maxLines: 2,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 2,
                                 ),
                                 Row(
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       CupertinoIcons.eye,
                                       color: SolhColors.primary_green,
                                       size: 12,
@@ -1544,7 +1537,7 @@ class _HomePageState extends State<HomePage> {
                                     Text(
                                       connectionController.bloglist[index].views
                                           .toString(),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                         color: SolhColors.primary_green,
                                       ),
@@ -1556,7 +1549,7 @@ class _HomePageState extends State<HomePage> {
                                           .bloglist[index].description ??
                                       '',
                                   maxLines: 5,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: SolhColors.grey,
                                     overflow: TextOverflow.ellipsis,
@@ -1579,10 +1572,10 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: Color.fromRGBO(255, 255, 255, 0.90)),
+            color: const Color.fromRGBO(255, 255, 255, 0.90)),
         child: Row(
           children: [
             CircleAvatar(
@@ -1592,7 +1585,7 @@ class _HomePageState extends State<HomePage> {
                       : journal.postedBy!.anonymous!.profilePicture ?? ''),
               backgroundColor: SolhColors.grey,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Column(
@@ -1613,20 +1606,20 @@ class _HomePageState extends State<HomePage> {
                     journal.postedBy != null &&
                             !journal.anonymousJournal! &&
                             journal.postedBy!.userType == "Official"
-                        ? SolhExpertBadge(
+                        ? const SolhExpertBadge(
                             usertype: 'Official',
                           )
                         : journal.postedBy != null &&
                                 !journal.anonymousJournal! &&
                                 journal.postedBy!.userType == "SolhProvider"
-                            ? SolhExpertBadge(
+                            ? const SolhExpertBadge(
                                 usertype: 'Counsellor',
                               )
                             : journal.postedBy != null &&
                                     !journal.anonymousJournal! &&
                                     journal.postedBy!.userType ==
                                         "SolhVolunteer"
-                                ? SolhExpertBadge(
+                                ? const SolhExpertBadge(
                                     usertype: 'Volunteer',
                                   )
                                 : journal.postedBy != null &&
@@ -1652,51 +1645,37 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: EdgeInsets.all(4.0.w),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          'Self Assessment'.tr,
-                          style: SolhTextStyles.QS_body_semi_1,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                              constraints: BoxConstraints(maxHeight: 70.h),
-                              isScrollControlled: true,
-                              context: context,
-                              enableDrag: true,
-                              isDismissible: true,
-                              builder: (context) {
-                                return showSelfAssessmentDisclaimer(context);
-                              },
-                            );
+                    Text(
+                      'Self Assessment'.tr,
+                      style: SolhTextStyles.QS_body_semi_1,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          constraints: BoxConstraints(maxHeight: 70.h),
+                          isScrollControlled: true,
+                          context: context,
+                          enableDrag: true,
+                          isDismissible: true,
+                          builder: (context) {
+                            return showSelfAssessmentDisclaimer(context);
                           },
-                          icon: Icon(
-                            Icons.info,
-                            size: 15,
-                            color: SolhColors.grey,
-                          ),
-                        )
-                      ],
-                    ),
-                    InkWell(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(AppRoutes.psychologyTest),
-                      child: Text(
-                        "View all",
-                        style: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.primary_green),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.info,
+                        size: 15,
+                        color: SolhColors.grey,
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 180,
                 child: ListView(
-                  padding: EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(left: 10),
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   children: psychologyTestController.testList.length > 5
@@ -1744,13 +1723,13 @@ class PsychoTestContainer extends StatelessWidget {
         }));
       },
       child: Container(
-        margin: EdgeInsets.only(right: 8),
+        margin: const EdgeInsets.only(right: 8),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: Container(
+              child: SizedBox(
                 width: 225,
                 child: CachedNetworkImage(
                   imageUrl: test.testPicture ?? '',
@@ -1762,7 +1741,7 @@ class PsychoTestContainer extends StatelessWidget {
               height: 90,
               width: 225,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   bottomRight: Radius.circular(10),
                   bottomLeft: Radius.circular(10),
                 ),
@@ -1793,7 +1772,7 @@ class PsychoTestContainer extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               CupertinoIcons.list_bullet,
                               size: 12,
                               color: Colors.white,
@@ -1805,19 +1784,19 @@ class PsychoTestContainer extends StatelessWidget {
                             )
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 7,
                         ),
-                        SolhDot(
+                        const SolhDot(
                           color: SolhColors.white,
                           size: 3,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 7,
                         ),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               CupertinoIcons.clock,
                               size: 12,
                               color: Colors.white,
@@ -1832,7 +1811,7 @@ class PsychoTestContainer extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                 ],
@@ -1891,8 +1870,8 @@ class ChatAnonymouslyCard extends StatelessWidget {
                               int.parse("0xFF${profileController.orgColor1}"))
                           : SolhColors.primary_green,
                       BlendMode.color),
-                  image:
-                      AssetImage('assets/images/ScaffoldBackgroundGreen.png'),
+                  image: const AssetImage(
+                      'assets/images/ScaffoldBackgroundGreen.png'),
                 ),
               ),
               child: Padding(
@@ -1923,7 +1902,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                                       : SolhColors.primary_green,
                               border: Border.all(
                                   color: SolhColors.white, width: 1)),
-                          child: Center(
+                          child: const Center(
                               child: Icon(
                             CupertinoIcons.arrow_right,
                             color: SolhColors.white,
@@ -1938,25 +1917,25 @@ class ChatAnonymouslyCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         getIssuesRowItem(
-                            Image(
+                            const Image(
                                 image:
                                     AssetImage('assets/images/saddness.png')),
                             'Sadness'.tr),
                         getIssuesRowItem(
-                            Image(
+                            const Image(
                                 image:
                                     AssetImage('assets/images/loneliness.png')),
                             'Loneliness'.tr),
                         getIssuesRowItem(
-                            Image(
+                            const Image(
                                 image: AssetImage('assets/images/stress.png')),
                             'Stress'.tr),
                         getIssuesRowItem(
                             Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: SolhColors.white),
-                              child: Center(child: Text('20+')),
+                              child: const Center(child: Text('20+')),
                             ),
                             'More'.tr)
                       ],
@@ -1964,7 +1943,7 @@ class ChatAnonymouslyCard extends StatelessWidget {
                     SizedBox(
                       height: 1.h,
                     ),
-                    Divider(
+                    const Divider(
                       color: SolhColors.white,
                       thickness: 1,
                     ),
@@ -1988,7 +1967,7 @@ getIssuesRowItem(Widget widget, String subtext) {
       Container(
         height: 15.w,
         width: 15.w,
-        decoration: BoxDecoration(shape: BoxShape.circle),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: widget,
       ),
       Text(
@@ -2012,7 +1991,7 @@ class AlliedExperts extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: ListView(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         children: [
           SizedBox(
             height: 2.h,
@@ -2058,8 +2037,8 @@ class AlliedExperts extends StatelessWidget {
                   null
               ? Container()
               : GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 4.0,
                       mainAxisSpacing: 4.0,
@@ -2082,7 +2061,7 @@ class AlliedExperts extends StatelessWidget {
                                   '');
                         },
                         child: Obx(() => profileController.myProfileModel.value.body == null
-                            ? SizedBox()
+                            ? const SizedBox()
                             : AlliedCardWithDiscount(
                                 image: getHelpController
                                         .getAlliedTherapyModel
@@ -2117,7 +2096,7 @@ class AlliedExperts extends StatelessWidget {
 }
 
 class AlliedCarousel extends StatefulWidget {
-  AlliedCarousel({super.key});
+  const AlliedCarousel({super.key});
 
   @override
   State<AlliedCarousel> createState() => _AlliedCarouselState();
@@ -2193,7 +2172,7 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                                       });
                                 }
                               },
-                              child: Container(
+                              child: SizedBox(
                                   height: 20.h,
                                   width: 100.w,
                                   child: FittedBox(
@@ -2226,7 +2205,7 @@ class _AlliedCarouselState extends State<AlliedCarousel> {
                         .map((e) => Container(
                               height: e == _current ? 6 : 5,
                               width: e == _current ? 6 : 5,
-                              margin: EdgeInsets.all(3),
+                              margin: const EdgeInsets.all(3),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 color: e == _current
@@ -2254,7 +2233,7 @@ class AnonymousDialog extends StatelessWidget {
           children: [
             InkWell(
                 onTap: (() => Navigator.of(context).pop()),
-                child: Icon(
+                child: const Icon(
                   CupertinoIcons.xmark,
                 )),
           ],
@@ -2350,7 +2329,7 @@ Widget showInfoDialog(context) {
   log(AppLocale.appLocale.languageCode);
   return SingleChildScrollView(
     child: Container(
-      padding: EdgeInsets.only(top: 14),
+      padding: const EdgeInsets.only(top: 14),
       child: Column(
         children: [
           Row(
@@ -2368,7 +2347,7 @@ Widget showInfoDialog(context) {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.cancel_sharp,
                     size: 30,
                     color: SolhColors.grey,
@@ -2389,7 +2368,7 @@ Widget showSelfAssessmentDisclaimer(context) {
   log(AppLocale.appLocale.languageCode);
   return SingleChildScrollView(
     child: Container(
-      padding: EdgeInsets.only(top: 14),
+      padding: const EdgeInsets.only(top: 14),
       child: Column(
         children: [
           Row(
@@ -2407,7 +2386,7 @@ Widget showSelfAssessmentDisclaimer(context) {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.cancel_sharp,
                     size: 30,
                     color: SolhColors.grey,
@@ -2418,7 +2397,7 @@ Widget showSelfAssessmentDisclaimer(context) {
               data: AppLocale.appLocale.languageCode == "hi"
                   ? disclaimerHtmlHindi
                   : disclaimerHtml),
-          SizedBox(
+          const SizedBox(
             height: 90,
           )
         ],
@@ -2439,18 +2418,18 @@ class OrgOfferCaurousel extends StatelessWidget {
       return _controller.isGettingOffers.value
           ? MyLoader()
           : _controller.offerCarouselModel.value.data == null
-              ? SizedBox()
+              ? const SizedBox()
               : _controller.offerCarouselModel.value.data!.isEmpty
                   ? Container()
                   : Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
-                        Row(
+                        const Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                 horizontal: 18,
                               ),
                               child: Text(
@@ -2465,7 +2444,7 @@ class OrgOfferCaurousel extends StatelessWidget {
                           itemCount:
                               _controller.offerCarouselModel.value.data!.length,
                           itemBuilder: ((context, index, realIndex) {
-                            return Container(
+                            return SizedBox(
                                 height: 20.h,
                                 width: 100.w,
                                 child: FittedBox(
@@ -2492,7 +2471,7 @@ class OrgOfferCaurousel extends StatelessWidget {
                             }),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         )
                       ],

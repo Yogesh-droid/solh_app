@@ -107,7 +107,8 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
         controller: scrollController,
         children: [
           if (widget.args['id'] != null)
-            ProductSubCatWidget(catId: widget.args['id']),
+            ProductSubCatWidget(
+                catId: widget.args['id'], img: widget.args['img']),
           Obx(
             () => productsListController.isLoading.value
                 ? productsListController.error.value.isNotEmpty

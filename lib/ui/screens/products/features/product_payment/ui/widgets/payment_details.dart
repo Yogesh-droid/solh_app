@@ -24,51 +24,51 @@ class PaymentDetails extends StatelessWidget {
             style:
                 SolhTextStyles.QS_body_semi_1.copyWith(color: SolhColors.black),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Order total',
+                'Order Total',
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.dark_grey),
               ),
               Text(
-                "₹ ${total}",
+                "₹ $total",
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.dark_grey),
               )
             ],
           ),
-          Divider(),
+          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Items discount',
+              Text('Items Discount',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
               Text(
-                '- ₹ ${discount}',
+                '- ₹ $discount',
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.dark_grey),
               ),
             ],
           ),
-          Divider(),
+          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Shipping Charge',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
-              Text('₹ ${shipping}',
+              Text('₹ $shipping',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
             ],
           ),
-          Divider(),
+          const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

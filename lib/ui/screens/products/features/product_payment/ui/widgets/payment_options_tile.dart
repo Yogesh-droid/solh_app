@@ -17,7 +17,7 @@ class PaymentOptionsTile extends StatelessWidget {
             Text("Payment Options",
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black)),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: 50,
               decoration: BoxDecoration(
@@ -31,12 +31,12 @@ class PaymentOptionsTile extends StatelessWidget {
                         'assets/images/get_help/stripe_icon.svg',
                         height: 50,
                       ),
-                      Text(
+                      const Text(
                         "Stripe",
                         style: SolhTextStyles.QS_body_1_med,
                       ),
                     ]),
-                    Radio(
+                    const Radio(
                         groupValue: 1,
                         value: 1,
                         onChanged: null,
