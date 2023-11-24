@@ -12,6 +12,7 @@ import 'package:solh/ui/screens/products/features/product_detail/ui/controller/p
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/product_star_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/widgets/review_card.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
+import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
@@ -298,14 +299,14 @@ class GetProductStatsAndImage extends StatelessWidget {
                           '${productDetailsModel.product!.currency} ${productDetailsModel.product!.afterDiscountPrice} ',
                           style: SolhTextStyles.QS_big_body),
                       const SizedBox(
-                        width: 20,
+                        width: 15,
                       ),
                       Row(
                         children: [
                           Text(
                             '${productDetailsModel.product!.currency} ${productDetailsModel.product!.price} ',
                             style: SolhTextStyles.QS_big_body.copyWith(
-                                color: SolhColors.dark_grey,
+                                color: SolhColors.grey,
                                 decoration: TextDecoration.lineThrough),
                           )
                         ],
@@ -490,6 +491,7 @@ class GetProductDeatilAppBar extends StatelessWidget
   final ProductDetailController productDetailController = Get.find();
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
+  final ProductWishlistController productWishlistController = Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -508,10 +510,13 @@ class GetProductDeatilAppBar extends StatelessWidget
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Obx(() {
             return AnimatedAddToWishlistButton(
-              onClick: () {
-                addDeleteWishlistItemController.addDeleteWhishlist({
-                  "id": productDetailController.productDetail.value.product!.sId
+              onClick: () async {
+                await addDeleteWishlistItemController.addDeleteWhishlist({
+                  "productId":
+                      productDetailController.productDetail.value.product!.sId
                 });
+
+                await productWishlistController.getWishlistProducts();
               },
               isSelected: productDetailController
                       .productDetail.value.product!.isWishlisted ??

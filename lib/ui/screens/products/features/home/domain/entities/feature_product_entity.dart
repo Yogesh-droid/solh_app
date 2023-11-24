@@ -9,17 +9,18 @@ class FeatureProductsEntity {
   String? productQuantity;
   int? inCartCount;
   bool? isWishlisted;
+  String? currency;
 
-  FeatureProductsEntity({
-    this.sId,
-    this.afterDiscountPrice,
-    this.description,
-    this.price,
-    this.productImage,
-    this.productName,
-    this.productQuantity,
-    this.inCartCount,
-    this.isWishlisted,
-    this.stockAvailable,
-  });
+  FeatureProductsEntity(
+      {this.sId,
+      this.afterDiscountPrice,
+      this.description,
+      this.price,
+      this.productImage,
+      this.productName,
+      this.productQuantity,
+      this.inCartCount,
+      this.isWishlisted,
+      this.stockAvailable,
+      this.currency});
 }

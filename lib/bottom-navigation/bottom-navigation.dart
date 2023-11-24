@@ -420,11 +420,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ))
                     : SolhGreenButton(
                         onPressed: () async {
-                          if (bottomNavigatorController.givenStars.value != 0 &&
-                              bottomNavigatorController
-                                  .feedbackTextEditingController.text
-                                  .trim()
-                                  .isNotEmpty) {
+                          if (bottomNavigatorController
+                              .feedbackTextEditingController.text
+                              .trim()
+                              .isNotEmpty) {
                             await bottomNavigatorController.submitRating({
                               "rating":
                                   (bottomNavigatorController.givenStars.value +

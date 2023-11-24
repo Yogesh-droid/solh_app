@@ -516,6 +516,8 @@ class FeatureProductsSection extends StatelessWidget {
                             false,
                         inCartItems: featureProductsController
                             .featureProductList[index].inCartCount,
+                        currency: featureProductsController
+                            .featureProductList[index].currency,
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                               AppRoutes.productDetailScreen,
