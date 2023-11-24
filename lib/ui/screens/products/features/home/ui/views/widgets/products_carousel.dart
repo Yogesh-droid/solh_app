@@ -17,32 +17,37 @@ class ProductsCarousel extends StatelessWidget {
       return _controller.isHomeProductsCarouselLoading.value
           ? Container()
           : _controller.productsHomeCarousel.value.banner != null
-              ? (_controller.productsHomeCarousel.value.banner!.length == 1
-                  ? GestureDetector(
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(AppRoutes.productsHome),
-                      child: AspectRatio(
-                        aspectRatio: 3 / 2,
-                        child: Image.network(_controller.productsHomeCarousel
-                                .value.banner![0].bannerImage ??
-                            ''),
-                      ),
-                    )
-                  : CarouselSlider(
-                      items: _controller.productsHomeCarousel.value.banner!
-                          .map((e) => GestureDetector(
-                              onTap: () => Navigator.of(context)
-                                  .pushNamed(AppRoutes.productsHome),
-                              child: Image.network(e.bannerImage ?? '')))
-                          .toList(),
-                      carouselController: buttonCarouselController,
-                      options: CarouselOptions(
-                        autoPlay: false,
-                        enableInfiniteScroll: true,
-                        enlargeCenterPage: true,
-                        initialPage: 1,
-                      ),
-                    ))
+              ? _controller.productsHomeCarousel.value.banner!.isEmpty
+                  ? const SizedBox.shrink()
+                  : (_controller.productsHomeCarousel.value.banner!.length == 1
+                      ? GestureDetector(
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(AppRoutes.productsHome),
+                          child: AspectRatio(
+                            aspectRatio: 3 / 2,
+                            child: Image.network(_controller
+                                    .productsHomeCarousel
+                                    .value
+                                    .banner![0]
+                                    .bannerImage ??
+                                ''),
+                          ),
+                        )
+                      : CarouselSlider(
+                          items: _controller.productsHomeCarousel.value.banner!
+                              .map((e) => GestureDetector(
+                                  onTap: () => Navigator.of(context)
+                                      .pushNamed(AppRoutes.productsHome),
+                                  child: Image.network(e.bannerImage ?? '')))
+                              .toList(),
+                          carouselController: buttonCarouselController,
+                          options: CarouselOptions(
+                            autoPlay: false,
+                            enableInfiniteScroll: true,
+                            enlargeCenterPage: true,
+                            initialPage: 1,
+                          ),
+                        ))
               : SizedBox();
     });
   }

@@ -240,7 +240,9 @@ class ProductsCategories extends StatelessWidget {
                                   "itemName": productMainCatController
                                       .mainCatList[index].categoryName,
                                   "id": productMainCatController
-                                      .mainCatList[index].id
+                                      .mainCatList[index].id,
+                                  "img": productMainCatController
+                                      .mainCatList[index].categoryImage,
                                 });
                           },
                           child: Column(
@@ -313,7 +315,8 @@ class _ProductsBannerCarouselState extends State<ProductsBannerCarousel> {
                         Navigator.pushNamed(context, AppRoutes.productList,
                             arguments: {
                               "itemName": e.bannerName,
-                              "id": e.routeKey
+                              "id": e.routeKey,
+                              "img": e.bannerImage
                             });
                       }
                       if (e.routeName == "product") {
