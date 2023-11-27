@@ -130,6 +130,7 @@ class _SolhAppState extends State<SolhApp> {
           onGenerateRoute: RouteGenerator.generateRoute,
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: analytics)],
           theme: ThemeData(
+            useMaterial3: false,
             progressIndicatorTheme: const ProgressIndicatorThemeData(
                 color: SolhColors.primary_green),
             textTheme: const TextTheme(

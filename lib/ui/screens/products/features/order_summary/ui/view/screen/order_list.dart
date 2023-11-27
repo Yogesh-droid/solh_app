@@ -96,7 +96,13 @@ class OrderSearchBar extends StatelessWidget {
                         orderListController.orderFilterStatus.value == ''
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: const Text('All'),
+                    label: Text('All',
+                        style: SolhTextStyles.CTA.copyWith(
+                          color:
+                              orderListController.orderFilterStatus.value == ''
+                                  ? SolhColors.white
+                                  : Colors.black,
+                        )),
                   ),
                 ),
                 const SizedBox(
@@ -113,7 +119,15 @@ class OrderSearchBar extends StatelessWidget {
                         orderListController.orderFilterStatus.value == 'placed'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: const Text('Ordered'),
+                    label: Text(
+                      'Ordered',
+                      style: SolhTextStyles.CTA.copyWith(
+                        color: orderListController.orderFilterStatus.value ==
+                                'placed'
+                            ? SolhColors.white
+                            : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -131,7 +145,13 @@ class OrderSearchBar extends StatelessWidget {
                                 'delivered'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: const Text('Delivered'),
+                    label: Text('Delivered',
+                        style: SolhTextStyles.CTA.copyWith(
+                          color: orderListController.orderFilterStatus.value ==
+                                  'delivered'
+                              ? SolhColors.white
+                              : Colors.black,
+                        )),
                   ),
                 ),
                 const SizedBox(
@@ -149,7 +169,13 @@ class OrderSearchBar extends StatelessWidget {
                                 'cancelled'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: const Text('Cancelled'),
+                    label: Text('Cancelled',
+                        style: SolhTextStyles.CTA.copyWith(
+                          color: orderListController.orderFilterStatus.value ==
+                                  'cancelled'
+                              ? SolhColors.white
+                              : Colors.black,
+                        )),
                   ),
                 ),
               ],

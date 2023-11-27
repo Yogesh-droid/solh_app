@@ -17,6 +17,7 @@ import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
+import 'package:solh/widgets_constants/zoom_image.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   ProductDetailScreen({required Map<dynamic, dynamic> args})
@@ -452,7 +453,14 @@ class _GetProductImagesState extends State<GetProductImages> {
             },
             controller: pageController,
             children: widget.productDetailsModel.product!.productImage!
-                .map((e) => Image.network(e))
+                .map(
+                  (e) => GestureDetector(
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ZoomImage(image: e),
+                    )),
+                    child: Image.network(e),
+                  ),
+                )
                 .toList(),
           ),
         ),

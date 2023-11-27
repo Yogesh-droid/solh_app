@@ -128,7 +128,7 @@ class _MasterScreen2State extends State<MasterScreen2>
           }
         } on SocketException catch (_) {
           ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Internet is not connected")));
+              const SnackBar(content: Text("Internet is not connected")));
           onConnectionFailed();
         }
       } else {}
@@ -139,13 +139,13 @@ class _MasterScreen2State extends State<MasterScreen2>
           .then((value) => DynamicLinkProvider.instance.initDynamicLink());
       showFeedbackForm();
     });
-    animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 800));
+    animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 800));
     bottomWidgetList.addAll([
-      HomeScreen(),
-      Journaling(),
+      const HomeScreen(),
+      const Journaling(),
       GetHelpScreen(),
-      ProductsHome(),
+      const ProductsHome(),
       // MyProfileScreenV2()
     ]);
     super.initState();
@@ -153,7 +153,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   void showFeedbackForm() {
     Future.delayed(
-      Duration(seconds: 40),
+      const Duration(seconds: 40),
       () {
         bottomNavigatorController.shouldShowFeedbackForm
             ? showBottomSheet(
@@ -263,7 +263,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             return Stack(
               children: [
                 AlertDialog(
-                  actionsPadding: EdgeInsets.all(8.0),
+                  actionsPadding: const EdgeInsets.all(8.0),
                   content: Text(
                     'Do you really want to exit app?'.tr,
                     style: SolhTextStyles.JournalingDescriptionText,
@@ -281,7 +281,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                         onTap: () {
                           exit(0);
                         }),
-                    SizedBox(width: 30),
+                    const SizedBox(width: 30),
                     InkWell(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -341,7 +341,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     ? Icons.star_border
                     : Icons.star,
                 size: 10.w,
-                color: Color(0xfff0ba00),
+                color: const Color(0xfff0ba00),
               ),
             ),
           ));
@@ -357,7 +357,7 @@ class _MasterScreen2State extends State<MasterScreen2>
         children: [
           IconButton(
               onPressed: () => Navigator.of(context).pop(),
-              icon: Icon(
+              icon: const Icon(
                 Icons.cancel,
                 size: 25,
                 color: SolhColors.grey_2,
@@ -370,20 +370,21 @@ class _MasterScreen2State extends State<MasterScreen2>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                   decoration: BoxDecoration(
                       color: Colors.black12,
                       borderRadius: BorderRadius.circular(8)),
-                  child: Text(
+                  child: const Text(
                     'Those who support us want to know if we are supporting you well. Please review us and give feedback.',
                     style: SolhTextStyles.QS_body_2_semi,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 getStarsRow(),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [],
                 ),
@@ -402,7 +403,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                       hintText: 'Your feedback :)'.tr,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: SolhColors.grey_3,
                           width: 1.0,
                         ),
@@ -410,11 +411,11 @@ class _MasterScreen2State extends State<MasterScreen2>
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Obx(() => bottomNavigatorController.isSubmittingFeedback.value
-                    ? SolhGreenButton(
+                    ? const SolhGreenButton(
                         child: ButtonLoadingAnimation(
                         ballColor: SolhColors.white,
                       ))
@@ -578,7 +579,7 @@ class _MasterScreen2State extends State<MasterScreen2>
         },
         child: SafeArea(
           child: Container(
-              color: Color.fromARGB(255, 247, 247, 247),
+              color: const Color.fromARGB(255, 247, 247, 247),
               height: 60,
               width: 60,
               child: Column(
@@ -588,7 +589,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                   GuideToorWidget(
                     description:
                         'Discover diverse resources and dive into the activities that stimulate your well-being',
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.menu,
                       color: SolhColors.primary_green,
                     ),
@@ -605,9 +606,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                             null
                         ? Text(
                             "More".tr,
-                            style: TextStyle(fontSize: 12),
+                            style: const TextStyle(fontSize: 12),
                           )
-                        : LiveBlink();
+                        : const LiveBlink();
                   }),
                 ],
               )),
@@ -687,7 +688,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   Widget getDrawer() {
     return Container(
-        decoration: BoxDecoration(shape: BoxShape.circle),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: InkWell(
           onTap: () {
             Navigator.of(context).push(
@@ -708,10 +709,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                         child: Container(
                           height: 30,
                           width: 30,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               color: SolhColors.primary_green),
-                          child: Icon(
+                          child: const Icon(
                             Icons.refresh_rounded,
                             color: SolhColors.white,
                             size: 20,
@@ -759,24 +760,24 @@ class _MasterScreen2State extends State<MasterScreen2>
       return Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          ModalBarrier(
+          const ModalBarrier(
             color: Colors.black26,
             dismissible: false,
           ),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 60.h,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10))),
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 UpperCloseDecoration(),
-                Divider(),
+                const Divider(),
                 SizedBox(
                   width: 100.w,
                   child: GridView.count(
@@ -888,7 +889,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                   ? Container(
                                       height: 14,
                                     )
-                                  : LiveBlink();
+                                  : const LiveBlink();
                             }),
                             getBottomSheetIcon(
                                 icon: 'assets/images/know-us-more.svg'),
@@ -901,7 +902,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                       ),
                       Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 14,
                           ),
                           Obx(() {
@@ -922,10 +923,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                                         child: Container(
                                           height: 30,
                                           width: 30,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                               color: SolhColors.primary_green),
-                                          child: Icon(
+                                          child: const Icon(
                                             CupertinoIcons.arrow_clockwise,
                                             color: SolhColors.white,
                                             size: 20,
@@ -983,7 +984,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   }
 
   void onConnectionFailed() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Internet is not connected"),
         behavior: SnackBarBehavior.floating));
     Navigator.push(
@@ -1037,7 +1038,7 @@ class UpperCloseDecoration extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(width: 15),
+            const SizedBox(width: 15),
             Container(
               height: 8,
               width: 50,
@@ -1052,7 +1053,7 @@ class UpperCloseDecoration extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(Icons.close),
+                child: const Icon(Icons.close),
               ),
             )
           ]),
@@ -1067,7 +1068,7 @@ class AnimatedHideContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Container(
             height: 10,
             width: 50,
@@ -1079,7 +1080,7 @@ class AnimatedHideContainer extends StatelessWidget {
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: Icon(Icons.close))
+              icon: const Icon(Icons.close))
         ]);
   }
 }

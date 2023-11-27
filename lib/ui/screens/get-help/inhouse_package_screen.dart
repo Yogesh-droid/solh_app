@@ -556,6 +556,7 @@ class _AboutAndPlansState extends State<AboutAndPlans> {
                                               .user!
                                               .id!,
                                     });
+
                                 Share.share(
                                     "Hey! Check out this ${widget.user!.name} package I found on the Solh App $link");
                                 _alliedController.isShareingLink(false);
