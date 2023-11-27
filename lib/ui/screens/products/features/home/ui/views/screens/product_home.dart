@@ -55,7 +55,10 @@ class _ProductsHomeState extends State<ProductsHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: ProductsAppBar(title: getDrawer(), popupMenu: getMorePopMenu()),
+        appBar: ProductsAppBar(
+          title: getDrawer(),
+          popupMenu: getMorePopMenu(),
+        ),
         bottomNavigationBar: Obx(() =>
             cartController.cartEntity.value.cartList != null &&
                     cartController.cartEntity.value.cartList!.items!.isNotEmpty
