@@ -50,7 +50,7 @@ class MoodAnalyticPage extends StatelessWidget {
     return SolhAppBar(
       title: Text(
         'Mood Analytics'.tr,
-        style: SolhTextStyles.AppBarText,
+        style: SolhTextStyles.QS_body_1_bold,
       ),
       callback: (() {
         moodMeterController.selectedFrequency.value = '7';

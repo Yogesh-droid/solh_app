@@ -453,11 +453,14 @@ class _GetProductImagesState extends State<GetProductImages> {
             },
             controller: pageController,
             children: widget.productDetailsModel.product!.productImage!
-                .map((e) => GestureDetector(
+                .map(
+                  (e) => GestureDetector(
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ZoomImage(image: e),
-                        )),
-                    child: Image.network(e)))
+                      builder: (context) => ZoomImage(image: e),
+                    )),
+                    child: Image.network(e),
+                  ),
+                )
                 .toList(),
           ),
         ),
