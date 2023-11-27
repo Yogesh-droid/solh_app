@@ -42,10 +42,13 @@ class _ProductsHomeState extends State<ProductsHome> {
   final CartController cartController = Get.find();
   @override
   void initState() {
-    productMainCatController.getMainCat();
-    productsCategoryController.getProductsCategories();
-    featureProductsController.getFeatureProducts();
-    productsHomeCarouselController.getBanners();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      productMainCatController.getMainCat();
+      productsCategoryController.getProductsCategories();
+      featureProductsController.getFeatureProducts();
+      productsHomeCarouselController.getBanners();
+    });
+
     super.initState();
   }
 
