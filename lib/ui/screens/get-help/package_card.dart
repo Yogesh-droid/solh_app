@@ -87,10 +87,7 @@ class PackageCard extends StatelessWidget {
                               ),
                               _alliedController.selectedPackage.value ==
                                       package!.sId
-                                  ? Positioned(
-                                      // right: 0,
-                                      // bottom: 10,
-                                      child: Container(
+                                  ? Container(
                                       margin: EdgeInsets.all(8),
                                       padding: const EdgeInsets.all(3.0),
                                       decoration: BoxDecoration(
@@ -106,7 +103,7 @@ class PackageCard extends StatelessWidget {
                                         "assets/images/check.svg",
                                         height: 30,
                                       ),
-                                    ))
+                                    )
                                   : Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Align(
