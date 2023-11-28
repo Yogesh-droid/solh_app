@@ -535,7 +535,7 @@ class RouteGenerator {
 
       case AppRoutes.cancelOrderPage:
         return MaterialPageRoute(
-            builder: ((context) => const CancelOrderPage()),
+            builder: ((context) => CancelOrderPage()),
             settings: RouteSettings(
                 name: AppRoutes.cancelOrderPage, arguments: args));
 

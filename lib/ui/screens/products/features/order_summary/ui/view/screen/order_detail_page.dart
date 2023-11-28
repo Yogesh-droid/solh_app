@@ -57,7 +57,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     return Scaffold(
         appBar: SolhAppBar(
             title: const Text(
-              "Order Detail",
+              "Order Details",
               style: SolhTextStyles.QS_body_1_bold,
             ),
             isLandingScreen: false),
@@ -102,7 +102,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ]),
           const Divider(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Text("OrderId", style: SolhTextStyles.QS_body_semi_1),
+            const Text("Order Ref No.", style: SolhTextStyles.QS_body_semi_1),
             Text(orderDetailEntity.userOrderDetails!.orderId ?? '',
                 style: SolhTextStyles.QS_body_semi_1)
           ]),

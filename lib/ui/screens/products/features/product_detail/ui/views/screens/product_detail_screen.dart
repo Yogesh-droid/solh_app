@@ -266,20 +266,21 @@ class GetProductStatsAndImage extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            size: 15,
-                            color: Colors.yellow[700],
-                          ),
-                          Text(
-                            productDetailsModel.product!.overAllRating
-                                .toString(),
-                            style: SolhTextStyles.QS_body_2,
-                          ),
-                        ],
-                      )
+                      if (productDetailsModel.product!.overAllRating! > 0)
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 15,
+                              color: Colors.yellow[700],
+                            ),
+                            Text(
+                              productDetailsModel.product!.overAllRating
+                                  .toString(),
+                              style: SolhTextStyles.QS_body_2,
+                            ),
+                          ],
+                        )
                     ],
                   ),
                   Text(

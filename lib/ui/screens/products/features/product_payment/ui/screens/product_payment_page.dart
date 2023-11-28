@@ -215,6 +215,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
 
       return response['data'];
     } on SocketException {
+      throw Exception("Internet is slow or connection interrupted");
     } catch (err) {
       throw Exception(err.toString());
     }

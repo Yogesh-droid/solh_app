@@ -31,7 +31,8 @@ class CancelReasonController extends GetxController {
     try {
       final ProductDataState<CancelReasonEntity> dataState =
           await cancelReasonUsecase.call(RequestParams(
-              url: "${APIConstants.api}/api/product/get-cancellation-reasons"));
+              url:
+                  "${APIConstants.api}/api/product/user-cancellation-reasons"));
       selectedReason.value = '';
       if (dataState.data != null) {
         cancelReasonEntity.value = dataState.data!;

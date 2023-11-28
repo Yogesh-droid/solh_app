@@ -14,14 +14,15 @@ import '../../../../../../../../widgets_constants/constants/colors.dart';
 import '../../../../../../../../widgets_constants/constants/textstyles.dart';
 
 class CancelOrderPage extends StatelessWidget {
-  const CancelOrderPage({super.key});
+  CancelOrderPage({super.key});
+  final TextEditingController textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final Map<dynamic, dynamic> args =
         ModalRoute.of(context)!.settings.arguments as Map<dynamic, dynamic>;
     final OrderDetailEntity orderDetailEntity = args['orderDetailEntity'];
-    final TextEditingController textEditingController = TextEditingController();
+
     final CancelReasonController cancelReasonController = Get.find();
     return Scaffold(
       appBar: SolhAppBar(
