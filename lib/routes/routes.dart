@@ -51,6 +51,7 @@ import 'package:solh/ui/screens/phone-authV2/otp-verification/otp_verification_s
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/add_address_page.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/views/screen/checkout_screen.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/screens/product_home.dart';
+import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/cancel_order_page.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_detail_page.dart';
 import 'package:solh/ui/screens/products/features/order_summary/ui/view/screen/order_list.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/views/screens/product_detail_screen.dart';
@@ -196,6 +197,7 @@ class AppRoutes {
   static const String productPaymentPage = "/productPaymentPage";
   static const String addAddressPage = '/addAddressPage';
   static const String orderdetails = '/orderDetails';
+  static const String cancelOrderPage = '/cancelOrderPage';
 }
 
 class RouteGenerator {
@@ -528,6 +530,12 @@ class RouteGenerator {
                   args: args as Map<String, dynamic>,
                 )),
             settings: const RouteSettings(name: AppRoutes.orderdetails));
+
+      case AppRoutes.cancelOrderPage:
+        return MaterialPageRoute(
+            builder: ((context) => const CancelOrderPage()),
+            settings: RouteSettings(
+                name: AppRoutes.cancelOrderPage, arguments: args));
 
       // case "/":
       //   return MaterialPageRoute(builder: ((context) => MasterScreen()));

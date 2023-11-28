@@ -33,11 +33,11 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       height: isExpaded ? MediaQuery.of(context).size.height / 2 : 60,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           boxShadow: [
             BoxShadow(
@@ -79,7 +79,7 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                               isExpaded = false;
                               setState(() {});
                             },
-                            child: Icon(
+                            child: const Icon(
                               CupertinoIcons.clear_thick,
                               color: SolhColors.grey,
                             ),
@@ -87,8 +87,8 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                         ],
                       ),
                     )
-                  : SizedBox.shrink(),
-              Expanded(child: isExpaded ? itemList() : SizedBox()),
+                  : const SizedBox.shrink(),
+              Expanded(child: isExpaded ? itemList() : const SizedBox()),
               Row(children: [
                 SizedBox(
                   child: Row(children: [
@@ -98,14 +98,14 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                           textStyle:
                               SolhTextStyles.CTA.copyWith(color: Colors.black)),
                     ),
-                    SizedBox(width: 15),
-                    Icon(
+                    const SizedBox(width: 15),
+                    const Icon(
                       Icons.arrow_drop_up,
                       color: SolhColors.primary_green,
                     )
                   ]),
                 ),
-                Spacer(),
+                const Spacer(),
                 SolhGreenButton(
                     onPressed: () {
                       Navigator.pushNamed(context, AppRoutes.checkoutScreen,
@@ -229,7 +229,7 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                         .productId!.id!);
               },
               separatorBuilder: (_, __) {
-                return GetHelpDivider();
+                return const GetHelpDivider();
               },
               itemCount:
                   cartController.cartEntity.value.cartList!.items!.length),

@@ -1136,11 +1136,6 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: (() {
-                      /*   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => GroupDetailsPage(
-                            group: discoverGroupController
-                                .discoveredGroupModel.value.groupList![index],
-                          ))); */
                       print(
                         discoverGroupController
                             .homepageGroupModel.value.groupList
@@ -1238,7 +1233,9 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 SvgPicture.asset(
                                   'assets/images/eye.svg',
-                                  color: SolhColors.primary_green,
+                                  colorFilter: const ColorFilter.mode(
+                                      SolhColors.primary_green,
+                                      BlendMode.srcIn),
                                   height: 11,
                                 ),
                                 SizedBox(
@@ -1253,17 +1250,6 @@ class _HomePageState extends State<HomePage> {
                               ],
                             ),
                           ),
-                          // Padding(
-                          //   padding: EdgeInsets.only(left: 8.0),
-                          //   child: Text(
-                          //     discoverGroupController.homepageGroupModel.value
-                          //             .groupList![index].groupDescription ??
-                          //         '',
-                          //     style: SolhTextStyles.JournalingHintText,
-                          //     maxLines: 3,
-                          //     overflow: TextOverflow.ellipsis,
-                          //   ),
-                          // ),
                           Obx(() {
                             return discoverGroupController.homepageGroupModel
                                     .value.groupList![index].isUserJoined!

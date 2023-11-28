@@ -2,80 +2,81 @@ import 'package:flutter/material.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class OrderListCard extends StatelessWidget {
-  OrderListCard(
+  const OrderListCard(
       {super.key,
-      required this.status,
+      this.status,
       required this.name,
-      required this.expectedDeliveryDate,
+      this.expectedDeliveryDate,
       required this.image,
-      required this.originalPrice,
+      this.originalPrice,
       required this.quantity,
       required this.refId,
       required this.salePrice});
 
-  final String status;
+  final String? status;
   final String name;
   final int salePrice;
-  final int originalPrice;
+  final int? originalPrice;
   final int quantity;
   final String image;
-  final String expectedDeliveryDate;
+  final String? expectedDeliveryDate;
   final String refId;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Image.network(
-                image,
-                height: 130,
-                fit: BoxFit.fitHeight,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              image,
+              height: 130,
+              fit: BoxFit.fitHeight,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      name,
+                      style: SolhTextStyles.QS_body_2_bold,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      'Item: $quantity',
+                      style: SolhTextStyles.QS_caption,
+                    ),
+                    if (expectedDeliveryDate != null)
                       Text(
-                        name,
-                        style: SolhTextStyles.QS_body_2_bold,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        'Item: $quantity',
+                        expectedDeliveryDate!,
                         style: SolhTextStyles.QS_caption,
                       ),
-                      Text(
-                        expectedDeliveryDate,
-                        style: SolhTextStyles.QS_caption,
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
               ),
-              Container(
-                height: 100,
-                child: Center(
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                  ),
+            ),
+            const SizedBox(
+              height: 100,
+              child: Center(
+                child: Icon(
+                  Icons.arrow_forward_ios_rounded,
                 ),
-              )
-            ],
-          ),
-          Divider(),
+              ),
+            )
+          ],
+        ),
+        const Divider(),
+        if (status != null)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -88,13 +89,13 @@ class OrderListCard extends StatelessWidget {
                       width: 8,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: getStatusColor(status)),
+                          color: getStatusColor(status!)),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      status,
+                      status!,
                       style: SolhTextStyles.QS_caption,
                     ),
                   ],
@@ -106,8 +107,7 @@ class OrderListCard extends StatelessWidget {
               ],
             ),
           )
-        ],
-      ),
+      ],
     );
   }
 }
