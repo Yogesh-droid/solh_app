@@ -135,4 +135,13 @@ void productControllerSetup() {
       ProductSubCatUsecase(productSubCatRepo: Get.find<ProductSubCatRepo>()));
   Get.put(ProductSubCatController(
       productSubCatUsecase: Get.find<ProductSubCatUsecase>()));
+
+  // cancel reason controller
+  Get.put<CancelReasonRepo>(CancelReasonRepoImpl());
+  Get.put(CancelReasonUsecase(cancelReasonRepo: Get.find<CancelReasonRepo>()));
+  Get.put<CancelOrderRepo>(CancelOrderRepoImpl());
+  Get.put(CancelOrderUsecase(cancelOrderRepo: Get.find<CancelOrderRepo>()));
+  Get.put(CancelReasonController(
+      cancelReasonUsecase: Get.find<CancelReasonUsecase>(),
+      cancelOrderUsecase: Get.find<CancelOrderUsecase>()));
 }

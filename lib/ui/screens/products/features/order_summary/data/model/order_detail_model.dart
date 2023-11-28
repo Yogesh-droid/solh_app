@@ -2,11 +2,16 @@ import 'package:solh/ui/screens/products/features/order_summary/domain/entity/or
 
 class OrderDetailModel extends OrderDetailEntity {
   OrderDetailModel(
-      {super.success, super.message, super.userOrderDetails, super.otherItems});
+      {super.success,
+      super.message,
+      super.userOrderDetails,
+      super.otherItems,
+      super.canCancel});
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
         success: json["success"],
+        canCancel: json["canCancel"],
         message: json["message"],
         userOrderDetails: json["userOrderDetails"] == null
             ? null

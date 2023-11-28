@@ -5,7 +5,12 @@ class OrderDetailEntity {
   final String? message;
   final UserOrderDetails? userOrderDetails;
   final List<OtherItems>? otherItems;
+  final bool? canCancel;
 
   OrderDetailEntity(
-      {this.success, this.message, this.userOrderDetails, this.otherItems});
+      {this.success,
+      this.message,
+      this.userOrderDetails,
+      this.otherItems,
+      this.canCancel});
 }

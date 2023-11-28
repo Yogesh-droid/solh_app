@@ -48,7 +48,7 @@ import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
-  MasterScreen({Key? key}) : super(key: key);
+  MasterScreen({super.key});
 
   final BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
@@ -68,18 +68,19 @@ class MasterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Running init in bottom ");
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: MasterScreen2(),
+        child: const MasterScreen2(),
       ),
     );
   }
 }
 
 class MasterScreen2 extends StatefulWidget {
+  const MasterScreen2({super.key});
+
   @override
   State<MasterScreen2> createState() => _MasterScreen2State();
 }
@@ -105,13 +106,13 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   @override
   void initState() {
-    print('init master');
+    debugPrint('init master');
     Connectivity().checkConnectivity().then((result) async {
       if (result == ConnectivityResult.none) {
         try {
           final result = await InternetAddress.lookup('example.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
+            debugPrint('connected');
           }
         } on SocketException catch (_) {
           onConnectionFailed();
@@ -124,9 +125,10 @@ class _MasterScreen2State extends State<MasterScreen2>
         try {
           final result = await InternetAddress.lookup('example.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
+            debugPrint('connected');
           }
         } on SocketException catch (_) {
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Internet is not connected")));
           onConnectionFailed();
@@ -153,7 +155,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   void showFeedbackForm() {
     Future.delayed(
-      const Duration(seconds: 40),
+      const Duration(seconds: 10),
       () {
         bottomNavigatorController.shouldShowFeedbackForm
             ? showBottomSheet(
@@ -435,6 +437,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                   .trim(),
                             });
 
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           } else {
                             SolhSnackbar.error(
@@ -561,12 +564,12 @@ class _MasterScreen2State extends State<MasterScreen2>
                       id: 'my_goal',
                       title: 'PRODUCTS',
                       child: Obx(() => SvgPicture.asset(
-                            'assets/images/groal tab vector.svg',
-                            color:
-                                bottomNavigatorController.activeIndex.value == 3
-                                    ? SolhColors.primary_green
-                                    : Colors.grey.shade600,
-                          )),
+                          'assets/images/product_icon.svg',
+                          colorFilter: ColorFilter.mode(
+                              bottomNavigatorController.activeIndex.value == 3
+                                  ? SolhColors.primary_green
+                                  : Colors.grey.shade600,
+                              BlendMode.srcIn))),
                     ),
                     label: "Products".tr),
               ],
@@ -776,7 +779,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                UpperCloseDecoration(),
+                const UpperCloseDecoration(),
                 const Divider(),
                 SizedBox(
                   width: 100.w,
@@ -1029,9 +1032,11 @@ class _MasterScreen2State extends State<MasterScreen2>
 }
 
 class UpperCloseDecoration extends StatelessWidget {
+  const UpperCloseDecoration({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 25,
       child: Row(
@@ -1046,7 +1051,7 @@ class UpperCloseDecoration extends StatelessWidget {
                   color: SolhColors.grey,
                   borderRadius: BorderRadius.circular(10)),
             ),
-            Container(
+            SizedBox(
               width: 40,
               height: 50,
               child: InkWell(
@@ -1062,6 +1067,8 @@ class UpperCloseDecoration extends StatelessWidget {
 }
 
 class AnimatedHideContainer extends StatelessWidget {
+  const AnimatedHideContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(
