@@ -255,7 +255,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   Future<bool> _onWillPop(BuildContext context) async {
     if (bottomNavigatorController.isDrawerOpen.value) {
       return Future.value(false);
-    } else if (bottomNavigatorController.activeIndex != 0) {
+    } else if (bottomNavigatorController.activeIndex.value != 0) {
       bottomNavigatorController.activeIndex.value = 0;
       return Future.value(false);
     } else {
@@ -954,6 +954,30 @@ class _MasterScreen2State extends State<MasterScreen2>
                             style: SolhTextStyles.QS_cap_semi,
                           )
                         ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.myGoalScreen);
+                        },
+                        child: Column(
+                          children: [
+                            Obx(() {
+                              return liveStreamController.liveStreamForUserModel
+                                          .value.webinar ==
+                                      null
+                                  ? Container(
+                                      height: 14,
+                                    )
+                                  : const LiveBlink();
+                            }),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/goals_icon.svg'),
+                            Text(
+                              'My Goals'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

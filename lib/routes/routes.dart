@@ -24,6 +24,7 @@ import 'package:solh/ui/screens/journaling/create-journal.dart';
 import 'package:solh/ui/screens/live_stream/live_stream.dart';
 import 'package:solh/ui/screens/live_stream/live_stream_waiting.dart';
 import 'package:solh/ui/screens/mood-meter/mood_analytic_page.dart';
+import 'package:solh/ui/screens/my-goals/my-goals-screen.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_menu.dart';
 import 'package:solh/ui/screens/my-profile/appointments/appointment_screen.dart';
 import 'package:solh/ui/screens/my-profile/appointments/profile_transfer.dart';
@@ -198,6 +199,7 @@ class AppRoutes {
   static const String addAddressPage = '/addAddressPage';
   static const String orderdetails = '/orderDetails';
   static const String cancelOrderPage = '/cancelOrderPage';
+  static const String myGoalsScreen = '/myGoalScreen';
 }
 
 class RouteGenerator {
@@ -534,6 +536,12 @@ class RouteGenerator {
       case AppRoutes.cancelOrderPage:
         return MaterialPageRoute(
             builder: ((context) => const CancelOrderPage()),
+            settings: RouteSettings(
+                name: AppRoutes.cancelOrderPage, arguments: args));
+
+      case AppRoutes.myGoalScreen:
+        return MaterialPageRoute(
+            builder: ((context) => const MyGoalsScreen()),
             settings: RouteSettings(
                 name: AppRoutes.cancelOrderPage, arguments: args));
 

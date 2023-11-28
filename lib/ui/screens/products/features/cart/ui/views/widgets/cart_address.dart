@@ -173,8 +173,16 @@ class _CartAddressState extends State<CartAddress> {
                       title: Text("Billing  to a different address?",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
-                      trailing:
-                          Radio(value: 1, groupValue: 0, onChanged: (_) {}),
+                      trailing: Radio(
+                          value: 1,
+                          groupValue: 0,
+                          onChanged: (_) {
+                            Navigator.pushNamed(
+                                context, AppRoutes.addAddressPage, arguments: {
+                              "addressList": null,
+                              'title': 'Add Billing Address'
+                            });
+                          }),
                     ),
 
                   // If Billing address is different than Shipping then Show it else hide it

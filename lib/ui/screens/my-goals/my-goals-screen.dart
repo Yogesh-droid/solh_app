@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
@@ -13,11 +12,11 @@ import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
-import '../../../bottom-navigation/bottom_navigator_controller.dart';
+
 import 'select_goal.dart';
 
 class MyGoalsScreen extends StatefulWidget {
-  MyGoalsScreen({Key? key}) : super(key: key);
+  const MyGoalsScreen({super.key});
 
   @override
   State<MyGoalsScreen> createState() => _MyGoalsScreenState();
@@ -26,69 +25,69 @@ class MyGoalsScreen extends StatefulWidget {
 class _MyGoalsScreenState extends State<MyGoalsScreen> {
   @override
   Widget build(BuildContext context) {
-    return MyGoalPage();
+    return const MyGoalPage();
   }
 }
 
 class MyGoalPage extends StatefulWidget {
-  const MyGoalPage({Key? key}) : super(key: key);
+  const MyGoalPage({super.key});
 
   @override
   State<MyGoalPage> createState() => _MyGoalPageState();
 }
 
 class _MyGoalPageState extends State<MyGoalPage> {
-  BottomNavigatorController _bottomNavigatorController = Get.find();
   GoalSettingController goalSettingController = Get.find();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 0,
-          ),
-          getTodayGoal(context),
-          Obx(() {
-            return goalSettingController.pesonalGoalModel.value.goalList !=
-                        null &&
-                    goalSettingController
-                            .pesonalGoalModel.value.goalList!.length >
-                        0
-                ? GetHelpDivider()
-                : Container();
-          }),
-          Obx(() {
-            return !goalSettingController.isPersonalGoalLoading.value
-                ? GoalName()
-                : personalGoallistShimmer();
-          }),
-          SizedBox(
-            height: 10,
-          ),
+    return Scaffold(
+      appBar: getAppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 0,
+            ),
+            getTodayGoal(context),
+            Obx(() {
+              return goalSettingController.pesonalGoalModel.value.goalList !=
+                          null &&
+                      goalSettingController
+                          .pesonalGoalModel.value.goalList!.isNotEmpty
+                  ? const GetHelpDivider()
+                  : Container();
+            }),
+            Obx(() {
+              return !goalSettingController.isPersonalGoalLoading.value
+                  ? GoalName()
+                  : personalGoallistShimmer();
+            }),
+            const SizedBox(
+              height: 10,
+            ),
 
-          Obx(() {
-            return goalSettingController.pesonalGoalModel.value.goalList !=
-                        null &&
-                    goalSettingController
-                            .pesonalGoalModel.value.goalList!.length >
-                        0 &&
-                    goalSettingController.isExpanded.value.toString() !=
-                        goalSettingController
-                            .pesonalGoalModel.value.goalList!.last.sId
-                            .toString()
-                ? GetHelpDivider()
-                : Container();
-          }),
+            Obx(() {
+              return goalSettingController.pesonalGoalModel.value.goalList !=
+                          null &&
+                      goalSettingController
+                          .pesonalGoalModel.value.goalList!.isNotEmpty &&
+                      goalSettingController.isExpanded.value.toString() !=
+                          goalSettingController
+                              .pesonalGoalModel.value.goalList!.last.sId
+                              .toString()
+                  ? const GetHelpDivider()
+                  : Container();
+            }),
 
-          // MileStone(),
-          SizedBox(
-            height: 10,
-          ),
-          GetHelpCategory(title: "I want to work on".tr),
-          IWantToWorkOn(),
-        ],
+            // MileStone(),
+            const SizedBox(
+              height: 10,
+            ),
+            GetHelpCategory(title: "I want to work on".tr),
+            IWantToWorkOn(),
+          ],
+        ),
       ),
     );
   }
@@ -103,7 +102,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
             children: [
               Text(
                 'Goals'.tr,
-                style: goalFontStyle(16.0, Color(0xffA6A6A6)),
+                style: goalFontStyle(16.0, const Color(0xffA6A6A6)),
               ),
               Row(
                 children: [
@@ -118,7 +117,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SelectGoal()));
+                                  builder: (context) => const SelectGoal()));
                         },
                         child: Row(
                           children: [
@@ -127,7 +126,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
                               style:
                                   goalFontStyle(14.0, SolhColors.primary_green),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.add,
                               color: SolhColors.primary_green,
                             )
@@ -168,20 +167,20 @@ class _MyGoalPageState extends State<MyGoalPage> {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 31.5,
           ),
           TodaysGoal(),
-          SizedBox(
+          const SizedBox(
             height: 24,
           ),
           SolhGreenButton(
-            child: Text('Add Goals +'.tr),
             height: 50,
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SelectGoal()));
+                  MaterialPageRoute(builder: (context) => const SelectGoal()));
             },
+            child: Text('Add Goals +'.tr),
           ),
         ],
       ),
@@ -194,7 +193,7 @@ class _MyGoalPageState extends State<MyGoalPage> {
       highlightColor: Colors.grey[300]!,
       child: ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: 3,
         itemBuilder: (context, index) {
           return Padding(
@@ -215,46 +214,8 @@ class _MyGoalPageState extends State<MyGoalPage> {
 
   SolhAppBar getAppBar() {
     return SolhAppBar(
-      title: Row(
-        children: [
-          Container(
-            decoration: BoxDecoration(shape: BoxShape.circle),
-            child: InkWell(
-              onTap: () {
-                print("side bar tapped");
-
-                _bottomNavigatorController.isDrawerOpen.value == true
-                    ? _bottomNavigatorController.isDrawerOpen.value = false
-                    : _bottomNavigatorController.isDrawerOpen.value = true;
-                // setState(() {
-                //   _isDrawerOpen = !_isDrawerOpen;
-                // });
-                print("opened");
-              },
-              child: Container(
-                decoration: BoxDecoration(shape: BoxShape.circle),
-                height: 40,
-                width: 30,
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: SvgPicture.asset(
-                  "assets/icons/app-bar/app-bar-menu.svg",
-                  width: 26,
-                  height: 24,
-                  color: SolhColors.primary_green,
-                ),
-              ),
-            ),
-          ),
-          // SizedBox(
-          //   width: 2.h,
-          // ),
-          // Text(
-          //   "Get help",
-          //   style: SolhTextStyles.AppBarText,
-          // ),
-        ],
-      ),
-      isLandingScreen: true,
+      title: const Text("My Goals", style: SolhTextStyles.QS_body_1_bold),
+      isLandingScreen: false,
     );
   }
 }
@@ -266,90 +227,86 @@ goalFontStyle(
 }
 
 class TodaysGoal extends StatelessWidget {
-  TodaysGoal({Key? key}) : super(key: key);
-  GoalSettingController _goalSettingController = Get.find();
+  TodaysGoal({super.key});
+  final GoalSettingController _goalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Today's Goals".tr,
-                style: goalFontStyle(24.0, Color(0xff666666), FontWeight.w400),
-              ),
-              Text(
-                "Track your today's goals".tr,
-                style: goalFontStyle(14.0, Color(0xffA6A6A6), FontWeight.w300),
-              )
-            ],
-          ),
-          Obx(() => Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    color: Colors.white,
-                    width: 60,
-                    height: 60,
-                    child: Center(
-                      child: Text(
-                        '${_goalSettingController.noOfGoalsCompleted.value}/${_goalSettingController.noOfGoals}\nCompleted',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey,
-                        ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Today's Goals".tr,
+              style:
+                  goalFontStyle(24.0, const Color(0xff666666), FontWeight.w400),
+            ),
+            Text(
+              "Track your today's goals".tr,
+              style:
+                  goalFontStyle(14.0, const Color(0xffA6A6A6), FontWeight.w300),
+            )
+          ],
+        ),
+        Obx(() => Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  color: Colors.white,
+                  width: 60,
+                  height: 60,
+                  child: Center(
+                    child: Text(
+                      '${_goalSettingController.noOfGoalsCompleted.value}/${_goalSettingController.noOfGoals}\nCompleted',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey,
                       ),
                     ),
                   ),
-                  Container(
-                    width: 70,
-                    height: 70,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          SolhColors.primary_green),
-                      backgroundColor: SolhColors.grey.withOpacity(0.5),
-                      value: _goalSettingController.noOfGoalsCompleted == 0
-                          ? 0
-                          : double.parse(_goalSettingController
-                                  .noOfGoalsCompleted
-                                  .toString()) /
-                              double.parse(
-                                  _goalSettingController.noOfGoals.toString()),
-                    ),
+                ),
+                SizedBox(
+                  width: 70,
+                  height: 70,
+                  child: CircularProgressIndicator(
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                        SolhColors.primary_green),
+                    backgroundColor: SolhColors.grey.withOpacity(0.5),
+                    value: _goalSettingController.noOfGoalsCompleted.value == 0
+                        ? 0
+                        : double.parse(_goalSettingController.noOfGoalsCompleted
+                                .toString()) /
+                            double.parse(
+                                _goalSettingController.noOfGoals.toString()),
                   ),
-                ],
-              ))
-        ],
-      ),
+                ),
+              ],
+            ))
+      ],
     );
   }
 }
 
 class GoalName extends StatelessWidget {
-  GoalName({Key? key}) : super(key: key);
-  GoalSettingController _goalSettingController = Get.find();
+  GoalName({super.key});
+  final GoalSettingController _goalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'goal name  ${_goalSettingController.pesonalGoalModel.value.goalList!.length}');
     return Obx(() => _goalSettingController.pesonalGoalModel.value.goalList !=
                 null &&
-            _goalSettingController.pesonalGoalModel.value.goalList!.length > 0
+            _goalSettingController.pesonalGoalModel.value.goalList!.isNotEmpty
         ? ExpansionPanelList(
             elevation: 0,
-            dividerColor: Color(0x30D9D9D9),
+            dividerColor: const Color(0x30D9D9D9),
             children: _goalSettingController.pesonalGoalModel.value.goalList!
                 .map((e) => getExpasionPanel(context, e))
                 .toList(),
             expansionCallback: (int index, bool isExpanded) {
-              print('Hello this is $isExpanded');
               _goalSettingController.isExpandedPanelExpanded.value =
                   !_goalSettingController.isExpandedPanelExpanded.value;
               if (_goalSettingController.expandedIndex.value != '' &&
@@ -386,135 +343,131 @@ class GoalName extends StatelessWidget {
                     e.sId !=
                         _goalSettingController
                             .pesonalGoalModel.value.goalList!.first.sId
-                ? GetHelpDivider()
+                ? const GetHelpDivider()
                 : Container(),
             Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Container(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: SolhColors.greyS200),
-                          borderRadius: BorderRadius.circular(8),
-                          color: SolhColors.greyS200.withOpacity(0.1)),
-                      child: ClipRRect(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: SolhColors.greyS200),
                         borderRadius: BorderRadius.circular(8),
-                        child: CachedNetworkImage(
-                            imageUrl: e.goalImage ?? '',
-                            height: 80,
-                            width: 80,
-                            fit: BoxFit.cover,
-                            errorWidget: (context, url, error) => Image.asset(
-                                'assets/images/no-image-available_err.png')),
+                        color: SolhColors.greyS200.withOpacity(0.1)),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: CachedNetworkImage(
+                          imageUrl: e.goalImage ?? '',
+                          height: 80,
+                          width: 80,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) => Image.asset(
+                              'assets/images/no-image-available_err.png')),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 8,
                       ),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          child: Text(
-                            e.goalName ?? '',
-                            overflow: TextOverflow.ellipsis,
-                            style: goalFontStyle(
-                              18.0,
-                              Color(0xff666666),
-                            ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: Text(
+                          e.goalName ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          style: goalFontStyle(
+                            18.0,
+                            const Color(0xff666666),
                           ),
                         ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Obx(() => Row(
-                              children: [
-                                Text(
-                                    _goalSettingController.completedGoalsToday
-                                            .contains(e.sId)
-                                        ? 'Done for the day'
-                                        : 'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
-                                    style: goalFontStyle(
-                                      14.0,
-                                      Color(0xffA6A6A6),
-                                      FontWeight.w300,
-                                    )),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                _goalSettingController.completedGoalsToday
-                                        .contains(e.sId)
-                                    ? Icon(
-                                        Icons.check_circle,
-                                        color: SolhColors.primary_green,
-                                      )
-                                    : Container()
-                              ],
-                            )),
-                      ],
-                    ),
-                    Spacer(),
-                    Obx(() {
-                      return
-                          // _goalSettingController.isExpandedPanelExpanded.value ==
-                          //             true &&
-                          _goalSettingController.expandedIndex.value == e.sId
-                              ? Container(
-                                  width: 30,
-                                  child: PopupMenuButton(
-                                    icon: Icon(
-                                      Icons.more_vert,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Obx(() => Row(
+                            children: [
+                              Text(
+                                  _goalSettingController.completedGoalsToday
+                                          .contains(e.sId)
+                                      ? 'Done for the day'
+                                      : 'MileStone Achieved ${e.milestoneReached ?? 0}/${e.milestone ?? 0}',
+                                  style: goalFontStyle(
+                                    14.0,
+                                    const Color(0xffA6A6A6),
+                                    FontWeight.w300,
+                                  )),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              _goalSettingController.completedGoalsToday
+                                      .contains(e.sId)
+                                  ? const Icon(
+                                      Icons.check_circle,
                                       color: SolhColors.primary_green,
-                                    ),
-                                    itemBuilder: (context) =>
-                                        <PopupMenuEntry<String>>[
-                                      PopupMenuItem(
-                                        value: 'edit',
-                                        child: Text('Edit'),
-                                      ),
-                                      PopupMenuItem(
-                                        value: 'delete',
-                                        child: Text('Delete'),
-                                      ),
-                                    ],
-                                    onSelected: (value) {
-                                      if (value == 'edit') {
-                                        //Get.toNamed('/goal-setting/edit-goal',arguments: e);
-                                      } else if (value == 'delete') {
-                                        showDeleteAlert(context, e);
-                                      }
-                                    },
+                                    )
+                                  : Container()
+                            ],
+                          )),
+                    ],
+                  ),
+                  const Spacer(),
+                  Obx(() {
+                    return
+                        // _goalSettingController.isExpandedPanelExpanded.value ==
+                        //             true &&
+                        _goalSettingController.expandedIndex.value == e.sId
+                            ? SizedBox(
+                                width: 30,
+                                child: PopupMenuButton(
+                                  icon: const Icon(
+                                    Icons.more_vert,
+                                    color: SolhColors.primary_green,
                                   ),
-                                )
-                              : Icon(
-                                  Icons.arrow_drop_down_circle,
-                                  color: SolhColors.primary_green,
-                                );
-                    })
-                  ],
-                ),
+                                  itemBuilder: (context) =>
+                                      <PopupMenuEntry<String>>[
+                                    const PopupMenuItem(
+                                      value: 'edit',
+                                      child: Text('Edit'),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: 'delete',
+                                      child: Text('Delete'),
+                                    ),
+                                  ],
+                                  onSelected: (value) {
+                                    if (value == 'edit') {
+                                      //Get.toNamed('/goal-setting/edit-goal',arguments: e);
+                                    } else if (value == 'delete') {
+                                      showDeleteAlert(context, e);
+                                    }
+                                  },
+                                ),
+                              )
+                            : const Icon(
+                                Icons.arrow_drop_down_circle,
+                                color: SolhColors.primary_green,
+                              );
+                  })
+                ],
               ),
             ),
           ],
         );
       },
-      body: Container(
-        child: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:
-                  e.activity!.map((e1) => getActivity(context, e1, e)).toList(),
-            ),
-            GetHelpDivider()
-          ],
-        ),
+      body: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children:
+                e.activity!.map((e1) => getActivity(context, e1, e)).toList(),
+          ),
+          const GetHelpDivider()
+        ],
       ),
       isExpanded: _goalSettingController.isExpanded.value.toString() ==
           e.sId?.toString(),
@@ -555,12 +508,12 @@ class GoalName extends StatelessWidget {
                     color: SolhColors.white,
                     border: Border.all(color: SolhColors.grey239)),
                 child: _goalSettingController.isUpdateGoal.value
-                    ? CircularProgressIndicator(
+                    ? const CircularProgressIndicator(
                         strokeWidth: 2,
                       )
                     : e1.isComplete != null
                         ? e1.isComplete!
-                            ? Icon(
+                            ? const Icon(
                                 Icons.check,
                                 color: SolhColors.primary_green,
                                 size: 16,
@@ -584,13 +537,13 @@ class GoalName extends StatelessWidget {
             'Is activity completed ?',
             style: goalFontStyle(
               18.0,
-              Color(0xff666666),
+              const Color(0xff666666),
             ),
           ),
           actions: <Widget>[
             MaterialButton(
               color: SolhColors.white,
-              child: Text(
+              child: const Text(
                 'Not yet',
                 style: TextStyle(color: Colors.grey),
               ),
@@ -600,7 +553,7 @@ class GoalName extends StatelessWidget {
             ),
             MaterialButton(
               color: SolhColors.primary_green,
-              child: Text(
+              child: const Text(
                 'Yes',
                 style: TextStyle(color: Colors.white),
               ),
@@ -624,13 +577,13 @@ class GoalName extends StatelessWidget {
             'Do you sure you want to delete this goal ?',
             style: goalFontStyle(
               18.0,
-              Color(0xff666666),
+              const Color(0xff666666),
             ),
           ),
           actions: <Widget>[
             MaterialButton(
               color: SolhColors.white,
-              child: Text(
+              child: const Text(
                 'No',
                 style: TextStyle(color: Colors.grey),
               ),
@@ -640,7 +593,7 @@ class GoalName extends StatelessWidget {
             ),
             MaterialButton(
               color: SolhColors.primary_green,
-              child: Text(
+              child: const Text(
                 'Yes',
                 style: TextStyle(color: Colors.white),
               ),
@@ -696,19 +649,20 @@ class _MileStoneState extends State<MileStone> {
 } */
 
 class IWantToWorkOn extends StatelessWidget {
-  IWantToWorkOn({Key? key}) : super(key: key);
-  GoalSettingController _goalSettingController = Get.find();
+  IWantToWorkOn({super.key});
+  final GoalSettingController _goalSettingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => _goalSettingController.loadingCat.value
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : _goalSettingController.goalsCatModel.value.categories != null
             ? Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h),
                 child: ListView.builder(
-                    padding: EdgeInsets.only(left: 8, right: 8, bottom: 60),
-                    physics: NeverScrollableScrollPhysics(),
+                    padding:
+                        const EdgeInsets.only(left: 8, right: 8, bottom: 60),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: _goalSettingController
                         .goalsCatModel.value.categories!.length,
                     shrinkWrap: true,
@@ -734,12 +688,13 @@ class IWantToWorkOn extends StatelessWidget {
                                       .categories![index].sId ??
                                   '');
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AddSelectGoal()));
+                              builder: (context) => const AddSelectGoal()));
                         }),
                         child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                              border: Border.all(color: Color(0xffA6A6A6)),
+                              border:
+                                  Border.all(color: const Color(0xffA6A6A6)),
                               borderRadius: BorderRadius.circular(
                                 8,
                               )),
@@ -754,7 +709,7 @@ class IWantToWorkOn extends StatelessWidget {
                                       '',
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
@@ -762,8 +717,8 @@ class IWantToWorkOn extends StatelessWidget {
                                 _goalSettingController.goalsCatModel.value
                                         .categories![index].name ??
                                     '',
-                                style: goalFontStyle(
-                                    14.0, Color(0xff666666), FontWeight.w400),
+                                style: goalFontStyle(14.0,
+                                    const Color(0xff666666), FontWeight.w400),
                               )),
                             ]),
                           ),
