@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:charts_painter/chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -186,6 +187,7 @@ class MoodAnalyticPage extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
+                      MoodAnalyticChart()
                     ],
                   ),
                 ),
@@ -697,5 +699,84 @@ class MoodAnalyticPage extends StatelessWidget {
               ),
             );
           });
+  }
+}
+
+class MoodAnalyticChart extends StatelessWidget {
+  MoodAnalyticChart({super.key});
+  MoodMeterController meterController = Get.find();
+  final List<int> list = [
+    5,
+    3,
+    5,
+    5,
+    5,
+    6,
+    3,
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: Stack(
+        children: [
+          Container(
+            height: 200,
+            width: 5,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: meterController.graphYAxisData
+                  .map((e) => Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SimpleImageContainer(
+                              imageUrl: e.emojiUrl, radius: 30),
+                          Container(
+                            width: 5,
+                            height: 200 / meterController.graphYAxisData.length,
+                            color: e.color,
+                          ),
+                        ],
+                      ))
+                  .toList()
+                  .reversed
+                  .toList(),
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              width: 100.h - 40,
+              height: 3,
+              color: SolhColors.grey,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Chart(
+                state: ChartState(
+                    backgroundDecorations: [
+                  SparkLineDecoration(lineColor: SolhColors.Grey_1)
+                ],
+                    data: ChartData([
+                      list
+                          .map((e) => ChartItem(
+                                e.toDouble(),
+                              ))
+                          .toList()
+                    ]),
+                    itemOptions: BubbleItemOptions(
+                      padding: EdgeInsets.all(10),
+                      bubbleItemBuilder: (p0) {
+                        return p0.itemIndex % 2 == 0
+                            ? BubbleItem(color: SolhColors.primary_green)
+                            : BubbleItem(color: SolhColors.black);
+                      },
+                    ))),
+          ),
+        ],
+      ),
+    );
   }
 }

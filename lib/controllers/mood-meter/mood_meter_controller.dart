@@ -8,6 +8,13 @@ import 'package:solh/model/mood-meter/mood_meter.dart';
 import 'package:solh/model/mood-meter/sub_mood_analytics_data.dart';
 import 'package:solh/services/network/network.dart';
 
+class GraphYAxisData {
+  final String emojiUrl;
+  final Color color;
+
+  const GraphYAxisData({required this.color, required this.emojiUrl});
+}
+
 class MoodMeterController extends GetxController {
   var isLoading = false.obs;
   List<String> gifList = [];
@@ -16,6 +23,8 @@ class MoodMeterController extends GetxController {
   var moodAnlyticsModel = MoodAnalyticsModel().obs;
   var subMoodAnlyticsModel = SubMoodAnlyticsModel().obs;
   var selectedFrequency = '7'.obs;
+
+  var graphYAxisData = <GraphYAxisData>[];
   RxMap<String, double> selectedFrequencyMoodMap = Map<String, double>().obs;
   // var selectedFrequencyMoodMap = {}.obs;
   var isFetchingMoodAnalytics = false.obs;
@@ -96,12 +105,19 @@ class MoodMeterController extends GetxController {
       getSubMoodAnalytics(selectedFrequency.value,
           moodAnlyticsModel.value.moodAnalytic!.first.sId!);
     }
+
+    moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
+      graphYAxisData.add(GraphYAxisData(
+          color: Color(int.parse((element.hexCode!.replaceAll('#', '0xFF')))),
+          emojiUrl: element.media ?? ''));
+    });
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
       selectedFrequencyMoodMap[element.name ?? ''] =
           element.moodCount!.toDouble();
       int color = int.parse((element.hexCode!.replaceAll('#', '0xFF')));
       activeColorList.add(Color(color));
     });
+
     log(selectedFrequencyMoodMap.toString(), name: 'selectedFrequencyMoodMap');
     moodAnlyticsModel.refresh();
     isFetchingMoodAnalytics.value = false;
