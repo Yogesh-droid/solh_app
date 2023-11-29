@@ -52,8 +52,9 @@ class ItemWidget extends StatelessWidget {
                     return Image.asset("assets/icons/app-bar/no-image.png");
                   },
                   placeholder: (context, url) {
-                    return Image.asset("assets/icons/app-bar/no-image.png");
+                    return Image.asset("assets/images/opening_link.gif");
                   },
+                  fit: BoxFit.fill,
                 )),
             const SizedBox(width: 20),
             Expanded(
@@ -67,7 +68,7 @@ class ItemWidget extends StatelessWidget {
                               fontFamily: GoogleFonts.quicksand().fontFamily),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis),
-                      Html(data: descrition, style: {
+                      Html(data: descrition!.trim(), style: {
                         "p": Style(
                           maxLines: 1,
                           textOverflow: TextOverflow.ellipsis,

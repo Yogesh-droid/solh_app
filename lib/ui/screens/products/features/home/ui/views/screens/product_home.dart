@@ -81,8 +81,8 @@ class _ProductsHomeState extends State<ProductsHome> {
           children: [
             Obx(() => ListView(
                   children: [
-                    const ProductsSearchBar(),
-                    const GetHelpDivider(),
+                    // const ProductsSearchBar(),
+                    // const GetHelpDivider(),
                     ProductsCategories(),
                     const GetHelpDivider(),
                     if (productsHomeCarouselController

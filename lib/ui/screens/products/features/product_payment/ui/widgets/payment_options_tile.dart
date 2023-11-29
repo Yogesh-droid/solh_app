@@ -14,7 +14,7 @@ class PaymentOptionsTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Payment Options",
+            Text("Select Payment Options",
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black)),
             const SizedBox(height: 20),

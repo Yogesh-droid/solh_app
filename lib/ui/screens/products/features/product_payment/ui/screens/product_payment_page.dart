@@ -34,6 +34,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
+        isVideoCallScreen: true,
         title: const Text(
           "Payment Mode",
           style: SolhTextStyles.QS_body_1_bold,

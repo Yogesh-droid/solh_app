@@ -69,6 +69,7 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
+        isVideoCallScreen: true,
         title: Obx(() => SizedBox(
               width: 220,
               child: Text(

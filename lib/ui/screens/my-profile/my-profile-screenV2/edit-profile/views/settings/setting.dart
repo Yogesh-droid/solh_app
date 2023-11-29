@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/bloc/user-bloc.dart';
@@ -54,7 +53,7 @@ class Setting extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, AppRoutes.accountPrivacy,
                 arguments: {}),
             child: getSettingOptions(
-              Icon(
+              const Icon(
                 CupertinoIcons.lock_shield,
                 color: SolhColors.primary_green,
               ),
@@ -62,7 +61,7 @@ class Setting extends StatelessWidget {
               'Delete account'.tr,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           // InkWell(
@@ -96,23 +95,23 @@ class Setting extends StatelessWidget {
           // ),
           InkWell(
             onTap: () => Navigator.push(context,
-                MaterialPageRoute(builder: (context) => BlockedUsers())),
+                MaterialPageRoute(builder: (context) => const BlockedUsers())),
             child: getSettingOptions(
-                Icon(
+                const Icon(
                   CupertinoIcons.minus_circle,
                   color: SolhColors.primary_green,
                 ),
                 'Blocked Users'.tr,
                 null),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           InkWell(
             onTap: () =>
                 Navigator.pushNamed(context, AppRoutes.languageSettingPage),
             child: getSettingOptions(
-                Icon(
+                const Icon(
                   CupertinoIcons.t_bubble,
                   color: SolhColors.primary_green,
                   size: 20,
@@ -120,13 +119,13 @@ class Setting extends StatelessWidget {
                 'Languages'.tr,
                 null),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           InkWell(
             onTap: () => Navigator.pushNamed(context, AppRoutes.OrgSetting),
             child: getSettingOptions(
-                Icon(
+                const Icon(
                   Icons.account_balance_outlined,
                   color: SolhColors.primary_green,
                 ),
@@ -161,9 +160,9 @@ class Setting extends StatelessWidget {
           //         );
           //       })
           //     : Container(),
-          Expanded(child: SizedBox()),
-          GetLogoutButton(),
-          SizedBox(
+          const Expanded(child: SizedBox()),
+          const GetLogoutButton(),
+          const SizedBox(
             height: 40,
           ),
         ]),
@@ -179,7 +178,7 @@ Widget getSettingOptions(
 ) {
   return InkWell(
     child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
           color: SolhColors.white,
           borderRadius: BorderRadius.circular(8),
@@ -190,7 +189,7 @@ Widget getSettingOptions(
           Row(
             children: [
               icon,
-              SizedBox(
+              const SizedBox(
                 width: 6,
               ),
               Column(
@@ -215,7 +214,7 @@ Widget getSettingOptions(
               )
             ],
           ),
-          Icon(
+          const Icon(
             Icons.arrow_forward_ios_sharp,
             color: SolhColors.Grey_1,
             size: 15,
@@ -227,19 +226,19 @@ Widget getSettingOptions(
 }
 
 class GetLogoutButton extends StatelessWidget {
-  const GetLogoutButton({Key? key}) : super(key: key);
+  const GetLogoutButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SolhGreenBorderButton(
       backgroundColor: SolhColors.greenShade3,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Icon(
+        const Icon(
           Icons.logout,
           color: SolhColors.primary_green,
           size: 20,
         ),
-        SizedBox(
+        const SizedBox(
           width: 6,
         ),
         Text('Logout'.tr,
@@ -265,6 +264,7 @@ class GetLogoutButton extends StatelessWidget {
           Get.delete<BottomNavigatorController>();
           Get.delete<ProfileController>();
 
+          // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.getStarted, (route) => false);
         });
@@ -315,7 +315,7 @@ Widget defaultViewDialogContent(context, SettingController settingController) {
             Navigator.of(context).pop();
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             decoration: BoxDecoration(
                 color: SolhColors.Grey_1,
                 borderRadius: BorderRadius.circular(4)),
@@ -326,7 +326,7 @@ Widget defaultViewDialogContent(context, SettingController settingController) {
             ),
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         InkWell(
@@ -335,7 +335,7 @@ Widget defaultViewDialogContent(context, SettingController settingController) {
             Navigator.of(context).pop();
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             decoration: BoxDecoration(
                 color: SolhColors.primary_green,
                 borderRadius: BorderRadius.circular(4)),

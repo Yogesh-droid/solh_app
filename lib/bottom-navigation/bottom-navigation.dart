@@ -789,125 +789,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                     crossAxisSpacing: 4.0,
                     mainAxisSpacing: 8.0,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Get.find<GetHelpController>()
-                              .getAlliedTherapyListMore();
-                          Navigator.pushNamed(
-                              context, AppRoutes.viewAllAlliedCategories,
-                              arguments: {
-                                "onTap": (value, name) {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.viewAllAlliedExpert,
-                                      arguments: {
-                                        "slug": value,
-                                        "name": name,
-                                        "type": 'specialization',
-                                        "enableAppbar": true
-                                      });
-                                }
-                              });
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/allied.svg'),
-                            Text(
-                              'Allied Therapies'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
-
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.pushNamed(
-                      //         context, AppRoutes.viewAllAlliedCategories,
-                      //         arguments: {
-                      //           "onTap": (value) {
-                      //             Navigator.pushNamed(
-                      //                 context, AppRoutes.viewAllAlliedExpert,
-                      //                 arguments: {
-                      //                   "slug": value,
-                      //                   "name": value,
-                      //                   "type": 'specialization',
-                      //                   "enableAppbar": true
-                      //                 });
-                      //           }
-                      //         });
-                      //   },
-                      //   child: Column(
-                      //     children: [
-                      //       getBottomSheetIcon(icon: 'assets/images/packages.svg'),
-                      //       Text('Packages'.tr)
-                      //     ],
-                      //   ),
-                      // ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, AppRoutes.psychologyTest);
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/self-assessment.svg'),
-                            Text(
-                              'Self Assessment'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AnonymousDialog());
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/talk-now-sheet.svg'),
-                            Text(
-                              'Talk Now'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.videoPlaylist);
-                        },
-                        child: Column(
-                          children: [
-                            Obx(() {
-                              return liveStreamController.liveStreamForUserModel
-                                          .value.webinar ==
-                                      null
-                                  ? Container(
-                                      height: 14,
-                                    )
-                                  : const LiveBlink();
-                            }),
-                            getBottomSheetIcon(
-                                icon: 'assets/images/know-us-more.svg'),
-                            Text(
-                              'Featured Videos'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
                       Column(
                         children: [
-                          const SizedBox(
-                            height: 14,
-                          ),
+                          const SizedBox(height: 14),
                           Obx(() {
                             return profileController.isProfileLoading.value
                                 ? Center(
@@ -952,12 +836,28 @@ class _MasterScreen2State extends State<MasterScreen2>
                           Text(
                             'My Profile'.tr,
                             style: SolhTextStyles.QS_cap_semi,
-                          )
+                          ),
                         ],
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.myGoalScreen);
+                          Navigator.pushNamed(context, AppRoutes.OrgSetting);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/org_icon_bottom.svg'),
+                            Text(
+                              'Organization'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.videoPlaylist);
                         },
                         child: Column(
                           children: [
@@ -965,11 +865,62 @@ class _MasterScreen2State extends State<MasterScreen2>
                               return liveStreamController.liveStreamForUserModel
                                           .value.webinar ==
                                       null
-                                  ? Container(
-                                      height: 14,
-                                    )
+                                  ? Container(height: 14)
                                   : const LiveBlink();
                             }),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/know-us-more.svg'),
+                            Text(
+                              'Featured Videos'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.psychologyTest);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/self-assessment.svg'),
+                            Text(
+                              'Self Assessment'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AnonymousDialog());
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/talk-now-sheet.svg'),
+                            Text(
+                              'Talk Now'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.myGoalScreen);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
                             getBottomSheetIcon(
                                 icon: 'assets/images/goals_icon.svg'),
                             Text(

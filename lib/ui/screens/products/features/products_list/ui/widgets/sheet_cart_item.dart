@@ -40,7 +40,7 @@ class SheetCartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       height: 120,
       child: Row(
         children: [
@@ -54,10 +54,11 @@ class SheetCartItem extends StatelessWidget {
                 placeholder: (context, url) {
                   return Image.asset("assets/icons/app-bar/no-image.png");
                 },
+                fit: BoxFit.fill,
               )),
           const SizedBox(width: 20),
           Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

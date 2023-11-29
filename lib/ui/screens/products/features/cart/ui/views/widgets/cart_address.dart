@@ -34,7 +34,7 @@ class _CartAddressState extends State<CartAddress> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -69,9 +69,9 @@ class _CartAddressState extends State<CartAddress> {
               ),
               _addressController.addressEntity.value.addressList!.isNotEmpty
                   ? Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Container(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(12.0),
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                             border: Border.all(color: SolhColors.grey_2),
@@ -90,7 +90,7 @@ class _CartAddressState extends State<CartAddress> {
                                         color: Colors.black))),
                             const SizedBox(height: 5),
                             Text(
-                                "${_addressController.selectedAddress.value.buildingName} ${_addressController.selectedAddress.value.street}\n${_addressController.selectedAddress.value.landmark} ${_addressController.selectedAddress.value.city} ${_addressController.selectedAddress.value.state} ${_addressController.selectedAddress.value.postalCode}",
+                                "${_addressController.selectedAddress.value.buildingName}, ${_addressController.selectedAddress.value.street}\n${_addressController.selectedAddress.value.landmark}, ${_addressController.selectedAddress.value.city}, ${_addressController.selectedAddress.value.state} ${_addressController.selectedAddress.value.postalCode}",
                                 style: GoogleFonts.signika(
                                     textStyle: const TextStyle(
                                         fontSize: 14,
@@ -163,6 +163,7 @@ class _CartAddressState extends State<CartAddress> {
                   if (_addressController.selectedAddress ==
                       _addressController.selectedBillingAddress)
                     ListTile(
+                      contentPadding: const EdgeInsets.all(12),
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.addAddressPage,
                             arguments: {
@@ -170,7 +171,7 @@ class _CartAddressState extends State<CartAddress> {
                               'title': 'Add Billing Address'
                             });
                       },
-                      title: Text("Billing  to a different address?",
+                      title: Text("Billing to a different address?",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
                       trailing: Radio(
@@ -192,9 +193,9 @@ class _CartAddressState extends State<CartAddress> {
                     _addressController
                             .addressEntity.value.addressList!.isNotEmpty
                         ? Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(12.0),
                             child: Container(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(12.0),
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                   border: Border.all(color: SolhColors.grey_2),
@@ -213,7 +214,7 @@ class _CartAddressState extends State<CartAddress> {
                                               color: Colors.black))),
                                   const SizedBox(height: 5),
                                   Text(
-                                      "${_addressController.selectedBillingAddress.value.buildingName} ${_addressController.selectedBillingAddress.value.street}\n${_addressController.selectedBillingAddress.value.landmark} ${_addressController.selectedBillingAddress.value.city} ${_addressController.selectedBillingAddress.value.state} ${_addressController.selectedBillingAddress.value.postalCode}",
+                                      "${_addressController.selectedBillingAddress.value.buildingName}, ${_addressController.selectedBillingAddress.value.street}\n${_addressController.selectedBillingAddress.value.landmark}, ${_addressController.selectedBillingAddress.value.city}, ${_addressController.selectedBillingAddress.value.state}, ${_addressController.selectedBillingAddress.value.postalCode}",
                                       style: GoogleFonts.signika(
                                           textStyle: const TextStyle(
                                               fontSize: 14,

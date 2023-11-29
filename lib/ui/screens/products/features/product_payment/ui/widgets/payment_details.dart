@@ -38,7 +38,7 @@ class PaymentDetails extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Item Total',
+                    'Items Total',
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey),
                   ),
@@ -46,12 +46,12 @@ class PaymentDetails extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
-                        color: SolhColors.primary_green,
+                        color: SolhColors.greenShade4,
                         borderRadius: BorderRadius.circular(5)),
                     child: Text(
                       "Saved $currencySymbol ${(total) - (total - discount)} ",
                       style: SolhTextStyles.Caption_2_semi.copyWith(
-                          color: Colors.white),
+                          color: SolhColors.primary_green, fontSize: 7),
                     ),
                   )
                 ],
@@ -90,7 +90,7 @@ class PaymentDetails extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Shipping Charge',
+              Text('Shipping Charges',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
               Text('$currencySymbol $shipping',
@@ -131,7 +131,7 @@ class PaymentDetails extends StatelessWidget {
                         SolhColors.primary_green, BlendMode.srcIn),
                   ),
                   Text(
-                    "Yay! Your total discount is $currencySymbol $discount",
+                    "Yay! You Saved $currencySymbol $discount",
                     style: SolhTextStyles.Caption_2_semi.copyWith(
                         color: SolhColors.primary_green),
                     textAlign: TextAlign.center,

@@ -40,6 +40,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Scaffold(
         appBar: SolhAppBar(
           isLandingScreen: false,
+          isVideoCallScreen: true,
           title: const Text(
             'Your Cart',
             style: SolhTextStyles.QS_body_1_bold,
@@ -54,8 +55,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           const CartAddress(),
                           const GetHelpDivider(),
                           Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12),
+                            padding: const EdgeInsets.all(12),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -197,7 +197,7 @@ class PaymentSummarySection extends StatelessWidget {
     final CartController cartController = Get.find();
     return Obx(() {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -215,7 +215,7 @@ class PaymentSummarySection extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      'Item Total',
+                      'Items Total',
                       style: SolhTextStyles.QS_body_semi_1.copyWith(
                           color: SolhColors.dark_grey),
                     ),
@@ -223,12 +223,12 @@ class PaymentSummarySection extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: SolhColors.primary_green,
+                          color: SolhColors.greenShade4,
                           borderRadius: BorderRadius.circular(5)),
                       child: Text(
                         "Saved ${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) - ((cartController.totalPayblePrice.value) - (cartController.cartEntity.value.discount!))} ",
                         style: SolhTextStyles.Caption_2_semi.copyWith(
-                            color: Colors.white),
+                            color: SolhColors.primary_green, fontSize: 8),
                       ),
                     )
                   ],
@@ -269,7 +269,7 @@ class PaymentSummarySection extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Shipping Charge',
+                Text('Shipping Charges',
                     style: SolhTextStyles.QS_body_semi_1.copyWith(
                         color: SolhColors.dark_grey)),
                 Text(
@@ -311,7 +311,7 @@ class PaymentSummarySection extends StatelessWidget {
                           SolhColors.primary_green, BlendMode.srcIn),
                     ),
                     Text(
-                      "Yay! Your total discount is ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount}",
+                      "Yay! You Saved ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount}",
                       style: SolhTextStyles.Caption_2_semi.copyWith(
                           color: SolhColors.primary_green),
                       textAlign: TextAlign.center,
@@ -335,7 +335,7 @@ class CheckoutButton extends StatelessWidget {
     final CartController cartController = Get.find();
     final AddressController addressController = Get.find();
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       height: 80,
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -352,7 +352,7 @@ class CheckoutButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Total Payble",
+                "Total Payable",
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Obx(() => Text(
