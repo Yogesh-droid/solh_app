@@ -203,7 +203,10 @@ class RelatedProductsSection extends StatelessWidget {
                           .product!.relatedProducts![index].inCartCount,
                       isInWishlist: productDetailsModel
                               .product!.relatedProducts![index].isWishlisted ??
+
                           false,
+                      currency: productDetailsModel
+                          .product!.relatedProducts![index].currency,
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                             AppRoutes.productDetailScreen,
@@ -412,6 +415,7 @@ class AddToCartBuyNowButton extends StatelessWidget {
             productsInCart: productDetailController
                     .productDetail.value.product!.inCartCount ??
                 0,
+            buttonWidth: 200,
           ),
           // SolhGreenMiniButton(
           //   backgroundColor: SolhColors.primaryRed,

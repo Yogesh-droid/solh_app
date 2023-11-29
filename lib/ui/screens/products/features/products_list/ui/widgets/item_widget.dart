@@ -40,13 +40,14 @@ class ItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 195,
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(right: 12, top: 12, bottom: 12),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
                 flex: 1,
                 child: CachedNetworkImage(
+                  fit: BoxFit.fitWidth,
                   imageUrl: image,
                   errorWidget: (context, url, error) {
                     return Image.asset("assets/icons/app-bar/no-image.png");
@@ -54,7 +55,6 @@ class ItemWidget extends StatelessWidget {
                   placeholder: (context, url) {
                     return Image.asset("assets/images/opening_link.gif");
                   },
-                  fit: BoxFit.fill,
                 )),
             const SizedBox(width: 20),
             Expanded(

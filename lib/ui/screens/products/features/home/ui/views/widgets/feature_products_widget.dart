@@ -199,10 +199,14 @@ class ProductsCard extends StatelessWidget {
 
 class AddRemoveProductButtoon extends StatefulWidget {
   const AddRemoveProductButtoon(
-      {super.key, required this.productId, required this.productsInCart});
+      {super.key,
+      required this.productId,
+      required this.productsInCart,
+      this.buttonWidth = 100});
 
   final String productId;
   final int productsInCart;
+  final double buttonWidth;
 
   @override
   State<AddRemoveProductButtoon> createState() =>
@@ -217,7 +221,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
-    addToCartController.addToCart(
+    await addToCartController.addToCart(
         productId: widget.productId, quantity: quantity);
     await cartController.getCart();
   }
@@ -240,7 +244,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                   children: [
                     SolhGreenButton(
                       height: 35,
-                      // width: 100,
+                      width: widget.buttonWidth,
                       onPressed: () {
                         poductNumber.value++;
                         onValueChange(poductNumber.value);

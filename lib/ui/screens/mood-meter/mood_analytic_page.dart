@@ -274,7 +274,7 @@ class MoodAnalyticPage extends StatelessWidget {
 
   Widget emotionsCount() {
     return moodMeterController.isFetchingSubMoodAnalytics.value
-        ? SizedBox(height: 200, child: ButtonLoadingAnimation())
+        ? const SizedBox(height: 200, child: ButtonLoadingAnimation())
         : (moodMeterController.subMoodAnlyticsModel.value.data == null ||
                 moodMeterController.subMoodAnlyticsModel.value.data!.isEmpty
             ? Container()
@@ -286,7 +286,7 @@ class MoodAnalyticPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                       ),
                       Text(
@@ -305,7 +305,7 @@ class MoodAnalyticPage extends StatelessWidget {
                             .subMoodAnlyticsModel.value.data!
                             .map(
                               (e) => Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                     color: SolhColors.red_shade_3,
                                     borderRadius: BorderRadius.circular(12)),
@@ -411,7 +411,7 @@ class MoodAnalyticPage extends StatelessWidget {
                             '',
                         radius: 110,
                       )
-                    : Text(
+                    : const Text(
                         'No mood recorded',
                         style: SolhTextStyles.QS_caption_bold,
                       ),
