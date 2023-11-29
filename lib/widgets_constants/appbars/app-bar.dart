@@ -418,7 +418,10 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
         const SizedBox(
           width: 10,
         ),
-        popupMenu ?? const SizedBox.shrink()
+        popupMenu ?? const SizedBox.shrink(),
+        const SizedBox(
+          width: 10,
+        ),
       ],
       elevation: 0,
       leading: title ??
