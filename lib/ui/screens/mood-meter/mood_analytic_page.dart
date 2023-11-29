@@ -217,7 +217,7 @@ class MoodAnalyticPage extends StatelessWidget {
                           '');
                 },
                 child: Container(
-                  width: 90,
+                  width: 70,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color:
@@ -264,7 +264,7 @@ class MoodAnalyticPage extends StatelessWidget {
           },
           separatorBuilder: (context, index) {
             return const SizedBox(
-              width: 10,
+              width: 5,
             );
           },
           itemCount:

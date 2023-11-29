@@ -37,7 +37,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
     controller = PageController(initialPage: 0);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         showDialog(
           barrierDismissible: false,
           context: context,
@@ -47,7 +47,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
     });
     super.initState();
 
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         psychologyTestController.questionList.length == 1
             ? isLast = true
@@ -55,7 +55,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
       });
     });
 
-    Future.delayed(Duration(milliseconds: 200), () {
+    Future.delayed(const Duration(milliseconds: 200), () {
       getIsNextAvailable();
     });
   }
@@ -104,7 +104,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                       },
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -116,7 +116,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                         onPressed: () {
                           if (controller.page != 0) {
                             controller.previousPage(
-                                duration: Duration(milliseconds: 500),
+                                duration: const Duration(milliseconds: 500),
                                 curve: Curves.easeOut);
                           } else {
                             return;
@@ -127,8 +127,6 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                         backgroundColor: isNextActive
                             ? SolhColors.primary_green
                             : SolhColors.dark_grey,
-                        child: Text(isLast ? "Done" : 'Next',
-                            style: SolhTextStyles.GreenButtonText),
                         onPressed: isNextActive
                             ? () {
                                 if (isLast) {
@@ -142,15 +140,18 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                                   }));
                                 } else {
                                   controller.nextPage(
-                                      duration: Duration(milliseconds: 300),
+                                      duration:
+                                          const Duration(milliseconds: 300),
                                       curve: Curves.decelerate);
                                 }
                               }
                             : () {},
+                        child: Text(isLast ? "Done" : 'Next',
+                            style: SolhTextStyles.GreenButtonText),
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   )
                 ],
@@ -185,7 +186,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
     TestQuestionList e,
   ) {
     return Padding(
-      padding: EdgeInsets.only(left: 8.0, top: 30, right: 8),
+      padding: const EdgeInsets.only(left: 8.0, top: 30, right: 8),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,11 +200,11 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
               " ${index + 1}/${psychologyTestController.questionList.length}",
               style: SolhTextStyles.QS_body_2_semi,
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width - 100,
               child: Text(e.question ?? ''),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             psychologyTestController
@@ -212,7 +213,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                 ? getOptionGrid(e.answer!, e)
                 : ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: e.answer!.length,
                     itemBuilder: (context, index) {
                       return questionTile(e.answer![index], e);
@@ -228,8 +229,8 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
     return GridView.builder(
       itemCount: answer.length,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, crossAxisSpacing: 10, mainAxisSpacing: 10),
       itemBuilder: (BuildContext context, int index) {
         return Card(
@@ -318,7 +319,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                   onChanged: (value) {
                     saveTestDate(answer, testQuestion);
                   }),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width - 90,
                 child: Text(
                   answer.title ?? '',
@@ -331,7 +332,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
   }
 
   void getIsNextAvailable() {
-    Future.delayed(Duration(milliseconds: 300), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
       if (psychologyTestController.selectedQuestion.length >
           controller.page!.round()) {
         setState(() {
@@ -364,7 +365,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                       ? Center(
                           child: MyLoader(),
                         )
-                      : (Container(
+                      : (SizedBox(
                           width: 100.w,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
