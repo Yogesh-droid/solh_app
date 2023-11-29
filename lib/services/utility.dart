@@ -6,7 +6,7 @@ import '../widgets_constants/constants/colors.dart';
 
 class Utility {
   static String getCurrentTime() {
-    DateTime now = new DateTime.now();
+    DateTime now = DateTime.now();
     return now.toString();
   }
 
@@ -14,8 +14,10 @@ class Utility {
       GlobalKey<ScaffoldState> scaffoldKey, String message) {
     ScaffoldMessenger.of(scaffoldKey.currentState!.context)
         .showSnackBar(SnackBar(
-      content: Text(message),
-    ));
+            content: Text(
+      message,
+      style: const TextStyle(color: Colors.white),
+    )));
   }
 
   static void showToast(String message) {
@@ -56,13 +58,13 @@ class Utility {
         child: Material(
           color: Colors.transparent,
           child: GestureDetector(
-            onTap: () => print('ON TAP OVERLAY!'),
+            onTap: () => debugPrint('ON TAP OVERLAY!'),
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: SolhColors.primary_green,
               ),
-              child: Icon(Icons.video_camera_front_rounded),
+              child: const Icon(Icons.video_camera_front_rounded),
             ),
           ),
         ),

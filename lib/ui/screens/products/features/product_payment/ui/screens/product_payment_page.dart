@@ -15,6 +15,7 @@ import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/pay
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../../../../../../../controllers/profile/profile_controller.dart';
 
@@ -27,6 +28,8 @@ class ProductPaymentPage extends StatefulWidget {
 }
 
 class _ProductPaymentPageState extends State<ProductPaymentPage> {
+  bool isPaymentStarted = false;
+  bool isCreatingOrder = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,26 +55,43 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         Padding(
           padding: const EdgeInsets.all(24),
           child: SolhGreenButton(
-            onPressed: () {
+            onPressed: () async {
               // launchUrl(Uri.parse(
               // 'upi://pay?pa=dinesh@dlanzer&pn=Dinesh&am=1&tn=Test Payment&cu=INR'));
 
               double amount = widget.args['totalPrice'] -
                   widget.args['discount'] +
                   widget.args['shipping'];
-              startPayment(
-                  amount: '${amount.toInt()}',
-                  currency: widget.args['feeCode'],
-                  feeCode: widget.args['feeCode'].toString().toLowerCase(),
-                  paymentGateway: "Stripe",
-                  paymentSource: "App");
+              setState(() {
+                isPaymentStarted = true;
+              });
+              await startPayment(
+                      amount: '${amount.toInt()}',
+                      currency: widget.args['feeCode'],
+                      feeCode: widget.args['feeCode'].toString().toLowerCase(),
+                      paymentGateway: "Stripe",
+                      paymentSource: "App")
+                  .onError((error, stackTrace) {
+                setState(() {
+                  isPaymentStarted = false;
+                });
+              });
+
+              setState(() {
+                isPaymentStarted = false;
+              });
             },
             height: 40,
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              "Make Payment",
-              style: SolhTextStyles.CTA.copyWith(color: Colors.white),
-            ),
+            child: isPaymentStarted || isCreatingOrder
+                ? MyLoader(
+                    radius: 10,
+                    strokeWidth: 2,
+                  )
+                : Text(
+                    "Make Payment",
+                    style: SolhTextStyles.CTA.copyWith(color: Colors.white),
+                  ),
           ),
         ),
       ]),
@@ -243,11 +263,24 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   }
 
   Future<void> makeOrderRequest(Map<String, dynamic> postBody) async {
+    setState(() {
+      isCreatingOrder = true;
+    });
     try {
       Map<String, dynamic> response = await Network.makePostRequestWithToken(
-          isEncoded: true,
-          url: '${APIConstants.api}/api/product/order-product',
-          body: postBody);
+              isEncoded: true,
+              url: '${APIConstants.api}/api/product/order-product',
+              body: postBody)
+          .onError((error, stackTrace) {
+        setState(() {
+          isCreatingOrder = false;
+        });
+        throw Exception(error);
+      });
+
+      setState(() {
+        isCreatingOrder = false;
+      });
 
       if (response["success"]) {
         final cartController = Get.find<CartController>();
