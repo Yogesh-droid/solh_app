@@ -42,7 +42,9 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         PaymentDetails(
             total: double.parse(widget.args['totalPrice'].toString()),
             discount: double.parse(widget.args['discount'].toString()),
-            shipping: double.parse(widget.args['shipping'].toString())),
+            shipping: double.parse(widget.args['shipping'].toString()),
+            currency: widget.args['feeCode'],
+            currencySymbol: widget.args['currency']),
         const SizedBox(height: 10),
         const GetHelpDivider(),
         const PaymentOptionsTile(),
@@ -59,8 +61,8 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                   widget.args['shipping'];
               startPayment(
                   amount: '${amount.toInt()}',
-                  currency: "INR",
-                  feeCode: "inr",
+                  currency: widget.args['feeCode'],
+                  feeCode: widget.args['feeCode'].toString().toLowerCase(),
                   paymentGateway: "Stripe",
                   paymentSource: "App");
             },

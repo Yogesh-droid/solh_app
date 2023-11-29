@@ -184,8 +184,8 @@ class ProductsSearchBar extends StatelessWidget {
         hintText: "Search for Mental wellness Products",
         hintStyle: MaterialStateProperty.resolveWith(
             (states) => const TextStyle(color: SolhColors.Grey_1)),
-        trailing: [
-          const Icon(
+        trailing: const [
+          Icon(
             Icons.search,
             color: SolhColors.primary_green,
           )

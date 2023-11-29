@@ -54,19 +54,21 @@ class CartButton extends StatelessWidget {
                   color: SolhColors.primary_green,
                 ),
               ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: SolhColors.primary_green),
-                  child: Text(itemsInCart.toString(),
-                      style: SolhTextStyles.QS_caption_2_bold.copyWith(
-                        color: SolhColors.white,
-                      )),
-                ),
-              )
+              if (itemsInCart > 0)
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: SolhColors.primary_green),
+                    child: Text(itemsInCart.toString(),
+                        style: SolhTextStyles.QS_caption_2_bold.copyWith(
+                          color: SolhColors.white,
+                        )),
+                  ),
+                )
             ],
           ),
         ),

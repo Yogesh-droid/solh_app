@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
@@ -7,10 +8,14 @@ class PaymentDetails extends StatelessWidget {
       {super.key,
       required this.total,
       required this.discount,
-      required this.shipping});
+      required this.shipping,
+      required this.currency,
+      required this.currencySymbol});
   final double total;
   final double discount;
   final double shipping;
+  final String currency;
+  final String currencySymbol;
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +35,44 @@ class PaymentDetails extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Order Total',
-                style: SolhTextStyles.QS_body_semi_1.copyWith(
-                    color: SolhColors.dark_grey),
+              Row(
+                children: [
+                  Text(
+                    'Item Total',
+                    style: SolhTextStyles.QS_body_semi_1.copyWith(
+                        color: SolhColors.dark_grey),
+                  ),
+                  const SizedBox(width: 5),
+                  Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                        color: SolhColors.primary_green,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      "Saved $currencySymbol ${(total) - (total - discount)} ",
+                      style: SolhTextStyles.Caption_2_semi.copyWith(
+                          color: Colors.white),
+                    ),
+                  )
+                ],
               ),
-              Text(
-                "₹ $total",
-                style: SolhTextStyles.QS_body_semi_1.copyWith(
-                    color: SolhColors.dark_grey),
-              )
+              Row(children: [
+                Text(
+                  "$currencySymbol $total",
+                  style: SolhTextStyles.QS_body_semi_1.copyWith(
+                      color: SolhColors.dark_grey,
+                      decoration: TextDecoration.lineThrough),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  "$currencySymbol ${total - discount}",
+                  style: SolhTextStyles.QS_body_semi_1.copyWith(
+                      color: SolhColors.dark_grey),
+                )
+              ])
             ],
           ),
-          const Divider(),
+          /* const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -55,7 +85,7 @@ class PaymentDetails extends StatelessWidget {
                     color: SolhColors.dark_grey),
               ),
             ],
-          ),
+          ), */
           const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +93,7 @@ class PaymentDetails extends StatelessWidget {
               Text('Shipping Charge',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
-              Text('₹ $shipping',
+              Text('$currencySymbol $shipping',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.dark_grey)),
             ],
@@ -73,16 +103,42 @@ class PaymentDetails extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Total Price',
+                'Grand Total',
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black),
               ),
               Text(
-                '₹ ${total + shipping - discount}',
+                '$currencySymbol ${total + shipping - discount}',
                 style: SolhTextStyles.QS_body_semi_1.copyWith(
                     color: SolhColors.black),
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: SolhColors.greenShade4,
+                borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    "assets/images/discount.svg",
+                    colorFilter: const ColorFilter.mode(
+                        SolhColors.primary_green, BlendMode.srcIn),
+                  ),
+                  Text(
+                    "Yay! Your total discount is $currencySymbol $discount",
+                    style: SolhTextStyles.Caption_2_semi.copyWith(
+                        color: SolhColors.primary_green),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
           )
         ],
       ),
