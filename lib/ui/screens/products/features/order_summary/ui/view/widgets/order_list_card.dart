@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
 
 class OrderListCard extends StatelessWidget {
@@ -66,11 +67,15 @@ class OrderListCard extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 100,
-              child: Center(
-                child: Icon(
-                  Icons.arrow_forward_ios_rounded,
+            const Padding(
+              padding: EdgeInsets.all(24.0),
+              child: SizedBox(
+                height: 100,
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: SolhColors.primary_green,
+                  ),
                 ),
               ),
             )
@@ -79,7 +84,7 @@ class OrderListCard extends StatelessWidget {
         const Divider(),
         if (status != null)
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
