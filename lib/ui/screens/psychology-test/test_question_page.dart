@@ -74,7 +74,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
       child: Obx(() {
         return psychologyTestController.isQuestionsLoading.value
             ? Center(
-                child: CircularProgressIndicator(),
+                child: MyLoader(),
               )
             : Column(
                 children: [
@@ -347,46 +347,61 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
 
   Widget disclaimerContent() {
     final PsychologyTestController psychologyTestController = Get.find();
-    return AlertDialog(
-      content: Obx(() {
-        return psychologyTestController.isQuestionsLoading.value
-            ? Center(
-                child: MyLoader(),
-              )
-            : Container(
-                width: 100.w,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Disclaimer',
-                      style: SolhTextStyles.QS_head_5.copyWith(
-                          color: SolhColors.primary_green),
-                    ),
-                    Html(
-                      data: psychologyTestController.testQuestionModel.value
-                              .testDetail!.testDisclaimer ??
-                          '',
-                      style: {
-                        "p": Style(
-                          fontSize: FontSize(16),
-                          color: SolhColors.dark_grey,
-                          fontWeight: FontWeight.w500,
+    return Obx(() {
+      return psychologyTestController.isQuestionsLoading.value
+          ? Center(
+              child: MyLoader(),
+            )
+          : (psychologyTestController
+                          .testQuestionModel.value.testDetail!.testDisclaimer ==
+                      "" ||
+                  psychologyTestController
+                          .testQuestionModel.value.testDetail!.testDisclaimer ==
+                      null
+              ? noDisclaimerFound()
+              : AlertDialog(
+                  content: psychologyTestController.isQuestionsLoading.value
+                      ? Center(
+                          child: MyLoader(),
                         )
-                      },
-                    ),
-                    SolhGreenMiniButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text('Accept',
-                          style: SolhTextStyles.CTA.copyWith(
-                            color: SolhColors.white,
-                          )),
-                    )
-                  ],
-                ),
-              );
-      }),
-    );
+                      : (Container(
+                          width: 100.w,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Disclaimer',
+                                style: SolhTextStyles.QS_head_5.copyWith(
+                                    color: SolhColors.primary_green),
+                              ),
+                              Html(
+                                data: psychologyTestController.testQuestionModel
+                                        .value.testDetail!.testDisclaimer ??
+                                    '',
+                                style: {
+                                  "p": Style(
+                                    fontSize: FontSize(16),
+                                    color: SolhColors.dark_grey,
+                                    fontWeight: FontWeight.w500,
+                                  )
+                                },
+                              ),
+                              SolhGreenMiniButton(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: Text('Accept',
+                                    style: SolhTextStyles.CTA.copyWith(
+                                      color: SolhColors.white,
+                                    )),
+                              )
+                            ],
+                          ),
+                        ))));
+    });
+  }
+
+  Widget noDisclaimerFound() {
+    Navigator.of(context).pop();
+    return Container();
   }
 
   void saveTestDate(Answer answer, TestQuestionList testQuestion) {
