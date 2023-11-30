@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
@@ -100,7 +101,8 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                         cartController.cartEntity.value.cartList!.items![index]
                             .productId!.id),
                     id,
-                    quantity);
+                    quantity,
+                    0);
               },
             )
           : const SizedBox.shrink()),
@@ -134,10 +136,14 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                               image: productsListController
                                       .productList[index].defaultImage ??
                                   '',
+                              stock: productsListController
+                                  .productList[index].stockAvailable,
                               currency: productsListController
                                   .productList[index].currency,
                               descrition: productsListController
-                                  .productList[index].description,
+                                      .productList[index].shortDescription ??
+                                  productsListController
+                                      .productList[index].description,
                               productName: productsListController
                                   .productList[index].productName,
                               itemPrice: productsListController
@@ -165,7 +171,9 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
                                     productsListController
                                         .productList[index].id!,
                                     productsListController
-                                        .productList[index].inCartCount!);
+                                        .productList[index].inCartCount!,
+                                    productsListController
+                                        .productList[index].stockAvailable!);
                               },
                             ),
                           );
@@ -217,14 +225,22 @@ class _ProductLisingPageState extends State<ProductLisingPage> {
 
 // to increase item's quantity
 
-  Future<void> onIncreaseCartCount(int index, String id, int quantity) async {
-    if (index >= 0) {
-      productsListController.productList[index].inCartCount =
-          productsListController.productList[index].inCartCount! + 1;
-      productsListController.productList.refresh();
+  Future<void> onIncreaseCartCount(
+      int index, String id, int quantity, int? stock) async {
+    if (quantity == stock) {
+      Utility.showToast("No More Item in Stock");
+      return;
     }
-
     await addToCartController.addToCart(productId: id, quantity: quantity + 1);
-    await cartController.getCart();
+    if (addToCartController.error.value.isEmpty) {
+      if (index >= 0) {
+        productsListController.productList[index].inCartCount =
+            productsListController.productList[index].inCartCount! + 1;
+        productsListController.productList.refresh();
+      }
+      await cartController.getCart();
+    } else {
+      Utility.showToast(addToCartController.error.value);
+    }
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
@@ -126,6 +127,18 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                                       .items![index].quantity!);
                             },
                             "onIncrease": (index, id, quantity) {
+                              if (cartController.cartEntity.value.cartList!
+                                      .items![index].quantity! ==
+                                  cartController
+                                      .cartEntity
+                                      .value
+                                      .cartList!
+                                      .items![index]
+                                      .productId!
+                                      .stockAvailable!) {
+                                Utility.showToast("No More Item in Stock");
+                                return;
+                              }
                               //  Id saved in controller so that we can check on which item we need to show loader//
                               Get.find<AddToCartController>()
                                       .indexOfItemToBeUpdated
@@ -179,6 +192,13 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                     productName: cartController.cartEntity.value.cartList!
                         .items![index].productId!.productName,
                     onIncreaseCartCount: () {
+                      if (cartController.cartEntity.value.cartList!
+                              .items![index].quantity! ==
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.stockAvailable!) {
+                        Utility.showToast("No More Item in Stock");
+                        return;
+                      }
                       //  Id saved in controller so that we can check on which item we need to show loader//
                       Get.find<AddToCartController>()
                               .indexOfItemToBeUpdated

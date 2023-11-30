@@ -21,7 +21,8 @@ class ItemWidget extends StatelessWidget {
       this.isWishListed,
       required this.onIncreaseCartCount,
       required this.onDecreaseCartCount,
-      this.descrition});
+      this.descrition,
+      this.stock});
 
   final String? descrition;
   final String image;
@@ -32,6 +33,7 @@ class ItemWidget extends StatelessWidget {
   final int? discountedPrice;
   final int? inCartNo;
   final bool? isWishListed;
+  final int? stock;
   final Function() onAddedCart;
   final Function() onIncreaseCartCount;
   final Function() onDecreaseCartCount;
@@ -68,7 +70,9 @@ class ItemWidget extends StatelessWidget {
                               fontFamily: GoogleFonts.quicksand().fontFamily),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis),
-                      Html(data: descrition!.trim(), style: {
+                      Html(data: descrition!.trim(), shrinkWrap: true, style: {
+                        "body": Style(
+                            padding: HtmlPaddings.zero, margin: Margins.zero),
                         "p": Style(
                           maxLines: 1,
                           textOverflow: TextOverflow.ellipsis,
@@ -88,25 +92,27 @@ class ItemWidget extends StatelessWidget {
                               ? MrpContainer(
                                   mrp: itemPrice ?? 0, currency: currency)
                               : const SizedBox.shrink(),
+                          const Spacer(),
+                          stock! > 0
+                              ? inCartNo != null && inCartNo! > 0
+                                  ? CartCountBtn(
+                                      decreaseCartCount: onDecreaseCartCount,
+                                      increaseCartCount: onIncreaseCartCount,
+                                      itemInCart: inCartNo ?? 0,
+                                    )
+                                  : SolhGreenButton(
+                                      height: 30,
+                                      width: 50,
+                                      onPressed: onAddedCart,
+                                      child: Text(
+                                        'Add',
+                                        style: GoogleFonts.quicksand(
+                                            textStyle: SolhTextStyles.CTA,
+                                            color: SolhColors.white),
+                                      ))
+                              : const Text("Out of Stock")
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      inCartNo != null && inCartNo! > 0
-                          ? CartCountBtn(
-                              decreaseCartCount: onDecreaseCartCount,
-                              increaseCartCount: onIncreaseCartCount,
-                              itemInCart: inCartNo ?? 0,
-                            )
-                          : SolhGreenButton(
-                              height: 30,
-                              width: 100,
-                              onPressed: onAddedCart,
-                              child: Text(
-                                'Add To Cart',
-                                style: GoogleFonts.quicksand(
-                                    textStyle: SolhTextStyles.CTA,
-                                    color: SolhColors.white),
-                              ))
                     ]))
           ],
         ));

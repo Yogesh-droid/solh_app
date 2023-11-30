@@ -16,6 +16,7 @@ class AddToCartController extends GetxController {
   Future<void> addToCart(
       {required String productId, required int quantity}) async {
     try {
+      error.value = '';
       addingToCart.value = true;
       final ProductDataState<String> dataState = await addToCartUsecase.call(
           RequestParams(
@@ -28,6 +29,7 @@ class AddToCartController extends GetxController {
         addingToCart.value = false;
       } else {
         addingToCart.value = false;
+        error.value = dataState.exception.toString();
         msg.value = dataState.exception.toString();
       }
     } on Exception catch (e) {

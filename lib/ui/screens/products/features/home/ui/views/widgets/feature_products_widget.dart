@@ -221,9 +221,9 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
   late ValueNotifier<int> poductNumber;
 
   Future<void> onValueChange(int quantity) async {
-    await addToCartController.addToCart(
-        productId: widget.productId, quantity: quantity);
-    await cartController.getCart();
+    await addToCartController
+        .addToCart(productId: widget.productId, quantity: quantity)
+        .then((value) => cartController.getCart());
   }
 
   @override

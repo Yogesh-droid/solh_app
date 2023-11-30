@@ -49,6 +49,7 @@ class Products {
   int? inCartCount;
   String? currency;
   String? description;
+  String? shortDescription;
   String? defaultImage;
 
   Products(
@@ -62,6 +63,7 @@ class Products {
       this.inCartCount,
       this.currency,
       this.description,
+      this.shortDescription,
       this.defaultImage,
       this.productQuantity});
 
@@ -80,5 +82,6 @@ class Products {
     currency = json['currency'];
     defaultImage = json['defaultImage'];
     description = json['description'];
+    shortDescription = json['shortDescription'];
   }
 }

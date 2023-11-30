@@ -16,6 +16,7 @@ class CartController extends GetxController {
   CartController({required this.cartUsecase});
 
   Future<void> getCart() async {
+    error.value = '';
     try {
       isCartLoading.value = true;
       final ProductDataState<CartEntity> dataState = await cartUsecase

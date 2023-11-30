@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
@@ -524,8 +525,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                     title: 'HOME',
                     child: Obx(
                       () => bottomNavigatorController.activeIndex.value == 0
-                          ? SvgPicture.asset('assets/images/home_solid.svg')
-                          : SvgPicture.asset('assets/images/home_outlined.svg'),
+                          ? SvgPicture.asset('assets/images/home_solid.svg',
+                              height: 20)
+                          : SvgPicture.asset('assets/images/home_outlined.svg',
+                              height: 20),
                     ),
                   ),
                   label: "Home".tr,
@@ -544,11 +547,11 @@ class _MasterScreen2State extends State<MasterScreen2>
                       () => bottomNavigatorController.activeIndex.value == 1
                           ? SvgPicture.asset(
                               'assets/images/journaling.svg',
-                              height: 18,
+                              height: 20,
                             )
                           : SvgPicture.asset(
                               'assets/images/journalling outline.svg',
-                              height: 18,
+                              height: 20,
                             ),
                     ),
                   ),
@@ -556,22 +559,24 @@ class _MasterScreen2State extends State<MasterScreen2>
                 ),
                 getHelpItem(),
                 BottomNavigationBarItem(
-                    icon: GuideToorWidget(
-                      description:
-                          'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
-                      icon: SvgPicture.asset(
-                          'assets/images/groal tab vector.svg'),
-                      id: 'my_goal',
-                      title: 'PRODUCTS',
-                      child: Obx(() => SvgPicture.asset(
-                          'assets/images/product_icon.svg',
-                          colorFilter: ColorFilter.mode(
-                              bottomNavigatorController.activeIndex.value == 3
-                                  ? SolhColors.primary_green
-                                  : Colors.grey.shade600,
-                              BlendMode.srcIn))),
-                    ),
-                    label: "Products".tr),
+                  icon: GuideToorWidget(
+                    description:
+                        'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
+                    icon:
+                        SvgPicture.asset('assets/images/groal tab vector.svg'),
+                    id: 'my_goal',
+                    title: 'PRODUCTS',
+                    child: Obx(() => SvgPicture.asset(
+                        'assets/images/product_icon.svg',
+                        height: 20,
+                        colorFilter: ColorFilter.mode(
+                            bottomNavigatorController.activeIndex.value == 3
+                                ? SolhColors.primary_green
+                                : Colors.grey.shade600,
+                            BlendMode.srcIn))),
+                  ),
+                  label: "Products".tr,
+                ),
               ],
             ),
           )),
@@ -601,6 +606,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     child: Icon(
                       Icons.menu,
                       color: Colors.grey.shade600,
+                      size: 18,
                     ),
                   ),
                   Obx(() {
@@ -609,7 +615,8 @@ class _MasterScreen2State extends State<MasterScreen2>
                             null
                         ? Text(
                             "More".tr,
-                            style: const TextStyle(fontSize: 12),
+                            style: GoogleFonts.quicksand(
+                                textStyle: TextStyle(fontSize: 12)),
                           )
                         : const LiveBlink();
                   }),
@@ -632,10 +639,10 @@ class _MasterScreen2State extends State<MasterScreen2>
             return profileController.isProfileLoading.value ||
                     profileController.myProfileModel.value.body == null
                 ? bottomNavigatorController.activeIndex.value == 2
-                    ? SvgPicture.asset("assets/images/get help tab.svg")
-                    : SvgPicture.asset(
-                        "assets/images/get help. outline.svg",
-                      )
+                    ? SvgPicture.asset("assets/images/get help tab.svg",
+                        height: 20)
+                    : SvgPicture.asset("assets/images/get help. outline.svg",
+                        height: 20)
                 : profileController.myProfileModel.value.body!.user!.userType ==
                         'SolhProvider'
                     ? Icon(
@@ -645,9 +652,13 @@ class _MasterScreen2State extends State<MasterScreen2>
                             : SolhColors.dark_grey,
                       )
                     : bottomNavigatorController.activeIndex.value == 2
-                        ? SvgPicture.asset("assets/images/get help tab.svg")
+                        ? SvgPicture.asset(
+                            "assets/images/get help tab.svg",
+                            height: 20,
+                          )
                         : SvgPicture.asset(
                             "assets/images/get help. outline.svg",
+                            height: 20,
                           );
           }),
         ),
