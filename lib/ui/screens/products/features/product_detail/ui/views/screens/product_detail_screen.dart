@@ -291,9 +291,10 @@ class GetProductStatsAndImage extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    'Available in stock ${productDetailsModel.product!.stockAvailable}',
+                    getStockString(
+                        productDetailsModel.product!.stockAvailable ?? 0),
                     style: SolhTextStyles.QS_body_2,
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
@@ -575,4 +576,13 @@ class GetProductDeatilAppBar extends StatelessWidget
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size(0, 50);
+}
+
+String getStockString(int itemInStock) {
+  if (itemInStock == 0) {
+    return ' Out of stock';
+  } else if (itemInStock <= 15) {
+    return ' $itemInStock left';
+  }
+  return 'In stock';
 }
