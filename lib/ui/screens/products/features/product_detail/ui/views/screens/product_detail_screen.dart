@@ -414,11 +414,21 @@ class AddToCartBuyNowButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           AddRemoveProductButtoon(
+            buttonTitle: productDetailController
+                        .productDetail.value.product!.stockAvailable ==
+                    0
+                ? "Out of stock"
+                : 'Add to cart',
             productId: productId,
             productsInCart: productDetailController
                     .productDetail.value.product!.inCartCount ??
                 0,
             buttonWidth: 200,
+            isEnabled: productDetailController
+                    .productDetail.value.product!.stockAvailable !=
+                0,
+            stockLimit: productDetailController
+                .productDetail.value.product!.stockAvailable,
           ),
           // SolhGreenMiniButton(
           //   backgroundColor: SolhColors.primaryRed,

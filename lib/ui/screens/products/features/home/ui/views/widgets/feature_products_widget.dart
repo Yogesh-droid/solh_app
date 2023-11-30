@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,6 +6,7 @@ import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/controllers/feature_products_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_delete_wishlist_item_controller.dart';
 import 'package:solh/widgets_constants/animated_add_to_wishlist_button.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -164,9 +164,11 @@ class ProductsCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: AnimatedAddToWishlistButton(
                           isSelected: isInWishlist,
-                          onClick: () {
-                            addDeleteWishlistItemController
+                          onClick: () async {
+                            await addDeleteWishlistItemController
                                 .addDeleteWhishlist({"productId": sId});
+                            // await Get.find<FeatureProductsController>()
+                            //     .getFeatureProducts();
                           },
                         ),
                       ),
@@ -279,6 +281,8 @@ class ProductsCard extends StatelessWidget {
                         buttonWidth: 50,
                         productId: sId ?? '',
                         productsInCart: inCartItems ?? 0,
+                        isEnabled: stockAvailable != 0,
+                        stockLimit: stockAvailable,
                       ),
                     ],
                   ),
@@ -300,12 +304,16 @@ class AddRemoveProductButtoon extends StatefulWidget {
       required this.productId,
       required this.productsInCart,
       this.buttonWidth = 100,
+      this.isEnabled,
+      this.stockLimit,
       this.buttonTitle = 'Add To Cart'});
 
   final String productId;
   final String buttonTitle;
   final int productsInCart;
   final double buttonWidth;
+  final bool? isEnabled;
+  final int? stockLimit;
 
   @override
   State<AddRemoveProductButtoon> createState() =>
@@ -341,19 +349,30 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SolhGreenButton(
-                      height: 35,
-                      width: widget.buttonWidth,
-                      onPressed: () {
-                        poductNumber.value++;
-                        onValueChange(poductNumber.value);
-                      },
-                      child: Text(
-                        widget.buttonTitle,
-                        style: SolhTextStyles.CTA
-                            .copyWith(color: SolhColors.white),
-                      ),
-                    ),
+                    widget.isEnabled == false
+                        ? SolhGreenButton(
+                            width: widget.buttonWidth,
+                            height: 35,
+                            child: Text(
+                              widget.buttonTitle,
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.white),
+                            ),
+                            backgroundColor: SolhColors.grey,
+                          )
+                        : SolhGreenButton(
+                            height: 35,
+                            width: widget.buttonWidth,
+                            onPressed: () {
+                              poductNumber.value++;
+                              onValueChange(poductNumber.value);
+                            },
+                            child: Text(
+                              widget.buttonTitle,
+                              style: SolhTextStyles.CTA
+                                  .copyWith(color: SolhColors.white),
+                            ),
+                          ),
                   ],
                 )
               : Row(
@@ -388,7 +407,10 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        poductNumber.value++;
+                        if (widget.stockLimit != null &&
+                            poductNumber.value < widget.stockLimit!.toInt()) {
+                          poductNumber.value++;
+                        }
                         onValueChange(poductNumber.value);
                       },
                       child: Container(

@@ -27,6 +27,13 @@ class _OrderListScreenState extends State<OrderListScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    orderListController.orderFilterStatus.value = '';
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: SolhAppBar(
@@ -43,8 +50,9 @@ class _OrderListScreenState extends State<OrderListScreen> {
                   child: MyLoader(),
                 )
               : (orderListController
-                          .orderListModel.value.userOrderList!.length ==
-                      0
+                              .orderListModel.value.userOrderList!.length ==
+                          0 &&
+                      orderListController.orderFilterStatus.value == ''
                   ? EmptyOrderList()
                   : Stack(
                       children: [

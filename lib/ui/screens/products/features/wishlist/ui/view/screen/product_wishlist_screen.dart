@@ -59,6 +59,7 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                           height: 10,
                         ),
                         ListView.separated(
+                          physics: NeverScrollableScrollPhysics(),
                           itemCount:
                               productWishlistController.wishlistItems.length,
                           shrinkWrap: true,
