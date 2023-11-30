@@ -490,7 +490,7 @@ class FeatureProductsSection extends StatelessWidget {
           return featureProductsController.isLoading.value
               ? MyLoader()
               : SizedBox(
-                  height: 380,
+                  height: 350,
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
@@ -527,6 +527,8 @@ class FeatureProductsSection extends StatelessWidget {
                             .featureProductList[index].inCartCount,
                         currency: featureProductsController
                             .featureProductList[index].currency,
+                        shortDescription: featureProductsController
+                            .featureProductList[index].shortDescription,
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                               AppRoutes.productDetailScreen,

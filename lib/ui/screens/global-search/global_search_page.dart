@@ -325,7 +325,7 @@ class _GlobalSearchPageState extends State<GlobalSearchPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => ViewAllSearchResults(
-                                    title: 'Peoples',
+                                    title: 'People',
                                     connection: connection,
                                   )));
                     },

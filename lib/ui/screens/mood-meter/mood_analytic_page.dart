@@ -143,7 +143,7 @@ class MoodAnalyticPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text('Mood count'.tr,
+                          Text('Mood Count'.tr,
                               style: SolhTextStyles.QS_body_semi_1),
                           const Spacer(),
                           getFrequencyButton(context),
@@ -198,7 +198,7 @@ class MoodAnalyticPage extends StatelessWidget {
 
   Widget getMoodHistoryList() {
     return SizedBox(
-      height: 100,
+      height: 80,
       child: ListView.separated(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
@@ -236,6 +236,7 @@ class MoodAnalyticPage extends StatelessWidget {
                                   .replaceAll('#', '0xFF')))))
                           : null),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SimpleImageContainer(
@@ -244,17 +245,26 @@ class MoodAnalyticPage extends StatelessWidget {
                             '',
                         radius: 40,
                       ),
-                      Text(
-                        moodMeterController.moodAnlyticsModel.value
-                                .moodAnalytic![index].name ??
-                            '',
-                        style: SolhTextStyles.QS_cap_2_semi,
-                      ),
-                      Text(
-                        moodMeterController.moodAnlyticsModel.value
-                            .moodAnalytic![index].moodCount
-                            .toString(),
-                        style: SolhTextStyles.QS_cap_semi,
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              moodMeterController.moodAnlyticsModel.value
+                                  .moodAnalytic![index].moodCount
+                                  .toString(),
+                              style: SolhTextStyles.QS_cap_semi,
+                            ),
+                            // Text(
+                            //   moodMeterController.moodAnlyticsModel.value
+                            //           .moodAnalytic![index].name ??
+                            //       '',
+                            //   textAlign: TextAlign.center,
+                            //   style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                            //       fontSize: 10),
+                            // ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
@@ -25,7 +27,6 @@ class FeatureProductsWidget extends StatelessWidget {
           },
         ),
         SizedBox(
-          height: 380,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             shrinkWrap: true,
@@ -62,6 +63,7 @@ class ProductsCard extends StatelessWidget {
     this.isInWishlist = false,
     this.inCartItems = 0,
     this.currency,
+    this.shortDescription,
     required this.onPressed,
   });
 
@@ -76,6 +78,7 @@ class ProductsCard extends StatelessWidget {
   final String? productQuantity;
   final int? inCartItems;
   final String? currency;
+  final String? shortDescription;
   final Function()? onPressed;
 
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
@@ -103,25 +106,71 @@ class ProductsCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(12),
-                      topLeft: Radius.circular(12),
-                    ),
-                    child: Image.network(
-                      productImage![0],
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 180,
-                    )),
+                  borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(12),
+                  ),
+                  child: Image.network(
+                    productImage![0],
+                    fit: BoxFit.fitHeight,
+                    width: double.infinity,
+                    height: 180,
+                  ),
+                ),
                 Positioned(
-                  right: 10,
-                  top: 10,
-                  child: AnimatedAddToWishlistButton(
-                    isSelected: isInWishlist,
-                    onClick: () {
-                      addDeleteWishlistItemController
-                          .addDeleteWhishlist({"productId": sId});
-                    },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Stack(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/images/discount_bg.svg',
+                              height: 40,
+                            ),
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              top: 0,
+                              bottom: 0,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 4,
+                                    ),
+                                    Text(
+                                      '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}%',
+                                      style:
+                                          SolhTextStyles.QS_cap_2_semi.copyWith(
+                                              color: SolhColors.white),
+                                    ),
+                                    Text(
+                                      'OFF',
+                                      style:
+                                          SolhTextStyles.QS_cap_2_semi.copyWith(
+                                              color: SolhColors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: AnimatedAddToWishlistButton(
+                          isSelected: isInWishlist,
+                          onClick: () {
+                            addDeleteWishlistItemController
+                                .addDeleteWhishlist({"productId": sId});
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -131,7 +180,7 @@ class ProductsCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(
@@ -140,44 +189,96 @@ class ProductsCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  Html(data: description, shrinkWrap: true, style: {
-                    "body":
-                        Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                    "p": Style(
-                      maxLines: 3,
-                      textOverflow: TextOverflow.ellipsis,
-                      fontSize: FontSize(12),
-                    )
-                  }),
+                  shortDescription != null
+                      ? Html(
+                          data: shortDescription,
+                          style: {
+                            "body": Style(
+                                padding: HtmlPaddings.zero,
+                                margin: Margins.zero,
+                                fontSize: FontSize(12)),
+                          },
+                        )
+                      : Container(),
+                  // Html(data: description, shrinkWrap: true, style: {
+                  //   "body":
+                  //       Style(padding: HtmlPaddings.zero, margin: Margins.zero),
+                  //   "p": Style(
+                  //     maxLines: 3,
+                  //     textOverflow: TextOverflow.ellipsis,
+                  //     fontSize: FontSize(12),
+                  //   )
+                  // }),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("$currency", style: SolhTextStyles.QS_cap_2),
-                          SizedBox(
-                            width: 3,
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 4),
+                            decoration: BoxDecoration(
+                                color: SolhColors.greenShade3,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: Text(
+                              '$currency $afterDiscountPrice',
+                              style: SolhTextStyles.QS_caption_bold,
+                            ),
                           ),
-                          Text(
-                            '$price',
-                            style: SolhTextStyles.QS_caption.copyWith(
-                                decoration: TextDecoration.lineThrough),
-                          )
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text("$currency", style: SolhTextStyles.QS_cap_2),
+                              const SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                '$price',
+                                style: SolhTextStyles.QS_caption.copyWith(
+                                    decoration: TextDecoration.lineThrough),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          // Container(
+                          //   padding: const EdgeInsets.symmetric(
+                          //       horizontal: 8, vertical: 4),
+                          //   decoration: BoxDecoration(
+                          //       color: SolhColors.greenShade3,
+                          //       borderRadius: BorderRadius.circular(8)),
+                          //   child: Row(
+                          //     children: [
+                          //       const Icon(
+                          //         CupertinoIcons.bolt_fill,
+                          //         color: SolhColors.greenShade1,
+                          //         size: 12,
+                          //       ),
+                          //       Text(
+                          //         '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}% OFF',
+                          //         style:
+                          //             SolhTextStyles.QS_caption_2_bold.copyWith(
+                          //                 color: SolhColors.greenShade1),
+                          //       )
+                          //     ],
+                          //   ),
+                          //)
                         ],
                       ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 4),
-                        decoration: BoxDecoration(
-                            color: SolhColors.greenShade3,
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Text(
-                          '$currency $afterDiscountPrice',
-                          style: SolhTextStyles.QS_caption_bold,
-                        ),
+                      AddRemoveProductButtoon(
+                        buttonTitle: 'Add',
+                        buttonWidth: 50,
+                        productId: sId ?? '',
+                        productsInCart: inCartItems ?? 0,
                       ),
                     ],
                   ),
@@ -185,10 +286,6 @@ class ProductsCard extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            AddRemoveProductButtoon(
-              productId: sId ?? '',
-              productsInCart: inCartItems ?? 0,
-            ),
             const SizedBox(height: 10)
           ],
         ),
@@ -202,9 +299,11 @@ class AddRemoveProductButtoon extends StatefulWidget {
       {super.key,
       required this.productId,
       required this.productsInCart,
-      this.buttonWidth = 100});
+      this.buttonWidth = 100,
+      this.buttonTitle = 'Add To Cart'});
 
   final String productId;
+  final String buttonTitle;
   final int productsInCart;
   final double buttonWidth;
 
@@ -250,7 +349,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                         onValueChange(poductNumber.value);
                       },
                       child: Text(
-                        'Add To Cart',
+                        widget.buttonTitle,
                         style: SolhTextStyles.CTA
                             .copyWith(color: SolhColors.white),
                       ),
@@ -276,7 +375,7 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                     ),
                     Container(
                       height: 30,
-                      width: 50,
+                      width: 40,
                       decoration: BoxDecoration(
                           border: Border.all(color: SolhColors.primary_green)),
                       child: Center(

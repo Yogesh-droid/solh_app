@@ -47,7 +47,7 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
     });
     super.initState();
 
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 0), () {
       setState(() {
         psychologyTestController.questionList.length == 1
             ? isLast = true
@@ -361,12 +361,14 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                       null
               ? noDisclaimerFound()
               : AlertDialog(
+                  insetPadding: EdgeInsets.zero,
                   content: psychologyTestController.isQuestionsLoading.value
                       ? Center(
                           child: MyLoader(),
                         )
                       : (SizedBox(
                           width: 100.w,
+                          height: 100.h,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -375,17 +377,22 @@ class _TestQuestionsPageState extends State<TestQuestionsPage> {
                                 style: SolhTextStyles.QS_head_5.copyWith(
                                     color: SolhColors.primary_green),
                               ),
-                              Html(
-                                data: psychologyTestController.testQuestionModel
-                                        .value.testDetail!.testDisclaimer ??
-                                    '',
-                                style: {
-                                  "p": Style(
-                                    fontSize: FontSize(16),
-                                    color: SolhColors.dark_grey,
-                                    fontWeight: FontWeight.w500,
-                                  )
-                                },
+                              Expanded(
+                                child: Html(
+                                  data: psychologyTestController
+                                          .testQuestionModel
+                                          .value
+                                          .testDetail!
+                                          .testDisclaimer ??
+                                      '',
+                                  style: {
+                                    "p": Style(
+                                      fontSize: FontSize(16),
+                                      color: SolhColors.dark_grey,
+                                      fontWeight: FontWeight.w500,
+                                    )
+                                  },
+                                ),
                               ),
                               SolhGreenMiniButton(
                                 onPressed: () => Navigator.of(context).pop(),

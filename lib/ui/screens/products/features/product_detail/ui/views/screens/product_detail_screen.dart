@@ -7,6 +7,8 @@ import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/app_bar_cart_icon.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
@@ -169,7 +171,7 @@ class RelatedProductsSection extends StatelessWidget {
                 // onPressed: () {},
               ),
               SizedBox(
-                height: 380,
+                height: 360,
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   shrinkWrap: true,
@@ -203,10 +205,11 @@ class RelatedProductsSection extends StatelessWidget {
                           .product!.relatedProducts![index].inCartCount,
                       isInWishlist: productDetailsModel
                               .product!.relatedProducts![index].isWishlisted ??
-
                           false,
                       currency: productDetailsModel
                           .product!.relatedProducts![index].currency,
+                      shortDescription: productDetailsModel
+                          .product!.relatedProducts![index].shortDescription,
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                             AppRoutes.productDetailScreen,
@@ -316,28 +319,28 @@ class GetProductStatsAndImage extends StatelessWidget {
                                 decoration: TextDecoration.lineThrough),
                           )
                         ],
-                      )
+                      ),
                     ],
                   ),
                   Text(
                     '${(100 - (productDetailsModel.product!.afterDiscountPrice! / productDetailsModel.product!.price!) * 100).toInt()}% OFF',
                     style: SolhTextStyles.QS_body_2_semi.copyWith(
                         color: SolhColors.primary_green),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    productDetailsModel.product!.skuOrIsbn ?? '',
-                    style: SolhTextStyles.QS_caption,
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     Text(
+              //       productDetailsModel.product!.skuOrIsbn ?? '',
+              //       style: SolhTextStyles.QS_caption,
+              //     ),
+              //   ],
+              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -365,10 +368,10 @@ class ProductDetails extends StatelessWidget {
                 .map((e) => Row(
                       children: [
                         Text(
-                          e.label ?? '',
+                          "${e.label ?? ''} :",
                           style: SolhTextStyles.CTA,
                         ),
-                        Text(' : ${e.value}')
+                        Text('  ${e.value}')
                       ],
                     ))
                 .toList(),
@@ -515,6 +518,8 @@ class GetProductDeatilAppBar extends StatelessWidget
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
   final ProductWishlistController productWishlistController = Get.find();
+
+  CartController cartController = Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -529,6 +534,12 @@ class GetProductDeatilAppBar extends StatelessWidget
       backgroundColor: SolhColors.white,
       iconTheme: const IconThemeData(color: SolhColors.black),
       actions: [
+        Obx(() {
+          return CartButton(
+              itemsInCart: cartController.cartEntity.value.cartList != null
+                  ? cartController.cartEntity.value.cartList!.items!.length
+                  : 0);
+        }),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Obx(() {
