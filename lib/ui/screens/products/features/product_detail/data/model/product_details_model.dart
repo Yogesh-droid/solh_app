@@ -186,6 +186,7 @@ class RelatedProducts {
   int? inCartCount;
   bool? isWishlisted;
   String? currency;
+  String? shortDescription;
 
   RelatedProducts({
     this.sId,
@@ -199,6 +200,7 @@ class RelatedProducts {
     this.isWishlisted,
     this.productQuantity,
     this.currency,
+    this.shortDescription,
   });
 
   RelatedProducts.fromJson(Map<String, dynamic> json) {
@@ -213,6 +215,7 @@ class RelatedProducts {
     isWishlisted = json['isWishlisted'];
     inCartCount = json['inCartCount'];
     currency = json['currency'];
+    shortDescription = json['shortDescription'];
   }
 
   Map<String, dynamic> toJson() {
