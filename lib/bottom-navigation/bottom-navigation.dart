@@ -858,7 +858,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                           children: [
                             const SizedBox(height: 14),
                             getBottomSheetIcon(
-                                icon: 'assets/images/org_icon_bottom.svg'),
+                                icon: 'assets/images/organization-icon.svg'),
                             Text(
                               'Organization'.tr,
                               style: SolhTextStyles.QS_cap_semi,

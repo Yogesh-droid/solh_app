@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -109,8 +110,13 @@ class ProductsCard extends StatelessWidget {
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
-                  child: Image.network(
-                    productImage![0],
+                  child: CachedNetworkImage(
+                    errorWidget: (context, error, stackTrace) {
+                      return Image.asset('assets/icons/app-bar/no-image.png');
+                    },
+                    placeholder: (context, url) =>
+                        Image.asset('assets/images/opening_link.gif'),
+                    imageUrl: productImage![0],
                     fit: BoxFit.fitHeight,
                     width: double.infinity,
                     height: 180,
