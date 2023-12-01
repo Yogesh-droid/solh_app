@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
@@ -101,7 +102,6 @@ class ProductsCard extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
             Stack(
               children: [
@@ -110,8 +110,13 @@ class ProductsCard extends StatelessWidget {
                     topRight: Radius.circular(12),
                     topLeft: Radius.circular(12),
                   ),
-                  child: Image.network(
-                    productImage![0],
+                  child: CachedNetworkImage(
+                    errorWidget: (context, error, stackTrace) {
+                      return Image.asset('assets/icons/app-bar/no-image.png');
+                    },
+                    placeholder: (context, url) =>
+                        Image.asset('assets/images/opening_link.gif'),
+                    imageUrl: productImage![0],
                     fit: BoxFit.fitHeight,
                     width: double.infinity,
                     height: 180,
@@ -177,119 +182,124 @@ class ProductsCard extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    productName ?? '',
-                    style: SolhTextStyles.QS_caption_bold,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  shortDescription != null
-                      ? Html(
-                          data: shortDescription,
-                          style: {
-                            "body": Style(
-                                padding: HtmlPaddings.zero,
-                                margin: Margins.zero,
-                                fontSize: FontSize(12)),
-                          },
-                        )
-                      : Container(),
-                  // Html(data: description, shrinkWrap: true, style: {
-                  //   "body":
-                  //       Style(padding: HtmlPaddings.zero, margin: Margins.zero),
-                  //   "p": Style(
-                  //     maxLines: 3,
-                  //     textOverflow: TextOverflow.ellipsis,
-                  //     fontSize: FontSize(12),
-                  //   )
-                  // }),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 4),
-                            decoration: BoxDecoration(
-                                color: SolhColors.greenShade3,
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Text(
-                              '$currency $afterDiscountPrice',
-                              style: SolhTextStyles.QS_caption_bold,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text("$currency", style: SolhTextStyles.QS_cap_2),
-                              const SizedBox(
-                                width: 3,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      productName ?? '',
+                      style: SolhTextStyles.QS_caption_bold,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    shortDescription != null
+                        ? Html(
+                            data: shortDescription,
+                            style: {
+                              "body": Style(
+                                  padding: HtmlPaddings.zero,
+                                  margin: Margins.zero,
+                                  fontSize: FontSize(12)),
+                            },
+                          )
+                        : Container(),
+                    // Html(data: description, shrinkWrap: true, style: {
+                    //   "body":
+                    //       Style(padding: HtmlPaddings.zero, margin: Margins.zero),
+                    //   "p": Style(
+                    //     maxLines: 3,
+                    //     textOverflow: TextOverflow.ellipsis,
+                    //     fontSize: FontSize(12),
+                    //   )
+                    // }),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 4),
+                              decoration: BoxDecoration(
+                                  color: SolhColors.greenShade3,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Text(
+                                '$currency $afterDiscountPrice',
+                                style: SolhTextStyles.QS_caption_bold,
                               ),
-                              Text(
-                                '$price',
-                                style: SolhTextStyles.QS_caption.copyWith(
-                                    decoration: TextDecoration.lineThrough),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //       horizontal: 8, vertical: 4),
-                          //   decoration: BoxDecoration(
-                          //       color: SolhColors.greenShade3,
-                          //       borderRadius: BorderRadius.circular(8)),
-                          //   child: Row(
-                          //     children: [
-                          //       const Icon(
-                          //         CupertinoIcons.bolt_fill,
-                          //         color: SolhColors.greenShade1,
-                          //         size: 12,
-                          //       ),
-                          //       Text(
-                          //         '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}% OFF',
-                          //         style:
-                          //             SolhTextStyles.QS_caption_2_bold.copyWith(
-                          //                 color: SolhColors.greenShade1),
-                          //       )
-                          //     ],
-                          //   ),
-                          //)
-                        ],
-                      ),
-                      AddRemoveProductButtoon(
-                        buttonTitle: 'Add',
-                        buttonWidth: 50,
-                        productId: sId ?? '',
-                        productsInCart: inCartItems ?? 0,
-                        isEnabled: stockAvailable != 0,
-                        stockLimit: stockAvailable,
-                      ),
-                    ],
-                  ),
-                ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text("$currency",
+                                    style: SolhTextStyles.QS_cap_2),
+                                const SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  '$price',
+                                  style: SolhTextStyles.QS_caption.copyWith(
+                                      decoration: TextDecoration.lineThrough),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            // Container(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       horizontal: 8, vertical: 4),
+                            //   decoration: BoxDecoration(
+                            //       color: SolhColors.greenShade3,
+                            //       borderRadius: BorderRadius.circular(8)),
+                            //   child: Row(
+                            //     children: [
+                            //       const Icon(
+                            //         CupertinoIcons.bolt_fill,
+                            //         color: SolhColors.greenShade1,
+                            //         size: 12,
+                            //       ),
+                            //       Text(
+                            //         '${(100 - (afterDiscountPrice! / price!) * 100).toInt()}% OFF',
+                            //         style:
+                            //             SolhTextStyles.QS_caption_2_bold.copyWith(
+                            //                 color: SolhColors.greenShade1),
+                            //       )
+                            //     ],
+                            //   ),
+                            //)
+                          ],
+                        ),
+                        AddRemoveProductButtoon(
+                          buttonTitle: 'Add',
+                          buttonWidth: 50,
+                          productId: sId ?? '',
+                          productsInCart: inCartItems ?? 0,
+                          isEnabled: stockAvailable != 0,
+                          stockLimit: stockAvailable,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            const Spacer(),
             const SizedBox(height: 10)
           ],
         ),
@@ -353,12 +363,12 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                         ? SolhGreenButton(
                             width: widget.buttonWidth,
                             height: 35,
+                            backgroundColor: SolhColors.grey,
                             child: Text(
                               widget.buttonTitle,
                               style: SolhTextStyles.CTA
                                   .copyWith(color: SolhColors.white),
                             ),
-                            backgroundColor: SolhColors.grey,
                           )
                         : SolhGreenButton(
                             height: 35,

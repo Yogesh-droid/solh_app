@@ -35,6 +35,7 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
     return Scaffold(
       appBar: SolhAppBar(
         isLandingScreen: false,
+        isVideoCallScreen: true,
         title: Text('Your Wishlist', style: SolhTextStyles.QS_body_1_bold),
       ),
       body: Obx(() {
@@ -89,6 +90,9 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                                   '',
                               productsInCart: productWishlistController
                                   .wishlistItems[index].inCartCount!,
+                              stockAvailable: productWishlistController
+                                      .wishlistItems[index].stockAvailable ??
+                                  0,
                             );
                           },
                         )

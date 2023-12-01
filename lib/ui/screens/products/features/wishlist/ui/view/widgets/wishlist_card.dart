@@ -18,6 +18,7 @@ class WishlistCard extends StatelessWidget {
     required this.productName,
     required this.productQuantity,
     required this.sId,
+    required this.stockAvailable,
     this.productsInCart = 0,
   });
 
@@ -29,6 +30,7 @@ class WishlistCard extends StatelessWidget {
   final String priceAfterDiscount;
   final String sId;
   final int productsInCart;
+  final int stockAvailable;
 
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
@@ -122,6 +124,9 @@ class WishlistCard extends StatelessWidget {
                     ),
                     Expanded(
                         child: AddRemoveProductButtoon(
+                      buttonTitle:
+                          stockAvailable != 0 ? 'Add to cart' : 'Out of stock',
+                      isEnabled: stockAvailable != 0,
                       productId: sId,
                       productsInCart: productsInCart,
                     )),
