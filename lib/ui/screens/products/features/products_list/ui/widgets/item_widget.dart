@@ -142,7 +142,7 @@ class ItemWidget extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  "${(((itemPrice! - discountedPrice!) / itemPrice!) * 100).toInt()} % off",
+                                  "${(((itemPrice! - discountedPrice!) / itemPrice!) * 100).toInt()}% off",
                                   style: SolhTextStyles.Caption_2_semi.copyWith(
                                       color: SolhColors.primary_green),
                                   textAlign: TextAlign.center,
@@ -170,7 +170,7 @@ class PriceContainer extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: SolhColors.greenShade4),
-      child: Text("$currency $discountedPrice",
+      child: Text("$currency$discountedPrice",
           style: GoogleFonts.quicksand(
               textStyle: SolhTextStyles.QS_caption_2_bold.copyWith(
                   color: const Color(0xFF666666), fontSize: 12))),
@@ -190,7 +190,7 @@ class MrpContainer extends StatelessWidget {
           style: GoogleFonts.quicksand(
               textStyle:
                   SolhTextStyles.QS_cap_2.copyWith(color: SolhColors.Grey_1))),
-      const SizedBox(width: 5),
+      const SizedBox(width: 0),
       Text(
         mrp.toString(),
         style: GoogleFonts.quicksand(

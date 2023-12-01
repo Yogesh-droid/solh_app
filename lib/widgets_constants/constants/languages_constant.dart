@@ -380,7 +380,7 @@ class Languages extends Translations {
           "Psychological Tests": "मनोवैज्ञानिक परीक्षण",
           "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.":
               "हमारे मनोविज्ञान परीक्षण आपको यह समझने में मदद करते हैं कि कुछ मानसिक स्वास्थ्य या भावनात्मक मुद्दे आपके लिए चिंता का विषय हो सकते हैं या नहीं।",
-          "Discover Test": "खोज परीक्षण",
+          "Discover Tests": "खोज परीक्षण",
           "Result History": "परिणाम इतिहास",
           "Video Playlist": "वीडियो प्लेलिस्ट",
           "Publically": "सार्वजनिक",
@@ -466,7 +466,7 @@ class Languages extends Translations {
           "Counseling": "काउंसिलिंग",
           "This is a grand total based on your engagement on the app":
               "यह ऐप पर आपके जुड़ाव के आधार पर कुल योग है",
-          "Discover test": "परीक्षण का पता लगाएं",
+          "Discover tests": "परीक्षण का पता लगाएं",
           "Result history": "सभी नतीजे",
           "Personal details": "यक्तिगत जानकारी",
           "Delete account": "अकाउंट डिलीट करें",
@@ -893,7 +893,7 @@ Map<String, String> en_us_map = {
   "Psychological Tests": "Psychological Tests",
   "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.":
       "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.",
-  "Discover Test": "Discover Test",
+  "Discover Tests": "Discover Tests",
   "Result History": "Result History",
   "Video Playlist": "Video Playlist",
   "Discover previously unknown features by learning more about Solh Features":
@@ -1311,7 +1311,7 @@ Map<String, String> fr_FR_map = {
   "Psychological Tests": "Tests psychologiques",
   "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.":
       "Nos tests de psychologie vous aident à comprendre si certains problèmes de santé mentale ou émotionnels peuvent vous préoccuper.",
-  "Discover Test": "Test de découverte",
+  "Discover Tests": "Test de découverte",
   "Result History": "Historique des résultats",
   "Video Playlist": "Playlist vidéo",
   "Discover previously unknown features by learning more about Solh Features":
@@ -1772,7 +1772,7 @@ Map<String, String> ar_sa_map = {
   "Psychological Tests": "الاختبارات النفسية",
   "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.":
       "تساعدك اختبارات علم النفس لدينا على فهم ما إذا كانت بعض القضايا العقلية أو القضايا العاطفية قد تكون مصدر قلق لك.",
-  "Discover Test": "اكتشف اختبار",
+  "Discover Tests": "اكتشف اختبار",
   "Result History": "تاريخ النتيجة",
   "Video Playlist": "قائمة تشغيل الفيديو",
   "Discover previously unknown features by learning more about Solh Features":
@@ -2243,7 +2243,7 @@ Map<String, String> ta_IN_map = {
   "Psychological Tests": "உளவியல் சோதனைகள்",
   "Our Psychology Tests help you understand whether certain mental health or emotional issues may be of concern to you.":
       "சில மன ஆரோக்கியம் அல்லது உணர்ச்சி பிரச்சினைகள் உங்களுக்கு கவலையாக இருக்கக்கூடும் என்பதைப் புரிந்துகொள்ள எங்கள் உளவியல் சோதனைகள் உங்களுக்கு உதவுகின்றன.",
-  "Discover Test": "சோதனையைக் கண்டறியவும்",
+  "Discover Tests": "சோதனையைக் கண்டறியவும்",
   "Result History": "முடிவு வரலாறு",
   "Video Playlist": "வீடியோ பிளேலிஸ்ட்",
   "Discover previously unknown features by learning more about Solh Features":

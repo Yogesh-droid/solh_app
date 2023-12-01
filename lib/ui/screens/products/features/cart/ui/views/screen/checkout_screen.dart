@@ -318,6 +318,9 @@ class PaymentSummarySection extends StatelessWidget {
                       colorFilter: const ColorFilter.mode(
                           SolhColors.primary_green, BlendMode.srcIn),
                     ),
+                    SizedBox(
+                      width: 3,
+                    ),
                     Text(
                       "Yay! You Saved ${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.discount}",
                       style: SolhTextStyles.Caption_2_semi.copyWith(

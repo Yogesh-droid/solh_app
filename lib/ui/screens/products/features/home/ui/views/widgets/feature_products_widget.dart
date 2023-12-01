@@ -250,7 +250,7 @@ class ProductsCard extends StatelessWidget {
                                 Text("$currency",
                                     style: SolhTextStyles.QS_cap_2),
                                 const SizedBox(
-                                  width: 3,
+                                  width: 0,
                                 ),
                                 Text(
                                   '$price',
