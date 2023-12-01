@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -23,20 +24,24 @@ class PaymentOptionsTile extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(color: SolhColors.primary_green),
                   borderRadius: BorderRadius.circular(10)),
-              child: Row(
+              child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(children: [
-                      SvgPicture.asset(
-                        'assets/images/get_help/stripe_icon.svg',
-                        height: 50,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Icon(
+                          CupertinoIcons.creditcard_fill,
+                          size: 20,
+                          color: SolhColors.primary_green,
+                        ),
                       ),
-                      const Text(
-                        "Stripe",
+                      Text(
+                        "Card payment",
                         style: SolhTextStyles.QS_body_1_med,
                       ),
                     ]),
-                    const Radio(
+                    Radio(
                         groupValue: 1,
                         value: 1,
                         onChanged: null,

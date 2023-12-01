@@ -171,7 +171,7 @@ class _CartAddressState extends State<CartAddress> {
                               'title': 'Add Billing Address'
                             });
                       },
-                      title: Text("Same As Shipping Address",
+                      title: Text("Same as shipping address",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
                       leading: InkWell(

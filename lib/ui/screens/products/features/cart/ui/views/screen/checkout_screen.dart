@@ -360,7 +360,7 @@ class CheckoutButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "You Pay",
+                "Total Payable",
                 style: SolhTextStyles.QS_body_semi_1,
               ),
               Obx(() => Text(
