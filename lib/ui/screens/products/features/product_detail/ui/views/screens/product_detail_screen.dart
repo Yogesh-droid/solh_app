@@ -527,6 +527,7 @@ class _GetProductImagesState extends State<GetProductImages> {
   }
 }
 
+// ignore: must_be_immutable
 class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   GetProductDeatilAppBar({super.key});

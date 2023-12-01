@@ -111,7 +111,11 @@ class ItemWidget extends StatelessWidget {
                                             textStyle: SolhTextStyles.CTA,
                                             color: SolhColors.white),
                                       ))
-                              : const Text("Out of Stock")
+                              : const Text(
+                                  "Out of Stock",
+                                  style:
+                                      TextStyle(color: SolhColors.primaryRed),
+                                )
                         ],
                       ),
                       const SizedBox(height: 10),

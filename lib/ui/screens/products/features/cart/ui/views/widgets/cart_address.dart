@@ -171,10 +171,21 @@ class _CartAddressState extends State<CartAddress> {
                               'title': 'Add Billing Address'
                             });
                       },
-                      title: Text("Billing to a different address?",
+                      title: Text("Same As Shipping Address",
                           style: GoogleFonts.quicksand(
                               textStyle: SolhTextStyles.QS_body_semi_1)),
-                      trailing: Radio(
+                      leading: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.addAddressPage,
+                              arguments: {
+                                "addressList": null,
+                                'title': 'Add Billing Address'
+                              });
+                        },
+                        child: const Icon(Icons.check_box,
+                            color: SolhColors.primary_green),
+                      ),
+                      /* trailing: Radio(
                           value: 1,
                           groupValue: 0,
                           onChanged: (_) {
@@ -183,7 +194,7 @@ class _CartAddressState extends State<CartAddress> {
                               "addressList": null,
                               'title': 'Add Billing Address'
                             });
-                          }),
+                          }), */
                     ),
 
                   // If Billing address is different than Shipping then Show it else hide it
