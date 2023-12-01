@@ -353,12 +353,12 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                         ? SolhGreenButton(
                             width: widget.buttonWidth,
                             height: 35,
+                            backgroundColor: SolhColors.grey,
                             child: Text(
                               widget.buttonTitle,
                               style: SolhTextStyles.CTA
                                   .copyWith(color: SolhColors.white),
                             ),
-                            backgroundColor: SolhColors.grey,
                           )
                         : SolhGreenButton(
                             height: 35,
