@@ -32,10 +32,13 @@ class OrderListCard extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              image,
-              height: 130,
-              fit: BoxFit.fitHeight,
+            Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Image.network(
+                image,
+                height: 130,
+                fit: BoxFit.fitHeight,
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -127,6 +130,7 @@ String getDeliveryString(String date) {
 }
 
 Color getStatusColor(String status) {
+  status = status.toLowerCase();
   if (status == "placed") {
     return Colors.yellow;
   } else if (status == "shipped") {

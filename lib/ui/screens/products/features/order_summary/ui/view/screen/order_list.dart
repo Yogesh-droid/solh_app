@@ -50,13 +50,27 @@ class _OrderListScreenState extends State<OrderListScreen> {
                   child: MyLoader(),
                 )
               : (orderListController
-                              .orderListModel.value.userOrderList!.length ==
-                          0 &&
+                          .orderListModel.value.userOrderList!.isEmpty &&
                       orderListController.orderFilterStatus.value == ''
                   ? EmptyOrderList()
                   : Stack(
                       children: [
-                        OrderList(),
+                        (orderListController.orderListModel.value.userOrderList!
+                                    .isNotEmpty &&
+                                orderListController.orderFilterStatus.value ==
+                                    ''
+                            ? OrderList()
+                            : (orderListController.orderListModel.value
+                                        .userOrderList!.isEmpty &&
+                                    orderListController
+                                            .orderFilterStatus.value !=
+                                        ''
+                                ? const Center(
+                                    child: Text(
+                                    'No item found',
+                                    style: SolhTextStyles.CTA,
+                                  ))
+                                : OrderList())),
                         OrderSearchBar(),
                       ],
                     ));
@@ -158,20 +172,20 @@ class OrderSearchBar extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    orderListController.orderFilterStatus.value = 'placed';
+                    orderListController.orderFilterStatus.value = 'Placed';
                     orderListController.getOrderList(
                         status: orderListController.orderFilterStatus.value);
                   },
                   child: Chip(
                     backgroundColor:
-                        orderListController.orderFilterStatus.value == 'placed'
+                        orderListController.orderFilterStatus.value == 'Placed'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
                     label: Text(
                       'Ordered',
                       style: SolhTextStyles.CTA.copyWith(
                         color: orderListController.orderFilterStatus.value ==
-                                'placed'
+                                'Placed'
                             ? SolhColors.white
                             : Colors.black,
                       ),
@@ -183,23 +197,25 @@ class OrderSearchBar extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    orderListController.orderFilterStatus.value = 'delivered';
+                    orderListController.orderFilterStatus.value = 'Delivered';
                     orderListController.getOrderList(
                         status: orderListController.orderFilterStatus.value);
                   },
                   child: Chip(
                     backgroundColor:
                         orderListController.orderFilterStatus.value ==
-                                'delivered'
+                                'Delivered'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
-                    label: Text('Delivered',
-                        style: SolhTextStyles.CTA.copyWith(
-                          color: orderListController.orderFilterStatus.value ==
-                                  'delivered'
-                              ? SolhColors.white
-                              : Colors.black,
-                        )),
+                    label: Text(
+                      'Delivered',
+                      style: SolhTextStyles.CTA.copyWith(
+                        color: orderListController.orderFilterStatus.value ==
+                                'Delivered'
+                            ? SolhColors.white
+                            : Colors.black,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -207,20 +223,20 @@ class OrderSearchBar extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    orderListController.orderFilterStatus.value = 'cancelled';
+                    orderListController.orderFilterStatus.value = 'Cancelled';
                     orderListController.getOrderList(
                         status: orderListController.orderFilterStatus.value);
                   },
                   child: Chip(
                     backgroundColor:
                         orderListController.orderFilterStatus.value ==
-                                'cancelled'
+                                'Cancelled'
                             ? SolhColors.primary_green
                             : Colors.grey.shade300,
                     label: Text('Cancelled',
                         style: SolhTextStyles.CTA.copyWith(
                           color: orderListController.orderFilterStatus.value ==
-                                  'cancelled'
+                                  'Cancelled'
                               ? SolhColors.white
                               : Colors.black,
                         )),

@@ -49,15 +49,18 @@ class ItemWidget extends StatelessWidget {
           children: [
             Expanded(
                 flex: 1,
-                child: CachedNetworkImage(
-                  fit: BoxFit.fitWidth,
-                  imageUrl: image,
-                  errorWidget: (context, url, error) {
-                    return Image.asset("assets/icons/app-bar/no-image.png");
-                  },
-                  placeholder: (context, url) {
-                    return Image.asset("assets/images/opening_link.gif");
-                  },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.fitWidth,
+                    imageUrl: image,
+                    errorWidget: (context, url, error) {
+                      return Image.asset("assets/icons/app-bar/no-image.png");
+                    },
+                    placeholder: (context, url) {
+                      return Image.asset("assets/images/opening_link.gif");
+                    },
+                  ),
                 )),
             const SizedBox(width: 20),
             Expanded(

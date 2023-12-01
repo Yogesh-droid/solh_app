@@ -287,7 +287,8 @@ class ProductsCard extends StatelessWidget {
                           ],
                         ),
                         AddRemoveProductButtoon(
-                          buttonTitle: 'Add',
+                          buttonTitle:
+                              stockAvailable != 0 ? 'Add' : 'Out of stock',
                           buttonWidth: 50,
                           productId: sId ?? '',
                           productsInCart: inCartItems ?? 0,
@@ -360,15 +361,10 @@ class _AddRemoveProductButtoonState extends State<AddRemoveProductButtoon> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     widget.isEnabled == false
-                        ? SolhGreenButton(
-                            width: widget.buttonWidth,
-                            height: 35,
-                            backgroundColor: SolhColors.grey,
-                            child: Text(
-                              widget.buttonTitle,
-                              style: SolhTextStyles.CTA
-                                  .copyWith(color: SolhColors.white),
-                            ),
+                        ? Text(
+                            widget.buttonTitle,
+                            style: SolhTextStyles.CTA
+                                .copyWith(color: SolhColors.primaryRed),
                           )
                         : SolhGreenButton(
                             height: 35,
