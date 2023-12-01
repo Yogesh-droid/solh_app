@@ -89,6 +89,9 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
                                   '',
                               productsInCart: productWishlistController
                                   .wishlistItems[index].inCartCount!,
+                              stockAvailable: productWishlistController
+                                      .wishlistItems[index].stockAvailable ??
+                                  0,
                             );
                           },
                         )
