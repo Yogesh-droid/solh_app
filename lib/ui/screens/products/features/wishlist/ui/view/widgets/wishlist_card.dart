@@ -46,8 +46,9 @@ class WishlistCard extends StatelessWidget {
         child: Row(children: [
           Container(
             height: 120,
-            constraints: const BoxConstraints(maxWidth: 100),
+            width: 100,
             child: Image.network(
+              fit: BoxFit.contain,
               productImage,
             ),
           ),

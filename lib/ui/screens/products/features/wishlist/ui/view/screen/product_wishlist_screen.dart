@@ -47,13 +47,16 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
             : (productWishlistController.wishlistItems.length == 0
                 ? EmptyWishListWidget()
                 : Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: ListView(
                       children: [
                         Row(
                           children: [
-                            Text(
-                                '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
+                            ),
                           ],
                         ),
                         SizedBox(
