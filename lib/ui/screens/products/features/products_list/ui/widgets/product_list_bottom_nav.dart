@@ -179,6 +179,9 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return SheetCartItem(
+                    isOutOfStock: cartController.cartEntity.value.cartList!
+                            .items![index].isOutOfStock ??
+                        false,
                     image: cartController.cartEntity.value.cartList!
                             .items![index].productId!.defaultImage ??
                         '',

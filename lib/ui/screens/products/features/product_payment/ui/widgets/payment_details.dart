@@ -126,7 +126,8 @@ class PaymentDetails extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgPicture.asset(
-                    "assets/images/discount.svg",
+                    "assets/images/disount-svg.svg",
+                    height: 20,
                     colorFilter: const ColorFilter.mode(
                         SolhColors.primary_green, BlendMode.srcIn),
                   ),

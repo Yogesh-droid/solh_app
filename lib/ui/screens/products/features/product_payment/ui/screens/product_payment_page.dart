@@ -129,7 +129,20 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                       postalCode: null,
                       state: null)),
               merchantDisplayName: 'Solh'));
-
+      List<Map<String, dynamic>> items = [];
+      for (var e in cartController.cartEntity.value.cartList!.items!) {
+        if (!e.isOutOfStock!) {
+          items.add({
+            "name": e.productId!.productName ?? '',
+            "product_id": e.productId!.id ?? '',
+            "salePrice": e.productId!.afterDiscountPrice ?? 0,
+            "originalPrice": e.productId!.price ?? 0,
+            "quantity": e.quantity ?? 0,
+            "image": e.productId!.productImage![0],
+            "shortDescription": e.productId!.shortDescription
+          });
+        }
+      }
       Map<String, dynamic> body = {
         "transaction": {
           "pgTransactionId": paymentIntent['id'],
@@ -145,16 +158,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
           "totalItems": cartController.cartEntity.value.cartList!.items!.length,
           "totalBill": widget.args['totalPrice'],
           "source": "App",
-          "orderItems": cartController.cartEntity.value.cartList!.items!
-              .map((e) => {
-                    "name": e.productId!.productName ?? '',
-                    "product_id": e.productId!.id ?? '',
-                    "salePrice": e.productId!.afterDiscountPrice ?? 0,
-                    "originalPrice": e.productId!.price ?? 0,
-                    "quantity": e.quantity ?? 0,
-                    "image": e.productId!.productImage![0]
-                  })
-              .toList(),
+          "orderItems": items,
           "shippingAddress": {
             "fullName": addressController.selectedAddress.value.fullName,
             "phoneNumber": addressController.selectedAddress.value.phoneNumber,
@@ -186,7 +190,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
           "paymentStatus": "Paid"
         }
       };
-
       // ignore: use_build_context_synchronously
       displayPaymentSheet(context, body);
     } catch (err) {

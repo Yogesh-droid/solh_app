@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/cart_count_btn.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
@@ -113,6 +114,36 @@ class ItemWidget extends StatelessWidget {
                               : const Text("Out of Stock")
                         ],
                       ),
+                      const SizedBox(height: 10),
+                      if (discountedPrice! > 0)
+                        Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: SolhColors.greenShade4,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  "assets/images/disount-svg.svg",
+                                  height: 15,
+                                  colorFilter: const ColorFilter.mode(
+                                      SolhColors.primary_green,
+                                      BlendMode.srcIn),
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  "${(((itemPrice! - discountedPrice!) / itemPrice!) * 100).toInt()} % off",
+                                  style: SolhTextStyles.Caption_2_semi.copyWith(
+                                      color: SolhColors.primary_green),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                     ]))
           ],
         ));

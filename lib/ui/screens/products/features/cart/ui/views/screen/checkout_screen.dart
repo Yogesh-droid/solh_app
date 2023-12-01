@@ -78,6 +78,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               return Padding(
                                   padding: const EdgeInsets.only(right: 12),
                                   child: SheetCartItem(
+                                    isOutOfStock: cartController
+                                            .cartEntity
+                                            .value
+                                            .cartList!
+                                            .items![index]
+                                            .isOutOfStock ??
+                                        false,
                                     image: cartController
                                             .cartEntity
                                             .value
@@ -236,14 +243,14 @@ class PaymentSummarySection extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "${cartController.cartEntity.value.currency} ${cartController.totalPayblePrice}",
+                      "${cartController.cartEntity.value.currency} ${cartController.cartEntity.value.totalPrice}",
                       style: SolhTextStyles.QS_body_semi_1.copyWith(
                           color: SolhColors.dark_grey,
                           decoration: TextDecoration.lineThrough),
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      '${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) - (cartController.cartEntity.value.discount!)}',
+                      '${cartController.cartEntity.value.currency} ${(cartController.cartEntity.value.finalPrice!) - (cartController.cartEntity.value.shippingAmount!)}',
                       style: SolhTextStyles.QS_body_semi_1.copyWith(
                           color: SolhColors.dark_grey),
                     ),
@@ -288,7 +295,7 @@ class PaymentSummarySection extends StatelessWidget {
                       color: SolhColors.black),
                 ),
                 Text(
-                  '${cartController.cartEntity.value.currency} ${(cartController.totalPayblePrice.value) + (cartController.cartEntity.value.shippingAmount!) - (cartController.cartEntity.value.discount!)}',
+                  '${cartController.cartEntity.value.currency} ${(cartController.cartEntity.value.finalPrice!)}',
                   style: SolhTextStyles.QS_body_semi_1.copyWith(
                       color: SolhColors.black),
                 ),
@@ -306,7 +313,8 @@ class PaymentSummarySection extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SvgPicture.asset(
-                      "assets/images/discount.svg",
+                      "assets/images/disount-svg.svg",
+                      height: 20,
                       colorFilter: const ColorFilter.mode(
                           SolhColors.primary_green, BlendMode.srcIn),
                     ),

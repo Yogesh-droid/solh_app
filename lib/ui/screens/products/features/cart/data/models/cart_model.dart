@@ -59,9 +59,10 @@ class CartList {
 class Items {
   ProductId? productId;
   int? quantity;
+  bool? isOutOfStock;
   String? id;
 
-  Items({this.productId, this.quantity, this.id});
+  Items({this.productId, this.quantity, this.id, this.isOutOfStock});
 
   Items.fromJson(Map<String, dynamic> json) {
     productId = json["productId"] == null
@@ -69,6 +70,7 @@ class Items {
         : ProductId.fromJson(json["productId"]);
     quantity = json["quantity"];
     id = json["_id"];
+    isOutOfStock = json['isOutofSkock'];
   }
 }
 
@@ -81,6 +83,7 @@ class ProductId {
   int? stockAvailable;
   String? defaultImage;
   String? currency;
+  String? shortDescription;
 
   ProductId(
       {this.id,
@@ -90,7 +93,8 @@ class ProductId {
       this.afterDiscountPrice,
       this.defaultImage,
       this.currency,
-      this.stockAvailable});
+      this.stockAvailable,
+      this.shortDescription});
 
   ProductId.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
@@ -103,5 +107,6 @@ class ProductId {
     stockAvailable = json["stockAvailable"];
     currency = json["currency"];
     defaultImage = json["defaultImage"];
+    shortDescription = json['shortDescription'];
   }
 }

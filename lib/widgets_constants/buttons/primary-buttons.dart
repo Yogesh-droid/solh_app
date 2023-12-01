@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SolhGreenBtn48 extends StatelessWidget {
-  SolhGreenBtn48({Key? key, required this.onPress, required this.text})
-      : super(key: key);
-  final Function() onPress;
+  const SolhGreenBtn48({super.key, required this.onPress, required this.text});
+  final Function()? onPress;
   final String text;
 
   @override
