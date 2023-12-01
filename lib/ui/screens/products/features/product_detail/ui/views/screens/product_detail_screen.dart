@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:readmore/readmore.dart';
@@ -293,7 +294,8 @@ class GetProductStatsAndImage extends StatelessWidget {
                   Text(
                     getStockString(
                         productDetailsModel.product!.stockAvailable ?? 0),
-                    style: SolhTextStyles.QS_body_2,
+                    style: SolhTextStyles.QS_body_2.copyWith(
+                        color: SolhColors.primaryRed),
                   ),
                 ],
               ),
@@ -333,15 +335,18 @@ class GetProductStatsAndImage extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   children: [
-              //     Text(
-              //       productDetailsModel.product!.skuOrIsbn ?? '',
-              //       style: SolhTextStyles.QS_caption,
-              //     ),
-              //   ],
-              // ),
+              Html(
+                  data: productDetailsModel.product!.shortDescription ?? '',
+                  shrinkWrap: true,
+                  style: {
+                    "body":
+                        Style(padding: HtmlPaddings.zero, margin: Margins.zero),
+                    "p": Style(
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontSize: FontSize(12),
+                    )
+                  }),
               const SizedBox(
                 height: 15,
               ),

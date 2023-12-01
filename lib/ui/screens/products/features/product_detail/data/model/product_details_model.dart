@@ -48,6 +48,7 @@ class Product {
   String? currency;
   int? stockAvailable;
   String? description;
+  String? shortDescription;
   String? medicineType;
   String? productQuantity;
   List<Specification>? specification;
@@ -65,6 +66,7 @@ class Product {
       this.productSubCategory,
       this.relatedProducts,
       this.price,
+      this.shortDescription,
       this.afterDiscountPrice,
       this.language,
       this.rating,
@@ -106,6 +108,7 @@ class Product {
     currency = json['currency'];
     stockAvailable = json['stockAvailable'];
     description = json['description'];
+    shortDescription = json['shortDescription'];
     medicineType = json['medicineType'];
     productQuantity = json['productQuantity'];
     if (json['specification'] != null) {

@@ -396,7 +396,7 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final CartController cartController = Get.find<CartController>();
     return AppBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       actions: [
         Obx(() => CartButton(
             itemsInCart: cartController.cartEntity.value.cartList != null
@@ -423,7 +423,8 @@ class ProductsAppBar extends StatelessWidget implements PreferredSizeWidget {
           width: 10,
         ),
       ],
-      elevation: 0,
+      elevation: 0.5,
+      foregroundColor: Colors.white,
       leading: title ??
           IconButton(
             icon: const Icon(
