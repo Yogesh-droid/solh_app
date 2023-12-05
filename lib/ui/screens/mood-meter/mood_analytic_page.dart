@@ -715,16 +715,7 @@ class MoodAnalyticPage extends StatelessWidget {
 class MoodAnalyticChart extends StatelessWidget {
   MoodAnalyticChart({super.key});
   final MoodMeterController meterController = Get.find();
-  final List<int> list = [
-    60,
-    0,
-    0,
-    0,
-    50,
-    60,
-    10,
-    30,
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -776,33 +767,41 @@ class MoodAnalyticChart extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 40),
-                child: Chart(
-                  state: ChartState(
-                    backgroundDecorations: [
-                      VerticalAxisDecoration(
-                        showValues: true,
-                        legendFontStyle: SolhTextStyles.CTA,
-                        showLines: false,
-                      ),
-                      SparkLineDecoration(lineColor: SolhColors.Grey_1)
-                    ],
-                    data: ChartData([
-                      list
-                          .map((e) => ChartItem(
-                                e.toDouble(),
-                              ))
-                          .toList()
-                    ]),
-                    itemOptions: BubbleItemOptions(
-                      padding: const EdgeInsets.all(7),
-                      bubbleItemBuilder: (p0) {
-                        return p0.itemIndex % 2 == 0
-                            ? const BubbleItem(color: SolhColors.primary_green)
-                            : const BubbleItem(color: SolhColors.black);
-                      },
-                    ),
-                  ),
-                ),
+                child: Obx(() {
+                  return meterController.isFetchingMoodAnalyticsChartData.value
+                      ? MyLoader()
+                      : Chart(
+                          state: ChartState(
+                            backgroundDecorations: [
+                              VerticalAxisDecoration(
+                                showValues: true,
+                                legendFontStyle: SolhTextStyles.CTA,
+                                showLines: false,
+                              ),
+                              SparkLineDecoration(lineColor: SolhColors.grey)
+                            ],
+                            data: ChartData([
+                              meterController.moodGraphData
+                                  .map((e) => ChartItem(
+                                        e.point.toDouble(),
+                                      ))
+                                  .toList()
+                            ]),
+                            itemOptions: BubbleItemOptions(
+                              padding: EdgeInsets.all(
+                                  meterController.selectedFrequency.value ==
+                                          '30'
+                                      ? 12
+                                      : 7),
+                              bubbleItemBuilder: (p0) {
+                                return BubbleItem(
+                                    color: meterController
+                                        .moodGraphData[p0.itemIndex].color);
+                              },
+                            ),
+                          ),
+                        );
+                }),
               ),
             ],
           ),
@@ -810,9 +809,12 @@ class MoodAnalyticChart extends StatelessWidget {
         Obx(() {
           return meterController.isFetchingMoodAnalyticsChartData.value
               ? const ButtonLoadingAnimation()
-              : Text(meterController.moodAnalyticsChartDataModel.value.isWeekly!
-                  ? 'weeks'
-                  : 'days');
+              : Text(
+                  meterController.moodAnalyticsChartDataModel.value.isWeekly!
+                      ? 'weeks'
+                      : 'days',
+                  style: SolhTextStyles.CTA
+                      .copyWith(color: SolhColors.primary_green));
         })
       ],
     );

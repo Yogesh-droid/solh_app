@@ -15,7 +15,8 @@ class MoodAnalyticsChartDataModel {
         averages!.add(v);
       });
     }
-    if (json['weeklyAverages']) {
+    if (json['weeklyAverages'] != null) {
+      averages = [];
       isWeekly = true;
       json['weeklyAverages'].forEach((v) {
         averages!.add(v);

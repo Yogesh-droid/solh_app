@@ -16,6 +16,13 @@ class GraphYAxisData {
   const GraphYAxisData({required this.color, required this.emojiUrl});
 }
 
+class GraphData {
+  final int point;
+  final Color color;
+
+  const GraphData({required this.point, required this.color});
+}
+
 class MoodMeterController extends GetxController {
   var isLoading = false.obs;
   List<String> gifList = [];
@@ -32,6 +39,7 @@ class MoodMeterController extends GetxController {
   var isFetchingMoodAnalytics = false.obs;
   var isFetchingSubMoodAnalytics = false.obs;
   var isFetchingMoodAnalyticsChartData = false.obs;
+  var moodGraphData = <GraphData>[].obs;
 
   var selectedGif = 'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif'.obs;
   var selectedMood = 'happy'.obs;
@@ -101,6 +109,7 @@ class MoodMeterController extends GetxController {
         '${APIConstants.api}/api/mood-analytics?days=$days');
     moodAnlyticsModel.value = MoodAnalyticsModel.fromJson(map);
     selectedFrequencyMoodMap.clear();
+    graphYAxisData.clear();
     activeColorList.clear();
     if (moodAnlyticsModel.value.moodAnalytic!.isNotEmpty) {
       currentSelectedMood.value =
@@ -110,11 +119,9 @@ class MoodMeterController extends GetxController {
     }
     getMoodAnalyticsChartData(days.toString());
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
-      if (graphYAxisData.length <= 5) {
-        graphYAxisData.add(GraphYAxisData(
-            color: Color(int.parse((element.hexCode!.replaceAll('#', '0xFF')))),
-            emojiUrl: element.media ?? ''));
-      }
+      graphYAxisData.add(GraphYAxisData(
+          color: Color(int.parse((element.hexCode!.replaceAll('#', '0xFF')))),
+          emojiUrl: element.media ?? ''));
     });
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
       selectedFrequencyMoodMap[element.name ?? ''] =
@@ -144,10 +151,17 @@ class MoodMeterController extends GetxController {
   Future<void> getMoodAnalyticsChartData(String day) async {
     isFetchingMoodAnalyticsChartData(true);
     try {
+      moodGraphData.clear();
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           '${APIConstants.api}/api/mood-graph?days=$day');
       moodAnalyticsChartDataModel.value =
           MoodAnalyticsChartDataModel.fromJson(map);
+      moodAnalyticsChartDataModel.value.averages!.forEach((element) {
+        moodGraphData.add(GraphData(
+            point: element['moodEnergy'],
+            color: Color(
+                int.parse((element['hexCode'].replaceAll('#', '0xFF'))))));
+      });
       isFetchingMoodAnalyticsChartData(false);
     } catch (e) {
       isFetchingMoodAnalyticsChartData(false);
