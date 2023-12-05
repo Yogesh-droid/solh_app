@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/services/utility.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/add_to_cart_controller.dart';
 import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_item.dart';
@@ -33,11 +33,11 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
-      height: isExpaded ? MediaQuery.of(context).size.height / 2 : 60,
+      duration: const Duration(milliseconds: 500),
+      height: isExpaded ? MediaQuery.of(context).size.height / 1.5 : 60,
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           boxShadow: [
             BoxShadow(
@@ -55,41 +55,41 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
             setState(() {});
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-          child: Column(
-            children: [
-              isExpaded
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(),
-                          Container(
-                            height: 8,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: SolhColors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
+        child: Column(
+          children: [
+            isExpaded
+                ? Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        Container(
+                          height: 8,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            color: SolhColors.grey,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          InkWell(
-                            onTap: () {
-                              isExpaded = false;
-                              setState(() {});
-                            },
-                            child: Icon(
-                              CupertinoIcons.clear_thick,
-                              color: SolhColors.grey,
-                            ),
-                          )
-                        ],
-                      ),
-                    )
-                  : SizedBox.shrink(),
-              Expanded(child: isExpaded ? itemList() : SizedBox()),
-              Row(children: [
+                        ),
+                        InkWell(
+                          onTap: () {
+                            isExpaded = false;
+                            setState(() {});
+                          },
+                          child: const Icon(
+                            CupertinoIcons.clear_thick,
+                            color: SolhColors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            Expanded(child: isExpaded ? itemList() : const SizedBox()),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(children: [
                 SizedBox(
                   child: Row(children: [
                     Text(
@@ -98,14 +98,14 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                           textStyle:
                               SolhTextStyles.CTA.copyWith(color: Colors.black)),
                     ),
-                    SizedBox(width: 15),
-                    Icon(
+                    const SizedBox(width: 15),
+                    const Icon(
                       Icons.arrow_drop_up,
                       color: SolhColors.primary_green,
                     )
                   ]),
                 ),
-                Spacer(),
+                const Spacer(),
                 SolhGreenButton(
                     onPressed: () {
                       Navigator.pushNamed(context, AppRoutes.checkoutScreen,
@@ -127,6 +127,18 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                                       .items![index].quantity!);
                             },
                             "onIncrease": (index, id, quantity) {
+                              if (cartController.cartEntity.value.cartList!
+                                      .items![index].quantity! ==
+                                  cartController
+                                      .cartEntity
+                                      .value
+                                      .cartList!
+                                      .items![index]
+                                      .productId!
+                                      .stockAvailable!) {
+                                Utility.showToast("No More Item in Stock");
+                                return;
+                              }
                               //  Id saved in controller so that we can check on which item we need to show loader//
                               Get.find<AddToCartController>()
                                       .indexOfItemToBeUpdated
@@ -153,8 +165,8 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                               .copyWith(color: SolhColors.white)),
                     ))
               ]),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -167,8 +179,12 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return SheetCartItem(
+                    isOutOfStock: cartController.cartEntity.value.cartList!
+                            .items![index].isOutOfStock ??
+                        false,
                     image: cartController.cartEntity.value.cartList!
-                        .items![index].productId!.productImage![0],
+                            .items![index].productId!.defaultImage ??
+                        '',
                     currency: "Rs",
                     discountedPrice: cartController.cartEntity.value.cartList!
                         .items![index].productId!.afterDiscountPrice,
@@ -179,6 +195,13 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                     productName: cartController.cartEntity.value.cartList!
                         .items![index].productId!.productName,
                     onIncreaseCartCount: () {
+                      if (cartController.cartEntity.value.cartList!
+                              .items![index].quantity! ==
+                          cartController.cartEntity.value.cartList!
+                              .items![index].productId!.stockAvailable!) {
+                        Utility.showToast("No More Item in Stock");
+                        return;
+                      }
                       //  Id saved in controller so that we can check on which item we need to show loader//
                       Get.find<AddToCartController>()
                               .indexOfItemToBeUpdated
@@ -229,7 +252,9 @@ class _ProductListBottomNavState extends State<ProductListBottomNav> {
                         .productId!.id!);
               },
               separatorBuilder: (_, __) {
-                return GetHelpDivider();
+                return const Divider(
+                  color: Colors.black,
+                );
               },
               itemCount:
                   cartController.cartEntity.value.cartList!.items!.length),

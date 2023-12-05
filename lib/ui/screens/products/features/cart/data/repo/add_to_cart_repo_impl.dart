@@ -9,7 +9,6 @@ class AddToCartRepoImpl implements AddToCartRepo {
     try {
       final Map<String, dynamic> map = await Network.makePostRequestWithToken(
           url: params.url, body: params.body!, isEncoded: true);
-      print("This is response $map");
       if (map['success']) {
         return DataSuccess(data: map['message']);
       } else {

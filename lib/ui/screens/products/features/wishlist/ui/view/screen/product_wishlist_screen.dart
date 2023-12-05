@@ -6,6 +6,9 @@ import 'package:solh/ui/screens/products/features/wishlist/ui/controller/add_del
 import 'package:solh/ui/screens/products/features/wishlist/ui/controller/product_wishlist_controller.dart';
 import 'package:solh/ui/screens/products/features/wishlist/ui/view/widgets/wishlist_card.dart';
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
+import 'package:solh/widgets_constants/constants/colors.dart';
+import 'package:solh/widgets_constants/constants/textstyles.dart';
 import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 class ProductWishlistScreen extends StatefulWidget {
@@ -30,66 +33,120 @@ class _ProductWishlistScreenState extends State<ProductWishlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: SolhAppBar(
+        isLandingScreen: false,
+        isVideoCallScreen: true,
+        title: Text('Your Wishlist', style: SolhTextStyles.QS_body_1_bold),
+      ),
       body: Obx(() {
         return productWishlistController.isLoading.value ||
                 addDeleteWishlistItemController.isLoading.value
             ? Center(
                 child: MyLoader(),
               )
-            : Scaffold(
-                appBar: ProductsAppBar(
-                  enableWishlist: false,
-                ),
-                body: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                              '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      ListView.separated(
-                        itemCount:
-                            productWishlistController.wishlistItems.length,
-                        shrinkWrap: true,
-                        separatorBuilder: (context, index) => GetHelpDivider(),
-                        itemBuilder: (context, index) {
-                          return WishlistCard(
-                            currency: productWishlistController
-                                    .wishlistItems[index].currency ??
-                                '',
-                            price: productWishlistController
-                                .wishlistItems[index].price
-                                .toString(),
-                            priceAfterDiscount: productWishlistController
-                                .wishlistItems[index].afterDiscountPrice
-                                .toString(),
-                            productImage: productWishlistController
-                                .wishlistItems[index].productImage![0],
-                            productName: productWishlistController
-                                    .wishlistItems[index].productName ??
-                                '',
-                            productQuantity: productWishlistController
-                                    .wishlistItems[index].productQuantity ??
-                                '',
-                            sId: productWishlistController
-                                    .wishlistItems[index].sId ??
-                                '',
-                            productsInCart: productWishlistController
-                                .wishlistItems[index].inCartCount!,
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              );
+            : (productWishlistController.wishlistItems.length == 0
+                ? EmptyWishListWidget()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: ListView(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  '${productWishlistController.wishlistItems.length} Items in your Wishlist '),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        ListView.separated(
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount:
+                              productWishlistController.wishlistItems.length,
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) =>
+                              GetHelpDivider(),
+                          itemBuilder: (context, index) {
+                            return WishlistCard(
+                              currency: productWishlistController
+                                      .wishlistItems[index].currency ??
+                                  '',
+                              price: productWishlistController
+                                  .wishlistItems[index].price
+                                  .toString(),
+                              priceAfterDiscount: productWishlistController
+                                  .wishlistItems[index].afterDiscountPrice
+                                  .toString(),
+                              productImage: productWishlistController
+                                  .wishlistItems[index].productImage![0],
+                              productName: productWishlistController
+                                      .wishlistItems[index].productName ??
+                                  '',
+                              productQuantity: productWishlistController
+                                      .wishlistItems[index].productQuantity ??
+                                  '',
+                              sId: productWishlistController
+                                      .wishlistItems[index].sId ??
+                                  '',
+                              productsInCart: productWishlistController
+                                  .wishlistItems[index].inCartCount!,
+                              stockAvailable: productWishlistController
+                                      .wishlistItems[index].stockAvailable ??
+                                  0,
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ));
       }),
+    );
+  }
+}
+
+class EmptyWishListWidget extends StatelessWidget {
+  const EmptyWishListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/empty_wishlist.png',
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'Oops! Your Wishlist is Empty',
+            style: SolhTextStyles.QS_body_1_bold,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            'Explore more and shortlist some items',
+            style: SolhTextStyles.QS_caption,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          SolhGreenMiniButton(
+            onPressed: () => Navigator.of(context).pop(),
+            height: 40,
+            child: Text(
+              'Shop Now',
+              style: SolhTextStyles.CTA.copyWith(color: SolhColors.white),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

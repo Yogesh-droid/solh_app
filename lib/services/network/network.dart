@@ -316,7 +316,7 @@ class Network {
         case 404:
           throw Exceptions(error: 'Data Not Found', statusCode: 404);
         default:
-          return {};
+          return jsonDecode(apiResponse.body);
       }
     } on SocketException {
       throw Exceptions(error: 'No Network', statusCode: 100);

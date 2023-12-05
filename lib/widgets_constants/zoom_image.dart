@@ -14,7 +14,7 @@ class _ZoomImageState extends State<ZoomImage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Container(
+          child: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Stack(
@@ -40,7 +40,7 @@ class _ZoomImageState extends State<ZoomImage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.close,
                     color: Colors.white,
                   ),

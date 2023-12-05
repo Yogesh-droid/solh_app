@@ -144,7 +144,7 @@ class MoodAnalyticPage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text('Mood count'.tr,
+                          Text('Mood Count'.tr,
                               style: SolhTextStyles.QS_body_semi_1),
                           const Spacer(),
                           getFrequencyButton(context),
@@ -200,7 +200,7 @@ class MoodAnalyticPage extends StatelessWidget {
 
   Widget getMoodHistoryList() {
     return SizedBox(
-      height: 100,
+      height: 80,
       child: ListView.separated(
           shrinkWrap: true,
           scrollDirection: Axis.horizontal,
@@ -219,7 +219,7 @@ class MoodAnalyticPage extends StatelessWidget {
                           '');
                 },
                 child: Container(
-                  width: 90,
+                  width: 70,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color:
@@ -238,6 +238,7 @@ class MoodAnalyticPage extends StatelessWidget {
                                   .replaceAll('#', '0xFF')))))
                           : null),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SimpleImageContainer(
@@ -246,17 +247,26 @@ class MoodAnalyticPage extends StatelessWidget {
                             '',
                         radius: 40,
                       ),
-                      Text(
-                        moodMeterController.moodAnlyticsModel.value
-                                .moodAnalytic![index].name ??
-                            '',
-                        style: SolhTextStyles.QS_cap_2_semi,
-                      ),
-                      Text(
-                        moodMeterController.moodAnlyticsModel.value
-                            .moodAnalytic![index].moodCount
-                            .toString(),
-                        style: SolhTextStyles.QS_cap_semi,
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              moodMeterController.moodAnlyticsModel.value
+                                  .moodAnalytic![index].moodCount
+                                  .toString(),
+                              style: SolhTextStyles.QS_cap_semi,
+                            ),
+                            // Text(
+                            //   moodMeterController.moodAnlyticsModel.value
+                            //           .moodAnalytic![index].name ??
+                            //       '',
+                            //   textAlign: TextAlign.center,
+                            //   style: SolhTextStyles.QS_cap_2_semi.copyWith(
+                            //       fontSize: 10),
+                            // ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -266,7 +276,7 @@ class MoodAnalyticPage extends StatelessWidget {
           },
           separatorBuilder: (context, index) {
             return const SizedBox(
-              width: 10,
+              width: 5,
             );
           },
           itemCount:
@@ -276,7 +286,7 @@ class MoodAnalyticPage extends StatelessWidget {
 
   Widget emotionsCount() {
     return moodMeterController.isFetchingSubMoodAnalytics.value
-        ? SizedBox(height: 200, child: ButtonLoadingAnimation())
+        ? const SizedBox(height: 200, child: ButtonLoadingAnimation())
         : (moodMeterController.subMoodAnlyticsModel.value.data == null ||
                 moodMeterController.subMoodAnlyticsModel.value.data!.isEmpty
             ? Container()
@@ -288,7 +298,7 @@ class MoodAnalyticPage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 24,
                       ),
                       Text(
@@ -307,7 +317,7 @@ class MoodAnalyticPage extends StatelessWidget {
                             .subMoodAnlyticsModel.value.data!
                             .map(
                               (e) => Container(
-                                padding: EdgeInsets.all(15),
+                                padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                     color: SolhColors.red_shade_3,
                                     borderRadius: BorderRadius.circular(12)),
@@ -413,7 +423,7 @@ class MoodAnalyticPage extends StatelessWidget {
                             '',
                         radius: 110,
                       )
-                    : Text(
+                    : const Text(
                         'No mood recorded',
                         style: SolhTextStyles.QS_caption_bold,
                       ),
@@ -516,7 +526,7 @@ class MoodAnalyticPage extends StatelessWidget {
                   width: 5,
                 ),
                 Text(
-                  '$mood',
+                  mood,
                   style: const TextStyle(
                     fontSize: 16,
                     color: Color(0xFF666666),
@@ -704,61 +714,78 @@ class MoodAnalyticPage extends StatelessWidget {
 
 class MoodAnalyticChart extends StatelessWidget {
   MoodAnalyticChart({super.key});
-  MoodMeterController meterController = Get.find();
+  final MoodMeterController meterController = Get.find();
   final List<int> list = [
-    5,
-    3,
-    5,
-    5,
-    5,
-    6,
-    3,
+    60,
+    0,
+    0,
+    0,
+    50,
+    60,
+    10,
+    30,
   ];
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: Stack(
-        children: [
-          Container(
-            height: 200,
-            width: 5,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: meterController.graphYAxisData
-                  .map((e) => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SimpleImageContainer(
-                              imageUrl: e.emojiUrl, radius: 30),
-                          Container(
-                            width: 5,
-                            height: 200 / meterController.graphYAxisData.length,
-                            color: e.color,
-                          ),
-                        ],
-                      ))
-                  .toList()
-                  .reversed
-                  .toList(),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: Container(
-              width: 100.h - 40,
-              height: 3,
-              color: SolhColors.grey,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Chart(
-                state: ChartState(
+    return Column(
+      children: [
+        SizedBox(
+          height: 200,
+          child: Stack(
+            children: [
+              // Positioned(
+              //   bottom: 0,
+              //   right: 0,
+              //   child: Container(
+              //     width: 100.w - 55,
+              //     height: 2,
+              //     color: SolhColors.grey_3,
+              //     // child: Row(
+              //     //   children: List.generate(
+              //     //       7,
+              //     //       (index) => Container(
+              //     //             height: 5,
+              //     //             width: 1,
+              //     //             color: Colors.amberAccent,
+              //     //           )),
+              //     // ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 200,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: meterController.graphYAxisData
+                      .map((e) => Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SimpleImageContainer(
+                                  imageUrl: e.emojiUrl, radius: 30),
+                              Container(
+                                width: 5,
+                                height:
+                                    200 / meterController.graphYAxisData.length,
+                                color: e.color,
+                              ),
+                            ],
+                          ))
+                      .toList()
+                      .reversed
+                      .toList(),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: Chart(
+                  state: ChartState(
                     backgroundDecorations: [
-                  SparkLineDecoration(lineColor: SolhColors.Grey_1)
-                ],
+                      VerticalAxisDecoration(
+                        showValues: true,
+                        legendFontStyle: SolhTextStyles.CTA,
+                        showLines: false,
+                      ),
+                      SparkLineDecoration(lineColor: SolhColors.Grey_1)
+                    ],
                     data: ChartData([
                       list
                           .map((e) => ChartItem(
@@ -767,16 +794,27 @@ class MoodAnalyticChart extends StatelessWidget {
                           .toList()
                     ]),
                     itemOptions: BubbleItemOptions(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(7),
                       bubbleItemBuilder: (p0) {
                         return p0.itemIndex % 2 == 0
-                            ? BubbleItem(color: SolhColors.primary_green)
-                            : BubbleItem(color: SolhColors.black);
+                            ? const BubbleItem(color: SolhColors.primary_green)
+                            : const BubbleItem(color: SolhColors.black);
                       },
-                    ))),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Obx(() {
+          return meterController.isFetchingMoodAnalyticsChartData.value
+              ? const ButtonLoadingAnimation()
+              : Text(meterController.moodAnalyticsChartDataModel.value.isWeekly!
+                  ? 'weeks'
+                  : 'days');
+        })
+      ],
     );
   }
 }

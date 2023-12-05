@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/constants/api.dart';
 import 'package:solh/controllers/goal-setting/goal_setting_controller.dart';
@@ -48,7 +49,7 @@ import '../widgets_constants/loader/my-loader.dart';
 import 'bottom_navigator_controller.dart';
 
 class MasterScreen extends StatelessWidget {
-  MasterScreen({Key? key}) : super(key: key);
+  MasterScreen({super.key});
 
   final BookAppointmentController bookAppointment =
       Get.put(BookAppointmentController());
@@ -68,18 +69,19 @@ class MasterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Running init in bottom ");
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        child: MasterScreen2(),
+        child: const MasterScreen2(),
       ),
     );
   }
 }
 
 class MasterScreen2 extends StatefulWidget {
+  const MasterScreen2({super.key});
+
   @override
   State<MasterScreen2> createState() => _MasterScreen2State();
 }
@@ -105,13 +107,13 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   @override
   void initState() {
-    print('init master');
+    debugPrint('init master');
     Connectivity().checkConnectivity().then((result) async {
       if (result == ConnectivityResult.none) {
         try {
           final result = await InternetAddress.lookup('example.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
+            debugPrint('connected');
           }
         } on SocketException catch (_) {
           onConnectionFailed();
@@ -124,9 +126,10 @@ class _MasterScreen2State extends State<MasterScreen2>
         try {
           final result = await InternetAddress.lookup('example.com');
           if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-            print('connected');
+            debugPrint('connected');
           }
         } on SocketException catch (_) {
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Internet is not connected")));
           onConnectionFailed();
@@ -153,7 +156,7 @@ class _MasterScreen2State extends State<MasterScreen2>
 
   void showFeedbackForm() {
     Future.delayed(
-      const Duration(seconds: 40),
+      const Duration(seconds: 10),
       () {
         bottomNavigatorController.shouldShowFeedbackForm
             ? showBottomSheet(
@@ -253,7 +256,7 @@ class _MasterScreen2State extends State<MasterScreen2>
   Future<bool> _onWillPop(BuildContext context) async {
     if (bottomNavigatorController.isDrawerOpen.value) {
       return Future.value(false);
-    } else if (bottomNavigatorController.activeIndex != 0) {
+    } else if (bottomNavigatorController.activeIndex.value != 0) {
       bottomNavigatorController.activeIndex.value = 0;
       return Future.value(false);
     } else {
@@ -435,6 +438,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                                   .trim(),
                             });
 
+                            // ignore: use_build_context_synchronously
                             Navigator.of(context).pop();
                           } else {
                             SolhSnackbar.error(
@@ -521,8 +525,10 @@ class _MasterScreen2State extends State<MasterScreen2>
                     title: 'HOME',
                     child: Obx(
                       () => bottomNavigatorController.activeIndex.value == 0
-                          ? SvgPicture.asset('assets/images/home_solid.svg')
-                          : SvgPicture.asset('assets/images/home_outlined.svg'),
+                          ? SvgPicture.asset('assets/images/home_solid.svg',
+                              height: 20)
+                          : SvgPicture.asset('assets/images/home_outlined.svg',
+                              height: 20),
                     ),
                   ),
                   label: "Home".tr,
@@ -541,11 +547,11 @@ class _MasterScreen2State extends State<MasterScreen2>
                       () => bottomNavigatorController.activeIndex.value == 1
                           ? SvgPicture.asset(
                               'assets/images/journaling.svg',
-                              height: 18,
+                              height: 20,
                             )
                           : SvgPicture.asset(
                               'assets/images/journalling outline.svg',
-                              height: 18,
+                              height: 20,
                             ),
                     ),
                   ),
@@ -553,22 +559,24 @@ class _MasterScreen2State extends State<MasterScreen2>
                 ),
                 getHelpItem(),
                 BottomNavigationBarItem(
-                    icon: GuideToorWidget(
-                      description:
-                          'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
-                      icon: SvgPicture.asset(
-                          'assets/images/groal tab vector.svg'),
-                      id: 'my_goal',
-                      title: 'PRODUCTS',
-                      child: Obx(() => SvgPicture.asset(
-                            'assets/images/groal tab vector.svg',
-                            color:
-                                bottomNavigatorController.activeIndex.value == 3
-                                    ? SolhColors.primary_green
-                                    : Colors.grey.shade600,
-                          )),
-                    ),
-                    label: "Products".tr),
+                  icon: GuideToorWidget(
+                    description:
+                        'Set Goals, manage them, and accomplish what you always wanted to. Celebrate milestones, and stay locked onto your goals for a more fulfilling life.',
+                    icon:
+                        SvgPicture.asset('assets/images/groal tab vector.svg'),
+                    id: 'my_goal',
+                    title: 'PRODUCTS',
+                    child: Obx(() => SvgPicture.asset(
+                        'assets/images/product_icon.svg',
+                        height: 20,
+                        colorFilter: ColorFilter.mode(
+                            bottomNavigatorController.activeIndex.value == 3
+                                ? SolhColors.primary_green
+                                : Colors.grey.shade600,
+                            BlendMode.srcIn))),
+                  ),
+                  label: "Products".tr,
+                ),
               ],
             ),
           )),
@@ -598,6 +606,7 @@ class _MasterScreen2State extends State<MasterScreen2>
                     child: Icon(
                       Icons.menu,
                       color: Colors.grey.shade600,
+                      size: 18,
                     ),
                   ),
                   Obx(() {
@@ -606,7 +615,8 @@ class _MasterScreen2State extends State<MasterScreen2>
                             null
                         ? Text(
                             "More".tr,
-                            style: const TextStyle(fontSize: 12),
+                            style: GoogleFonts.quicksand(
+                                textStyle: TextStyle(fontSize: 12)),
                           )
                         : const LiveBlink();
                   }),
@@ -629,10 +639,10 @@ class _MasterScreen2State extends State<MasterScreen2>
             return profileController.isProfileLoading.value ||
                     profileController.myProfileModel.value.body == null
                 ? bottomNavigatorController.activeIndex.value == 2
-                    ? SvgPicture.asset("assets/images/get help tab.svg")
-                    : SvgPicture.asset(
-                        "assets/images/get help. outline.svg",
-                      )
+                    ? SvgPicture.asset("assets/images/get help tab.svg",
+                        height: 20)
+                    : SvgPicture.asset("assets/images/get help. outline.svg",
+                        height: 20)
                 : profileController.myProfileModel.value.body!.user!.userType ==
                         'SolhProvider'
                     ? Icon(
@@ -642,9 +652,13 @@ class _MasterScreen2State extends State<MasterScreen2>
                             : SolhColors.dark_grey,
                       )
                     : bottomNavigatorController.activeIndex.value == 2
-                        ? SvgPicture.asset("assets/images/get help tab.svg")
+                        ? SvgPicture.asset(
+                            "assets/images/get help tab.svg",
+                            height: 20,
+                          )
                         : SvgPicture.asset(
                             "assets/images/get help. outline.svg",
+                            height: 20,
                           );
           }),
         ),
@@ -776,7 +790,7 @@ class _MasterScreen2State extends State<MasterScreen2>
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                UpperCloseDecoration(),
+                const UpperCloseDecoration(),
                 const Divider(),
                 SizedBox(
                   width: 100.w,
@@ -786,125 +800,9 @@ class _MasterScreen2State extends State<MasterScreen2>
                     crossAxisSpacing: 4.0,
                     mainAxisSpacing: 8.0,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Get.find<GetHelpController>()
-                              .getAlliedTherapyListMore();
-                          Navigator.pushNamed(
-                              context, AppRoutes.viewAllAlliedCategories,
-                              arguments: {
-                                "onTap": (value, name) {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.viewAllAlliedExpert,
-                                      arguments: {
-                                        "slug": value,
-                                        "name": name,
-                                        "type": 'specialization',
-                                        "enableAppbar": true
-                                      });
-                                }
-                              });
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/allied.svg'),
-                            Text(
-                              'Allied Therapies'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
-
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.pushNamed(
-                      //         context, AppRoutes.viewAllAlliedCategories,
-                      //         arguments: {
-                      //           "onTap": (value) {
-                      //             Navigator.pushNamed(
-                      //                 context, AppRoutes.viewAllAlliedExpert,
-                      //                 arguments: {
-                      //                   "slug": value,
-                      //                   "name": value,
-                      //                   "type": 'specialization',
-                      //                   "enableAppbar": true
-                      //                 });
-                      //           }
-                      //         });
-                      //   },
-                      //   child: Column(
-                      //     children: [
-                      //       getBottomSheetIcon(icon: 'assets/images/packages.svg'),
-                      //       Text('Packages'.tr)
-                      //     ],
-                      //   ),
-                      // ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, AppRoutes.psychologyTest);
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/self-assessment.svg'),
-                            Text(
-                              'Self Assessment'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AnonymousDialog());
-                        },
-                        child: Column(
-                          children: [
-                            getBottomSheetIcon(
-                                icon: 'assets/images/talk-now-sheet.svg'),
-                            Text(
-                              'Talk Now'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.videoPlaylist);
-                        },
-                        child: Column(
-                          children: [
-                            Obx(() {
-                              return liveStreamController.liveStreamForUserModel
-                                          .value.webinar ==
-                                      null
-                                  ? Container(
-                                      height: 14,
-                                    )
-                                  : const LiveBlink();
-                            }),
-                            getBottomSheetIcon(
-                                icon: 'assets/images/know-us-more.svg'),
-                            Text(
-                              'Featured Videos'.tr,
-                              style: SolhTextStyles.QS_cap_semi,
-                            )
-                          ],
-                        ),
-                      ),
                       Column(
                         children: [
-                          const SizedBox(
-                            height: 14,
-                          ),
+                          const SizedBox(height: 14),
                           Obx(() {
                             return profileController.isProfileLoading.value
                                 ? Center(
@@ -949,8 +847,99 @@ class _MasterScreen2State extends State<MasterScreen2>
                           Text(
                             'My Profile'.tr,
                             style: SolhTextStyles.QS_cap_semi,
-                          )
+                          ),
                         ],
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.OrgSetting);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/organization-icon.svg'),
+                            Text(
+                              'Organization'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.videoPlaylist);
+                        },
+                        child: Column(
+                          children: [
+                            Obx(() {
+                              return liveStreamController.liveStreamForUserModel
+                                          .value.webinar ==
+                                      null
+                                  ? Container(height: 14)
+                                  : const LiveBlink();
+                            }),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/know-us-more.svg'),
+                            Text(
+                              'Featured Videos'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, AppRoutes.psychologyTest);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/self-assessment.svg'),
+                            Text(
+                              'Self Assessment'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AnonymousDialog());
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/talk-now-sheet.svg'),
+                            Text(
+                              'Talk Now'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.myGoalScreen);
+                        },
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 14),
+                            getBottomSheetIcon(
+                                icon: 'assets/images/goals_icon.svg'),
+                            Text(
+                              'My Goals'.tr,
+                              style: SolhTextStyles.QS_cap_semi,
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -1029,9 +1018,11 @@ class _MasterScreen2State extends State<MasterScreen2>
 }
 
 class UpperCloseDecoration extends StatelessWidget {
+  const UpperCloseDecoration({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 25,
       child: Row(
@@ -1046,7 +1037,7 @@ class UpperCloseDecoration extends StatelessWidget {
                   color: SolhColors.grey,
                   borderRadius: BorderRadius.circular(10)),
             ),
-            Container(
+            SizedBox(
               width: 40,
               height: 50,
               child: InkWell(
@@ -1062,6 +1053,8 @@ class UpperCloseDecoration extends StatelessWidget {
 }
 
 class AnimatedHideContainer extends StatelessWidget {
+  const AnimatedHideContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Row(

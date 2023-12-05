@@ -13,7 +13,7 @@ class AddressListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AddressController _addressController = Get.find();
+    final AddressController addressController = Get.find();
     return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: SingleChildScrollView(
@@ -21,22 +21,21 @@ class AddressListWidget extends StatelessWidget {
           children: [
             Text("Choose Address",
                 style: GoogleFonts.signika(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.black))),
-            ..._addressController.addressEntity.value.addressList!
+            ...addressController.addressEntity.value.addressList!
                 .map((e) => AddressTileSheet(
                       addressList: e,
                       wantToChangeBilling: wantToChangeBilling,
-                    ))
-                .toList(),
+                    )),
             SolhGreenButton(
               height: 40,
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.add),
-                SizedBox(width: 5),
+                const Icon(Icons.add),
+                const SizedBox(width: 5),
                 Text(
                   "Add New",
                   style: SolhTextStyles.QS_body_2_semi.copyWith(

@@ -7,9 +7,9 @@ class CartEntity {
   final int? discount;
   final int? shippingAmount;
   final int? finalPrice;
-  final String? currency;
-  final String? code;
-  final String? symbol;
+  final String? currency; // ₹
+  final String? code; // INR
+  final String? symbol; // Rs
 
   CartEntity(
       {this.success,

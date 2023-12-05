@@ -193,7 +193,7 @@ class SolhPinkMiniButton extends StatelessWidget {
 
 class SolhGreenButton extends StatelessWidget {
   const SolhGreenButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.height,
@@ -204,7 +204,7 @@ class SolhGreenButton extends StatelessWidget {
     this.borderRadius,
     this.alignment,
     this.margin,
-  }) : super(key: key);
+  });
 
   final double? height;
   final double? width;
@@ -232,7 +232,7 @@ class SolhGreenButton extends StatelessWidget {
       child: Container(
         height: height ?? 7.h,
         width: width ?? 180,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(5),
         child: Center(child: child),
       ),
     );

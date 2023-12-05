@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/products/features/order_summary/data/model/order_detail_model.dart';
 import 'package:solh/ui/screens/products/features/order_summary/domain/entity/order_detail_entity.dart';
 import 'package:solh/widgets_constants/constants/colors.dart';
@@ -33,7 +34,23 @@ class OrderTrackingWidget extends StatelessWidget {
                               .userOrderDetails!.orderItems!.tracker!.length -
                           1);
             },
-          )
+          ),
+          const SizedBox(height: 10),
+          if (orderEntity.canCancel != null && orderEntity.canCancel!)
+            ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.cancelOrderPage,
+                    arguments: {"orderDetailEntity": orderEntity});
+              },
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              title: Text("Cancel Order",
+                  style: SolhTextStyles.QS_body_semi_1.copyWith(
+                      color: Colors.black)),
+              trailing: const Icon(
+                Icons.keyboard_arrow_right_rounded,
+                color: SolhColors.primary_green,
+              ),
+            )
         ],
       ),
     );

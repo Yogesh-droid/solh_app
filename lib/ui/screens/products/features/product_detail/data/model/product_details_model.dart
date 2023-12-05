@@ -10,26 +10,26 @@ class ProductDetailsModel {
   ProductDetailsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     product =
-        json['product'] != null ? new Product.fromJson(json['product']) : null;
+        json['product'] != null ? Product.fromJson(json['product']) : null;
     if (json['reviews'] != null) {
       reviews = <Reviews>[];
       json['reviews'].forEach((v) {
-        reviews!.add(new Reviews.fromJson(v));
+        reviews!.add(Reviews.fromJson(v));
       });
     }
     totalReview = json['totalReview'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['success'] = this.success;
-    if (this.product != null) {
-      data['product'] = this.product!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    if (product != null) {
+      data['product'] = product!.toJson();
     }
-    if (this.reviews != null) {
-      data['reviews'] = this.reviews!.map((v) => v.toJson()).toList();
+    if (reviews != null) {
+      data['reviews'] = reviews!.map((v) => v.toJson()).toList();
     }
-    data['totalReview'] = this.totalReview;
+    data['totalReview'] = totalReview;
     return data;
   }
 }
@@ -48,6 +48,7 @@ class Product {
   String? currency;
   int? stockAvailable;
   String? description;
+  String? shortDescription;
   String? medicineType;
   String? productQuantity;
   List<Specification>? specification;
@@ -65,6 +66,7 @@ class Product {
       this.productSubCategory,
       this.relatedProducts,
       this.price,
+      this.shortDescription,
       this.afterDiscountPrice,
       this.language,
       this.rating,
@@ -85,18 +87,18 @@ class Product {
     productName = json['productName'];
     productImage = json['productImage'].cast<String>();
     productCategory = json['productCategory'] != null
-        ? new ProductCategory.fromJson(json['productCategory'])
+        ? ProductCategory.fromJson(json['productCategory'])
         : null;
     if (json['productSubCategory'] != null) {
       productSubCategory = <ProductSubCategory>[];
       json['productSubCategory'].forEach((v) {
-        productSubCategory!.add(new ProductSubCategory.fromJson(v));
+        productSubCategory!.add(ProductSubCategory.fromJson(v));
       });
     }
     if (json['relatedProducts'] != null) {
       relatedProducts = <RelatedProducts>[];
       json['relatedProducts'].forEach((v) {
-        relatedProducts!.add(new RelatedProducts.fromJson(v));
+        relatedProducts!.add(RelatedProducts.fromJson(v));
       });
     }
     price = json['price'];
@@ -106,12 +108,13 @@ class Product {
     currency = json['currency'];
     stockAvailable = json['stockAvailable'];
     description = json['description'];
+    shortDescription = json['shortDescription'];
     medicineType = json['medicineType'];
     productQuantity = json['productQuantity'];
     if (json['specification'] != null) {
       specification = <Specification>[];
       json['specification'].forEach((v) {
-        specification!.add(new Specification.fromJson(v));
+        specification!.add(Specification.fromJson(v));
       });
     }
     iV = json['__v'];
@@ -122,36 +125,35 @@ class Product {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['productName'] = this.productName;
-    data['productImage'] = this.productImage;
-    if (this.productCategory != null) {
-      data['productCategory'] = this.productCategory!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['productName'] = productName;
+    data['productImage'] = productImage;
+    if (productCategory != null) {
+      data['productCategory'] = productCategory!.toJson();
     }
-    if (this.productSubCategory != null) {
+    if (productSubCategory != null) {
       data['productSubCategory'] =
-          this.productSubCategory!.map((v) => v.toJson()).toList();
+          productSubCategory!.map((v) => v.toJson()).toList();
     }
-    if (this.relatedProducts != null) {
+    if (relatedProducts != null) {
       data['relatedProducts'] =
-          this.relatedProducts!.map((v) => v.toJson()).toList();
+          relatedProducts!.map((v) => v.toJson()).toList();
     }
-    data['price'] = this.price;
-    data['afterDiscountPrice'] = this.afterDiscountPrice;
-    data['language'] = this.language;
-    data['rating'] = this.rating;
-    data['currency'] = this.currency;
-    data['stockAvailable'] = this.stockAvailable;
-    data['description'] = this.description;
-    data['medicineType'] = this.medicineType;
-    data['productQuantity'] = this.productQuantity;
-    if (this.specification != null) {
-      data['specification'] =
-          this.specification!.map((v) => v.toJson()).toList();
+    data['price'] = price;
+    data['afterDiscountPrice'] = afterDiscountPrice;
+    data['language'] = language;
+    data['rating'] = rating;
+    data['currency'] = currency;
+    data['stockAvailable'] = stockAvailable;
+    data['description'] = description;
+    data['medicineType'] = medicineType;
+    data['productQuantity'] = productQuantity;
+    if (specification != null) {
+      data['specification'] = specification!.map((v) => v.toJson()).toList();
     }
-    data['__v'] = this.iV;
-    data['sku_or_isbn'] = this.skuOrIsbn;
+    data['__v'] = iV;
+    data['sku_or_isbn'] = skuOrIsbn;
     return data;
   }
 }
@@ -168,9 +170,9 @@ class ProductCategory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['categoryName'] = this.categoryName;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['categoryName'] = categoryName;
     return data;
   }
 }
@@ -187,6 +189,7 @@ class RelatedProducts {
   int? inCartCount;
   bool? isWishlisted;
   String? currency;
+  String? shortDescription;
 
   RelatedProducts({
     this.sId,
@@ -200,6 +203,7 @@ class RelatedProducts {
     this.isWishlisted,
     this.productQuantity,
     this.currency,
+    this.shortDescription,
   });
 
   RelatedProducts.fromJson(Map<String, dynamic> json) {
@@ -214,17 +218,18 @@ class RelatedProducts {
     isWishlisted = json['isWishlisted'];
     inCartCount = json['inCartCount'];
     currency = json['currency'];
+    shortDescription = json['shortDescription'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['productName'] = this.productName;
-    data['productImage'] = this.productImage;
-    data['price'] = this.price;
-    data['afterDiscountPrice'] = this.afterDiscountPrice;
-    data['stockAvailable'] = this.stockAvailable;
-    data['productQuantity'] = this.productQuantity;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['productName'] = productName;
+    data['productImage'] = productImage;
+    data['price'] = price;
+    data['afterDiscountPrice'] = afterDiscountPrice;
+    data['stockAvailable'] = stockAvailable;
+    data['productQuantity'] = productQuantity;
     return data;
   }
 }
@@ -243,10 +248,10 @@ class Specification {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['label'] = this.label;
-    data['value'] = this.value;
-    data['_id'] = this.sId;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['label'] = label;
+    data['value'] = value;
+    data['_id'] = sId;
     return data;
   }
 }
@@ -265,17 +270,16 @@ class Reviews {
     review = json['review'];
     rating = json['rating'];
     createdAt = json['createdAt'];
-    userId =
-        json['userId'] != null ? new UserId.fromJson(json['userId']) : null;
+    userId = json['userId'] != null ? UserId.fromJson(json['userId']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['review'] = this.review;
-    data['rating'] = this.rating;
-    if (this.userId != null) {
-      data['userId'] = this.userId!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['review'] = review;
+    data['rating'] = rating;
+    if (userId != null) {
+      data['userId'] = userId!.toJson();
     }
     return data;
   }
@@ -297,11 +301,11 @@ class UserId {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['profilePicture'] = this.profilePicture;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
+    data['profilePicture'] = profilePicture;
+    data['id'] = id;
     return data;
   }
 }
@@ -318,7 +322,7 @@ class ProductSubCategory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = id;
     data['categoryName'] = categoryName;
     return data;

@@ -10,6 +10,7 @@ class FeatureProductsEntity {
   int? inCartCount;
   bool? isWishlisted;
   String? currency;
+  String? shortDescription;
 
   FeatureProductsEntity(
       {this.sId,
@@ -22,5 +23,6 @@ class FeatureProductsEntity {
       this.inCartCount,
       this.isWishlisted,
       this.stockAvailable,
+      this.shortDescription,
       this.currency});
 }

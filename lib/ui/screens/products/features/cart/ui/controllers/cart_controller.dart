@@ -16,6 +16,7 @@ class CartController extends GetxController {
   CartController({required this.cartUsecase});
 
   Future<void> getCart() async {
+    error.value = '';
     try {
       isCartLoading.value = true;
       final ProductDataState<CartEntity> dataState = await cartUsecase
@@ -23,11 +24,12 @@ class CartController extends GetxController {
       if (dataState.data != null) {
         cartEntity.value = CartEntity();
         cartEntity.value = dataState.data!;
-        totalPayblePrice.value = cartEntity.value.cartList!.items!.fold(
-            0,
-            (previousValue, element) =>
-                previousValue +
-                (element.productId!.price! * element.quantity!));
+        // totalPayblePrice.value = cartEntity.value.cartList!.items!.fold(
+        //     0,
+        //     (previousValue, element) =>
+        //         previousValue +
+        //         (element.productId!.price! * element.quantity!));
+        totalPayblePrice.value = cartEntity.value.totalPrice!.toDouble();
 
         isCartLoading.value = false;
       } else {

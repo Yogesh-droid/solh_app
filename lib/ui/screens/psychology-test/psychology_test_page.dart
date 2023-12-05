@@ -134,7 +134,7 @@ class _PsychologyTestPageState extends State<PsychologyTestPage>
             controller: tabController,
             tabs: [
               Text(
-                'Discover Test'.tr,
+                'Discover Tests'.tr,
               ),
               Text(
                 'Result History'.tr,

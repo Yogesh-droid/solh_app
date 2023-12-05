@@ -15,6 +15,7 @@ import 'package:solh/ui/screens/products/features/product_payment/ui/widgets/pay
 import 'package:solh/widgets_constants/appbars/app-bar.dart';
 import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 import 'package:solh/widgets_constants/constants/textstyles.dart';
+import 'package:solh/widgets_constants/loader/my-loader.dart';
 
 import '../../../../../../../controllers/profile/profile_controller.dart';
 
@@ -27,10 +28,13 @@ class ProductPaymentPage extends StatefulWidget {
 }
 
 class _ProductPaymentPageState extends State<ProductPaymentPage> {
+  bool isPaymentStarted = false;
+  bool isCreatingOrder = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: SolhAppBar(
+        isVideoCallScreen: true,
         title: const Text(
           "Payment Mode",
           style: SolhTextStyles.QS_body_1_bold,
@@ -42,7 +46,9 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         PaymentDetails(
             total: double.parse(widget.args['totalPrice'].toString()),
             discount: double.parse(widget.args['discount'].toString()),
-            shipping: double.parse(widget.args['shipping'].toString())),
+            shipping: double.parse(widget.args['shipping'].toString()),
+            currency: widget.args['feeCode'],
+            currencySymbol: widget.args['currency']),
         const SizedBox(height: 10),
         const GetHelpDivider(),
         const PaymentOptionsTile(),
@@ -50,26 +56,43 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
         Padding(
           padding: const EdgeInsets.all(24),
           child: SolhGreenButton(
-            onPressed: () {
+            onPressed: () async {
               // launchUrl(Uri.parse(
               // 'upi://pay?pa=dinesh@dlanzer&pn=Dinesh&am=1&tn=Test Payment&cu=INR'));
 
               double amount = widget.args['totalPrice'] -
                   widget.args['discount'] +
                   widget.args['shipping'];
-              startPayment(
-                  amount: '${amount.toInt()}',
-                  currency: "INR",
-                  feeCode: "inr",
-                  paymentGateway: "Stripe",
-                  paymentSource: "App");
+              setState(() {
+                isPaymentStarted = true;
+              });
+              await startPayment(
+                      amount: '${amount.toInt()}',
+                      currency: widget.args['feeCode'],
+                      feeCode: widget.args['feeCode'].toString().toLowerCase(),
+                      paymentGateway: "Stripe",
+                      paymentSource: "App")
+                  .onError((error, stackTrace) {
+                setState(() {
+                  isPaymentStarted = false;
+                });
+              });
+
+              setState(() {
+                isPaymentStarted = false;
+              });
             },
             height: 40,
             width: MediaQuery.of(context).size.width,
-            child: Text(
-              "Make Payment",
-              style: SolhTextStyles.CTA.copyWith(color: Colors.white),
-            ),
+            child: isPaymentStarted || isCreatingOrder
+                ? MyLoader(
+                    radius: 10,
+                    strokeWidth: 2,
+                  )
+                : Text(
+                    "Make Payment",
+                    style: SolhTextStyles.CTA.copyWith(color: Colors.white),
+                  ),
           ),
         ),
       ]),
@@ -106,7 +129,20 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
                       postalCode: null,
                       state: null)),
               merchantDisplayName: 'Solh'));
-
+      List<Map<String, dynamic>> items = [];
+      for (var e in cartController.cartEntity.value.cartList!.items!) {
+        if (!e.isOutOfStock!) {
+          items.add({
+            "name": e.productId!.productName ?? '',
+            "product_id": e.productId!.id ?? '',
+            "salePrice": e.productId!.afterDiscountPrice ?? 0,
+            "originalPrice": e.productId!.price ?? 0,
+            "quantity": e.quantity ?? 0,
+            "image": e.productId!.productImage![0],
+            "shortDescription": e.productId!.shortDescription
+          });
+        }
+      }
       Map<String, dynamic> body = {
         "transaction": {
           "pgTransactionId": paymentIntent['id'],
@@ -122,16 +158,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
           "totalItems": cartController.cartEntity.value.cartList!.items!.length,
           "totalBill": widget.args['totalPrice'],
           "source": "App",
-          "orderItems": cartController.cartEntity.value.cartList!.items!
-              .map((e) => {
-                    "name": e.productId!.productName ?? '',
-                    "product_id": e.productId!.id ?? '',
-                    "salePrice": e.productId!.afterDiscountPrice ?? 0,
-                    "originalPrice": e.productId!.price ?? 0,
-                    "quantity": e.quantity ?? 0,
-                    "image": e.productId!.productImage![0]
-                  })
-              .toList(),
+          "orderItems": items,
           "shippingAddress": {
             "fullName": addressController.selectedAddress.value.fullName,
             "phoneNumber": addressController.selectedAddress.value.phoneNumber,
@@ -163,7 +190,6 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
           "paymentStatus": "Paid"
         }
       };
-
       // ignore: use_build_context_synchronously
       displayPaymentSheet(context, body);
     } catch (err) {
@@ -215,6 +241,7 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
 
       return response['data'];
     } on SocketException {
+      throw Exception("Internet is slow or connection interrupted");
     } catch (err) {
       throw Exception(err.toString());
     }
@@ -240,11 +267,24 @@ class _ProductPaymentPageState extends State<ProductPaymentPage> {
   }
 
   Future<void> makeOrderRequest(Map<String, dynamic> postBody) async {
+    setState(() {
+      isCreatingOrder = true;
+    });
     try {
       Map<String, dynamic> response = await Network.makePostRequestWithToken(
-          isEncoded: true,
-          url: '${APIConstants.api}/api/product/order-product',
-          body: postBody);
+              isEncoded: true,
+              url: '${APIConstants.api}/api/product/order-product',
+              body: postBody)
+          .onError((error, stackTrace) {
+        setState(() {
+          isCreatingOrder = false;
+        });
+        throw Exception(error);
+      });
+
+      setState(() {
+        isCreatingOrder = false;
+      });
 
       if (response["success"]) {
         final cartController = Get.find<CartController>();

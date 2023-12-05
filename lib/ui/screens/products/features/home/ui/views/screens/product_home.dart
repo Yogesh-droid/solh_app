@@ -81,8 +81,8 @@ class _ProductsHomeState extends State<ProductsHome> {
           children: [
             Obx(() => ListView(
                   children: [
-                    const ProductsSearchBar(),
-                    const GetHelpDivider(),
+                    // const ProductsSearchBar(),
+                    // const GetHelpDivider(),
                     ProductsCategories(),
                     const GetHelpDivider(),
                     if (productsHomeCarouselController
@@ -184,8 +184,8 @@ class ProductsSearchBar extends StatelessWidget {
         hintText: "Search for Mental wellness Products",
         hintStyle: MaterialStateProperty.resolveWith(
             (states) => const TextStyle(color: SolhColors.Grey_1)),
-        trailing: [
-          const Icon(
+        trailing: const [
+          Icon(
             Icons.search,
             color: SolhColors.primary_green,
           )
@@ -490,7 +490,7 @@ class FeatureProductsSection extends StatelessWidget {
           return featureProductsController.isLoading.value
               ? MyLoader()
               : SizedBox(
-                  height: 380,
+                  height: 350,
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
@@ -527,6 +527,8 @@ class FeatureProductsSection extends StatelessWidget {
                             .featureProductList[index].inCartCount,
                         currency: featureProductsController
                             .featureProductList[index].currency,
+                        shortDescription: featureProductsController
+                            .featureProductList[index].shortDescription,
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                               AppRoutes.productDetailScreen,

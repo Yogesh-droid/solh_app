@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:solh/constants/api.dart';
+import 'package:solh/model/mood-meter/mood_analytics_chart_data_model.dart';
 import 'package:solh/model/mood-meter/mood_analytics_model.dart';
 import 'package:solh/model/mood-meter/mood_meter.dart';
 import 'package:solh/model/mood-meter/sub_mood_analytics_data.dart';
@@ -22,6 +23,7 @@ class MoodMeterController extends GetxController {
   var moodMeterModel = MoodMeterModel().obs;
   var moodAnlyticsModel = MoodAnalyticsModel().obs;
   var subMoodAnlyticsModel = SubMoodAnlyticsModel().obs;
+  var moodAnalyticsChartDataModel = MoodAnalyticsChartDataModel().obs;
   var selectedFrequency = '7'.obs;
 
   var graphYAxisData = <GraphYAxisData>[];
@@ -29,6 +31,7 @@ class MoodMeterController extends GetxController {
   // var selectedFrequencyMoodMap = {}.obs;
   var isFetchingMoodAnalytics = false.obs;
   var isFetchingSubMoodAnalytics = false.obs;
+  var isFetchingMoodAnalyticsChartData = false.obs;
 
   var selectedGif = 'https://media.giphy.com/media/JmBXdjfIblJDi/giphy.gif'.obs;
   var selectedMood = 'happy'.obs;
@@ -105,11 +108,13 @@ class MoodMeterController extends GetxController {
       getSubMoodAnalytics(selectedFrequency.value,
           moodAnlyticsModel.value.moodAnalytic!.first.sId!);
     }
-
+    getMoodAnalyticsChartData(days.toString());
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
-      graphYAxisData.add(GraphYAxisData(
-          color: Color(int.parse((element.hexCode!.replaceAll('#', '0xFF')))),
-          emojiUrl: element.media ?? ''));
+      if (graphYAxisData.length <= 5) {
+        graphYAxisData.add(GraphYAxisData(
+            color: Color(int.parse((element.hexCode!.replaceAll('#', '0xFF')))),
+            emojiUrl: element.media ?? ''));
+      }
     });
     moodAnlyticsModel.value.moodAnalytic!.forEach((element) {
       selectedFrequencyMoodMap[element.name ?? ''] =
@@ -133,6 +138,20 @@ class MoodMeterController extends GetxController {
     } catch (e) {
       isFetchingSubMoodAnalytics(false);
       throw (e);
+    }
+  }
+
+  Future<void> getMoodAnalyticsChartData(String day) async {
+    isFetchingMoodAnalyticsChartData(true);
+    try {
+      Map<String, dynamic> map = await Network.makeGetRequestWithToken(
+          '${APIConstants.api}/api/mood-graph?days=$day');
+      moodAnalyticsChartDataModel.value =
+          MoodAnalyticsChartDataModel.fromJson(map);
+      isFetchingMoodAnalyticsChartData(false);
+    } catch (e) {
+      isFetchingMoodAnalyticsChartData(false);
+      rethrow;
     }
   }
 

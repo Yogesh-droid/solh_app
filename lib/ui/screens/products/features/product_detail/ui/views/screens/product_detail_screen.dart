@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:readmore/readmore.dart';
 import 'package:sizer/sizer.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/ui/screens/get-help/get-help.dart';
+import 'package:solh/ui/screens/products/features/cart/ui/controllers/cart_controller.dart';
+import 'package:solh/ui/screens/products/features/home/ui/views/widgets/app_bar_cart_icon.dart';
 import 'package:solh/ui/screens/products/features/home/ui/views/widgets/feature_products_widget.dart';
 import 'package:solh/ui/screens/products/features/product_detail/data/model/product_details_model.dart';
 import 'package:solh/ui/screens/products/features/product_detail/ui/controller/product_detail_controller.dart';
@@ -168,7 +172,7 @@ class RelatedProductsSection extends StatelessWidget {
                 // onPressed: () {},
               ),
               SizedBox(
-                height: 380,
+                height: 360,
                 child: ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   shrinkWrap: true,
@@ -203,6 +207,10 @@ class RelatedProductsSection extends StatelessWidget {
                       isInWishlist: productDetailsModel
                               .product!.relatedProducts![index].isWishlisted ??
                           false,
+                      currency: productDetailsModel
+                          .product!.relatedProducts![index].currency,
+                      shortDescription: productDetailsModel
+                          .product!.relatedProducts![index].shortDescription,
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                             AppRoutes.productDetailScreen,
@@ -266,26 +274,29 @@ class GetProductStatsAndImage extends StatelessWidget {
                       const SizedBox(
                         width: 5,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.star,
-                            size: 15,
-                            color: Colors.yellow[700],
-                          ),
-                          Text(
-                            productDetailsModel.product!.overAllRating
-                                .toString(),
-                            style: SolhTextStyles.QS_body_2,
-                          ),
-                        ],
-                      )
+                      if (productDetailsModel.product!.overAllRating! > 0)
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 15,
+                              color: Colors.yellow[700],
+                            ),
+                            Text(
+                              productDetailsModel.product!.overAllRating
+                                  .toString(),
+                              style: SolhTextStyles.QS_body_2,
+                            ),
+                          ],
+                        )
                     ],
                   ),
                   Text(
-                    'Available in stock ${productDetailsModel.product!.stockAvailable}',
-                    style: SolhTextStyles.QS_body_2,
-                  )
+                    getStockString(
+                        productDetailsModel.product!.stockAvailable ?? 0),
+                    style: SolhTextStyles.QS_body_2.copyWith(
+                        color: SolhColors.primaryRed),
+                  ),
                 ],
               ),
               const SizedBox(
@@ -311,28 +322,31 @@ class GetProductStatsAndImage extends StatelessWidget {
                                 decoration: TextDecoration.lineThrough),
                           )
                         ],
-                      )
+                      ),
                     ],
                   ),
                   Text(
                     '${(100 - (productDetailsModel.product!.afterDiscountPrice! / productDetailsModel.product!.price!) * 100).toInt()}% OFF',
                     style: SolhTextStyles.QS_body_2_semi.copyWith(
                         color: SolhColors.primary_green),
-                  )
+                  ),
                 ],
               ),
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    productDetailsModel.product!.skuOrIsbn ?? '',
-                    style: SolhTextStyles.QS_caption,
-                  ),
-                ],
-              ),
+              Html(
+                  data: productDetailsModel.product!.shortDescription ?? '',
+                  shrinkWrap: true,
+                  style: {
+                    "body":
+                        Style(padding: HtmlPaddings.zero, margin: Margins.zero),
+                    "p": Style(
+                      maxLines: 1,
+                      textOverflow: TextOverflow.ellipsis,
+                      fontSize: FontSize(12),
+                    )
+                  }),
               const SizedBox(
                 height: 15,
               ),
@@ -360,10 +374,10 @@ class ProductDetails extends StatelessWidget {
                 .map((e) => Row(
                       children: [
                         Text(
-                          e.label ?? '',
+                          "${e.label ?? ''} :",
                           style: SolhTextStyles.CTA,
                         ),
-                        Text(' : ${e.value}')
+                        Text('  ${e.value}')
                       ],
                     ))
                 .toList(),
@@ -406,10 +420,21 @@ class AddToCartBuyNowButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           AddRemoveProductButtoon(
+            buttonTitle: productDetailController
+                        .productDetail.value.product!.stockAvailable ==
+                    0
+                ? "Out of stock"
+                : 'Add to cart',
             productId: productId,
             productsInCart: productDetailController
                     .productDetail.value.product!.inCartCount ??
                 0,
+            buttonWidth: 200,
+            isEnabled: productDetailController
+                    .productDetail.value.product!.stockAvailable !=
+                0,
+            stockLimit: productDetailController
+                .productDetail.value.product!.stockAvailable,
           ),
           // SolhGreenMiniButton(
           //   backgroundColor: SolhColors.primaryRed,
@@ -455,11 +480,20 @@ class _GetProductImagesState extends State<GetProductImages> {
             children: widget.productDetailsModel.product!.productImage!
                 .map(
                   (e) => GestureDetector(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ZoomImage(image: e),
-                    )),
-                    child: Image.network(e),
-                  ),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ZoomImage(image: e),
+                          )),
+                      child: CachedNetworkImage(
+                        // fit: BoxFit.fill,
+                        imageUrl: e,
+                        errorWidget: (context, url, error) {
+                          return Image.asset(
+                              "assets/icons/app-bar/no-image.png");
+                        },
+                        placeholder: (context, url) {
+                          return Image.asset("assets/images/opening_link.gif");
+                        },
+                      )),
                 )
                 .toList(),
           ),
@@ -493,6 +527,7 @@ class _GetProductImagesState extends State<GetProductImages> {
   }
 }
 
+// ignore: must_be_immutable
 class GetProductDeatilAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   GetProductDeatilAppBar({super.key});
@@ -500,6 +535,8 @@ class GetProductDeatilAppBar extends StatelessWidget
   final AddDeleteWishlistItemController addDeleteWishlistItemController =
       Get.find();
   final ProductWishlistController productWishlistController = Get.find();
+
+  CartController cartController = Get.find();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -514,6 +551,12 @@ class GetProductDeatilAppBar extends StatelessWidget
       backgroundColor: SolhColors.white,
       iconTheme: const IconThemeData(color: SolhColors.black),
       actions: [
+        Obx(() {
+          return CartButton(
+              itemsInCart: cartController.cartEntity.value.cartList != null
+                  ? cartController.cartEntity.value.cartList!.items!.length
+                  : 0);
+        }),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: Obx(() {
@@ -539,4 +582,13 @@ class GetProductDeatilAppBar extends StatelessWidget
   @override
   // TODO: implement preferredSize
   Size get preferredSize => const Size(0, 50);
+}
+
+String getStockString(int itemInStock) {
+  if (itemInStock == 0) {
+    return ' Out of stock';
+  } else if (itemInStock <= 15) {
+    return ' $itemInStock left';
+  }
+  return 'In stock';
 }

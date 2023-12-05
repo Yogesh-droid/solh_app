@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/item_widget.dart';
 import 'package:solh/ui/screens/products/features/products_list/ui/widgets/sheet_cart_add_remove_btn.dart';
+import 'package:solh/widgets_constants/buttons/custom_buttons.dart';
 
 import '../../../../../../../widgets_constants/constants/colors.dart';
 import '../../../../../../../widgets_constants/constants/textstyles.dart';
@@ -22,7 +23,8 @@ class SheetCartItem extends StatelessWidget {
       required this.id,
       required this.onIncreaseCartCount,
       required this.onDecreaseCartCount,
-      required this.onDeleteItem});
+      required this.onDeleteItem,
+      required this.isOutOfStock});
 
   final String image;
   final String? productName;
@@ -33,6 +35,7 @@ class SheetCartItem extends StatelessWidget {
   final int? inCartNo;
   final bool? isWishListed;
   final String id;
+  final bool isOutOfStock;
   final Function() onIncreaseCartCount;
   final Function() onDecreaseCartCount;
   final Function() onDeleteItem;
@@ -40,7 +43,7 @@ class SheetCartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       height: 120,
       child: Row(
         children: [
@@ -54,10 +57,11 @@ class SheetCartItem extends StatelessWidget {
                 placeholder: (context, url) {
                   return Image.asset("assets/icons/app-bar/no-image.png");
                 },
+                fit: BoxFit.fill,
               )),
           const SizedBox(width: 20),
           Expanded(
-              flex: 2,
+              flex: 3,
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,18 +95,27 @@ class SheetCartItem extends StatelessWidget {
                     const Spacer(),
                     Row(
                       children: [
-                        discountedPrice! > 0
-                            ? PriceContainer(
-                                discountedPrice: discountedPrice ?? 0,
-                                currency: currency)
-                            : const SizedBox.shrink(),
-                        const SizedBox(width: 10),
-                        discountedPrice! > 0
-                            ? MrpContainer(
-                                mrp: itemPrice ?? 0,
-                                currency: currency,
-                              )
-                            : const SizedBox.shrink(),
+                        isOutOfStock
+                            ? const SolhGreenButton(
+                                onPressed: null,
+                                height: 30,
+                                width: 100,
+                                backgroundColor: SolhColors.grey_3,
+                                child: Text('Out Of Stock'))
+                            : Row(children: [
+                                discountedPrice! > 0
+                                    ? PriceContainer(
+                                        discountedPrice: discountedPrice ?? 0,
+                                        currency: currency)
+                                    : const SizedBox.shrink(),
+                                const SizedBox(width: 10),
+                                discountedPrice! > 0
+                                    ? MrpContainer(
+                                        mrp: itemPrice ?? 0,
+                                        currency: currency,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ]),
                         const Spacer(),
                         SheetCartAddRemoveBtn(
                           decreaseCartCount: onDecreaseCartCount,
