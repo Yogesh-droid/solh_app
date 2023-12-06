@@ -88,7 +88,7 @@ class CreateJournal {
               "aspectRatio": aspectRatio
             };
       print('${APIConstants.api}/api/create-user-post');
-      print(body);
+      print("body $body");
 
       await http.post(Uri.parse('${APIConstants.api}/api/create-user-post'),
           body: jsonEncode(body),
@@ -116,23 +116,23 @@ class CreateJournal {
             };
       print('${APIConstants.api}/api/create-user-post');
       print(body);
-      await http.post(Uri.parse("${APIConstants.api}/api/create-user-post"),
+      var response = await http.post(
+          Uri.parse("${APIConstants.api}/api/create-user-post"),
           body: jsonEncode(body),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ${userBlocNetwork.getSessionCookie}',
-          }).then((value) {
-        // print("post response" + json.decode(value.body).toString());
-        if (json.decode(value.body)['body']['inGroup']) {
-          globalNavigatorKey.currentState!.push(
-            MaterialPageRoute(
-                builder: (context) => CommentScreen(
-                    journalModel:
-                        Journals(id: json.decode(value.body)['body']['postId']),
-                    index: -1)),
-          );
-        }
-      });
+          }).onError((error, stackTrace) => throw ("error $error"));
+      print('response ${response.body}');
+      if (json.decode(response.body)['body']['inGroup']) {
+        globalNavigatorKey.currentState!.push(
+          MaterialPageRoute(
+              builder: (context) => CommentScreen(
+                  journalModel: Journals(
+                      id: json.decode(response.body)['body']['postId']),
+                  index: -1)),
+        );
+      }
 
       return "posted";
     }

@@ -20,7 +20,7 @@ class OfferCarouselController extends GetxController {
       }
     } catch (e) {
       log(e.toString(), name: "errorx");
-      throw (e);
+      rethrow;
     }
     isGettingOffers(false);
   }

@@ -2,7 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
+import 'package:solh/controllers/psychology-test/psychology_test_controller.dart';
+import 'package:solh/main.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/routes/routes.dart';
 import 'package:solh/services/utility.dart';
@@ -95,19 +98,19 @@ Widget getAddOrgButton() {
     mainAxisAlignment: MainAxisAlignment.end,
     children: [
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
           color: SolhColors.primary_green,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Row(
           children: [
-            Icon(
+            const Icon(
               CupertinoIcons.add,
               color: SolhColors.white,
               size: 15,
             ),
-            SizedBox(
+            const SizedBox(
               width: 5,
             ),
             Text(
@@ -132,7 +135,7 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
         decoration: BoxDecoration(
           color: SolhColors.white,
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               spreadRadius: 2,
               blurRadius: 2,
               color: Colors.black12,
@@ -146,8 +149,8 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 8, top: 8),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8, top: 8),
                   child: Icon(
                     Icons.check_circle_outline,
                     size: 25,
@@ -174,7 +177,7 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
                       //  orgController.removeAndUpdateOrg(myProfileModel
                       //   .body!.userOrganisations!.first.organisation!.sId!);
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.remove_circle_outline,
                       size: 25,
                       color: SolhColors.primaryRed,
@@ -200,13 +203,14 @@ Widget getDefaultOrg(MyProfileModel myProfileModel, OrgController orgController,
               textAlign: TextAlign.center,
               style: SolhTextStyles.QS_caption,
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             myProfileModel.body!.userOrganisations!.first.orgusercategories !=
                     null
                 ? Padding(
-                    padding: EdgeInsets.only(top: 5),
+                    padding: const EdgeInsets.only(top: 5),
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 2),
                       decoration: BoxDecoration(
                           color: SolhColors.primary_green.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(6)),
@@ -243,10 +247,10 @@ Widget getOtherOrgs(
   List<UserOrganisations> subList =
       myProfileModel.body!.userOrganisations!.sublist(1);
   return GridView.builder(
-    padding: EdgeInsets.only(
+    padding: const EdgeInsets.only(
       top: 15,
     ),
-    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
       mainAxisSpacing: 15,
       childAspectRatio: 2 / 2.6,
@@ -254,12 +258,12 @@ Widget getOtherOrgs(
     ),
     itemCount: subList.length,
     shrinkWrap: true,
-    physics: NeverScrollableScrollPhysics(),
+    physics: const NeverScrollableScrollPhysics(),
     itemBuilder: (context, index) {
       return Container(
         decoration: BoxDecoration(
           color: SolhColors.white,
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               spreadRadius: 2,
               blurRadius: 2,
@@ -276,9 +280,27 @@ Widget getOtherOrgs(
                 Padding(
                     padding: const EdgeInsets.only(left: 8, top: 8),
                     child: InkWell(
-                      onTap: () {
+                      onTap: () async {
                         if (subList[index].status == 'Approved') {
-                          orgController.changeDefault(index);
+                          await orgController.changeDefault(index);
+                          await Get.find<DiscoverGroupController>()
+                              .getHomePageGroup();
+                          await Get.find<DiscoverGroupController>()
+                              .getDiscoverGroups();
+
+                          await Get.find<DiscoverGroupController>()
+                              .getJoinedGroups();
+                          await Get.find<DiscoverGroupController>()
+                              .getCreatedGroups();
+                          await Get.find<PsychologyTestController>()
+                              .getTestList();
+
+                          WidgetsBinding.instance
+                              .addPostFrameCallback((timeStamp) {
+                            print('change org');
+                            globalNavigatorKey.currentState!
+                                .pushReplacementNamed(AppRoutes.master);
+                          });
                         } else {
                           Utility.showToast(
                               'Only approved organizations can be made default');
@@ -311,7 +333,7 @@ Widget getOtherOrgs(
                       // orgController.removeAndUpdateOrg(
                       //     subList[index].organisation!.sId ?? '');
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.remove_circle_outline,
                       size: 25,
                       color: SolhColors.primaryRed,
@@ -339,7 +361,7 @@ Widget getOtherOrgs(
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            Expanded(child: SizedBox()),
+            const Expanded(child: SizedBox()),
             InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -357,7 +379,8 @@ Widget getOtherOrgs(
               },
               child: subList[index].orgusercategories != null
                   ? Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 2),
                       decoration: BoxDecoration(
                           color: SolhColors.primary_green.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(6)),
@@ -379,7 +402,7 @@ Widget getTeamLocationText(UserOrganisations userOrganisations) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.location_on_outlined,
             color: SolhColors.primary_green,
             size: 15,
@@ -399,7 +422,7 @@ Widget getTeamLocationText(UserOrganisations userOrganisations) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.card_travel,
             color: SolhColors.primary_green,
             size: 15,
@@ -421,7 +444,7 @@ Widget getTeamLocationText(UserOrganisations userOrganisations) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.card_travel,
                 color: SolhColors.primary_green,
                 size: 15,
@@ -437,7 +460,7 @@ Widget getTeamLocationText(UserOrganisations userOrganisations) {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.location_on_outlined,
                 color: SolhColors.primary_green,
                 size: 15,
@@ -522,11 +545,11 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
         length: 2,
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Padding(
-              padding: const EdgeInsets.all(0),
+            const Padding(
+              padding: EdgeInsets.all(0),
               child: TabBar(indicatorColor: SolhColors.primary_green, tabs: [
                 Text(
                   'Select Team',
@@ -539,16 +562,14 @@ class _TeamsModelSheetContentState extends State<TeamsModelSheetContent> {
               ]),
             ),
             Expanded(
-              child: Container(
-                child: TabBarView(children: [
-                  SelectTeamTabContent(
-                    userOrganisations: widget.userOrganisations,
-                  ),
-                  SelectLocationTabContent(
-                    userOrganisations: widget.userOrganisations,
-                  )
-                ]),
-              ),
+              child: TabBarView(children: [
+                SelectTeamTabContent(
+                  userOrganisations: widget.userOrganisations,
+                ),
+                SelectLocationTabContent(
+                  userOrganisations: widget.userOrganisations,
+                )
+              ]),
             )
           ],
         ),
@@ -588,8 +609,8 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
         children: [
           widget.userOrganisations.orgusercategories == null ||
                   widget.userOrganisations.orgusercategories!.options!.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     'No Category to select',
                     style: SolhTextStyles.QS_body_2_bold,
@@ -597,7 +618,7 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
                 )
               : ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Card(
                         child: Row(
@@ -624,12 +645,12 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
                   itemCount: widget
                       .userOrganisations.orgusercategories!.options!.length,
                 ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Obx(() {
             return orgController.isUpdatingOrgTeam.value
-                ? SolhGreenButton(
+                ? const SolhGreenButton(
                     child: ButtonLoadingAnimation(
                       ballColor: SolhColors.white,
                     ),
@@ -668,7 +689,7 @@ class _SelectTeamTabContentState extends State<SelectTeamTabContent> {
 }
 
 class SelectLocationTabContent extends StatefulWidget {
-  SelectLocationTabContent({super.key, required this.userOrganisations});
+  const SelectLocationTabContent({super.key, required this.userOrganisations});
 
   final UserOrganisations userOrganisations;
 
@@ -699,8 +720,8 @@ class _SelectLocationTabContentState extends State<SelectLocationTabContent> {
           widget.userOrganisations.orgusercategories == null ||
                   widget
                       .userOrganisations.orgusercategories!.optionsLoc!.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     'No Category to select',
                     style: SolhTextStyles.QS_body_2_bold,
@@ -708,7 +729,7 @@ class _SelectLocationTabContentState extends State<SelectLocationTabContent> {
                 )
               : ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return Card(
                         child: Row(
@@ -735,12 +756,12 @@ class _SelectLocationTabContentState extends State<SelectLocationTabContent> {
                   itemCount: widget
                       .userOrganisations.orgusercategories!.optionsLoc!.length,
                 ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Obx(() {
             return orgController.isUpdatingOrgTeam.value
-                ? SolhGreenButton(
+                ? const SolhGreenButton(
                     child: ButtonLoadingAnimation(
                       ballColor: SolhColors.white,
                     ),
@@ -789,7 +810,7 @@ Widget getOrgStatus(String status) {
         decoration: BoxDecoration(
             shape: BoxShape.circle, color: getStatusColor(status)),
       ),
-      SizedBox(
+      const SizedBox(
         width: 5,
       ),
       Text(
@@ -803,11 +824,11 @@ Widget getOrgStatus(String status) {
 Color getStatusColor(String label) {
   switch (label) {
     case 'Approved':
-      return Color(0xff0C812C);
+      return const Color(0xff0C812C);
     case 'Invited':
-      return Color(0xffEAA900);
+      return const Color(0xffEAA900);
     case 'Rejected':
-      return Color(0xffE11616);
+      return const Color(0xffE11616);
     default:
       return Colors.white;
   }
@@ -834,7 +855,7 @@ Widget removeOrgAlertDialog(String orgName, OrgController controller,
             style: SolhTextStyles.QS_cap_2_semi.copyWith(
                 fontSize: 14, color: SolhColors.primary_green)),
       ),
-      SizedBox(
+      const SizedBox(
         width: 15,
       ),
       InkWell(

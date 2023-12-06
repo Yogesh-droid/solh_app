@@ -1673,28 +1673,31 @@ class _HomePageState extends State<HomePage> {
                   )),
               SizedBox(
                 height: 180,
-                child: ListView(
-                  padding: const EdgeInsets.only(left: 10),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: psychologyTestController.testList.length > 5
-                      ? List.generate(
-                          5,
-                          (index) => PsychoTestContainer(
-                                test: psychologyTestController.testList[index],
+                child: Obx(() {
+                  return ListView(
+                    padding: const EdgeInsets.only(left: 10),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    children: psychologyTestController.testList.length > 5
+                        ? List.generate(
+                            5,
+                            (index) => PsychoTestContainer(
+                                  test:
+                                      psychologyTestController.testList[index],
+                                  psychologyTestController:
+                                      psychologyTestController,
+                                ))
+                        : psychologyTestController.testList
+                            .map(
+                              (element) => PsychoTestContainer(
+                                test: element,
                                 psychologyTestController:
                                     psychologyTestController,
-                              ))
-                      : psychologyTestController.testList
-                          .map(
-                            (element) => PsychoTestContainer(
-                              test: element,
-                              psychologyTestController:
-                                  psychologyTestController,
-                            ),
-                          )
-                          .toList(),
-                ),
+                              ),
+                            )
+                            .toList(),
+                  );
+                }),
               ),
             ],
           ));

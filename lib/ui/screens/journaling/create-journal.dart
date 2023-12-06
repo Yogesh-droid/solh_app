@@ -315,7 +315,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       journalPageController.selectedDiary.value.id != null
           ? await _createJournal.postJournalFromDiary()
           : await _createJournal.postJournal();
-
+      print('posted');
       if (_journalType == 'My_Diary') {
         await myDiaryController.getMyJournals(1);
         myDiaryController.myJournalsList.refresh();
@@ -335,6 +335,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
           _isPosting = false;
         });
       }
+
       //journalsBloc.getJournalsSnapshot();
       if (_createJournal.groupId == '') {
         if (bottomNavigatorController.activeIndex == 1) {

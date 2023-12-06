@@ -31,6 +31,7 @@ class PsychologyTestController extends GetxController {
 
   Future<void> getTestList() async {
     isLoadingList.value = true;
+    testList.clear();
     Map<String, dynamic> map = await Network.makeGetRequestWithToken(
         "${APIConstants.api}/api/get-test-listv2");
 

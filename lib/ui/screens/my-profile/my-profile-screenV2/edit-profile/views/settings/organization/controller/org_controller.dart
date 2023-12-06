@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:solh/controllers/group/discover_group_controller.dart';
 import 'package:solh/controllers/profile/profile_controller.dart';
 import 'package:solh/model/profile/my_profile_model.dart';
 import 'package:solh/ui/screens/my-profile/my-profile-screenV2/edit-profile/views/settings/organization/service/org_service.dart';
@@ -138,7 +139,8 @@ class OrgController extends GetxController {
     allId.add(firstItem.organisation!.sId);
     log(allId.toString());
     profileController.editProfile({'organisation': jsonEncode(allId)});
-    DefaultOrg.setDefaultOrg(allId.first);
+    await DefaultOrg.setDefaultOrg(allId.first);
+    await DefaultOrg.getDefaultOrg();
   }
 
   Future<void> updateOrgTeamController(
