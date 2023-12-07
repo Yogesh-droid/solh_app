@@ -78,7 +78,6 @@ class ItemWidget extends StatelessWidget {
                         "body": Style(
                             padding: HtmlPaddings.zero, margin: Margins.zero),
                         "p": Style(
-                          maxLines: 1,
                           textOverflow: TextOverflow.ellipsis,
                           fontSize: FontSize(12),
                         )
