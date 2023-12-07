@@ -15,6 +15,7 @@ class DiscoverGroupController extends GetxController {
   var discoveredGroupModel = GetGroupResponseModel().obs;
   var groupDetailModel = GroupDetailModel().obs;
   var homepageGroupModel = HomepageGroupModel().obs;
+  bool disableNextPageSetting = false;
   List<String> groupsShownOnHome =
       []; ////  groups shown on home screen created + joined groups// used to find index of selected group
   ////  So that we can animate the controller to its partcular position
@@ -63,8 +64,9 @@ class DiscoverGroupController extends GetxController {
   }
 
   Future<void> getJoinedGroups() async {
-    if (joinedGroupNextPage != null) {
+    if (joinedGroupNextPage != null || disableNextPageSetting) {
       loadingJoinedGroups.value = true;
+      joinedGroupModel.value.groupList?.clear();
       Map<String, dynamic> map = await Network.makeGetRequestWithToken(
           '${APIConstants.api}/api/joined-groupsv2?pageNumber=$joinedGroupNextPage&limit=10');
       loadingJoinedGroups.value = false;

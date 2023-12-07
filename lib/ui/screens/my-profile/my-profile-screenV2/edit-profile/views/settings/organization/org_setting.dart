@@ -283,17 +283,24 @@ Widget getOtherOrgs(
                       onTap: () async {
                         if (subList[index].status == 'Approved') {
                           await orgController.changeDefault(index);
-                          await Get.find<DiscoverGroupController>()
+
+                          print('*****' * 30);
+                          Get.find<DiscoverGroupController>()
+                              .disableNextPageSetting = true;
+
+                          Get.find<DiscoverGroupController>().getJoinedGroups();
+                          Get.find<DiscoverGroupController>()
+                              .disableNextPageSetting = false;
+                          print('###' * 30);
+
+                          Get.find<DiscoverGroupController>()
                               .getHomePageGroup();
-                          await Get.find<DiscoverGroupController>()
+                          Get.find<DiscoverGroupController>()
                               .getDiscoverGroups();
 
-                          await Get.find<DiscoverGroupController>()
-                              .getJoinedGroups();
-                          await Get.find<DiscoverGroupController>()
+                          Get.find<DiscoverGroupController>()
                               .getCreatedGroups();
-                          await Get.find<PsychologyTestController>()
-                              .getTestList();
+                          Get.find<PsychologyTestController>().getTestList();
 
                           WidgetsBinding.instance
                               .addPostFrameCallback((timeStamp) {
